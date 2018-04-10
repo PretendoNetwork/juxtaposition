@@ -46,8 +46,6 @@ func getIP() string {
 	
 }
 
-}
-
 // function for zeroing something
 // takes a pointer (&varible)
 func erase(v interface{}) {

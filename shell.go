@@ -181,7 +181,7 @@ func code(index string) string {
 	if runtime.GOOS == "darwin" { ansiTrick(); }
 
 	// fix prefix for windows
-	if isWindows() {
+	if runtime.GOOS == "windows" {
 
 		// prefix that the terminal
 		// color lib uses
@@ -224,7 +224,7 @@ func consoleSequence(message string) {
 
 	// things are different for windows
 	// *shrug*
-	if isWindows() {
+	if runtime.GOOS == "windows" {
 
 		// make that writer
 		Writer := ansicolor.NewAnsiColorWriter(os.Stdout)
