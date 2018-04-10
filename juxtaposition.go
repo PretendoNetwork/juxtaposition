@@ -13,7 +13,7 @@ import (
 	// internals
 	"fmt"
 	"strings"
-        "time"
+    "time"
 	// not used right now
 	// "flag"
 	// "os"
@@ -25,9 +25,9 @@ func startup(channel chan<- string) {
 
 	// test
 	channel <- "test"
-        time.Sleep(2 * time.Second)
+    time.Sleep(2 * time.Second)
 	channel <- "another test"
-        time.Sleep(2 * time.Second)
+    time.Sleep(2 * time.Second)
 	channel <- "finished"
 
 }
@@ -39,8 +39,8 @@ func main() {
 	consoleSequence(fmt.Sprintf("%s", code("reset")))
 
 	// show a welcome message to be friendly
-	consoleSequence(fmt.Sprintf("\n%s%sjuxtaposition%s by %s%ssuperwhiskers%s\n", code("reset"), code("magenta"), code("reset"), code("bold"), code("magenta"), code("reset")))
-	consoleSequence(fmt.Sprintf("version: %sv%s%s\n", code("green"), ver, code("reset")))
+	consoleSequence(fmt.Sprintf("\n%s%s%s%s by %s%ssuperwhiskers%s\n", code("reset"), code("magenta"), progName, code("reset"), code("bold"), code("magenta"), code("reset")))
+	consoleSequence(fmt.Sprintf("version: %sv%s%s\n", code("green"), curVer, code("reset")))
 	fmt.Printf("----\n\n")
 
 	// show a loading message

@@ -12,4 +12,7 @@ if you want a copy, go to http://www.gnu.org/licenses/
 package main
 
 // current version
-var ver = "0.1a"
+var curVer = "0.1a"
+
+// name
+var progName = "juxtaposition"
