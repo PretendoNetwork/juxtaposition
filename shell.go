@@ -128,7 +128,7 @@ func padStrToMatchStr(pad string, match string, padWith string) string {
 	}
 
 	// pad the string to match the length of the other
-	for x := 0; x < length(match); x++ {
+	for x := length(pad); x < length(match); x++ {
 		
 		// pad the string with the character
 		pad += padWith

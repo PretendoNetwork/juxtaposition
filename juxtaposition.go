@@ -13,6 +13,7 @@ import (
 	// internals
 	"fmt"
 	"strings"
+        "time"
 	// not used right now
 	// "flag"
 	// "os"
@@ -22,8 +23,10 @@ import (
 func startup(channel chan<- string) {
 
 	// test
-	channel <- "finishing"
+	channel <- "test"
+        time.Sleep(2 * time.Second)
 	channel <- "another test"
+        time.Sleep(2 * time.Second)
 	channel <- "finished"
 
 }
@@ -70,7 +73,7 @@ func main() {
 		if message == "finished" {
 
 			// is done
-			consoleSequence(padStrToMatchStr(fmt.Sprintf("\rstarting up (finished)."), lastmsg, " "))
+			consoleSequence(strings.Join([]string{ padStrToMatchStr(fmt.Sprintf("\rstarting up (finished)."), lastmsg, " "), "\n" }, ""))
 
 			// exit it
 			break
