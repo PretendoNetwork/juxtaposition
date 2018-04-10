@@ -20,6 +20,7 @@ import (
 )
 
 // startup function
+// (might be moved into another file)
 func startup(channel chan<- string) {
 
 	// test
