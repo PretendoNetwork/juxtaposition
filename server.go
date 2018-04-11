@@ -22,7 +22,7 @@ import (
 var err error
 
 // the https server function
-func main() {
+func notmain() {
     
     // macaron
     m := macaron.Classic()

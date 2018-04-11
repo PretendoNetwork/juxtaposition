@@ -13,7 +13,7 @@ import (
 	// internals
 	"fmt"
 	"strings"
-    "time"
+        "time"
 	// not used right now
 	// "flag"
 	// "os"
@@ -25,9 +25,9 @@ func startup(channel chan<- string) {
 
 	// test
 	channel <- "test"
-    time.Sleep(2 * time.Second)
+        time.Sleep(2 * time.Second)
 	channel <- "another test"
-    time.Sleep(2 * time.Second)
+        time.Sleep(2 * time.Second)
 	channel <- "finished"
 
 }

@@ -6,15 +6,25 @@ if [ "$1" == "release" ]; then
     # show a message telling what we are doing
     echo "building release..."
     
-    # select the appropriate build config
-    cp buildconfs/build.prod.yaml
+    # select the appropriate build config to
+    # use
+    cp buildconfs/build.prod.go $(pwd)/build.conf.go >/dev/null 2>/dev/null
+    
+    # if an error occured from the cp command...
+    if [ "$?" != 0 ]; then
+        
+        # show an error message  
+        echo "an error occured while copying the config..."
+        echo "check if the buildconfs directory exists, and if build.prod.go exists..."
+        exit
+    
+    fi
 
-    # generate a go file with the binary data from
-    # the asset directories and the build config
-    go-bindata  -o assets.go assets/ templates/ buildconfs/build.prod.yaml
-
+    # run the build command
+    go build -buildmode=pie -o juxtaposition
+    
     # to be continued
-
+    
 # development build
 elif [ "$1" == "dev" ]; then
 
@@ -23,8 +33,22 @@ elif [ "$1" == "dev" ]; then
     
     # generate a go file with the binary data from
     # the asset directories and the build config
-    go-bindata  -o assets.go assets/ templates/ buildconfs/build.devel.yaml
+    cp buildconfs/build.devel.go $(pwd)/build.conf.go >/dev/null 2>/dev/null
+    
+    # run the build command
+    go build -buildmode=pie -o juxtaposition
+    
+    # to be continued
 
+# clean the environment
+elif [ "$1" == "clean" ]; then
+    
+    # show a message telling what we are doing
+    echo "cleaning the build environment..."
+    
+    # clean the build environment
+    rm $(pwd)/build.conf.go
+    
     # to be continued
 
 # show help
