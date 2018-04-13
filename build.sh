@@ -10,24 +10,31 @@ cd $DIR
 if [ "$1" == "release" ]; then
 
     # show a message telling what we are doing
-    echo "building release..."
+    echo "copying config file..."
     
     # select the appropriate build config to
     # use
     cp buildconfs/build.prod.go build.conf.go >/dev/null 2>/dev/null
     
+    # get the exit code
+    extcode=$?
+
     # if an error occured from the cp command...
-    if [ "$?" != 0 ]; then
+    if [ "$extcode" != 0 ]; then
         
-        # show an error message  
+        # show an error message and the exit code
         echo "an error occured while copying the config"
         echo "check if the buildconfs directory exists, and if build.prod.go exists..."
+        echo "exit code of cp: $extcode"
         exit
     
     fi
 
     # make the build directory
     mkdir build
+
+    # send a message letting the user know that we have started compiling
+    echo "compiling release build..."
 
     # run the build command
     go build -buildmode=pie -o build/juxtaposition
@@ -38,24 +45,31 @@ if [ "$1" == "release" ]; then
 elif [ "$1" == "dev" ]; then
 
     # show a message telling what we are doing
-    echo "building development build..."
-    
+    echo "copying config file..."
+
     # select the appropriate build
     # config to use
     cp buildconfs/build.devel.go build.conf.go >/dev/null 2>/dev/null
     
-    # if an error occured with the cp command...
-    if [ "$?" != 0 ]; then
+    # get the exit code
+    extcode=$?
 
-        # show an error message
+    # if an error occured with the cp command...
+    if [ "$extcode" != 0 ]; then
+
+        # show an error message and the exit code
         echo "an error occured while copying the config"
         echo "check if the buildconfs directory exists, and if build.prod.go exists..."
+        echo "exit code of cp: $extcode"
         exit
 
     fi
     
     # make the build directory
     mkdir build
+
+    # send a message letting the user know that we have started compiling
+    echo "compiling development build..."
     
     # run the build command
     go build -buildmode=pie -o build/juxtaposition
