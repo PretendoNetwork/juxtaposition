@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# get the bash script directory so nothing is screwed up
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+# then fix the running directory
+cd $DIR
+
 # release build
 if [ "$1" == "release" ]; then
 
@@ -8,20 +14,23 @@ if [ "$1" == "release" ]; then
     
     # select the appropriate build config to
     # use
-    cp buildconfs/build.prod.go $(pwd)/build.conf.go >/dev/null 2>/dev/null
+    cp buildconfs/build.prod.go build.conf.go >/dev/null 2>/dev/null
     
     # if an error occured from the cp command...
     if [ "$?" != 0 ]; then
         
         # show an error message  
-        echo "an error occured while copying the config..."
+        echo "an error occured while copying the config"
         echo "check if the buildconfs directory exists, and if build.prod.go exists..."
         exit
     
     fi
 
+    # make the build directory
+    mkdir build
+
     # run the build command
-    go build -buildmode=pie -o juxtaposition
+    go build -buildmode=pie -o build/juxtaposition
     
     # to be continued
     
@@ -31,12 +40,25 @@ elif [ "$1" == "dev" ]; then
     # show a message telling what we are doing
     echo "building development build..."
     
-    # generate a go file with the binary data from
-    # the asset directories and the build config
-    cp buildconfs/build.devel.go $(pwd)/build.conf.go >/dev/null 2>/dev/null
+    # select the appropriate build
+    # config to use
+    cp buildconfs/build.devel.go build.conf.go >/dev/null 2>/dev/null
+    
+    # if an error occured with the cp command...
+    if [ "$?" != 0 ]; then
+
+        # show an error message
+        echo "an error occured while copying the config"
+        echo "check if the buildconfs directory exists, and if build.prod.go exists..."
+        exit
+
+    fi
+    
+    # make the build directory
+    mkdir build
     
     # run the build command
-    go build -buildmode=pie -o juxtaposition
+    go build -buildmode=pie -o build/juxtaposition
     
     # to be continued
 
@@ -47,7 +69,7 @@ elif [ "$1" == "clean" ]; then
     echo "cleaning the build environment..."
     
     # clean the build environment
-    rm $(pwd)/build.conf.go
+    rm -rf build.conf.go build
     
     # to be continued
 
