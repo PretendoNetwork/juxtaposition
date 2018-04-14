@@ -52,6 +52,19 @@ buildsh_show_help () {
 
 }
 
+# function to clean the build environment
+buildsh_clean () {
+
+    # show a message telling what we are doing
+    echo "cleaning the build environment..."
+    
+    # clean the build environment
+    rm -rf build.conf.go build
+    
+    # to be continued
+
+}
+
 # check if we need to show help
 if [[ "$*" = *"-h"* || "$*" = *"--help"* ]]; then
 
@@ -60,6 +73,9 @@ if [[ "$*" = *"-h"* || "$*" = *"--help"* ]]; then
 
 # release build
 elif [[ "$1" == "release" || "$1" == "dev" ]]; then
+
+    # clean the build environment
+    buildsh_clean
 
     # show a message telling what we are doing
     echo "copying config file..."
@@ -97,7 +113,7 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
     
     fi
 
-    # make the build directory
+    # create the build directory
     mkdir build
 
     # cross-compilation handling
@@ -157,13 +173,8 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
 # clean the environment
 elif [ "$1" == "clean" ]; then
     
-    # show a message telling what we are doing
-    echo "cleaning the build environment..."
-    
-    # clean the build environment
-    rm -rf build.conf.go build
-    
-    # to be continued
+    # run the clean function
+    buildsh_clean
 
 # show help
 else
