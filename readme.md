@@ -24,8 +24,9 @@ guess what, i decided to take a break from yamamamura to work on this! hopefully
 - [golang](https://golang.org/)
 - [macaron](https://github.com/go-macaron/macaron)
 - [gocql](https://github.com/gocql/gocql)
+- [go-redis](https://github.com/go-redis/redis)
+- [lego](https://github.com/xenolf/lego/)
 - [ansicolor](https://github.com/shiena/ansicolor)
-- [go-bindata](https://github.com/go-bindata/go-bindata)
 - [go-yaml](https://github.com/go-yaml/yaml)
 
 #### building

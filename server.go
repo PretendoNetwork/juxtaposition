@@ -15,6 +15,7 @@ import (
         // internals
         "fmt"
         "net/http"
+        "strconv"
         // externals
         "gopkg.in/macaron.v1"
 )
@@ -22,11 +23,44 @@ import (
 var err error
 
 // the https server function
-func notmain() {
+func server() {
     
     // macaron
-    m := macaron.Classic()
+    m := macaron.New()
     
+    // set the environment
+    if serverEnv == "devel" {
+
+        // make it a development environment
+        m.setEnv(macaron.DEV)
+
+    } else if serverEnv == "prod" {
+
+        // make it a production environment
+        m.setEnv(macaron.PROD)
+
+    }
+
+    // pull in some middleware
+    
+    // if we are in a development environment,
+    // then attach a logger to macaron
+    if serverEnv == "devel" {
+
+        // attach the logger
+        m.Use(macaron.Logger())
+
+    }
+
+    // don't attempt panic recovery in development
+    // environments
+    if serverEnv == "prod" {
+
+        // add the panic recovery middleware
+        m.Use(macaron.Recovery())
+
+    }
+
     // a nice handler for the root
     m.Get("/", func(ctx *macaron.Context) string {
         
@@ -35,10 +69,21 @@ func notmain() {
     
     })
     
+    // get the full port
+    port := strconf.Itoa(serverPort)
+
     // output logs
-    fmt.Printf("hosting server on :5342\n")
-    err = http.ListenAndServeTLS(":5342", "pubkey", "privkey", m)
+    fmt.Printf("hosting server on %s\n", port)
+    err = http.ListenAndServeTLS(strings.Join([]string{ ":", port }), "pubkey", "privkey", m)
+
+    // show any errors if necissary
     if err != nil {
+
+        // show error message
+        fmt.Printf("[err]: error while attempting to start the server...\n")
+
+        // show traceback
         panic(err)
     }
+    
 }

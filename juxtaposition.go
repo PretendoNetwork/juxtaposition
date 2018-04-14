@@ -14,6 +14,8 @@ import (
 	"fmt"
 	"strings"
 	"time"
+	// externals
+	"gopkg.in/yaml.v2"
 	// not used right now
 	// "flag"
 	// "os"
@@ -21,14 +23,53 @@ import (
 
 // startup function
 // (might be moved into another file)
-func startup(channel chan<- string) {
+func startup(channel chan<- map[string]string) {
 
-	// test
-	channel <- "test"
-    time.Sleep(2 * time.Second)
-	channel <- "another test"
-    time.Sleep(2 * time.Second)
-	channel <- "finished"
+	// create holder variable for all configs
+	var confs map[string]map[string]interface{}
+
+	// load the main config
+	channel <- map[string]string{"cur": "loading main config", "prev": "none"}
+
+	// get the file data
+	confByte := readFileByte("configs/main.yaml")
+
+	// parse it to yaml
+	err := yaml.Unmarshal(confByte, &confs["main"])
+
+	// check for errors
+	if err != nil {
+
+		// show a message
+		fmt.Printf("[err]: there is an error in your yaml in the configs/main.yaml file...\n")
+
+		// and show a traceback
+		panic(err)
+
+	}
+
+	// begin loading communities
+	channel <- map[string]string{"cur": "loading communities", "prev": "success"}
+
+	// get file data of the community config
+	communityConfigByte := readFileByte("configs/communities.yaml")
+
+	// parse it
+	err = yaml.Unmarshal(communityConfigByte, &confs["communities"])
+
+	// handle errors
+	if err != nil {
+
+		// show a message
+		fmt.Printf("[err]: there is an error in your yaml in the config/communities.yaml file...\n")
+
+		// and show a traceback
+		panic(err)
+
+	}
+	
+	// show that we have finished
+	channel <- map[string]string{"cur": "finished", "prev": "success"}
 
 }
 
@@ -47,7 +88,7 @@ func main() {
 	fmt.Printf("starting up...")
 
 	// create a communications channel
-	channel := make(chan string)
+	channel := make(chan map[string]string)
 
 	// start the load goroutine
 	go startup(channel)
@@ -71,10 +112,10 @@ func main() {
 		message = <-channel
 
 		// exit the loop if it is done
-		if message == "finished" {
+		if message["cur"] == "finished" {
 
 			// is done
-			consoleSequence(strings.Join([]string{ padStrToMatchStr(fmt.Sprintf("\rstarting up (finished)."), lastmsg, " "), "\n" }, ""))
+			consoleSequence(strings.Join([]string{ padStrToMatchStr(fmt.Sprintf("\rstarting up (finished, result of last: %s).", message["prev"]), lastmsg, " "), "\n" }, ""))
 
 			// exit it
 			break
@@ -95,7 +136,7 @@ func main() {
 		}
 
 		// get the current message
-		curmsg = fmt.Sprintf("\rstarting up (current phase: %s)%s", message, strings.Repeat(".", dots))
+		curmsg = fmt.Sprintf("\rstarting up (current phase: %s, result of last: %s)%s", message["cur"], message["prev"], strings.Repeat(".", dots))
 		
 		// display the data in the message
 		consoleSequence(padStrToMatchStr(curmsg, lastmsg, " "))
