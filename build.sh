@@ -123,8 +123,7 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
         echo "compiling $1 build for multiple oses..."
 
         # start cross compilation
-        for targetstr in "${targets[@]}"
-        do
+        for targetstr in "${targets[@]}"; do
 
             # get the target
             IFS=':' read -r -a target <<< "$targetstr"
