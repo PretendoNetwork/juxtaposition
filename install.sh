@@ -37,6 +37,9 @@ cd $rootdir
 # make a dependency directory
 mkdir deps
 
+# go into the dependencies directory
+cd deps
+
 # download the dependencies
 for i in "${!deps[@]}"; do
 
@@ -68,25 +71,48 @@ for i in "${!deps[@]}"; do
     # tell the user what we are doing
     echo "downloading and unpacking source archive..."
 
+    # make a directory for it
+    mkdir ${dep[0]}
+
+    # go into that directory
+    cd ${dep[0]}
+
     # pull the dependency
-    curl ${dep[2]} > deps/${dep[0]}
+    curl ${dep[2]} > ${dep[0]}-archive
 
     # do one of the extraction methods on it
     if [ "${dep[3]}" == "tar" ]; then
 
         # extract the tar archive
-        tar -xf deps/${dep[0]}
+        tar -xf ${dep[0]}-archive
 
     elif [ "${dep[3]}" == "github" ]; then
 
         # exctract the zip archive
-        unzip deps/${dep[0]}
+        unzip ${dep[0]}-archive
 
     elif [ "${dep[3]}" == "zip" ]; then
 
         # extract the zip archive
-        unzip deps/${dep[0]}
+        unzip ${dep[0]}-archive
 
     fi
+
+    # remove the archive
+    rm ${dep[0]}-archive
+
+    # make the extracted folder have
+    # an identifiable name
+    mv * tmp-extract
+
+    # move everything in the extracted
+    # directory into the dependency dir
+    mv tmp-extract/* $(pwd)
+
+    # remove the extracted folder
+    rm -rf tmp-extract
+
+    # exit that dependency directory
+    cd ..
 
 done
