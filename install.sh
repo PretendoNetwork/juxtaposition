@@ -70,6 +70,7 @@ for i in "${!deps[@]}"; do
 
     # tell the user what we are doing
     echo "downloading and unpacking source archive..."
+    echo
 
     # make a directory for it
     mkdir ${dep[0]}
@@ -100,17 +101,21 @@ for i in "${!deps[@]}"; do
 
     # remove the archive
     rm ${dep[0]}-archive
-
+        
+    # make a random number for use
+    # in the extracted folder name
+    tmpfoldername="tmp-extract-$(shuf -i 1000000-9999999 -n 1)"
+    
     # make the extracted folder have
-    # an identifiable name
-    mv * tmp-extract
+    # the name
+    mv * $tmpfoldername
 
     # move everything in the extracted
     # directory into the dependency dir
-    mv tmp-extract/* $(pwd)
+    mv $tmpfoldername/* $(pwd)
 
     # remove the extracted folder
-    rm -rf tmp-extract
+    rm -rf $tmpfoldername
 
     # exit that dependency directory
     cd ..
