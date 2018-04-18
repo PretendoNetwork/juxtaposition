@@ -13,12 +13,11 @@ import (
 	// internals
 	"fmt"
 	"strings"
-	"time"
+	"os"
 	// externals
 	"gopkg.in/yaml.v2"
 	// not used right now
 	// "flag"
-	// "os"
 )
 
 // startup function
@@ -26,16 +25,32 @@ import (
 func startup(channel chan<- map[string]string) {
 
 	// create holder variable for all configs
-	var confs map[string]map[string]interface{}
+	confs := make(map[string]map[string]interface{})
+
+	// temporary variable for moving a config into the map
+	var tmpconf map[string]interface{}
 
 	// load the main config
 	channel <- map[string]string{"cur": "loading main config", "prev": "none"}
 
 	// get the file data
-	confByte := readFileByte("configs/main.yaml")
+	confByte, err := readFileByte("configs/main.yaml")
+
+	// check for errors
+	if err != nil {
+
+		// show a message
+		fmt.Printf("\n[err]: error while loading the config in configs/main.yaml.\n")
+		fmt.Printf("       you should copy main.example.yaml in that directory to a file\n")
+		fmt.Printf("       in that directory named main.yaml.")
+
+		// exit
+		os.Exit(1)
+
+	}
 
 	// parse it to yaml
-	err := yaml.Unmarshal(confByte, &confs["main"])
+	err = yaml.Unmarshal(confByte, &tmpconf)
 
 	// check for errors
 	if err != nil {
@@ -48,14 +63,30 @@ func startup(channel chan<- map[string]string) {
 
 	}
 
+	// move it in
+	confs["main"] = tmpconf
+
 	// begin loading communities
 	channel <- map[string]string{"cur": "loading communities", "prev": "success"}
 
 	// get file data of the community config
-	communityConfigByte := readFileByte("configs/communities.yaml")
+	communityConfigByte, nil := readFileByte("configs/communities.yaml")
+
+	// check for errors
+	if err != nil {
+
+		// show a message
+		fmt.Printf("\n[err]: error while loading the config in configs/communities.yaml.\n")
+		fmt.Printf("       you should copy communities.example.yaml in that directory to a file\n")
+		fmt.Printf("       in that directory named communities.yaml.")
+
+		// exit
+		os.Exit(1)
+
+	}
 
 	// parse it
-	err = yaml.Unmarshal(communityConfigByte, &confs["communities"])
+	err = yaml.Unmarshal(communityConfigByte, &tmpconf)
 
 	// handle errors
 	if err != nil {
@@ -67,6 +98,9 @@ func startup(channel chan<- map[string]string) {
 		panic(err)
 
 	}
+
+	// move it in
+	confs["communities"] = tmpconf
 	
 	// show that we have finished
 	channel <- map[string]string{"cur": "finished", "prev": "success"}
@@ -94,7 +128,7 @@ func main() {
 	go startup(channel)
 
 	// message variable
-	var message string
+	var message map[string]string
 
 	// dot counter
 	var dots int

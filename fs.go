@@ -14,7 +14,6 @@ package main
 import (
 	// internals
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -22,7 +21,7 @@ import (
 )
 
 // create directory
-func makeDirectory(directory string) {
+func makeDirectory(directory string) error {
 
 	// make the directory
 	err := os.MkdirAll(directory, 0755)
@@ -30,13 +29,12 @@ func makeDirectory(directory string) {
 	// error handling
 	if err != nil {
 
-		// show error message
-		fmt.Printf("[err]: error while creating directory (does it already exist?)")
-
-		// show traceback
-		panic(err)
+		return err
 
 	}
+
+	// return no error
+	return nil
 
 }
 
@@ -78,43 +76,29 @@ func doesFileExist(file string) bool {
 }
 
 // create a file
-func createFile(file string) {
-
-	// detect if file already exists
-	if doesFileExist(file) == true {
-
-		// display something if it already does
-		fmt.Printf("[err] : %s already exists..", file)
-
-		// then exit the program because you should already know if it does
-		os.Exit(1)
-
-	}
+func createFile(file string) error {
 
 	// create the file
 	oput, err := os.Create(file)
 
+	// close the file stream when done with it
+	defer oput.Close()
+
 	// handle any errors
 	if err != nil {
 
-		// display an error message
-		fmt.Printf("[err] : error creating file %s.. (does it already exist?)\n", file)
-
-		// close the file stream
-		defer oput.Close()
-
-		// show a traceback
-		panic(err)
+		// yeah, you have an error
+		return err
 
 	}
 
-	// close it if done writing
-	defer oput.Close()
+	// return no error
+	return nil
 
 }
 
 // read a file, output a byte
-func readFileByte(file string) []byte {
+func readFileByte(file string) ([]byte, error) {
 
 	// read file
 	b, err := ioutil.ReadFile(file)
@@ -122,35 +106,31 @@ func readFileByte(file string) []byte {
 	// handle errors
 	if err != nil {
 
-		// display error message
-		fmt.Printf("[err] : error reading file %s.. (does it exist?)\n", file)
-
-		// show traceback
-		panic(err)
+		return nil, err
 
 	}
 
 	// return the byte array
-	return b
+	return b, nil
 
 }
 
 // read a file, output data as string
-func readFile(file string) string {
+func readFile(file string) (string, error) {
 
 	// read the file with my other function
-	b := readFileByte(file)
+	b, err := readFileByte(file)
 
 	// convert byte array to string
 	str := string(b)
 
 	// return the string
-	return str
+	return str, err
 
 }
 
 // delete a file
-func deleteFile(file string) {
+func deleteFile(file string) error {
 
 	// delete the file
 	err := os.Remove(file)
@@ -158,18 +138,18 @@ func deleteFile(file string) {
 	// handle errors
 	if err != nil {
 
-		// show error message
-		fmt.Printf("[err] : error deleting file %s..", file)
-
-		// show traceback
-		panic(err)
+		// return it
+		return err
 
 	}
+
+	// return no error
+	return nil
 
 }
 
 // write to file
-func writeFile(file string, data string) {
+func writeFile(file string, data string) error {
 
 	// convert string to byte array
 	bdata := []byte(data)
@@ -180,18 +160,18 @@ func writeFile(file string, data string) {
 	// handle errors
 	if err != nil {
 
-		// show error message
-		fmt.Printf("[err] : error writing to file %s.. (does it exist?)\n", file)
-
-		// show traceback
-		panic(err)
+		// return it
+		return err
 
 	}
+
+	// return no error
+	return nil
 
 }
 
 // write byte to file
-func writeByteToFile(file string, data []byte) {
+func writeByteToFile(file string, data []byte) error {
 
 	// write to file
 	err := ioutil.WriteFile(file, data, 0644)
@@ -199,71 +179,90 @@ func writeByteToFile(file string, data []byte) {
 	// handle errors
 	if err != nil {
 
-		// show error message
-		fmt.Printf("[err] : error writing to file %s.. (does it exist?)\n", file)
-
-		// show traceback
-		panic(err)
+		// return it
+		return err
 
 	}
+
+	// return no error
+	return nil
 
 }
 
 // check if file is valid JSON
-func checkJSONValidity(file string) bool {
+func checkJSONValidity(file string) (bool, error) {
 
-	// get JSON from file
-	filedata := []byte(readFile(file))
+	// get bytes from file
+	filedata, err := readFile(file)
+
+	// file doesn't exist
+	if err != nil {
+
+		// return error
+		return false, err
+
+	}
+
+	// convert to byte
+	filebyte := []byte(filedata)
 
 	// this only exists because it's required to unmarshal the file
 	var data map[string]interface{}
 
 	// unmarshal the file
-	err := json.Unmarshal(filedata, &data)
+	err = json.Unmarshal(filebyte, &data)
 
 	// check for errors
 	if err != nil {
 
 		// return false if there is one
-		return false
+		return false, nil
 
 	}
 
 	// return true if there isn't one
-	return true
+	return true, nil
 
 }
 
 // read a JSON file
-func readJSONFile(file string) map[string]interface{} {
+func readJSONFile(file string) (map[string]interface{}, error) {
 
 	// get json from file, and turn into byte array
-	jsonObj := []byte(readFile(file))
+	byteObj, err := readFile(file)
+
+	// check for errors
+	if err != nil {
+
+		// if so, return it
+		return nil, err
+
+	}
+
+	// convert it to byte array
+	jsonObj := []byte(byteObj)
 
 	// initialize an interface
 	var data map[string]interface{}
 
 	// turn json into a valid golang item
-	err := json.Unmarshal(jsonObj, &data)
+	err = json.Unmarshal(jsonObj, &data)
 
 	// handle errors
 	if err != nil {
 
-		// show error message
-		fmt.Printf("[err] : error converting raw JSON to valid golang item from %s.. (is this valid JSON?)\n", file)
-
-		// show traceback
-		panic(err)
+		// return it
+		return nil, err
 
 	}
 
 	// return the golang item
-	return data
+	return data, nil
 
 }
 
 // write to a json file
-func writeJSONFile(file string, data map[string]int) {
+func writeJSONFile(file string, data map[string]int) error {
 
 	// turn go map into valid JSON
 	fileData, err := json.Marshal(data)
@@ -271,11 +270,8 @@ func writeJSONFile(file string, data map[string]int) {
 	// handle errors
 	if err != nil {
 
-		// show error message
-		fmt.Printf("[err] : error while converting a golang map into JSON. (how did this even happen)\n")
-
-		// show traceback
-		panic(err)
+		// return it
+		return err
 
 	}
 
@@ -284,5 +280,8 @@ func writeJSONFile(file string, data map[string]int) {
 
 	// write it to a file
 	writeFile(file, sFileData)
+
+	// return no error
+	return nil
 
 }

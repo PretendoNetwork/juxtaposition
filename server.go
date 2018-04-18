@@ -16,6 +16,7 @@ import (
         "fmt"
         "net/http"
         "strconv"
+        "strings"
         // externals
         "gopkg.in/macaron.v1"
 )
@@ -27,19 +28,6 @@ func server() {
     
     // macaron
     m := macaron.New()
-    
-    // set the environment
-    if serverEnv == "devel" {
-
-        // make it a development environment
-        m.setEnv(macaron.DEV)
-
-    } else if serverEnv == "prod" {
-
-        // make it a production environment
-        m.setEnv(macaron.PROD)
-
-    }
 
     // pull in some middleware
     
@@ -70,11 +58,11 @@ func server() {
     })
     
     // get the full port
-    port := strconf.Itoa(serverPort)
+    port := strconv.Itoa(serverPort)
 
     // output logs
     fmt.Printf("hosting server on %s\n", port)
-    err = http.ListenAndServeTLS(strings.Join([]string{ ":", port }), "pubkey", "privkey", m)
+    err = http.ListenAndServeTLS(strings.Join([]string{ ":", port }, ""), "pubkey", "privkey", m)
 
     // show any errors if necissary
     if err != nil {

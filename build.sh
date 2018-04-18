@@ -134,15 +134,9 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
             echo "  os: ${target[0]}"
             echo "  arch: ${target[1]}"
             echo
-
-            # -buildmode=pie is only supported on linux
-            if [ "${target[0]}" == "linux" ]; then
-
-                # compile it for that linux with that arch
-                env GOOS=${target[0]} GOARCH=${target[1]} go build -buildmode=pie -o "build/juxtaposition-${target[0]}-${target[1]}"
             
             # add the .exe extension for windows
-            elif [ "${target[0]}" == "windows" ]; then
+            if [ "${target[0]}" == "windows" ]; then
 
                 # compile it for that windows with that arch
                 env GOOS=${target[0]} GOARCH=${target[1]} go build -o "build/juxtaposition-${target[0]}-${target[1]}.exe"
@@ -163,7 +157,7 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
         echo "compiling $1 build for host os..."
 
         # run the build command
-        go build -buildmode=pie -o build/juxtaposition
+        go build -o build/juxtaposition
     
     fi
 

@@ -28,7 +28,7 @@ func getIP() string {
 	if err != nil {
 		
 		// show error message
-		fmt.Printf("[err]: error while connecting to another computer\n")
+		fmt.Printf("\n[err]: error while connecting to another computer\n")
 		
 		// show traceback
 		panic(err)

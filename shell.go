@@ -47,7 +47,7 @@ func clear() {
 		if err != nil {
 			
 			// show a message
-			fmt.Printf("[err] : error while executing cls. (report this issue)\n")
+			fmt.Printf("\n[err] : error while executing cls. (report this issue)\n")
 		
 			// show traceback
 			panic(err)
@@ -79,7 +79,7 @@ func ansiTrick() {
 	if err != nil {
 		
 		// show an error message
-		fmt.Printf("[err] : error while executing export. (isn't that a shell builtin?)\n")
+		fmt.Printf("\n[err] : error while executing export. (isn't that a shell builtin?)\n")
 		
 		// show a traceback
 		panic(err)
@@ -122,7 +122,7 @@ func padStrToMatchStr(pad string, match string, padWith string) string {
 	if length(padWith) != 1 {
 
 		// throw an error if it isn't
-		fmt.Printf("[err] : '%s' is not 1 character long", padWith)
+		fmt.Printf("\n[err] : '%s' is not 1 character long", padWith)
 		os.Exit(1)
 
 	}
