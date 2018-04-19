@@ -8,3 +8,6 @@ build/
 
 # exclude config files in the run-configuration directory
 run-configuration/*
+
+# except for the .gitignore file itself in there
+!run-configuration/.gitignore
