@@ -8,6 +8,7 @@
 # if you want a copy, go to http://www.gnu.org/licenses/
 #
 
+#
 # dependencies
 #
 # please keep them like this:
@@ -17,6 +18,7 @@
 #  - tar: uses tar command
 #  - github: this means that url has to be of the format user/repo
 #  - zip: extracts with unzip command
+#
 deps=(
     "redis|in-memory database, cache, and message broker|http://download.redis.io/releases/redis-4.0.9.tar.gz|tar"
     "cassandra|extremely scalable and fast database|http://mirror.stjschools.org/public/apache/cassandra/3.11.2/apache-cassandra-3.11.2-src.tar.gz|tar"
@@ -121,3 +123,5 @@ for i in "${!deps[@]}"; do
     cd ..
 
 done
+
+# 

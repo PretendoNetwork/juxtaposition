@@ -42,7 +42,7 @@ func startup(channel chan<- map[string]string) {
 		// show a message
 		fmt.Printf("\n[err]: error while loading the config in configs/main.yaml.\n")
 		fmt.Printf("       you should copy main.example.yaml in that directory to a file\n")
-		fmt.Printf("       in that directory named main.yaml.")
+		fmt.Printf("       in that directory named main.yaml.\n")
 
 		// exit
 		os.Exit(1)
@@ -78,7 +78,7 @@ func startup(channel chan<- map[string]string) {
 		// show a message
 		fmt.Printf("\n[err]: error while loading the config in configs/communities.yaml.\n")
 		fmt.Printf("       you should copy communities.example.yaml in that directory to a file\n")
-		fmt.Printf("       in that directory named communities.yaml.")
+		fmt.Printf("       in that directory named communities.yaml.\n")
 
 		// exit
 		os.Exit(1)

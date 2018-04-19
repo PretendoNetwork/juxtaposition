@@ -1,0 +1,14 @@
+# general configuration settings
+general:
+
+    # the name to display instead of
+    # juxtaposition
+    name: "juxtaposition"
+
+# cassandra database settings
+cassandra:
+    # ip addresses for every
+    # db in the cluster
+    cluster:
+        - 127.0.0.1
+    # 

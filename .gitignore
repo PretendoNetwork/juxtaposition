@@ -1,4 +1,10 @@
+
+# exclude compiled binaries
+# and build files
 juxtaposition.exe
 juxtaposition
 build.conf.go
 build/
+
+# exclude config files
+

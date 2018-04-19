@@ -33,7 +33,7 @@ buildsh_show_help () {
 
     # show it
     echo 
-    echo "build.sh [ release | dev | clean ] [ -h | --help ] [ --cross-compile ]"
+    echo "build.sh [ release | dev | run | clean ] [ -h | --help ] [ --cross-compile ]"
     echo 
     echo "sets up and builds juxtaposition"
     echo 
@@ -47,6 +47,7 @@ buildsh_show_help () {
     echo
     echo "    release         build a release package (production)"
     echo "    dev             build a development package"
+    echo "    run             run the program directly"
     echo "    clean           clean the build environment"
     echo 
 
@@ -91,7 +92,7 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
         extcode=$?
     
     # development build
-    elif [ "$1" == "dev" ]; then
+    elif [[ "$1" == "dev" || "$1" == "run" ]]; then
 
         # select the appropriate build
         # config to use
@@ -150,7 +151,17 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
             fi
         
         done
+    
+    # running the program directly
+    elif [ "$1" == "run" ]; then
+        
+	# let them know we're running it
+        echo "running the program for host os..."
+	
+	# run it
+	go run *.go
 
+    # compiling the program for only your system
     else
 
         # send a message letting the user know that we have started compiling
