@@ -6,5 +6,5 @@ juxtaposition
 build.conf.go
 build/
 
-# exclude config files
-
+# exclude config files in the run-configuration directory
+run-configuration/*

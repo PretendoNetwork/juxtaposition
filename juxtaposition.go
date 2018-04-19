@@ -14,15 +14,14 @@ import (
 	"fmt"
 	"strings"
 	"os"
+	"flag"
 	// externals
 	"gopkg.in/yaml.v2"
-	// not used right now
-	// "flag"
 )
 
 // startup function
 // (might be moved into another file)
-func startup(channel chan<- map[string]string) {
+func startup(confFolder string, channel chan<- map[string]string) {
 
 	// create holder variable for all configs
 	confs := make(map[string]map[string]interface{})
@@ -34,14 +33,14 @@ func startup(channel chan<- map[string]string) {
 	channel <- map[string]string{"cur": "loading main config", "prev": "none"}
 
 	// get the file data
-	confByte, err := readFileByte("configs/main.yaml")
+	confByte, err := readFileByte(fmt.Sprintf("%s/main.yaml", confFolder))
 
 	// check for errors
 	if err != nil {
 
 		// show a message
-		fmt.Printf("\n[err]: error while loading the config in configs/main.yaml.\n")
-		fmt.Printf("       you should copy main.example.yaml in that directory to a file\n")
+		fmt.Printf("\n[err]: error while loading the config in %s/main.yaml.\n", confFolder)
+		fmt.Printf("       you should copy main.example.yaml in/into that directory to a file\n")
 		fmt.Printf("       in that directory named main.yaml.\n")
 
 		// exit
@@ -56,7 +55,7 @@ func startup(channel chan<- map[string]string) {
 	if err != nil {
 
 		// show a message
-		fmt.Printf("[err]: there is an error in your yaml in the configs/main.yaml file...\n")
+		fmt.Printf("[err]: there is an error in your yaml in the %s/main.yaml file...\n", confFolder)
 
 		// and show a traceback
 		panic(err)
@@ -70,14 +69,14 @@ func startup(channel chan<- map[string]string) {
 	channel <- map[string]string{"cur": "loading communities", "prev": "success"}
 
 	// get file data of the community config
-	communityConfigByte, nil := readFileByte("configs/communities.yaml")
+	communityConfigByte, nil := readFileByte(fmt.Sprintf("%s/communities.yaml", confFolder))
 
 	// check for errors
 	if err != nil {
 
 		// show a message
-		fmt.Printf("\n[err]: error while loading the config in configs/communities.yaml.\n")
-		fmt.Printf("       you should copy communities.example.yaml in that directory to a file\n")
+		fmt.Printf("\n[err]: error while loading the config in %s/communities.yaml.\n", confFolder)
+		fmt.Printf("       you should copy communities.example.yaml in/into that directory to a file\n")
 		fmt.Printf("       in that directory named communities.yaml.\n")
 
 		// exit
@@ -92,7 +91,7 @@ func startup(channel chan<- map[string]string) {
 	if err != nil {
 
 		// show a message
-		fmt.Printf("[err]: there is an error in your yaml in the config/communities.yaml file...\n")
+		fmt.Printf("[err]: there is an error in your yaml in the %s/communities.yaml file...\n", confFolder)
 
 		// and show a traceback
 		panic(err)
@@ -110,6 +109,10 @@ func startup(channel chan<- map[string]string) {
 // main function
 func main() {
 
+	// parse flags
+	confFolder := flag.String("configDirectory", "configs", "value for config file path (default is configs)")
+	flag.Parse()
+
 	// reset term colors
 	consoleSequence(fmt.Sprintf("%s", code("reset")))
 
@@ -125,7 +128,7 @@ func main() {
 	channel := make(chan map[string]string)
 
 	// start the load goroutine
-	go startup(channel)
+	go startup(*confFolder, channel)
 
 	// message variable
 	var message map[string]string

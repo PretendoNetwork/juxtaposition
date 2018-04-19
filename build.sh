@@ -48,6 +48,7 @@ buildsh_show_help () {
     echo "    release         build a release package (production)"
     echo "    dev             build a development package"
     echo "    run             run the program directly"
+    echo "                    (configuration to use goes in the run-configuration directory)"
     echo "    clean           clean the build environment"
     echo 
 
@@ -73,7 +74,7 @@ if [[ "$*" = *"-h"* || "$*" = *"--help"* ]]; then
     buildsh_show_help
 
 # release build
-elif [[ "$1" == "release" || "$1" == "dev" ]]; then
+elif [[ "$1" == "release" || "$1" == "dev" || "$1" == "run" ]]; then
 
     # clean the build environment
     buildsh_clean
@@ -114,11 +115,11 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
     
     fi
 
-    # create the build directory
-    mkdir build
-
     # cross-compilation handling
     if [ "$2" == "--cross-compile" ]; then
+
+        # create the build directory
+        mkdir build
 
         # send them a message telling them what we are doing
         echo "compiling $1 build for multiple oses..."
@@ -155,14 +156,17 @@ elif [[ "$1" == "release" || "$1" == "dev" ]]; then
     # running the program directly
     elif [ "$1" == "run" ]; then
         
-	# let them know we're running it
+	    # let them know we're running it
         echo "running the program for host os..."
 	
-	# run it
-	go run *.go
+	    # run it
+    	go run *.go --configDirectory run-configuration
 
     # compiling the program for only your system
     else
+
+        # create the build directory
+        mkdir build
 
         # send a message letting the user know that we have started compiling
         echo "compiling $1 build for host os..."
