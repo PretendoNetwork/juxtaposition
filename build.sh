@@ -33,23 +33,23 @@ buildsh_show_help () {
 
     # show it
     echo 
-    echo "build.sh [ release | dev | run | clean ] [ -h | --help ] [ --cross-compile ]"
+    echo "build.sh [ release | dev | run | clean ] [ -h | --help ] [ -c | --cross-compile ]"
     echo 
     echo "sets up and builds juxtaposition"
     echo 
     echo "options:"
     echo 
-    echo "    -h | --help         shows this"
-    echo "    --cross-compile     when a compilation argument is"
-    echo "                        specified, cross compile it"
+    echo "    -h | --help             shows this"
+    echo "    -c | --cross-compile    when a compilation argument is"
+    echo "                            specified, cross compile it"
     echo 
     echo "arguments:"
     echo
-    echo "    release         build a release package (production)"
-    echo "    dev             build a development package"
-    echo "    run             run the program directly"
-    echo "                    (configuration to use goes in the run-configuration directory)"
-    echo "    clean           clean the build environment"
+    echo "    release                 build a release package (production)"
+    echo "    dev                     build a development package"
+    echo "    run                     run the program directly"
+    echo "                            (configuration to use goes in the run-configuration directory)"
+    echo "    clean                   clean the build environment"
     echo 
 
 }
@@ -67,14 +67,104 @@ buildsh_clean () {
 
 }
 
+# option and argument variables
+args_release=0
+args_clean=0
+args_dev=0
+args_run=0
+opts_cross_compile=0
+opts_help=0
+
+# check for args and options
+# ( if it takes a value, use the shift keyword to move over one )
+while [[ "$#" > 0 ]]; do case $1 in
+  	
+	# arguments
+	release) args_release=1;;
+  	clean) args_clean=1;;
+  	dev) args_dev=1;;
+  	run) args_run=1;;
+
+	# options
+	-c|--cross-compile) opts_cross_compile=1;;
+	-h|--help) opts_help=1;;
+
+	# if unknown option or argument
+  	*) echo "unknown parameter passed: $1"; buildsh_show_help; exit 1;;
+
+esac; shift; done
+
+# do check on arguments since only one can be passed at a time
+if [[ "$args_release" == 1  ]]; then
+	
+	# make sure no other args are specified
+	if [[ "$args_clean" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
+		
+		# show help if others are
+		echo "only one argument may be specified at a time..."
+		buildsh_show_help
+		exit 1
+
+	fi
+
+elif [[ "$args_clean" == 1 ]]; then
+
+	# make sure no other args are specified
+	if [[ "$args_release" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
+
+		# show help if others are
+		echo "only one argument may be specified at a time..."
+		buildsh_show_help
+		exit 1
+
+	fi
+
+elif [[ "$args_dev" == 1 ]]; then
+
+	# make sure no others are specified
+	if [[ "$args_release" == 1 || "$args_clean" == 1 || "$args_run" == 1 ]]; then
+
+		# show help if others are
+		echo "only one argument may be specified at a time..."
+		buildsh_show_help
+		exit 1
+
+	fi
+
+elif [[ "$args_run" == 1 ]]; then
+
+	# make sure no others are specified
+	if [[ "$args_release" == 1 || "$args_clean" == 1 || "$args_dev" == 1 ]]; then
+
+		# show help if others are
+		echo "only one argument may be specified at a time..."
+		buildsh_show_help
+		exit 1
+
+	fi
+
+else
+
+	# check for help flag
+	if [[ "$opts_help" != 1 ]]; then
+	
+		# tell them they must have an argument
+		echo "you must have at least one argument passed..."
+		buildsh_show_help
+		exit 1
+
+	fi
+
+fi
+
 # check if we need to show help
-if [[ "$*" = *"-h"* || "$*" = *"--help"* ]]; then
+if [[ "$opts_help" == 1 ]]; then
 
     # show help
     buildsh_show_help
 
 # release build
-elif [[ "$1" == "release" || "$1" == "dev" || "$1" == "run" ]]; then
+elif [[ "$args_release" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
 
     # clean the build environment
     buildsh_clean
@@ -83,7 +173,7 @@ elif [[ "$1" == "release" || "$1" == "dev" || "$1" == "run" ]]; then
     echo "copying config file..."
     
     # release build
-    if [ "$1" == "release" ]; then
+    if [ "$args_release" == 1 ]; then
 
         # select the appropriate build config to
         # use
@@ -93,7 +183,7 @@ elif [[ "$1" == "release" || "$1" == "dev" || "$1" == "run" ]]; then
         extcode=$?
     
     # development build
-    elif [[ "$1" == "dev" || "$1" == "run" ]]; then
+    elif [[ "$args_dev" == 1 || "$args_run" == 1 ]]; then
 
         # select the appropriate build
         # config to use
@@ -154,7 +244,7 @@ elif [[ "$1" == "release" || "$1" == "dev" || "$1" == "run" ]]; then
         done
     
     # running the program directly
-    elif [ "$1" == "run" ]; then
+    elif [ "$args_run" == 1 ]; then
         
 	    # let them know we're running it
         echo "running the program for host os..."
@@ -179,7 +269,7 @@ elif [[ "$1" == "release" || "$1" == "dev" || "$1" == "run" ]]; then
     # to be continued
 
 # clean the environment
-elif [ "$1" == "clean" ]; then
+elif [ "$args_clean" == 1 ]; then
     
     # run the clean function
     buildsh_clean
