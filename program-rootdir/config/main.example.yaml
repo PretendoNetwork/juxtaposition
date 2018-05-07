@@ -1,14 +1,34 @@
 # general configuration settings
 general:
 
-    # the name to display instead of
-    # juxtaposition
-    name: "juxtaposition"
+  # the name to display instead of
+  # juxtaposition
+  name: "juxtaposition"
 
 # cassandra database settings
 cassandra:
-    # ip addresses for every
-    # db in the cluster
-    cluster:
-        - 127.0.0.1
-    # 
+  
+  # ip addresses for every
+  # db in the cluster
+  cluster:
+
+    - "127.0.0.1"
+
+  # keyspace to do all work in
+  keyspace: "juxtaposition"
+
+# redis server settings
+redis:
+
+  # ip adresses for every database
+  # in the cluster
+  cluster:
+
+    - "127.0.0.1"
+
+  # password for the cluster
+  password: ""
+
+  # db to use
+  # (only used if a single address is in the cluster area)
+  db: 0

@@ -65,7 +65,7 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	if err != nil {
 
 		// show a message
-		fmt.Printf("[err]: there is an error in your yaml in the %s/main.yaml file...\n", confFolder)
+		fmt.Printf("\n[err]: there is an error in your yaml in the %s/main.yaml file...\n", confFolder)
 
 		// and show a traceback
 		panic(err)
@@ -101,7 +101,7 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	if err != nil {
 
 		// show a message
-		fmt.Printf("[err]: there is an error in your yaml in the %s/communities.yaml file...\n", confFolder)
+		fmt.Printf("\n[err]: there is an error in your yaml in the %s/communities.yaml file...\n", confFolder)
 
 		// and show a traceback
 		panic(err)
@@ -118,9 +118,17 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	cassandraSettings := confs["main"]["cassandra"].(map[interface{}]interface{})
 	clusterIPsInterface := cassandraSettings["cluster"].([]interface{})
 	keyspaceName := cassandraSettings["keyspace"].(string)
+
+	// copy every ip in the cluster to another slice
+	// with the correct type
+
+	// create the variable
 	var clusterIPs []string
+
+	// loop over the old slice
 	for _, IP := range clusterIPsInterface {
 
+		// copy over the ip
 		clusterIPs = append(clusterIPs, IP.(string))
 
 	}
@@ -135,7 +143,7 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	if err != nil {
 
 		// show error message
-		fmt.Printf("[err]: error while connecting to the cassandra database...")
+		fmt.Printf("\n[err]: error while connecting to the cassandra database...\n")
 
 		// panic
 		panic(err)
@@ -148,6 +156,26 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	// you should at least have this
 	// keyspace created
 	cass = gocqltable.NewKeyspace(keyspaceName)
+
+	// set up redis
+	channel <- map[string]string{"cur": "connecting to caching server (redis)", "prev": "success"}
+
+	// perform needed type assertions
+	redisSettings := confs["main"]["redis"].(map[interface{}]interface{})
+	redisClusterIPsInterface := redisSettings["cluster"].([]interface{})
+	redisPassword := redisSettings["password"].(string)
+	redisDB := redisSettings["password"].(int)
+
+	// move over the cluster ips to a non-interface slice
+	var redisClusterIPs []string
+
+	// loop over the old slice
+	for _, IP := range redisClusterIPsInterface {
+
+		// copy over the ip
+		redisClusterIPs = append(redisClusterIPs, IP.(string))
+
+	}
 
 	// show that we have finished
 	channel <- map[string]string{"cur": "finished", "prev": "success"}
