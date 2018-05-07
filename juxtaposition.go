@@ -11,20 +11,30 @@ package main
 
 import (
 	// internals
-	"fmt"
-	"strings"
-	"os"
 	"flag"
+	"fmt"
+	"os"
+	"strings"
 	// externals
+	"github.com/gocql/gocql"
+	"github.com/kristoiv/gocqltable"
 	"gopkg.in/yaml.v2"
 )
+
+// configs
+var confs map[string]map[string]interface{}
+
+// the cassandra cluster, session, and keyspace
+var cassCluster *gocql.ClusterConfig
+var cassandra *gocql.Session
+var cass gocqltable.Keyspace
 
 // startup function
 // (might be moved into another file)
 func startup(confFolder string, channel chan<- map[string]string) {
 
 	// create holder variable for all configs
-	confs := make(map[string]map[string]interface{})
+	confs = make(map[string]map[string]interface{})
 
 	// temporary variable for moving a config into the map
 	var tmpconf map[string]interface{}
@@ -100,7 +110,45 @@ func startup(confFolder string, channel chan<- map[string]string) {
 
 	// move it in
 	confs["communities"] = tmpconf
-	
+
+	// begin loading the cassandra database in
+	channel <- map[string]string{"cur": "connecting to database server (cassandra)", "prev": "success"}
+
+	// perform a type assertion on something that we need for this
+	cassandraSettings := confs["main"]["cassandra"].(map[interface{}]interface{})
+	clusterIPsInterface := cassandraSettings["cluster"].([]interface{})
+	keyspaceName := cassandraSettings["keyspace"].(string)
+	var clusterIPs []string
+	for _, IP := range clusterIPsInterface {
+
+		clusterIPs = append(clusterIPs, IP.(string))
+
+	}
+
+	// first, we create a variable with the cluster
+	cassCluster = gocql.NewCluster(clusterIPs...)
+
+	// create a connection to that cluster
+	cassandra, err = cassCluster.CreateSession()
+
+	// check for errors
+	if err != nil {
+
+		// show error message
+		fmt.Printf("[err]: error while connecting to the cassandra database...")
+
+		// panic
+		panic(err)
+
+	}
+
+	// load gocqltable
+	gocqltable.SetDefaultSession(cassandra)
+
+	// you should at least have this
+	// keyspace created
+	cass = gocqltable.NewKeyspace(keyspaceName)
+
 	// show that we have finished
 	channel <- map[string]string{"cur": "finished", "prev": "success"}
 
@@ -152,7 +200,7 @@ func main() {
 		if message["cur"] == "finished" {
 
 			// is done
-			consoleSequence(strings.Join([]string{ padStrToMatchStr(fmt.Sprintf("\rstarting up (finished, result of last: %s).", message["prev"]), lastmsg, " "), "\n" }, ""))
+			consoleSequence(strings.Join([]string{padStrToMatchStr(fmt.Sprintf("\rstarting up (finished, result of last: %s).", message["prev"]), lastmsg, " "), "\n"}, ""))
 
 			// exit it
 			break
@@ -161,7 +209,7 @@ func main() {
 
 		// do dot display
 		if dots != 4 {
-			
+
 			// increment dots
 			dots++
 
@@ -174,7 +222,7 @@ func main() {
 
 		// get the current message
 		curmsg = fmt.Sprintf("\rstarting up (current phase: %s, result of last: %s)%s", message["cur"], message["prev"], strings.Repeat(".", dots))
-		
+
 		// display the data in the message
 		consoleSequence(padStrToMatchStr(curmsg, lastmsg, " "))
 
