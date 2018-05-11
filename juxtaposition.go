@@ -29,6 +29,9 @@ var cassCluster *gocql.ClusterConfig
 var cassandra *gocql.Session
 var cass gocqltable.Keyspace
 
+// the redis client
+var redis interface{}
+
 // startup function
 // (might be moved into another file)
 func startup(confFolder string, channel chan<- map[string]string) {
@@ -144,9 +147,11 @@ func startup(confFolder string, channel chan<- map[string]string) {
 
 		// show error message
 		fmt.Printf("\n[err]: error while connecting to the cassandra database...\n")
+		fmt.Printf("       check if you are running a cassandra server at any of the ips:\n")
+		fmt.Printf("       %v\n", clusterIPs)
 
-		// panic
-		panic(err)
+		// exit the program
+		os.Exit(1)
 
 	}
 
@@ -176,6 +181,24 @@ func startup(confFolder string, channel chan<- map[string]string) {
 		redisClusterIPs = append(redisClusterIPs, IP.(string))
 
 	}
+
+	// check length of the cluster ips
+	// and how to initiate them
+	if len(redisClusterIPs) > 1 {
+
+		// is a cluster
+		fmt.Printf("this is a cluster of redis dbs...\n")
+
+	} else {
+
+		// is not a cluster
+		fmt.Printf("this is not a cluster of redis dbs...\n")
+		fmt.Printf("db to use: %s", redisDB)
+
+	}
+
+	// gotta use the password somewhere
+	fmt.Printf("password to use: %s", redisPassword)
 
 	// show that we have finished
 	channel <- map[string]string{"cur": "finished", "prev": "success"}
