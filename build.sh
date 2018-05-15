@@ -73,26 +73,92 @@ args_clean=0
 args_dev=0
 args_run=0
 opts_cross_compile=0
-opts_help=0
 
-# check for args and options
-# ( if it takes a value, use the shift keyword to move over one )
-while [[ "$#" > 0 ]]; do case $1 in
-  	
-	# arguments
-	release) args_release=1;;
-  	clean) args_clean=1;;
-  	dev) args_dev=1;;
-  	run) args_run=1;;
+# check for args and help option on first argument
+if [[ "$1" == "release" ]]; then
 
-	# options
-	-c|--cross-compile) opts_cross_compile=1;;
-	-h|--help) opts_help=1;;
+    # set the release argument
+    args_release=1
 
-	# if unknown option or argument
-  	*) echo "unknown parameter passed: $1"; buildsh_show_help; exit 1;;
+elif [[ "$1" == "clean" ]]; then
 
-esac; shift; done
+    # set the clean argument
+    args_clean=1
+
+elif [[ "$1" == "dev" ]]; then
+
+    # set the dev argument
+    args_dev=1
+
+elif [[ "$1" == "run" ]]; then
+
+    # set the run argument
+    args_run=1
+
+elif [[ "$1" == "-h" || "$1" == "--help" ]]; then
+
+    # show help
+    buildsh_show_help
+    exit 1
+
+else
+
+    # show an error message, help, and then exit
+    echo "unknown parameter passed for the argument: $1"
+    buildsh_show_help
+    exit 1
+
+fi
+
+# handle second options
+if [[ "$2" == "--cross-compile" || "$2" == "-c" ]]; then
+
+    # set the cross compile option
+    opts_cross_compile=1
+
+elif [[ "$2" == "--help" || "$2" == "-h" ]]; then
+
+    # show help
+    buildsh_show_help
+    exit 1
+
+else
+
+    if [[ "$2" != "" ]]; then
+
+        # show an error message, help, and then exit
+        echo "unknown parameter passed for second option: $2"
+        buildsh_show_help
+        exit 1
+
+    fi
+
+fi
+
+# handle third options
+if [[ "$3" == "--cross-compile" || "$3" == "-c" ]]; then
+
+    # set cross compile option
+    opts_cross_compile=1
+
+elif [[ "$3" == "--help" || "$3" == "-h" ]]; then
+
+    # show help
+    buildsh_show_help
+    exit 1
+
+else
+
+    if [[ "$3" != "" ]]; then
+
+        # show an error message, help, and then exit
+        echo "unknown parameter passed for third option: $3"
+        buildsh_show_help
+        exit 1
+
+    fi
+
+fi
 
 # do check on arguments since only one can be passed at a time
 if [[ "$args_release" == 1  ]]; then
@@ -145,26 +211,15 @@ elif [[ "$args_run" == 1 ]]; then
 
 else
 
-	# check for help flag
-	if [[ "$opts_help" != 1 ]]; then
-	
-		# tell them they must have an argument
-		echo "you must have at least one argument passed..."
-		buildsh_show_help
-		exit 1
-
-	fi
+	# tell them they must have an argument
+	echo "you must have at least one argument passed..."
+	buildsh_show_help
+	exit 1
 
 fi
 
-# check if we need to show help
-if [[ "$opts_help" == 1 ]]; then
-
-    # show help
-    buildsh_show_help
-
 # release build
-elif [[ "$args_release" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
+if [[ "$args_release" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
 
     # clean the build environment
     buildsh_clean

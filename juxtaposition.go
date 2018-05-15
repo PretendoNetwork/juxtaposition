@@ -193,7 +193,7 @@ func startup(confFolder string, channel chan<- map[string]string) {
 
 		// is not a cluster
 		fmt.Printf("this is not a cluster of redis dbs...\n")
-		fmt.Printf("db to use: %s", redisDB)
+		fmt.Printf("db to use: %d", redisDB)
 
 	}
 
