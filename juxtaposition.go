@@ -169,7 +169,7 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	redisSettings := confs["main"]["redis"].(map[interface{}]interface{})
 	redisClusterIPsInterface := redisSettings["cluster"].([]interface{})
 	redisPassword := redisSettings["password"].(string)
-	redisDB := redisSettings["password"].(int)
+	redisDB := redisSettings["db"].(int)
 
 	// move over the cluster ips to a non-interface slice
 	var redisClusterIPs []string
