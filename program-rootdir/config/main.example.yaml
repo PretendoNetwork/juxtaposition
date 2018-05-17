@@ -27,6 +27,7 @@ redis:
     - "127.0.0.1"
 
   # password for the cluster
+  # leave this as "" for none
   password: ""
 
   # db to use

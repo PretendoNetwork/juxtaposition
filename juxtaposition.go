@@ -16,6 +16,7 @@ import (
 	"os"
 	"strings"
 	// externals
+	"github.com/go-redis/redis"
 	"github.com/gocql/gocql"
 	"github.com/kristoiv/gocqltable"
 	"gopkg.in/yaml.v2"
@@ -30,7 +31,7 @@ var cassandra *gocql.Session
 var cass gocqltable.Keyspace
 
 // the redis client
-var redis interface{}
+var redisClient interface{}
 
 // startup function
 // (might be moved into another file)
@@ -186,19 +187,22 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	// and how to initiate them
 	if len(redisClusterIPs) > 1 {
 
-		// is a cluster
-		fmt.Printf("this is a cluster of redis dbs...\n")
+		// create the cluster client
+		redisClient = redis.NewClusterClient(&redis.ClusterOptions{
+			Addrs:    redisClusterIPs,
+			Password: redisPassword,
+		})
 
 	} else {
 
-		// is not a cluster
-		fmt.Printf("this is not a cluster of redis dbs...\n")
-		fmt.Printf("db to use: %d", redisDB)
+		// create the client
+		redisClient = redis.NewClient(&redis.Options{
+			Addr:     redisClusterIPs[0],
+			Password: redisPassword,
+			DB:       redisDB,
+		})
 
 	}
-
-	// gotta use the password somewhere
-	fmt.Printf("password to use: %s", redisPassword)
 
 	// show that we have finished
 	channel <- map[string]string{"cur": "finished", "prev": "success"}
