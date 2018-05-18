@@ -231,20 +231,45 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	// and how to initiate them
 	if len(redisClusterIPs) > 1 {
 
-		// create the cluster client
-		redisClient = redis.NewClusterClient(&redis.ClusterOptions{
-			Addrs:    redisClusterIPs,
-			Password: redisPassword,
-		})
+		// check if we're going to enable authentication
+		if redisAuth["enabled"].(bool) == true {
+
+			// enable it
+			redisClient = redis.NewClusterClient(&redis.ClusterOptions{
+				Addrs:    redisClusterIPs,
+				Password: redisPassword,
+			})
+
+		} else {
+
+			// keep it disabled
+			redisClient = redis.NewClusterClient(&redis.ClusterOptions{
+				Addrs: redisClusterIPs,
+			})
+
+		}
 
 	} else {
 
-		// create the client
-		redisClient = redis.NewClient(&redis.Options{
-			Addr:     redisClusterIPs[0],
-			Password: redisPassword,
-			DB:       redisDB,
-		})
+		// check if we're going to enable authentication
+		if redisAuth["enabled"].(bool) == true {
+
+			// enable it
+			redisClient = redis.NewClient(&redis.Options{
+				Addr:     redisClusterIPs[0],
+				Password: redisPassword,
+				DB:       redisDB,
+			})
+
+		} else {
+
+			// keep it disabled
+			redisClient = redis.NewClient(&redis.Options{
+				Addr: redisClusterIPs[0],
+				DB:   redisDB,
+			})
+
+		}
 
 	}
 
