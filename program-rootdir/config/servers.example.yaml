@@ -1,0 +1,72 @@
+# server options
+server:
+
+  # discovery server options
+  discovery:
+
+    # port to use for discovery server
+    port: 6666
+
+    # domain to use for discovery server
+    domain: "discovery.juxtaposition.io"
+
+    # ssl options
+    ssl:
+
+      # todo: add some options here
+
+  # 3ds server options
+  3ds:
+
+    # port to use for the 3ds server
+    port: 4343
+
+    # domain to use for 3ds server
+    domain: "3ds.juxtaposition.io"
+
+    # ssl options
+    ssl:
+      
+      # todo: add some options here
+
+  # wiiu server options
+  wiiu:
+
+    # port to use for the wiiu server
+    port: 3434
+
+    # domain to use for wiiu server
+    domain: "wiiu.juxtaposition.io"
+
+    # ssl options
+    ssl:
+
+      # todo: add some options here
+
+  # api server options
+  api:
+
+    # port to use for the api server
+    port: 3333
+
+    # domain to use for api server
+    domain: "api.juxtaposition.io"
+
+    # ssl options
+    ssl:
+
+      # todo: add some options here
+
+  # web server options
+  web:
+
+    # port to use for the webserver
+    port: 8080
+
+    # domain to use for webserver
+    domain: "juxtaposition.io"
+
+    # ssl options
+    ssl:
+
+      # todo: add some options here

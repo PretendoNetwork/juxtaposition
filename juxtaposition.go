@@ -115,6 +115,42 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	// move it in
 	confs["communities"] = tmpconf
 
+	// begin loading the server config in
+	channel <- map[string]string{"cur": "loading servers", "prev": "success"}
+
+	// get file data of the community config
+	serverConfigByte, nil := readFileByte(fmt.Sprintf("%s/servers.yaml", confFolder))
+
+	// check for errors
+	if err != nil {
+
+		// show a message
+		fmt.Printf("\n[err]: error while loading the config in %s/servers.yaml.\n", confFolder)
+		fmt.Printf("       you should copy servers.example.yaml in/into that directory to a file\n")
+		fmt.Printf("       in that directory named servers.yaml.\n")
+
+		// exit
+		os.Exit(1)
+
+	}
+
+	// parse it
+	err = yaml.Unmarshal(serverConfigByte, &tmpconf)
+
+	// handle errors
+	if err != nil {
+
+		// show a message
+		fmt.Printf("\n[err]: there is an error in your yaml in the %s/servers.yaml file...\n", confFolder)
+
+		// and show a traceback
+		panic(err)
+
+	}
+
+	// move it in
+	confs["servers"] = tmpconf
+
 	// begin loading the cassandra database in
 	channel <- map[string]string{"cur": "connecting to database server (cassandra)", "prev": "success"}
 
