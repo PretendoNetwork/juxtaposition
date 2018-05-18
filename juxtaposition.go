@@ -118,10 +118,13 @@ func startup(confFolder string, channel chan<- map[string]string) {
 	// begin loading the cassandra database in
 	channel <- map[string]string{"cur": "connecting to database server (cassandra)", "prev": "success"}
 
-	// perform a type assertion on something that we need for this
+	// perform a type assertion on some things that we need for this
 	cassandraSettings := confs["main"]["cassandra"].(map[interface{}]interface{})
-	clusterIPsInterface := cassandraSettings["cluster"].([]interface{})
-	keyspaceName := cassandraSettings["keyspace"].(string)
+	cassandraAuth := cassandraSettings["authentication"].(map[interface{}]interface{})
+	cassandraGeneral := cassandraSettings["general"].(map[interface{}]interface{})
+	cassandraSSL := cassandraSettings["ssl"].(map[interface{}]interface{})
+	clusterIPsInterface := cassandraGeneral["cluster"].([]interface{})
+	keyspaceName := cassandraGeneral["keyspace"].(string)
 
 	// copy every ip in the cluster to another slice
 	// with the correct type
@@ -139,6 +142,45 @@ func startup(confFolder string, channel chan<- map[string]string) {
 
 	// first, we create a variable with the cluster
 	cassCluster = gocql.NewCluster(clusterIPs...)
+
+	// check if we need to add authentication
+	if cassandraAuth["enabled"].(bool) == true {
+
+		// add authentication
+		cassCluster.Authenticator = gocql.PasswordAuthenticator{
+
+			Username: cassandraAuth["username"].(string),
+			Password: cassandraAuth["password"].(string),
+		}
+
+	}
+
+	// check if we are using client cert authentication
+	if cassandraSSL["enabled"].(bool) == true {
+
+		// check if we are using a root ca
+		if cassandraSSL["rootCA"].(string) != "" {
+
+			// then use one
+			cassCluster.SslOpts = &gocql.SslOptions{
+
+				CertPath: cassandraSSL["certPath"].(string),
+				KeyPath:  cassandraSSL["keyPath"].(string),
+				CaPath:   cassandraSSL["rootCA"].(string),
+			}
+
+		} else {
+
+			// otherwise, use one
+			cassCluster.SslOpts = &gocql.SslOptions{
+
+				CertPath: cassandraSSL["certPath"].(string),
+				KeyPath:  cassandraSSL["keyPath"].(string),
+			}
+
+		}
+
+	}
 
 	// create a connection to that cluster
 	cassandra, err = cassCluster.CreateSession()
@@ -168,9 +210,11 @@ func startup(confFolder string, channel chan<- map[string]string) {
 
 	// perform needed type assertions
 	redisSettings := confs["main"]["redis"].(map[interface{}]interface{})
-	redisClusterIPsInterface := redisSettings["cluster"].([]interface{})
-	redisPassword := redisSettings["password"].(string)
-	redisDB := redisSettings["db"].(int)
+	redisGeneral := redisSettings["general"].(map[interface{}]interface{})
+	redisAuth := redisSettings["authentication"].(map[interface{}]interface{})
+	redisClusterIPsInterface := redisGeneral["cluster"].([]interface{})
+	redisPassword := redisAuth["password"].(string)
+	redisDB := redisGeneral["db"].(int)
 
 	// move over the cluster ips to a non-interface slice
 	var redisClusterIPs []string

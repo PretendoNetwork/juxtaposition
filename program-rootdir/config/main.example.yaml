@@ -8,28 +8,65 @@ general:
 # cassandra database settings
 cassandra:
   
-  # ip addresses for every
-  # db in the cluster
-  cluster:
+  # general settings
+  general:
 
-    - "127.0.0.1"
+    # ip addresses for every
+    # db in the cluster
+    cluster:
 
-  # keyspace to do all work in
-  keyspace: "juxtaposition"
+      - "127.0.0.1"
+
+    # keyspace to do all work in
+    keyspace: "juxtaposition"
+  
+  # authentication to use
+  # when connnecting
+  authentication:
+
+    # set this to true to enable authentication
+    enabled: false
+
+    # username to authenticate with
+    username: ""
+
+    # password to authenticate with
+    password: ""
+
+  # ssl configuration
+  ssl:
+
+    # set this to true to add some of this stuff
+    enabled: false
+
+    # path to an ssl client certificate
+    certPath: ""
+
+    # path to an ssl key
+    keyPath: ""
+
+    # path to a root ca certificate
+    # (not required, keep it to "" to not use one)
+    rootCA: ""
 
 # redis server settings
 redis:
 
-  # ip adresses for every database
-  # in the cluster
-  cluster:
+  # general settings
+  general:
+    
+    # ip adresses for every database
+    # in the cluster
+    cluster:
 
-    - "127.0.0.1"
+      - "127.0.0.1"
 
-  # password for the cluster
-  # leave this as "" for none
-  password: ""
-
-  # db to use
-  # (only used if a single address is in the cluster area)
-  db: 0
+    # db to use
+    # (only used if a single address is in the cluster area)
+    db: 0
+  
+  authentication:
+  
+    # password for the cluster
+    # leave this as "" for none
+    password: ""
