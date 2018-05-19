@@ -16,16 +16,17 @@ guess what, i decided to take a break from yamamamura to work on this! hopefully
 - completely self-contained (no external webserver)
 - much quicker than reverse
 - code readability
+- high configurability
 
 ### building from source
 
 #### prerequisites
 
-- [golang](https://golang.org/)
-- [macaron](https://github.com/go-macaron/macaron)
+- [golang](https://golang.org)
+- [echo](https://github.com/labstack/echo)
 - [gocql](https://github.com/gocql/gocql)
 - [go-redis](https://github.com/go-redis/redis)
-- [lego](https://github.com/xenolf/lego/)
+- [lego](https://github.com/xenolf/lego)
 - [ansicolor](https://github.com/shiena/ansicolor)
 - [go-yaml](https://github.com/go-yaml/yaml)
 

@@ -13,65 +13,52 @@ package main
 
 import (
 	// internals
-	"fmt"
+
+	"html/template"
+	"io"
 	"net/http"
-	"strconv"
-	"strings"
 	// externals
-	"gopkg.in/macaron.v1"
+	"github.com/labstack/echo"
 )
 
-var err error
+// Template a template type
+type Template struct {
+	templates *template.Template
+}
+
+// Render renders a template
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+
+	// return the parsed template
+	return t.templates.ExecuteTemplate(w, name, data)
+
+}
 
 // the https server function
-func server() {
+func server(rootPtr *string) {
 
-	// macaron
-	m := macaron.New()
+	// dereference the pointer
+	root := *rootPtr
 
-	// pull in some middleware
+	// create a new echo server object
+	e := echo.New()
 
-	// if we are in a development environment,
-	// then attach a logger to macaron
-	if serverEnv == "devel" {
+	// hide the startup banner
+	e.HideBanner = true
 
-		// attach the logger
-		m.Use(macaron.Logger())
+	// set the renderer to our renderer
+	e.Renderer = &Template{
 
+		templates: template.Must(template.ParseGlob((root + "assets/templates/*.tmpl"))),
 	}
 
-	// don't attempt panic recovery in development
-	// environments
-	if serverEnv == "prod" {
+	// statically serve public files
+	e.Static("/assets", (root + "assets/public"))
 
-		// add the panic recovery middleware
-		m.Use(macaron.Recovery())
-
-	}
-
-	// a nice handler for the root
-	m.Get("/", func(ctx *macaron.Context) string {
-
-		// return some data
-		return "path is: " + ctx.Req.RequestURI
-
+	// handle get requests
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
 	})
-
-	// get the full port
-	port := strconv.Itoa(serverPort)
-
-	// output logs
-	fmt.Printf("hosting server on %s\n", port)
-	err = http.ListenAndServeTLS(strings.Join([]string{":", port}, ""), "pubkey", "privkey", m)
-
-	// show any errors if necissary
-	if err != nil {
-
-		// show error message
-		fmt.Printf("[err]: error while attempting to start the server...\n")
-
-		// show traceback
-		panic(err)
-	}
+	e.Logger.Fatal(e.Start(":1323"))
 
 }

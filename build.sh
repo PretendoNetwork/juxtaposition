@@ -305,7 +305,7 @@ if [[ "$args_release" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
         echo "running the program for host os..."
 	
 	    # run it
-    	go run *.go --configDirectory run-configuration
+    	go run *.go --configDirectory run-configuration --rootDirectory program-rootdir/
 
     # compiling the program for only your system
     else

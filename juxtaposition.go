@@ -319,6 +319,7 @@ func main() {
 
 	// parse flags
 	confFolder := flag.String("configDirectory", "configs", "value for config file path (default is configs)")
+	rootFolder := flag.String("rootDirectory", "", "value for root directory (default is the current one)")
 	flag.Parse()
 
 	// reset term colors
@@ -390,5 +391,8 @@ func main() {
 		lastmsg = curmsg
 
 	}
+
+	// now we start the server
+	server(rootFolder)
 
 }
