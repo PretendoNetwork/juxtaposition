@@ -29,6 +29,7 @@ guess what, i decided to take a break from yamamamura to work on this! hopefully
 - [lego](https://github.com/xenolf/lego)
 - [ansicolor](https://github.com/shiena/ansicolor)
 - [go-yaml](https://github.com/go-yaml/yaml)
+- [fsnotify](github.com/fsnotify/fsnotify)
 
 #### building
 

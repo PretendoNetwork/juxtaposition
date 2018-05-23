@@ -265,6 +265,7 @@ if [[ "$args_release" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
 
         # create the build directory
         mkdir build
+        mkdir build/out
 
         # send them a message telling them what we are doing
         echo "compiling $1 build for multiple oses..."
@@ -286,17 +287,20 @@ if [[ "$args_release" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
             if [ "${target[0]}" == "windows" ]; then
 
                 # compile it for that windows with that arch
-                env GOOS=${target[0]} GOARCH=${target[1]} go build -o "build/juxtaposition-${target[0]}-${target[1]}.exe"
+                env GOOS=${target[0]} GOARCH=${target[1]} go build -o "build/out/juxtaposition-${target[0]}-${target[1]}.exe"
 
             # any other os/arch combo
             else
             
                 # compile it for that os and arch
-                env GOOS=${target[0]} GOARCH=${target[1]} go build -o "build/juxtaposition-${target[0]}-${target[1]}"
+                env GOOS=${target[0]} GOARCH=${target[1]} go build -o "build/out/juxtaposition-${target[0]}-${target[1]}"
 
             fi
         
         done
+
+        # copy over the program files to it
+        cp run-configuration/* build/out
     
     # running the program directly
     elif [ "$args_run" == 1 ]; then
@@ -312,12 +316,16 @@ if [[ "$args_release" == 1 || "$args_dev" == 1 || "$args_run" == 1 ]]; then
 
         # create the build directory
         mkdir build
+        mkdir build/out
 
         # send a message letting the user know that we have started compiling
         echo "compiling $1 build for host os..."
 
         # run the build command
-        go build -o build/juxtaposition
+        go build -o build/out/juxtaposition
+
+        # copy over the program files to it
+        cp run-configuration/* build/out
     
     fi
 

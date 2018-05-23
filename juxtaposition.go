@@ -392,6 +392,14 @@ func main() {
 
 	}
 
+	// check if we are running in a development environment
+	if serverEnv == "devel" {
+
+		// let them know we are in a development environment
+		consoleSequence(fmt.Sprintf("\n%s%s~~ warning! this server is running in in development mode. please do not use this in prodution :3 ~~%s\n\n", code("reset"), code("red"), code("reset")))
+
+	}
+
 	// now we start the server
 	server(rootFolder)
 
