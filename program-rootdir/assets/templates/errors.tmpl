@@ -1,0 +1,56 @@
+{{define "500_error"}}
+<html class="error-page">
+
+<head>
+    <link rel="stylesheet" href="/assets/css/juxtaposition.css">
+</head>
+
+<body class="error-page-child-container">
+    <h1>500</h1>
+    <p>
+    oopsie woopsie~~!<br>
+    no, we aren't monkeys. i have no clue why you would be thinking that<br>
+    </p><br><br>
+    <a href="/">back to home</a>
+</body>
+
+</html>
+{{end}}
+
+{{define "404_error"}}
+<html class="error-page">
+
+<head>
+    <link rel="stylesheet" href="/assets/css/juxtaposition.css">
+</head>
+
+<body class="error-page-child-container">
+    <h1>404</h1>
+    <p>
+    oh my goodness...<br>
+    that wasn't supposed to happen. sorry :(<br>
+    </p><br><br>
+    <a href="/">back to home</a>
+</body>
+
+</html>
+{{end}}
+
+{{define "unhandled_error"}}
+<html class="error-page">
+
+<head>
+    <link rel="stylesheet" href="/assets/css/juxtaposition.css">
+</head>
+
+<body class="error-page-child-container">
+    <h1>{{index . "error"}}</h1>
+    <p>
+    blame the sysadmins<br>
+    this error has no specific page<br>
+    </p><br><br>
+    <a href="/">back to home</a>
+</body>
+
+</html>
+{{end}}

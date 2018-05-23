@@ -13,11 +13,12 @@ package main
 
 import (
 	// internals
-
 	"fmt"
 	"html/template"
 	"io"
 	"net/http"
+	"strconv"
+	"strings"
 	// externals
 	"github.com/fsnotify/fsnotify"
 	"github.com/labstack/echo"
@@ -33,6 +34,51 @@ func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Con
 
 	// return the parsed template
 	return t.templates.ExecuteTemplate(w, name, data)
+
+}
+
+// http error handler
+func customHTTPErrorHandler(err error, c echo.Context) {
+
+	// it is an internal server error unless said otherwise
+	errCodeH := http.StatusInternalServerError
+
+	// check if it isn't an internal server error
+	if he, ok := err.(*echo.HTTPError); ok {
+
+		// if it isn't, we redefine it
+		errCodeH = he.Code
+
+	}
+
+	// convert the error code to a string
+	errCodeS := strconv.Itoa(errCodeH)
+
+	// then make a string following the template naming format
+	errCode := strings.Join([]string{errCodeS, "_error"}, "")
+
+	// render the template
+	if err := c.Render(http.StatusOK, errCode, nil); err != nil {
+
+		// attempt to render the unhandleable error template
+		if err := c.Render(http.StatusOK, "unhandled_error", map[string]string{
+			"error": errCodeS,
+		}); err != nil {
+
+			// if we couldn't do that too, we must send a simple text response
+			c.HTML(http.StatusOK, fmt.Sprintf("<h1>well, that's a doozie...</h1><p>could not find an error template...<br><br>error code: %s</p>", errCodeS))
+
+			// log an error if it failed
+			consoleSequence(fmt.Sprintf("-> %s%scould not find the unhandled_error template. it is advised you have one of these...%s\n", code("reset"), code("red"), code("reset")))
+			c.Logger().Error(err)
+
+		}
+
+	}
+
+	// log an error if it failed
+	consoleSequence(fmt.Sprintf("-> an %s%serror%s happened...\n", code("reset"), code("red"), code("reset")))
+	c.Logger().Error(err)
 
 }
 
@@ -122,6 +168,9 @@ func server(rootPtr *string) {
 
 	// statically serve public files
 	e.Static("/assets", (root + "assets/public"))
+
+	// custom fancy error handler
+	e.HTTPErrorHandler = customHTTPErrorHandler
 
 	// handle get requests
 	e.GET("/", func(c echo.Context) error {

@@ -1,0 +1,53 @@
+/*
+
+juxtaposition.css -
+the stylings for juxtaposition
+
+*/
+
+.error-page {
+
+    display: flex;
+    padding: 50px;
+    justify-content: flex-start;
+    font-family: Inconsolata, "Courier New", Courier, monospace;
+
+}
+
+.error-page > .error-page-child-container {
+
+    display: block;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+}
+
+.error-page > .error-page-child-container > h1 {
+
+    font-size: 100px;
+    color: #000000;
+
+}
+
+.error-page > .error-page-child-container > p {
+
+    font-size: 16px;
+
+}
+
+a {
+
+    color: black;
+    text-decoration: underline;
+    font-weight: bold;
+
+}
+
+a:hover {
+
+    color: #430499;
+
+}
