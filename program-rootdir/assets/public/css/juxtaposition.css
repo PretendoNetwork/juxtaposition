@@ -5,6 +5,28 @@ the stylings for juxtaposition
 
 */
 
+/* general element stylings */
+a {
+
+    color: black;
+
+}
+
+a:hover {
+
+    color: #430499;
+
+}
+
+/* utility classes */
+.emphasize {
+
+    text-decoration: underline;
+    font-weight: bold;
+
+}
+
+/* organization classes */
 .error-page {
 
     display: flex;
@@ -35,19 +57,5 @@ the stylings for juxtaposition
 .error-page > .error-page-child-container > p {
 
     font-size: 16px;
-
-}
-
-a {
-
-    color: black;
-    text-decoration: underline;
-    font-weight: bold;
-
-}
-
-a:hover {
-
-    color: #430499;
 
 }
