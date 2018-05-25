@@ -1,0 +1,122 @@
+/*
+
+juxtaposition.scss -
+the stylings for juxtaposition
+
+*/
+
+/* variables */
+
+/* themes */
+
+// default colors
+html[data-theme="standard"] {
+
+    --primary:       #440499;  // pretendo purple
+    --primary-light: #6917D7;  // light pretendo purple
+    --primary-dark:  #28025B;  // dark pretendo purple
+    --darkest:       #000000;  // darkest color
+    --lightest:      #ffffff;  // lightest color
+
+}
+
+// some other theme used for testing
+html[data-theme="other-theme"] {
+
+    --primary:       #00796C;  // some green
+    --primary-light: #2C9B8F;  // some light green
+    --primary-dark:  #004841;  // some dark green
+    --darkest:       #000000;  // darkest color
+    --lightest:      #ffffff;  // lightest color
+
+}
+
+// dark theme
+// some other theme used for testing
+html[data-theme="dark-theme"] {
+
+    --primary:       #440499;  // pretendo purple
+    --primary-light: #6917D7;  // light pretendo purple
+    --primary-dark:  #28025B;  // dark pretendo purple
+    --darkest:       #ffffff;  // darkest color
+    --lightest:      #000000;  // lightest color
+
+}
+
+/* mixins */
+@mixin vertical-align($position: relative) {
+
+    position: $position;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+
+}
+
+/* utility classes */
+.emphasize {
+
+    text-decoration: underline;
+    font-weight: bold;
+
+}
+
+/* general site stylings */
+.site-container {
+
+    background: var(--lightest);
+    color: var(--darkest);
+
+    a {
+
+        @extend .emphasize;
+
+        color: var(--darkest);
+
+    }
+
+    a:hover {
+
+        color: var(--primary);
+
+    }
+
+    a:visited {
+
+        color: var(--primary-light);
+
+    }
+
+}
+
+/* organization classes */
+.error-page {
+
+    display: flex;
+    padding: 50px;
+    justify-content: flex-start;
+    font-family: Inconsolata, "Courier New", Courier, monospace;
+
+    .error-page-child-container {
+
+        @include vertical-align(relative);
+
+        display: block;
+        
+        h1 {
+
+            font-size: 100px;
+            color: var(--darkest);
+        
+        }
+
+        p {
+
+            font-size: 16px;
+        
+        }
+
+    }
+
+}

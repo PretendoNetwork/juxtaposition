@@ -1,61 +1,78 @@
 /*
 
-juxtaposition.css -
+juxtaposition.scss -
 the stylings for juxtaposition
 
 */
-
-/* general element stylings */
-a {
-
-    color: black;
-
+/* variables */
+/* themes */
+html[data-theme=standard] {
+  --primary: #440499;
+  --primary-light: #6917D7;
+  --primary-dark: #28025B;
+  --darkest: #000000;
+  --lightest: #ffffff;
 }
 
-a:hover {
-
-    color: #430499;
-
+html[data-theme=other-theme] {
+  --primary: #00796C;
+  --primary-light: #2C9B8F;
+  --primary-dark: #004841;
+  --darkest: #000000;
+  --lightest: #ffffff;
 }
 
+html[data-theme=dark-theme] {
+  --primary: #440499;
+  --primary-light: #6917D7;
+  --primary-dark: #28025B;
+  --darkest: #ffffff;
+  --lightest: #000000;
+}
+
+/* mixins */
 /* utility classes */
-.emphasize {
+.emphasize, .site-container a {
+  text-decoration: underline;
+  font-weight: bold;
+}
 
-    text-decoration: underline;
-    font-weight: bold;
-
+/* general site stylings */
+.site-container {
+  background: var(--lightest);
+  color: var(--darkest);
+}
+.site-container a {
+  color: var(--darkest);
+}
+.site-container a:hover {
+  color: var(--primary);
+}
+.site-container a:visited {
+  color: var(--primary-light);
 }
 
 /* organization classes */
 .error-page {
-
-    display: flex;
-    padding: 50px;
-    justify-content: flex-start;
-    font-family: Inconsolata, "Courier New", Courier, monospace;
-
+  display: flex;
+  padding: 50px;
+  justify-content: flex-start;
+  font-family: Inconsolata, "Courier New", Courier, monospace;
+}
+.error-page .error-page-child-container {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  display: block;
+}
+.error-page .error-page-child-container h1 {
+  font-size: 100px;
+  color: var(--darkest);
+}
+.error-page .error-page-child-container p {
+  font-size: 16px;
 }
 
-.error-page > .error-page-child-container {
-
-    display: block;
-    position: relative;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-
-}
-
-.error-page > .error-page-child-container > h1 {
-
-    font-size: 100px;
-    color: #000000;
-
-}
-
-.error-page > .error-page-child-container > p {
-
-    font-size: 16px;
-
-}
+/*# sourceMappingURL=juxtaposition.css.map */
