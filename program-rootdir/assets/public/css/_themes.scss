@@ -1,0 +1,40 @@
+/*
+
+_themes.scss -
+partial that contains color themes
+
+*/
+
+// standard color theme
+html[data-theme="standard"] {
+
+    --primary:       #440499;  // pretendo purple
+    --primary-light: #6917D7;  // light pretendo purple
+    --primary-dark:  #28025B;  // dark pretendo purple
+    --darkest:       #000000;  // darkest color
+    --lightest:      #ffffff;  // lightest color
+
+}
+
+// some other theme used for testing
+html[data-theme="other-theme"] {
+
+    --primary:       #00796C;  // some green
+    --primary-light: #2C9B8F;  // some light green
+    --primary-dark:  #004841;  // some dark green
+    --darkest:       #000000;  // darkest color
+    --lightest:      #ffffff;  // lightest color
+
+}
+
+// dark theme
+// some other theme used for testing
+html[data-theme="dark-theme"] {
+
+    --primary:       #440499;  // pretendo purple
+    --primary-light: #6917D7;  // light pretendo purple
+    --primary-dark:  #28025B;  // dark pretendo purple
+    --darkest:       #ffffff;  // darkest color
+    --lightest:      #000000;  // lightest color
+
+}
