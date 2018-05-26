@@ -179,6 +179,10 @@ func server(rootPtr *string) {
 		})
 	})
 
+	e.GET("/login", func(c echo.Context) error {
+		return c.Render(http.StatusOK, "login", nil)
+	})
+
 	// start the server
 	e.Logger.Fatal(e.Start(":1323"))
 

@@ -37,35 +37,42 @@ the stylings for juxtaposition
 
     }
 
+    h1 {
+
+        font-weight: 900;
+        font-size: 100px;
+        color: var(--darkest);
+    
+    }
+
+    p {
+
+        font-size: 16px;
+    
+    }
+
 }
 
 /* organization classes */
-.error-page {
+.justify-left {
 
     display: flex;
     padding: 50px;
     justify-content: flex-start;
-    font-family: Inconsolata, "Courier New", Courier, monospace;
 
-    .error-page-child-container {
+    .justify-left-child-container {
 
         @include vertical-align(relative);
 
         display: block;
-        
-        h1 {
-
-            font-size: 100px;
-            color: var(--darkest);
-        
-        }
-
-        p {
-
-            font-size: 16px;
-        
-        }
 
     }
+
+}
+
+/* error-page specifics */
+.error-page-stylings {
+
+    font-family: Inconsolata, "Courier New", Courier, monospace;
 
 }

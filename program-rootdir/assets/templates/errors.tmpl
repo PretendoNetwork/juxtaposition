@@ -1,11 +1,11 @@
 {{define "500_error"}}
-<html class="error-page site-container" data-theme="standard">
+<html class="justify-left site-container error-page-stylings" data-theme="standard">
 
 <head>
     <link rel="stylesheet" href="/assets/css/juxtaposition.css">
 </head>
 
-<body class="error-page-child-container">
+<body class="justify-left-child-container">
     <h1>500</h1>
     <p>
     oopsie woopsie~~!<br>
@@ -18,13 +18,13 @@
 {{end}}
 
 {{define "404_error"}}
-<html class="error-page site-container" data-theme="standard">
+<html class="justify-left site-container error-page-stylings" data-theme="other-theme">
 
 <head>
     <link rel="stylesheet" href="/assets/css/juxtaposition.css">
 </head>
 
-<body class="error-page-child-container">
+<body class="justify-left-child-container">
     <h1>404</h1>
     <p>
     oh my goodness...<br>
@@ -37,13 +37,13 @@
 {{end}}
 
 {{define "unhandled_error"}}
-<html class="error-page site-container" data-theme="standard">
+<html class="justify-left site-container error-page-stylings" data-theme="standard">
 
 <head>
     <link rel="stylesheet" href="/assets/css/juxtaposition.css">
 </head>
 
-<body class="error-page-child-container">
+<body class="justify-left-child-container">
     <h1>{{index . "error"}}</h1>
     <p>
     blame the sysadmins<br>
