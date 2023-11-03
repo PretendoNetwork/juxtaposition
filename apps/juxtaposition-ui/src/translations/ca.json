@@ -1,1 +1,78 @@
-{}
+{
+    "global": {
+        "communities": "Comunitats",
+        "more": "Carregar més publicacions",
+        "next": "Següent",
+        "messages": "Missatges",
+        "activity_feed": "Registre d'activitat",
+        "exit": "Sortir",
+        "back": "Enrere",
+        "notifications": "Notificacions",
+        "save": "Desa",
+        "no_posts": "No hi ha publicacions",
+        "private": "Privat",
+        "close": "Tancar",
+        "user_page": "Pàgina d'usuari",
+        "go_back": "Torna"
+    },
+    "notifications": {
+        "none": "No hi ha notificacions.",
+        "new_follower": "t'ha seguit!"
+    },
+    "user_page": {
+        "follow_user": "Seguir",
+        "game_experience": "Experiència jugant",
+        "no_following": "No segueix a ningú",
+        "befriend": "Fes-te amic",
+        "posts": "Publicacions",
+        "friends": "Amics",
+        "following_user": "Seguint",
+        "pending": "Pendent",
+        "followers": "Seguidors",
+        "no_followers": "No hi ha seguidors",
+        "no_friends": "Sense amics",
+        "birthday": "Aniversari",
+        "country": "País",
+        "following": "Seguint"
+    },
+    "community": {
+        "new": "Publicació nova",
+        "posts": "Publicacions",
+        "tags": "Etiquetes",
+        "followers": "Seguidors",
+        "following": "Seguint",
+        "follow": "Segueix aquesta comunitat",
+        "verified": "Publicacions verificades",
+        "recent": "Publicaciones recents",
+        "popular": "Publicacions populars"
+    },
+    "user_settings": {
+        "show_game": "Mostrar experiència al perfil",
+        "show_comment": "Mostra el teu comentari al perfil",
+        "show_birthday": "Mostra el teu aniversari al perfil",
+        "profile_settings": "Configuració del perfil",
+        "profile_comment": "Comentari del perfil",
+        "swearing": "El comentari del perfil no pot contenir llenguatge explícit o inapropiat.",
+        "show_country": "Mostra el teu país al perfil"
+    },
+    "new_post": {
+        "text_hint": "Toca aquí per fer una publicació.",
+        "new_post_text": "Publicació nova",
+        "post_to": "Publica a"
+    },
+    "all_communities": {
+        "show_all": "Mostrar tot",
+        "search": "Cerca comunitats...",
+        "text": "Totes les comunitats",
+        "ann_string": "Toca aquí per veure els anuncis recents!",
+        "new_communities": "Noves Comunitats",
+        "popular_places": "Comunitats Populars"
+    },
+    "language": "Català",
+    "activity_feed": {
+        "empty": "Aquí està buit. Pots provar de seguir algú!"
+    },
+    "setup": {
+        "welcome": "Benvingut a Juxtaposition!"
+    }
+}
