@@ -1,15 +1,15 @@
 {
     "language": "Français",
     "global": {
-        "user_page": "Profil",
+        "user_page": "Page utilisateur",
         "activity_feed": "Fil d'Actualité",
         "communities": "Communautés",
         "messages": "Messages",
         "notifications": "Notifications",
         "go_back": "Retour",
         "back": "Retour",
-        "yeahs": "Ouais",
-        "more": "Afficher Plus",
+        "yeahs": "Ouais !",
+        "more": "Afficher plus de publications",
         "no_posts": "Aucune Publication",
         "private": "Privés",
         "close": "Fermer",
