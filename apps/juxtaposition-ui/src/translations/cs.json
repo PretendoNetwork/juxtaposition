@@ -70,7 +70,7 @@
     "new_post": {
         "new_post_text": "Nový příspěvek",
         "swearing": "Příspěvky nesmí obsahovat nevhodné výrazy.",
-        "text_hint": "Klikněte zde pro vytvoření příspěvku.",
+        "text_hint": "Klikněte sem pro vytvoření příspěvku.",
         "post_to": "Přispět do"
     },
     "setup": {
