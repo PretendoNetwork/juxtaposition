@@ -1,1 +1,38 @@
-{}
+{
+    "global": {
+        "communities": "Comunidades",
+        "more": "Cargar más publicaciones",
+        "next": "Próximo",
+        "yeahs": "Sí",
+        "messages": "Mensajes",
+        "activity_feed": "Fuente de actividades",
+        "exit": "Salida",
+        "back": "Atrás",
+        "notifications": "Notificaciones",
+        "save": "Salvar",
+        "no_posts": "Sin publicaciones",
+        "private": "Privado",
+        "close": "Cerrar",
+        "user_page": "Página de usuario",
+        "go_back": "Volver"
+    },
+    "community": {
+        "posts": "Publicaciones",
+        "tags": "Etiquetas",
+        "followers": "Seguidores",
+        "following": "Siguiente",
+        "follow": "Seguir a la comunidad",
+        "recent": "Publicaciones recientes",
+        "popular": "Publicaciones populares"
+    },
+    "all_communities": {
+        "show_all": "Mostrar todo",
+        "announcements": "Anuncios",
+        "search": "Buscar comunidades...",
+        "text": "Todas las comunidades",
+        "ann_string": "¡Haga clic aquí para ver los anuncios recientes!",
+        "new_communities": "Nuevas comunidades",
+        "popular_places": "Lugares populares"
+    },
+    "language": "Asturies"
+}
