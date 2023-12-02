@@ -95,9 +95,9 @@
             "first": "Chystáte se vyzkoušet první veřejnou betu Juxtu. To znamená, že mnohé je stále ve hvězdách a mnohé se může kdykoli změnit."
         },
         "experience_text": {
-            "expert": "Expert",
+            "expert": "Pokročilý",
             "info": "Sdělte nám, prosím, jak byste popsal(a) Vaši zkušenost s hraním. Toto nastavení můžete změnit později.",
-            "intermediate": "Pokročilý",
+            "intermediate": "Středně pokročilý",
             "beginner": "Začátečník"
         },
         "guest_button": "Rozumím",
