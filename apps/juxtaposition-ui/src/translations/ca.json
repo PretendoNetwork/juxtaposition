@@ -49,7 +49,7 @@
         "popular": "Publicacions populars"
     },
     "user_settings": {
-        "show_game": "Mostra experiència de joc al perfil",
+        "show_game": "Mostra la experiència de joc al perfil",
         "show_comment": "Mostra el teu comentari al perfil",
         "show_birthday": "Mostra el teu aniversari al perfil",
         "profile_settings": "Configuració del perfil",
@@ -94,9 +94,9 @@
             "twelfth": "Has jugat a aquest joc?"
         },
         "beta_text": {
-            "third": "El lloc web, el seu programari i tot el contingut que s'hi troba es proporcionen \"tal qual\" i \"segons estigui disponible\". The Pretendo Network no dóna cap garantia, ja sigui expressa o implícita, sobre la idoneïtat o usabilitat del lloc web, el seu programari o qualsevol dels seus continguts.",
-            "second": "Això pot incloure i pot incloure una eliminació total de la base de dades al final o durant el període beta.",
-            "first": "Esteu a punt de provar la primera beta pública de Juxt. Això vol dir que encara hi ha moltes coses en l'aire, i moltes coses poden canviar en qualsevol moment."
+            "third": "El lloc web, el seu programari i tot el contingut que s'hi troba es proporcionen \"tal qual\" i \"segons estigui disponible\". La Pretendo Network no dóna cap garantia, ja sigui expressa o implícita, sobre la idoneïtat o usabilitat del lloc web, el seu programari o qualsevol dels seus continguts.",
+            "second": "Això pot incloure una eliminació total de la base de dades al final o durant el període beta.",
+            "first": "Estàs a punt de provar la primera beta pública de Juxt. Això vol dir que encara hi ha moltes coses en l'aire, i moltes coses poden canviar en qualsevol moment."
         },
         "experience_text": {
             "expert": "Expert",
@@ -114,8 +114,8 @@
         "rules": "Regles de Juxt",
         "welcome_text": "Juxt és una comunitat de jocs que connecta persones de tot el món mitjançant personatges Mii. Utilitzeu Juxt per compartir les vostres experiències de joc i conèixer gent de tot el món.",
         "google_text": "La juxtaposició utilitza Google Analytics per tal de fer un seguiment de com els usuaris utilitzen el nostre servei. Les dades recopilades inclouen, entre d'altres, el temps de visita, les pàgines visitades i el temps dedicat al lloc. Aquestes dades no se li adjunten de cap manera, i no s'utilitzen per a anuncis per nosaltres o Google.",
-        "info": "Què és la juxtaposició?",
-        "info_text": "Juxt és una comunitat de jocs impulsada per l'usuari on podeu interactuar amb la gent\n                a tot el món. Pots escriure o dibuixar publicacions en comunitats de jocs o enviar missatges directament als teus amics.",
+        "info": "Què és Juxtaposition?",
+        "info_text": "Juxt és una comunitat de jocs impulsada per l'usuari on es pot interactuar amb la gent\n                a tot el món. Pots escriure o dibuixar publicacions en comunitats de jocs o enviar missatges directament als teus amics.",
         "ready_text": "En primer lloc, fes un cop d'ull a algunes comunitats i descobreix què publiquen persones de tot el món. Aprofita aquesta oportunitat per familiaritzar-te amb Juxt. Podeu fer alguns descobriments nous al llarg del camí!",
         "done": "Diverteix-te a Juxt!",
         "beta": "Exempció de responsabilitat beta"
