@@ -18,16 +18,16 @@
         "next": "Volgende"
     },
     "all_communities": {
-        "text": "Alle Gemeenschappen",
+        "text": "Alle Communities",
         "announcements": "Aankondigingen",
         "ann_string": "Klik hier om recente aankondigen te bekijken!",
-        "popular_places": "Populaire Gemeenschappen",
-        "new_communities": "Nieuwe Gemeenschappen",
+        "popular_places": "Populaire Communities",
+        "new_communities": "Nieuwe Communities",
         "show_all": "Alles weergeven",
-        "search": "Zoek gemeenschappen..."
+        "search": "Zoek communities..."
     },
     "community": {
-        "follow": "Volg gemeenschap",
+        "follow": "Volg Community",
         "following": "Volgend",
         "followers": "Volgers",
         "posts": "Posts",
@@ -39,7 +39,7 @@
     },
     "user_page": {
         "country": "Land",
-        "birthday": "Geboortedatum",
+        "birthday": "Verjaardag",
         "game_experience": "Game Ervaring",
         "posts": "Posts",
         "friends": "Vrienden",
@@ -56,10 +56,10 @@
     },
     "user_settings": {
         "profile_settings": "Profiel instellingen",
-        "show_country": "Weergeef Land op Profiel",
-        "show_birthday": "Weergeef Geboortedatum op Profiel",
-        "show_game": "Weergeef Game Ervaring op Profiel",
-        "show_comment": "Weergeef Omschrijving op Profiel",
+        "show_country": "Geef Land op Profiel weer",
+        "show_birthday": "Geef Verjaardag op Profiel weer",
+        "show_game": "Geef Game Ervaring op Profiel weer",
+        "show_comment": "Geef Omschrijving op Profiel weer",
         "profile_comment": "Profiel Omschrijving",
         "swearing": "Profiel omschrijving kan geen expliciete tekst bevatten."
     },
@@ -85,7 +85,7 @@
         "beta": "Beta-disclaimer",
         "beta_text": {
             "first": "Je staat op het punt de eerste publieke beta van Juxt te gebruiken. Dit betekent dat veel onzeker is en ook van alles kan veranderen.",
-            "second": "Dit kan mogelijk een volledige reset van de database bevatten aan het einde van de beta periode of tijdens deze periode.",
+            "second": "Dit kan mogelijk een volledige reset van de database aan het einde van de beta periode of tijdens deze periode omvatten.",
             "third": "De website, de software die het bevat, alsook alle content dat te vinden is op deze website, worden geleverd op een \"as is\" en \"as available\" basis. Pretendo Network geeft geen garantstellingen, ofwel expliciet ofwel impliciet, met betrekking tot de geschiktheid of bruikbaarheid van de website, de software die het bevat of de content op de website."
         },
         "info": "Wat is Juxtaposition?",
