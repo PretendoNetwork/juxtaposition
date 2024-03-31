@@ -1,1 +1,94 @@
-{}
+{
+    "global": {
+        "go_back": "Idi Natrag",
+        "back": "Natrag",
+        "yeahs": "Da",
+        "more": "Učitaj Više Postova",
+        "no_posts": "Nema Postova",
+        "close": "Zatvoriti",
+        "save": "Sačuvati",
+        "exit": "Izlaženje",
+        "private": "Privatno",
+        "next": "Idući",
+        "activity_feed": "Feed Aktivnosti",
+        "user_page": "Korisnička Stranica",
+        "communities": "Zajednice",
+        "messages": "Poruke",
+        "notifications": "Obavijesti"
+    },
+    "all_communities": {
+        "text": "Sve Zajednice",
+        "announcements": "Najavljivanja",
+        "ann_string": "Kliknite Ovdje Za Pregled Nedavnih Najava!",
+        "popular_places": "Popularna Mjesta",
+        "new_communities": "Novi Zajednice",
+        "show_all": "Pokaži Sve",
+        "search": "Traži Zajednice..."
+    },
+    "community": {
+        "follow": "Slijediti Zajednič",
+        "tags": "Označiti",
+        "posts": "Postovi",
+        "recent": "Najnovije Objave",
+        "popular": "Popularan Objave",
+        "verified": "Potvrđeni Objave",
+        "new": "Novi Objave",
+        "following": "Sljedeći",
+        "followers": "Sljedbenik"
+    },
+    "user_page": {
+        "country": "Domovina",
+        "birthday": "Rođendan",
+        "game_experience": "Iskustvo Igre",
+        "posts": "Postovi",
+        "friends": "Prijatelji",
+        "follow_user": "Pratiti",
+        "unfriend": "Ukinuti Prijateljstvo",
+        "no_friends": "Bez Prijatelja",
+        "following": "Sljedeći",
+        "following_user": "Sljedeći",
+        "no_following": "Ne Slijedeći Nikoga",
+        "followers": "Sljedbenik",
+        "no_followers": "Nema Sljedbenika",
+        "befriend": "Steći Prijatelje",
+        "pending": "U Tijeku"
+    },
+    "user_settings": {
+        "profile_settings": "Profil Opcije",
+        "show_country": "Pokazati Nacija Na Profil",
+        "show_birthday": "Pokazati Rođendan Na Profil",
+        "show_game": "Pokazati Iskustvo Igre Na Profil",
+        "profile_comment": "Profil Primjedba",
+        "swearing": "Komentar Profila Ne Smije Sadržavati Eksplicitan Jezik.",
+        "show_comment": "Pokazati Primjedba Na Profil"
+    },
+    "notifications": {
+        "none": "Nema Obavijestia.",
+        "new_follower": "Pratio Te!"
+    },
+    "new_post": {
+        "new_post_text": "Nova Postova",
+        "post_to": "Postov do",
+        "swearing": "Post Ne Smije Sadržavati Eksplicitan Jezik.",
+        "text_hint": "Dodirnite ovdje za napraviti a poštov."
+    },
+    "messages": {
+        "coming_soon": "Poruke Ne Spremne Još. Vrati Se Kasnije!"
+    },
+    "setup": {
+        "welcome": "Dobrodošli u Juxtaposition!",
+        "beta": "Beta Odricanje",
+        "beta_text": {
+            "first": "Upravo ćete Isprobati Javnu Beta Verziju Juxt. To Znači da se Još Mnogo Toga Može Promijeniti u Bilo Kojem Vrijeme.",
+            "second": "To Mogla Značiti da se Podaci Mogu Izbrisati u Bilo Kojem Vrijem Tijekom Beta Razdoblja.",
+            "third": "Web Stranica, Njezin Softver i Sav Sadržaj Koji se na Njoj Nalazi Dostupni su na Temelju \"Kakvi Jesu\" i \"Kako su Dostupni\". Pretendo Network ne Daje Nikakva Jamstva, Izričita Ili Prešutna, u Pogledu Prikladnosti Ili Upotrebljivosti Web Stranice, Njezinog Softvera Ili Bilo Kojeg Njezinog Sadržaja."
+        },
+        "info": "Što je Juxtaposition?",
+        "welcome_text": "Juxt Je Igraća Zajednica Koji Povezuje ljudi iz Diljem Svijeta Koristeći Mii Likovi. Koristite Juxt do Podijelite Svoje Iskustvo Igranja i Upoznati Ljude iz Diljem Svijeta.",
+        "info_text": "Juxt je Zajednica Igara Vođena Korisnicima u Kojoj Možete Komunicirati s Ljudima \nDiljem Svijeta"
+    },
+    "language": "Hrvatski",
+    "activity_feed": {
+        "empty": "to je prazno ovdje. Pokušajte Pratiti Nekoga!"
+    }
+}
