@@ -8,8 +8,8 @@
         "notifications": "알림",
         "go_back": "뒤로 가기",
         "back": "뒤로",
-        "yeahs": "맞네",
-        "more": "추가 포스트 로드",
+        "yeahs": "좋아요",
+        "more": "포스트 더보기",
         "no_posts": "포스트 없음",
         "private": "비공개",
         "close": "닫기",
@@ -23,7 +23,7 @@
         "ann_string": "여기를 클릭해서 최근 공지를 확인하세요!",
         "popular_places": "유명한 곳",
         "new_communities": "새로운 커뮤니티",
-        "show_all": "모두 보이기",
+        "show_all": "모두 보기",
         "search": "커뮤니티 검색..."
     },
     "community": {
