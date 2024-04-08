@@ -1,8 +1,8 @@
 {
     "language": "Español",
     "global": {
-        "user_page": "Perfil",
-        "activity_feed": "Registro de actividad",
+        "user_page": "Menú de usuario",
+        "activity_feed": "Actividad",
         "communities": "Comunidades",
         "messages": "Mensajes",
         "notifications": "Notificaciones",
