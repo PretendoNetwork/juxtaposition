@@ -1,1 +1,87 @@
-{}
+{
+    "global": {
+        "user_page": "Page de Utilisateur",
+        "activity_feed": "Flux d'activité",
+        "communities": "Communauté",
+        "messages": "Messages",
+        "notifications": "Notifications",
+        "go_back": "Retourner",
+        "back": "Revenir",
+        "yeahs": "Ouias",
+        "more": "Charger plus posts",
+        "no_posts": "Sans Posts",
+        "private": "Privé",
+        "close": "Fermer",
+        "save": "Enregistrer",
+        "exit": "Sortir",
+        "next": "Prochain"
+    },
+    "all_communities": {
+        "announcements": "Annonce",
+        "popular_places": "Endroit Populaire",
+        "new_communities": "Nouveau Communautés",
+        "show_all": "Tout Montrer",
+        "search": "Chercher Communautés...",
+        "text": "Tout Communautés",
+        "ann_string": "Cliquer Ici à Vue Annonce Récent!"
+    },
+    "community": {
+        "follow": "Suivre Communauté",
+        "following": "Suivant",
+        "followers": "Followers",
+        "tags": "Taguer",
+        "posts": "Posters",
+        "recent": "Posters Récent",
+        "popular": "Posters de Populaire",
+        "verified": "Posters de Vérifié",
+        "new": "Nouveau Poster"
+    },
+    "user_page": {
+        "country": "Pays",
+        "birthday": "Anniversaire",
+        "game_experience": "Expérience de Jeux",
+        "posts": "Posters",
+        "friends": "Amis",
+        "following": "Suivants",
+        "followers": "Followers",
+        "follow_user": "Suivre",
+        "following_user": "Suivants",
+        "befriend": "Devenir Amis",
+        "pending": "En Attente",
+        "unfriend": "Enlever Amis",
+        "no_friends": "Sans Amis",
+        "no_following": "Pas Suivants Quiconque",
+        "no_followers": "Sans Followers"
+    },
+    "user_settings": {
+        "profile_settings": "Préférences de Profil",
+        "show_country": "Montrer Pays Sur Profil",
+        "show_birthday": "Montrer Anniversaire Sur Profil",
+        "show_game": "Montrer Expérience de Jeux Sur Profil",
+        "show_comment": "Montrer Commentaire Sur Profile",
+        "profile_comment": "Commentaire de Profil",
+        "swearing": "Commentaire de Profil Pouvoir Pas Contenir Langue Explicite."
+    },
+    "activity_feed": {
+        "empty": "Son Vide Ici. Essayer Suivants Quelqu'un!"
+    },
+    "notifications": {
+        "none": "Sans Notifications.",
+        "new_follower": "suivi tu!"
+    },
+    "new_post": {
+        "new_post_text": "Nouveau Poster",
+        "post_to": "Poster à",
+        "text_hint": "Cliquez Ici à Créer Une Poster.",
+        "swearing": "Poster Pouvoir Pas Contenir Langue Explicite."
+    },
+    "messages": {
+        "coming_soon": "Messages N'est Pas Prêt Maintenant. Revenir Bientôt!"
+    },
+    "setup": {
+        "welcome": "Bienvenue à Juxtaposition!",
+        "welcome_text": "Juxt Est un Communauté de Jeux ça Relier Gens de Tout le Monde Utiliser Personnage Mii. Utiliser Juxt à Partager Ton Expérience de Jeux et Retrouver Gens de Tout le Monde.",
+        "beta": "Bêta Avertissement"
+    },
+    "language": "Français (CA)"
+}
