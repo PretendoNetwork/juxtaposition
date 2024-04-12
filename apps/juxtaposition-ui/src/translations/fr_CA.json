@@ -81,7 +81,15 @@
     "setup": {
         "welcome": "Bienvenue à Juxtaposition!",
         "welcome_text": "Juxt Est un Communauté de Jeux ça Relier Gens de Tout le Monde Utiliser Personnage Mii. Utiliser Juxt à Partager Ton Expérience de Jeux et Retrouver Gens de Tout le Monde.",
-        "beta": "Bêta Avertissement"
+        "beta": "Bêta Avertissement",
+        "beta_text": {
+            "first": "Tu es Tester la Premier public Bêta de Juxt. Ceci Signifier ça Beucoup est Encore au air, et ça Beucoup Pouvoir Changer à de Temps.",
+            "second": "Ceci Pouvoir et il se Peut Que Comprendre un Effacer total à le Conclusion ou Pendant le Période Bêta.",
+            "third": "Le site, et ça est Logiciel et Tout Content Trouvé dans il es Fourni il un \"tel quel\" et \"tel disponible\" base. Le Pretendo Network Pouvoir pas Donner du Clause, si Formel ou Impliquer, Aussi à le Convenir ou Convivialité de le site, et C'est Logiciel ou si de Contenu."
+        },
+        "info": "Qu'est que Juxtaposition?",
+        "info_text": "Juxt est un Utilisateur-Motivé Communauté où tu Pouvoir Interagir avec Gens\nPartout le Montrer. Tu Pouvoir écrire et Dessiner Poster dans Communauté de Jeux ou Envoyer Messages Directement à ton amis.",
+        "rules": "Règle de Juxt"
     },
     "language": "Français (CA)"
 }
