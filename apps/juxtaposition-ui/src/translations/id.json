@@ -1,1 +1,15 @@
-{}
+{
+    "global": {
+        "user_page": "Halaman Pengguna",
+        "communities": "Komunitas",
+        "activity_feed": "Halaman Aktivitas",
+        "messages": "Pesan",
+        "notifications": "Notifikasi",
+        "go_back": "Kembali",
+        "back": "Kembali",
+        "yeahs": "Ya",
+        "more": "Memuat Postingan",
+        "no_posts": "Tidak ada Postingan"
+    },
+    "language": "Bahasa Indonesia"
+}
