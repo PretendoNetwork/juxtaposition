@@ -2,7 +2,7 @@
     "global": {
         "user_page": "Page de Utilisateur",
         "activity_feed": "Flux d'activité",
-        "communities": "Communauté",
+        "communities": "Communautés",
         "messages": "Messages",
         "notifications": "Notifications",
         "go_back": "Retourner",
@@ -12,18 +12,18 @@
         "no_posts": "Sans Posts",
         "private": "Privé",
         "close": "Fermer",
-        "save": "Enregistrer",
+        "save": "Sauvegarder",
         "exit": "Sortir",
         "next": "Prochain"
     },
     "all_communities": {
-        "announcements": "Annonce",
+        "announcements": "Annonces",
         "popular_places": "Endroit Populaire",
         "new_communities": "Nouveau Communautés",
         "show_all": "Tout Montrer",
         "search": "Chercher Communautés...",
         "text": "Tout Communautés",
-        "ann_string": "Cliquer Ici à Vue Annonce Récent!"
+        "ann_string": "Cliquer Ici à Vue Annonces Récent!"
     },
     "community": {
         "follow": "Suivre Communauté",
@@ -102,8 +102,25 @@
             "seventh": "N'oubliez pas, connaître quelqu'un dans Juxt n'est pas la même chose aussi connaître dans le vraie vie. Jamais partager ton adresse e-mail, adresse de maison, nom de travail ou ecole, ou autre informations de identifier personnellement avec n'importe qui sur Juxt, et Jamais partager l'autre n'importe quis informations, de plus, si quelqu'un tu rencontrer dans Juxt inviter tu rencontrer lui ou elle dans le vraie vie, ne accepter pas. Juxt est un communauté en ligne et devoir pas utiliser à vraie vie se retrouver.",
             "ninth": "Quelques gens venir à Juxt recherche pour \"tips et tricks\" pour jeux, mais autres vouloir faire découvrir secrets de jeux sur leur propre.Posters que révéler secrets de jeux ou intrigue es qui s'appelle \"spoilers.\" si tu es poster quelque chose sur un jeux que il se pourrait que être un spoiler, être sûr à cocher le boîte de spoiler avant de poster tu. Ce façon, gens qui ne vouloir pas à spoiled ne voir pas ton poster.",
             "eleventh": "Nos objectif est à garder sympa et plaisant dans Juxt. Dans l'événement ça quelqu'un Violer du Juxt Code de Conduite, nous aller agir approprié, allant jusqu'à et inclure bouchage le choquant utilisateur ou console.",
-            "twelfth": "Avez-vous que tu Jeux ces Jeux?"
-        }
+            "twelfth": "Avez-vous que tu Jeux ces Jeux?",
+            "thirteenth": "Si vous publier dans la communauté pour un jeu auquel tu as joué, tes publications aura une icône indiquant que vous l'avez joué."
+        },
+        "experience": "Expérience de jeu",
+        "experience_text": {
+            "info": "S'il vous plait dites-nous comment décririez-vous votre niveau d'expérience avec les jeux. Tu peux changer ce paramètre plus tard.",
+            "beginner": "Débutant/Débutante",
+            "intermediate": "Intermédiaire",
+            "expert": "Expert/Experte"
+        },
+        "google": "Google Analytics",
+        "ready": "Prêt à commencer à utiliser Juxt",
+        "ready_text": "Consultez d’abord certaines communautés et voyez ce que les gens du tout le monde entier publient. Profitez de cette occasion pour vous familiariser avec Juxt. Vous ferez peut-être de nouvelles découvertes en cours de route !",
+        "done": "Amusez-vous dans Juxt !",
+        "done_button": "Allons-y!",
+        "guest": "Mode Invité",
+        "guest_button": "Je Comprends",
+        "guest_text": "Nous ne pouvons pas vérifier votre compte pour le moment, ce qui signifie probablement que vous êtes connecté avec un compte Nintendo Network. Vous pourrez toujours parcourir Juxt, mais vous ne pourrez pas accéder à Yeah! des publiez ou créez vos propres publications jusqu'à ce que vous vous connectiez avec un compte Pretendo Network. Pour plus d'informations, consultez le serveur Discord.",
+        "google_text": "Juxtaposition utilise Google Analytics pour suivre comment les utilisateurs utilisent notre service.Les données collectées incluent, sans toutefois s'y limiter, le temps de visite, les pages visitées et le temps passé sur le site ne vous sont en aucun cas associées et ne sont pas utilisées à des fins publicitaires par nous ou par Google.\nCommunity Verified icon"
     },
     "language": "Français (CA)"
 }
