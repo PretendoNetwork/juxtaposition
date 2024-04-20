@@ -9,7 +9,83 @@
         "back": "Kembali",
         "yeahs": "Ya",
         "more": "Memuat Postingan",
-        "no_posts": "Tidak ada Postingan"
+        "no_posts": "Tidak ada Postingan",
+        "private": "Pribadi",
+        "close": "Tutup",
+        "save": "Simpan",
+        "exit": "Keluar",
+        "next": "Berikut"
     },
-    "language": "Bahasa Indonesia"
+    "language": "Bahasa Indonesia",
+    "all_communities": {
+        "show_all": "Tunjuk Semua",
+        "text": "Semua Komunitas",
+        "announcements": "Pengumuman",
+        "ann_string": "Klik sini untuk melihat pengumuman terkini!",
+        "popular_places": "Tempat Populer",
+        "new_communities": "Komunitas Baru",
+        "search": "Cari Komunitas..."
+    },
+    "user_settings": {
+        "show_game": "Tunjuk Pengalaman Permainan di Profil",
+        "show_comment": "Tunjuk Komentar di Profil",
+        "profile_comment": "Komentar Profil",
+        "profile_settings": "Pengaturan Profil",
+        "show_country": "Tunjuk Negara di Profil",
+        "show_birthday": "Tunjuk Ulang Tahun di Profil",
+        "swearing": "Komentar Profil tidak boleh mengandung bahasa eksplisit."
+    },
+    "setup": {
+        "welcome_text": "Juxt adalah komunitas game yang menghubungan orang-orang dari seluruh dunia menggunakan karakter Mii. Gunakan Juxt untuk berbagi pengalaman bermain game anda dan bertemu orang-orang dari seluruh dunia.",
+        "beta_text": {
+            "first": "Anda akan mencoba versi beta publik pertama Juxt. Artinya, masih banyak hal yang belum terealisasi, dan banyak hal yang bisa berubah kapan saja.",
+            "second": "Hal ini dapat dan mungkin mencakup penghapusan total basis data para akhir atau selama periode beta."
+        },
+        "welcome": "Selamat datang ke Juxtaposition (Juxt)!",
+        "beta": "Pembertitahuan Beta"
+    },
+    "community": {
+        "follow": "Ikut Komunitas",
+        "following": "Mengikuti",
+        "followers": "Pengikutas",
+        "posts": "Postingan",
+        "tags": "Tags",
+        "recent": "Postingan Terkini",
+        "popular": "Postingan Populer",
+        "verified": "Postingan Diverifikasi",
+        "new": "Postingan Baru"
+    },
+    "user_page": {
+        "country": "Negara",
+        "birthday": "Ulang Tahun",
+        "game_experience": "Pengalaman Permainan",
+        "posts": "Postingan",
+        "friends": "Teman",
+        "following": "Mengikuti",
+        "followers": "Pengikutas",
+        "follow_user": "Mengikut",
+        "following_user": "Mengikuti",
+        "befriend": "Nambah Teman",
+        "pending": "Tertunda",
+        "unfriend": "Hapus Teman",
+        "no_friends": "Tidak ada Teman",
+        "no_following": "Tidak Mengikuti Orang",
+        "no_followers": "Tidak ada Pengikutas"
+    },
+    "activity_feed": {
+        "empty": "Tidak ada apa-apa di sini. Coba mengikut orang!"
+    },
+    "notifications": {
+        "none": "Tidak ada notificasi.",
+        "new_follower": "diikuti kamu!"
+    },
+    "new_post": {
+        "new_post_text": "Postingan Baru",
+        "post_to": "Posting ke",
+        "text_hint": "Klik sini untuk membuat postingan.",
+        "swearing": "Postingan tidak boleh mengandung bahasa eksplisit."
+    },
+    "messages": {
+        "coming_soon": "Pessan belum siap sekarang. Segara periksa kembali!"
+    }
 }
