@@ -32,9 +32,9 @@
         "followers": "Seguidores",
         "posts": "Publicaciones",
         "tags": "Etiquetas",
-        "recent": "Publicaciones recientes",
-        "popular": "Publicaciones populares",
-        "verified": "Publicaciones verificadas",
+        "recent": "Mensajes recientes",
+        "popular": "Mensajes populares",
+        "verified": "Mensajes verificados",
         "new": "Nueva publicación"
     },
     "user_page": {
@@ -58,7 +58,7 @@
         "profile_settings": "Preferencias del perfil",
         "show_country": "Mostrar país en tu perfil",
         "show_birthday": "Mostrar cumpleaños en tu perfil",
-        "show_game": "Mostrar experiencia de juego en tu perfil",
+        "show_game": "Mostrar el nivel como jugador en tu perfil",
         "show_comment": "Mostrar comentario en tu perfil",
         "profile_comment": "Comentario del perfil",
         "swearing": "Los comentarios no pueden tener lenguaje inapropiado."
@@ -106,9 +106,9 @@
             "twelfth": "¿Has jugado a este juego?",
             "thirteenth": "Si publicas en una comunidad sobre algún juego que has jugado, tus publicaciones tendrán un icono que indica que has jugado a ese juego."
         },
-        "experience": "Experiencia de juego",
+        "experience": "Nivel como jugador",
         "experience_text": {
-            "info": "Por favor, indica cuánta experiencia tienes jugando. Puedes cambiarlo después en Ajustes.",
+            "info": "Por favor, indica tu nivel como jugador. Puedes cambiarlo después en Ajustes.",
             "beginner": "Principiante",
             "intermediate": "Intermedio",
             "expert": "Experto"
