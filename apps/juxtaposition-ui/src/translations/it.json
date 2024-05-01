@@ -29,7 +29,7 @@
     "community": {
         "follow": "Segui community",
         "following": "Seguiti",
-        "followers": "Seguaci",
+        "followers": "seguiti",
         "posts": "Post",
         "tags": "Etichette",
         "recent": "Post recenti",
@@ -43,7 +43,7 @@
         "game_experience": "Esperienza di gioco",
         "posts": "Post",
         "friends": "Amici",
-        "following": "Sta seguendo",
+        "following": "Seguiti",
         "followers": "Follower",
         "follow_user": "Segui",
         "following_user": "Stai seguendo",
