@@ -22,7 +22,7 @@
         "announcements": "Anuncios",
         "ann_string": "¡Toca para ver los anuncios recientes!",
         "popular_places": "Lugares populares",
-        "new_communities": "Nuevas comunidades",
+        "new_communities": "Comunidades nuevas",
         "show_all": "Mostrar todo",
         "search": "Buscar comunidades..."
     },
@@ -32,9 +32,9 @@
         "followers": "Seguidores",
         "posts": "Publicaciones",
         "tags": "Etiquetas",
-        "recent": "Mensajes recientes",
-        "popular": "Mensajes populares",
-        "verified": "Mensajes verificados",
+        "recent": "Publicaciones recientes",
+        "popular": "Publicaciones populares",
+        "verified": "Publicaciones verificados",
         "new": "Nueva publicación"
     },
     "user_page": {
