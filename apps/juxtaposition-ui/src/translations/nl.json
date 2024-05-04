@@ -100,7 +100,7 @@
             "sixth": "Post Geen Persoonlijke Gegevens—Die van Jezelf of Van Anderen",
             "seventh": "Onthoud, iemand in Juxt kennen is niet hetzelfde als iemand in het echt kennen. Deel nooit je e-mail adres, huisadres, de naam van je school of werk of wat voor een persoonlijke identificeerbare informatie dan ook met een ander en deel ook geen van deze gegevens van iemand anders. Daarnaast, als iemand die je ontmoet hebt op Juxt je vraagt om diegene in het echt te ontmoeten, accepteer dit niet. Juxt is een online community en moet niet gebruikt worden om ontmoetingen in het echt te faciliteren.",
             "eighth": "Post Geen Spoilers",
-            "ninth": "Engels\nSommige mensen komen naar Juxt voor tips en trucs voor games, anderen willen zelf de geheimen van een game ontdekken. Berichten die geheimen van een game of het verhaal ervan onthullen, worden 'spoilers' genoemd. Als je iets post over een game dat een spoiler zou kunnen zijn, zorg er dan voor dat je het vakje Spoilers aanvinkt voordat je je post verstuurt. Zo zien mensen die niet verwend willen worden je bericht niet.",
+            "ninth": "Sommige mensen komen naar Juxt voor tips en trucs voor games, anderen willen zelf de geheimen van een game ontdekken. Berichten die geheimen van een game of het verhaal ervan onthullen, worden 'spoilers' genoemd. Als je iets post over een game dat een spoiler zou kunnen zijn, zorg er dan voor dat je het vakje Spoilers aanvinkt voordat je je post verstuurt. Zo zien mensen die geen spoilers willen zien je bericht niet.",
             "tenth": "Gedragscode overtredingen",
             "eleventh": "Ons doel is om Juxt leuk en gezellig voor iedereen te houden. Mocht iemand de Juxt Gedragscode overtreden, dan zullen wij gepaste maatregelen nemen. Deze maatregelen omvatten onder andere het blokkeren van toegang voor het account of de console van de gebruiker die de gedragscode overtreedt.",
             "twelfth": "Heb Je Dat Spel Gespeeld?",
@@ -120,7 +120,7 @@
         "done": "Veel plezier in Juxt!",
         "done_button": "Laten We Beginnen!",
         "guest": "Gast Modus",
-        "guest_text": "We kunnen momenteel jouw account niet verifiëren, dit betekent waarschijnlijk dat je probeert in te loggen met een Nintendo Network account. Je kan nog steeds Juxt bezoeken, maar je kan geen Yeah!s geven op posts, daarnaast kan je geen posts maken totdat je inlogt met een Pretendo Network account. Bezoek de Discord server voor meer informatie.",
+        "guest_text": "We kunnen momenteel jouw account niet verifiëren, dit betekent waarschijnlijk dat je probeert in te loggen met een Nintendo Network account. Je kan nog steeds Juxt bezoeken, maar je kan posts geen Ja! geven. Daarnaast kan je geen posts maken totdat je inlogt met een Pretendo Network account. Bezoek de Discord server voor meer informatie.",
         "guest_button": "Begrepen"
     }
 }
