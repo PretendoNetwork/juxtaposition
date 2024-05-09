@@ -1,94 +1,126 @@
 {
     "global": {
-        "go_back": "Idi Natrag",
+        "go_back": "Idi natrag",
         "back": "Natrag",
         "yeahs": "Da",
-        "more": "Učitaj Više Postova",
-        "no_posts": "Nema Postova",
-        "close": "Zatvoriti",
-        "save": "Sačuvati",
-        "exit": "Izlaženje",
+        "more": "Učitaj još objava",
+        "no_posts": "Nema objava",
+        "close": "Zatvori",
+        "save": "Spremi",
+        "exit": "Zatvori",
         "private": "Privatno",
-        "next": "Idući",
-        "activity_feed": "Feed Aktivnosti",
-        "user_page": "Korisnička Stranica",
+        "next": "Dalje",
+        "activity_feed": "Kanal aktivnosti",
+        "user_page": "Korisnička stranica",
         "communities": "Zajednice",
         "messages": "Poruke",
         "notifications": "Obavijesti"
     },
     "all_communities": {
-        "text": "Sve Zajednice",
-        "announcements": "Najavljivanja",
-        "ann_string": "Kliknite Ovdje Za Pregled Nedavnih Najava!",
-        "popular_places": "Popularna Mjesta",
-        "new_communities": "Novi Zajednice",
-        "show_all": "Pokaži Sve",
-        "search": "Traži Zajednice..."
+        "text": "Sve zajednice",
+        "announcements": "Najave",
+        "ann_string": "Pritisni ovdje za prikaz nedavnih najava!",
+        "popular_places": "Popularna mjesta",
+        "new_communities": "Nove zajednice",
+        "show_all": "Pokaži sve",
+        "search": "Traži zajednice …"
     },
     "community": {
-        "follow": "Slijediti Zajednič",
-        "tags": "Označiti",
-        "posts": "Postovi",
-        "recent": "Najnovije Objave",
-        "popular": "Popularan Objave",
-        "verified": "Potvrđeni Objave",
-        "new": "Novi Objave",
-        "following": "Sljedeći",
-        "followers": "Sljedbenik"
+        "follow": "Prati zajednicu",
+        "tags": "Oznake",
+        "posts": "Objave",
+        "recent": "Nedavne objave",
+        "popular": "Popularane objave",
+        "verified": "Potvrđene objave",
+        "new": "Nove objave",
+        "following": "Praćenje",
+        "followers": "Sljedbenici"
     },
     "user_page": {
-        "country": "Domovina",
+        "country": "Zemlja",
         "birthday": "Rođendan",
-        "game_experience": "Iskustvo Igre",
-        "posts": "Postovi",
+        "game_experience": "Iskustvo igranja",
+        "posts": "Objave",
         "friends": "Prijatelji",
-        "follow_user": "Pratiti",
-        "unfriend": "Ukinuti Prijateljstvo",
-        "no_friends": "Bez Prijatelja",
-        "following": "Sljedeći",
-        "following_user": "Sljedeći",
-        "no_following": "Ne Slijedeći Nikoga",
-        "followers": "Sljedbenik",
-        "no_followers": "Nema Sljedbenika",
-        "befriend": "Steći Prijatelje",
-        "pending": "U Tijeku"
+        "follow_user": "Prati",
+        "unfriend": "Ukini prijateljstvo",
+        "no_friends": "Nema prijatelja",
+        "following": "Praćenje",
+        "following_user": "Praćenje",
+        "no_following": "Ne pratiš nikoga",
+        "followers": "Sljedbenici",
+        "no_followers": "Nema sljedbenika",
+        "befriend": "Sprijatelji se",
+        "pending": "Na čekanju"
     },
     "user_settings": {
-        "profile_settings": "Profil Opcije",
-        "show_country": "Pokazati Nacija Na Profil",
-        "show_birthday": "Pokazati Rođendan Na Profil",
-        "show_game": "Pokazati Iskustvo Igre Na Profil",
+        "profile_settings": "Postavke profila",
+        "show_country": "Prikaži zemlju u profilu",
+        "show_birthday": "Prikaži rođendan u profilu",
+        "show_game": "Prikaži iskustvo igranja u profilu",
         "profile_comment": "Profil Primjedba",
-        "swearing": "Komentar Profila Ne Smije Sadržavati Eksplicitan Jezik.",
+        "swearing": "Komentar profila ne smije sadržavati prostačke izraze.",
         "show_comment": "Pokazati Primjedba Na Profil"
     },
     "notifications": {
-        "none": "Nema Obavijestia.",
-        "new_follower": "Pratio Te!"
+        "none": "Nema obavijesti.",
+        "new_follower": "te je pratio/la!"
     },
     "new_post": {
-        "new_post_text": "Nova Postova",
-        "post_to": "Postov do",
+        "new_post_text": "Nova objava",
+        "post_to": "Objava za",
         "swearing": "Objava ne smije sadržavati prostačke izraze.",
-        "text_hint": "Dodirnite ovdje za napraviti a poštov."
+        "text_hint": "Dodirni ovdje za izradu objave."
     },
     "messages": {
-        "coming_soon": "Poruke Ne Spremne Još. Vrati Se Kasnije!"
+        "coming_soon": "Poruke još ne radi. Navrati kasnije!"
     },
     "setup": {
         "welcome": "Dobrodošli u Juxtaposition!",
-        "beta": "Beta Odricanje",
+        "beta": "Odricanje odgovornosti za beta izdanje",
         "beta_text": {
-            "first": "Upravo ćete Isprobati Javnu Beta Verziju Juxt. To Znači da se Još Mnogo Toga Može Promijeniti u Bilo Kojem Vrijeme.",
-            "second": "To Mogla Značiti da se Podaci Mogu Izbrisati u Bilo Kojem Vrijem Tijekom Beta Razdoblja.",
-            "third": "Web Stranica, Njezin Softver i Sav Sadržaj Koji se na Njoj Nalazi Dostupni su na Temelju \"Kakvi Jesu\" i \"Kako su Dostupni\". Pretendo Network ne Daje Nikakva Jamstva, Izričita Ili Prešutna, u Pogledu Prikladnosti Ili Upotrebljivosti Web Stranice, Njezinog Softvera Ili Bilo Kojeg Njezinog Sadržaja."
+            "first": "Isprobavaš prvu javnu Juxt beta verziju. To znači da će vjerojatno biti još puno promjena.",
+            "second": "To može uključivati potpuno brisanje baze podataka na kraju ili tijekom razvoja beta verzije.",
+            "third": "Web stranica, softver i sav sadržaj pružaju se na osnovi „kao što je” i „kao što je dostupno”. Mreža Pretendo ne jamči, bilo izričito ili implicirano, prikladnost ili upotrebljivost web stranice, softvera ili bilo kojeg njenog sadržaja."
         },
         "info": "Što je Juxtaposition?",
-        "welcome_text": "Juxt Je Igraća Zajednica Koji Povezuje ljudi iz Diljem Svijeta Koristeći Mii Likovi. Koristite Juxt do Podijelite Svoje Iskustvo Igranja i Upoznati Ljude iz Diljem Svijeta.",
-        "info_text": "Juxt je korisnički vođena zajednica za igranje u kojoj možeš komunicirati s ljudima diljem svijeta. U zajednicama igara možeš pisati i crtati objave ili slati poruke izravno svojim prijateljima."
+        "welcome_text": "Juxt je zajednica za igranje koja povezuje ljude iz cijelog svijeta koristeći Mii likove. Koristi Juxt za dijeljenje tvojih iskustva igranja i upoznaj ljude iz cijelog svijeta.",
+        "info_text": "Juxt je korisnički vođena zajednica za igranje u kojoj možeš komunicirati s ljudima\n                diljem svijeta. U zajednicama igara možeš pisati i crtati objave ili slati poruke izravno svojim prijateljima.",
+        "rules_text": {
+            "sixth": "Nemoj objavljivati osobne podatke – vlastite ili drugih osoba",
+            "third": "Juxt sadrži mnoge zajednice za igranje u kojima ljudi iz cijelog svijeta mogu podijeliti svoja razmišljanja. Kada šalješ obavijesti, imaj na umu da to svi mogu vidjeti, stoga se izrazi na pristojan način. Koristi zdrav razum i razmisli prije slanja objave. Juxt je usluga kojoj se također može pristupiti s interneta, stoga imaj na umu da osobe koje ne koriste Juxt također mogu vidjeti tvoje objave. Osim toga, svu tvoji komentari na objave tvojih prijatelja vidjet će ne samo tvoji prijatelji, već i ljudi diljem svijeta.",
+            "seventh": "Poznavati nekoga u Juxtu nije isto kao poznati osobu u stvarnom životu. Nikada nemoj dijeliti tvoju e-mail adresu, kućnu adresu, naziv posla ili škole ili druge osobne podatke s bilo kim na Juxtu. Također nemoj dijeliti tuđe podatke. Osim toga, ako te netko koga upoznaš u Juxtu pozove da ga upoznaš u stvarnom svijetu, nemoj prihvatiti poziv. Juxt je internetska zajednica i ne bi se trebala koristiti za organiziranje susreta u stvarnom svijetu.",
+            "eighth": "Nemoj objavljivati tajne igre",
+            "ninth": "Neki ljudi traže savjete i trikove za igre, drugi žele otkriti tajne igre samostalno. Objave koje otkrivaju tajne igre ili njezinu priču nazivaju se „spojleri”. Ako objavljuješ nešto o igri koja bi mogla biti spojler, prije slanja označi kvadratić spojlera. Na taj način, ljudi koji ne žele spojlere neće vidjeti tvoju objavu.",
+            "tenth": "Kršenja kodeksa ponašanja",
+            "eleventh": "Želimo da Juxt bude zabavan i ugodan za sve. U slučaju da netko prekrši kodeks ponašanja Juxta, poduzet ćemo odgovarajuće mjere, sve do blokiranja korisnika ili njegove konzole.",
+            "twelfth": "Jesi li igrao/la tu igru?",
+            "thirteenth": "Ako u zajednici objavljuješ igru koju si igrao/la, tvoje će objave dobiti ikonu koja ukazuje na to da si je igralo/la.",
+            "first": "Slijede neke važne smjernice za stvaranje zabavnog i ugodnog iskustva za sve. Kodeks ponašanja Juxta sadrži detaljne informacije, pa ih pažljivo pročitaj.",
+            "second": "Objave se mogu prikazati širom svijeta",
+            "fourth": "Budite uljudni jedni prema drugima",
+            "fifth": "Kako bismo održali zabavno mjesto za sve, budite uljudni jedni prema drugima. Pomognite nam zadržati ugodno iskustvo ne objavljujući ništa što je neprimjereno ili uvredljivo."
+        },
+        "experience": "Iskustvo igranja",
+        "experience_text": {
+            "info": "Ocijeni tvoju razinu iskustva s igrama. Ovu postavku možeš kasnije promijeniti.",
+            "beginner": "Početnik",
+            "intermediate": "Napredni",
+            "expert": "Profesionalac"
+        },
+        "google": "Google Analytics",
+        "google_text": "Juxtaposition koristi Google Analytics kako bi pratio način na koji korisnici koriste našu uslugu. Prikupljeni podaci uključuju, ali nisu ograničeni na vrijeme posjete, posjećene stranice i provedeno vrijeme na web stranici. Ovi podaci nisu na nikoji način s tobom povezani i mi niti Google ih ne koristimo za oglase.",
+        "ready": "Sve je spremno za početak korištenja Juxta",
+        "ready_text": "Najprije pogledaj neke zajednice i vidi što ljudi iz cijelog svijeta objavljuju. Iskoristi ovu priliku da upoznaš Juxt. Možda ćeš otkriti nešto novo!",
+        "done": "Uživaj u Juxtu!",
+        "done_button": "Krenimo!",
+        "guest": "Modus gosta",
+        "guest_text": "Trenutačno ne možemo provjeriti tvoj račun, što vjerojatno znači da se trenutačno prijavljuješ na Nintendo Network račun. I dalje ćeš moći pregledavati Juxt, ali nećeš moći odgovoriti na objave s „Da!” ili izraditi objave dok se ne prijaviš s Pretendo Network računom. Pregledaj Discord server za više informacija.",
+        "guest_button": "Razumijem",
+        "rules": "Juxt pravila"
     },
     "language": "Hrvatski",
     "activity_feed": {
-        "empty": "to je prazno ovdje. Pokušajte Pratiti Nekoga!"
+        "empty": "Ovdje je prazno. Pokušaj nekoga pratiti!"
     }
 }
