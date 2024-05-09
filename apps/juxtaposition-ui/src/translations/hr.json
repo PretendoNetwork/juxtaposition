@@ -69,7 +69,7 @@
     "new_post": {
         "new_post_text": "Nova Postova",
         "post_to": "Postov do",
-        "swearing": "Post Ne Smije Sadržavati Eksplicitan Jezik.",
+        "swearing": "Objava ne smije sadržavati prostačke izraze.",
         "text_hint": "Dodirnite ovdje za napraviti a poštov."
     },
     "messages": {
@@ -85,7 +85,7 @@
         },
         "info": "Što je Juxtaposition?",
         "welcome_text": "Juxt Je Igraća Zajednica Koji Povezuje ljudi iz Diljem Svijeta Koristeći Mii Likovi. Koristite Juxt do Podijelite Svoje Iskustvo Igranja i Upoznati Ljude iz Diljem Svijeta.",
-        "info_text": "Juxt je Zajednica Igara Vođena Korisnicima u Kojoj Možete Komunicirati s Ljudima \nDiljem Svijeta"
+        "info_text": "Juxt je korisnički vođena zajednica za igranje u kojoj možeš komunicirati s ljudima diljem svijeta. U zajednicama igara možeš pisati i crtati objave ili slati poruke izravno svojim prijateljima."
     },
     "language": "Hrvatski",
     "activity_feed": {
