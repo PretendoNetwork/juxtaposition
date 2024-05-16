@@ -58,9 +58,9 @@
         "show_country": "Prikaži zemlju u profilu",
         "show_birthday": "Prikaži rođendan u profilu",
         "show_game": "Prikaži iskustvo igranja u profilu",
-        "profile_comment": "Profil Primjedba",
+        "profile_comment": "Komentar profila",
         "swearing": "Komentar profila ne smije sadržavati prostačke izraze.",
-        "show_comment": "Pokazati Primjedba Na Profil"
+        "show_comment": "Prikaži komentar u profilu"
     },
     "notifications": {
         "none": "Nema obavijesti.",
@@ -76,7 +76,7 @@
         "coming_soon": "Poruke još ne radi. Navrati kasnije!"
     },
     "setup": {
-        "welcome": "Dobrodošli u Juxtaposition!",
+        "welcome": "Dobro došli u Juxtaposition!",
         "beta": "Odricanje odgovornosti za beta izdanje",
         "beta_text": {
             "first": "Isprobavaš prvu javnu Juxt beta verziju. To znači da će vjerojatno biti još puno promjena.",
