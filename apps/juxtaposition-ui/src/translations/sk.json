@@ -1,3 +1,76 @@
 {
-    "language": "Slovenčina"
+    "language": "Slovenčina",
+    "global": {
+        "communities": "Komunity",
+        "notifications": "Pripomienky",
+        "private": "Súkromné",
+        "close": "Zavrieť",
+        "save": "Uložiť",
+        "exit": "Ukončiť",
+        "next": "Ďalší",
+        "no_posts": "Žiadne príspevky",
+        "messages": "Správy"
+    },
+    "community": {
+        "following": "Odoberané",
+        "followers": "Odoberatelia",
+        "posts": "Príspevky",
+        "recent": "Čerstvé príspevky",
+        "popular": "Populárne príspevky",
+        "verified": "Overené príspevky",
+        "new": "Nové príspevky",
+        "follow": "Odoberané komunity"
+    },
+    "user_page": {
+        "country": "Krajina",
+        "friends": "Priatelia",
+        "following": "Odoberané",
+        "followers": "Odoberatelia",
+        "follow_user": "Odoberať",
+        "following_user": "Odoberané",
+        "unfriend": "Odstrániť priateľa",
+        "no_friends": "Žiadny priatelia",
+        "posts": "Príspevky",
+        "birthday": "Dátum narodenia",
+        "no_followers": "Žiadni odoberatelia"
+    },
+    "all_communities": {
+        "text": "Všetky komunity",
+        "popular_places": "Populárne miesta",
+        "show_all": "Ukázať všetky",
+        "new_communities": "Nové komunity"
+    },
+    "user_settings": {
+        "profile_settings": "Nastavenia profilu",
+        "show_country": "Ukázať krajinu na profile",
+        "show_birthday": "Ukázať dátum narodenia na profile"
+    },
+    "notifications": {
+        "new_follower": "vás odoberá!",
+        "none": "Žiadne pripomienky."
+    },
+    "new_post": {
+        "text_hint": "Ťuknite sem na vytvorenie príspevku.",
+        "swearing": "Príspevok nemôže obsahovať nadávky.",
+        "new_post_text": "Nový príspevok"
+    },
+    "setup": {
+        "welcome": "Vitajte v Juxtaposition!",
+        "info": "Čo je Juxtaposition?",
+        "rules": "Pravidlá Juxta",
+        "rules_text": {
+            "eighth": "Neposielajte spoilery"
+        },
+        "experience_text": {
+            "beginner": "Začiatočník",
+            "expert": "Expert"
+        },
+        "guest_button": "Rozumiem",
+        "ready": "Pripavený začať používať Juxt",
+        "done_button": "Poďme do toho!",
+        "guest": "Režim návštevníka"
+    },
+    "activity_feed": {
+        "empty": "Je to tu prázdne. Skúste niekoho odoberať!"
+    }
 }
