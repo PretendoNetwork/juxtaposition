@@ -2,14 +2,14 @@
     "language": "Italiano",
     "global": {
         "user_page": "Pagina dell'utente",
-        "activity_feed": "Feed delle attività",
-        "communities": "Community",
+        "activity_feed": "Attività",
+        "communities": "Comunità",
         "messages": "Messaggi",
         "notifications": "Notifiche",
         "go_back": "Torna indietro",
         "back": "Indietro",
         "yeahs": "Sìì",
-        "more": "Carica più post",
+        "more": "Carica altri post",
         "no_posts": "Nessun post",
         "private": "Privato",
         "close": "Chiudi",
@@ -18,18 +18,18 @@
         "next": "Avanti"
     },
     "all_communities": {
-        "text": "Tutte le community",
+        "text": "Tutte le comunità",
         "announcements": "Annunci",
         "ann_string": "Clicca qui per vedere gli annunci più recenti!",
         "popular_places": "Luoghi popolari",
-        "new_communities": "Nuove community",
+        "new_communities": "Nuove comunità",
         "show_all": "Mostra tutto",
-        "search": "Cerca community..."
+        "search": "Cerca comunità..."
     },
     "community": {
-        "follow": "Segui community",
+        "follow": "Segui comunità",
         "following": "Seguiti",
-        "followers": "seguiti",
+        "followers": "Seguitori",
         "posts": "Post",
         "tags": "Etichette",
         "recent": "Post recenti",
@@ -44,14 +44,14 @@
         "posts": "Post",
         "friends": "Amici",
         "following": "Seguiti",
-        "followers": "Follower",
+        "followers": "Seguitore",
         "follow_user": "Segui",
         "following_user": "Stai seguendo",
         "befriend": "Chiedi amicizia",
         "pending": "In attesa",
         "unfriend": "Rimuovi amicizia",
         "no_friends": "Nessun amico",
-        "no_following": "Non segue nessuno",
+        "no_following": "Non segui nessuno",
         "no_followers": "Nessun follower"
     },
     "user_settings": {
