@@ -11,7 +11,7 @@
         "yeahs": "Ouais",
         "more": "Afficher plus de publications",
         "no_posts": "Aucune Publication",
-        "private": "Privés",
+        "private": "Privé",
         "close": "Fermer",
         "save": "Sauvegarder",
         "exit": "Quitter",
@@ -21,7 +21,7 @@
         "text": "Toutes les Communautés",
         "announcements": "Annonces",
         "ann_string": "Cliquez-ici pour voir les dernières annonces !",
-        "popular_places": "Lieux Populaires",
+        "popular_places": "Communautés Populaires",
         "new_communities": "Nouvelles Communautés",
         "show_all": "Afficher Tout",
         "search": "Rechercher des Communautés..."
@@ -50,9 +50,9 @@
         "befriend": "Devenir Amis",
         "pending": "En Attente",
         "unfriend": "Retirer des Amis",
-        "no_friends": "Aucun Amis",
+        "no_friends": "Aucun Ami",
         "no_following": "Ne Suit Personne",
-        "no_followers": "Aucun Abonnés"
+        "no_followers": "Aucun Abonné"
     },
     "user_settings": {
         "profile_settings": "Paramètres du Profil",
@@ -67,7 +67,7 @@
         "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
     },
     "notifications": {
-        "none": "Aucune notifications.",
+        "none": "Aucune notification.",
         "new_follower": "vous suit !"
     },
     "new_post": {
@@ -77,14 +77,14 @@
         "swearing": "Les publications ne peuvent pas contenir de language explicite."
     },
     "messages": {
-        "coming_soon": "Les messages ne sont pas encore prêt pour le moment. Revenez bientôt !"
+        "coming_soon": "Les messages ne sont pas encore prêts pour le moment. Revenez bientôt !"
     },
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",
-        "welcome_text": "Juxt est une communauté de jeu qui connecte les personnes du monde entier à l'aide de personnages Mii. Utilisez Juxt pour partager votre expériences de jeu et rencontrer les gens autour du globe.",
+        "welcome_text": "Juxt est une communauté de jeu qui connecte les personnes du monde entier à l'aide de personnages Mii. Utilisez Juxt pour partager votre expérience de jeu et rencontrer des gens autour du globe.",
         "beta": "Avertissement Beta",
         "beta_text": {
-            "first": "Vous êtes sur le point d'essayer la première version bêta publique de Juxt. Cela signifie que beaucoup de choses sont encore en suspens et qu'elles peuvent changer à tout moment.",
+            "first": "Vous êtes sur le point d'essayer la première version bêta publique de Juxt. Cela signifie que beaucoup de choses sont encore en développement et qu'elles peuvent changer à tout moment.",
             "second": "Cela peut inclure un effacement total de la base de données à la fin ou pendant la période bêta.",
             "third": "Le site web, son logiciel et tout le contenu qui s'y trouve sont fournis sur une base \"telle quelle\" et \"telle que disponible\". Le Réseau Pretendo ne donne aucune garantie, expresse ou implicite, quant à l'adéquation ou à la facilité d'utilisation du site web, de son logiciel ou de son contenu."
         },
@@ -92,13 +92,13 @@
         "info_text": "Juxt est une communauté de jeu gérée par les utilisateurs où vous pouvez interagir avec des personnes du monde entier.\nVous pouvez écrire ou dessiner des messages dans les communautés de jeu ou envoyer des messages directement à vos amis.",
         "rules": "Règles de Juxt",
         "rules_text": {
-            "first": "Voici quelques directives importantes pour faire de Juxt une expérience amusante et agréable pour tous. Le code de conduite de Juxt contient des informations détaillées. Veuillez les lires attentivement.",
-            "second": "Les publications peuvent être consultés dans le monde entier",
+            "first": "Voici quelques directives importantes pour faire de Juxt une expérience amusante et agréable pour tous. Le code de conduite de Juxt contient des informations détaillées. Veuillez les lire attentivement.",
+            "second": "Les publications peuvent être consultées dans le monde entier",
             "third": "Juxt contient de nombreuses communautés de jeu où des personnes du monde entier peuvent partager leurs idées. Lorsque vous publiez un message dans une communauté, n'oubliez pas que tout le monde peut le voir, alors exprimez-vous de manière à ce que tout le monde puisse l'apprécier. Faites preuve de bon sens et réfléchissez avant de publier. Juxt est un service qui est également accessible sur Internet, alors n'oubliez pas que les personnes qui n'utilisent pas Juxt peuvent également voir vos messages. De plus, les commentaires que vous faites sur les messages de vos amis seront vus non seulement par vos amis mais aussi par des personnes autour du globe. Gardez cela à l'esprit.",
             "fourth": "Soyez gentils les uns envers les autres",
             "fifth": "Afin que Juxt reste un endroit agréable pour tous, nous vous demandons d'être soucieux des autres utilisateurs. Aidez-nous à faire de Juxt une expérience agréable en ne publiant rien d'inapproprié ou d'offensant.",
             "sixth": "Ne publiez pas d'informations personnelles - les vôtres ou celles des autres",
-            "seventh": "N'oubliez pas que connaître quelqu'un sur Juxt n'est pas la même chose que de le connaître dans la vie réelle. Ne partagez jamais votre adresse électronique, votre adresse personnelle, le nom de votre travail ou école, ou toute autre information permettant de vous identifier personnellement avec quelqu'un sur Juxt, et ne partagez jamais non plus les informations de quelqu'un d'autre. Si une personne rencontrée sur Juxt vous invite à la rencontrer dans le monde réel, n'acceptez pas. Juxt est une communauté en ligne et ne doit pas être utilisé pour organiser des rencontres dans le monde réel.",
+            "seventh": "N'oubliez pas que connaître quelqu'un sur Juxt n'est pas la même chose que de le connaître dans la vie réelle. Ne partagez jamais votre adresse électronique, votre adresse personnelle, le nom de votre lieu de travail ou école, ou toute autre information permettant de vous identifier personnellement avec quelqu'un sur Juxt, et ne partagez jamais non plus les informations de quelqu'un d'autre. Si une personne rencontrée sur Juxt vous invite à la rencontrer dans le monde réel, n'acceptez pas. Juxt est une communauté en ligne et ne doit pas être utilisé pour organiser des rencontres dans le monde réel.",
             "eighth": "Ne postez pas les secrets d'un jeu",
             "ninth": "Certaines personnes viennent sur Juxt à la recherche de conseils et d'astuces pour les jeux, mais d'autres veulent découvrir les secrets d'un jeu par elles-mêmes. Les messages qui révèlent les secrets d'un jeu ou de son histoire sont appelés \"spoilers\". Si vous publiez quelque chose sur un jeu qui pourrait être un spoiler, assurez-vous de cocher la case Spoilers avant d'envoyer votre message. Ainsi, les personnes qui ne veulent pas être spoilées ne verront pas votre message.",
             "tenth": "Violations du Code de Conduite",
