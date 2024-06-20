@@ -4,7 +4,7 @@
         "more": "Carregar més publicacions",
         "next": "Següent",
         "messages": "Missatges",
-        "activity_feed": "Feed d'activitats",
+        "activity_feed": "Taxes d'activitat",
         "exit": "Sortir",
         "back": "Enrere",
         "notifications": "Notificacions",
@@ -14,7 +14,7 @@
         "close": "Tancar",
         "user_page": "Pàgina d'usuari",
         "go_back": "Torna",
-        "yeahs": "Sí"
+        "yeahs": "Mola"
     },
     "notifications": {
         "none": "No hi ha notificacions.",
@@ -35,7 +35,7 @@
         "birthday": "Aniversari",
         "country": "País",
         "following": "Seguint",
-        "unfriend": "Eliminar de la llista d'amics"
+        "unfriend": "Eliminar amic"
     },
     "community": {
         "new": "Publicació nova",
@@ -45,7 +45,7 @@
         "following": "Seguint",
         "follow": "Segueix aquesta comunitat",
         "verified": "Publicacions verificades",
-        "recent": "Entrades recents",
+        "recent": "Publicacions recents",
         "popular": "Publicacions populars"
     },
     "user_settings": {
@@ -61,7 +61,7 @@
         "text_hint": "Toca aquí per fer una publicació.",
         "new_post_text": "Publicació nova",
         "post_to": "Publica a",
-        "swearing": "L'entrada no pot contenir llenguatge explícit."
+        "swearing": "La teva publicació no pot contenir llenguatge explícit."
     },
     "all_communities": {
         "show_all": "Mostra-ho tot",
@@ -89,7 +89,7 @@
             "second": "Les publicacions es poden veure a tot el món",
             "sixth": "No publiquis informació personal, teva o d'altres persones",
             "first": "A continuació es detallen algunes pautes importants per fer de Juxt una experiència divertida i agradable per a tothom. El Codi de Conducta de Juxt conté informació detallada, així que llegiu-la atentament.",
-            "eighth": "No publiqueu spoilers",
+            "eighth": "No publiqueu revelacions",
             "seventh": "Recordeu, no és el mateix conèixer algú a Juxt que conèixer-lo a la vida real. No compartiu mai la vostra adreça de correu electrònic, adreça de casa, nom de la feina o de l'escola, ni cap altra informació d'identificació personal amb ningú a Juxt, i mai compartiu la informació de ningú més. A més, si algú que coneixes a Juxt et convida a conèixer-lo al món real, no acceptis. Juxt és una comunitat en línia i no s'ha d'utilitzar per organitzar trobades del món real.",
             "twelfth": "Has jugat a aquest joc?"
         },
@@ -118,7 +118,7 @@
         "info_text": "Juxt és una comunitat de jocs impulsada per l'usuari on es pot interactuar amb la gent\n                a tot el món. Pots escriure o dibuixar publicacions en comunitats de jocs o enviar missatges directament als teus amics.",
         "ready_text": "En primer lloc, fes un cop d'ull a algunes comunitats i descobreix què publiquen persones de tot el món. Aprofita aquesta oportunitat per familiaritzar-te amb Juxt. Podeu fer alguns descobriments nous al llarg del camí!",
         "done": "Diverteix-te a Juxt!",
-        "beta": "Exempció de responsabilitat beta"
+        "beta": "Exempció de responsabilitat sobre la beta"
     },
     "messages": {
         "coming_soon": "L'opció Missatges encara no està preparada. Torna-ho a comprovar aviat!"
