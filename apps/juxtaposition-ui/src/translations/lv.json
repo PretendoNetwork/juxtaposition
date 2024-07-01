@@ -1,1 +1,126 @@
-{}
+{
+    "global": {
+        "activity_feed": "Aktivitātes saraksts",
+        "messages": "Ziņas",
+        "notifications": "Paziņojumi",
+        "go_back": "Doties Atpakaļ",
+        "back": "Atpakaļ",
+        "no_posts": "Nav ziņojumu",
+        "private": "Privāts",
+        "close": "Aizvērt",
+        "exit": "Iziet",
+        "more": "Ielādēt vairāk ziņojumus",
+        "save": "Saglabāt",
+        "next": "Nākamais",
+        "yeahs": "Reakcijas",
+        "communities": "Kopienas",
+        "user_page": "Lietotāju Lapa"
+    },
+    "all_communities": {
+        "announcements": "Paziņojumi",
+        "ann_string": "Spied šeit, lai skatītu nesen sūtītos ziņojumus!",
+        "new_communities": "Jaunas kopienas",
+        "show_all": "Rādīt visus",
+        "text": "Visas kopienas",
+        "search": "Meklēt kopienas...",
+        "popular_places": "Bieži apmeklētas vietas"
+    },
+    "community": {
+        "follow": "Sekot kopienai",
+        "following": "Seko līdzi",
+        "followers": "Sekotāji",
+        "posts": "Ziņojumi",
+        "tags": "Birkas",
+        "recent": "Nesen sūtītie ziņojumi",
+        "new": "Jauna ziņa",
+        "verified": "Apstiprinātās ziņas",
+        "popular": "Bieži skatītie ziņojumi"
+    },
+    "user_page": {
+        "birthday": "Dzimšanas diena",
+        "posts": "Ziņojumi",
+        "friends": "Draugi",
+        "following": "Seko",
+        "follow_user": "Sekot",
+        "following_user": "Seko",
+        "befriend": "Pievienot draugu sarakstam",
+        "pending": "Gaidošie",
+        "unfriend": "Noņemt no draugu saraksta",
+        "no_following": "Nevienam neseko",
+        "country": "Valsts",
+        "followers": "Sekotāji",
+        "no_friends": "Nav neviena drauga",
+        "no_followers": "Nav neviena sekotāja",
+        "game_experience": "Spēles spēlēšanas pieredze"
+    },
+    "user_settings": {
+        "profile_settings": "Profila iestatījumi",
+        "show_country": "Rādīt valsti profilā",
+        "show_birthday": "Rādīt dzimšanas dienu profilā",
+        "show_comment": "Radīt komentārus pie profila",
+        "profile_comment": "Profila komentāri",
+        "swearing": "Profila komentārs nedrīkst saturēt necenzētu valodu.",
+        "show_game": "Rādīt spēļu pieredzi profilā"
+    },
+    "activity_feed": {
+        "empty": "Te ir tukšs. Pamēģini kādam sekot!"
+    },
+    "notifications": {
+        "none": "Nav ziņojumi.",
+        "new_follower": "sāka tev sekot!"
+    },
+    "new_post": {
+        "post_to": "Nosūtīt uz",
+        "new_post_text": "Jauns ziņojums",
+        "text_hint": "Spied šeit, lai rakstītu ziņojumu.",
+        "swearing": "Ziņojums nedrīkst saturēt necenzētu valodu."
+    },
+    "setup": {
+        "welcome": "Laipni lūgts Juxtaposition!",
+        "beta": "Beta brīdinājums",
+        "info": "Kas ir Juxtaposition?",
+        "rules": "Juxt noteikumi",
+        "rules_text": {
+            "second": "Ziņas var tikt skatītas visā pasaulē",
+            "fourth": "Esi jauks pret citiem",
+            "sixth": "Neraksti neviena cilvēka personīgo informāciju",
+            "eighth": "Neraksti spoilerus",
+            "tenth": "Uzvedības kodeksa pārkāpumi",
+            "first": "Turpmāk minētās ir svarīgas vadlīnijas, kas ir ieviestas ar mērķi padarīt Juxt par aizraujošu un baudāmu pieredzi visiem. Juxt uzvedības kodekss satur detalizētu informāciju, tādēļ lūdzu izlasiet to uzmanīgi.",
+            "third": "Juxt satur daudzas spēlētāju kopienas, kurās cilvēki no visas pasaules var dalīties ar savām domām. Kad tu raksti kopienai, atceries, ka visi var to redzēt, tādēļ, lūdzu, izpaud sevi veidā, kas visiem ir patīkams. Izmanto vispārējo saprātu, un padomā pirms raksti. Juxt ir serviss, kas ir pieejams caur internetu, tādēļ paturi prātā, ka arī cilvēki, kas neizmanto Juxt var redzēt tavas ziņas. Papildus tam, visi komentāri, ko tu raksti pie savu draugu ziņām būs redzami arī visiem citiem. Lūdzu atceries šo.",
+            "fifth": "Lai paturētu Juxt par foršu vietu visiem, mēs prasām, lai tu esi saudzīgs pret citiem lietotājiem. Palīdzi mums saglabāt Juxt patīkamu, nerakstot neko neatbilstošu vai aizvainošu.",
+            "seventh": "Atcerieties, ka zināt kādu Juxt nav tas pats, kas viņu personīgi pazīt reālajā dzīvē. Nekad nevienam neraksti savu e-pasta adresi, dzīvesvietas adresi, darba vai skolas nosaukumu vai citu personisku informāciju caur Juxt, un nekad nedalieties arī ar citu personu personīgo informāciju. Turklāt, ja kāds, ar ko esat iepazinies Juxt, aicina tevi tikties reālajā pasaulē, nepieņem to. Juxt ir tiešsaistes kopiena, un to nevajadzētu izmantot, lai organizētu reālas tikšanās.",
+            "ninth": "Daži cilvēki ierodas Juxt meklējot padomus un trikus priekš spēlēm, bet citi grib paši atklāt spēles noslēpumus. Ziņas, kas atklāj šos noslēpumus par spēli vai tās scenāriju sauc par \"spoileriem\". Ja tu raksti kaut ko, kas varētu būt spoileris, pārliecinies, ka atzīmējiet spoilera izvēles rūtiņu. Tādā veidā, cilvēki, kas nevēlas tikt spoiloti neredzēs šo ziņu.",
+            "eleventh": "Mūsu mērķis ir saglabāt Juxt par draudzīgu un patīkamu visiem. Ja kāds pārkāps Juxt rīcības kodeksu, mēs veiksim atbilstošus pasākumus, tostarp bloķēsim pārkāpēju lietotāju un/vai konsoli.",
+            "twelfth": "Vai tu esi spēlējis šo spēli?",
+            "thirteenth": "Ja tu raksti kopienā par spēli, kuru tu esi spēlējis, tavām ziņām būs ikona, kas norāda, ka tu esi to spēlēji."
+        },
+        "experience": "Spēļu spēlēšanas pieredze",
+        "experience_text": {
+            "beginner": "Iesācējs",
+            "info": "Lūdzu pastāsti mums, kā tu aprakstītu savu pieredzi ar videospēlēm. Tu vari vēlāk mainīt šo iestatījumu.",
+            "intermediate": "Piepratējs",
+            "expert": "Eksperts"
+        },
+        "ready": "Gatavs sākt izmantot Juxt",
+        "ready_text": "Vispirms apskati dažas kopienas un noskaidro par ko citi cilvēki raksta. Izmanto šo iespēju, lai iepazīstinātu sevi ar Juxt. Tu pa ceļam varētu veikt jaunus atklājumus!",
+        "done": "Priecājies izmantojot Juxt servisu!",
+        "done_button": "Aiziet!",
+        "guest": "Viesa režīms",
+        "guest_text": "Mēs pašlaik nevaram apstiprināt tavu kontu, kas visticamāk nozīmē, ka tu pašlaik esi ielogojies ar Nintendo Network kontu. Tu varēsi apskatīt Juxt, bet nevarēsi reaģēt uz ziņām vai rakstīt tās pats, līdz ielogosies ar Pretendo Network kontu. Lai iegūtu vairāk informāciju apskati mūsu Discord serveri.",
+        "guest_button": "Es saprotu",
+        "beta_text": {
+            "first": "Tu izmēģināsi pirmo Juxt publisko beta versiju. Tas nozīmē, ka daudz lietas vēl nav pabeigtas, un daudz, kas vēl tiks mainīts.",
+            "third": "Mājaslapa, tās programmatūra un viss tajā atrodamais saturs tiek nodrošināts pēc \"tā, kā ir\" un \"kā pieejams\" principa. Pretendo Network nesniedz nekādas garantijas - ne tiešas, ne netiešas - par tīmekļa vietnes, tās programmatūras vai jebkāda tās satura piemērotību vai lietojamību.",
+            "second": "Tas var saturēt absolūtu datubāžu izdzēšanu beta testēšanas perioda laikā vai pēc tā."
+        },
+        "info_text": "Juxt ir lietotāju vadīta spēlētāju kopiena, kurā tu vari mijiedarboties ar cilvēkiem\n                no visas pasaules. Tu vari rakstīt vai uzzīmēt ziņas spēļu kopienām vai arī sūtīt ziņas tieši draugiem.",
+        "google": "Google analītika",
+        "google_text": "Juxtaposition izmanto \"Google Analytics\", lai izsekotu, kā lietotāji izmanto mūsu pakalpojumus. Savāktie dati ietver, bet neaprobežojas ar apmeklējuma laiku, apmeklētajām lapām un vietnē pavadīto laiku. Šie dati nav nekādā veidā saistīti ar jums(?), un mēs vai Google(?) tos neizmanto reklāmām.",
+        "welcome_text": "Juxt ir spēlētāju kopiena, kas savieno cilvēkus no visas pasaules, izmantojot Mii varoņus. Izmanto Juxt, lai dalītos savā spēlēšanas pieredzē un satiktu cilvēkus no visas pasaules."
+    },
+    "language": "Latviešu valoda",
+    "messages": {
+        "coming_soon": "Ziņas vēl nav gatavas. Apskati atkal pēc kāda laika!"
+    }
+}
