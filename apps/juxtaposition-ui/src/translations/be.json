@@ -43,7 +43,11 @@
         "posts": "Пасты",
         "friends": "Сябры",
         "following": "Падпіскі",
-        "followers": "Падпісчыкі"
+        "followers": "Падпісчыкі",
+        "follow_user": "Сачыць",
+        "following_user": "Далей",
+        "befriend": "Сябраваць",
+        "pending": "Дапытлівы"
     },
     "language": "Беларуская"
 }
