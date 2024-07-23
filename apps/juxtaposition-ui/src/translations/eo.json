@@ -1,1 +1,20 @@
-{}
+{
+    "global": {
+        "user_page": "Profilo",
+        "activity_feed": "Novaĵoj",
+        "communities": "Komunumoj",
+        "messages": "Mesaĝoj",
+        "notifications": "Avizoj",
+        "go_back": "Reveni",
+        "back": "Malantaŭ",
+        "yeahs": "Ŝatoj",
+        "more": "Vidigi pli de afiŝoj",
+        "no_posts": "Neniu afiŝoj",
+        "private": "Privata",
+        "close": "Fermi",
+        "save": "Konservi",
+        "exit": "Eliri",
+        "next": "Sekvanto"
+    },
+    "language": "Esperanto"
+}
