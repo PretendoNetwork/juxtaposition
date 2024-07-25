@@ -8,7 +8,7 @@
         "go_back": "Reveni",
         "back": "Malantaŭ",
         "yeahs": "Ŝatoj",
-        "more": "Vidigi pli de afiŝoj",
+        "more": "Vidigi pli de afiŝojn",
         "no_posts": "Neniu afiŝoj",
         "private": "Privata",
         "close": "Fermi",
@@ -16,5 +16,45 @@
         "exit": "Eliri",
         "next": "Sekvanto"
     },
-    "language": "Esperanto"
+    "language": "Esperanto",
+    "all_communities": {
+        "text": "Ĉiuj Komunumoj",
+        "announcements": "Anoncoj",
+        "ann_string": "Klaku ĉi tie, por vidi lastatempaj anoncoj!",
+        "new_communities": "Novaj Komunumoj",
+        "show_all": "Vidi ĉi tie",
+        "search": "Serĉi komunumoj...",
+        "popular_places": "Popularaj Komunumoj"
+    },
+    "community": {
+        "followers": "Abonantoj",
+        "following": "Abonanta",
+        "follow": "Aboni komunumo",
+        "posts": "Afiŝoj",
+        "tags": "Etikedoj",
+        "recent": "Lastatempaj afiŝoj",
+        "popular": "Popularaj afiŝoj",
+        "verified": "Kontrolita afiŝoj",
+        "new": "Nova afiŝo"
+    },
+    "user_page": {
+        "country": "Lando",
+        "birthday": "Naskiĝtago",
+        "game_experience": "Sperto de Ludo",
+        "posts": "Afiŝoj",
+        "friends": "Amikoj",
+        "following": "Abonanta",
+        "followers": "Abonantoj",
+        "follow_user": "Aboni",
+        "following_user": "Abonanta",
+        "befriend": "Amikiĝi",
+        "pending": "Atendanta",
+        "unfriend": "Malamikiĝi",
+        "no_friends": "Neniu Amikoj",
+        "no_following": "Ne abonu iun",
+        "no_followers": "Neniu Abonantoj"
+    },
+    "user_settings": {
+        "profile_settings": "Agordoj de Profilo"
+    }
 }
