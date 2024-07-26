@@ -56,7 +56,7 @@
     },
     "user_settings": {
         "profile_settings": "Preferencias del perfil",
-        "show_country": "Mostrar país en tu perfil",
+        "show_country": "",
         "show_birthday": "Mostrar cumpleaños en tu perfil",
         "show_game": "Mostrar el nivel como jugador en tu perfil",
         "show_comment": "Mostrar comentario en tu perfil",
