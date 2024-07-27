@@ -50,11 +50,20 @@
         "befriend": "Amikiĝi",
         "pending": "Atendanta",
         "unfriend": "Malamikiĝi",
-        "no_friends": "Neniu Amikoj",
-        "no_following": "Ne abonu iun",
-        "no_followers": "Neniu Abonantoj"
+        "no_friends": "Neniu amikoj",
+        "no_following": "Ne abonas iun",
+        "no_followers": "Neniu abonantoj"
     },
     "user_settings": {
-        "profile_settings": "Agordoj de Profilo"
+        "profile_settings": "Agordoj de Profilo",
+        "profile_comment": "Komento de Profil",
+        "show_country": "Montri landon en profilo",
+        "show_birthday": "Montri naskiĝtagon en profilo",
+        "show_game": "Montri sperton de ludo en profilo",
+        "swearing": "La komento devas ne ampleksi maldecan lingvon.",
+        "show_comment": "Montri komenton en profilo"
+    },
+    "activity_feed": {
+        "empty": "Ĝi estas malplena ĉi tie. Abonu iu!"
     }
 }
