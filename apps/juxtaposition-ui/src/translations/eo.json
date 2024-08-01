@@ -65,5 +65,15 @@
     },
     "activity_feed": {
         "empty": "Ĝi estas malplena ĉi tie. Abonu iu!"
+    },
+    "notifications": {
+        "none": "Neniu avizoj.",
+        "new_follower": "abonis vin!"
+    },
+    "new_post": {
+        "new_post_text": "Novo afiŝo",
+        "post_to": "Afiŝi al",
+        "text_hint": "Tuŝu ĉi tie por ke afiŝi.",
+        "swearing": "La afiŝo devas ne ampleksi maldecan lingvon."
     }
 }
