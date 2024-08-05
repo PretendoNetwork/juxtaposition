@@ -1,1 +1,50 @@
-{}
+{
+    "global": {
+        "activity_feed": "Rexistro de actividades",
+        "communities": "Comunidades",
+        "messages": "Mensaxes",
+        "notifications": "Notificacións",
+        "go_back": "Volver",
+        "back": "De volta",
+        "private": "Privado",
+        "close": "Pechar",
+        "save": "Manteña",
+        "exit": "Saia",
+        "next": "Seguindo",
+        "user_page": "Páxina de usuario",
+        "yeahs": "Guay",
+        "more": "Cargar máis publicacións",
+        "no_posts": "Non hai publicacións"
+    },
+    "all_communities": {
+        "text": "Todas as comunidades",
+        "announcements": "Anuncios",
+        "show_all": "Mostra todo",
+        "search": "Busca comunidades...",
+        "ann_string": "Fai clic para ver os últimos anuncios!",
+        "new_communities": "Novas comunidades",
+        "popular_places": "Lugares populares"
+    },
+    "community": {
+        "follow": "Sigue a comunidade",
+        "following": "Continuar",
+        "followers": "Seguidores",
+        "posts": "Publicacións",
+        "tags": "Etiquetas",
+        "recent": "Mensaxes recentes",
+        "popular": "Publicacións populares",
+        "verified": "Publicacións verificadas",
+        "new": "Nova publicación"
+    },
+    "user_page": {
+        "country": "Pais",
+        "game_experience": "Experiencia de xogo",
+        "posts": "Publicacións",
+        "friends": "Amigos",
+        "following": "Seguindo",
+        "followers": "Seguidores",
+        "follow_user": "Segue",
+        "birthday": "Aniversario"
+    },
+    "language": "Galego"
+}
