@@ -5,11 +5,11 @@
         "communities": "Komunumoj",
         "messages": "Mesaĝoj",
         "notifications": "Avizoj",
-        "go_back": "Reveni",
-        "back": "Malantaŭ",
+        "go_back": "Reiri",
+        "back": "Reen",
         "yeahs": "Ŝatoj",
-        "more": "Vidigi pli de afiŝojn",
-        "no_posts": "Neniu afiŝoj",
+        "more": "Videbligi pli da afiŝoj",
+        "no_posts": "Neniuj afiŝoj",
         "private": "Privata",
         "close": "Fermi",
         "save": "Konservi",
@@ -20,22 +20,22 @@
     "all_communities": {
         "text": "Ĉiuj Komunumoj",
         "announcements": "Anoncoj",
-        "ann_string": "Klaku ĉi tie, por vidi lastatempaj anoncoj!",
+        "ann_string": "Klaku ĉi tie, por vidi lastatempajn anoncojn!",
         "new_communities": "Novaj Komunumoj",
-        "show_all": "Vidi ĉi tie",
-        "search": "Serĉi komunumoj...",
+        "show_all": "Montri Ĉiun",
+        "search": "Serĉi Komunumojn...",
         "popular_places": "Popularaj Komunumoj"
     },
     "community": {
         "followers": "Abonantoj",
         "following": "Abonanta",
-        "follow": "Aboni komunumo",
+        "follow": "Aboni Komunumon",
         "posts": "Afiŝoj",
         "tags": "Etikedoj",
-        "recent": "Lastatempaj afiŝoj",
-        "popular": "Popularaj afiŝoj",
-        "verified": "Kontrolita afiŝoj",
-        "new": "Nova afiŝo"
+        "recent": "Lastatempaj Afiŝoj",
+        "popular": "Popularaj Afiŝoj",
+        "verified": "Kontrolitaj Afiŝoj",
+        "new": "Nova Afiŝo"
     },
     "user_page": {
         "country": "Lando",
@@ -50,30 +50,38 @@
         "befriend": "Amikiĝi",
         "pending": "Atendanta",
         "unfriend": "Malamikiĝi",
-        "no_friends": "Neniu amikoj",
-        "no_following": "Ne abonas iun",
-        "no_followers": "Neniu abonantoj"
+        "no_friends": "Neniuj Amikoj",
+        "no_following": "Ne Abonas Iun",
+        "no_followers": "Neniuj Abonantoj"
     },
     "user_settings": {
         "profile_settings": "Agordoj de Profilo",
-        "profile_comment": "Komento de Profil",
-        "show_country": "Montri landon en profilo",
-        "show_birthday": "Montri naskiĝtagon en profilo",
-        "show_game": "Montri sperton de ludo en profilo",
+        "profile_comment": "Komento de Profilo",
+        "show_country": "Montri Landon en Profilo",
+        "show_birthday": "Montri Naskiĝtagon en Profilo",
+        "show_game": "Montri Sperton de Ludo en Profilo",
         "swearing": "La komento devas ne ampleksi maldecan lingvon.",
         "show_comment": "Montri komenton en profilo"
     },
     "activity_feed": {
-        "empty": "Ĝi estas malplena ĉi tie. Abonu iu!"
+        "empty": "Estas malplena ĉi tie. Abonu iun!"
     },
     "notifications": {
-        "none": "Neniu avizoj.",
+        "none": "Neniuj avizoj.",
         "new_follower": "abonis vin!"
     },
     "new_post": {
-        "new_post_text": "Novo afiŝo",
+        "new_post_text": "Novo Afiŝo",
         "post_to": "Afiŝi al",
-        "text_hint": "Tuŝu ĉi tie por ke afiŝi.",
+        "text_hint": "Tuŝu ĉi tie por afiŝi.",
         "swearing": "La afiŝo devas ne ampleksi maldecan lingvon."
+    },
+    "messages": {
+        "coming_soon": "Mesaĝoj ankoraŭ ne estas disponeblaj. Baldaŭ revenu!"
+    },
+    "setup": {
+        "welcome": "Bonvenu en Juxtaposition!",
+        "beta": "Beta-disklerigo",
+        "welcome_text": "Juxt estas videoludado-komunumo kuniganta homojn el ĉiuj partoj de la mondo per Mii-figuroj. Uzu Juxt por diskonigi viajn ludadospertojn kaj renkontiĝi homojn el ĉiu angulo de la mondo."
     }
 }
