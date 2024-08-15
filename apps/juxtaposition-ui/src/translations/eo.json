@@ -94,10 +94,12 @@
             "first": "Sekvante kelkaj gravaj gvidlinioj por ke Juxt estu amuza kaj ĝuable sperto por ĉiuj. La kodo de konduto de Juxt enhavas detalajn informojn, do bonvolu diligente legi.",
             "fourth": "Estu Agrabla Unu al la Alia",
             "fifth": "Por ke Juxt restu agrabla loko por ĉiu, ni petas ke vi estu konsiderema al aliaj uzantoj. Asistu nin restigi Juxt agrablan sperton per afiŝi nek maldecaĵojn nek ofendaĵojn.",
-            "sixth": "Ne afiŝu privataj informoj, nek viaj, nek alies"
+            "sixth": "Ne afiŝu privataj informoj, nek viaj, nek alies",
+            "ninth": "Kelkaj homoj venas al Juxt serĉante konsilojn kaj lertaĵojn por ludoj, sed aliaj volas malkovri la sekretojn de ludo tute memstare. Afiŝoj kiuj rivelas sekretojn de ludo aŭ ĝia rakonto estas nomitaj \"spoilers\". Se vi afiŝas ion pri ludo, kiu povus esti spoiler, nepre kontrolu la skatolon Spoilers antaŭ sendi vian afiŝon. Tiel homoj, kiuj ne volas esti difektitaj, ne vidos vian afiŝon."
         },
         "info": "Kio estas Juxtaposition?",
         "info_text": "Juxt estas uzantobazita videoludokomunumo kie oni povas interagi kun homoj\n                de la tuta mondo. Oni povas skribi aŭ desegni afiŝojn en videoludokomunumoj aŭ rekte mesaĝi al viaj amikoj.",
-        "rules": "reguloj de Juxt"
+        "rules": "reguloj de Juxt",
+        "google_text": "Juntapozicio uzas Google Analytics por spuri kiel uzantoj uzas nian servon. La datumoj kolektitaj inkluzivas sed ne estas limigitaj al tempo de vizito, paĝoj vizititaj kaj tempo pasigita en la retejo. Ĉi tiuj datumoj neniel estas ligitaj al vi, kaj ne estas uzataj por reklamoj de ni aŭ Guglo."
     }
 }
