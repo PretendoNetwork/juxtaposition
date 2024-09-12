@@ -81,12 +81,12 @@
     },
     "setup": {
         "welcome": "Welkom op Juxtaposition!",
-        "welcome_text": "Juxt is een gaming community welk mensen van over de hele wereld verbind doormiddel van Mii karakters. Gebruik Juxt om jouw ervaringen tijdens het gamen te delen en mensen te ontmoeten over de hele wereld.",
+        "welcome_text": "Juxt is een gaming community welk mensen van over de hele wereld verbind door middel van Mii karakters. Gebruik Juxt om jouw ervaringen tijdens het gamen te delen en mensen te ontmoeten over de hele wereld.",
         "beta": "Beta-disclaimer",
         "beta_text": {
             "first": "Je staat op het punt de eerste publieke beta van Juxt te gebruiken. Dit betekent dat veel onzeker is en ook van alles kan veranderen.",
-            "second": "Dit kan mogelijk een volledige reset van de database aan het einde van de beta periode of tijdens deze periode omvatten.",
-            "third": "De website, de software die het bevat, alsook alle content die te vinden is op deze website, worden geleverd op een \"as is\" en \"as available\" basis. Pretendo Network geeft geen garantstellingen, ofwel expliciet ofwel impliciet, met betrekking tot de geschiktheid of bruikbaarheid van de website, de software die het bevat of de content op de website."
+            "second": "Dit kan mogelijk een volledige reset van de database aan het einde van of tijdens de beta periode omvatten.",
+            "third": "De website, de software die het bevat, alsook alle content die te vinden is op deze website, worden geleverd op een \"as is\" en \"as available\" basis. Pretendo Network geeft geen garantstellingen, noch expliciet noch impliciet, met betrekking tot de geschiktheid of bruikbaarheid van de website, de software die het bevat of de content op de website."
         },
         "info": "Wat is Juxtaposition?",
         "info_text": "Juxt is een gebruikers-gedreven gaming community waar je kan communiceren met mensen\n                over de hele wereld. Je kan posts schrijven of tekenen in game communities of berichten rechtstreeks naar je vrienden sturen.",
@@ -98,7 +98,7 @@
             "fourth": "Wees Aardig Tegen Elkaar",
             "fifth": "Om Juxt een leuke omgeving voor iedereen te houden vragen wij van jou om rekening te houden met anderen. Help ons om Juxt zo leuk mogelijk te houden door niets ongepasts of beledigend te posten.",
             "sixth": "Post Geen Persoonlijke Gegevens—Die van Jezelf of van Anderen",
-            "seventh": "Onthoud, iemand in Juxt kennen is niet hetzelfde als iemand in het echt kennen. Deel nooit je e-mail adres, huisadres, de naam van je school of werk of wat voor een persoonlijke identificeerbare informatie dan ook met een ander en deel ook geen van deze gegevens van iemand anders. Daarnaast, als iemand die je ontmoet hebt op Juxt je vraagt om diegene in het echt te ontmoeten, accepteer dit niet. Juxt is een online community en moet niet gebruikt worden om ontmoetingen in het echt te faciliteren.",
+            "seventh": "Onthoud, iemand in Juxt kennen is niet hetzelfde als iemand in het echt kennen. Deel nooit je e-mail adres, huisadres, de naam van je school of werk of wat voor een persoonlijke identificeerbare informatie dan ook met een ander en deel zulke gegevens van iemand anders niet. Daarnaast, als iemand die je ontmoet hebt op Juxt je vraagt om diegene in het echt te ontmoeten, accepteer dit niet. Juxt is een online community en moet niet gebruikt worden om ontmoetingen in het echt te faciliteren.",
             "eighth": "Post Geen Spoilers",
             "ninth": "Sommige mensen komen naar Juxt voor tips en trucs voor games, anderen willen zelf de geheimen van een game ontdekken. Berichten die geheimen van een game of het verhaal ervan onthullen, worden 'spoilers' genoemd. Als je iets post over een game dat een spoiler zou kunnen zijn, zorg er dan voor dat je het vakje Spoilers aanvinkt voordat je je post verstuurt. Zo zien mensen die geen spoilers willen zien je bericht niet.",
             "tenth": "Gedragscode overtredingen",
@@ -116,7 +116,7 @@
         "google": "Google Analytics",
         "google_text": "Juxtaposition gebruikt Google Analytics om bij te houden hoe gebruikers onze dienst gebruiken. De data die we verzamelen bevat onder andere tijd van bezoek, bezochte pagina's en hoe lang het bezoek duurde. Deze data is op geen enkele manier gekoppeld aan jou en wordt niet gebruikt door Google of ons om advertenties aan jou te tonen.",
         "ready": "Klaar om Juxt te Gebruiken",
-        "ready_text": "Bekijk allereerst wat community's en zie waar mensen van over de hele wereld over posten. Gebruik deze kans om je bekend te maken met Juxt. Mogelijk ontdek je iets nieuws op deze manier!",
+        "ready_text": "Bekijk eerst wat community's en zie waar mensen van over de hele wereld over posten. Gebruik deze kans om je bekend te maken met Juxt. Misschien ontdek je iets nieuws op deze manier!",
         "done": "Veel plezier in Juxt!",
         "done_button": "Laten We Beginnen!",
         "guest": "Gastmodus",
