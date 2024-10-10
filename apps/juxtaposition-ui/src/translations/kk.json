@@ -38,7 +38,11 @@
         "new": "Жаңа пост"
     },
     "user_page": {
-        "country": "Ел"
+        "country": "Ел",
+        "birthday": "Туған күн",
+        "game_experience": "Ойын тәжірибесі",
+        "friends": "Достар",
+        "posts": "Жазбалар"
     },
     "setup": {
         "experience_text": {
@@ -49,6 +53,7 @@
         "rules_text": {
             "eighth": "Спойлер жазбаңыз"
         },
-        "ready": "Juxt пайдалануды бастауға дайын"
+        "ready": "Juxt пайдалануды бастауға дайын",
+        "guest_button": "Мен түссіндім"
     }
 }
