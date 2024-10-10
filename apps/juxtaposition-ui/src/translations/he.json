@@ -1,1 +1,54 @@
-{}
+{
+    "global": {
+        "user_page": "עמוד משתמש",
+        "communities": "קהילות",
+        "no_posts": "אין פוסטים",
+        "activity_feed": "עדכון פעילות",
+        "exit": "יְצִיאָה",
+        "next": "הַבָּא",
+        "messages": "הודעות",
+        "notifications": "התראות",
+        "go_back": "לַחֲזוֹר",
+        "back": "בְּחֲזָרָה",
+        "yeahs": "כן",
+        "more": "טען עוד פוסטים",
+        "private": "פְּרָטִי",
+        "close": "לִסְגוֹר",
+        "save": "לְהַצִיל"
+    },
+    "all_communities": {
+        "text": "כל הקהילות",
+        "announcements": "הכרזות",
+        "ann_string": "לחץ כאן לצפייה בהכרזות האחרונות!",
+        "popular_places": "מקומות פופולריים",
+        "new_communities": "קהילות חדשות",
+        "show_all": "הצג הכל",
+        "search": "חפש קהילות..."
+    },
+    "community": {
+        "new": "פוסט חדש",
+        "follow": "עקוב אחר הקהילה",
+        "following": "עוקבים",
+        "posts": "פוסטים",
+        "recent": "פוסטים אחרונים",
+        "popular": "פוסטים פופולריים",
+        "verified": "פוסטים מאומתים"
+    },
+    "user_page": {
+        "birthday": "יוֹם הוּלֶדֶת",
+        "game_experience": "חווית משחק",
+        "posts": "פוסטים",
+        "friends": "חברים",
+        "following": "עוקבים",
+        "follow_user": "לַעֲקוֹב",
+        "following_user": "עוקבים",
+        "pending": "תָלוּי וְעוֹמֵד",
+        "no_friends": "אין חברים",
+        "no_following": "לא עוקב אחרי אף אחד",
+        "no_followers": "אין עוקבים"
+    },
+    "user_settings": {
+        "profile_settings": "הגדרות פרופיל",
+        "show_birthday": "הצג יום הולדת בפרופיל"
+    }
+}
