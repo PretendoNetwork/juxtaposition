@@ -1,1 +1,84 @@
-{}
+{
+    "global": {
+        "communities": "Pobail",
+        "messages": "Teachtaireachtaí",
+        "user_page": "Leathnach Úsáideora",
+        "go_back": "Téigh Ar Ais",
+        "activity_feed": "Fotha Gníomhaíochtaí",
+        "private": "Príobháideach",
+        "close": "Dún",
+        "exit": "Amach",
+        "more": "Lódáil Níos Mó",
+        "next": "Ar Aghaidh",
+        "notifications": "Fógraí",
+        "yeahs": "Sea",
+        "save": "Sábháil",
+        "back": "Ar Ais",
+        "no_posts": "Gan Postálacha"
+    },
+    "all_communities": {
+        "announcements": "Fógraí",
+        "ann_string": "Cliceáil anseo chun na fograí is deanaí a fheceáil!",
+        "text": "Gach Phobail",
+        "popular_places": "Áiteanna bhfuil gnaoi an phobail air",
+        "new_communities": "Pobail Nua",
+        "show_all": "Taispeáin Gach Rud",
+        "search": "Cuardaigh pobail..."
+    },
+    "community": {
+        "follow": "Lean Pobail",
+        "following": "Ag Leanúint",
+        "followers": "Leantóirí",
+        "posts": "Postálacha",
+        "tags": "Clibeanna",
+        "recent": "Postálacha Is Deanaí",
+        "verified": "Postálacha Deimhnithe",
+        "new": "Postáil Nua",
+        "popular": "Postálacha bhfuil gnaoi an phobail air"
+    },
+    "user_page": {
+        "birthday": "Lá Breithe",
+        "game_experience": "Taithí Cluiche",
+        "posts": "Postálacha",
+        "friends": "Cairde",
+        "following": "Ag Leanúint",
+        "followers": "Leantóirí",
+        "follow_user": "Lean",
+        "following_user": "Ag Leanúint",
+        "befriend": "Cairde a deanamh leo",
+        "pending": "Ar Feitheamh",
+        "unfriend": "Stop ag bheith cairde leo",
+        "no_following": "Ag leanúint duine ar bith",
+        "no_followers": "Gan Leantóirí",
+        "country": "Tír",
+        "no_friends": "Gan Cairde"
+    },
+    "user_settings": {
+        "show_country": "Taispeán Tír ar do Phroifíl",
+        "show_game": "Taispeán Taithí Cluiche ar do Phroifíl",
+        "show_birthday": "Taispeán Lá Breithe ar do Phroifíl",
+        "show_comment": "Taispeán Nóta Tráchta ar do Phrofíl",
+        "profile_comment": "Nóta Tráchta Proifíl",
+        "swearing": "Ní feidir le teanga follasach a bheith sa nóta tráchta proifíl.",
+        "profile_settings": "Socruithe Proifíl"
+    },
+    "activity_feed": {
+        "empty": "Tá sé follamh anseo. Trial ag leanúint duine éigin!"
+    },
+    "notifications": {
+        "none": "Gan fógraí."
+    },
+    "new_post": {
+        "post_to": "Postáil chuig",
+        "text_hint": "Tapáil anseo chun postáil a cruthú.",
+        "swearing": "Ní feidir le teanga follasach a bheith sa phostáil.",
+        "new_post_text": "Postáil Nua"
+    },
+    "setup": {
+        "welcome": "Fáilte chuig Juxtaposition!"
+    },
+    "language": "Gaeilge",
+    "messages": {
+        "coming_soon": "Níl teachtaireachtaí réidh fós. Seiceáil ar ais go luath!"
+    }
+}
