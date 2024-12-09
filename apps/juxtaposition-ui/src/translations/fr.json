@@ -2,15 +2,15 @@
     "language": "Français",
     "global": {
         "user_page": "Profil",
-        "activity_feed": "Fil d'Actualité",
+        "activity_feed": "Fil d'actualité",
         "communities": "Communautés",
         "messages": "Messages",
         "notifications": "Notifications",
-        "go_back": "Revenir en arrière",
-        "back": "Retour",
+        "go_back": "Retour",
+        "back": "Précedent",
         "yeahs": "Ouais",
-        "more": "Afficher plus de publications",
-        "no_posts": "Aucune Publication",
+        "more": "Voir plus de publications",
+        "no_posts": "Aucune publication",
         "private": "Privé",
         "close": "Fermer",
         "save": "Sauvegarder",
@@ -18,83 +18,83 @@
         "next": "Suivant"
     },
     "all_communities": {
-        "text": "Toutes les Communautés",
+        "text": "Toutes les communautés",
         "announcements": "Annonces",
-        "ann_string": "Cliquez-ici pour voir les dernières annonces !",
-        "popular_places": "Communautés Populaires",
-        "new_communities": "Nouvelles Communautés",
-        "show_all": "Afficher Tout",
-        "search": "Rechercher des Communautés..."
+        "ann_string": "Cliquez ici pour voir les dernières annonces !",
+        "popular_places": "Populaires",
+        "new_communities": "Nouvelles communautés",
+        "show_all": "Tout afficher",
+        "search": "Rechercher des communautés..."
     },
     "community": {
-        "follow": "Suivre la Communauté",
-        "following": "Abonné",
+        "follow": "Suivre la communauté",
+        "following": "Suivie",
         "followers": "Abonnés",
         "posts": "Publications",
         "tags": "Tags",
-        "recent": "Publications Récentes",
-        "popular": "Publications Populaires",
-        "verified": "Publications Vérifiées",
-        "new": "Nouvelle Publication"
+        "recent": "Posts récents",
+        "popular": "Posts populaires",
+        "verified": "Publications vérifiées",
+        "new": "Publier"
     },
     "user_page": {
         "country": "Pays",
         "birthday": "Anniversaire",
-        "game_experience": "Expérience de Jeu",
+        "game_experience": "Expérience de joueur",
         "posts": "Publications",
         "friends": "Amis",
         "following": "Abonnements",
         "followers": "Abonnés",
-        "follow_user": "S'abonner",
-        "following_user": "Abonné",
+        "follow_user": "Suivre",
+        "following_user": "Suivi(e)",
         "befriend": "Devenir Amis",
-        "pending": "En Attente",
-        "unfriend": "Retirer des Amis",
-        "no_friends": "Aucun Ami",
-        "no_following": "Ne Suit Personne",
-        "no_followers": "Aucun Abonné"
+        "pending": "En attente",
+        "unfriend": "Retirer des amis",
+        "no_friends": "Aucun ami",
+        "no_following": "Ne suit aucun utilisateur",
+        "no_followers": "Aucun abonné"
     },
     "user_settings": {
-        "profile_settings": "Paramètres du Profil",
-        "show_country": "Afficher le Pays sur le Profil",
-        "show_birthday": "Afficher l'Anniversaire sur le Profil",
-        "show_game": "Afficher l'Expérience de Jeu sur le Profil",
-        "show_comment": "Afficher les Commentaires sur le Profil",
-        "profile_comment": "Commentaires du Profil",
-        "swearing": "Les commentaires de profil ne peuvent pas contenir de language explicite."
+        "profile_settings": "Paramètres du profil",
+        "show_country": "Afficher mon pays sur le profil",
+        "show_birthday": "Afficher mon anniversaire sur le profil",
+        "show_game": "Afficher mon expérience de joueur sur le profil",
+        "show_comment": "Rendre visible le commentaire de mon profil",
+        "profile_comment": "Commentaire du profil",
+        "swearing": "Le commentaire du profil ne doit pas contenir de language explicite."
     },
     "activity_feed": {
-        "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
+        "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
     },
     "notifications": {
         "none": "Aucune notification.",
-        "new_follower": "vous suit !"
+        "new_follower": "vous suit !"
     },
     "new_post": {
         "new_post_text": "Nouvelle Publication",
         "post_to": "Poster sur",
-        "text_hint": "Cliquez-ici pour poster un message.",
+        "text_hint": "Touchez ici pour commencer à poster.",
         "swearing": "Les publications ne peuvent pas contenir de language explicite."
     },
     "messages": {
-        "coming_soon": "Les messages ne sont pas encore prêts pour le moment. Revenez bientôt !"
+        "coming_soon": "Les messages privés ne sont pas encore disponibles. Revenez bientôt !"
     },
     "setup": {
-        "welcome": "Bienvenue sur Juxtaposition !",
+        "welcome": "Bienvenue sur Juxtaposition !",
         "welcome_text": "Juxt est une communauté de jeu qui connecte les personnes du monde entier à l'aide de personnages Mii. Utilisez Juxt pour partager votre expérience de jeu et rencontrer des gens autour du globe.",
-        "beta": "Avertissement Beta",
+        "beta": "BÊTA : AVIS DE NON-GARANTIE",
         "beta_text": {
             "first": "Vous êtes sur le point d'essayer la première version bêta publique de Juxt. Cela signifie que beaucoup de choses sont encore en développement et qu'elles peuvent changer à tout moment.",
             "second": "Cela peut inclure un effacement total de la base de données à la fin ou pendant la période bêta.",
             "third": "Le site web, son logiciel et tout le contenu qui s'y trouve sont fournis sur une base \"telle quelle\" et \"telle que disponible\". Le Réseau Pretendo ne donne aucune garantie, expresse ou implicite, quant à l'adéquation ou à la facilité d'utilisation du site web, de son logiciel ou de son contenu."
         },
-        "info": "C'est quoi Juxtaposition ?",
+        "info": "C'est quoi, Juxtaposition ?",
         "info_text": "Juxt est une communauté de jeu gérée par les utilisateurs où vous pouvez interagir avec des personnes du monde entier.\nVous pouvez écrire ou dessiner des messages dans les communautés de jeu ou envoyer des messages directement à vos amis.",
         "rules": "Règles de Juxt",
         "rules_text": {
             "first": "Voici quelques directives importantes pour faire de Juxt une expérience amusante et agréable pour tous. Le code de conduite de Juxt contient des informations détaillées. Veuillez les lire attentivement.",
-            "second": "Les publications peuvent être consultées dans le monde entier",
-            "third": "Juxt contient de nombreuses communautés de jeu où des personnes du monde entier peuvent partager leurs idées. Lorsque vous publiez un message dans une communauté, n'oubliez pas que tout le monde peut le voir, alors exprimez-vous de manière à ce que tout le monde puisse l'apprécier. Faites preuve de bon sens et réfléchissez avant de publier. Juxt est un service qui est également accessible sur Internet, alors n'oubliez pas que les personnes qui n'utilisent pas Juxt peuvent également voir vos messages. De plus, les commentaires que vous faites sur les messages de vos amis seront vus non seulement par vos amis mais aussi par des personnes autour du globe. Gardez cela à l'esprit.",
+            "second": "Le monde entier pourra voir vos publications",
+            "third": "Juxt contient de nombreuses communautés de jeu où des personnes du monde entier peuvent partager leurs idées. Lorsque vous publiez du contenu dans une communauté, n'oubliez pas que tout le monde peut le voir, alors exprimez-vous de manière à ce que tout le monde puisse l'apprécier. Faites preuve de bon sens et réfléchissez avant de le publier. Juxt est un service qui est également accessible sur Internet, alors n'oubliez pas que les personnes qui n'utilisent pas Juxt peuvent également voir vos publications. De plus, les commentaires que vous enverrez sur les publications de vos amis seront visibles non seulement par vos amis mais aussi par des personnes autour du globe. Gardez cela à l'esprit.",
             "fourth": "Soyez gentils les uns envers les autres",
             "fifth": "Afin que Juxt reste un endroit agréable pour tous, nous vous demandons d'être soucieux des autres utilisateurs. Aidez-nous à faire de Juxt une expérience agréable en ne publiant rien d'inapproprié ou d'offensant.",
             "sixth": "Ne publiez pas d'informations personnelles - les vôtres ou celles des autres",
@@ -106,21 +106,21 @@
             "twelfth": "Avez-vous joué à ce jeu ?",
             "thirteenth": "Si vous postez dans la communauté pour un jeu auquel vous avez joué, vos messages auront une icône indiquant que vous y avez joué."
         },
-        "experience": "Expérience de Jeu",
+        "experience": "Expérience de joueur",
         "experience_text": {
-            "info": "Comment décririez-vous votre niveau de compétences avec les jeux ? Vous pourrez changer ce paramètre plus tard.",
+            "info": "Comment décririez-vous votre niveau de compétence avec les jeux ? Vous pourrez changer ce paramètre plus tard.",
             "beginner": "Débutant",
             "intermediate": "Connaisseur",
             "expert": "Adepte"
         },
         "google": "Google Analytics",
-        "google_text": "Juxtaposition utilise Google Analytics afin de déterminer comment les utilisateurs utilisent notre service. Les données recueillies comprennent, sans s'y limiter, l'heure de la visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas rattachées à votre personne et ne sont pas utilisées à des fins publicitaires par nous ou par Google.",
+        "google_text": "Juxtaposition utilise Google Analytics afin de savoir comment les visiteurs interagissent avec notre service. Les données recueillies comprennent, sans s'y limiter, l'heure de visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas rattachées à votre personne et ne seront pas utilisées à des fins publicitaires, ni par nous ni par Google.",
         "ready": "Prêt à Utiliser Juxt",
-        "ready_text": "Commencez par consulter quelques communautés et voyez ce que les gens du monde entier publient. Profitez de cette occasion pour vous familiariser avec Juxt. Vous pourriez faire de nouvelles découvertes en cours de route !",
-        "done": "Amusez-vous bien sur Juxtaposition !",
-        "done_button": "C'est Parti !",
+        "ready_text": "Commencez par consulter quelques communautés et voyez ce que les gens du monde entier publient. Profitez de cette occasion pour vous familiariser avec Juxt. Vous pourriez faire de nouvelles découvertes en cours de route !",
+        "done": "Amusez-vous bien sur Juxtaposition !",
+        "done_button": "C'est parti !",
         "guest": "Mode Invité",
         "guest_text": "Nous ne pouvons pas vérifier votre compte pour le moment, ce qui signifie probablement que vous vous connectez actuellement avec un compte Nintendo Network. Vous pourrez toujours naviguer sur Juxt, mais vous ne pourrez pas donner des \"Ouais!\" aux publications, ni créer les vôtres tant que vous ne vous serez pas connecté avec un compte Pretendo Network. Pour plus d'informations, consultez le Serveur Discord.",
-        "guest_button": "Je Comprends"
+        "guest_button": "Je comprends"
     }
 }
