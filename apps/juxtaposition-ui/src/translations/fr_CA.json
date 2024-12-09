@@ -30,7 +30,7 @@
         "following": "Suivant",
         "followers": "Followers",
         "tags": "Taguer",
-        "posts": "Posters",
+        "posts": "Publications",
         "recent": "Posters Récent",
         "popular": "Posters de Populaire",
         "verified": "Posters de Vérifié",
@@ -40,7 +40,7 @@
         "country": "Pays",
         "birthday": "Anniversaire",
         "game_experience": "Expérience de Jeux",
-        "posts": "Posters",
+        "posts": "Publications",
         "friends": "Amis",
         "following": "Suivants",
         "followers": "Followers",
@@ -67,7 +67,7 @@
     },
     "notifications": {
         "none": "Sans Notifications.",
-        "new_follower": "suivi tu!"
+        "new_follower": "vous suit!"
     },
     "new_post": {
         "new_post_text": "Nouveau Poster",
