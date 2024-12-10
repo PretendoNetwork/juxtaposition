@@ -71,22 +71,22 @@
         "new_follower": "vous suit !"
     },
     "new_post": {
-        "new_post_text": "Nouvelle Publication",
+        "new_post_text": "Nouvelle publication",
         "post_to": "Poster sur",
         "text_hint": "Touchez ici pour commencer à poster.",
         "swearing": "Les publications ne peuvent pas contenir de language explicite."
     },
     "messages": {
-        "coming_soon": "Les messages privés ne sont pas encore disponibles. Revenez bientôt !"
+        "coming_soon": "Les messages ne sont pas encore disponibles. Revenez bientôt !"
     },
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",
-        "welcome_text": "Juxt est une communauté de jeu qui connecte les personnes du monde entier à l'aide de personnages Mii. Utilisez Juxt pour partager votre expérience de jeu et rencontrer des gens autour du globe.",
+        "welcome_text": "Juxt est une communauté de jeu qui rassemble les personnes du monde entier à l'aide de personnages Mii. Utilisez Juxt pour partager votre expérience de jeu et rencontrer des gens autour du globe.",
         "beta": "BÊTA : AVIS DE NON-GARANTIE",
         "beta_text": {
             "first": "Vous êtes sur le point d'essayer la première version bêta publique de Juxt. Cela signifie que beaucoup de choses sont encore en développement et qu'elles peuvent changer à tout moment.",
             "second": "Cela peut inclure un effacement total de la base de données à la fin ou pendant la période bêta.",
-            "third": "Le site web, son logiciel et tout le contenu qui s'y trouve sont fournis sur une base \"telle quelle\" et \"telle que disponible\". Le Réseau Pretendo ne donne aucune garantie, expresse ou implicite, quant à l'adéquation ou à la facilité d'utilisation du site web, de son logiciel ou de son contenu."
+            "third": "Le site web, son logiciel et tout le contenu qui s'y trouve sont fournis « en l'état » et selon leur disponibilité. Le Pretendo Network ne fait aucune garantie, expresse ou implicite, quant à l'adéquation ou à la facilité d'utilisation du site web, de son logiciel ou de son contenu."
         },
         "info": "C'est quoi, Juxtaposition ?",
         "info_text": "Juxt est une communauté de jeu gérée par les utilisateurs où vous pouvez interagir avec des personnes du monde entier.\nVous pouvez écrire ou dessiner des messages dans les communautés de jeu ou envoyer des messages directement à vos amis.",
@@ -117,7 +117,7 @@
         "google_text": "Juxtaposition utilise Google Analytics afin de savoir comment les visiteurs interagissent avec notre service. Les données recueillies comprennent, sans s'y limiter, l'heure de visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas rattachées à votre personne et ne seront pas utilisées à des fins publicitaires, ni par nous ni par Google.",
         "ready": "Prêt à Utiliser Juxt",
         "ready_text": "Commencez par consulter quelques communautés et voyez ce que les gens du monde entier publient. Profitez de cette occasion pour vous familiariser avec Juxt. Vous pourriez faire de nouvelles découvertes en cours de route !",
-        "done": "Amusez-vous bien sur Juxtaposition !",
+        "done": "Profitez bien de Juxt !",
         "done_button": "C'est parti !",
         "guest": "Mode Invité",
         "guest_text": "Nous ne pouvons pas vérifier votre compte pour le moment, ce qui signifie probablement que vous vous connectez actuellement avec un compte Nintendo Network. Vous pourrez toujours naviguer sur Juxt, mais vous ne pourrez pas donner des \"Ouais!\" aux publications, ni créer les vôtres tant que vous ne vous serez pas connecté avec un compte Pretendo Network. Pour plus d'informations, consultez le Serveur Discord.",
