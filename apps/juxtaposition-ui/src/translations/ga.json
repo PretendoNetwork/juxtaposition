@@ -17,7 +17,7 @@
         "no_posts": "Gan Postálacha"
     },
     "all_communities": {
-        "announcements": "Fógraí",
+        "announcements": "Fógraí Pobail",
         "ann_string": "Cliceáil anseo chun na fograí is deanaí a fheceáil!",
         "text": "Gach Phobail",
         "popular_places": "Áiteanna bhfuil gnaoi an phobail air",
@@ -63,10 +63,11 @@
         "profile_settings": "Socruithe Proifíl"
     },
     "activity_feed": {
-        "empty": "Tá sé follamh anseo. Trial ag leanúint duine éigin!"
+        "empty": "Tá sé follamh anseo. Trial chun duine éigin a leanúint!"
     },
     "notifications": {
-        "none": "Gan fógraí."
+        "none": "Gan fógraí.",
+        "new_follower": "- lean siad tú!"
     },
     "new_post": {
         "post_to": "Postáil chuig",
@@ -75,7 +76,22 @@
         "new_post_text": "Postáil Nua"
     },
     "setup": {
-        "welcome": "Fáilte chuig Juxtaposition!"
+        "welcome": "Fáilte chuig Juxtaposition!",
+        "welcome_text": "Is pobail cluichíocht é Juxt a nascann daoine timpeall an domhain ag úsáid charactar Mii. Úsáid Juxt chun do taithí cluichíocht a roinnt agus bualadh le daoine timpeall an domhain.",
+        "beta": "Shéanadh Béite",
+        "beta_text": {
+            "first": "Tá tú chun an chead béite poiblí de Juxt a thrial amach. Cialaíonn sé seo go bhfuil rudaí fós neamhcinnte, agus is feidir le go leor athrú in ann tharlú ag aon am.",
+            "second": "Is féidir agus is féadfaidh go mbeidh scrios iomlán don bunachar sonraí ag deireadh nó i rith an tréimhse béite."
+        },
+        "info": "Cad é Juxtaposition?",
+        "rules_text": {
+            "second": "Is Feidir le Postálacha a Fheiceáil Ar Fud an Domhain",
+            "sixth": "Ná Postáil Eolas Pearsanta atá Leatsa nó Le Duine Eile",
+            "fourth": "Beidh Go Deas le Daoine Eile",
+            "third": "Tá go leor phobail cluchíocht i Juxt ina bhfuil daoine ar fud an domhain in ann a smaointe a roinnt. Nuair a cruthaíonn tú postáil, cuimhnigh gur feidir le gach daoine in ann é a fheiceál. Le do thoil, chur tú féin in iúl i mbealach a féidir le gach daoine taitneamh a bhaint as. Úsáid chiall cóiteann, agus smaoineamh roimh a deannan tú postál. Is seirbhís é Juxt a bhfuil ar fháil ar an tIdírlíon freisin. Cuimhnigh gur feidir freisin le dhaoine nach úsáideann Juxt do postálacha a fhecáil. Chomh maith leis sin, feicfear aon trácht a dheannan tú ar postálacha do chairde ag ní hamháin do chairde, ach daoine timpeall an domhain freisin. Le do thoil, cuimhnigh ar seo.",
+            "fifth": "Chun Juxt a coinnigh mar áit spraoiúil le haghadih gach duine, cuirimis ceist ort a bheidh tuisceanach le húsáideoirí eile. Cabhair linn Juxt a coinnigh mar taithí taitneamhach agus ná postáil rud ar bith atá mí-oiriúnach nó maslach."
+        },
+        "rules": "Rialacha Juxt"
     },
     "language": "Gaeilge",
     "messages": {
