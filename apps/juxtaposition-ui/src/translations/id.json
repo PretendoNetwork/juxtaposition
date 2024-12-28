@@ -42,7 +42,9 @@
             "second": "Hal ini dapat dan mungkin mencakup penghapusan total basis data para akhir atau selama periode beta."
         },
         "welcome": "Selamat datang ke Juxtaposition (Juxt)!",
-        "beta": "Pembertitahuan Beta"
+        "beta": "Pembertitahuan Beta",
+        "done_button": "Ayo!",
+        "guest_button": "Saya Mengerti"
     },
     "community": {
         "follow": "Ikut Komunitas",
