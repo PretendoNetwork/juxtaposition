@@ -57,15 +57,15 @@
         "close": "Stäng",
         "save": "Spara",
         "no_posts": "Inga Inlägg",
-        "yeahs": "Jan",
+        "yeahs": "Ja:n",
         "private": "Privat",
         "more": "Ladda Mer Inlägg"
     },
     "all_communities": {
-        "text": "Alla Samhällen",
+        "text": "Alla Gemenskap",
         "announcements": "Uttalanden",
-        "new_communities": "Nya Samhällen",
-        "search": "Sök samhällen...",
+        "new_communities": "Nya gemenskap",
+        "search": "Sök gemenskap...",
         "show_all": "Visa Allt",
         "popular_places": "Populära Ställen",
         "ann_string": "Klicka här för att visa de nyligen skapade uttalandena!"
@@ -82,7 +82,7 @@
     "community": {
         "following": "Följer",
         "tags": "Taggar",
-        "follow": "Följ Samhälle",
+        "follow": "Följ gemenskap",
         "posts": "Inlägg",
         "followers": "Följare",
         "verified": "Verifierade Inlägg",
