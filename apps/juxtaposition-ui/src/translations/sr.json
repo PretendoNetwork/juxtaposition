@@ -70,7 +70,19 @@
         },
         "experience_text": {
             "beginner": "Početnik",
-            "intermediate": "Srednji"
-        }
+            "intermediate": "Srednji",
+            "expert": "Ekspert",
+            "info": "Molimo vas da opišete vaš nivo iskustva sa igricama. Ovo podešavanje se može promeniti kasnije."
+        },
+        "beta_text": {
+            "second": "Ovo može podrazumevati brisanje cele baze podataka po završetku ili za vreme probnog perioda."
+        },
+        "experience": "Iskustvo sa Igricama",
+        "google": "Google Analitika",
+        "google_text": "Juxtaposition koristi Google Analitiku kako bi pratilo kako korisnici koriste naš servis. Prikupljene informacije uključuju ali nisu ograničene na vreme posete, posećene strane i vreme provedeno na sajtu. Ovi podatci nisu lično asocirani i neće biti korišćene u svrhe reklama od strane nas ili Google-a.",
+        "ready": "Spremni da Koristite Juxt",
+        "done": "Uživajte u Juxt-u!",
+        "done_button": "Krenimo!",
+        "ready_text": "Prvo proverite zajednice i vidite o čemu ljudi objavljuju oko celog sveta. Iskoristite ovu priliku da se upoznate sa Juxt-om. Možda ćete napraviti zanimljiva otkrića!"
     }
 }
