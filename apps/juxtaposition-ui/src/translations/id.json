@@ -3,7 +3,7 @@
         "user_page": "Halaman Pengguna",
         "communities": "Komunitas",
         "activity_feed": "Halaman Aktivitas",
-        "messages": "Pesan",
+        "messages": "Pesan-pesan",
         "notifications": "Notifikasi",
         "go_back": "Kembali",
         "back": "Kembali",
@@ -39,19 +39,52 @@
         "welcome_text": "Juxt adalah komunitas game yang menghubungan orang-orang dari seluruh dunia menggunakan karakter Mii. Gunakan Juxt untuk berbagi pengalaman bermain game anda dan bertemu orang-orang dari seluruh dunia.",
         "beta_text": {
             "first": "Anda akan mencoba versi beta publik pertama Juxt. Artinya, masih banyak hal yang belum terealisasi, dan banyak hal yang bisa berubah kapan saja.",
-            "second": "Hal ini dapat dan mungkin mencakup penghapusan total basis data para akhir atau selama periode beta."
+            "second": "Hal ini dapat dan mungkin mencakup penghapusan total basis data para akhir atau selama periode beta.",
+            "third": "Situs web, perangkat lunaknya, dan semua konten yang terdapat di dalamnya disediakan atas dasar \"apa adanya\" dan \"sebagaimana tersedia\". Pretendo Network tidak memberikan jaminan apa pun, baik tersurat maupun tersirat, mengenai kesesuaian atau kegunaan situs web, perangkat lunaknya, atau konten apa pun di dalamnya."
         },
         "welcome": "Selamat datang ke Juxtaposition (Juxt)!",
         "beta": "Pembertitahuan Beta",
         "done_button": "Ayo!",
-        "guest_button": "Saya Mengerti"
+        "guest_button": "Saya Mengerti",
+        "experience": "Pengalaman Permainan",
+        "rules_text": {
+            "first": "Berikut ini adalah beberapa aturan penting untuk menjadikan Juxt sebagai pengalaman yang menyenangkan dan mengasyikkan bagi semua orang. Kode Etik Juxt memuat informasi terperinci, jadi harap baca dengan saksama.",
+            "third": "Juxt berisi banyak komunitas game tempat orang-orang dari seluruh dunia dapat berbagi pemikiran mereka. Saat anda memposting di suatu komunitas, ingatlah bahwa semua orang dapat melihatnya, jadi harap ekspresikan diri anda dengan cara yang dapat dinikmati semua orang. Gunakan akal sehat, dan pikirkan sebelum anda memposting. Juxt adalah layanan yang juga dapat diakses dari Internet, jadi perlu diingat bahwa orang yang tidak menggunakan Juxt juga dapat melihat postingan Anda. Selain itu, komentar apa pun yang anda buat pada postingan teman-teman anda tidak hanya akan dilihat oleh teman-teman anda, tetapi juga oleh orang-orang di seluruh dunia. Harap diingat hal ini.",
+            "sixth": "Jangan Memposting Informasi Pribadi—Informasi Anda atau Informasi Orang Lain",
+            "eighth": "Jangan Postingan Spoiler",
+            "eleventh": "Tujuan kami adalah menjaga Juxt tetap menyenangkan dan menghibur bagi semua orang. Jika ada yang melanggar Kode Etik Juxt, kami akan mengambil tindakan yang sesuai, termasuk memblokir pengguna atau konsol yang melanggar.",
+            "thirteenth": "Jika Anda mengepos di komunitas tentang permainan yang pernah Anda mainkan, pos Anda akan memiliki ikon yang menunjukkan bahwa Anda telah memainkannya.",
+            "fourth": "Bersikap Baik Terhadap Satu Sama Lain",
+            "seventh": "Ingat, mengenal seseorang di Juxt tidak sama dengan mengenalnya di dunia nyata. Jangan pernah membagikan alamat email, alamat rumah, nama kantor atau sekolah, atau informasi pengenal pribadi lainnya dengan siapa pun di Juxt, dan jangan pernah membagikan informasi orang lain juga. Selain itu, jika seseorang yang anda temui di Juxt mengundang Anda untuk bertemu dengannya di dunia nyata, jangan terima. Juxt adalah komunitas daring dan tidak boleh digunakan untuk mengatur pertemuan di dunia nyata.",
+            "second": "Postingan Dapat Dilihat di Seluruh Dunia",
+            "fifth": "Agar Juxt tetap menjadi tempat yang menyenangkan bagi semua orang, kami meminta anda untuk bersikap baik kepada pengguna lain. Bantu kami agar Juxt tetap menjadi pengalaman yang menyenangkan dengan tidak mengunggah sesuatu yang tidak pantas atau menyinggung.",
+            "tenth": "Pelanggaran Kode Etik",
+            "ninth": "Beberapa orang datang ke Juxt untuk mencari tips dan trik permainan, tetapi yang lain ingin menemukan sendiri rahasia permainan. Postingan yang mengungkap rahasia permainan atau ceritanya disebut \"spoiler.\" Jika anda memposting sesuatu tentang permainan yang mungkin merupakan spoiler, pastikan untuk mencentang kotak \"Spoiler\" sebelum mengirim postingan anda. Dengan cara ini, orang yang tidak ingin mengetahui spoiler tidak akan melihat postingan anda.",
+            "twelfth": "Pernahkah Anda Memainkan Game Itu?"
+        },
+        "rules": "Aturan Juxt",
+        "experience_text": {
+            "info": "Harap beri tahu kami bagaimana Anda menggambarkan tingkat pengalaman Anda dengan gim. Anda dapat mengubah pengaturan ini nanti.",
+            "intermediate": "Intermediat",
+            "expert": "Pakar",
+            "beginner": "Pemula"
+        },
+        "ready_text": "Pertama, kunjungi beberapa komunitas dan lihat apa yang diposting orang-orang dari seluruh dunia. Manfaatkan kesempatan ini untuk mengenal Juxt lebih jauh. Anda mungkin akan menemukan beberapa hal baru di sepanjang perjalanan!",
+        "done": "Bersenang-senanglah di Juxt!",
+        "google": "Google Analytics",
+        "ready": "Siap untuk Mulai Menggunakan Juxt",
+        "guest": "Mode Tamu",
+        "info_text": "Juxt adalah komunitas game yang digerakkan oleh pengguna tempat anda dapat berinteraksi dengan orang-orang\n                di seluruh dunia. Anda dapat menulis atau menggambar postingan di komunitas game atau mengirim pesan langsung ke teman-teman anda.",
+        "guest_text": "Kami tidak dapat memverifikasi akun anda saat ini, yang kemungkinan berarti Anda saat ini masuk dengan akun Nintendo Network. Anda masih dapat menjelajahi Juxt, tetapi anda tidak akan dapat memposting Ya! atau membuat postingan sendiri hingga anda masuk dengan akun Pretendo Network. Untuk informasi lebih lanjut, lihat di server Discord.",
+        "google_text": "Juxt menggunakan Google Analytics untuk melacak bagaimana pengguna menggunakan layanan kami. Data yang dikumpulkan termasuk tetapi tidak terbatas pada waktu kunjungan, halaman yang dikunjungi, dan waktu yang dihabiskan di situs. Data ini tidak dikaitkan dengan Anda dengan cara apa pun, dan tidak digunakan untuk iklan oleh kami atau Google.",
+        "info": "Apa itu Juxtaposition?"
     },
     "community": {
         "follow": "Ikut Komunitas",
         "following": "Mengikuti",
         "followers": "Pengikutas",
         "posts": "Postingan",
-        "tags": "Tags",
+        "tags": "Label",
         "recent": "Postingan Terkini",
         "popular": "Postingan Populer",
         "verified": "Postingan Diverifikasi",
@@ -62,7 +95,7 @@
         "birthday": "Ulang Tahun",
         "game_experience": "Pengalaman Permainan",
         "posts": "Postingan",
-        "friends": "Teman",
+        "friends": "Teman-Teman",
         "following": "Mengikuti",
         "followers": "Pengikutas",
         "follow_user": "Mengikut",
@@ -72,7 +105,7 @@
         "unfriend": "Hapus Teman",
         "no_friends": "Tidak ada Teman",
         "no_following": "Tidak Mengikuti Orang",
-        "no_followers": "Tidak ada Pengikutas"
+        "no_followers": "Tidak Ada Pengikutas"
     },
     "activity_feed": {
         "empty": "Tidak ada apa-apa di sini. Coba mengikut orang!"
@@ -88,6 +121,6 @@
         "swearing": "Postingan tidak boleh mengandung bahasa eksplisit."
     },
     "messages": {
-        "coming_soon": "Pessan belum siap sekarang. Segara periksa kembali!"
+        "coming_soon": "Pesan-Pesan belum siap sekarang. Segara periksa kembali!"
     }
 }
