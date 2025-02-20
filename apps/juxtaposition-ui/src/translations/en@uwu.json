@@ -1,1 +1,32 @@
-{}
+{
+    "all_communities": {
+        "ann_string": "kik mii 4 nws fwom da big cheese!",
+        "popular_places": "so many kittehs in klans",
+        "new_communities": "new kitteh klans!!",
+        "text": "all kitteh klans",
+        "show_all": "show da secrets",
+        "search": "find kitteh klans…",
+        "announcements": "da big cheese nws!!"
+    },
+    "community": {
+        "follow": "join kitteh klan"
+    },
+    "global": {
+        "communities": "kitteh klans",
+        "messages": "kitteh texts",
+        "activity_feed": "kitteh parti",
+        "go_back": "go bak",
+        "back": "bak",
+        "yeahs": "kitteh'd",
+        "more": "mor kittehs plz",
+        "private": "no kitteh alowd",
+        "save": "sav",
+        "exit": "kthxbai!!",
+        "close": "kitteh retret",
+        "next": "nex",
+        "user_page": "kitteh pege",
+        "notifications": "PINGS",
+        "no_posts": "no kittehs, sad :("
+    },
+    "language": "lolcat"
+}
