@@ -7,6 +7,7 @@ const schema = z.object({
 	}).default({}),
 	accountServerAddress: z.string(),
 	aesKey: z.string(),
+	cdnUrl: z.string().url().transform(s => s.replace(/\/$/, '')),
 	mongoose: z.object({
 		uri: z.string(),
 		options: z.object({
@@ -19,7 +20,9 @@ const schema = z.object({
 	s3: z.object({
 		endpoint: z.string(),
 		key: z.string(),
-		secret: z.string()
+		secret: z.string(),
+		bucket: z.string(),
+		region: z.string()
 	}),
 	grpc: z.object({
 		friends: z.object({
