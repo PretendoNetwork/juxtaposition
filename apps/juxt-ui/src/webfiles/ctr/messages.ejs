@@ -1,0 +1,33 @@
+<ul class="list-content-with-icon-column arrow-list" id="news-list-content">
+        <% if(conversations.length === 0) {%>
+            <p class="no-posts-text"><%= lang.messages.coming_soon %></p>
+        <%} else { %>
+            <% conversations.forEach(function(conversation) { %>
+                <%
+                    // get the PID of the opposite user
+                    var userObj, me;
+                    if(conversation.users[0].pid === pid) {
+                        userObj = conversation.users[1];
+                        me = conversation.users[0];
+                    }
+                    else if(conversation.users[1].pid === pid) {
+                        userObj = conversation.users[0];
+                        me = conversation.users[1];
+                    }
+                %>
+                <li>
+                    <a href="/users/<%= userObj.pid %>" data-pjax="#body" class="icon-container notify <%if(userObj.official) {%> verified<%}%>">
+                        <img src="http://mii.olv.pretendo.cc/mii/<%= userObj.pid %>/normal_face.png" class="icon">
+                    </a>
+                    <a href="/friend_messages/<%= conversation.id %>" data-pjax="#body" class="arrow-button"></a>
+                    <div class="body message">
+                        <p class="">
+                            <span class="nick-name"><%= usersMap.get(userObj.pid) %></span>
+                            <span class="id-name">@<%= usersMap.get(userObj.pid) %></span>
+                            <span> <%= conversation.message_preview %></span>
+                            <span class="timestamp"> <%= moment(conversation.last_updated).fromNow() %></span>
+                        </p>
+                    </div>
+                </li>
+        <% });} %>
+</ul>

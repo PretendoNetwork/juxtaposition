@@ -1,0 +1,27 @@
+<div class="communities-list">
+    <ul class="list-content-with-icon-column" id="community-new-content">
+        <% bundle.followers.forEach(function(user) { %>
+        <%if(user.pid === 0) return %>
+            <li id="<%= user.pid %>">
+                <span class="icon-container"><img src="https://mii.olv.pretendo.cc/mii/<%= user.pid %>/normal_face.png" class="icon" alt=""></span>
+                <a href="/users/show?pid=<%= user.pid %>" data-pjax="#body" class="scroll to-community-button"></a>
+                <div class="body">
+                    <div class="body-content">
+                        <span class="community-name title"><%= user.screen_name %></span>
+                    </div>
+                </div>
+            </li>
+        <% }); %>
+        <% bundle.communities.forEach(function(community) { %>
+                <li id="<%= community %>">
+                    <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%= community %>/128.png" class="icon" alt=""></span>
+                    <a href="/titles/<%= community %>/new" data-pjax="#body" class="scroll to-community-button"></a>
+                    <div class="body">
+                        <div class="body-content">
+                            <span class="community-name title"><%= bundle.communityMap.get(community) %></span>
+                        </div>
+                    </div>
+                </li>
+        <% }); %>
+    </ul>
+</div>

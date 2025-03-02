@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3DS Testing</title>
+    <script src="/js/pjax.js"></script>
+    <script src="/js/juxt.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+</head>
+<body>
+<div id="main">
+    <div class="top-screen" <%if(community.CTR_browser_header) {%>style="background: url('<%=community.CTR_browser_header%>')"<%}%>>
+        <div class="header-description">
+            <p>
+                <% community.description %>
+            </p>
+        </div>
+        <div id="" class="header-icon"><img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png"></div>
+        <h2 class="header-title"><%= community.name %></h2>
+    </div>
+    <div class="bottom-screen">
+        <div class="community-page-posts-wrapper">
+
+            <div id="wrapper">
+
+                <% if(totalNumPosts === 0) {%>
+                    <p class="no-posts-text">No Posts</p>
+                <%} else { %>
+                    <button id="load-more-posts-button" onclick="loadCommunityPosts()" style="background: #1F8A42">Load More Posts</button>
+                        <% newPosts.forEach(function(post) { %>
+                            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                        <% }); %>
+                <%}%>
+            </div>
+        </div>
+        <div class="toolbar-padding"></div>
+    </div>
+    <body onload="onStart()"></body>
+</body>
+</html>

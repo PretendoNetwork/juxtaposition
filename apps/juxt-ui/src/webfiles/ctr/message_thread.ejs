@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: lang.global.messages }); %>
+<body>
+<div id="body">
+    <header id="header" class="buttons">
+        <h1 id="page-title" class=""><%= userMap.get(user2.pid) %></h1>
+        <a id="header-post-button" class="header-button left" href="#"
+           data-sound="SE_WAVE_SELECT_TAB" data-module-hide="message-page"
+           data-module-show="add-post-page" data-header="false" data-screenshot="true"
+           data-message="Message to <%= userMap.get(user2.pid) %>">Post + </a>
+    </header>
+    <div class="body-content message-post-list" id="message-page">
+        <% messages.forEach(function(message) { %>
+            <div id="message-<%= message.id %>" class="post scroll <%if(message.pid === pid) {%>my-post<%} else {%>other-post<%}%>">
+                <a href="/users/show?pid=<%= message.pid %>" data-pjax="#body" class="scroll-focus mii-icon-container">
+                    <img src="<%= message.mii_face_url.replace('https:', 'http:') %>" class="mii-icon">
+                </a>
+                <header>
+                    <span class="timestamp"><%= moment(message.created_at).fromNow()%></span>
+                </header>
+                <div class="post-body">
+                    <%if(message.screenshot) {%>
+                        <img class="message-viewer-bubble-sent-screenshot" src="http://mii.olv.pretendo.cc<%= message.screenshot %>">
+                    <%}%>
+                    <%if(message.painting) {%>
+                    <img class="message-viewer-bubble-sent-memo" src="http://mii.olv.pretendo.cc/paintings/<%=message.pid%>/<%=message.id%>.png">
+                    <%}else {%>
+                        <p class="post-content"><%= message.body %></p>
+                    <%}%>
+                </div>
+            </div>
+        <%});%>
+    </div>
+    <%- include('partials/new_post', { pid, lang, id: conversation.id, name: userMap.get(user2.pid), url: '/friend_messages/new', show: 'message-page', message_pid: user2.pid  }); %>
+    <img src="" onerror="cave.toolbar_setActiveButton(4);setTimeout(function() { window.scrollTo(0, 500000); }, 1000)">
+</div>
+</body>
+</html>

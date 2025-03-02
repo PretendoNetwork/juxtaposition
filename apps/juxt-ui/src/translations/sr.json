@@ -1,0 +1,76 @@
+{
+    "global": {
+        "messages": "Poruke",
+        "communities": "Zajednice",
+        "notifications": "Obaveštenja",
+        "back": "Nazad",
+        "no_posts": "Nema objava",
+        "private": "Privatno",
+        "exit": "Izađi",
+        "save": "Sačuvaj",
+        "next": "Sledeće",
+        "go_back": "Vrati se",
+        "close": "Zatvori",
+        "more": "Učitaj još objava"
+    },
+    "language": "Srpski",
+    "community": {
+        "verified": "Potvrđene objave",
+        "follow": "Zaprati zajednicu",
+        "following": "Praćenje",
+        "followers": "Pratioci",
+        "posts": "Objave",
+        "tags": "Oznake",
+        "recent": "Nedavne objave",
+        "popular": "Popularne objave",
+        "new": "Nova objava"
+    },
+    "user_page": {
+        "birthday": "Rođendan",
+        "following_user": "Praćenje",
+        "country": "Zemlja",
+        "posts": "Objave",
+        "friends": "Prijatelji",
+        "follow_user": "Zaprati",
+        "followers": "Pratioci",
+        "pending": "U toku"
+    },
+    "all_communities": {
+        "new_communities": "Nove zajednice",
+        "text": "Sve zajednice",
+        "announcements": "Objave",
+        "popular_places": "Popularna mesta",
+        "search": "Pretraži zajednice...",
+        "show_all": "Prikaži sve",
+        "ann_string": "Klikni ovde da vidiš nedavne objave!"
+    },
+    "notifications": {
+        "new_follower": "Vas je zapratio!",
+        "none": "Nema obaveštenja."
+    },
+    "user_settings": {
+        "profile_settings": "Podešavanja profila",
+        "show_country": "Prikaži zemlju na profilu",
+        "show_birthday": "Prikaži rođendan na profilu"
+    },
+    "new_post": {
+        "new_post_text": "Nova objava",
+        "post_to": "Objavi na",
+        "text_hint": "Dodirni ovde da napraviš objavu."
+    },
+    "activity_feed": {
+        "empty": "Ovde je prazno. Pokušaj da pratiš nekoga!"
+    },
+    "messages": {
+        "coming_soon": "Poruke još uvek nisu spremne. Proveri ponovo uskoro!"
+    },
+    "setup": {
+        "rules_text": {
+            "eighth": "Ne objavljuj spojlere"
+        },
+        "experience_text": {
+            "beginner": "Početnik",
+            "intermediate": "Srednji"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.notifications %></h2>
+    <%- include('partials/nav_bar', { selection: 4, pid: pid }); %>
+    <div id="toast"></div>
+    <div id="wrapper">
+        <%- include('partials/' + template, { bundle }); %>
+    </div>
+</div>
+</body>
+</html>

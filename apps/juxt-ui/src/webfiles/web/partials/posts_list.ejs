@@ -1,0 +1,11 @@
+<%if(!bundle.open) {%><div class="headline"><h2>This community is closed to new posts.</h2></div><%}%>
+<% if(bundle.numPosts === 0) {%>
+    <p class="no-posts-text"><%= lang.global.no_posts %></p>
+<%} else { %>
+    <% bundle.posts.forEach(function(post) { %>
+        <%- include('post_template', { post: post, mii_image_CDN: bundle.mii_image_CDN, lang: bundle.lang, userContent: bundle.userContent, communityMap: bundle.communityMap, reply: false  }); %>
+    <% }); %>
+    <div id="wrapper" class="bottom">
+        <button id="load-more" data-href="<%= bundle.link %>"><%= lang.global.more %></button>
+    </div>
+<%}%>

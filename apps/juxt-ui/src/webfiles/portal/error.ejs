@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: 'Error: ' + code }); %>
+<body>
+<%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class=""></h1>
+    </header>
+    <div class="body-content">
+        <div class="communities-list">
+            <div class="headline">
+                <h2>Error <%= code %>: <%= message %></h2>
+            </div>
+            <p>Whoops! Looks like we couldn't find the page you're looking for.</p>
+            <p>Double-check your link or try again later</p>
+            <img class="lost" src="/images/bandwidthlost.png">
+        </div>
+    </div>
+</div>
+</body>
+<style>
+    button {
+        width: 100px;
+        height: 50px;
+        font-size: x-large;
+    }
+</style>
+<body onload="wiiuBrowser.endStartUp();"></body>
+</html>

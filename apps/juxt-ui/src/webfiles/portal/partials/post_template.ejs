@@ -1,0 +1,88 @@
+<div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%> <%if(post.is_spoiler) {%>spoiler<%}%>">
+    <% if(post.removed) {%>
+        <div class="post-body-content removed">
+            <h2>Post has been removed.</h2>
+        </div>
+    <%} else {%>
+    <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
+        <img src="<%= post.mii_face_url.replace('http:', 'https:') %>" class="mii-icon">
+    </a>
+    <div class="post-body-content <% if(post.removed) {%>removed<%}%>">
+        <div class="post-body <%if(userContent.likes && userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>" id="<%= post.id %>">
+            <header>
+                <span class="screen-name"><%= post.screen_name %></span>
+                <span class="timestamp">- <%= moment(post.created_at).fromNow() %></span>
+                <%if(post.topic_tag) {%>
+                <a href="/topics?topic_tag=<%=post.topic_tag%>" data-pjax="#body">
+                    <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="30" height="30">
+                    <path d="M42.34,138.34A8,8,0,0,1,40,132.69V40h92.69a8,8,0,0,1,5.65,2.34l99.32,99.32a8,8,0,0,1,0,11.31L153,237.66a8,8,0,0,1-11.31,0Z" fill="#a362d8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                    <circle fill="#fff" cx="84" cy="84" r="12"/>
+                </svg>
+                <span class="tags"><%=post.topic_tag%></span>
+                </a>
+                </span>
+                <%}%>
+            </header>
+            <%if(!reply) {%>
+            <a href="/titles/<%= post.community_id %>" class="community-banner" data-pjax="#body">
+                        <span class="title-icon-container" data-pjax="#body">
+                            <img src="https://mii.olv.pretendo.cc/icons/<%= post.community_id %>/128.png" class="title-icon">
+                        </span>
+                <span class="community-name"><%= communityMap.get(post.community_id) %></span>
+            </a>
+            <%}%>
+            <%if(post.is_spoiler) {%>
+            <div class="spoiler-wrapper">
+                <button data-post-id="<%= post.id %>">Show Spoiler</button>
+            </div>
+            <%}%>
+            <div class="post-content" <%if(!reply) {%>data-href="/posts/<%= post.id %>"<%}%>>
+                <% if(post.body !== '') { %>
+                    <p class="post-content-text"><%= post.body %></p>
+                <%}%>
+                <% if(post.screenshot !== '') { %>
+                    <img class="post-screenshot" src="https://mii.olv.pretendo.cc<%= post.screenshot %>">
+                <%}%>
+                <% if(post.painting !== '') { %>
+                <img class="post-memo" src="https://mii.olv.pretendo.cc/paintings/<%=post.pid%>/<%=post.id%>.png">
+                <%}%>
+                <% if(post.url) { %>
+                    <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <%}%>
+            </div>
+            <div class="post-buttons">
+                <button type="button" class="submit yeah-button <%if(post.yeahs && post.yeahs.indexOf(userContent.pid) !== -1){ %> selected <%}%>" data-post="<%= post.id %>"></button>
+                <a <%if(!yeah && !reply) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
+                    <% if(reply && post.pid !== pid && !moderator) {%>
+                        <div>
+                            <button type="button" class="submit report" data-post="<%= post.id %>" onclick="reportPost(this)"></button>
+                        </div>
+                    <%}%>
+                    <% if(reply && post.pid === pid || reply && moderator) {%>
+                        <div>
+                            <button type="button" class="submit remove" data-post="<%= post.id %>" onclick="deletePost(this)"></button>
+                        </div>
+                    <%}%>
+                    <%if(!yeah) {%>
+                        <span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
+                        <%if(!reply) {%>
+                        <span class="reply"><%=post.reply_count %></span>
+                        <%}%>
+                    <%}%>
+                </a>
+            </div>
+        </div>
+    </div>
+    <%if(yeah && post.yeahs.length > 0) {%>
+    <h6 class="yeah-text"><span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span> people gave this post a yeah.</h6>
+    <div class="yeah-list">
+        <%for(var yeah of post.yeahs) {%>
+            <a href="/users/<%= yeah %>" class="mii-icon-container" data-pjax="#body">
+                <img src="https://mii.olv.pretendo.cc/mii/<%= yeah %>/normal_face.png" class="mii-icon">
+            </a>
+        <%}%>
+    </div>
+    <%}%>
+    <%}%>
+</div>

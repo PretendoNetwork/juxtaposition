@@ -1,0 +1,49 @@
+{
+    "global": {
+        "user_page": "Старонка Карыстальніка",
+        "activity_feed": "Стужка Актыўнасці",
+        "communities": "Суполкі",
+        "notifications": "Апавяшчэнні",
+        "back": "Назад",
+        "yeahs": "Такі",
+        "more": "Загрузіць Яшчэ Посты",
+        "no_posts": "Няма Постаў",
+        "private": "Прыватны",
+        "save": "Захаваць",
+        "exit": "Выйсці",
+        "next": "Наступны",
+        "messages": "Паведамленні",
+        "go_back": "Назад",
+        "close": "Закрыць"
+    },
+    "all_communities": {
+        "text": "Усе Суполкі",
+        "announcements": "Анонсы",
+        "ann_string": "Націсніце сюды каб паглядзець новыя анонсы!",
+        "popular_places": "Папулярныя Месцы",
+        "new_communities": "Новыя Суполкі",
+        "show_all": "Усе",
+        "search": "Шукаць суполкі..."
+    },
+    "community": {
+        "followers": "Падпісчыкі",
+        "follow": "Падпісацца да Суполкі",
+        "posts": "Пасты",
+        "tags": "Тэгі",
+        "recent": "Новые Пасты",
+        "popular": "Папулярные Пасты",
+        "verified": "Правераныя Пасты",
+        "new": "Новыя Пасты",
+        "following": "Падпісаны"
+    },
+    "user_page": {
+        "country": "Страна",
+        "birthday": "Дзень Народжання",
+        "game_experience": "Вопыт Гульні",
+        "posts": "Пасты",
+        "friends": "Сябры",
+        "following": "Падпіскі",
+        "followers": "Падпісчыкі"
+    },
+    "language": "Беларуская"
+}

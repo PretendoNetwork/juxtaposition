@@ -1,0 +1,78 @@
+<html>
+<head>
+    <title>Juxt - <%= community.name %></title>
+    <%- include('partials/head'); %>
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Juxt - <%= community.name %>">
+    <meta itemprop="description" content="<%= community.description %>">
+    <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net/icons/<%= community.olive_community_id %>/128.png">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Juxt - <%= community.name %>"/>
+    <meta property="og:description" content="<%= community.description %>"/>
+    <meta property="og:url" content="https://juxt.pretendo.cc/communities/<%= community.olive_community_id %>/new"/>
+    <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/icons/<%= community.olive_community_id %>/128.png"/>
+    <meta property="og:site_name" content="Juxtaposition" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Juxt - <%= community.name %>"/>
+    <meta name="twitter:description" content="<%= community.description %>"/>
+    <meta name="twitter:site" content="@PretendoNetwork"/>
+    <meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/icons/<%= community.olive_community_id %>/128.png"/>
+    <meta name="twitter:creator" content="@PretendoNetwork"/>
+
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
+    <%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
+    <div id="toast"></div>
+    <div id="wrapper" class="community-page-post-box">
+        <div class="community-top">
+            <img class="banner" src="https://pretendo-cdn.b-cdn.net/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"/>
+            <div class="community-info">
+                <img class="user-icon" src="https://pretendo-cdn.b-cdn.net/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png"/>
+                <h2 class="community-title"><%= community.name %></h2>
+                <%if(community.open && pid !== 1000000000){%>
+                    <% var following = userContent.followed_communities.indexOf(community.olive_community_id) !== -1; %>
+                    <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
+                <%}%>
+            </div>
+            <h4 class="community-description"><%= community.description %></h4>
+            <span class="community-page-follow-button-text" id="<%= community.olive_community_id %>"></span>
+            <div class="info-boxes-wrapper">
+                <div>
+                    <h4><%= lang.community.followers %></h4>
+                    <h4 class="community-page-table-text" id="followers"><%= community.followers %></h4>
+                </div>
+                <div>
+                    <h4><%= lang.community.posts %></h4>
+                    <h4><%=totalNumPosts%></h4>
+                </div>
+                <div>
+                    <h4><%= lang.community.tags %></h4>
+                    <h4>N/A</h4>
+                </div>
+            </div>
+        </div>
+        <%- include('partials/' + template, { bundle }); %>
+    </div>
+    <!--<table class="community-page-posts-header switcher">
+        <tbody>
+        <tr>
+            <td>
+                <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active"><%= lang.community.recent %></h4>
+            </td>
+            <td>
+                <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab"><%= lang.community.popular %></h4>
+            </td>
+            <td>
+                <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab"><%= lang.community.verified %></h4>
+            </td>
+        </tr>
+        </tbody>
+    </table>-->
+</div>
+</body>
+</html>

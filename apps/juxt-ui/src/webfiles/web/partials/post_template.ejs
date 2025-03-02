@@ -1,0 +1,33 @@
+<div class="posts-wrapper" id="<%= post.id %>">
+    <div class="post-user-info-wrapper" id="<%= post.id %>">
+            <img class="user-icon <%if(post.verified) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net<%= post.mii_face_url.substring(post.mii_face_url.lastIndexOf('/mii')) %>" data-pjax="/users/show?pid=<%= post.pid %>">
+        <div class="post-meta-wrapper">
+            <h3><a href="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></a></h3>
+            <span class="verified-badge" style="<%if(!post.verified) {%>display: none;<%}%>">✓</span>
+            <h4><%= moment(post.created_at).fromNow() %> - <a href="/titles/<%=post.community_id%>"><%= communityMap.get(post.community_id) %></a></h4>
+        </div>
+    </div>
+    <div class="spoiler-overlay" <% if(post.is_spoiler === 0) {%>style="display: none"<%}%>>
+        <button onclick="this.parentElement.style.display = 'none'; document.getElementById('post-content-<%= post.id%>').style.display = 'block'">Click to Show Spoiler</button>
+    </div>
+    <div class="post-content" id="post-content-<%= post.id%>" <% if(post.is_spoiler === 1) {%>style="display: none"<%}%> onclick="location.href='/posts/<%= post.id %>'">
+            <% if(post.body !== '') { %>
+                <h4><%= post.body %></h4>
+            <%}%>
+            <% if(post.screenshot !== '') { %>
+                <img id="<%= post.id %>" class="screenshot" src="https://pretendo-cdn.b-cdn.net/<%= post.screenshot %>">
+            <%}%>
+            <% if(post.painting !== '') { %>
+                <img id="<%= post.id%>" class="painting" src="https://pretendo-cdn.b-cdn.net/paintings/<%=post.pid%>/<%=post.id%>.png">
+            <%}%>
+            <% if(post.url) { %>
+                    <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <%}%>
+    </div>
+    <div class="post-buttons-wrapper">
+        <span <%if(userContent !== null) {%> data-post="<%= post.id %>" class="<%if(post.yeahs && post.yeahs.indexOf(userContent.pid) !== -1){ %> selected <%}%> <%}%>"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><h4 id="count-<%= post.id %>"><%= post.empathy_count %></h4></span>
+        <span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 13 13.311"><g id="Icon_feather-corner-down-right" data-name="Icon feather-corner-down-right" transform="translate(-5.25 -5.25)"><path id="Path_47" data-name="Path 47" d="M22.5,15l3.594,3.594L22.5,22.188" transform="translate(-8.594 -4.688)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path id="Path_48" data-name="Path 48" d="M6,6v5.031a2.875,2.875,0,0,0,2.875,2.875H17.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></g></svg><h4><%= post.reply_count %></h4></span>
+        <span onclick="copyToClipboard('https://juxt.pretendo.network/posts/<%=post.id%>');"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
+    </div>
+</div>
+

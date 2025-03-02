@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <title>Post by <%= post.screen_name %></title>
+    <%- include('partials/head'); %>
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Juxtaposition - Post by <%= post.screen_name %>">
+    <meta itemprop="description" content="<%= community.name %> - <%= post.empathy_count%> Yeahs!">
+    <% if(post.screenshot !== '') { %>
+        <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net<%= post.screenshot %>">
+    <%} else if(post.painting !== '') { %>
+        <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png">
+    <%}%>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Juxt - Post by <%= post.screen_name %>"/>
+    <meta property="og:description" content="<%= community.name %> - <%= post.empathy_count%> Yeahs!"/>
+    <meta property="og:url" content="https://juxt.pretendo.cc/posts/<%= post.id %>"/>
+    <% if(post.screenshot !== '') { %>
+        <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/<%= post.screenshot %>"/>
+    <%} else if(post.painting !== '') { %>
+        <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png"/>
+    <%}%>
+    <meta property="og:site_name" content="Juxtaposition" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Juxt - Post by <%= post.screen_name %>"/>
+    <meta name="twitter:description" content="<%= community.name %> - <%= post.empathy_count%> Yeahs!"/>
+    <meta name="twitter:site" content="@PretendoNetwork"/>
+    <% if(post.screenshot !== '') { %>
+        <meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/<%= post.screenshot %>"/>
+    <%} else if(post.painting !== '') { %>
+        <meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png"/>
+    <%}%>
+    <meta name="twitter:creator" content="@PretendoNetwork"/>
+
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header">Post</h2>
+    <%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
+    <div id="toast"></div>
+    <div class="community-page-post-box">
+        <div id="wrapper">
+                <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
+                <span class="replies-line"></span>
+                <% replies.forEach(function(post) { %>
+                    <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
+                    <span class="replies-line"></span>
+                <% }); %>
+        </div>
+    </div>
+</div>
+</body>
+</html>

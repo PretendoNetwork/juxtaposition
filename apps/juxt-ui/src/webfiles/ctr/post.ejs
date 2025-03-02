@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: lang.global.activity_feed }); %>
+<body>
+<div id="body">
+    <header id="header" class="buttons">
+        <h1 id="page-title" class=""><%= post.screen_name %></h1>
+        <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+            <a id="header-post-button" class="header-button left" href="#"
+               data-sound="SE_WAVE_SELECT_TAB" data-module-hide="post"
+               data-module-show="add-post-page" data-header="false" data-screenshot="true"
+               data-message="Reply to <%= post.screen_name %>">Reply +</a>
+        <%}%>
+    </header>
+    <div class="body-content tab2-content" id="post">
+        <div class="post-wrapper parent">
+            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid, yeah: true }); %>
+        </div>
+        <% replies.forEach(function(post) { %>
+            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true, pid: pid  }); %>
+        <% }); %>
+    </div>
+    <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+        <%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
+    <%}%>
+</div>
+</body>
+</html>

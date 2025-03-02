@@ -1,0 +1,65 @@
+{
+  "name": "juxt-web",
+  "version": "1.0.0",
+  "description": "Web frontend for the Pretendo Network miiverse replacement, Juxt.",
+  "main": "./src/server",
+  "scripts": {
+    "start": "node .",
+    "lint": "npx eslint .",
+    "build": "npm run lint && npm run clean && npx tsc && npx tsc-alias",
+    "clean": "rimraf ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PretendoNetwork/juxt-web.git"
+  },
+  "keywords": [],
+  "author": "https://github.com/CaramelKat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PretendoNetwork/juxt-web/issues"
+  },
+  "homepage": "https://github.com/PretendoNetwork/juxt-web#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1192.0",
+    "body-parser": "^1.19.0",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.5",
+    "crc": "^4.3.2",
+    "date-fns": "^2.29.3",
+    "express": "^4.17.1",
+    "express-rate-limit": "^6.7.0",
+    "fs-extra": "^9.0.1",
+    "hashmap": "^2.4.0",
+    "image-pixels": "^1.1.1",
+    "memory-cache": "^0.2.0",
+    "moment": "^2.29.1",
+    "mongoose": "^6.0.13",
+    "mongoose-fuzzy-search-next": "^1.0.13",
+    "mongoose-unique-validator": "^3.0.0",
+    "morgan": "^1.10.0",
+    "nice-grpc": "^2.1.4",
+    "node-rsa": "^1.1.1",
+    "node-snowflake": "0.0.1",
+    "pako": "^2.0.2",
+    "pngjs": "^6.0.0",
+    "pretendo-grpc": "github:PretendoNetwork/grpc-ts",
+    "sharp": "^0.31.3",
+    "tga": "^1.0.4",
+    "xml2js": "^0.4.23",
+    "xmlbuilder2": "^3.0.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.59.11",
+    "@typescript-eslint/parser": "^5.59.11",
+    "bmp-js": "^0.1.0",
+    "ejs": "^3.1.5",
+    "eslint": "^8.42.0",
+    "express-slow-down": "^1.4.0",
+    "express-subdomain": "^1.0.5",
+    "multer": "^1.4.2",
+    "request": "^2.88.2",
+    "tsc-alias": "^1.8.6",
+    "typescript": "^5.1.3"
+  }
+}

@@ -1,0 +1,15 @@
+<html lang="en">
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= userMap.get(user2.pid) %></h2>
+    <%- include('partials/nav_bar', { selection: 3, pid: pid }); %>
+    <div id="toast"></div>
+    <div id="wrapper" style="height: 80%;padding: 2em;text-align:center">
+        <h2>Messages are not quite ready yet. Check back soon!</h2>
+    </div>
+</div>
+</body>
+</html>

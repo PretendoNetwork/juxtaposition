@@ -1,0 +1,126 @@
+{
+    "language": "Polski",
+    "global": {
+        "exit": "Wyjdź",
+        "user_page": "Strona użytkownika",
+        "activity_feed": "Kanał aktywności",
+        "communities": "Społeczności",
+        "messages": "Wiadomości",
+        "notifications": "Powiadomienia",
+        "go_back": "Wróć",
+        "yeahs": "Tak",
+        "more": "Załaduj więcej postów",
+        "no_posts": "Brak postów",
+        "private": "Prywatny",
+        "close": "Zamknij",
+        "save": "Zapisać",
+        "back": "Wróć",
+        "next": "Następne"
+    },
+    "setup": {
+        "beta_text": {
+            "first": "Właśnie teraz wypróbujesz pierwszą betę Juxt. Oznacza to że jeszcze dużo przed nami, wszystko może się zmienić w późniejszym czasie.",
+            "third": "Strona, jej oprogramowanie i wszystkie treści na niej zawarte są dostarczane na zasadzie \"tak jak jest\" i \"tak jak są dostępne\". The Pretendo Network nie udziela żadnych gwarancji, zarówno wyraźnych jak i dorozumianych, co do przydatności lub użyteczności strony, jej oprogramowania lub jakiejkolwiek jej zawartości.",
+            "second": "To może i może obejmować całkowite wyczyszczenie bazy danych na zakończenie lub w trakcie okresu beta."
+        },
+        "welcome_text": "Juxt jest społecznością graczy która łączy ludzi z całego świata używając postaci Mii. Używaj Juxt aby udostępnić swoje doświadczenia i poznaj ludzi z całego świata.",
+        "beta": "Ostrzeżenie o fazie beta",
+        "rules_text": {
+            "first": "Poniżej są ważne zasady aby Juxt była porządną platformą dla każdego. Kodeks postępowania Juxt zawiera zdetalowane informacje, więc proszę przeczytać uważnie.",
+            "third": "Juxt zawiera wiele społeczności graczy, w których ludzie z całego świata mogą dzielić się swoimi przemyśleniami. Kiedy piszesz post w społeczności, pamiętaj, że każdy może go zobaczyć, więc wyrażaj się w sposób, który może się wszystkim spodobać. Zachowaj zdrowy rozsądek i pomyśl, zanim napiszesz post. Juxt jest serwisem dostępnym również z Internetu, więc pamiętaj, że osoby nie korzystające z Juxt mogą również zobaczyć Twoje posty. Ponadto wszelkie komentarze do postów znajomych będą widoczne nie tylko dla znajomych, ale także dla ludzi z całego świata. Należy o tym pamiętać.",
+            "seventh": "Pamiętaj, że znajomość z kimś w Juxt to nie to samo, co znajomość w prawdziwym życiu. Nigdy nie udostępniaj nikomu w Juxt swojego adresu e-mail, adresu domowego, nazwy pracy lub szkoły, ani innych informacji umożliwiających identyfikację. Ponadto, jeżeli osoba poznana w Juxt zaprasza do spotkania w świecie rzeczywistym, nie należy jej akceptować. Juxt jest społecznością internetową i nie powininna być wykorzystywana do organizowania spotkań w świecie rzeczywistym.",
+            "ninth": "Niektórzy ludzie przychodzą do Juxt w poszukiwaniu porad i wskazówek dotyczących gier, ale inni chcą odkryć sekrety gry na własną rękę. Posty, które ujawniają sekrety gry lub jej fabułę, są nazywane \"spoilerami\". Jeśli publikujesz coś o grze, co może być spoilerem, pamiętaj, aby sprawdzić pole Spoilery przed wysłaniem swojego postu. W ten sposób osoby, które nie chcą zostać zepsuci, nie zobaczą Twojego postu.",
+            "second": "Posty mogą być przeczytane na całym świecie",
+            "fourth": "Bądź miły dla każdego",
+            "fifth": "Aby Juxt był miejscem przyjemnym dla wszystkich, prosimy o zachowanie szacunku dla innych użytkowników. Pomóż nam utrzymać Juxt jako miejsce przyjemne, nie zamieszczając niczego nieodpowiedniego lub obraźliwego.",
+            "sixth": "Nie publikuj informacji prywatnych, ani twoich ani kogoś innego",
+            "eighth": "Nie publikuj spoilerów",
+            "tenth": "Naruszenia Kodeksu Postępowania",
+            "eleventh": "Naszym celem jest utrzymanie Juxt w stanie zabawy i przyjemności dla każdego. W przypadku, gdy ktoś naruszy Kodeks Postępowania Juxt, podejmiemy odpowiednie działania, aż do zablokowania użytkownika lub konsoli.",
+            "twelfth": "Czy kiedykolwiek zagrałeś w tą grę?",
+            "thirteenth": "Jeśli piszesz posty w społeczności dla gry, w którą grałeś, twoje posty będą miały ikonę wskazującą, że w nią grałeś."
+        },
+        "welcome": "Witaj w Juxtaposition!",
+        "info": "Czym jest Juxtaposition?",
+        "rules": "Zasady Juxt",
+        "experience": "Doświadczenie w grze",
+        "experience_text": {
+            "info": "Proszę powiedzieć, jak opisałbyś swój poziom doświadczenia z grami. Możesz zmienić to ustawienie później.",
+            "beginner": "Początkujący",
+            "intermediate": "Średniozaawansowany",
+            "expert": "Ekspert"
+        },
+        "google": "Analityki Google",
+        "info_text": "Juxt to społeczność graczy, w której możesz wchodzić w interakcje z ludźmi z całego świata.\n                z całego świata. Możesz pisać lub rysować posty w społecznościach gier lub wysyłać wiadomości bezpośrednio do swoich znajomych.",
+        "google_text": "Juxtaposition wykorzystuje Analityki Google w celu śledzenia, jak użytkownicy korzystają z naszego serwisu. Zbierane dane obejmują, ale nie ograniczają się do czasu wizyty, odwiedzanych stron i czasu spędzonego na stronie. Dane te nie są w żaden sposób powiązane z użytkownikiem i nie są wykorzystywane do reklam przez nas lub Google.",
+        "ready": "Gotowy(wa), aby zacząc korzystać z Juxt",
+        "ready_text": "Najpierw sprawdź kilka społeczności i zobacz, o czym piszą ludzie z całego świata. Skorzystaj z okazji, aby zapoznać się z Juxt. Być może po drodze dokonasz kilku nowych odkryć!",
+        "done": "Baw się dobrze w Juxt!",
+        "done_button": "Zaczynamy!",
+        "guest": "Tryb gościa",
+        "guest_text": "Nie możemy zweryfikować Twojego konta w tej chwili, co prawdopodobnie oznacza, że obecnie logujesz się za pomocą konta Nintendo Network. Nadal będziesz mógł przeglądać Juxt, ale nie będziesz mógł pisać postów Yeah! lub pisać własnych, dopóki nie zalogujesz się na konto Pretendo Network. Aby uzyskać więcej informacji sprawdź serwer Discord.",
+        "guest_button": "Zrozumiano"
+    },
+    "all_communities": {
+        "text": "Wszystkie społeczności",
+        "announcements": "Ogłoszenia",
+        "ann_string": "Kliknij tutaj aby zobaczyć nowe ogłoszenia!",
+        "popular_places": "Popularne miejsca",
+        "new_communities": "Nowe społeczności",
+        "show_all": "Pokaż wszystkie",
+        "search": "Szukaj społeczności..."
+    },
+    "community": {
+        "follow": "Obserwuj Społeczność",
+        "following": "Obserwujesz",
+        "followers": "Obserwatorzy",
+        "posts": "Posty",
+        "tags": "Tagi",
+        "recent": "Nowe posty",
+        "popular": "Popularne posty",
+        "verified": "Zweryfikowane posty",
+        "new": "Nowy post"
+    },
+    "user_page": {
+        "country": "Kraj",
+        "birthday": "Urodziny",
+        "game_experience": "Doświadczenie gry",
+        "posts": "Posty",
+        "friends": "Znajomi",
+        "following": "Obserwujsz",
+        "followers": "Obserwatorzy",
+        "follow_user": "Obserwuj",
+        "following_user": "Obserwuję",
+        "befriend": "Zaprzyjaźnij się",
+        "pending": "Oczekujące",
+        "unfriend": "Usuń znajomego",
+        "no_friends": "Brak znajomych",
+        "no_following": "Nikogo nie obserwujesz",
+        "no_followers": "Brak obserwujących"
+    },
+    "user_settings": {
+        "profile_settings": "Ustawienia profilu",
+        "show_country": "Pokaż kraj na profilu",
+        "show_birthday": "Pokaż urodziny na profilu",
+        "show_game": "Pokaż doświadczenia w grze na profilu",
+        "show_comment": "Pokaż komentarze na profilu",
+        "profile_comment": "Skomentuj profil",
+        "swearing": "Komentarz profilu nie może zawierać obraźliwego języka."
+    },
+    "activity_feed": {
+        "empty": "Pusto tutaj. Zaobserwuj kogoś!"
+    },
+    "notifications": {
+        "none": "Brak powiadomień.",
+        "new_follower": "zaobserwował(ała) Cię!"
+    },
+    "new_post": {
+        "new_post_text": "Nowy post",
+        "post_to": "Postuj do",
+        "text_hint": "Kliknij tutaj by zrobić post.",
+        "swearing": "Post nie może zawierać obraźliwego języka."
+    },
+    "messages": {
+        "coming_soon": "Wiadomości nie są jeszcze gotowe. Zajrzyj tu później!"
+    }
+}

@@ -1,0 +1,28 @@
+<menu id="nav-menu">
+    <li id="nav-menu-me" data-tab="me" <% if(selection === 0) {%>class="selected"<%}%>>
+        <a href="/users/me" data-pjax="#body" data-sound="SE_WAVE_MENU">
+            <span class="mii-icon">
+                <img src="https://mii.olv.pretendo.cc/mii/<%=pid%>/normal_face.png" alt="User Page">
+            </span>
+            <span><%= lang.global.user_page %></span>
+        </a>
+    </li>
+    <li id="nav-menu-feed" data-tab="feed" <% if(selection === 1) {%>class="selected"<%}%>>
+        <a href="/feed" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.activity_feed %></a>
+    </li>
+    <li id="nav-menu-community" data-tab="titles" <% if(selection === 2) {%>class="selected"<%}%>>
+        <a href="/titles" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.communities %></a>
+    </li>
+    <li id="nav-menu-message" data-tab="message" <% if(selection === 3) {%>class="selected"<%}%>>
+        <a href="/friend_messages" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.messages %><span id="message-badge" class="badge">0</span></a>
+    </li>
+    <li id="nav-menu-news" data-tab="news" <% if(selection === 4) {%>class="selected"<%}%>>
+        <a href="/news/my_news" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.notifications %><span id="news-badge" class="badge">0</span></a>
+    </li>
+    <li id="nav-menu-exit" onclick="exit()">
+        <a role="button" data-sound="SE_WAVE_EXIT"><%= lang.global.close %></a>
+    </li>
+    <li id="nav-menu-back" class="none" onclick="back()">
+        <a role="button" class="accesskey-B" data-sound="SE_WAVE_BACK"><%= lang.global.go_back %></a>
+    </li>
+</menu>

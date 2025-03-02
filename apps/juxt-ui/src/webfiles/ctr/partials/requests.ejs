@@ -1,0 +1,20 @@
+<ul class="list-content-with-icon-column arrow-list" id="news-list-content">
+    <%if(!bundle.requests) {%><li><p>No Friend Requests</p></li><%}%>
+    <%if(bundle.requests){%>
+        <% for(var request of bundle.requests) {%>
+            <%if(bundle.userMap.get(request.sender)) {%>
+            <li>
+                <a href="/users/<%= request.sender %>" data-pjax="#body" class="icon-container notify">
+                    <img src="http://mii.olv.pretendo.cc/mii/<%= request.sender %>/normal_face.png" class="icon">
+                </a>
+                <div class="body">
+                    <p class=""><span class="nick-name"><%= bundle.userMap.get(request.sender) %></span>
+                        <span><%=request.message%></span>
+                        <span class="timestamp"> <%= moment(request.sent * 1000).fromNow() %></span>
+                    </p>
+                </div>
+            </li>
+            <%}%>
+        <%}%>
+    <%}%>
+</ul>

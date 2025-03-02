@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<%- include('partials/head', { title: lang.global.notifications }); %>
+<body>
+<%- include('partials/nav_bar', { selection: 4, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class="">Notifications</h1>
+    </header>
+    <div class="body-content tab2-content" id="news-page">
+        <menu class="tab-header">
+            <li id="tab-header-my-news" class="tab-button <%if(selection === 0){ %>selected<%}%>" data-show-post-button="1">
+                <a href="/news/my_news" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+                    <span class="new-post">Updates</span>
+                </a>
+            </li>
+            <li id="tab-header-friend-request" class="tab-button <%if(selection === 1){ %>selected<%}%>">
+                <a href="/news/friend_requests" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+                    <span>Friend Requests</span>
+                </a>
+            </li>
+        </menu>
+        <div class="tab-body">
+            <%- include('partials/' + template, { bundle }); %>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<div id="add-post-page" class="add-post-page official-user-post">
+    <header id="header">
+        <h1 id="page-title" class=""><%= lang.new_post.post_to %> <%= name %></h1>
+    </header>
+    <form method="post" action="<%= url %>" id="posts-form" data-is-own-title="1" data-is-identified="1">
+        <input type="hidden" name="community_id" value="<%= id %>"/>
+        <input type="hidden" name="bmp" value="true"/>
+        <div class="add-post-page-content">
+            <div class="feeling-selector expression">
+                <img src="http://mii.olv.pretendo.cc/mii/<%= pid %>/normal_face.png" id="mii-face" class="icon">
+                <ul class="buttons">
+                    <li><input type="radio" name="feeling_id" value="0" class="feeling-button-normal"
+                               data-mii-face-url="http://mii.olv.pretendo.cc/mii/<%= pid %>/normal_face.png" checked
+                               data-sound="SE_WAVE_MII_FACE_00">
+                    </li>
+                    <li>
+                        <input type="radio" name="feeling_id" value="1" class="feeling-button-happy"
+                               data-mii-face-url="http://mii.olv.pretendo.cc/mii/<%= pid %>/smile_open_mouth.png"
+                               data-sound="SE_WAVE_MII_FACE_01">
+                    </li>
+                    <li>
+                        <input type="radio" name="feeling_id" value="2" class="feeling-button-like"
+                               data-mii-face-url="http://mii.olv.pretendo.cc/mii/<%= pid %>/wink_left.png"
+                               data-sound="SE_WAVE_MII_FACE_02">
+                    </li>
+                    <li>
+                        <input type="radio" name="feeling_id" value="3" class="feeling-button-surprised"
+                               data-mii-face-url="http://mii.olv.pretendo.cc/mii/<%= pid %>/surprise_open_mouth.png"
+                               data-sound="SE_WAVE_MII_FACE_03">
+                    </li>
+                    <li>
+                        <input type="radio" name="feeling_id" value="4" class="feeling-button-frustrated"
+                               data-mii-face-url="http://mii.olv.pretendo.cc/mii/<%= pid %>/frustrated.png"
+                               data-sound="SE_WAVE_MII_FACE_04">
+                    </li>
+                    <li>
+                        <input type="radio" name="feeling_id" value="5" class="feeling-button-puzzled"
+                               data-mii-face-url="http://mii.olv.pretendo.cc/mii/<%= pid %>/sorrow.png"
+                               data-sound="SE_WAVE_MII_FACE_05">
+                    </li>
+                </ul>
+            </div>
+            <div class="image-selector dropdown">
+                <button id="screenshot-button" type="button" data-toggle="dropdown" class="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN"
+                        onclick="window.alert(cave.capture_getLowerImage())">
+                    <img class="preview-image sprite" src="">
+                </button>
+                <input id="screenshot-value" type="hidden" name="screenshot" value="">
+            </div>
+            <div class="textarea-container textarea-with-menu active-text">
+                <menu class="textarea-menu">
+                    <li class="textarea-menu-text">
+                        <span class="sprite text-input selected" id="text-sprite"></span>
+                        <input type="radio" name="_post_type" value="body" checked data-sound=""
+                                onclick="newText()">
+                        <textarea name="body" id="post-text" class="textarea-text selected" value="" maxlength="280"
+                                  placeholder="Share your thoughts in a post to a community or to your followers."></textarea>
+                    </li>
+                    <li class="textarea-menu-memo">
+                        <span class="sprite memo" id="memo-sprite"></span>
+                        <input type="radio" name="_post_type" value="painting" data-sound=""
+                               onclick="newPainting(false)">
+                        <div class="textarea-memo" id="post-memo" data-sound="" onclick="newPainting(false)">
+                            <img id="memo" class="textarea-memo-preview" src="">
+                            <input id="memo-value" type="hidden" name="painting">
+                        </div>
+                    </li>
+                </menu>
+            </div>
+            <div class="checkbox-container spoiler-button">
+                <span>
+                    <label for="spoiler">Spoiler</label>
+                    <input type="checkbox" id="spoiler" name="spoiler" value="true">
+                </span>
+            </div>
+        </div>
+        <input id="message_to_pid" type="hidden" name="message_to_pid"
+               <% if(message_pid) { %>value="<%= message_pid %><% } %>">
+        <input id="close-modal-button" type="button" class="olv-modal-close-button fixed-bottom-button left"
+               value="Cancel" data-sound="SE_WAVE_CANCEL"
+               data-module-show="<%= show %>" data-module-hide="add-post-page"
+               data-header="true">
+        <input type="submit" id="submit" class="post-button fixed-bottom-button" value="Post"
+               onclick="wiiuBrowser.lockUserOperation(true);">
+    </form>
+</div>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: lang.global.communities }); %>
+<body>
+<%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class=""><%= community.name %> Related Communities</h1>
+    </header>
+    <div class="body-content">
+        <div class="communities-list double">
+            <ul class="list-content-with-icon-column" id="community-new-content">
+                <% for(var i = 0; i < children.length; i++) {%>
+                    <% var communityID = children[i].olive_community_id; %>
+                    <li id="<%=communityID%>">
+                        <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%= children[i].parent ? children[i].parent : children[i].olive_community_id %>/128.png" class="icon" alt=""></span>
+                        <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button"></a>
+                        <div class="body">
+                            <div class="body-content">
+                                <span class="community-name title"><%= children[i].name %></span>
+                                <span class="text"><%= children[i].followers %> <%= lang.community.followers %></span>
+                            </div>
+                        </div>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<body onload="stopLoading();">
+</html>

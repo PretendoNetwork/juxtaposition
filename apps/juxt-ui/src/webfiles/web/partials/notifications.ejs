@@ -1,0 +1,37 @@
+<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+<%if(bundle.notifications === undefined) {%><li><p><%= lang.notifications.none %></p></li><%}%>
+<% for(var notification of bundle.notifications) {%>
+    <% if(notification.type === 'follow') {%>
+    <li>
+        <div class="hover">
+            <a href="/users/<%= notification.objectID %>" data-pjax="#body" class="icon-container notify">
+                <img src="https://pretendo-cdn.b-cdn.net/mii/<%= notification.objectID %>/normal_face.png" class="icon">
+            </a>
+            <a class="body" href="<%= notification.link %>">
+                <% if(notification.users.length === 1) {%>
+                    <span class="text"><span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>
+                    <span href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></span>
+                    <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+                </span>
+                <%} else if(notification.users.length === 2) {%>
+                    <span class="text">
+                    <span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>
+                    <span>and <span class="nick-name"><%= bundle.userMap.get(Number(notification.users[0].user)) %></span></span>
+                    <span href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></span>
+                    <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+                </span>
+                <%} else if(notification.users.length > 2) {%>
+                    <span class="text">
+                    <span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>,
+                    <span class="nick-name"><%= bundle.userMap.get(Number(notification.users[0].user)) %></span>,
+                    <span>and <span class="nick-name"><%= notification.users.length - 2%> other(s)</span></span>
+                    <span href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></span>
+                    <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+                </span>
+                <%}%>
+            </a>
+        </div>
+    </li>
+    <%}%>
+    <%}%>
+</ul>

@@ -1,0 +1,126 @@
+{
+    "language": "Español",
+    "global": {
+        "user_page": "Perfil",
+        "activity_feed": "Registro de actividad",
+        "communities": "Comunidades",
+        "messages": "Mensajes",
+        "notifications": "Notificaciones",
+        "go_back": "Volver",
+        "back": "Atrás",
+        "yeahs": "Ajá",
+        "more": "Cargar más publicaciones",
+        "no_posts": "No hay publicaciones",
+        "private": "Privado",
+        "close": "Cerrar",
+        "save": "Guardar",
+        "exit": "Salir",
+        "next": "Siguiente"
+    },
+    "all_communities": {
+        "text": "Todas las comunidades",
+        "announcements": "Anuncios",
+        "ann_string": "¡Toca para ver los anuncios recientes!",
+        "popular_places": "Lugares populares",
+        "new_communities": "Nuevas comunidades",
+        "show_all": "Mostrar todo",
+        "search": "Buscar comunidades..."
+    },
+    "community": {
+        "follow": "Seguir comunidad",
+        "following": "Siguiendo",
+        "followers": "Seguidores",
+        "posts": "Publicaciones",
+        "tags": "Etiquetas",
+        "recent": "Publicaciones recientes",
+        "popular": "Publicaciones populares",
+        "verified": "Publicaciones verificadas",
+        "new": "Nueva publicación"
+    },
+    "user_page": {
+        "country": "País",
+        "birthday": "Cumpleaños",
+        "game_experience": "Experiencia jugando",
+        "posts": "Publicaciones",
+        "friends": "Amigos",
+        "following": "Siguiendo",
+        "followers": "Seguidores",
+        "follow_user": "Seguir",
+        "following_user": "Seguidores",
+        "befriend": "Ser amigos",
+        "pending": "Pendiente",
+        "unfriend": "Eliminar amigo",
+        "no_friends": "Sin amigos",
+        "no_following": "No sigues a nadie",
+        "no_followers": "No tienes seguidores"
+    },
+    "user_settings": {
+        "profile_settings": "Preferencias del perfil",
+        "show_country": "Mostrar país en tu perfil",
+        "show_birthday": "Mostrar cumpleaños en tu perfil",
+        "show_game": "Mostrar experiencia en tu perfil",
+        "show_comment": "Mostrar comentario en tu perfil",
+        "profile_comment": "Comentario del perfil",
+        "swearing": "Los comentarios no pueden tener lenguaje inapropiado."
+    },
+    "activity_feed": {
+        "empty": "No hay nada que ver. ¡Prueba a seguir a alguien!"
+    },
+    "notifications": {
+        "none": "Sin notificaciones.",
+        "new_follower": "te ha seguido!"
+    },
+    "new_post": {
+        "new_post_text": "Nueva publicación",
+        "post_to": "Publicar en",
+        "text_hint": "Toca aquí para hacer una publicación.",
+        "swearing": "No se puede incluir lenguaje inapropiado en las publicaciones."
+    },
+    "messages": {
+        "coming_soon": "La función de mensajes no esta lista. ¡Vuelve más tarde!"
+    },
+    "setup": {
+        "welcome": "¡Bienvenido a Juxtaposition!",
+        "welcome_text": "Juxt es una comunidad de videojuegos para conectar a personas de todo el mundo usando personajes Mii. Juxt se puede usar para compartir tus experiencias Gaming y conocer personas de todo el mundo.",
+        "beta": "Información de la beta",
+        "beta_text": {
+            "first": "Estás a punto de probar la primera beta pública de Juxt. Esto significa que todavía quedan muchas cosas en el aire, y pueden haber grandes cambios en cualquier momento.",
+            "second": "Esto puede incluir que todos los datos que almacenamos sean completamente eliminados durante o al acabar el periodo de beta.",
+            "third": "El sitio web, su software y todo el contenido que se encuentra en él se proporcionan 'tal cual' y 'según esté disponible'. Pretendo Network no ofrece ninguna garantía, ya sea expresa o implícita, en cuanto a la integridad o usabilidad del sitio web, su software o cualquiera de sus contenidos."
+        },
+        "info": "¿Que es Juxtaposition?",
+        "info_text": "Juxt es una comunidad de videojuegos dirigida por usuarios donde puedes interactuar con personas\n                de todo el mundo. Puedes escribir y dibujar publicaciones en comunidades enfocadas a los videojuegos y enviar mensajes directamente a tus amigos.",
+        "rules": "Reglas de Juxt",
+        "rules_text": {
+            "first": "Las siguientes son algunas normas importantes para hacer de Juxt una experiencia divertida y agradable para todos. El Código de conducta de Juxt contiene información detallada, así que léelo detenidamente.",
+            "second": "Todas las publicaciones pueden ser vistas por cualquier persona",
+            "third": "Juxt contiene muchas comunidades de videojuegos donde gente de todo el mundo puede compartir sus pensamientos. Cuando publiques en una comunidad, recuerda que todos pueden verlo. Por favor, expresa tus pensamientos de una forma que sea respetuosa hacia todos. Usa el sentido común y piensa antes de publicar. Juxt es un servicio al que también se puede acceder desde Internet, así que ten en cuenta que las personas que no usan Juxt también pueden ver tus publicaciones. Además, cualquier comentario que hagas en las publicaciones de tus amigos será visto, no solo por tus amigos, sino también por personas de todo el mundo. Por favor, ten esto en mente.",
+            "fourth": "Sé agradable con los demás",
+            "fifth": "Para que Juxt sea un lugar divertido para todos, te pedimos que seas considerado con los demás usuarios. Ayúdanos a que Juxt sea una experiencia agradable: no publiques nada inapropiado ni ofensivo.",
+            "sixth": "No publiques información personal - tuya o de otras personas",
+            "seventh": "Recuerda, conocer a alguien en Juxt no es lo mismo que conocerlo en la vida real. Nunca compartas tu dirección de correo electrónico, domicilio, nombre de tu trabajo o escuela u otra información de identificación personal con nadie en Juxt, y tampoco compartas la información de nadie más. Además, si alguien que conoces en Juxt te invita a conocerlo en el mundo real, no lo aceptes. Juxt es una comunidad en línea y no debe usarse para organizar reuniones en el mundo real.",
+            "eighth": "No publiques spoilers",
+            "ninth": "Algunas personas vienen a Juxt en busca de consejos y trucos para juegos, pero otras quieren descubrir los secretos de un juego por su cuenta. Las publicaciones que revelan secretos de un juego o su historia se denominan \"spoilers\". Si estás publicando algo sobre un juego que podría ser un spoiler, asegúrate de marcar la casilla \"Spoilers\" antes de enviar tu publicación. De esta forma, las personas que no quieran ver detalles del juego no verán tu publicación.",
+            "tenth": "Violaciones del Código de conducta",
+            "eleventh": "Nuestro objetivo es hacer que Juxt sea divertido y agradable para todos. En el caso de que alguien viole el Código de conducta de Juxt tomaremos las medidas adecuadas, incluyendo el bloqueo del usuario o la consola infractores.",
+            "twelfth": "¿Has jugado a este juego?",
+            "thirteenth": "Si publicas en una comunidad sobre algún juego que has jugado, tus publicaciones tendrán un icono que indica que has jugado a ese juego."
+        },
+        "experience": "Experiencia de juego",
+        "experience_text": {
+            "info": "Por favor, indica cuánta experiencia tienes jugando. Puedes cambiarlo después en Ajustes.",
+            "beginner": "Principiante",
+            "intermediate": "Intermedio",
+            "expert": "Experto"
+        },
+        "google": "Google Analytics",
+        "google_text": "Juxtaposition usa Google Analytics para saber cómo se usan nuestros servicios. Los datos recolectados incluyen el tiempo por visita, qué páginas se usan y el tiempo de uso de cada página. La recolección de datos es anónima, y no se utiliza ni por Google ni por nosotros para mostrar publicidad.",
+        "ready": "Listo para usar Juxt",
+        "ready_text": "Primero, revisa algunas comunidades y mira las publicaciones de personas de todo el mundo. Aprovecha esta oportunidad para familiarizarte con Juxt. ¡Podrías hacer nuevos descubrimientos en el camino!",
+        "done": "¡Que te diviertas en Juxt!",
+        "done_button": "¡Vamos!",
+        "guest": "Modo invitado",
+        "guest_text": "No podemos verificar tu cuenta en este momento, lo que probablemente significa que estás iniciando sesión con una cuenta de Nintendo Network. Podrás seguir navegando por Juxt, pero no podrás indicar ¡Genial! o crear publicaciones hasta que inicies sesión con una cuenta de Pretendo Network. Para obtener más información, consulta el servidor de Discord.",
+        "guest_button": "Entendido"
+    }
+}

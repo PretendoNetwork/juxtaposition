@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/juxt.min.css">
+    <title>First Run</title>
+</head>
+<style>
+
+    .background {
+        background: #fff;
+        border-radius: 5px;
+        border: 1px solid #666;
+        margin: 0 auto;
+        padding: 5px;
+        display: none;
+    }
+    .about-body {
+        font-size: 12px;
+        text-align: center;
+    }
+    .post-button {
+        display: block;
+    }
+    #body {
+        position: relative;;
+    }
+
+    .fixed-bottom-button.left {
+        left: 38px;
+    }
+    .post-button.fixed-bottom-button {
+        right: 38px;
+    }
+    .fixed-bottom-button {
+        padding: 0 !important;
+        width: 162px !important;
+        position: absolute;
+        bottom: 0;
+        height: 25px;
+    }
+    .about-wrapper.background {
+        min-height: 188px;
+    }
+    .about-button {
+        height: 25px;
+        margin: 0 auto;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+    }
+    .about-header {
+        font-weight: bold;
+        text-align: center;
+        color: #866dbe;
+        font-size: 15px;
+        margin: 5px 0;
+    }
+    h3 {
+        font-weight: bold;
+        text-align: center;
+        color: #44cca1;
+        font-size: 25px;
+        margin: 15px 0;
+    }
+
+    .headline {
+        width: 290px;
+        height: 36px;
+    }
+
+    .headline > h2 {
+        font-size: 12px;
+        line-height: 36px;
+        overflow: clip;
+    }
+    .tab-header span {
+        font-size: 12px;
+    }
+</style>
+<script>
+    var experience = 0;
+    var notifications = false;
+    function selectExperience(type) {
+        document.getElementById('beginner').className = ('tab-button');
+        document.getElementById('intermediate').className = ('tab-button');
+        document.getElementById('expert').className = ('tab-button');
+        switch (type) {
+            case 0:
+                document.getElementById("beginner").className += ' selected';
+                experience = 0;
+                break;
+            case 1:
+                document.getElementById("intermediate").className += ' selected';
+                experience = 1;
+                break;
+            case 2:
+                document.getElementById("expert").className += ' selected';
+                experience = 2;
+                break;
+
+        }
+        cave.snd_playSe('SE_OLV_OK');
+    }
+    function submit() {
+        var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+        var theUrl = "/titles/show/newUser";
+        xmlhttp.open("POST", theUrl);
+        xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications }));
+    }
+    function initPostModules() {
+        var els = document.querySelectorAll("[data-module-show]");
+        if (!els) return;
+        for (var i = 0; i < els.length; i++) {
+            els[i].addEventListener("click", postModel);
+        }
+        function postModel(e) {
+            var el = e.currentTarget,
+                show = el.getAttribute("data-module-show"),
+                hide = el.getAttribute("data-module-hide"),
+                header = el.getAttribute("data-header"),
+                sound = el.getAttribute("data-sound"),
+                message = el.getAttribute("data-message");
+            if(sound) cave.snd_playSe(sound);
+            if(!show || !hide) return;
+            document.getElementById(hide).style.display = 'none';
+            document.getElementById(show).style.display = 'block';
+            if(header === 'true')
+                document.getElementById("header").style.display = 'block';
+            else
+                document.getElementById("header").style.display = 'none';
+            if(message) {
+                cave.toolbar_setWideButtonMessage(message);
+                cave.toolbar_setMode(1);
+                cave.toolbar_setButtonType(1);
+                function tempBk() {
+                    document.getElementById("close-modal-button").click();
+                }
+                cave.toolbar_setCallback(1, tempBk);
+                cave.toolbar_setCallback(99, tempBk);
+                cave.toolbar_setCallback(8, function () {
+                    cave.toolbar_setMode(0);
+                    cave.toolbar_setButtonType(0);
+                    document.getElementById("submit").click();
+                });
+
+            }
+            else {
+                cave.toolbar_setMode(0);
+                cave.toolbar_setButtonType(0);
+                cave.toolbar_setCallback(1, back);
+                cave.toolbar_setCallback(99, back);
+            }
+            cave.transition_end();
+            initNewPost();
+        }
+    }
+</script>
+<body>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class="">Juxtaposition Setup</h1>
+    </header>
+    <div class="body-content">
+        <div class="communities-list">
+            <div id="welcome" class="about-wrapper background" style="display: block">
+                <h1 class="about-header"><%= lang.setup.welcome %></h1>
+                <div class="about-body">
+                    <p>
+                        <%= lang.setup.welcome_text %>
+                    </p>
+                </div>
+                <input type="button" class="fixed-bottom-button left"
+                       value="<%= lang.global.exit %>" data-sound="SE_WAVE_CANCEL"
+                       data-module-show="" data-module-hide="add-post-page"
+                       data-header="true" data-menu="false" onclick="cave.exitApp()">
+
+                <input type="submit" class="post-button fixed-bottom-button"
+                       value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+                       data-module-show="beta" data-module-hide="welcome"
+                       data-header="true" data-menu="false">
+            </div>
+
+            <div id="beta" class="about-wrapper background">
+                <h1 class="about-header"><%= lang.setup.beta %></h1>
+                <div class="about-body" style="position: relative">
+                    <p>
+                        <%= lang.setup.beta_text.first %>
+                        <br>
+                        <b><u><%= lang.setup.beta_text.second %></u></b>
+                        <br>
+                        <%= lang.setup.beta_text.third %>
+                    </p>
+                </div>
+                <input type="button" class="fixed-bottom-button left"
+                       value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+                       data-module-show="welcome" data-module-hide="beta"
+                       data-header="true" data-menu="false">
+                <input type="submit" class="post-button fixed-bottom-button"
+                       value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+                       data-module-show="about" data-module-hide="beta"
+                       data-header="true" data-menu="false">
+            </div>
+
+            <div id="about" class="about-wrapper background">
+                <h1 class="about-header"><%= lang.setup.info %></h1>
+                <div class="about-body">
+                    <p>
+                        <%= lang.setup.info_text %>
+                    </p>
+                </div>
+                <input type="button" class="fixed-bottom-button left"
+                       value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+                       data-module-show="beta" data-module-hide="about"
+                       data-header="true" data-menu="false">
+                <input type="submit" class="post-button fixed-bottom-button"
+                       value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+                       data-module-show="manners" data-module-hide="about"
+                       data-header="true" data-menu="false">
+            </div>
+
+            <div id="manners" class="background">
+                <h1 class="about-header"><%= lang.setup.rules %></h1>
+                <div class="about-body" style="position: relative">
+                    <p>
+                        <%= lang.setup.rules_text.first %>
+                        <br><br>
+                    <div class="headline">
+                        <h2><%= lang.setup.rules_text.second %></h2>
+                    </div>
+                    <%= lang.setup.rules_text.third %>
+                    <br><br>
+                    <div class="headline">
+                        <h2><%= lang.setup.rules_text.fourth %></h2>
+                    </div>
+                    <%= lang.setup.rules_text.fifth %>
+                    <br><br>
+                    <div class="headline">
+                        <h2><%= lang.setup.rules_text.sixth %></h2>
+                    </div>
+                    <%= lang.setup.rules_text.seventh %>
+                    <br><br>
+                    <div class="headline">
+                        <h2><%= lang.setup.rules_text.eighth %></h2>
+                    </div>
+                    <%= lang.setup.rules_text.ninth %>
+                    <br><br>
+                    <div class="headline">
+                        <h2><%= lang.setup.rules_text.tenth %></h2>
+                    </div>
+                    <%= lang.setup.rules_text.eleventh %>
+                    <br><br>
+                    <div class="headline">
+                        <h2><%= lang.setup.rules_text.twelfth %></h2>
+                    </div>
+                    <%= lang.setup.rules_text.thirteenth %>
+                    <br><br>
+                    </p>
+                </div>
+                <input type="button" class="fixed-bottom-button left"
+                       value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+                       data-module-show="about" data-module-hide="manners"
+                       data-header="true" data-menu="false">
+                <input type="submit" class="post-button fixed-bottom-button"
+                       value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+                       data-module-show="google-analytics" data-module-hide="manners"
+                       data-header="true" data-menu="false">
+            </div>
+
+            <div id="google-analytics" class="about-wrapper background">
+                <h1 class="about-header"><%= lang.setup.google %></h1>
+                <div class="about-body">
+                    <p>
+                        <%= lang.setup.google_text %>
+                    </p>
+                </div>
+                <input type="button" class="fixed-bottom-button left"
+                       value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+                       data-module-show="manners" data-module-hide="google-analytics"
+                       data-header="true" data-menu="false">
+                <input type="submit" class="post-button fixed-bottom-button"
+                       value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+                       data-module-show="game-experience" data-module-hide="google-analytics"
+                       data-header="true" data-menu="false">
+            </div>
+
+            <div id="game-experience" class="about-wrapper background">
+                <h1 class="about-header"><%= lang.setup.experience %></h1>
+                <div class="about-body">
+                    <p>
+                        <%= lang.setup.experience_text.info %>
+                    </p>
+                </div>
+                <div>
+                    <menu class="tab-header user-page">
+                        <li id="beginner" class="tab-button selected">
+                            <a data-sound="SE_WAVE_SELECT_TAB" onclick="selectExperience(0)">
+                                <span class="new-post"><%= lang.setup.experience_text.beginner %></span>
+                            </a>
+                        </li>
+                        <li id="intermediate" class="tab-button">
+                            <a data-sound="SE_WAVE_SELECT_TAB" onclick="selectExperience(1)">
+                                <span><%= lang.setup.experience_text.intermediate %></span>
+                            </a>
+                        </li>
+                        <li id="expert" class="tab-button">
+                            <a data-sound="SE_WAVE_SELECT_TAB" onclick="selectExperience(2)">
+                                <span><%= lang.setup.experience_text.expert %></span>
+                            </a>
+                        </li>
+                    </menu>
+                    <br><br>
+                </div>
+                <input type="button" class="fixed-bottom-button left"
+                       value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+                       data-module-show="google-analytics" data-module-hide="game-experience"
+                       data-header="true" data-menu="false">
+                <input type="submit" class="post-button fixed-bottom-button"
+                       value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+                       data-module-show="ready" data-module-hide="game-experience"
+                       data-header="true" data-menu="false">
+            </div>
+
+            <div id="ready" class="about-wrapper background">
+                <h1 class="about-header"><%= lang.setup.ready %></h1>
+                <div class="about-body">
+                    <p>
+                        <%= lang.setup.ready_text %>
+                    </p>
+                </div>
+                <input type="button" class="fixed-bottom-button left"
+                       value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+                       data-module-show="game-experience" data-module-hide="ready"
+                       data-header="true" data-menu="false">
+                <input type="submit" class="post-button fixed-bottom-button"
+                       value="<%= lang.global.next %>" data-sound="GL_OLV_INIT_END"
+                       data-module-show="have-fun" data-module-hide="ready"
+                       data-header="true" data-menu="false" onclick="cave.snd_playBgm('BGM_CAVE_SYOKAI2');submit()">
+            </div>
+
+            <div id="have-fun" class="about-wrapper background">
+                <h1 class="about-header"></h1>
+                <div class="about-body">
+                    <h1 class="about-header"><%= lang.setup.done %></h1>
+                </div>
+                <br><br><br><br>
+                <div class="center">
+                    <button class="about-button"
+                            onclick="window.location.replace('/titles')"><%= lang.setup.done_button %></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<body onload="cave.snd_playBgm('BGM_CAVE_SYOKAI');cave.toolbar_setVisible(false);initPostModules()">
+</body>
+</html>

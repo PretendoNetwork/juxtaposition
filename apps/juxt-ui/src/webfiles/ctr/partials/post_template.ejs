@@ -1,0 +1,72 @@
+<div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%> <%if(post.is_spoiler) {%>spoiler<%}%>">
+    <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
+        <img src="<%= post.mii_face_url.replace('https:', 'http:') %>" class="mii-icon">
+    </a>
+    <div class="post-body-content">
+        <div class="post-body <%if(userContent.likes && userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>" id="<%= post.id %>">
+            <header>
+                <span class="screen-name"><%= post.screen_name %></span>
+                <span class="timestamp">- <%= moment(post.created_at).fromNow() %></span>
+                <%if(post.topic_tag) {%>
+                <a href="/topics?topic_tag=<%=post.topic_tag%>" data-pjax="#body">
+                    <span>
+                        <span class="sprite tag"></span>
+                        <span class="tags"><%=post.topic_tag%></span>
+                    </span>
+                </a>
+                <%}%>
+            </header>
+            <%if(!reply) {%>
+                <a href="/titles/<%= post.community_id %>" class="community-banner" data-pjax="#body">
+                        <span class="title-icon-container" data-pjax="#body">
+                            <img src="http://mii.olv.pretendo.cc/icons/<%= post.community_id %>/32.png" class="title-icon">
+                        </span>
+                    <span class="community-name"><%= communityMap.get(post.community_id) %></span>
+                </a>
+            <%}%>
+            <%if(post.is_spoiler) {%>
+                <div class="spoiler-wrapper" id="spoiler-<%= post.id %>">
+                    <button data-post-id="<%= post.id %>">Show Spoiler</button>
+                </div>
+            <%}%>
+            <div class="post-content" <%if(!reply) {%>data-href="/posts/<%= post.id %>"<%}%>>
+                <% if(post.body !== '') { %>
+                    <p class="post-content-text"><%= post.body %></p>
+                <%}%>
+                <% if(post.screenshot !== '') { %>
+                    <img class="post-screenshot" src="http://mii.olv.pretendo.cc<%= post.screenshot %>" onclick="alert(this.src)">
+                <%}%>
+                <% if(post.painting !== '') { %>
+                <img class="post-memo" src="http://mii.olv.pretendo.cc/paintings/<%=post.pid%>/<%=post.id%>.png">
+                <%}%>
+                <% if(post.url) { %>
+                    <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <%}%>
+            </div>
+            <div class="post-buttons">
+                <button type="button" class="submit yeah-button <%if(post.yeahs && post.yeahs.indexOf(userContent.pid) !== -1){ %> selected <%}%>" data-post="<%= post.id %>">
+                    <span class="sprite yeah"></span>
+                </button>
+                <a <%if(!locals.yeah) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
+                    <%if(!locals.yeah) {%>
+                        <span class="sprite feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
+                        <%if(!reply) {%>
+                        <span class="sprite reply"><%=post.reply_count %></span>
+                        <%}%>
+                    <%}%>
+                </a>
+            </div>
+        </div>
+    </div>
+    <%if(locals.yeah && post.yeahs.length > 0) {%>
+        <h6 class="yeah-text"><span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span> people gave this post a yeah.</h6>
+        <div class="yeah-list">
+            <% var length = post.yeahs.length > 10 ? 10 : post.yeahs.length%>
+            <%for(var i = 0; i < length; i++) {%>
+                <a href="/users/<%= yeah %>" class="mii-icon-container" data-pjax="#body">
+                    <img src="http://mii.olv.pretendo.cc/mii/<%= post.yeahs[i] %>/normal_face.png" class="mii-icon">
+                </a>
+            <%}%>
+        </div>
+    <%}%>
+</div>

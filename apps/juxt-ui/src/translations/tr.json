@@ -1,0 +1,126 @@
+{
+    "global": {
+        "go_back": "Geri dön",
+        "back": "Geri",
+        "messages": "Mesajlar",
+        "more": "Daha fazla gönderi yükle",
+        "user_page": "Kullanıcı Sayfası",
+        "activity_feed": "Etkinlik Akışı",
+        "yeahs": "Evet",
+        "notifications": "Bildirimler",
+        "communities": "Topluluklar",
+        "private": "Özel",
+        "next": "Sonraki",
+        "no_posts": "Gönderi yok",
+        "close": "Kapat",
+        "save": "Kaydet",
+        "exit": "Çık"
+    },
+    "user_page": {
+        "unfriend": "Arkadaşlıktan çıkar",
+        "no_friends": "Arkadaş yok",
+        "no_following": "Kimse takip edilmiyor",
+        "no_followers": "Takipçi yok",
+        "posts": "Gönderiler",
+        "following": "Takip edilenler",
+        "followers": "Takipçiler",
+        "birthday": "Doğum günü",
+        "game_experience": "Oyun Deneyimi",
+        "friends": "Arkadaşlar",
+        "following_user": "Takip ediliyor",
+        "country": "Ülke",
+        "follow_user": "Takip et",
+        "befriend": "Arkadaş ol",
+        "pending": "Bekliyor"
+    },
+    "user_settings": {
+        "profile_settings": "Profil Ayarları",
+        "show_country": "Profilde Ülkeyi göster",
+        "show_birthday": "Profilde doğum gününü göster",
+        "show_game": "Profilde oyun deneyimini göster",
+        "profile_comment": "Profil Yorumu",
+        "swearing": "Profil yorumu açık bir dil içeremez.",
+        "show_comment": "Profilde yorumu göster"
+    },
+    "activity_feed": {
+        "empty": "Burası bomboş. Birini takip etmeyi deneyin!"
+    },
+    "notifications": {
+        "none": "Bildirim yok.",
+        "new_follower": "seni takip etti!"
+    },
+    "new_post": {
+        "post_to": "Şuraya gönder",
+        "text_hint": "Gönderi oluşturmak için buraya dokunun.",
+        "new_post_text": "Yeni Gönderi",
+        "swearing": "Gönderiler açık bir dil içeremez."
+    },
+    "messages": {
+        "coming_soon": "Mesajlar henüz hazır değil. Daha sonra kontrol edin!"
+    },
+    "setup": {
+        "welcome": "Juxtaposition'a hoşgeldiniz!",
+        "beta": "Beta Sorumluluk Reddi",
+        "beta_text": {
+            "second": "Bu, beta döneminde veritabanının tamamen silinmesini içerebilir.",
+            "first": "Juxt'un ilk herkese açık beta sürümünü denemek üzeresiniz. Bu, pek çok şeyin kararsız olduğu ve her an pek çok şeyin değişebileceği anlamına gelir.",
+            "third": "Web sitesi, yazılımı ve üzerinde bulunan tüm içerik “olduğu gibi” ve “mevcut olduğu şekilde” sağlanmaktadır. Pretendo Network, web sitesinin, yazılımının veya herhangi bir içeriğinin uygunluğu veya kullanılabilirliği konusunda açık veya zımni hiçbir garanti vermez."
+        },
+        "info": "Juxtaposition nedir?",
+        "rules": "Juxt Kuralları",
+        "rules_text": {
+            "first": "Aşağıda, Juxt'u herkes için eğlenceli ve keyifli bir deneyim haline getirmek için bazı önemli yönergeler verilmiştir. Juxt Davranış Kuralları ayrıntılı bilgiler içerir, bu yüzden lütfen dikkatlice okuyun.",
+            "fourth": "Birbirinize iyi davranın",
+            "fifth": "Juxt'u herkes için eğlenceli bir yer olarak tutmak için, diğer kullanıcılara karşı düşünceli olmanızı rica ediyoruz. Uygunsuz veya rahatsız edici hiçbir şey yayınlamayarak Juxt'u keyifli bir deneyim haline getirmemize yardımcı olun.",
+            "sixth": "Kişisel Bilgilerinizi Göndermeyin—Sizin veya Başkalarının",
+            "eleventh": "Amacımız Juxt'u herkes için eğlenceli ve eğlenceli kılmaktır. Birinin Juxt Davranış Kurallarını ihlal etmesi durumunda, ihlalde bulunan kullanıcıyı veya konsolu engellemek de dahil olmak üzere uygun önlemleri alacağız.",
+            "twelfth": "O Oyunu Oynadın mı?",
+            "thirteenth": "Oynadığınız bir oyun için toplulukta gönderi paylaşıyorsanız, gönderilerinizde onu oynadığınızı gösteren bir simge olacaktır.",
+            "second": "Gönderiler Dünyanın Her Yerinde Görüntülenebilir",
+            "third": "Juxt, dünyanın her yerinden insanların düşüncelerini paylaşabileceği birçok oyun topluluğu içerir. Bir toplulukta paylaşımda bulunduğunuzda, herkesin görebileceğini unutmayın, bu yüzden lütfen kendinizi herkesin keyif alabileceği bir şekilde ifade edin. Sağduyunuzu kullanın ve göndermeden önce düşünün. Juxt, İnternet'ten de erişilebilen bir hizmettir, bu nedenle Juxt kullanmayan kişilerin de gönderilerinizi görebileceğini unutmayın. Ayrıca, arkadaşlarınızın gönderilerine yaptığınız yorumlar sadece arkadaşlarınız tarafından değil, dünyanın her yerinden insanlar tarafından da görülecektir. Lütfen bunu aklınızda bulundurun.",
+            "seventh": "Unutmayın, birini Juxt'ta tanımak, onu gerçek hayatta tanımakla aynı şey değildir. E-posta adresinizi, ev adresinizi, iş veya okul adınızı veya diğer kişisel kimlik bilgilerinizi Juxt'ta asla kimseyle paylaşmayın ve asla başka birinin bilgilerini de paylaşmayın. Ek olarak, Juxt'ta tanıştığınız biri sizi onunla gerçek dünyada buluşmaya davet ederse, kabul etmeyin. Juxt çevrimiçi bir topluluktur ve gerçek dünyadaki buluşmaları düzenlemek için kullanılmamalıdır.",
+            "eighth": "Spoiler Göndermeyin",
+            "ninth": "Bazı insanlar oyunlar için ipuçları ve püf noktaları aramak için Juxt'a gelir, ancak diğerleri bir oyunun sırlarını kendi başlarına keşfetmek ister. Bir oyunun veya hikayesinin sırlarını açığa çıkaran gönderilere \"spoiler\" denir. Spoiler olabilecek bir oyun hakkında bir şeyler yayınlıyorsanız, yazınızı göndermeden önce Spoiler kutusunu kontrol ettiğinizden emin olun. Bu sayede spoiler görmek istemeyen kişiler gönderinizi görmeyecektir.",
+            "tenth": "Davranış Kuralları İhlalleri"
+        },
+        "info_text": "Juxt, dünyanın her yerinden insanlarla etkileşime girebileceğiniz, kullanıcı odaklı bir oyun topluluğudur. Oyun topluluklarında yazı yazabilir veya çizebilir veya doğrudan arkadaşlarınıza mesaj gönderebilirsiniz.",
+        "experience": "Oyun Deneyimi",
+        "experience_text": {
+            "info": "Lütfen bize oyunlarla ilgili deneyim seviyenizi nasıl tanımlayacağınızı söyleyin. Bu ayarı daha sonra değiştirebilirsiniz.",
+            "beginner": "Acemi",
+            "intermediate": "Orta düzey",
+            "expert": "Uzman"
+        },
+        "ready": "Juxt'u Kullanmaya Hazır",
+        "ready_text": "Önce bazı topluluklara göz atın ve dünyanın her yerinden insanların neler hakkında gönderiler paylaştığını görün. Juxt'u tanımak için bu fırsatı kullanın. Yol boyunca birçok yeni keşifler yapabilirsiniz!",
+        "done": "Juxt'ta iyi eğlenceler!",
+        "done_button": "Hadi gidelim!",
+        "guest": "Misafir Modu",
+        "guest_button": "Anlıyorum",
+        "welcome_text": "Juxt, Mii karakterlerini kullanarak dünyanın her yerinden insanları birbirine bağlayan bir oyun topluluğudur. Oyun deneyimlerinizi paylaşmak ve dünyanın her yerinden insanlarla tanışmak için Juxt'u kullanın.",
+        "google": "Google Analytics",
+        "google_text": "Juxtaposition, kullanıcıların hizmetimizi nasıl kullandığını izlemek için Google Analytics'i kullanır. Toplanan veriler, ziyaret süresi, ziyaret edilen sayfalar ve sitede geçirilen süreyi içerir ancak bunlarla sınırlı değildir. Bu veriler hiçbir şekilde size bağlı değildir ve biz veya Google tarafından reklamlar için kullanılmaz.",
+        "guest_text": "Şu anda hesabınızı doğrulayamıyoruz, bu da muhtemelen şu anda bir Nintendo Network hesabıyla giriş yaptığınız anlamına geliyor. Juxt'a göz atmaya devam edebilirsiniz, ancak bir Pretendo Network hesabıyla oturum açana kadar gönderileri Evet! leyemezsiniz veya kendi gönderilerinizi paylaşamazsınız. Daha fazla bilgi için Discord sunucusunu kontrol edin."
+    },
+    "language": "Türkçe",
+    "all_communities": {
+        "text": "Tüm topluluklar",
+        "popular_places": "Popüler Yerler",
+        "search": "Toplulukları ara...",
+        "announcements": "Duyurular",
+        "ann_string": "Son duyuruları görüntülemek için buraya tıklayın!",
+        "new_communities": "Yeni Topluluklar",
+        "show_all": "Hepsini göster"
+    },
+    "community": {
+        "following": "Takip ediliyor",
+        "tags": "Etiketler",
+        "recent": "Son Gönderiler",
+        "new": "Yeni Gönderi",
+        "followers": "Takipçiler",
+        "posts": "Gönderiler",
+        "follow": "Topluluğu takip et",
+        "popular": "Popüler Gönderiler",
+        "verified": "Onaylanmış Gönderiler"
+    }
+}

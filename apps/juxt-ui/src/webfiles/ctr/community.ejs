@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: community.name }); %>
+<body>
+<div id="body">
+    <header id="header" style="background: url('http://mii.olv.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png')">
+        <h1 id="page-title" class="community">
+            <span>
+                <span class="icon-container">
+                    <img src="http://mii.olv.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/64.png" class="icon">
+                </span>
+                <span class="community-name">
+                    <%= community.name %>
+                </span>
+                <span class="text">
+                    <span>
+                        <span class="sprite posts"></span>
+                        <%= bundle.numPosts %>
+                    </span>
+                    <span>|
+                        <span class="sprite followers"></span>
+                        <span id="followers"><%= community.followers %></span>
+                    </span>
+                </span>
+            </span>
+            </span>
+        </h1>
+        <% if(((community.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+            <a id="header-post-button" class="header-button left" href="#"
+               data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list"
+               data-module-show="add-post-page" data-header="false" data-screenshot="true"
+               data-message="<%= lang.new_post.post_to %> <%= community.name %>">Post + </a>
+        <%}%>
+        <%if(children){%>
+            <a id="header-communities-button" class="right" href="/titles/<%= community.olive_community_id %>/related" data-pjax="#body">Related Communities</a>
+        <%}%>
+        <%if(community.open){%>
+        <button type="button" class="submit follow yeah-button <%if(children) {%>suggested<%}%> <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>">
+            <span class="sprite yeah"></span>
+        </button>
+        <%}%>
+    </header>
+    <div class="body-content tab2-content" id="community-post-list">
+        <div class="community-info info-content with-header-banner">
+        </div>
+        <menu class="tab-header">
+            <li id="tab-header-post" class="tab-button <%if(type === 0){ %>selected<%}%>">
+                <a href="/titles/<%= community.olive_community_id %>/new" data-sound="SE_WAVE_SELECT_TAB"><span class="new-post"><%= lang.community.recent %></span></a>
+            </li>
+            <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.olive_community_id %>/hot" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
+        </menu>
+        <div class="tab-body post-list">
+            <%- include('partials/' + template, { bundle }); %>
+        </div>
+    </div>
+    <%- include('partials/new_post', { pid, lang, id: community.olive_community_id, name: community.name, url: '/posts/new', show: 'community-post-list', message_pid: '' }); %>
+</div>
+</body>
+</html>
