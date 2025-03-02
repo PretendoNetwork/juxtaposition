@@ -2,7 +2,13 @@ import express from 'express';
 import multer from 'multer';
 import xmlbuilder from 'xmlbuilder';
 import { z } from 'zod';
-import { getUserAccountData, processPainting, uploadCDNAsset, getValueFromQueryString } from '@/util';
+import {
+	getUserAccountData,
+	processPainting,
+	uploadCDNAsset,
+	getValueFromQueryString,
+	INVALID_POST_BODY_REGEX
+} from '@/util';
 import {
 	getPostByID,
 	getUserContent,
@@ -15,9 +21,10 @@ import {
 import { LOG_WARN } from '@/logger';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { HydratedPostDocument } from '@/types/mongoose/post';
+import { config } from '@/config-manager';
 import type { PostRepliesResult } from '@/types/miiverse/post';
+import type { HydratedPostDocument } from '@/types/mongoose/post';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
@@ -213,7 +220,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 
 	try {
 		user = await getUserAccountData(request.pid);
-	} catch (ignore) {
+	} catch (ignored) {
 		// TODO - Log this error
 		response.sendStatus(403);
 		return;
@@ -235,7 +242,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	}
 
 	const communityID = bodyCheck.data.community_id || '';
-	let messageBody = bodyCheck.data.body;
+	const messageBody = bodyCheck.data.body?.trim();
 	const painting = bodyCheck.data.painting?.replace(/\0/g, '').trim() || '';
 	const screenshot = bodyCheck.data.screenshot?.replace(/\0/g, '').trim() || '';
 	const appData = bodyCheck.data.app_data?.replace(/[^A-Za-z0-9+/=\s]/g, '').trim() || '';
@@ -288,10 +295,10 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	}
 
 	// TODO - Clean this up
-	// * Nesting this because of how manu checks there are, extremely unreadable otherwise
+	// * Nesting this because of how many checks there are, extremely unreadable otherwise
 	if (!(community.admins && community.admins.indexOf(request.pid) !== -1 && userSettings.account_status === 0)) {
-		if (community.type >= 2) {
-			if (!(parentPost && community.allows_comments && community.open)) {
+		if (community.type >= 2 || user.accessLevel < community.permissions.minimum_new_post_access_level) {
+			if (!(parentPost && user.accessLevel >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
 				response.sendStatus(403);
 				return;
 			}
@@ -317,15 +324,19 @@ async function newPost(request: express.Request, response: express.Response): Pr
 			break;
 	}
 
-	if (messageBody) {
-		messageBody = messageBody.replace(/[^A-Za-z\d\s-_!@#$%^&*(){}‛¨ƒºª«»“”„¿¡←→↑↓√§¶†‡¦–—⇒⇔¤¢€£¥™©®+×÷=±∞ˇ˘˙¸˛˜′″µ°¹²³♭♪•…¬¯‰¼½¾♡♥●◆■▲▼☆★♀♂,./?;:'"\\<>]/g, '');
+	if (messageBody && INVALID_POST_BODY_REGEX.test(messageBody)) {
+		// TODO - Log this error
+		response.sendStatus(400);
+		return;
 	}
 
 	if (messageBody && messageBody.length > 280) {
-		messageBody = messageBody.substring(0, 280);
+		// TODO - Log this error
+		response.sendStatus(400);
+		return;
 	}
 
-	if ((!messageBody || messageBody === '') && painting === '' && screenshot === '') {
+	if (!messageBody?.trim() && !painting?.trim() && !screenshot?.trim()) {
 		response.status(400);
 		return;
 	}
@@ -354,7 +365,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		is_app_jumpable: (jumpable) ? 1 : 0,
 		language_id: languageID,
 		mii: user.mii.data,
-		mii_face_url: `https://mii.olv.pretendo.cc/mii/${user.pid}/${miiFace}`,
+		mii_face_url: `${config.cdn_url}/mii/${user.pid}/${miiFace}`,
 		pid: request.pid,
 		platform_id: platformID,
 		region_id: regionID,
@@ -385,7 +396,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		const paintingBuffer = await processPainting(painting);
 
 		if (paintingBuffer) {
-			await uploadCDNAsset('pn-cdn', `paintings/${request.pid}/${post.id}.png`, paintingBuffer, 'public-read');
+			await uploadCDNAsset(`paintings/${request.pid}/${post.id}.png`, paintingBuffer, 'public-read');
 		} else {
 			LOG_WARN(`PAINTING FOR POST ${post.id} FAILED TO PROCESS`);
 		}
@@ -394,7 +405,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	if (screenshot) {
 		const screenshotBuffer = Buffer.from(screenshot, 'base64');
 
-		await uploadCDNAsset('pn-cdn', `screenshots/${request.pid}/${post.id}.jpg`, screenshotBuffer, 'public-read');
+		await uploadCDNAsset(`screenshots/${request.pid}/${post.id}.jpg`, screenshotBuffer, 'public-read');
 
 		post.screenshot = `/screenshots/${request.pid}/${post.id}.jpg`;
 		post.screenshot_length = screenshot.length;

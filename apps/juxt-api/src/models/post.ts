@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import moment from 'moment';
 import { Schema, model } from 'mongoose';
+import { INVALID_POST_BODY_REGEX } from '@/util';
 import type { HydratedPostDocument, IPost, IPostMethods, PostModel } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { PostToJSONOptions } from '@/types/mongoose/post-to-json-options';
@@ -106,7 +107,7 @@ PostSchema.method<HydratedPostDocument>('generatePostUID', async function genera
 });
 
 PostSchema.method<HydratedPostDocument>('cleanedBody', function cleanedBody(): string {
-	return this.body ? this.body.replace(/[^A-Za-z\d\s-_!@#$%^&*(){}+=,.<>/?;:'"[\]]/g, '').replace(/[\n\r]+/gm, '') : '';
+	return this.body ? this.body.replace(INVALID_POST_BODY_REGEX, '').replace(/[\n\r]+/gm, '') : '';
 });
 
 PostSchema.method<HydratedPostDocument>('cleanedMiiData', function cleanedMiiData(): string {

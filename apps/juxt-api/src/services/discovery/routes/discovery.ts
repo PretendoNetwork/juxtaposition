@@ -15,7 +15,7 @@ router.get('/', async function (request: express.Request, response: express.Resp
 
 	try {
 		user = await getUserAccountData(request.pid);
-	} catch (ignore) {
+	} catch (ignored) {
 		// TODO - Log this error
 		response.sendStatus(404);
 		return;

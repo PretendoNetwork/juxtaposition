@@ -6,20 +6,20 @@ import { Conversation } from '@/models/conversation';
 import { Endpoint } from '@/models/endpoint';
 import { Post } from '@/models/post';
 import { Settings } from '@/models/settings';
-import { conf as config } from '@/config';
-import type { HydratedCommunityDocument } from '@/types/mongoose/community';
-import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
-import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
-import type { HydratedContentDocument } from '@/types/mongoose/content';
+import { config } from '@/config-manager';
 import type { HydratedConversationDocument } from '@/types/mongoose/conversation';
+import type { HydratedContentDocument } from '@/types/mongoose/content';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
+import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
+import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
 const { mongoose: mongooseConfig } = config;
 
 let connection: mongoose.Connection;
 
 export async function connect(): Promise<void> {
-	await mongoose.connect(mongooseConfig.uri, mongooseConfig.options);
+	await mongoose.connect(mongooseConfig.connection_string, mongooseConfig.options);
 
 	connection = mongoose.connection;
 	connection.on('connected', () => {

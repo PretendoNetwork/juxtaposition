@@ -2,16 +2,17 @@ import express from 'express';
 import xmlbuilder from 'xmlbuilder';
 import multer from 'multer';
 import { z } from 'zod';
+import { Post } from '@/models/post';
+import { Community } from '@/models/community';
+import { LOG_WARN } from '@/logger';
+import { getValueFromQueryString, getUserAccountData } from '@/util';
 import {
 	getMostPopularCommunities,
 	getNewCommunities,
 	getCommunityByTitleID,
 	getUserContent
 } from '@/database';
-import { getValueFromQueryString } from '@/util';
-import { LOG_WARN } from '@/logger';
-import { Community } from '@/models/community';
-import { Post } from '@/models/post';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { SubCommunityQuery } from '@/types/mongoose/subcommunity-query';
 import type { CommunityPostsQuery } from '@/types/mongoose/community-posts-query';
@@ -265,6 +266,29 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 	const bodyCheck = createNewCommunitySchema.safeParse(request.body);
 	if (!bodyCheck.success) {
 		return respondCommunityError(response, 400, 20);
+	}
+
+	let pnid: GetUserDataResponse;
+
+	try {
+		pnid = await getUserAccountData(request.pid);
+	} catch (ignored) {
+		// TODO - Log this error
+		response.sendStatus(403);
+		return;
+	}
+
+	if (pnid.accessLevel < parentCommunity.permissions.minimum_new_community_access_level) {
+		response.send(xmlbuilder.create({
+			result: {
+				has_error: '1',
+				version: '1',
+				code: '403',
+				error_code: '911',
+				message: 'NO_NEW_COMMUNITY'
+			}
+		}).end({ pretty: true, allowEmpty: true }));
+		return;
 	}
 
 	request.body.name = request.body.name.trim();

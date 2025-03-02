@@ -4,20 +4,31 @@ import { Snowflake } from 'node-snowflake';
 import moment from 'moment';
 import xmlbuilder from 'xmlbuilder';
 import { z } from 'zod';
-import { getUserFriendPIDs, getUserAccountData, processPainting, uploadCDNAsset, getValueFromQueryString } from '@/util';
+import {
+	getUserFriendPIDs,
+	getUserAccountData,
+	processPainting,
+	uploadCDNAsset,
+	getValueFromQueryString,
+	INVALID_POST_BODY_REGEX
+} from '@/util';
 import { getConversationByUsers, getUserSettings, getFriendMessages } from '@/database';
 import { LOG_WARN } from '@/logger';
 import { Post } from '@/models/post';
 import { Conversation } from '@/models/conversation';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import { config } from '@/config-manager';
 import type { FormattedMessage } from '@/types/common/formatted-message';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
 const sendMessageSchema = z.object({
-	message_to_pid: z.string().transform(Number),
-	body: z.string(),
+	body: z.string().optional(),
 	painting: z.string().optional(),
 	screenshot: z.string().optional(),
-	app_data: z.string().optional()
+	app_data: z.string().optional(),
+	feeling_id: z.string(),
+	is_autopost: z.string(),
+	number: z.string(),
+	message_to_pid: z.string().transform(Number)
 });
 
 const router = express.Router();
@@ -30,18 +41,20 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	const bodyCheck = sendMessageSchema.safeParse(request.body);
 
 	if (!bodyCheck.success) {
-		response.status(422);
+		LOG_WARN('[Messages] Body check failed');
+		response.sendStatus(422);
 		return;
 	}
 
 	const recipientPID = bodyCheck.data.message_to_pid;
-	let messageBody = bodyCheck.data.body;
+	const messageBody = bodyCheck.data.body?.trim() || '';
 	const painting = bodyCheck.data.painting?.replace(/\0/g, '').trim() || '';
 	const screenshot = bodyCheck.data.screenshot?.trim().replace(/\0/g, '').trim() || '';
 	const appData = bodyCheck.data.app_data?.replace(/[^A-Za-z0-9+/=\s]/g, '').trim() || '';
 
 	if (isNaN(recipientPID)) {
-		response.status(422);
+		LOG_WARN('[Messages] PID is not a number');
+		response.sendStatus(422);
 		return;
 	}
 
@@ -49,26 +62,38 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 
 	try {
 		sender = await getUserAccountData(request.pid);
-	} catch (ignore) {
-		// TODO - Log this error
-		response.status(422);
+	} catch (ignored) {
+		LOG_WARN('[Messages] Cannot find sender');
+		response.sendStatus(422);
 		return;
 	}
 
 	if (!sender.mii) {
 		// * This should never happen, but TypeScript complains so check anyway
-		// TODO - Better errors
-		response.status(422);
+		LOG_WARN('[Messages] Mii does not exist or is invalid');
+		response.sendStatus(422);
 		return;
 	}
 
 	let recipient: GetUserDataResponse;
 
 	try {
-		recipient = await getUserAccountData(request.pid);
-	} catch (ignore) {
+		recipient = await getUserAccountData(recipientPID);
+	} catch (ignored) {
 		// TODO - Log this error
+		LOG_WARN('[Messages] Cannot find recipient');
+		response.type('application/xml');
 		response.status(422);
+
+		response.send(xmlbuilder.create({
+			result: {
+				has_error: 1,
+				version: 1,
+				code: 400,
+				error_code: 11,
+				message: 'User not Found'
+			}
+		}).end({ pretty: true }));
 		return;
 	}
 
@@ -79,6 +104,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		const user2Settings = await getUserSettings(recipient.pid);
 
 		if (!sender || !recipient || userSettings || user2Settings) {
+			LOG_WARN(`[Messages] Some data is missing:\n${!sender} ${!recipient} ${!userSettings} ${!user2Settings}`);
 			response.sendStatus(422);
 			return;
 		}
@@ -108,6 +134,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	const friendPIDs = await getUserFriendPIDs(recipient.pid);
 
 	if (friendPIDs.indexOf(request.pid) === -1) {
+		LOG_WARN('[Messages] Users are not friends');
 		response.sendStatus(422);
 		return;
 	}
@@ -131,16 +158,21 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 			break;
 	}
 
-	if (messageBody) {
-		messageBody = messageBody.replace(/[^A-Za-z\d\s-_!@#$%^&*(){}‛¨ƒºª«»“”„¿¡←→↑↓√§¶†‡¦–—⇒⇔¤¢€£¥™©®+×÷=±∞ˇ˘˙¸˛˜′″µ°¹²³♭♪•…¬¯‰¼½¾♡♥●◆■▲▼☆★♀♂,./?;:'"\\<>]/g, '');
+	if (messageBody && INVALID_POST_BODY_REGEX.test(messageBody)) {
+		// TODO - Log this error
+		response.sendStatus(400);
+		return;
 	}
 
-	if (messageBody.length > 280) {
-		messageBody = messageBody.substring(0, 280);
+	if (messageBody && messageBody.length > 280) {
+		// TODO - Log this error
+		response.sendStatus(400);
+		return;
 	}
 
-	if (messageBody === '' && painting === '' && screenshot === '') {
+	if (!messageBody?.trim() && !painting?.trim() && !screenshot?.trim()) {
 		response.status(422);
+		LOG_WARN('[Messages] message content is empty');
 		response.redirect(`/friend_messages/${conversation.id}`);
 		return;
 	}
@@ -164,7 +196,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		is_app_jumpable: request.body.is_app_jumpable,
 		language_id: request.body.language_id,
 		mii: sender.mii.data,
-		mii_face_url: `https://mii.olv.pretendo.cc/mii/${sender.pid}/${miiFace}`,
+		mii_face_url: `${config.cdn_url}/mii/${sender.pid}/${miiFace}`,
 		pid: request.pid,
 		platform_id: request.paramPack.platform_id,
 		region_id: request.paramPack.region_id,
@@ -178,7 +210,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		const paintingBuffer = await processPainting(painting);
 
 		if (paintingBuffer) {
-			await uploadCDNAsset('pn-cdn', `paintings/${request.pid}/${post.id}.png`, paintingBuffer, 'public-read');
+			await uploadCDNAsset(`paintings/${request.pid}/${post.id}.png`, paintingBuffer, 'public-read');
 		} else {
 			LOG_WARN(`PAINTING FOR POST ${post.id} FAILED TO PROCESS`);
 		}
@@ -187,7 +219,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	if (screenshot) {
 		const screenshotBuffer = Buffer.from(screenshot, 'base64');
 
-		await uploadCDNAsset('pn-cdn', `screenshots/${request.pid}/${post.id}.jpg`, screenshotBuffer, 'public-read');
+		await uploadCDNAsset(`screenshots/${request.pid}/${post.id}.jpg`, screenshotBuffer, 'public-read');
 
 		post.screenshot = `/screenshots/${request.pid}/${post.id}.jpg`;
 		post.screenshot_length = screenshot.length;
@@ -283,6 +315,7 @@ router.post('/:post_id/empathies', upload.none(), async function (_request: expr
 	const post = await getPostByID(req.params.post_id);
 	if(pid === null) {
 		res.sendStatus(403);
+		response.sendStatus(400);
 		return;
 	}
 	let user = await getUserByPID(pid);

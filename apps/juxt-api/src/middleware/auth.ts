@@ -1,9 +1,10 @@
 import xmlbuilder from 'xmlbuilder';
+import moment from 'moment';
 import { z } from 'zod';
-import { getEndpoint } from '@/database';
 import { getUserAccountData, getValueFromHeaders, decodeParamPack, getPIDFromServiceToken } from '@/util';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import { getEndpoint, getUserSettings } from '@/database';
 import type express from 'express';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
 
 const ParamPackSchema = z.object({
@@ -86,20 +87,32 @@ async function auth(request: express.Request, response: express.Response, next: 
 		return serverError(response, discovery);
 	}
 
-	// TODO - This is temp, testing something. Will be removed in the future
-	if (request.path !== '/v1/endpoint') {
-		if (user.serverAccessLevel !== 'test' && user.serverAccessLevel !== 'dev') {
-			return badAuth(response, 16, 'BAD_TOKEN');
-		}
+	request.pid = pid;
+	request.paramPack = paramPackData;
+
+	const userSettings = await getUserSettings(request.pid);
+
+	if (!userSettings && request.path === '/v1/endpoint') {
+		return next();
+	} else if (!userSettings) {
+		return badAuth(response, 18, 'BAD_PARAM');
 	}
 
-	// * This is a false positive from ESLint.
-	// * Since this middleware is only ever called
-	// * per every request instance
-
-	request.pid = pid;
-
-	request.paramPack = paramPackData;
+	if (moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
+		userSettings.account_status = 0;
+		await userSettings.save();
+	}
+	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
+	// assuming we support more gradual bans on PNID's
+	if (userSettings.account_status < 0 || userSettings.account_status > 1 || user.accessLevel < 0) {
+		if (userSettings.account_status === 2 && request.method === 'GET') {
+			return next();
+		} else if (userSettings.account_status === 2) {
+			return badAuth(response, 8, 'PNID_POST_BAN');
+		} else {
+			return badAuth(response, 7, 'PNID_PERM_BAN');
+		}
+	}
 
 	return next();
 }

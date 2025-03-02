@@ -1,5 +1,6 @@
 import crypto from 'node:crypto';
 import TGA from 'tga';
+import BMP from 'bmp-js';
 import pako from 'pako';
 import { PNG } from 'pngjs';
 import aws from 'aws-sdk';
@@ -7,13 +8,13 @@ import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { conf as config } from '@/config';
+import { config } from '@/config-manager';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { Token } from '@/types/common/token';
-import type { ParamPack } from '@/types/common/param-pack';
 import type { ParsedQs } from 'qs';
 import type { IncomingHttpHeaders } from 'node:http';
+import type { ParamPack } from '@/types/common/param-pack';
+import type { Token } from '@/types/common/token';
 
 // * nice-grpc doesn't export ChannelImplementation so this can't be typed
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.ip}:${config.grpc.friends.port}`);
@@ -27,6 +28,9 @@ const s3 = new aws.S3({
 	accessKeyId: config.s3.key,
 	secretAccessKey: config.s3.secret
 });
+
+// TODO - This doesn't really belong here
+export const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
 
 export function decodeParamPack(paramPack: string): ParamPack {
 	const values = Buffer.from(paramPack, 'base64').toString().split('\\');
@@ -52,6 +56,16 @@ export function getPIDFromServiceToken(token: string): number {
 		}
 
 		const unpackedToken = unpackToken(decryptedToken);
+
+		// * Only allow token types 1 (Wii U) and 2 (3DS)
+		if (unpackedToken.system_type !== 1 && unpackedToken.system_type !== 2) {
+			return 0;
+		}
+
+		// * Check if the token is expired
+		if (unpackedToken.expire_time < Date.now()) {
+			return 0;
+		}
 
 		return unpackedToken.pid;
 	} catch (e) {
@@ -102,26 +116,49 @@ export function processPainting(painting: string): Buffer | null {
 		return null;
 	}
 
-	const tga = new TGA(Buffer.from(output));
-	const png = new PNG({
-		width: tga.width,
-		height: tga.height
-	});
+	// 3DS is a BMP, Wii U is a TGA. God isn't real so we need to edit the
+	// alpha layer of the BMP to covert it to a PNG for the web app
+	if (output[0] === 66) {
+		const bitmap = BMP.decode(Buffer.from(output));
+		const png = new PNG({
+			width: bitmap.width,
+			height: bitmap.height
+		});
 
-	png.data = Buffer.from(tga.pixels);
+		const bpmBuffer = bitmap.getData();
+		bpmBuffer.swap32();
+		png.data = bpmBuffer;
+		for (let i = 3; i < bpmBuffer.length; i += 4) {
+			bpmBuffer[i] = 255;
+		}
+		return PNG.sync.write(png);
+	} else {
+		const tga = new TGA(Buffer.from(output));
+		const png = new PNG({
+			width: tga.width,
+			height: tga.height
+		});
 
-	return PNG.sync.write(png);
+		png.data = Buffer.from(tga.pixels);
+		return PNG.sync.write(png);
+	}
 }
 
-export async function uploadCDNAsset(bucket: string, key: string, data: Buffer, acl: string): Promise<void> {
+export async function uploadCDNAsset(key: string, data: Buffer, acl: string): Promise<boolean> {
 	const awsPutParams = {
 		Body: data,
 		Key: key,
-		Bucket: bucket,
+		Bucket: config.s3.bucket,
 		ACL: acl
 	};
 
-	await s3.putObject(awsPutParams).promise();
+	try {
+		await s3.putObject(awsPutParams).promise();
+		return true;
+	} catch (e) {
+		console.error(e);
+		return false;
+	}
 }
 
 export async function getUserFriendPIDs(pid: number): Promise<number[]> {

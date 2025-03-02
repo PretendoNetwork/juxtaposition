@@ -6,9 +6,12 @@ import { LOG_INFO, LOG_SUCCESS } from '@/logger';
 import auth from '@/middleware/auth';
 import discovery from '@/services/discovery';
 import api from '@/services/api';
-import { conf as config } from '@/config';
+import { config } from '@/config-manager';
 
 process.title = 'Pretendo - Miiverse';
+process.on('SIGTERM', () => {
+	process.exit(0);
+});
 
 const { http: { port } } = config;
 const app = express();
