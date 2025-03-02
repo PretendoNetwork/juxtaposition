@@ -10,7 +10,7 @@ import auth from '@/middleware/auth';
 import discovery from '@/services/discovery';
 import api from '@/services/api';
 
-import { config } from '@/config-manager';
+import { conf as config } from '@/config';
 
 const { http: { port } } = config;
 const app = express();
