@@ -704,12 +704,12 @@ if (typeof cave === 'undefined') {
 		effect_scrollGuide: function (flag) {
 			console.log('cave.effect_scrollGuide( ' + flag + ' )');
 		},
-		effect_setScrollGuideOffsetPos: function (x, y) {
+		effect_setScrollGuideOffsetPos: function (x, _y) {
 			console.log('effect_setScrollGuideOffsetPos( x = ' + x + ', y = ' + ' )');
 		},
 		// キーボードアプレットに入力した文字列が返り値になるので window.prompt でエミュレートする
 		// Since the string entered in the keyboard applet will be the return value, emulate it with window.prompt
-		swkbd_callFullKeyboard: function (text, maxLength, minLength, isMonospace, isMultiline, isConvertible) {
+		swkbd_callFullKeyboard: function (text, _maxLength, _minLength, _isMonospace, _isMultiline, _isConvertible) {
 			console.log('cave.callFullKeyboard( ' + Array.prototype.join.call(arguments, ', ') + ' )');
 			return window.prompt('cave.callFullKeyboard', text);
 		},

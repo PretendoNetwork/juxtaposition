@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const parseString = require('xml2js').parseString;
-const request = require('request');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const logger = require('../../../../logger');
 const { conf: config } = require('@/config');
 
 router.get('/', async function (req, res) {

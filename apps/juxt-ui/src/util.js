@@ -1,6 +1,4 @@
 const crypto = require('crypto');
-const NodeRSA = require('node-rsa');
-const fs = require('fs-extra');
 const grpc = require('nice-grpc');
 const { AccountDefinition } = require('pretendo-grpc/dist/account/account_service');
 const { FriendsDefinition } = require('pretendo-grpc/dist/friends/friends_service');
@@ -44,7 +42,7 @@ const s3 = new aws.S3({
 nameCache();
 
 function nameCache() {
-	database.connect().then(async (e) => {
+	database.connect().then(async (_e) => {
 		const communities = await COMMUNITY.find();
 		if (communities !== null) {
 			for (let i = 0; i < communities.length; i++) {

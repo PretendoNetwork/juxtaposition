@@ -304,7 +304,7 @@ function newPainting(reset) {
 }
 
 function newScreenshot(topScreen) {
-    var screenshot = topScreen ? cave.capture_getLowerImage();
+    var screenshot = topScreen ? cave.capture_getLowerImage() : null;
 }
 
 function follow(el) {

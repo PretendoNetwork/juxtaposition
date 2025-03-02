@@ -52,7 +52,6 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/more', async function (req, res) {
-	const offset = req.query.offset ? parseInt(req.query.offset) : 0;
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.data.getCommunityHash();
 	const tag = req.query.topic_tag;

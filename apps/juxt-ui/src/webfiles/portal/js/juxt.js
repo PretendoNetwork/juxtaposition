@@ -1,8 +1,8 @@
-let scrollPosition; let pjax;
-const updateCheck = setInterval(checkForUpdates, 30000);
-const inputCheck = setInterval(input, 100);
+// let scrollPosition; let pjax;
+// const updateCheck = setInterval(checkForUpdates, 30000);
+// const inputCheck = setInterval(input, 100);
 
-/* global Pjax */
+/* global Pjax -- idk what this comment exists */
 function initNavBar() {
 	const els = document.querySelectorAll('#nav-menu > li[data-tab]');
 	if (!els) {

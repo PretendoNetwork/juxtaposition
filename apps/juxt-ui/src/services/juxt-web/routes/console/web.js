@@ -1,8 +1,8 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 const database = require('../../../../database');
 const { POST } = require('../../../../models/post');
-const path = require('path');
 
 router.get('/', function (req, res) {
 	res.redirect('/titles/show');

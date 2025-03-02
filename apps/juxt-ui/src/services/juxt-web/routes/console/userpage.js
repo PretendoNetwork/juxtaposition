@@ -1,5 +1,4 @@
 const express = require('express');
-const { conf: config } = require('@/config');
 const multer = require('multer');
 const moment = require('moment');
 const util = require('../../../../util');
@@ -7,6 +6,7 @@ const database = require('../../../../database');
 const upload = multer({ dest: 'uploads/' });
 const { POST } = require('../../../../models/post');
 const { SETTINGS } = require('../../../../models/settings');
+const { conf: config } = require('@/config');
 const router = express.Router();
 
 router.get('/menu', async function (req, res) {
@@ -186,7 +186,10 @@ async function userRelations(req, res, userID) {
 		return res.redirect('/404');
 	}
 
-	let followers; let communities; let communityMap; let selection;
+	let followers;
+	let communities;
+	let communityMap;
+	let selection;
 
 	if (req.params.type === 'yeahs') {
 		const posts = await POST.find({ yeahs: req.pid, removed: false }).sort({ created_at: -1 });

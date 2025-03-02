@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const express = require('express');
 const multer = require('multer');
 const moment = require('moment');
@@ -8,7 +9,6 @@ const { POST } = require('../../../../models/post');
 const { REPORT } = require('../../../../models/report');
 const { conf: config } = require('@/config');
 const upload = multer({ dest: 'uploads/' });
-const crypto = require('crypto');
 const router = express.Router();
 
 const postLimit = rateLimit({
@@ -201,7 +201,9 @@ async function newPost(req, res) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	let painting = ''; let paintingURI = ''; let screenshot = null;
+	let painting = '';
+	let paintingURI = '';
+	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		if (req.body.bmp === 'true') {
 			painting = await util.data.processPainting(req.body.painting.replace(/\0/g, '').trim(), false);
