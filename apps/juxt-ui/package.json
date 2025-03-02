@@ -7,7 +7,7 @@
     "dev": "tsup --watch --onSuccess \"node --enable-source-maps dist/server.js\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "build": "npm run lint && tsup",
+    "build": "tsup && tsc --noEmit",
     "start": "node --enable-source-maps dist/server.js"
   },
   "repository": {
