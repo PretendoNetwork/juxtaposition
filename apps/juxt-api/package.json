@@ -28,8 +28,9 @@
 	"license": "AGPL-3.0",
 	"dependencies": {
 		"@neato/config": "^3.0.0",
-		"@pretendonetwork/grpc": "^1.0.3",
+		"@pretendonetwork/grpc": "^2.0.0",
 		"aws-sdk": "^2.1204.0",
+		"bmp-js": "^0.1.0",
 		"colors": "^1.4.0",
 		"crc": "^4.3.2",
 		"express": "^4.17.1",
@@ -49,6 +50,7 @@
 	},
 	"devDependencies": {
 		"@pretendonetwork/eslint-config": "^0.0.8",
+		"@types/bmp-js": "^0.1.2",
 		"@types/express": "^4.17.17",
 		"@types/fs-extra": "^11.0.1",
 		"@types/morgan": "^1.9.4",
