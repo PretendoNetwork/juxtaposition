@@ -36,6 +36,10 @@ npm run dev
 
 You have to also make an `.env` file to configure your environment. Inspire it from the content of `example.env` in each service.
 
-# 🤝Contributors
+# 🤝 Translation
+
+If you'd like to help localize Pretendo Network, you can contribute to the translations on our project on [Weblate](https://hosted.weblate.org/engage/pretendonetwork/).
+
+# 🤝 Contributors
 
 [![Contributors](https://contrib.rocks/image?repo=pretendoNetwork/juxtaposition)](https://github.com/pretendoNetwork/juxtaposition/graphs/contributors)
