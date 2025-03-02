@@ -4,7 +4,7 @@
   "description": "Web frontend for the Pretendo Network miiverse replacement, Juxt.",
   "main": "./src/server",
   "scripts": {
-    "dev": "tsup --watch --onSuccess \"node dist/server.js\"",
+    "dev": "tsup --watch --onSuccess \"node --enable-source-maps dist/server.js\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "npm run lint && tsup",
@@ -25,6 +25,7 @@
     "@neato/config": "^3.0.0",
     "aws-sdk": "^2.1192.0",
     "bmp-js": "^0.1.0",
+    "colors": "^1.4.0",
     "cookie-parser": "^1.4.5",
     "crc": "^4.3.2",
     "ejs": "^3.1.5",
@@ -43,12 +44,14 @@
     "pako": "^2.0.2",
     "pngjs": "^6.0.0",
     "pretendo-grpc": "github:PretendoNetwork/grpc-ts",
+    "request": "^2.88.2",
     "tga": "^1.0.4",
     "xml2js": "^0.4.23",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@pretendonetwork/eslint-config": "^0.0.8",
+    "@types/node": "^22.13.8",
     "eslint": "^9.21.0",
     "tsup": "^8.4.0",
     "typescript": "^5.7.3"
