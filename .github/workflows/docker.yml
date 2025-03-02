@@ -26,6 +26,9 @@ jobs:
       IMAGE_NAME: ${{ matrix.repo }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Set up QEMU for Docker
         uses: docker/setup-qemu-action@v3
 
@@ -74,6 +77,9 @@ jobs:
       IMAGE_NAME: ${{ matrix.repo }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Set up QEMU for Docker
         uses: docker/setup-qemu-action@v3
 
