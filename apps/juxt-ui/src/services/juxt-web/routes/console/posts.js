@@ -178,7 +178,9 @@ router.post('/:post_id/report', upload.none(), async function (req, res) {
 });
 
 async function newPost(req, res) {
-	const userSettings = await database.getUserSettings(req.pid); let parentPost = null; const postID = await generatePostUID(21);
+	const userSettings = await database.getUserSettings(req.pid);
+	let parentPost = null;
+	const postID = await generatePostUID(21);
 	const community = await database.getCommunityByID(req.body.community_id);
 	if (!community || !userSettings || !req.user) {
 		res.status(403);

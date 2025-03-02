@@ -33,7 +33,7 @@ router.post('/new', async function (req, res, _next) {
 		return res.sendStatus(404);
 	}
 	if (!conversation) {
-		if (!user || !user2) {
+		if (!req.user || !user2) {
 			return res.sendStatus(422);
 		}
 		const document = {

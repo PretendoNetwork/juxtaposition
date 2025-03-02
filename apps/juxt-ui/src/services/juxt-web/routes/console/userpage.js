@@ -336,7 +336,6 @@ async function morePosts(req, res, userID) {
 
 async function moreYeahPosts(req, res, userID) {
 	let offset = parseInt(req.query.offset);
-	const parentUserContent = await database.getUserContent(userID);
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.data.getCommunityHash();
 	if (!offset) {

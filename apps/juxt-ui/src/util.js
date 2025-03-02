@@ -214,7 +214,7 @@ const methods = {
 		userMap.delete(pid);
 		userMap.set(pid, name);
 	},
-	resizeImage: function (file, width, height) {
+	resizeImage: function (_file, _width, _height) {
 		// TODO Sharp is not imported?
 		// sharp(file)
 		// 	.resize({ height: height, width: width })
