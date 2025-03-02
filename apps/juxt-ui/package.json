@@ -2,7 +2,7 @@
   "name": "juxt-web",
   "version": "1.0.0",
   "description": "Web frontend for the Pretendo Network miiverse replacement, Juxt.",
-  "main": "./src/server",
+  "main": "./dist/server.js",
   "scripts": {
     "dev": "tsup --watch --onSuccess \"node --enable-source-maps dist/server.js\"",
     "lint": "eslint .",
