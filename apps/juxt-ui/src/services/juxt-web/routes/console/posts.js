@@ -5,11 +5,11 @@ const moment = require('moment');
 const rateLimit = require('express-rate-limit');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const { conf: config } = require('@/config');
 const { POST } = require('../../../../models/post');
 const { REPORT } = require('../../../../models/report');
 const upload = multer({ dest: 'uploads/' });
 const redis = require('../../../../redisCache');
+const { conf: config } = require('@/config');
 const router = express.Router();
 
 const postLimit = rateLimit({

@@ -2,8 +2,8 @@ const express = require('express');
 const moment = require('moment');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const { conf: config } = require('@/config');
 const { POST } = require('../../../../models/post');
+const { conf: config } = require('@/config');
 const router = express.Router();
 
 router.get('/', async function (req, res) {

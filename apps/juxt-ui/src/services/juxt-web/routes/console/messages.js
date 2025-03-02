@@ -4,9 +4,9 @@ const moment = require('moment');
 const snowflake = require('node-snowflake').Snowflake;
 const database = require('../../../../database');
 const util = require('../../../../util');
-const { conf: config } = require('@/config');
 const { POST } = require('../../../../models/post');
 const { CONVERSATION } = require('../../../../models/conversation');
+const { conf: config } = require('@/config');
 const router = express.Router();
 
 router.get('/', async function (req, res) {

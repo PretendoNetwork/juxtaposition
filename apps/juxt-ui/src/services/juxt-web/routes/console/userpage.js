@@ -3,12 +3,12 @@ const multer = require('multer');
 const moment = require('moment');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const { conf: config } = require('@/config');
-const upload = multer({ dest: 'uploads/' });
 const { POST } = require('../../../../models/post');
 const { SETTINGS } = require('../../../../models/settings');
 const redis = require('../../../../redisCache');
+const { conf: config } = require('@/config');
 const router = express.Router();
+const upload = multer({ dest: 'uploads/' });
 
 router.get('/menu', async function (req, res) {
 	const user = await database.getUserSettings(req.pid);
