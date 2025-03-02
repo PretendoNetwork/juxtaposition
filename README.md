@@ -17,7 +17,7 @@ We want to bring all features originally found in Miiverse into Juxtaposition an
 
 Prerequisites:
 - Clone the repository
-- Have a functional running [account server](https://github.com/PretendoNetwork/account)
+- Have a functional running [account server](https://github.com/PretendoNetwork/account) and [friends server](https://github.com/PretendoNetwork/friends)
 - Have NodeJS 20 or higher installed
 - Optional: have docker installed (highly recommended)
 
