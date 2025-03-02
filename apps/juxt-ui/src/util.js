@@ -215,12 +215,13 @@ const methods = {
 		userMap.set(pid, name);
 	},
 	resizeImage: function (file, width, height) {
-		sharp(file)
-			.resize({ height: height, width: width })
-			.toBuffer()
-			.then((data) => {
-				return data;
-			});
+		// TODO Sharp is not imported?
+		// sharp(file)
+		// 	.resize({ height: height, width: width })
+		// 	.toBuffer()
+		// 	.then((data) => {
+		// 		return data;
+		// 	});
 	},
 	createBMPTgaBuffer: function (width, height, pixels, dontFlipY) {
 		const buffer = Buffer.alloc(18 + pixels.length);

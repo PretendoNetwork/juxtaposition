@@ -52,11 +52,10 @@ router.get('/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.data.getCommunityHash();
-	let posts;
 	if (!offset) {
 		offset = 0;
 	}
-	posts = await database.getNewsFeedOffset(userContent, config.post_limit, offset);
+	const posts = await database.getNewsFeedOffset(userContent, config.post_limit, offset);
 
 	const bundle = {
 		posts,

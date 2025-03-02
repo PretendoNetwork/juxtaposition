@@ -1,7 +1,6 @@
 process.title = 'Pretendo - Juxt-Web';
 const express = require('express');
 const morgan = require('morgan');
-const ejs = require('ejs');
 const cookieParser = require('cookie-parser');
 const auth = require('./middleware/auth');
 const database = require('./database');

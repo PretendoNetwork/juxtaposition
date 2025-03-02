@@ -1,12 +1,12 @@
 const crypto = require('crypto');
 const express = require('express');
 const moment = require('moment');
+const snowflake = require('node-snowflake').Snowflake;
 const database = require('../../../../database');
 const util = require('../../../../util');
 const { POST } = require('../../../../models/post');
 const { CONVERSATION } = require('../../../../models/conversation');
 const { conf: config } = require('@/config');
-const snowflake = require('node-snowflake').Snowflake;
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -24,7 +24,7 @@ router.get('/', async function (req, res) {
 	});
 });
 
-router.post('/new', async function (req, res, next) {
+router.post('/new', async function (req, res, _next) {
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await util.data.getUserDataFromPid(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
@@ -65,7 +65,9 @@ router.post('/new', async function (req, res, next) {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	let painting = ''; let paintingURI = ''; let screenshot = null;
+	let painting = '';
+	let paintingURI = '';
+	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
 		paintingURI = await util.data.processPainting(painting, true);
@@ -145,8 +147,8 @@ router.post('/new', async function (req, res, next) {
 	await conversation.newMessage(postPreviewText, user2.pid);
 });
 
-router.get('/new/:pid', async function (req, res, next) {
-	const user = await util.data.getUserDataFromPid(req.pid);
+router.get('/new/:pid', async function (req, res, _next) {
+	// const user = await util.data.getUserDataFromPid(req.pid);
 	const user2 = await util.data.getUserDataFromPid(req.params.pid);
 	const friends = await util.data.getFriends(user2.pid);
 	if (!req.user || !user2) {

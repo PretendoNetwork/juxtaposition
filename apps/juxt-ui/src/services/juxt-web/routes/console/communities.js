@@ -1,5 +1,4 @@
 const express = require('express');
-const { conf: config } = require('@/config');
 const multer = require('multer');
 const moment = require('moment');
 const util = require('../../../../util');
@@ -8,6 +7,7 @@ const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 const { POST } = require('../../../../models/post');
 const { COMMUNITY } = require('../../../../models/communities');
+const { conf: config } = require('@/config');
 
 router.get('/', async function (req, res) {
 	const newCommunities = await database.getNewCommunities(6);
@@ -102,7 +102,8 @@ router.get('/:communityID/:type', async function (req, res) {
 	if (children.length === 0) {
 		children = null;
 	}
-	let posts; let type;
+	let posts;
+	let type;
 
 	if (req.params.type === 'hot') {
 		posts = await database.getNumberPopularCommunityPostsByID(community, config.post_limit);
