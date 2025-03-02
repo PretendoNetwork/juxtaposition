@@ -2,7 +2,6 @@ import express from 'express';
 import multer from 'multer';
 import xmlbuilder from 'xmlbuilder';
 import { z } from 'zod';
-import { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import { getUserAccountData, processPainting, uploadCDNAsset, getValueFromQueryString } from '@/util';
 import {
 	getPostByID,
@@ -16,8 +15,9 @@ import {
 import { LOG_WARN } from '@/logger';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
-import { HydratedPostDocument } from '@/types/mongoose/post';
-import { PostRepliesResult } from '@/types/miiverse/post';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { HydratedPostDocument } from '@/types/mongoose/post';
+import type { PostRepliesResult } from '@/types/miiverse/post';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
@@ -212,8 +212,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	let user: GetUserDataResponse;
 
 	try {
-		user  = await getUserAccountData(request.pid);
-	} catch (error) {
+		user = await getUserAccountData(request.pid);
+	} catch (ignore) {
 		// TODO - Log this error
 		response.sendStatus(403);
 		return;

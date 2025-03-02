@@ -1,16 +1,14 @@
-process.title = 'Pretendo - Miiverse';
-
 import express from 'express';
 import morgan from 'morgan';
 import xmlbuilder from 'xmlbuilder';
 import { connect as connectDatabase } from '@/database';
 import { LOG_INFO, LOG_SUCCESS } from '@/logger';
 import auth from '@/middleware/auth';
-
 import discovery from '@/services/discovery';
 import api from '@/services/api';
-
 import { conf as config } from '@/config';
+
+process.title = 'Pretendo - Miiverse';
 
 const { http: { port } } = config;
 const app = express();

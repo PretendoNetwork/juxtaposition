@@ -4,13 +4,13 @@ import { Snowflake } from 'node-snowflake';
 import moment from 'moment';
 import xmlbuilder from 'xmlbuilder';
 import { z } from 'zod';
-import { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import { getUserFriendPIDs, getUserAccountData, processPainting, uploadCDNAsset, getValueFromQueryString } from '@/util';
 import { getConversationByUsers, getUserSettings, getFriendMessages } from '@/database';
 import { LOG_WARN } from '@/logger';
 import { Post } from '@/models/post';
 import { Conversation } from '@/models/conversation';
-import { FormattedMessage } from '@/types/common/formatted-message';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { FormattedMessage } from '@/types/common/formatted-message';
 
 const sendMessageSchema = z.object({
 	message_to_pid: z.string().transform(Number),
@@ -49,7 +49,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 
 	try {
 		sender = await getUserAccountData(request.pid);
-	} catch (error) {
+	} catch (ignore) {
 		// TODO - Log this error
 		response.status(422);
 		return;
@@ -66,7 +66,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 
 	try {
 		recipient = await getUserAccountData(request.pid);
-	} catch (error) {
+	} catch (ignore) {
 		// TODO - Log this error
 		response.status(422);
 		return;
@@ -95,7 +95,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 					pid: recipient.pid,
 					official: (recipient.accessLevel === 2 || recipient.accessLevel === 3),
 					read: false
-				},
+				}
 			]
 		});
 	}

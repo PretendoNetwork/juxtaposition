@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { CommunityData } from '@/types/miiverse/community';
-import { ICommunity, ICommunityMethods, CommunityModel, HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { CommunityData } from '@/types/miiverse/community';
+import type { ICommunity, ICommunityMethods, CommunityModel, HydratedCommunityDocument } from '@/types/mongoose/community';
 
 const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods>({
 	platform_id: Number,
@@ -35,7 +35,7 @@ const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods
 	owner: Number,
 	created_at: {
 		type: Date,
-		default: new Date(),
+		default: new Date()
 	},
 	empathy_count: {
 		type: Number,

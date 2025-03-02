@@ -1,21 +1,19 @@
 import crypto from 'node:crypto';
-import { IncomingHttpHeaders } from 'node:http';
 import TGA from 'tga';
 import pako from 'pako';
 import { PNG } from 'pngjs';
 import aws from 'aws-sdk';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
-import { ParsedQs } from 'qs';
 import crc32 from 'crc/crc32';
-import { ParamPack } from '@/types/common/param-pack';
-import { conf as config } from '@/config';
-import { Token } from '@/types/common/token';
-
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
-import { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
-
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import { conf as config } from '@/config';
+import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { Token } from '@/types/common/token';
+import type { ParamPack } from '@/types/common/param-pack';
+import type { ParsedQs } from 'qs';
+import type { IncomingHttpHeaders } from 'node:http';
 
 // * nice-grpc doesn't export ChannelImplementation so this can't be typed
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.ip}:${config.grpc.friends.port}`);

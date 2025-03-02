@@ -7,12 +7,12 @@ import { Endpoint } from '@/models/endpoint';
 import { Post } from '@/models/post';
 import { Settings } from '@/models/settings';
 import { conf as config } from '@/config';
-import { HydratedCommunityDocument } from '@/types/mongoose/community';
-import { HydratedPostDocument, IPost } from '@/types/mongoose/post';
-import { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
-import { HydratedSettingsDocument } from '@/types/mongoose/settings';
-import { HydratedContentDocument } from '@/types/mongoose/content';
-import { HydratedConversationDocument } from '@/types/mongoose/conversation';
+import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
+import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { HydratedContentDocument } from '@/types/mongoose/content';
+import type { HydratedConversationDocument } from '@/types/mongoose/conversation';
 
 const { mongoose: mongooseConfig } = config;
 

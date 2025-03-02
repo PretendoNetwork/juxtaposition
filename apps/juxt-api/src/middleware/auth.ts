@@ -1,10 +1,10 @@
-import express from 'express';
 import xmlbuilder from 'xmlbuilder';
 import { z } from 'zod';
-import { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import { getEndpoint } from '@/database';
 import { getUserAccountData, getValueFromHeaders, decodeParamPack, getPIDFromServiceToken } from '@/util';
-import { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type express from 'express';
+import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
 
 const ParamPackSchema = z.object({
 	title_id: z.string(),
@@ -96,9 +96,9 @@ async function auth(request: express.Request, response: express.Response, next: 
 	// * This is a false positive from ESLint.
 	// * Since this middleware is only ever called
 	// * per every request instance
-	// eslint-disable-next-line require-atomic-updates
+
 	request.pid = pid;
-	// eslint-disable-next-line require-atomic-updates
+
 	request.paramPack = paramPackData;
 
 	return next();
