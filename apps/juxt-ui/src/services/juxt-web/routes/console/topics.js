@@ -2,15 +2,14 @@ const express = require('express');
 const moment = require('moment');
 const database = require('../../../../database');
 const util = require('../../../../util');
+const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
-const { conf: config } = require('@/config');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	const tag = req.query.topic_tag;
-	console.log(tag);
 	if (!userContent || !tag) {
 		return res.redirect('/404');
 	}
@@ -21,16 +20,13 @@ router.get('/', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/topics/more?tag=${tag}&offset=${posts.length}&pjax=true`
 	};
 
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
-			moment,
-			lang: req.lang
+			moment
 		});
 	}
 
@@ -41,19 +37,14 @@ router.get('/', async function (req, res) {
 		posts: posts,
 		communityMap: communityMap,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
 		bundle,
-		template: 'posts_list',
-		moderator: req.moderator
+		template: 'posts_list'
 	});
 });
 
 router.get('/more', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	const tag = req.query.topic_tag;
 	if (!tag) {
 		return res.sendStatus(204);
@@ -66,8 +57,6 @@ router.get('/more', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/topics/more?tag=${tag}&offset=${posts.length}&pjax=true`
 	};
 
@@ -77,12 +66,7 @@ router.get('/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
-			pid: req.pid,
-			moderator: req.moderator
+			account_server: config.account_server_domain.slice(8)
 		});
 	} else {
 		res.sendStatus(204);

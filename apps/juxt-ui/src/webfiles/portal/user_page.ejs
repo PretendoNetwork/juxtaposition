@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<% var banned = (userSettings.account_status < 0  || userSettings.account_status > 1 || pnid.accessLevel < 0); %></0>
 <%- include('partials/head', { title: pnid.mii.name }); %>
 <body>
 <%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
@@ -11,19 +12,19 @@
     </header>
     <div class="body-content tab2-content" id="community-post-list">
         <div class="header-banner-container">
-            <img src="<%= cdnURL %>/images/banner.png" class="header-banner with-top-button">
+            <img src="/images/banner.png" class="header-banner with-top-button">
         </div>
         <div class="community-info info-content with-header-banner">
-            <span class="icon-container"><img src="<%if(pnid.deleted){%><%= cdnURL %>/images/bandwidthlost.png<%}else{%>https://mii.olv.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon" alt=""></span>
-            <%if(pnid.pid !== pid && !pnid.deleted) {%>
+            <span class="icon-container"><img src="<%if (banned || pnid.deleted) { %>/images/bandwidthlost.png<% } else { %><%= cdnURL %>/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon" alt=""></span>
+            <%if(pnid.pid !== pid && !pnid.deleted && !(banned)) {%>
                 <a href="#" class="favorite-button favorite-button-mini button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>"></a>
                 <%if(friends.indexOf(pid) !== -1) { /*Is mutual*/%>
                 <a href="/friend_messages/new/<%=userContent.pid%>" class="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
                 <%}%>
             <%}%>
-            <span class="title"><%if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %><%}%></span>
+            <span class="title"><% if(banned) { %>Banned User<% } else if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %><%}%></span>
             <span class="text">
-            <%if(!pnid.deleted){%>
+            <%if(!pnid.deleted && !(banned)){%>
                 <span>
                     @<%= pnid.username %>
                 </span>
@@ -44,7 +45,7 @@
                 <%if(userSettings.birthday_visibility){%>
                 <span>|
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="128" y1="88" x2="128" y2="64" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M128,64c46.2-16,0-56,0-56S80,48,128,64Z" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M162,126a34,34,0,0,1-68,0" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M94,126a34,34,0,0,1-33.3,34c-19.1.4-34.7-15.6-34.7-34.7V112A23.9,23.9,0,0,1,50,88H206a23.9,23.9,0,0,1,24,24v13.3c0,19.1-15.6,35.1-34.7,34.7A34,34,0,0,1,162,126" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M216,153.3V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V153.3" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
-                    <%=moment.utc(pnid.birthdate).format("MMM Do")%>
+                    <%=moment.utc(pnid.birthdate || pnid.birthday).format("MMM Do")%>
                 </span>
                 <%}%>
                 <%if(userSettings.game_skill_visibility){%>
@@ -104,7 +105,7 @@
             <%}%>
             </span>
         </div>
-        <%if(!pnid.deleted){%>
+        <%if(!pnid.deleted && !(banned)){%>
         <menu class="tab-header user-page">
             <li id="tab-header-post" class="tab-button <%if(selection === 0){ %>selected<%}%>">
                 <a href="<%= link %>" data-sound="SE_WAVE_SELECT_TAB">

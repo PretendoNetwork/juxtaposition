@@ -1,17 +1,16 @@
-// let scrollPosition; let pjax;
-// const updateCheck = setInterval(checkForUpdates, 30000);
-// const inputCheck = setInterval(input, 100);
+var pjax;
+setInterval(checkForUpdates, 30000);
+setInterval(input, 100);
 
-/* global Pjax -- idk what this comment exists */
 function initNavBar() {
-	const els = document.querySelectorAll('#nav-menu > li[data-tab]');
+	var els = document.querySelectorAll('#nav-menu > li[data-tab]');
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
-			const el = e.currentTarget;
-			for (let i = 0; i < els.length; i++) {
+			var el = e.currentTarget;
+			for (var i = 0; i < els.length; i++) {
 				if (els[i].classList.contains('selected')) {
 					els[i].classList.remove('selected');
 				}
@@ -21,20 +20,21 @@ function initNavBar() {
 	}
 }
 function initYeah() {
-	const els = document.querySelectorAll('button[data-post].yeah-button');
+	var els = document.querySelectorAll('button[data-post].yeah-button');
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].removeEventListener('click', yeah);
 		els[i].addEventListener('click', yeah);
 	}
 	function yeah(e) {
-		const el = e.currentTarget; const id = el.getAttribute('data-post');
-		const parent = document.getElementById(id);
-		const count = document.getElementById('count-' + id);
+		var el = e.currentTarget;
+		var id = el.getAttribute('data-post');
+		var parent = document.getElementById(id);
+		var count = document.getElementById('count-' + id);
 		el.disabled = true;
-		const params = 'postID=' + id;
+		var params = 'postID=' + id;
 		if (el.classList.contains('selected')) {
 			el.classList.remove('selected');
 			parent.classList.remove('yeah');
@@ -52,7 +52,7 @@ function initYeah() {
 		}
 
 		POST('/posts/empathy', params, function a(data) {
-			const post = JSON.parse(data.response);
+			var post = JSON.parse(data.response);
 			if (!post || post.status !== 200) {
 				// Apparently there was an actual error code for not being able to yeah a post, who knew!
 				// TODO: Find more of these
@@ -66,20 +66,20 @@ function initYeah() {
 	}
 }
 function initTabs() {
-	const els = document.querySelectorAll('.tab-button');
+	var els = document.querySelectorAll('.tab-button');
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].removeEventListener('click', tabs);
 		els[i].addEventListener('click', tabs);
 	}
 	function tabs(e) {
 		e.preventDefault();
-		const el = e.currentTarget;
-		const child = el.children[0];
+		var el = e.currentTarget;
+		var child = el.children[0];
 
-		for (let i = 0; i < els.length; i++) {
+		for (var i = 0; i < els.length; i++) {
 			if (els[i].classList.contains('selected')) {
 				els[i].classList.remove('selected');
 			}
@@ -87,7 +87,7 @@ function initTabs() {
 		el.classList.add('selected');
 
 		GET(child.getAttribute('href') + '?pjax=true', function a(data) {
-			const response = data.response;
+			var response = data.response;
 			if (response && data.status === 200) {
 				document.getElementsByClassName('tab-body')[0].innerHTML = data.response;
 				window.history.pushState({ url: child.href, title: '', scrollPos: [0, 0] }, '', child.href);
@@ -98,11 +98,11 @@ function initTabs() {
 	}
 }
 function initPosts() {
-	const els = document.querySelectorAll('.post-content[data-href]');
+	var els = document.querySelectorAll('.post-content[data-href]');
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
 		});
@@ -111,15 +111,15 @@ function initPosts() {
 	initSpoilers();
 }
 function initMorePosts() {
-	const els = document.querySelectorAll('.load-more[data-href]');
+	var els = document.querySelectorAll('.load-more[data-href]');
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
-			const el = e.currentTarget;
+			var el = e.currentTarget;
 			GET(el.getAttribute('data-href'), function a(data) {
-				const response = data.response;
+				var response = data.response;
 				if (response && data.status === 200) {
 					el.parentElement.outerHTML = data.response;
 					initPosts();
@@ -132,25 +132,25 @@ function initMorePosts() {
 	}
 }
 function initPostModules() {
-	const els = document.querySelectorAll('[data-module-show]');
+	var els = document.querySelectorAll('[data-module-show]');
 	console.log(els);
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
-			const el = e.currentTarget;
-			const show = el.getAttribute('data-module-show');
-			const hide = el.getAttribute('data-module-hide');
+			var el = e.currentTarget;
+			var show = el.getAttribute('data-module-show');
+			var hide = el.getAttribute('data-module-hide');
 			if (!show || !hide) {
 				return;
 			}
 			document.getElementById(hide).style.display = 'none';
 			document.getElementById(show).style.display = 'block';
 
-			const header = el.getAttribute('data-header');
-			const menu = el.getAttribute('data-menu');
-			const sound = el.getAttribute('data-sound');
+			var header = el.getAttribute('data-header');
+			var menu = el.getAttribute('data-menu');
+			var sound = el.getAttribute('data-sound');
 			if (sound) {
 				wiiuSound.playSoundByName(sound, 3);
 			}
@@ -171,24 +171,24 @@ function initPostModules() {
 	}
 }
 function initPostEmotion() {
-	const els = document.querySelectorAll('input[data-mii-face-url]');
+	var els = document.querySelectorAll('input[data-mii-face-url]');
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
-			const el = e.currentTarget;
+			var el = e.currentTarget;
 			document.getElementById('mii-face').src = el.getAttribute('data-mii-face-url');
 			wiiuSound.playSoundByName(el.getAttribute('data-sound'), 3);
 		});
 	}
 }
 function initSounds() {
-	const els = document.querySelectorAll('[data-sound]');
+	var els = document.querySelectorAll('[data-sound]');
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', playSound);
 	}
 	function playSound(e) {
@@ -204,13 +204,13 @@ function initNewPost() {
 	initScreenShots();
 }
 function initSpoilers() {
-	const els = document.querySelectorAll('button[data-post-id]');
+	var els = document.querySelectorAll('button[data-post-id]');
 	if (!els) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
+	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
-			const el = e.currentTarget;
+			var el = e.currentTarget;
 			document.getElementById('post-' + el.getAttribute('data-post-id')).classList.remove('spoiler');
 			el.outerHTML = '';
 		});
@@ -245,8 +245,8 @@ document.addEventListener('pjax:error', function (e) {
 document.addEventListener('pjax:success', function () {
 	console.debug('Event: pjax:success', arguments);
 	wiiuBrowser.showLoadingIcon(false);
-	const back = document.getElementById('nav-menu-back');
-	const close = document.getElementById('nav-menu-exit');
+	var back = document.getElementById('nav-menu-back');
+	var close = document.getElementById('nav-menu-exit');
 	if (wiiuBrowser.canHistoryBack()) {
 		back.classList.remove('selected');
 		back.classList.remove('none');
@@ -273,8 +273,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function hideScreenShots() {
 	document.getElementById('screenshot-toggle').checked = false;
 }
+
+// eslint-disable-next-line no-unused-vars -- Used by src/webfiles/portal/partials/new_post.ejs
 function chooseScreenShot(value) {
-	const screenshot = document.getElementById('screenshot-value');
+	var screenshot = document.getElementById('screenshot-value');
 	switch (value) {
 		case 0:
 			screenshot.value = wiiuMainApplication.getScreenShot(true);
@@ -290,11 +292,13 @@ function chooseScreenShot(value) {
 	}
 	hideScreenShots();
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/community.ejs and src/webfiles/portal/user_page.ejs
 function follow(el) {
-	const id = el.getAttribute('data-community-id');
-	const count = document.getElementById('followers');
+	var id = el.getAttribute('data-community-id');
+	var count = document.getElementById('followers');
 	el.disabled = true;
-	const params = 'id=' + id;
+	var params = 'id=' + id;
 	if (el.classList.contains('checked')) {
 		el.classList.remove('checked');
 		wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
@@ -304,7 +308,7 @@ function follow(el) {
 	}
 
 	POST(el.getAttribute('data-url'), params, function a(data) {
-		const element = JSON.parse(data.response);
+		var element = JSON.parse(data.response);
 		if (!element || element.status !== 200) {
 			// Apparently there was an actual error code for not being able to yeah a post, who knew!
 			// TODO: Find more of these
@@ -314,6 +318,8 @@ function follow(el) {
 		count.innerText = element.count;
 	});
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/new_post.ejs
 function newPainting(reset) {
 	wiiuMemo.open(reset);
 	setTimeout(function () {
@@ -335,6 +341,8 @@ function stopLoading() {
 		wiiuBrowser.lockUserOperation(false);
 	}
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/nav_bar.ejs
 function exit() {
 	wiiu.gamepad.update();
 
@@ -346,12 +354,13 @@ function exit() {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/post_template.ejs
 function deletePost(post) {
-	const id = post.getAttribute('data-post');
+	var id = post.getAttribute('data-post');
 	if (!id) {
 		return;
 	}
-	const confirm = wiiuDialog.confirm('Are you sure you want to delete your post? This cannot be undone.', 'No', 'Yes');
+	var confirm = wiiuDialog.confirm('Are you sure you want to delete your post? This cannot be undone.', 'No', 'Yes');
 	if (confirm) {
 		DELETE('/posts/' + id, function a(data) {
 			if (!data || data.status !== 200) {
@@ -364,23 +373,26 @@ function deletePost(post) {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/post_template.ejs
 function reportPost(post) {
-	const id = post.getAttribute('data-post');
-	const button = document.getElementById('report-launcher');
-	const form = document.getElementById('report-form');
-	if (!id || !button || !form) {
+	var id = post.getAttribute('data-post');
+	var button = document.getElementById('report-launcher');
+	var form = document.getElementById('report-form');
+	var formID = document.getElementById('report-post-id');
+	if (!id || !button || !form || !formID) {
 		return;
 	}
 
 	form.action = '/posts/' + id + '/report';
+	formID.value = id;
 	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, '$1-$2-$3-$4-$5-$6'));
 	button.click();
 }
 function checkForUpdates() {
-	GET('/notifications.json', function updates(data) {
-		const notificationObj = JSON.parse(data.responseText);
-		const messages = document.getElementById('message-badge');
-		const news = document.getElementById('news-badge');
+	GET('/users/notifications.json', function updates(data) {
+		var notificationObj = JSON.parse(data.responseText);
+		var messages = document.getElementById('message-badge');
+		var news = document.getElementById('news-badge');
 
 		/**/
 		if (notificationObj.message_count > 0 && notificationObj.message_count < 99) {
@@ -407,7 +419,7 @@ function checkForUpdates() {
 }
 function POST(url, data, callback) {
 	wiiuBrowser.showLoadingIcon(true);
-	const xhttp = new XMLHttpRequest();
+	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			wiiuBrowser.showLoadingIcon(false);
@@ -420,7 +432,7 @@ function POST(url, data, callback) {
 }
 function GET(url, callback) {
 	wiiuBrowser.showLoadingIcon(true);
-	const xhttp = new XMLHttpRequest();
+	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			wiiuBrowser.showLoadingIcon(false);
@@ -433,7 +445,7 @@ function GET(url, callback) {
 
 function DELETE(url, callback) {
 	wiiuBrowser.showLoadingIcon(true);
-	const xhttp = new XMLHttpRequest();
+	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			wiiuBrowser.showLoadingIcon(false);

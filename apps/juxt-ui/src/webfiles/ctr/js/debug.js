@@ -98,7 +98,7 @@ if (typeof cave === 'undefined') {
          * @param errorCode
          */
 		error_callErrorViewer: function (errorCode) {
-			const fakeMessage = 'Message for error code ' + errorCode;
+			var fakeMessage = 'Message for error code ' + errorCode;
 			alert(errorCode + '\n\n' + fakeMessage);
 		},
 		/**
@@ -142,7 +142,7 @@ if (typeof cave === 'undefined') {
 			console.log('cave.ls_setItem()');
 			// string でないと実機でエラー出るので挙動を合わせる
 			// If it is not string, an error will occur on the actual machine, so match the behavior
-			for (let i = 0; i < 2; i++) {
+			for (var i = 0; i < 2; i++) {
 				if (typeof arguments[i] !== 'string') {
 					console.error('Argument ' + i + ' should be string');
 					console.error('JavaScript Extension error. Arguments Count or Argument Type is not mutch. Or , too big arguments.');
@@ -229,7 +229,7 @@ if (typeof cave === 'undefined') {
          */
 		ls_setCanUseCachedServiceToken: function (can_use) {
 			console.log('cave.ls_setCanUseCachedServiceToken');
-			const flag = can_use ? '1' : '0';
+			var flag = can_use ? '1' : '0';
 			sessionStorage.setItem('custk', flag);
 		},
 		/**
@@ -282,7 +282,7 @@ if (typeof cave === 'undefined') {
          */
 		dialog_twoButton: function (title, message, buttonL_text, buttonR_text) {
 			console.log('cave.dialog_twoButton()');
-			const result = confirm('タイトル:' + title + '\n' + 'メッセージ:' + message + '\n\n[ ' + buttonL_text + ' (Cancel) ] [ ' + buttonR_text + ' (OK) ]');
+			var result = confirm('タイトル:' + title + '\n' + 'メッセージ:' + message + '\n\n[ ' + buttonL_text + ' (Cancel) ] [ ' + buttonR_text + ' (OK) ]');
 			return result ? 1 : 0;
 		},
 
@@ -526,7 +526,7 @@ if (typeof cave === 'undefined') {
 
 			// テスト等でスクショの有無を固定したい場合にクッキーで指定できるようにする, 実機ではこの挙動は存在しない
 			// If you want to fix the presence or absence of screenshots in tests, etc., make it possible to specify with cookies, this behavior does not exist on the actual device
-			const force = Olv.Cookie.get('force_screenshot_for_test');
+			var force = Olv.Cookie.get('force_screenshot_for_test');
 			if (force === 'true') {
 				return true;
 			}
@@ -569,7 +569,7 @@ if (typeof cave === 'undefined') {
 		},
 		lls_getPath: function (key) {
 			console.log('cave.getPath(' + key + ')');
-			const value = localStorage.getItem(key);
+			var value = localStorage.getItem(key);
 			if (value == 0) {
 				return '/img/dummy-image/screenshot-dummy-3ds-low.jpeg';
 			} else {
@@ -686,7 +686,7 @@ if (typeof cave === 'undefined') {
 		},
 		convertTimeToString: function (unixTime) {
 			console.log('cave.convertTimeToString(' + unixTime + ')');
-			const date = new Date(unixTime * 1000);
+			var date = new Date(unixTime * 1000);
 			return date.getFullYear() + '-' + this._toDoubleDigits(date.getMonth() + 1) + '-' + this._toDoubleDigits(date.getDate()) +
 				' ' + this._toDoubleDigits(date.getHours()) + ':' + this._toDoubleDigits(date.getMinutes()) + ':' + this._toDoubleDigits(date.getSeconds());
 		},
@@ -704,8 +704,8 @@ if (typeof cave === 'undefined') {
 		effect_scrollGuide: function (flag) {
 			console.log('cave.effect_scrollGuide( ' + flag + ' )');
 		},
-		effect_setScrollGuideOffsetPos: function (x, _y) {
-			console.log('effect_setScrollGuideOffsetPos( x = ' + x + ', y = ' + ' )');
+		effect_setScrollGuideOffsetPos: function (x, y) {
+			console.log('effect_setScrollGuideOffsetPos( x = ' + x + ', y = ' + y + ' )');
 		},
 		// キーボードアプレットに入力した文字列が返り値になるので window.prompt でエミュレートする
 		// Since the string entered in the keyboard applet will be the return value, emulate it with window.prompt

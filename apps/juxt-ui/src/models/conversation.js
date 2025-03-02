@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const moment = require('moment');
 const snowflake = require('node-snowflake').Snowflake;
 
 const user = new Schema({
@@ -34,28 +33,21 @@ const ConversationSchema = new Schema({
 	users: [user]
 });
 
-ConversationSchema.methods.newMessage = async function (message, fromPid) {
-	if (this.users[0].pid === fromPid) {
-		this.users[1].read = false;
-		this.markModified('users[1].read');
-	} else {
-		this.users[0].read = false;
-		this.markModified('users[0].read');
+ConversationSchema.methods.newMessage = async function (message, senderPID) {
+	this.last_updated = new Date();
+	this.message_preview = message;
+	const sender = this.users.find(user => user.pid === senderPID);
+	if (sender) {
+		sender.read = false;
 	}
-	this.set('last_updated', moment(new Date()));
-	this.set('message_preview', message);
 	await this.save();
 };
 
-ConversationSchema.methods.markAsRead = async function (pid) {
-	const users = this.get('users');
-	if (users[0].pid === pid) {
-		users[0].read = true;
-	} else if (users[1].pid === pid) {
-		users[1].read = true;
+ConversationSchema.methods.markAsRead = async function (receiverPID) {
+	const receiver = this.users.find(user => user.pid === receiverPID);
+	if (receiver) {
+		receiver.read = true;
 	}
-	this.set('users', users);
-	this.markModified('users');
 	await this.save();
 };
 

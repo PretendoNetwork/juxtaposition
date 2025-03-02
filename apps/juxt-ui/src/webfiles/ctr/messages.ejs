@@ -17,7 +17,7 @@
                 %>
                 <li>
                     <a href="/users/<%= userObj.pid %>" data-pjax="#body" class="icon-container notify <%if(userObj.official) {%> verified<%}%>">
-                        <img src="http://mii.olv.pretendo.cc/mii/<%= userObj.pid %>/normal_face.png" class="icon">
+                        <img src="<%= cdnURL %>/mii/<%= userObj.pid %>/normal_face.png" class="icon">
                     </a>
                     <a href="/friend_messages/<%= conversation.id %>" data-pjax="#body" class="arrow-button"></a>
                     <div class="body message">

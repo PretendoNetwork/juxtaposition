@@ -8,69 +8,86 @@
     <%- include('partials/nav_bar', { selection: 5, pid: pid }); %>
     <div id="toast"></div>
     <div id="wrapper">
+		<div class="buttons tabs">
+			<a id="post-reports" class="selected" href="/admin/posts">Posts</a>
+			<a id="account-reports" href="/admin/accounts">Accounts</a>
+			<% if (developer) { %>
+			<a id="communities" href="/admin/communities">Communities</a>
+			<% } %>
+		</div>
         <% if(reports.length === 0) {%>
             <p>No Reports found</p>
         <%} else { %>
         <ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
             <% reports.forEach(function(report) { %>
-                <li class="reports">
-                    <div class="hover">
-                        <a href="/users/<%= report.reported_by %>" data-pjax="#body" class="icon-container notify">
-                            <img src="https://pretendo-cdn.b-cdn.net/mii/<%= report.reported_by %>/normal_face.png" class="icon">
-                        </a>
-                        <a class="body messages report" href="#">
-                            <span class="text">
-                                <span class="nick-name">Reported By: <%= userMap.get(report.reported_by) %></span>
-                                <span class="timestamp"><%= moment(report.created_at).fromNow() %></span>
-                            </span>
-                            <span class="text">
-                                <h4>
-                                    <% switch (report.reason) {
-                                    case 0: %>
-                                    Spoiler
-                                    <% break;
-                                    case 1: %>
-                                    Personal Information
-                                    <% break;
-                                    case 2: %>
-                                    Violent Content
-                                    <% break;
-                                    case 3: %>
-                                    Inappropriate/Harmful Conduct
-                                    <% break;
-                                    case 4: %>
-                                    Hateful/Bullying
-                                    <% break;
-                                    case 5: %>
-                                    Advertising
-                                    <% break;
-                                    case 6: %>
-                                    Sexually Explicit
-                                    <% break;
-                                    case 7: %>
-                                    Piracy
-                                    <% break;
-                                    case 8: %>
-                                    Inappropriate Behavior in Game
-                                    <% break;
-                                    case 9: %>
-                                    Other
-                                    <% break;
-                                       default: %>
-                                    Unknown
-                                    <% break; } %>
-                                </h4>
-                                <p>
-                                    <%= report.message %>
-                                </p>
-                            </span>
-                        </a>
-                    </div>
-                    <% let post = posts.find((post) => post.id === report.post_id) %>
-                    <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
-                    <button onclick="remove(this)" data-id="<%=report._id%>">Remove Post</button>
-                </li>
-
+				<% let post = posts.find((post) => post.id === report.post_id) %>
+				<% if (!post || post.removed) return; %>
+					<li class="reports">
+						<details>
+							<summary>
+								<div class="hover">
+									<span href="/users/<%= report.reported_by %>" data-pjax="#body" class="icon-container notify">
+										<img src="<%= cdnURL %>/mii/<%= report.reported_by %>/normal_face.png" class="icon">
+									</span>
+									<span class="body messages report" href="#">
+										<span class="text">
+											<span class="nick-name">Reported By: <%= userMap.get(report.reported_by) %></span>
+											<span class="timestamp"><%= moment(report.created_at).fromNow() %></span>
+										</span>
+										<span class="text">
+											<h4>
+												<% switch (report.reason) {
+												case 0: %>
+												Spoiler
+												<% break;
+												case 1: %>
+												Personal Information
+												<% break;
+												case 2: %>
+												Violent Content
+												<% break;
+												case 3: %>
+												Inappropriate/Harmful Conduct
+												<% break;
+												case 4: %>
+												Hateful/Bullying
+												<% break;
+												case 5: %>
+												Advertising
+												<% break;
+												case 6: %>
+												Sexually Explicit
+												<% break;
+												case 7: %>
+												Piracy
+												<% break;
+												case 8: %>
+												Inappropriate Behavior in Game
+												<% break;
+												case 9: %>
+												Other
+												<% break;
+												case 10: %>
+												Missing Images; Reach out to Jemma with post link to fix
+												<% break;
+												default: %>
+												Unknown
+												<% break; } %>
+											</h4>
+											<p>
+												<%= report.message %>
+											</p>
+										</span>
+									</span>
+								</div>
+							</summary>
+							<%- include('partials/post_template', { post: post, reply: false }); %>
+							<div class="button-spacer">
+								<button onclick="remove(this)" data-id="<%=report._id%>">Remove Post</button>
+								<button onclick="ignore(this)" data-id="<%=report._id%>">Ignore Report</button>
+							</div>
+						</details>
+					</li>
             <% });} %>
         </ul>
     </div>
@@ -85,7 +102,18 @@
             method: 'DELETE',
         })
             .then(res => res.text())
-            .then(res => console.log(res))
+            .then(res => location.reload())
+    }
+	function ignore(element) {
+        const id = element.getAttribute("data-id");
+        const reason = prompt("Provide explanation for ignoring this report:")
+        if(!id || !reason) return;
+
+        fetch(`/admin/${id}?reason=${reason}`, {
+            method: 'PUT',
+        })
+            .then(res => res.text())
+            .then(res => location.reload())
     }
 </script>
 </body>

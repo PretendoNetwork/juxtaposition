@@ -1,3 +1,4 @@
+<% if(locals.mainPost === undefined) locals.mainPost = false; %>
 <div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%> <%if(post.is_spoiler) {%>spoiler<%}%>">
     <% if(post.removed) {%>
         <div class="post-body-content removed">
@@ -5,7 +6,7 @@
         </div>
     <%} else {%>
     <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
-        <img src="<%= post.mii_face_url.replace('http:', 'https:') %>" class="mii-icon">
+        <img src="<%= post.mii_face_url %>" class="mii-icon">
     </a>
     <div class="post-body-content <% if(post.removed) {%>removed<%}%>">
         <div class="post-body <%if(userContent.likes && userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>" id="<%= post.id %>">
@@ -27,7 +28,7 @@
             <%if(!reply) {%>
             <a href="/titles/<%= post.community_id %>" class="community-banner" data-pjax="#body">
                         <span class="title-icon-container" data-pjax="#body">
-                            <img src="https://mii.olv.pretendo.cc/icons/<%= post.community_id %>/128.png" class="title-icon">
+                            <img src="<%= cdnURL %>/icons/<%= post.community_id %>/128.png" class="title-icon">
                         </span>
                 <span class="community-name"><%= communityMap.get(post.community_id) %></span>
             </a>
@@ -42,10 +43,10 @@
                     <p class="post-content-text"><%= post.body %></p>
                 <%}%>
                 <% if(post.screenshot !== '') { %>
-                    <img class="post-screenshot" src="https://mii.olv.pretendo.cc<%= post.screenshot %>">
+                    <img class="post-screenshot" src="<%= cdnURL %><%= post.screenshot %>">
                 <%}%>
                 <% if(post.painting !== '') { %>
-                <img class="post-memo" src="https://mii.olv.pretendo.cc/paintings/<%=post.pid%>/<%=post.id%>.png">
+                <img class="post-memo" src="<%= cdnURL %>/paintings/<%=post.pid%>/<%=post.id%>.png">
                 <%}%>
                 <% if(post.url) { %>
                     <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -53,7 +54,7 @@
             </div>
             <div class="post-buttons">
                 <button type="button" class="submit yeah-button <%if(post.yeahs && post.yeahs.indexOf(userContent.pid) !== -1){ %> selected <%}%>" data-post="<%= post.id %>"></button>
-                <a <%if(!yeah && !reply) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
+                <a <%if(!reply) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
                     <% if(reply && post.pid !== pid && !moderator) {%>
                         <div>
                             <button type="button" class="submit report" data-post="<%= post.id %>" onclick="reportPost(this)"></button>
@@ -64,7 +65,7 @@
                             <button type="button" class="submit remove" data-post="<%= post.id %>" onclick="deletePost(this)"></button>
                         </div>
                     <%}%>
-                    <%if(!yeah) {%>
+                    <%if(!mainPost) {%>
                         <span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
                         <%if(!reply) {%>
                         <span class="reply"><%=post.reply_count %></span>
@@ -74,12 +75,13 @@
             </div>
         </div>
     </div>
-    <%if(yeah && post.yeahs.length > 0) {%>
+    <%if(locals.mainPost && post.yeahs.length > 0) {%>
     <h6 class="yeah-text"><span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span> people gave this post a yeah.</h6>
     <div class="yeah-list">
-        <%for(var yeah of post.yeahs) {%>
-            <a href="/users/<%= yeah %>" class="mii-icon-container" data-pjax="#body">
-                <img src="https://mii.olv.pretendo.cc/mii/<%= yeah %>/normal_face.png" class="mii-icon">
+		<% var yeahCount = post.yeahs.length > 10 ? 10 : post.yeahs.length %>
+        <%for(var i = 0; i < yeahCount; i++) {%>
+            <a href="/users/<%= post.yeahs[i] %>" class="mii-icon-container" data-pjax="#body">
+                <img src="<%= cdnURL %>/mii/<%= post.yeahs[i] %>/normal_face.png" class="mii-icon">
             </a>
         <%}%>
     </div>

@@ -47,7 +47,7 @@ if (typeof wiiuBrowser === 'undefined') {
 		jumpToEshop: function (query) {
 			console.debug(query);
 		},
-		jumpToApplication: function (titleId, flags, communityId, appData, postId) {
+		jumpToApplication: function (titleId, _flags, _communityId, _appData, _postId) {
 			console.debug(titleId);
 		}
 	};
@@ -67,7 +67,7 @@ if (typeof wiiuSound === 'undefined') {
 		playSound: function (soundId, device) {
 			this.playSoundByName('id ' + soundId, device);
 		},
-		playSoundByName: function (name, device) {
+		playSoundByName: function (name, _device) {
 			console.debug('Play sound ' + name);
 		}
 	};
@@ -145,12 +145,12 @@ if (typeof wiiuBOSS === 'undefined') {
 	window.wiiuBOSS = {
 		isRegisteredBossTask: function () {
 			console.debug('wiiuBOSS.isRegisteredBossTask');
-			const result = {
+			var result = {
 				isRegistered: true
 			};
 			return result;
 		},
-		registerBossTask: function (languageCode) {
+		registerBossTask: function (_languageCode) {
 			console.debug('wiiuBOSS.registerBossTask');
 			// return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
 			return {};
@@ -162,17 +162,17 @@ if (typeof wiiuBOSS === 'undefined') {
 		},
 		isRegisteredDirectMessageTask: function () {
 			console.debug('wiiuBOSS.isRegisteredDirectMessageTask');
-			const result = {
+			var result = {
 				isRegistered: true
 			};
 			return result;
 		},
-		registerDirectMessageTask: function (languageCode) {
+		registerDirectMessageTask: function (_languageCode) {
 			console.debug('wiiuBOSS.registerDirectMessageTask');
 			// return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
 			return {};
 		},
-		registerDirectMessageTaskEx: function (lifeTime, interval) {
+		registerDirectMessageTaskEx: function (_lifeTime, _interval) {
 			console.debug('wiiuBOSS.registerDirectMessageTaskEx');
 			// return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
 			return {};
@@ -194,8 +194,8 @@ if (typeof wiiuMainApplication === 'undefined') {
 			null
 		],
 		_getImage: function () {
-			const images = this._images;
-			const index = Math.floor(Math.random() * images.length);
+			var images = this._images;
+			var index = Math.floor(Math.random() * images.length);
 
 			// テスト等でスクショの有無を固定したい場合にクッキーで指定できるようにする, 実機ではこの挙動は存在しない
 			// If you want to fix the presence or absence of screenshots in tests, etc., make it possible to specify with cookies, this behavior does not exist on the actual device
@@ -205,7 +205,7 @@ if (typeof wiiuMainApplication === 'undefined') {
 
 			return images[index];
 		},
-		getScreenShot: function (isTv) {
+		getScreenShot: function (_isTv) {
 			return this._getImage();
 		},
 		getAppData: function () {
@@ -225,7 +225,7 @@ if (typeof wiiuMemo === 'undefined') {
 		open: function (reset) {
 			console.debug('wiiuMemo.open(reset = ' + reset + ')');
 			this._isFinish = false;
-			const self = this;
+			var self = this;
 			setTimeout(function () {
 				self._isFinish = true;
 			}, 100);
@@ -263,7 +263,7 @@ if (typeof wiiuPDM === 'undefined') {
 if (typeof wiiuErrorViewer === 'undefined') {
 	window.wiiuErrorViewer = {
 		openByCode: function (errorCode) {
-			const message = 'Message for error code ' + errorCode;
+			var message = 'Message for error code ' + errorCode;
 			this.openByCodeAndMessage(errorCode, message);
 		},
 		openByCodeAndMessage: function (errorCode, errorMessage) {
@@ -329,6 +329,6 @@ if (typeof wiiuLocalStorage === 'undefined') {
 		length: function () {
 			return localStorage.length;
 		},
-		write: function () {}
+		write: function () { }
 	};
 }

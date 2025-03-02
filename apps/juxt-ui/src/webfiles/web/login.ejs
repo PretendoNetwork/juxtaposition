@@ -92,10 +92,10 @@
         let x = document.getElementById("toast");
         x.innerText = text;
         x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 10000);
     }
     <%if(toast) {%>
-        Toast("<%=toast%>");
+        Toast(`<%=toast%>`);
     <%}%>
 </script>
 </body></html>

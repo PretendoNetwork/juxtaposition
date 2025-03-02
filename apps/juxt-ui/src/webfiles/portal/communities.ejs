@@ -17,7 +17,7 @@
                 <% for(var i = 0; i < popularCommunities.length; i++) {%>
                     <% var popCommunityID = popularCommunities[i].olive_community_id; %>
                     <li id="<%=popCommunityID%>">
-                        <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%=popCommunityID%>/128.png" class="icon" alt=""></span>
+                        <span class="icon-container"><img src="<%= cdnURL %>/icons/<%=popCommunityID%>/128.png" class="icon" alt=""></span>
                         <a href="/titles/<%=popCommunityID%>/new" data-pjax="#body" class="scroll to-community-button"></a>
                         <div class="body">
                             <div class="body-content">
@@ -35,7 +35,7 @@
                 <% for(var j = 0; j < newCommunities.length; j++) {%>
                     <% var communityID = newCommunities[j].olive_community_id; %>
                     <li id="<%=communityID%>">
-                        <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
+                        <span class="icon-container"><img src="<%= cdnURL %>/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
                         <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button"></a>
                         <div class="body">
                             <div class="body-content">

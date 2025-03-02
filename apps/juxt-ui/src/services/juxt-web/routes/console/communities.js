@@ -1,49 +1,47 @@
 const express = require('express');
 const multer = require('multer');
 const moment = require('moment');
-const util = require('../../../../util');
 const database = require('../../../../database');
+const util = require('../../../../util');
+const config = require('../../../../../config.json');
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 const { POST } = require('../../../../models/post');
 const { COMMUNITY } = require('../../../../models/communities');
-const { conf: config } = require('@/config');
+const redis = require('../../../../redisCache');
 
 router.get('/', async function (req, res) {
-	const newCommunities = await database.getNewCommunities(6);
-	const last24Hours = await calculateMostPopularCommunities();
-	const popularCommunities = await COMMUNITY.aggregate([
-		{ $match: { olive_community_id: { $in: last24Hours }, parent: null } },
-		{
-			$addFields: {
-				index: { $indexOfArray: [last24Hours, '$olive_community_id'] }
-			}
-		},
-		{ $sort: { index: 1 } },
-		{ $limit: 9 },
-		{ $project: { index: 0, _id: 0 } }
-	]);
+	const newCommunities = JSON.parse(await redis.getValue('newCommunities')) || await database.getNewCommunities(6);
+	let popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
+
+	if (!popularCommunities) {
+		const last24Hours = await calculateMostPopularCommunities();
+		popularCommunities = await COMMUNITY.aggregate([
+			{ $match: { olive_community_id: { $in: last24Hours }, parent: null } },
+			{
+				$addFields: {
+					index: { $indexOfArray: [last24Hours, '$olive_community_id'] }
+				}
+			},
+			{ $sort: { index: 1 } },
+			{ $limit: 9 },
+			{ $project: { index: 0, _id: 0 } }
+		]);
+		redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+		redis.setValue('newCommunities', JSON.stringify(newCommunities), 60 * 60);
+	}
+
 	res.render(req.directory + '/communities.ejs', {
 		cache: true,
 		popularCommunities: popularCommunities,
-		newCommunities: newCommunities,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator
+		newCommunities: newCommunities
 	});
 });
 
 router.get('/all', async function (req, res) {
 	const communities = await database.getCommunities(90);
 	res.render(req.directory + '/all_communities.ejs', {
-		communities: communities,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator
+		communities: communities
 	});
 });
 
@@ -66,9 +64,9 @@ router.get('/:communityID/related', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
+		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found' });
 	}
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
 	if (!children) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
@@ -78,12 +76,7 @@ router.get('/:communityID/related', async function (req, res) {
 		selection: 2,
 		communityMap,
 		community,
-		children,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator
+		children
 	});
 });
 
@@ -95,9 +88,19 @@ router.get('/:communityID/:type', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
+		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found' });
 	}
-	const communityMap = await util.data.getCommunityHash();
+
+	if (!community.permissions) {
+		community.permissions = {
+			open: community.open,
+			minimum_new_post_access_level: 0,
+			minimum_new_comment_access_level: 0,
+			minimum_new_community_access_level: 0
+		};
+		await community.save();
+	}
+	const communityMap = await util.getCommunityHash();
 	let children = await database.getSubCommunities(community.olive_community_id);
 	if (children.length === 0) {
 		children = null;
@@ -119,20 +122,17 @@ router.get('/:communityID/:type', async function (req, res) {
 
 	const bundle = {
 		posts,
-		open: community.open,
+		open: community.permissions.open,
 		numPosts,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/titles/${req.params.communityID}/${req.params.type}/more?offset=${posts.length}&pjax=true`
 	};
 
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
-			moment,
-			lang: req.lang
+			moment
 		});
 	}
 
@@ -146,22 +146,18 @@ router.get('/:communityID/:type', async function (req, res) {
 		userSettings: userSettings,
 		userContent: userContent,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
+		pnid: req.user,
 		children,
 		type,
 		bundle,
-		template: 'posts_list',
-		moderator: req.moderator
+		template: 'posts_list'
 	});
 });
 
 router.get('/:communityID/:type/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	let posts;
 	const community = await database.getCommunityByID(req.params.communityID);
 	if (!community) {
@@ -188,8 +184,6 @@ router.get('/:communityID/:type/more', async function (req, res) {
 		numPosts: posts.length,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/titles/${req.params.communityID}/${req.params.type}/more?offset=${offset + posts.length}&pjax=true`
 	};
 
@@ -199,12 +193,7 @@ router.get('/:communityID/:type/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
-			pid: req.pid,
-			moderator: req.moderator
+			account_server: config.account_server_domain.slice(8)
 		});
 	} else {
 		res.sendStatus(204);
@@ -214,16 +203,29 @@ router.get('/:communityID/:type/more', async function (req, res) {
 router.post('/follow', upload.none(), async function (req, res) {
 	const community = await database.getCommunityByID(req.body.id);
 	const userContent = await database.getUserContent(req.pid);
+	const popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
+	let updated = false;
+
 	if (userContent !== null && userContent.followed_communities.indexOf(community.olive_community_id) === -1) {
 		community.upFollower();
 		userContent.addToCommunities(community.olive_community_id);
 		res.send({ status: 200, id: community.olive_community_id, count: community.followers });
+		updated = true;
 	} else if (userContent !== null && userContent.followed_communities.indexOf(community.olive_community_id) !== -1) {
 		community.downFollower();
 		userContent.removeFromCommunities(community.olive_community_id);
 		res.send({ status: 200, id: community.olive_community_id, count: community.followers });
+		updated = true;
 	} else {
 		res.send({ status: 423, id: community.olive_community_id, count: community.followers });
+	}
+
+	if (popularCommunities && updated) {
+		const index = popularCommunities.findIndex(element => element.olive_community_id === community.olive_community_id);
+		if (index !== -1) {
+			popularCommunities[index].followers = community.followers;
+			redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+		}
 	}
 });
 

@@ -28,7 +28,7 @@
                 <%} else { %>
                     <button id="load-more-posts-button" onclick="loadCommunityPosts()" style="background: #1F8A42">Load More Posts</button>
                         <% newPosts.forEach(function(post) { %>
-                            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                            <%- include('post_template', { post: post, reply: false  }); %>
                         <% }); %>
                 <%}%>
             </div>

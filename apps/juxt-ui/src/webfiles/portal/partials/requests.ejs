@@ -5,12 +5,12 @@
             <%if(bundle.userMap.get(request.sender)) {%>
             <li>
                 <a href="/users/<%= request.sender %>" data-pjax="#body" class="icon-container notify">
-                    <img src="https://mii.olv.pretendo.cc/mii/<%= request.sender %>/normal_face.png" class="icon">
+                    <img src="<%= cdnURL %>/mii/<%= request.sender %>/normal_face.png" class="icon">
                 </a>
                 <div class="body">
                     <p class="text"><span class="nick-name"><%= bundle.userMap.get(request.sender) %></span>
                         <span><%=request.message%></span>
-                        <span class="timestamp"> <%= moment(request.sent * 1000).fromNow() %></span>
+                        <span class="timestamp"> <%= moment(Number(request.sent) * 1000).fromNow() %></span>
                     </p>
                 </div>
             </li>

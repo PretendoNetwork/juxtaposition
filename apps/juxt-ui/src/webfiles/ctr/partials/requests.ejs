@@ -5,7 +5,7 @@
             <%if(bundle.userMap.get(request.sender)) {%>
             <li>
                 <a href="/users/<%= request.sender %>" data-pjax="#body" class="icon-container notify">
-                    <img src="http://mii.olv.pretendo.cc/mii/<%= request.sender %>/normal_face.png" class="icon">
+                    <img src="<%= cdnURL %>/mii/<%= request.sender %>/normal_face.png" class="icon">
                 </a>
                 <div class="body">
                     <p class=""><span class="nick-name"><%= bundle.userMap.get(request.sender) %></span>

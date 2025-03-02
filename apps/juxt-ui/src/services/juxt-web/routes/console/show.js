@@ -1,27 +1,17 @@
 const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const { conf: config } = require('@/config');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
 	if (req.pid === 1000000000) {
-		return res.render(req.directory + '/guest_notice.ejs', {
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			moderator: req.moderator
-		});
+		return res.render(req.directory + '/guest_notice.ejs');
 	}
 
 	const user = await database.getUserSettings(req.pid);
 	const content = await database.getUserContent(req.pid);
 	if (!user || !content) {
-		res.render(req.directory + '/first_run.ejs', {
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			pid: req.pid,
-			moderator: req.moderator
-		});
+		return res.render(req.directory + '/first_run.ejs');
 	}
 
 	if (req.query.topic_tag) {
@@ -34,22 +24,18 @@ router.get('/', async function (req, res) {
 
 	const usrMii = await database.getUserSettings(req.pid);
 	if (req.user.mii.name !== usrMii.screen_name) {
-		util.data.setName(req.pid, req.user.mii.name);
+		util.setName(req.pid, req.user.mii.name);
 		usrMii.screen_name = req.user.mii.name;
 		await usrMii.save();
 	}
 });
 
 router.get('/first', async function (req, res) {
-	res.render(req.directory + '/first_run.ejs', {
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		moderator: req.moderator
-	});
+	res.render(req.directory + '/first_run.ejs');
 });
 
 router.post('/newUser', async function (req, res) {
-	if (req.pid === null) {
+	if (req.pid === null || !req.new_users || req.directory === 'web') {
 		return res.sendStatus(401);
 	}
 
@@ -58,7 +44,7 @@ router.post('/newUser', async function (req, res) {
 		return res.sendStatus(504);
 	}
 
-	await util.data.create_user(req.pid, req.body.experience, req.body.notifications);
+	await util.create_user(req.pid, req.body.experience, req.body.notifications);
 	if (await database.getUserSettings(req.pid) !== null) {
 		res.sendStatus(200);
 	} else {

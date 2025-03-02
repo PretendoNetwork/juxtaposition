@@ -21,10 +21,10 @@
                 </header>
                 <div class="post-body">
                     <%if(message.screenshot) {%>
-                        <img class="message-viewer-bubble-sent-screenshot" src="http://mii.olv.pretendo.cc<%= message.screenshot %>">
+                        <img class="message-viewer-bubble-sent-screenshot" src="<%= cdnURL %><%= message.screenshot %>">
                     <%}%>
                     <%if(message.painting) {%>
-                    <img class="message-viewer-bubble-sent-memo" src="http://mii.olv.pretendo.cc/paintings/<%=message.pid%>/<%=message.id%>.png">
+                    <img class="message-viewer-bubble-sent-memo" src="<%= cdnURL %>/paintings/<%=message.pid%>/<%=message.id%>.png">
                     <%}else {%>
                         <p class="post-content"><%= message.body %></p>
                     <%}%>

@@ -8,6 +8,10 @@
     <%- include('partials/nav_bar', { selection: 1, pid: pid }); %>
     <div id="toast"></div>
     <div id="wrapper">
+		<div class="buttons tabs" style="margin-bottom: 1.5em;">
+			<a id="my-feed" href="/feed" <% if(tab == 0) {%>class="selected"<%}%>>My Feed</a>
+			<a id="all-feed" href="/feed/all" <% if(tab == 1) {%>class="selected"<%}%>>Global Feed</a>
+		</div>
         <%- include('partials/' + template, { bundle }); %>
     </div>
 </div>

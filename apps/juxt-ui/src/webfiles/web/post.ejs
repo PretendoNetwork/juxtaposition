@@ -2,54 +2,107 @@
 <head>
     <title>Post by <%= post.screen_name %></title>
     <%- include('partials/head'); %>
+	<%if(!post.removed) {%>
     <!-- Google / Search Engine Tags -->
-    <meta itemprop="name" content="Juxtaposition - Post by <%= post.screen_name %>">
-    <meta itemprop="description" content="<%= community.name %> - <%= post.empathy_count%> Yeahs!">
+    <meta itemprop="name" content="<%= post.screen_name %> (@<%= postPNID.username %>) - <%= community.name %>">
+    <meta itemprop="description" content="<%= post.body %>
+
+<%= post.reply_count %> 🗨️  <%= post.empathy_count %> ❤️">
     <% if(post.screenshot !== '') { %>
-        <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net<%= post.screenshot %>">
+        <meta itemprop="image" content="<%= cdnURL %><%= post.screenshot %>">
     <%} else if(post.painting !== '') { %>
-        <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png">
+        <meta itemprop="image" content="<%= cdnURL %>/paintings/<%= post.pid %>/<%= post.id %>.png">
     <%}%>
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Juxt - Post by <%= post.screen_name %>"/>
-    <meta property="og:description" content="<%= community.name %> - <%= post.empathy_count%> Yeahs!"/>
+    <meta property="og:title" content="<%= post.screen_name %> (@<%= postPNID.username %>) - <%= community.name %>"/>
+    <meta property="og:description" content="<%= post.body %>
+
+<%= post.reply_count %> 🗨️  <%= post.empathy_count %> ❤️"/>
     <meta property="og:url" content="https://juxt.pretendo.cc/posts/<%= post.id %>"/>
     <% if(post.screenshot !== '') { %>
-        <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/<%= post.screenshot %>"/>
+	<meta property="og:image" content="<%= cdnURL %><%= post.screenshot %>"/>
     <%} else if(post.painting !== '') { %>
-        <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png"/>
+	<meta property="og:image" content="<%= cdnURL %>/paintings/<%= post.pid %>/<%= post.id %>.png"/>
     <%}%>
-    <meta property="og:site_name" content="Juxtaposition" />
+    <meta property="og:site_name" content="Juxtaposition - Pretendo Network" />
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:title" content="Juxt - Post by <%= post.screen_name %>"/>
-    <meta name="twitter:description" content="<%= community.name %> - <%= post.empathy_count%> Yeahs!"/>
+    <meta name="twitter:title" content=""<%= post.screen_name %> (@<%= postPNID.username %>) - <%= community.name %>"/>
+    <meta name="twitter:description" content="<%= post.body %>
+
+<%= post.reply_count %> 🗨️  <%= post.empathy_count %> ❤️"/>
     <meta name="twitter:site" content="@PretendoNetwork"/>
     <% if(post.screenshot !== '') { %>
-        <meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/<%= post.screenshot %>"/>
+	<meta name="twitter:image" content="<%= cdnURL %><%= post.screenshot %>"/>
     <%} else if(post.painting !== '') { %>
-        <meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png"/>
+	<meta name="twitter:image" content="<%= cdnURL %>/paintings/<%= post.pid %>/<%= post.id %>.png"/>
     <%}%>
     <meta name="twitter:creator" content="@PretendoNetwork"/>
-
+<% } %>
 </head>
 <body>
 <div id="main">
     <h2 id="title" class="page-header">Post</h2>
     <%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
     <div id="toast"></div>
-    <div class="community-page-post-box">
+    <div class="community-page-post-box" id="post">
         <div id="wrapper">
-                <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
+			<%if(!post.removed) {%>
+				<% if(pid !== 1000000000 && (
+		(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
+		(pnid.accessLevel >= community.permissions.minimum_new_comment_access_level)
+		) && userSettings.account_status === 0) {%>
+				<!--<button id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">+</button>-->
+				<%}%>
+			<%}%>
+                <%- include('partials/post_template', { post: post, reply: false, mainPost: true }); %>
                 <span class="replies-line"></span>
                 <% replies.forEach(function(post) { %>
-                    <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
+                    <%- include('partials/post_template', { post: post, reply: true }); %>
                     <span class="replies-line"></span>
                 <% }); %>
         </div>
     </div>
+	<% if (pid !== 1000000000) { %>
+	<div id="report-post-page" class="add-post-page official-user-post" style="display: none">
+        <form method="post" action="/posts/<%=post.id%>/report" id="report-form" name="report" data-is-own-title="1" data-is-identified="1">
+            <input type="hidden" name="post_id" id="report-post-id" value="<%= post.id %>"/>
+            <div class="add-post-page-content report">
+				<h2 class="page-title">Report Post</h2>
+                <p>
+                    You are about to report a post with content which violates the Juxtaposition Code of Conduct.
+                    This report will be sent to Pretendo's Juxtaposition administrators and not to the creator of the post.
+                </p>
+                <div>
+                    <h4>Violation Type:</h4>
+                    <select name="reason" id="report">
+                        <option value="0">Spoiler</option>
+                        <option value="1">Personal Information</option>
+                        <option value="2">Violent Content</option>
+                        <option value="3">Inappropriate/Harmful Conduct</option>
+                        <option value="4">Hateful/Bullying</option>
+                        <option value="5">Advertising</option>
+                        <option value="6">Sexually Explicit</option>
+                        <option value="7">Piracy</option>
+                        <option value="8">Inappropriate Behavior in Game</option>
+						<option value="10">Missing Images</option>
+                        <option value="9">Other</option>
+                    </select>
+                </div>
+                <textarea name="message" class="textarea-text" value="" maxlength="280" placeholder="Enter additional comments or information"></textarea>
+            </div>
+			<div id="button-wrapper">
+				<input type="button" class="olv-modal-close-button fixed-bottom-button left"
+                   value="Cancel" data-sound="SE_WAVE_CANCEL"
+                   data-module-show="post" data-module-hide="report-post-page"
+                   data-header="true" data-menu="true">
+            <input type="submit" class="post-button fixed-bottom-button" value="Submit">
+			</div>
+        </form>
+	</div>
+	<% } %>
 </div>
 </body>
 </html>

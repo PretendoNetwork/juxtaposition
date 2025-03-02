@@ -5,6 +5,10 @@ const endpointSchema = new Schema({
 	server_access_level: String,
 	topics: Boolean,
 	guest_access: Boolean,
+	new_users: {
+		type: Boolean,
+		default: true
+	},
 	host: String,
 	api_host: String,
 	portal_host: String,

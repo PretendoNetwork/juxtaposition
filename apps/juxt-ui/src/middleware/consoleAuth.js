@@ -1,38 +1,40 @@
-const moment = require('moment/moment');
+const config = require('../../config.json');
 const util = require('../util');
-const db = require('../database');
-const { conf: config } = require('@/config');
 
 async function auth(request, response, next) {
 	// Get pid and fetch user data
-	if (request.headers['x-nintendo-servicetoken']) {
-		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.data.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
-		request.user = request.pid ? await util.data.getUserDataFromPid(request.pid) : null;
+	if (request.session && request.session.user && request.session.pid && !request.isWrite) {
+		request.user = request.session.user;
+		request.pid = request.session.pid;
+	} else {
+		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
+		request.user = request.pid ? await util.getUserDataFromPid(request.pid) : null;
+
+		request.session.user = request.user;
+		request.session.pid = request.pid;
 	}
 
 	// Set headers
-	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.data.decodeParamPack(request.headers['x-nintendo-parampack']) : null;
+	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.decodeParamPack(request.headers['x-nintendo-parampack']) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
 
-	// Ban check
-	if (request.user) {
-		// Set moderator status
-		request.moderator = request.user.accessLevel >= 2;
-		const user = await db.getUserSettings(request.pid);
-		if (user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
-			user.account_status = 0;
-			await user.save();
-		}
-		// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
-		// assuming we support more gradual bans on PNID's
-		if (user && (user.account_status < 0 || user.account_status > 1 || request.user.accessLevel < 0)) {
-			response.render(request.directory + '/partials/ban_notification.ejs', {
-				user: user,
-				moment: moment,
-				cdnURL: config.CDN_domain,
-				lang: request.lang,
-				pid: request.pid
-			});
+	if (!request.user) {
+		try {
+			request.user = await util.getUserDataFromToken(request.cookies.access_token);
+			request.pid = request.user.pid;
+
+			request.session.user = request.user;
+			request.session.pid = request.pid;
+			if (request.user.accessLevel !== 3) {
+				request.user = null;
+				request.pid = null;
+				request.session.user = null;
+				request.session.pid = null;
+			}
+		} catch (e) {
+			console.error(e);
+			request.user = null;
+			request.pid = null;
 		}
 	}
 
@@ -43,16 +45,16 @@ async function auth(request, response, next) {
 			error: 'Unable to parse service token. Are you using a Nintendo Network ID?'
 		});
 	}
-	if (request.user.accessLevel < 3 && !request.paramPackData) {
-		return response.render('portal/partials/ban_notification.ejs', {
-			user: null,
-			error: 'Missing auth headers'
-		});
-	}
 	if (!request.user) {
 		return response.render('portal/partials/ban_notification.ejs', {
 			user: null,
 			error: 'Unable to fetch user data. Please try again later.'
+		});
+	}
+	if (request.user.accessLevel < 3 && !request.paramPackData) {
+		return response.render('portal/partials/ban_notification.ejs', {
+			user: null,
+			error: 'Missing auth headers'
 		});
 	}
 	const userAgent = request.headers['user-agent'];
@@ -63,8 +65,8 @@ async function auth(request, response, next) {
 		});
 	}
 
-	request.lang = util.data.processLanguage(request.paramPackData);
-	request.directory = request.subdomains[1];
+	response.locals.lang = util.processLanguage(request.paramPackData);
+	response.locals.pid = request.pid;
 	return next();
 }
 

@@ -109,8 +109,8 @@ ul {
 
 #body > .body-content,
 #posts-form {
-    width: 320px;
-    margin-left: 40px;
+    width: 322px;
+    margin-left: 39px;
     min-height: 175px
 }
 
@@ -326,11 +326,11 @@ menu.tab-header.user-page li:last-child {
 
 .post-memo,
 .post-screenshot {
-    width: 318px
+    width: 320px
 }
 
 .post-memo {
-    height: 118px
+    height: 120px
 }
 
 .post-screenshot {
@@ -371,7 +371,9 @@ header svg {
 
 .post-content-text {
     padding: 5px;
-    font-size: 15px
+    font-size: 15px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
 }
 
 .post header {
@@ -892,4 +894,17 @@ menu.tab-header.no-margin {
 
 .message-post-list .post header {
     color: #969696;
+}
+#report-post-page p {
+	text-align: center;
+}
+#report-post-page .report > div {
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+}
+#report-post-page .report > .textarea-text {
+	width: 377px;
+	margin: 4px;
+	padding: 4px;
 }

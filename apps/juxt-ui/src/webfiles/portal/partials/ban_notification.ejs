@@ -1,7 +1,7 @@
 <%if(user === undefined || user === null) {%>
 <body>
 <h1>You are not authorized to access this application</h1>
-<p>If you believe this is an issue, contact @Jemma#6508 on Discord</p>
+<p>If you believe this is an issue, contact @JemTanuki on Discord</p>
 <p>Error: <%=error%></p>
 </body>
 <script>
@@ -10,14 +10,17 @@
 </script>
 <%} else {%>
 <script>
-    <%if(user.account_status === 1) {%>
-    wiiuErrorViewer.openByCodeAndMessage(5980009, '<%=user.user_id%> has been limited from posting until: \n\n<%= moment(user.ban_lift_date) %>.\n\nReason: <%=user.ban_reason%>\n\nIf you have any questions contact the developers in the Discord server.');
-    location.href = '/communities'
+	<% if(networkBan) {%>
+	wiiuErrorViewer.openByCodeAndMessage(5980010, '<%=PNID%> has been banned from the network.\n\nReason: <%=user.ban_reason%>\n\nIf you have any questions contact the moderators in the Discord server or forum.');
+	wiiuBrowser.closeApplication();
+    <%} else if(user.account_status === 1) {%>
+    wiiuErrorViewer.openByCodeAndMessage(5980009, '<%=PNID%> has been limited from posting until: \n\n<%= moment(user.ban_lift_date) %>.\n\nReason: <%=user.ban_reason%>\n\nIf you have any questions contact the moderators in the Discord server or forum.');
+    location.href = '/communities';
     <%} else if(user.account_status === 2) {%>
-    wiiuErrorViewer.openByCodeAndMessage(5980010, '<%=user.user_id%> has been banned until: \n\n<%= moment(user.ban_lift_date) %>.\n\nReason: <%=user.ban_reason%>\n\nIf you have any questions contact the developers in the Discord server.');
+    wiiuErrorViewer.openByCodeAndMessage(5980010, '<%=PNID%> has been banned until: \n\n<%= moment(user.ban_lift_date) %>.\n\nReason: <%=user.ban_reason%>\n\nIf you have any questions contact the moderators in the Discord server or forum.');
     wiiuBrowser.closeApplication();
     <%} else if(user.account_status === 3) {%>
-    wiiuErrorViewer.openByCodeAndMessage(5980011, '<%=user.user_id%> has been banned forever.\n\nReason: <%=user.ban_reason%>\n\nIf you have any questions contact the developers in the Discord server.');
+    wiiuErrorViewer.openByCodeAndMessage(5980011, '<%=PNID%> has been banned forever.\n\nReason: <%=user.ban_reason%>\n\nIf you have any questions contact the moderators in the Discord server or forum.');
     wiiuBrowser.closeApplication();
     <%}%>
 </script>

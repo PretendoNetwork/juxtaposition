@@ -9,7 +9,7 @@
     <div id="toast"></div>
     <div id="wrapper">
         <% if(conversations.length === 0) {%>
-            <li><p><%= lang.messages.coming_soon %><</p></li>
+            <li style="list-style: none;"><p><%= lang.messages.coming_soon %></p></li>
         <%} else { %>
             <ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
             <% conversations.forEach(function(conversation) { %>
@@ -28,7 +28,7 @@
                     <li>
                         <div class="hover">
                             <a href="/users/<%= userObj.pid %>" data-pjax="#body" class="icon-container notify">
-                                <img src="https://pretendo-cdn.b-cdn.net/mii/<%= userObj.pid %>/normal_face.png" class="icon">
+                                <img src="<%= cdnURL %>/mii/<%= userObj.pid %>/normal_face.png" class="icon">
                             </a>
                             <a class="body messages" href="/friend_messages/<%= conversation.id %>">
                                 <span class="text">

@@ -156,18 +156,20 @@ form.account.register div:last-child {
 
 #toast {
     opacity: 0;
-    min-width: 250px;
-    margin-left: -141px;
-    background-color: #A9375B;
-    color: var(--text);
-    text-align: center;
-    position: fixed;
-    z-index: 10;
-    left: 50%;
-    bottom: 5em;
-    border-radius: 1em;
-    padding: 1ch;
-    transition: all 0.5s ease;
+	min-width: 250px;
+	background-color: #A9375B;
+	color: var(--text);
+	text-align: center;
+	position: fixed;
+	z-index: 10;
+	left: 50%;
+	bottom: 5em;
+	border-radius: 1em;
+	padding: 1ch;
+	transition: all 0.5s ease;
+	transform: translate(-50%);
+	max-width: 80%;
+	white-space: break-spaces;
 }
 
 #toast.show {

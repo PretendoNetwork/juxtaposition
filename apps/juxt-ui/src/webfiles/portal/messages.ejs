@@ -26,7 +26,7 @@
                         %>
                         <li>
                             <a href="/users/show?pid=<%= userObj.pid %>" data-pjax="#body"
-                               class="icon-container trigger"><img src="https://mii.olv.pretendo.cc/mii/<%= userObj.pid %>/normal_face.png" class="icon<%if(userObj.official) {%> verified<%}%>"></a>
+                               class="icon-container trigger"><img src="<%= cdnURL %>/mii/<%= userObj.pid %>/normal_face.png" class="icon<%if(userObj.official) {%> verified<%}%>"></a>
                             <a href="/friend_messages/<%= conversation.id %>" data-pjax="#body" class="arrow-button"></a>
                             <div class="body">
                                 <p class="title">

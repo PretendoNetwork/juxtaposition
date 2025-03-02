@@ -1,53 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <%- include('partials/head', { title: community.name }); %>
-<body>
-<%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
-<div id="body">
-    <header id="header">
-        <% if(((community.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
-        <a id="header-post-button" class="header-button" href="#" data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list" data-module-show="add-post-page" data-header="false" data-menu="false">Post</a>
-        <%}%>
-        <%if(children){%>
-        <a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>
-        <%}%>
-    </header>
-    <div class="body-content tab2-content" id="community-post-list">
-        <div class="header-banner-container">
-            <img src="https://mii.olv.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png" class="header-banner with-top-button"></div>
+	<body>
+		<%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
+			<div id="body">
+				<header id="header">
+					<% if((
+						(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
+						(pnid.accessLevel >= community.permissions.minimum_new_post_access_level)
+						) && userSettings.account_status === 0) {%>
+						<a id="header-post-button" class="header-button" href="#" data-sound="SE_WAVE_SELECT_TAB"
+							data-module-hide="community-post-list" data-module-show="add-post-page" data-header="false"
+							data-menu="false">Post</a>
+						<%}%>
+						<%if(children){%>
+							<a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>
+						<%}%>
+				</header>
+				<div class="body-content tab2-content" id="community-post-list">
+					<div class="header-banner-container">
+						<img src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"
+							class="header-banner with-top-button">
+					</div>
 
-        <div class="community-info info-content with-header-banner">
-            <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png" class="icon"></span>
-            <%if(community.open){%>
-            <a href="#" class="favorite-button button <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>checked<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>"></a>
-            <%}%>
-            <span class="title"><%= community.name %></span>
-            <span class="text">
-                <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><polygon points="128 160 96 160 96 128 192 32 224 64 128 160" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polygon><line x1="164" y1="60" x2="196" y2="92" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><path d="M216,128.6V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h79.4" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
-                    <%= bundle.numPosts %>
-                </span>
-                <span>|
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><line x1="204" y1="136" x2="244" y2="136" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="224" y1="116" x2="224" y2="156" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><circle cx="108" cy="100" r="60" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><path d="M22.2,200a112,112,0,0,1,171.6,0" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
-                    <span id="followers"><%= community.followers %></span>
-                </span>
-            </span>
-        </div>
-        <menu class="tab-header">
-            <li id="tab-header-post" class="tab-button <%if(type === 0){ %>selected<%}%>">
-                <a href="/titles/<%= community.olive_community_id %>/new" data-sound="SE_WAVE_SELECT_TAB"><span class="new-post"><%= lang.community.recent %></span></a>
-            </li>
-            <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.olive_community_id %>/hot" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
-        </menu>
-        <div id="new-post-button-container" class="none">
-            <a href="#" class="button" data-offset="10"><%= lang.global.more %></a>
-            <div id="new-post"></div>
-        </div>
-        <div class="tab-body post-list">
-            <%- include('partials/' + template, { bundle }); %>
-        </div>
-    </div>
-    <%- include('partials/new_post', { pid, lang, id: community.olive_community_id, name: community.name, url: '/posts/new', show: 'community-post-list', message_pid: '' }); %>
-</div>
-</body>
+					<div class="community-info info-content with-header-banner">
+						<span class="icon-container"><img
+								src="<%= cdnURL %>/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png"
+								class="icon"></span>
+						<%if(community.permissions.open){%>
+							<a href="#"
+								class="favorite-button button <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>checked<%}%>"
+								onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"
+								data-community-id="<%= community.olive_community_id %>"></a>
+							<%}%>
+								<span class="title"><%= community.name %></span>
+								<span class="text">
+									<span>
+										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#ffffff"
+											viewBox="0 0 256 200">
+											<rect width="256" height="256" fill="none"></rect>
+											<polygon points="128 160 96 160 96 128 192 32 224 64 128 160" fill="none"
+												stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round"
+												stroke-width="24"></polygon>
+											<line x1="164" y1="60" x2="196" y2="92" fill="none" stroke="#ffffff"
+												stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+											<path
+												d="M216,128.6V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h79.4"
+												fill="none" stroke="#ffffff" stroke-linecap="round"
+												stroke-linejoin="round" stroke-width="24"></path>
+										</svg><%= bundle.numPosts %></span><span>|
+										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#ffffff"
+											viewBox="0 0 256 200">
+											<rect width="256" height="256" fill="none"></rect>
+											<line x1="204" y1="136" x2="244" y2="136" fill="none" stroke="#ffffff"
+												stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+											<line x1="224" y1="116" x2="224" y2="156" fill="none" stroke="#ffffff"
+												stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
+											<circle cx="108" cy="100" r="60" fill="none" stroke="#ffffff"
+												stroke-linecap="round" stroke-linejoin="round" stroke-width="24">
+											</circle>
+											<path d="M22.2,200a112,112,0,0,1,171.6,0" fill="none" stroke="#ffffff"
+												stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path>
+										</svg>
+										<span id="followers">
+											<%= community.followers %>
+										</span>
+									</span>
+								</span>
+					</div>
+					<menu class="tab-header">
+						<li id="tab-header-post" class="tab-button <%if(type === 0){ %>selected<%}%>">
+							<a href="/titles/<%= community.olive_community_id %>/new"
+								data-sound="SE_WAVE_SELECT_TAB"><span class="new-post">
+									<%= lang.community.recent %>
+								</span></a>
+						</li>
+						<li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a
+								href="/titles/<%= community.olive_community_id %>/hot"
+								data-sound="SE_WAVE_SELECT_TAB"><span>
+									<%= lang.community.popular %>
+								</span></a></li>
+					</menu>
+					<div id="new-post-button-container" class="none">
+						<a href="#" class="button" data-offset="10">
+							<%= lang.global.more %>
+						</a>
+						<div id="new-post"></div>
+					</div>
+					<div class="tab-body post-list">
+						<%- include('partials/' + template, { bundle }); %>
+					</div>
+				</div>
+				<%- include('partials/new_post', { pid, lang, id: community.olive_community_id, name: community.name,
+					url: '/posts/new' , show: 'community-post-list' , message_pid: '' }); %>
+			</div>
+	</body>
+
 </html>

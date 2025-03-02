@@ -1,6 +1,6 @@
 <div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%> <%if(post.is_spoiler) {%>spoiler<%}%>">
     <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
-        <img src="<%= post.mii_face_url.replace('https:', 'http:') %>" class="mii-icon">
+        <img src="<%= post.mii_face_url %>" class="mii-icon">
     </a>
     <div class="post-body-content">
         <div class="post-body <%if(userContent.likes && userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>" id="<%= post.id %>">
@@ -19,7 +19,7 @@
             <%if(!reply) {%>
                 <a href="/titles/<%= post.community_id %>" class="community-banner" data-pjax="#body">
                         <span class="title-icon-container" data-pjax="#body">
-                            <img src="http://mii.olv.pretendo.cc/icons/<%= post.community_id %>/32.png" class="title-icon">
+                            <img src="<%= cdnURL %>/icons/<%= post.community_id %>/32.png" class="title-icon">
                         </span>
                     <span class="community-name"><%= communityMap.get(post.community_id) %></span>
                 </a>
@@ -34,10 +34,10 @@
                     <p class="post-content-text"><%= post.body %></p>
                 <%}%>
                 <% if(post.screenshot !== '') { %>
-                    <img class="post-screenshot" src="http://mii.olv.pretendo.cc<%= post.screenshot %>" onclick="alert(this.src)">
+                    <img class="post-screenshot" src="<%= cdnURL %><%= post.screenshot %>" onclick="alert(this.src)">
                 <%}%>
                 <% if(post.painting !== '') { %>
-                <img class="post-memo" src="http://mii.olv.pretendo.cc/paintings/<%=post.pid%>/<%=post.id%>.png">
+                <img class="post-memo" src="<%= cdnURL %>/paintings/<%=post.pid%>/<%=post.id%>.png">
                 <%}%>
                 <% if(post.url) { %>
                     <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -63,8 +63,8 @@
         <div class="yeah-list">
             <% var length = post.yeahs.length > 10 ? 10 : post.yeahs.length%>
             <%for(var i = 0; i < length; i++) {%>
-                <a href="/users/<%= yeah %>" class="mii-icon-container" data-pjax="#body">
-                    <img src="http://mii.olv.pretendo.cc/mii/<%= post.yeahs[i] %>/normal_face.png" class="mii-icon">
+                <a href="/users/<%= post.yeahs[i] %>" class="mii-icon-container" data-pjax="#body">
+                    <img src="<%= cdnURL %>/mii/<%= post.yeahs[i] %>/normal_face.png" class="mii-icon">
                 </a>
             <%}%>
         </div>

@@ -1,23 +1,34 @@
 const { Schema, model } = require('mongoose');
 
-const CommunitySchema = new Schema({
-	platform_id: Number,
-	name: String,
-	description: String,
+const PermissionsSchema = new Schema({
 	open: {
 		type: Boolean,
 		default: true
 	},
-	allows_comments: {
-		type: Boolean,
-		default: true
+	minimum_new_post_access_level: {
+		type: Number,
+		default: 0
 	},
+	minimum_new_comment_access_level: {
+		type: Number,
+		default: 0
+	},
+	minimum_new_community_access_level: {
+		type: Number,
+		default: 0
+	}
+});
+
+const CommunitySchema = new Schema({
+	platform_id: Number,
+	name: String,
+	description: String,
 	/**
-     * 0: Main Community
-     * 1: Sub-Community
-     * 2: Announcement Community
-     * 3: Private Community
-     */
+	 * 0: Main Community
+	 * 1: Sub-Community
+	 * 2: Announcement Community
+	 * 3: Private Community
+	 */
 	type: {
 		type: Number,
 		default: 0
@@ -61,7 +72,8 @@ const CommunitySchema = new Schema({
 		type: Number,
 		default: 0
 	},
-	app_data: String
+	app_data: String,
+	permissions: PermissionsSchema
 });
 
 CommunitySchema.methods.upEmpathy = async function () {

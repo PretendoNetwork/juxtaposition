@@ -20,13 +20,13 @@ var Pjax = {
 		return this;
 	},
 	refresh: function () {
-		const els = document.querySelectorAll(this.elements);
+		var els = document.querySelectorAll(this.elements);
 		if (!els) {
 			return;
 		}
 		console.log(this.elements);
 		console.log(els);
-		for (let i = 0; i < els.length; i++) {
+		for (var i = 0; i < els.length; i++) {
 			els[i].addEventListener('click', function (e) {
 				pageWrapper(e, this);
 			});
@@ -44,7 +44,7 @@ var Pjax = {
 		console.log(url);
 	},
 	get: function (url, callback) {
-		const xhttp = new XMLHttpRequest();
+		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function () {
 			if (this.readyState === 4) {
 				document.dispatchEvent(Pjax.events.PjaxLoaded);
@@ -56,13 +56,13 @@ var Pjax = {
 		xhttp.send();
 	},
 	parseDom: function (data) {
-		const response = data.responseText;
+		var response = data.responseText;
 		if (response && data.status === 200) {
-			const html = document.implementation.createHTMLDocument('');
+			var html = document.implementation.createHTMLDocument('');
 			html.documentElement.innerHTML = response;
-			for (let i = 0; i < Pjax.selectors.length; i++) {
-				const newElement = html.querySelector(Pjax.selectors[i]);
-				const oldElement = document.querySelector(Pjax.selectors[i]);
+			for (var i = 0; i < Pjax.selectors.length; i++) {
+				var newElement = html.querySelector(Pjax.selectors[i]);
+				var oldElement = document.querySelector(Pjax.selectors[i]);
 				if (!newElement || !oldElement) {
 					continue;
 				}
@@ -81,7 +81,7 @@ var Pjax = {
 		if (!this.canGoBack()) {
 			return;
 		}
-		const url = this.history.pop();
+		var url = this.history.pop();
 		this.loadUrl(url, true);
 	}
 };

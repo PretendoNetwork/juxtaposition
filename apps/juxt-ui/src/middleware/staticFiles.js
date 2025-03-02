@@ -9,7 +9,7 @@ async function staticFiles(request, response, next) {
 		isStartOfPath(request.path, '/web/') ||
 		isStartOfPath(request.path, '/images/') ||
 		isStartOfPath(request.path, '/image/')) {
-		request.lang = util.data.processLanguage();
+		response.locals.lang = util.processLanguage();
 
 		if (request.subdomains.includes('juxt')) {
 			request.directory = 'web';

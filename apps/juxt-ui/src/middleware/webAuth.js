@@ -1,51 +1,45 @@
-const moment = require('moment/moment');
 const util = require('../util');
-const db = require('../database');
-const { conf: config } = require('@/config');
 
-async function auth(request, response, next) {
+async function webAuth(request, response, next) {
 	// Get pid and fetch user data
-	request.lang = util.data.processLanguage();
-	request.paramPackData = null;
-	request.directory = 'web';
-	request.token = request.cookies.access_token;
-	if (request.cookies.access_token) {
+
+	if (request.session && request.session.user && request.session.pid && !request.isWrite && request.cookies.access_token) {
+		request.user = request.session.user;
+		request.pid = request.session.pid;
+	} else {
 		try {
-			request.user = await util.data.getUserDataFromToken(request.token);
-		} catch (e) {
-			console.log(e);
+			request.user = await util.getUserDataFromToken(request.cookies.access_token);
+			request.pid = request.user.pid;
+
+			request.session.user = request.user;
+			request.session.pid = request.pid;
+		} catch (ignored) {
+			const domain = request.get('host').replace('juxt-beta', '').replace('juxt', '');
+			response.clearCookie('access_token', { domain: domain, path: '/' });
+			response.clearCookie('refresh_token', { domain: domain, path: '/' });
+			response.clearCookie('token_type', { domain: domain, path: '/' });
 			if (request.path === '/login') {
+				response.locals.lang = util.processLanguage();
+				request.token = request.cookies.access_token;
+				request.paramPackData = null;
 				return next();
 			}
-			return response.render('web/login.ejs', { toast: 'Unable to reach the account server. Try again later.', cdnURL: config.CDN_domain });
 		}
-		request.pid = request.user ? request.user.pid : null;
 	}
 
-	// Ban check
-	if (request.user) {
-		// Set moderator status
-		request.moderator = request.user.accessLevel >= 2;
-		const user = await db.getUserSettings(request.pid);
-		if (user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
-			user.account_status = 0;
-			await user.save();
-		}
-		// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
-		// assuming we support more gradual bans on PNID's
-		if (user && (user.account_status < 0 || user.account_status > 1 || request.user.accessLevel < 0)) {
-			return response.render('web/login.ejs', { toast: 'Your account has been suspended. For more information, log into https://pretendo.network/account', cdnURL: config.CDN_domain });
-		}
-	}
+	request.token = request.cookies.access_token;
 
 	// Open access pages
 	if (isStartOfPath(request.path, '/users/') ||
 		(isStartOfPath(request.path, '/titles/') && request.path !== '/titles/show') ||
 		(isStartOfPath(request.path, '/posts/') && !request.path.includes('/empathy'))) {
-		if (!request.pid) {
+		if (!request.pid && request.guest_access && !request.isWrite) {
 			request.pid = 1000000000;
+			response.locals.pid = request.pid;
+			return next();
+		} else if (!request.pid) {
+			return response.redirect('/login');
 		}
-		return next();
 	}
 	// Login endpoint
 	if (request.path === '/login') {
@@ -54,11 +48,11 @@ async function auth(request, response, next) {
 		}
 		return next();
 	}
-	console.log(request.route);
-	if (!request.user && request.path !== '/') {
+	if (!request.pid) {
 		return response.redirect('/login');
 	}
 
+	response.locals.pid = request.pid;
 	return next();
 }
 
@@ -66,4 +60,8 @@ function isStartOfPath(path, value) {
 	return path.indexOf(value) === 0;
 }
 
-module.exports = auth;
+BigInt.prototype['toJSON'] = function () {
+	return this.toString();
+};
+
+module.exports = webAuth;

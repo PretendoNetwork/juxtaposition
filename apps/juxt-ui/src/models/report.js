@@ -14,14 +14,16 @@ const ReportSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	note: String,
 	resolved_by: Number,
 	resolved_at: Date
 });
 
-ReportSchema.methods.resolve = async function (pid) {
+ReportSchema.methods.resolve = async function (pid, note) {
 	this.set('resolved', true);
 	this.set('resolved_by', pid);
 	this.set('resolved_at', new Date());
+	this.set('note', note);
 	await this.save();
 };
 

@@ -42,14 +42,53 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="/css/login.css">
+	<link rel="stylesheet" href="/css/first_run.css">
+	<script src="/js/pjax.min.js"></script>
+	<script src="/js/web.min.js"></script>
 </head>
 <body>
 <div class="main-body">
-    <link rel="stylesheet" href="/css/login.css">
-
+	<script>
+		var experience = 0;
+		var notifications = false;
+		function selectExperience(type) {
+			document.getElementById('beginner').classList.remove('selected');
+			document.getElementById('intermediate').classList.remove('selected');
+			document.getElementById('expert').classList.remove('selected');
+			switch (type) {
+				case 0:
+					document.getElementById("beginner").classList.add('selected');
+					experience = 0;
+					break;
+				case 1:
+					document.getElementById("intermediate").classList.add('selected');
+					experience = 1;
+					break;
+				case 2:
+					document.getElementById("expert").classList.add('selected');
+					experience = 2;
+					break;
+			}
+		}
+		function submit() {
+			var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
+			var theUrl = "/titles/show/newUser";
+			xmlhttp.open("POST", theUrl);
+			xmlhttp.onreadystatechange = function() {
+				if (this.readyState === 4 && (this.status === 423 || this.status === 404 || this.status === 504)) {
+					alert('Unable to complete setup, the server is likely having issues.\n\nPlease try again later.');
+				}
+			}
+			xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+			xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications }));
+		}
+	</script>
     <div class="wrapper">
         <div class="account-form-wrapper">
-            <a class="logotype" href="/">
+			<h2>Account Creation is only available when you have a linked Wii U or 3DS.</h2>
+            <!--<a class="logotype" href="/">
                 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="39.876">
                     <g id="logo_type" data-name="logo type" transform="translate(-553 -467)">
                         <g id="logo" transform="translate(553 467)">
@@ -66,8 +105,180 @@
                     </g>
                 </svg>
             </a>
-            <h2>Account setup is currently only available on the Wii U or 3DS</h2>
-            <h3>You can get started with Pretendo on your console <a href="https://pretendo.network/docs/install/juxt">here.</a></h3>
+            <div id="welcome" class="about-wrapper background" style="display: flex">
+				<h1 class="about-header"><%= lang.setup.welcome %></h1>
+				<div class="about-body">
+					<p>
+						<%= lang.setup.welcome_text %>
+					</p>
+				</div>
+				<div class="button-wrapper">
+					<input type="button" class="post-button fixed-bottom-button"
+						value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+						data-module-show="beta" data-module-hide="welcome"
+						data-header="false" data-menu="false">
+				</div>
+			</div>
+			<div id="beta" class="about-wrapper background">
+				<h1 class="about-header"><%= lang.setup.beta %></h1>
+				<div class="about-body" style="position: relative">
+					<p>
+						<%= lang.setup.beta_text.first %>
+						<br>
+						<b><u><%= lang.setup.beta_text.second %></u></b>
+						<br>
+						<%= lang.setup.beta_text.third %>
+					</p>
+				</div>
+				<div class="button-wrapper">
+					<input type="button" class="fixed-bottom-button left"
+						value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+						data-module-show="welcome" data-module-hide="beta"
+						data-header="false" data-menu="false">
+					<input type="button" class="post-button fixed-bottom-button"
+						value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+						data-module-show="about" data-module-hide="beta"
+						data-header="false" data-menu="false">
+				</div>
+			</div>
+			<div id="about" class="about-wrapper background">
+				<h1 class="about-header"><%= lang.setup.info %></h1>
+				<div class="about-body">
+					<p>
+						<%= lang.setup.info_text %>
+					</p>
+				</div>
+				<div class="button-wrapper">
+					<input type="button" class="fixed-bottom-button left"
+						value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+						data-module-show="beta" data-module-hide="about"
+						data-header="false" data-menu="false">
+					<input type="button" class="post-button fixed-bottom-button"
+						value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+						data-module-show="manners" data-module-hide="about"
+						data-header="false" data-menu="false">
+				</div>
+			</div>
+			<div id="manners" class="background">
+				<h1 class="about-header"><%= lang.setup.rules %></h1>
+				<div class="about-body" style="position: relative">
+					<p>
+						<%= lang.setup.rules_text.first %>
+						<br><br>
+						<div class="headline">
+							<h2><%= lang.setup.rules_text.second %></h2>
+						</div>
+						<%= lang.setup.rules_text.third %>
+						<br><br>
+						<div class="headline">
+							<h2><%= lang.setup.rules_text.fourth %></h2>
+						</div>
+						<%= lang.setup.rules_text.fifth %>
+						<br><br>
+						<div class="headline">
+							<h2><%= lang.setup.rules_text.sixth %></h2>
+						</div>
+						<%= lang.setup.rules_text.seventh %>
+						<br><br>
+						<div class="headline">
+							<h2><%= lang.setup.rules_text.eighth %></h2>
+						</div>
+						<%= lang.setup.rules_text.ninth %>
+						<br><br>
+						<div class="headline">
+							<h2><%= lang.setup.rules_text.tenth %></h2>
+						</div>
+						<%= lang.setup.rules_text.eleventh %>
+						<br><br>
+						<div class="headline">
+							<h2><%= lang.setup.rules_text.twelfth %></h2>
+						</div>
+						<%= lang.setup.rules_text.thirteenth %>
+						<br><br>
+					</p>
+				</div>
+				<div class="button-wrapper">
+					<input type="button" class="fixed-bottom-button left"
+						value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+						data-module-show="about" data-module-hide="manners"
+						data-header="false" data-menu="false">
+					<input type="button" class="post-button fixed-bottom-button"
+						value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+						data-module-show="google-analytics" data-module-hide="manners"
+						data-header="false" data-menu="false">
+				</div>
+			</div>
+			<div id="google-analytics" class="about-wrapper background">
+				<h1 class="about-header"><%= lang.setup.google %></h1>
+				<div class="about-body">
+					<p>
+						<%= lang.setup.google_text %>
+					</p>
+				</div>
+				<div class="button-wrapper">
+					<input type="button" class="fixed-bottom-button left"
+						value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+						data-module-show="manners" data-module-hide="google-analytics"
+						data-header="false" data-menu="false">
+					<input type="button" class="post-button fixed-bottom-button"
+						value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+						data-module-show="game-experience" data-module-hide="google-analytics"
+						data-header="false" data-menu="false">
+				</div>
+			</div>
+			<div id="game-experience" class="about-wrapper background">
+				<h1 class="about-header"><%= lang.setup.experience %></h1>
+				<div class="about-body">
+					<p>
+						<%= lang.setup.experience_text.info %>
+					</p>
+				</div>
+				<div>
+					<ul class="horizontal-list">
+						<li  id="beginner" onclick="selectExperience(0)" class="selected"><a href="#"><%= lang.setup.experience_text.beginner %></a></li>
+						<li  id="intermediate" onclick="selectExperience(1)"><a href="#"><%= lang.setup.experience_text.intermediate %></a></li>
+						<li  id="expert" onclick="selectExperience(2)"><a href="#"><%= lang.setup.experience_text.expert %></a></li>
+					</ul>
+				</div>
+				<div class="button-wrapper">
+					<input type="button" class="fixed-bottom-button left"
+						value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+						data-module-show="google-analytics" data-module-hide="game-experience"
+						data-header="false" data-menu="false">
+					<input type="button" class="post-button fixed-bottom-button"
+						value="<%= lang.global.next %>" data-sound="SE_WAVE_MENU"
+						data-module-show="ready" data-module-hide="game-experience"
+						data-header="false" data-menu="false">
+				</div>
+			</div>
+			<div id="ready" class="about-wrapper background">
+				<h1 class="about-header"><%= lang.setup.ready %></h1>
+				<div class="about-body">
+					<p>
+						<%= lang.setup.ready_text %>
+					</p>
+				</div>
+				<div class="button-wrapper">
+					<input type="button" class="fixed-bottom-button left"
+						value="<%= lang.global.back %>" data-sound="SE_WAVE_CANCEL"
+						data-module-show="game-experience" data-module-hide="ready"
+						data-header="false" data-menu="false">
+					<input type="button" class="post-button fixed-bottom-button"
+						value="<%= lang.global.next %>" data-sound="GL_OLV_INIT_END"
+						data-module-show="have-fun" data-module-hide="ready"
+						data-header="false" data-menu="false" onclick="submit()">
+				</div>
+			</div>
+			<div id="have-fun" class="about-wrapper background">
+				<h1 class="about-header"></h1>
+				<div class="about-body">
+					<h1 class="about-header"><%= lang.setup.done %></h1>
+				</div>
+				<div class="center">
+					<button class="about-button"
+							onclick="window.location.replace('/titles')"><%= lang.setup.done_button %></button>
+				</div>
+			</div>-->
         </div>
     </div>
 </div>

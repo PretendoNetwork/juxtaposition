@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { FuzzySearch } = require('mongoose-fuzzy-search-next');
+const { mongoose: mongooseConfig } = require('../config.json');
 const { COMMUNITY } = require('./models/communities');
 const { CONTENT } = require('./models/content');
 const { CONVERSATION } = require('./models/conversation');
@@ -8,8 +10,8 @@ const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
 const { REPORT } = require('./models/report');
 const logger = require('./logger');
-const { conf } = require('@/config');
-const { uri, database, options } = conf.mongoose;
+
+const { uri, database, options } = mongooseConfig;
 
 let connection;
 mongoose.set('strictQuery', true);
@@ -32,12 +34,24 @@ function verifyConnected() {
 	}
 }
 
-async function getCommunities(numberOfCommunities) {
+async function getCommunities(numberOfCommunities, offset) {
 	verifyConnected();
+	if (!offset) {
+		offset = 0;
+	}
 	if (numberOfCommunities === -1) {
-		return COMMUNITY.find({ parent: null, type: [0, 2] });
+		return COMMUNITY.find({ parent: null, type: [0, 2] }).skip(offset);
 	} else {
-		return COMMUNITY.find({ parent: null, type: [0, 2] }).limit(numberOfCommunities);
+		return COMMUNITY.find({ parent: null, type: [0, 2] }).skip(offset).limit(numberOfCommunities);
+	}
+}
+
+async function getCommunitiesFuzzySearch(search_key, limit, offset) {
+	verifyConnected();
+	if (limit === -1) {
+		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset);
+	} else {
+		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset).limit(limit);
 	}
 }
 
@@ -281,12 +295,21 @@ async function getUsersSettings(numberOfUsers) {
 	}
 }
 
-async function getUsersContent(numberOfUsers) {
+async function getUsersContent(numberOfUsers, offset) {
 	verifyConnected();
 	if (numberOfUsers === -1) {
-		return SETTINGS.find({});
+		return SETTINGS.find({}).skip(offset);
 	} else {
-		return SETTINGS.find({}).limit(numberOfUsers);
+		return SETTINGS.find({}).skip(offset).limit(numberOfUsers);
+	}
+}
+
+async function getUserSettingsFuzzySearch(search_key, numberOfUsers, offset) {
+	verifyConnected();
+	if (numberOfUsers === -1) {
+		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset);
+	} else {
+		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset).limit(numberOfUsers);
 	}
 }
 
@@ -466,6 +489,14 @@ async function getReportsByPost(postID, offset, limit) {
 	return REPORT.find({ post_id: postID }).sort({ created_at: -1 }).skip(offset).limit(limit);
 }
 
+async function getDuplicateReports(pid, postID) {
+	verifyConnected();
+	return REPORT.findOne({
+		reported_by: pid,
+		post_id: postID
+	});
+}
+
 async function getReportById(id) {
 	verifyConnected();
 	return REPORT.findById(id);
@@ -474,6 +505,7 @@ async function getReportById(id) {
 module.exports = {
 	connect,
 	getCommunities,
+	getCommunitiesFuzzySearch,
 	getMostPopularCommunities,
 	getNewCommunities,
 	getSubCommunities,
@@ -513,6 +545,7 @@ module.exports = {
 	getUsersSettings,
 	getUsersContent,
 	getUserSettings,
+	getUserSettingsFuzzySearch,
 	getUserContent,
 	getNotifications,
 	getUnreadNotificationCount,
@@ -524,5 +557,6 @@ module.exports = {
 	getAllOpenReports,
 	getReportsByUser,
 	getReportsByPost,
+	getDuplicateReports,
 	getReportById
 };

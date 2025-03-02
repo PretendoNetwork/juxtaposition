@@ -12,7 +12,7 @@
         <div id="popular" class="communities-wrapper">
             <% for(var i = 0; i < popularCommunities.length; i++) {%>
             <a class="community-list-wrapper" href="/titles/<%= popularCommunities[i].olive_community_id %>/new">
-                <img class="community-list-icon" src="https://pretendo-cdn.b-cdn.net/icons/<%= popularCommunities[i].olive_community_id %>/128.png">
+                <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= popularCommunities[i].olive_community_id %>/128.png">
                 <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
                 <h4 class="community-list-followers"><%= popularCommunities[i].followers %> followers</h4>
             </a>
@@ -22,7 +22,7 @@
         <div id="new" class="communities-wrapper">
             <% for(var j = 0; j < newCommunities.length; j++) {%>
                 <a class="community-list-wrapper" href="/titles/<%= newCommunities[j].olive_community_id %>/new">
-                    <img class="community-list-icon" src="https://pretendo-cdn.b-cdn.net/icons/<%= newCommunities[j].olive_community_id %>/128.png">
+                    <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= newCommunities[j].olive_community_id %>/128.png">
                     <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
                     <h4 class="community-list-followers"><%= newCommunities[j].followers %> followers</h4>
                 </a>

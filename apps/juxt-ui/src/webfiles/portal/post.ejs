@@ -13,10 +13,13 @@
             <%}%>
         </h1>
         <%if(!post.removed) {%>
-        <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+			<% if((
+				(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
+				(pnid.accessLevel >= community.permissions.minimum_new_comment_access_level)
+				) && userSettings.account_status === 0) {%>
         <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
         <%}%>
-        <% if(post.pid === pid || moderator) {%>
+        <% if(post.pid === pid) {%>
             <a id="header-communities-button" class="delete" href="#" data-post="<%=post.id%>" onclick="deletePost(this)">Delete Post</a>
         <%} else {%>
             <a id="report-launcher" style="display: none" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false"></a>
@@ -26,13 +29,16 @@
     </header>
     <div class="body-content post-list" id="post">
         <div class="post-wrapper parent">
-            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid, yeah: true }); %>
+            <%- include('partials/post_template', { post: post, reply: false, pid: pid, mainPost: true }); %>
         </div>
         <% replies.forEach(function(post) { %>
-            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true, pid: pid  }); %>
+            <%- include('partials/post_template', { post: post, reply: true, pid: pid  }); %>
         <% }); %>
     </div>
-    <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+    <% if((
+		(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
+		(pnid.accessLevel >= community.permissions.minimum_new_comment_access_level)
+		) && userSettings.account_status === 0) {%>
     <%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
     <%}%>
     <div id="report-post-page" class="add-post-page official-user-post" style="display: none">
@@ -40,7 +46,7 @@
             <h1 class="page-title">Report Post</h1>
         </header>
         <form method="post" action="/posts/<%=post.id%>/report" id="report-form" name="report" data-is-own-title="1" data-is-identified="1">
-            <input type="hidden" name="post_id" value="<%= post.id %>"/>
+            <input type="hidden" name="post_id" id="report-post-id" value="<%= post.id %>"/>
             <div class="add-post-page-content report">
                 <p>
                     You are about to report a post with content which violates the Juxtaposition Code of Conduct.
@@ -58,6 +64,7 @@
                         <option value="6">Sexually Explicit</option>
                         <option value="7">Piracy</option>
                         <option value="8">Inappropriate Behavior in Game</option>
+						<option value="10">Missing Images</option>
                         <option value="9">Other</option>
                     </select>
                 </div>

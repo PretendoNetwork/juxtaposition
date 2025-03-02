@@ -2,7 +2,7 @@
     <li id="nav-menu-me" data-tab="me" <% if(selection === 0) {%>class="selected"<%}%>>
         <a href="/users/me" data-pjax="#body" data-sound="SE_WAVE_MENU">
             <span class="mii-icon">
-                <img src="https://mii.olv.pretendo.cc/mii/<%=pid%>/normal_face.png" alt="User Page">
+                <img src="<%= cdnURL %>/mii/<%=pid%>/normal_face.png" alt="User Page">
             </span>
             <span><%= lang.global.user_page %></span>
         </a>

@@ -2,25 +2,25 @@ const express = require('express');
 const router = express.Router();
 const database = require('../../../../database');
 const util = require('../../../../util');
-const { conf: config } = require('@/config');
+const config = require('../../../../../config.json');
 
 router.get('/', async function (req, res) {
-	res.render(req.directory + '/login.ejs', { toast: null, cdnURL: config.CDN_domain });
+	res.render(req.directory + '/login.ejs', { toast: null });
 });
 
 router.post('/', async (req, res) => {
 	const { username, password } = req.body;
-	const login = await util.data.login(username, password).catch((e) => {
-		console.log(e.details);
+	const login = await util.login(username, password).catch((e) => {
+		console.error(e.details);
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
-				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.', cdnURL: config.CDN_domain });
+				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.' });
 				break;
 			case 'INVALID_ARGUMENT: Password is incorrect':
-				res.render(req.directory + '/login.ejs', { toast: 'Password was incorrect.', cdnURL: config.CDN_domain });
+				res.render(req.directory + '/login.ejs', { toast: 'Password was incorrect.' });
 				break;
 			default:
-				res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', cdnURL: config.CDN_domain });
+				res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.' });
 				break;
 		}
 	});
@@ -28,14 +28,17 @@ router.post('/', async (req, res) => {
 		return;
 	}
 
-	const PNID = await util.data.getUserDataFromToken(login.accessToken);
+	const PNID = await util.getUserDataFromToken(login.accessToken);
 	if (!PNID) {
-		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', cdnURL: config.CDN_domain });
+		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.' });
 	}
 
-	const pid = PNID.pid;
-
-	const discovery = await database.getEndPoint(PNID.serverAccessLevel);
+	let discovery = await database.getEndPoint(config.server_environment);
+	if (!discovery) {
+		discovery = {
+			status: 5
+		};
+	}
 	let message = '';
 	switch (discovery.status) {
 		case 3:
@@ -51,17 +54,14 @@ router.post('/', async (req, res) => {
 	if (discovery.status !== 0) {
 		return res.render(req.directory + '/error.ejs', {
 			code: 504,
-			message: message,
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			pid: pid,
-			moderator: req.moderator
+			message: message
 		});
 	}
 	const cookieDomain = (req.hostname.indexOf('miiverse') !== -1) ? '.miiverse.cc' : '.pretendo.network';
 	const expiration = (req.hostname.indexOf('miiverse') !== -1) ? login.expiresIn * 60 * 60 * 24 : login.expiresIn * 60 * 60;
 	res.cookie('access_token', login.accessToken, { domain: cookieDomain, maxAge: expiration });
 	res.cookie('refresh_token', login.refreshToken, { domain: cookieDomain });
+	res.cookie('token_type', 'Bearer', { domain: cookieDomain });
 	res.redirect('/');
 });
 
