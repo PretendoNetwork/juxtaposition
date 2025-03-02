@@ -3,9 +3,9 @@
 		"strict": true,
 		"sourceMap": true,
 		"resolveJsonModule": true,
-		"module": "commonjs",
+		"module": "ES2022",
 		"esModuleInterop": true,
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"baseUrl": "src",
 		"outDir": "dist",
 		"allowJs": true,
@@ -13,9 +13,14 @@
 		"noEmitOnError": true,
 		"noImplicitAny": true,
 		"strictPropertyInitialization": true,
+		"verbatimModuleSyntax": true,
 		"paths": {
-			"@/*": ["./*"]
+			"@/*": [
+				"./*"
+			]
 		}
 	},
-	"include": ["src"]
+	"include": [
+		"src"
+	]
 }
