@@ -17,7 +17,6 @@ router.use(subdomain('portal.olv', console));
 router.use(subdomain('portal-beta.olv', console));
 router.use(subdomain('portal-dev.olv', console));
 
-
 logger.info('[JUXT-WEB] Creating \'3DS\' subdomain');
 router.use(subdomain('ctr.olv', console));
 router.use(subdomain('ctr-beta.olv', console));

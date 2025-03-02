@@ -10,7 +10,7 @@ const streams = {
 	error: fs.createWriteStream(`${root}/logs/error.log`),
 	warn: fs.createWriteStream(`${root}/logs/warn.log`),
 	info: fs.createWriteStream(`${root}/logs/info.log`),
-	audit: fs.createWriteStream(`${root}/logs/audit.log`),
+	audit: fs.createWriteStream(`${root}/logs/audit.log`)
 };
 
 function success(input) {
