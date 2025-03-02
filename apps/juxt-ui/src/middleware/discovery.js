@@ -1,4 +1,4 @@
-const config = require('../../config.json');
+const { conf: config } = require('@/config');
 const db = require('../database');
 
 async function checkDiscovery(request, response, next) {

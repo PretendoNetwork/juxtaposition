@@ -9,7 +9,7 @@ const { COMMUNITY } = require('../../../../models/communities');
 const util = require('../../../../util');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-const config = require('../../../../../config.json');
+const { conf: config } = require('@/config');
 const router = express.Router();
 
 router.get('/posts', async function (req, res) {

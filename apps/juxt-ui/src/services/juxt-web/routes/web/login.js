@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const database = require('../../../../database');
 const util = require('../../../../util');
-const config = require('../../../../../config.json');
+const { conf: config } = require('@/config');
 
 router.get('/', async function (req, res) {
 	res.render(req.directory + '/login.ejs', { toast: null });

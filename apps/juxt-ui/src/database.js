@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const { FuzzySearch } = require('mongoose-fuzzy-search-next');
-const { mongoose: mongooseConfig } = require('../config.json');
 const { COMMUNITY } = require('./models/communities');
 const { CONTENT } = require('./models/content');
 const { CONVERSATION } = require('./models/conversation');
@@ -10,8 +9,9 @@ const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
 const { REPORT } = require('./models/report');
 const logger = require('./logger');
+const { conf } = require('@/config');
 
-const { uri, database, options } = mongooseConfig;
+const { uri, database, options } = conf.mongoose;
 
 let connection;
 mongoose.set('strictQuery', true);

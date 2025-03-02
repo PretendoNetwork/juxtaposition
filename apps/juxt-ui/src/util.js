@@ -12,7 +12,6 @@ const bmp = require('bmp-js');
 const sharp = require('sharp');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const crc32 = require('crc/crc32');
-const config = require('../config.json');
 const database = require('./database');
 const translations = require('./translations');
 const { COMMUNITY } = require('./models/communities');
@@ -20,6 +19,7 @@ const { NOTIFICATION } = require('./models/notifications');
 const logger = require('./logger');
 const { CONTENT } = require('./models/content');
 const { SETTINGS } = require('./models/settings');
+const { conf: config } = require('@/config');
 const communityMap = new HashMap();
 const userMap = new HashMap();
 

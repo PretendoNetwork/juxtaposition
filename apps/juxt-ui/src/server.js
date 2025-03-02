@@ -3,11 +3,11 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis').default;
-const config = require('../config.json');
 const database = require('./database');
 const logger = require('./logger');
 const { redisClient } = require('./redisCache');
 const juxt_web = require('./services/juxt-web');
+const { conf: config } = require('@/config');
 
 process.title = 'Pretendo - Juxt-Web';
 process.on('SIGTERM', () => {

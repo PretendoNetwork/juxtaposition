@@ -1,7 +1,7 @@
 const redis = require('redis');
-const config = require('../config.json');
 const logger = require('./logger');
-const { host, port } = config.redis;
+const { conf } = require('@/config');
+const { host, port } = conf.redis;
 
 const redisClient = redis.createClient({
 	url: `redis://${host}:${port}`
