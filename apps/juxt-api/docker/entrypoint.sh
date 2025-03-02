@@ -1,6 +1,6 @@
 #!/bin/sh
 
-files='config.json certs/access/private.pem certs/access/aes.key'
+files='certs/access/private.pem certs/access/aes.key'
 
 for file in $files; do
     if [ ! -f $file ]; then
@@ -9,4 +9,4 @@ for file in $files; do
     fi
 done
 
-exec node src/server.js
+exec npm run start

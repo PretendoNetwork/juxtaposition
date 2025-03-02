@@ -32,7 +32,7 @@ const schema = z.object({
 			port: z.string(),
 			api_key: z.string().optional()
 		})
-	}),
+	})
 });
 
 export const conf = createConfigLoader()
