@@ -3,9 +3,9 @@ import { z } from 'zod';
 
 const schema = z.object({
 	http: z.object({
-		port: z.coerce.number().default(80)
-	}),
-	postLimit: z.string(),
+		port: z.coerce.number().default(8080)
+	}).default({}),
+	postLimit: z.coerce.number().default(10),
 	accountServerDomain: z.string(),
 	miiImageCdn: z.string(),
 	cdnDomain: z.string(),

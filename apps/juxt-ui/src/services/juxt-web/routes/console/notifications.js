@@ -1,6 +1,6 @@
 const express = require('express');
 const database = require('../../../../database');
-const config = require('../../../../../config.json');
+const { conf: config } = require('@/config');
 const util = require('../../../../util');
 const moment = require('moment');
 const router = express.Router();

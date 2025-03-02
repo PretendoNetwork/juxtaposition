@@ -1,4 +1,4 @@
-const config = require('../../config.json');
+const { conf: config } = require('@/config');
 const util = require('../util');
 const moment = require("moment/moment");
 const db = require('../database');

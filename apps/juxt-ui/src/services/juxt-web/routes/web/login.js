@@ -3,7 +3,7 @@ const router = express.Router();
 const parseString = require('xml2js').parseString;
 const database = require('../../../../database');
 const util = require('../../../../util');
-const config = require("../../../../../config.json");
+const { conf: config } = require('@/config');
 const request = require("request");
 const logger = require("../../../../logger");
 

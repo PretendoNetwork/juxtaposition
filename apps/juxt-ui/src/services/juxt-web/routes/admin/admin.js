@@ -3,7 +3,7 @@ const database = require('../../../../database');
 const { POST } = require('../../../../models/post');
 const util = require('../../../../util');
 const moment = require('moment');
-const config = require("../../../../../config.json");
+const { conf: config } = require('@/config');
 const router = express.Router();
 
 router.get('/', async function (req, res) {

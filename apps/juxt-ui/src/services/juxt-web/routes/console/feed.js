@@ -1,7 +1,7 @@
 const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const config = require('../../../../../config.json');
+const { conf: config } = require('@/config');
 const moment = require('moment');
 const router = express.Router();
 
