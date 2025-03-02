@@ -1,7 +1,8 @@
 {
-  "name": "juxt-web",
-  "version": "1.0.0",
-  "description": "Web frontend for the Pretendo Network miiverse replacement, Juxt.",
+  "name": "juxt-ui",
+  "version": "3.0.0",
+  "description": "Frontend for Juxtaposition",
+  "license": "AGPL-3.0-only",
   "main": "./dist/server.js",
   "scripts": {
     "dev": "tsup --watch --onSuccess \"node --enable-source-maps dist/server.js\"",
@@ -10,17 +11,6 @@
     "build": "tsup && tsc --noEmit",
     "start": "node --enable-source-maps dist/server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/PretendoNetwork/juxt-web.git"
-  },
-  "keywords": [],
-  "author": "https://github.com/CaramelKat",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/PretendoNetwork/juxt-web/issues"
-  },
-  "homepage": "https://github.com/PretendoNetwork/juxt-web#readme",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.729.0",
     "@neato/config": "^3.0.0",

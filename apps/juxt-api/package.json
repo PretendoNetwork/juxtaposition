@@ -1,7 +1,8 @@
 {
-	"name": "miiverse-api",
-	"version": "2.0.0",
-	"description": "Miiverse API Server",
+	"name": "juxt-api",
+	"version": "3.0.0",
+	"description": "API for juxtaposition",
+	"license": "AGPL-3.0-only",
 	"main": "./dist/server.js",
 	"scripts": {
 		"dev": "tsup --watch --onSuccess \"node --enable-source-maps dist/server.js\"",
@@ -11,21 +12,6 @@
 		"start": "node --enable-source-maps dist/server.js",
 		"test": "ts-node test/test.ts"
 	},
-	"keywords": [],
-	"author": "Pretendo Network",
-	"contributors": [
-		{
-			"name": "Jemma Poffinbarger",
-			"email": "contact@jemsoftware.dev",
-			"url": "https://jemsoftware.dev/"
-		},
-		{
-			"name": "Jonathan Barrow",
-			"email": "jonbarrow1998@gmail.com",
-			"url": "https://jonbarrow.dev/"
-		}
-	],
-	"license": "AGPL-3.0",
 	"dependencies": {
 		"@neato/config": "^3.0.0",
 		"@pretendonetwork/grpc": "^2.0.0",
