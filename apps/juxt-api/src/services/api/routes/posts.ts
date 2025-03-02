@@ -365,7 +365,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		is_app_jumpable: (jumpable) ? 1 : 0,
 		language_id: languageID,
 		mii: user.mii.data,
-		mii_face_url: `${config.cdn_url}/mii/${user.pid}/${miiFace}`,
+		mii_face_url: `${config.cdnUrl}/mii/${user.pid}/${miiFace}`,
 		pid: request.pid,
 		platform_id: platformID,
 		region_id: regionID,

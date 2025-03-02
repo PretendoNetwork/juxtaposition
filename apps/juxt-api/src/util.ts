@@ -17,10 +17,10 @@ import type { ParamPack } from '@/types/common/param-pack';
 import type { Token } from '@/types/common/token';
 
 // * nice-grpc doesn't export ChannelImplementation so this can't be typed
-const gRPCFriendsChannel = createChannel(`${config.grpc.friends.ip}:${config.grpc.friends.port}`);
+const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
 const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
 
-const gRPCAccountChannel = createChannel(`${config.grpc.account.ip}:${config.grpc.account.port}`);
+const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
 const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
 
 const s3 = new aws.S3({
@@ -80,7 +80,7 @@ export function decryptToken(token: Buffer): Buffer {
 	const expectedChecksum = token.readUint32BE();
 	const encryptedBody = token.subarray(4);
 
-	const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(config.aes_key, 'hex'), iv);
+	const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(config.aesKey, 'hex'), iv);
 
 	const decrypted = Buffer.concat([
 		decipher.update(encryptedBody),
@@ -166,7 +166,7 @@ export async function getUserFriendPIDs(pid: number): Promise<number[]> {
 		pid: pid
 	}, {
 		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.api_key
+			'X-API-Key': config.grpc.friends.apiKey
 		})
 	});
 
@@ -178,7 +178,7 @@ export async function getUserFriendRequestsIncoming(pid: number): Promise<Friend
 		pid: pid
 	}, {
 		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.api_key
+			'X-API-Key': config.grpc.friends.apiKey
 		})
 	});
 
@@ -190,7 +190,7 @@ export function getUserAccountData(pid: number): Promise<GetUserDataResponse> {
 		pid: pid
 	}, {
 		metadata: Metadata({
-			'X-API-Key': config.grpc.account.api_key
+			'X-API-Key': config.grpc.account.apiKey
 		})
 	});
 }

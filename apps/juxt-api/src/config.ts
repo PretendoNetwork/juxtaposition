@@ -7,7 +7,7 @@ const schema = z.object({
 	}).default({}),
 	accountServerAddress: z.string(),
 	aesKey: z.string(),
-	cdnUrl: z.string().url().transform(s => s.replace(/\/$/, '')),
+	cdnUrl: z.string().url().transform(s => s.replace(/\/$/g, '')),
 	mongoose: z.object({
 		uri: z.string(),
 		options: z.object({
@@ -28,12 +28,12 @@ const schema = z.object({
 		friends: z.object({
 			host: z.string(),
 			port: z.string(),
-			api_key: z.string().optional()
+			apiKey: z.string()
 		}),
 		account: z.object({
 			host: z.string(),
 			port: z.string(),
-			api_key: z.string().optional()
+			apiKey: z.string()
 		})
 	})
 });

@@ -6,6 +6,7 @@
 		"module": "ES2022",
 		"esModuleInterop": true,
 		"moduleResolution": "bundler",
+		"skipLibCheck": true,
 		"baseUrl": "src",
 		"outDir": "dist",
 		"allowJs": true,

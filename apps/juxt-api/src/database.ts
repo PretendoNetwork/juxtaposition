@@ -19,7 +19,7 @@ const { mongoose: mongooseConfig } = config;
 let connection: mongoose.Connection;
 
 export async function connect(): Promise<void> {
-	await mongoose.connect(mongooseConfig.connection_string, mongooseConfig.options);
+	await mongoose.connect(mongooseConfig.uri, mongooseConfig.options);
 
 	connection = mongoose.connection;
 	connection.on('connected', () => {
