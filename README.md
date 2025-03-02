@@ -19,8 +19,15 @@ Prerequisites:
 - Clone the repository
 - Have a functional running [account server](https://github.com/PretendoNetwork/account)
 - Have NodeJS 20 or higher installed
+- Optional: have docker installed (highly recommended)
 
-After the prerequisites you need to run the two services in `/apps`:
+After the prerequisites you need to run the following inside `.docker`:
+```sh
+docker compose up -d
+```
+If you are not using docker for development, please set up the services listed in `.docker/docker-compose.yml` manually.
+
+Next up, you need to run the two services in `/apps`:
 ```bash
 cd apps/juxt-api
 npm i
