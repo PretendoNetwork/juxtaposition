@@ -34,7 +34,7 @@ npm i
 npm run dev
 ```
 
-You have to also make an `.env` file to configure your environment. Inspire it from the content of `example.env` in each service.
+You have to also make an `.env` file to configure your environment. Inspire it from the schema in `src/config.ts` in each service.
 
 # 🤝 Translation
 
