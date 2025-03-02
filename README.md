@@ -15,7 +15,12 @@ We want to bring all features originally found in Miiverse into Juxtaposition an
 
 # 🧬 Running locally for development
 
-To run locally, you must first clone the repository. After that you need to run the two services in `/apps`:
+Prerequisites:
+- Clone the repository
+- Have a functional running [account server](https://github.com/PretendoNetwork/account)
+- Have NodeJS 20 or higher installed
+
+After the prerequisites you need to run the two services in `/apps`:
 ```bash
 cd apps/juxt-api
 npm i
@@ -30,9 +35,6 @@ npm run dev
 ```
 
 You have to also make an `.env` file to configure your environment. Inspire it from the content of `example.env` in each service.
-
-> [!TIP]
-> You must use and run NodeJS 20
 
 # 🤝Contributors
 
