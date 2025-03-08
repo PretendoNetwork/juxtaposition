@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        repo: ["juxt-api", "juxt-ui"]
+        repo: ["miiverse-api", "juxtaposition-ui"]
 
     env:
       IMAGE_NAME: ${{ matrix.repo }}
@@ -71,7 +71,7 @@ jobs:
 
     strategy:
       matrix:
-        repo: ["juxt-api", "juxt-ui"]
+        repo: ["miiverse-api", "juxtaposition-ui"]
 
     env:
       IMAGE_NAME: ${{ matrix.repo }}
