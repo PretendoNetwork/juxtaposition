@@ -29,14 +29,14 @@ If you are not using docker for development, please set up the services listed i
 
 Next up, you need to run the two services in `/apps`:
 ```bash
-cd apps/juxt-api
+cd apps/miiverse-api
 npm i
 npm run dev
 ```
 
 And in another terminal:
 ```bash
-cd apps/juxt-ui
+cd apps/juxtaposition-ui
 npm i
 npm run dev
 ```

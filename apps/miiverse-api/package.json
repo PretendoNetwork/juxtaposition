@@ -1,7 +1,7 @@
 {
-	"name": "juxt-api",
+	"name": "miiverse-api",
 	"version": "3.0.0",
-	"description": "API for juxtaposition",
+	"description": "API for miiverse",
 	"license": "AGPL-3.0-only",
 	"main": "./dist/server.js",
 	"scripts": {
