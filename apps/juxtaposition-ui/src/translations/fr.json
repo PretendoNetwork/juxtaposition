@@ -1,10 +1,10 @@
 {
     "language": "Français",
     "global": {
-        "user_page": "Profil",
-        "activity_feed": "Fil d'actualité",
+        "user_page": "Page de l'utilisateur",
+        "activity_feed": "Suivi des activités",
         "communities": "Communautés",
-        "messages": "Messages",
+        "messages": "Messages privés",
         "notifications": "Notifications",
         "go_back": "Retour",
         "back": "Précédent",
