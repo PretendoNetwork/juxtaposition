@@ -4,6 +4,8 @@ const database = require('../../../../database');
 const util = require('../../../../util');
 const { conf: config } = require('@/config');
 
+const cookieDomain = config.http.cookie_domain || '.pretendo.network';
+
 router.get('/', async function (req, res) {
 	res.render(req.directory + '/login.ejs', { toast: null });
 });
@@ -57,8 +59,8 @@ router.post('/', async (req, res) => {
 			message: message
 		});
 	}
-	const cookieDomain = (req.hostname.indexOf('miiverse') !== -1) ? '.miiverse.cc' : '.pretendo.network';
-	const expiration = (req.hostname.indexOf('miiverse') !== -1) ? login.expiresIn * 60 * 60 * 24 : login.expiresIn * 60 * 60;
+	const expiration = login.expiresIn * 60 * 60;
+
 	res.cookie('access_token', login.accessToken, { domain: cookieDomain, maxAge: expiration });
 	res.cookie('refresh_token', login.refreshToken, { domain: cookieDomain });
 	res.cookie('token_type', 'Bearer', { domain: cookieDomain });

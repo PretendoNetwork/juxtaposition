@@ -223,8 +223,8 @@ function setName(pid, name) {
 	if (!pid || !name) {
 		return;
 	}
-	this.userMap.delete(pid);
-	this.userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu, '').replace(/\u202e/g, ''));
+	userMap.delete(pid);
+	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu, '').replace(/\u202e/g, ''));
 }
 
 function updateCommunityHash(community) {

@@ -37,6 +37,7 @@ router.get('/', async function (req, res) {
 		posts: posts,
 		communityMap: communityMap,
 		account_server: config.account_server_domain.slice(8),
+		tab: 1,
 		bundle,
 		template: 'posts_list'
 	});

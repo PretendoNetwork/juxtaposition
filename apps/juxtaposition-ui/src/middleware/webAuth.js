@@ -1,4 +1,7 @@
 const util = require('../util');
+const { conf } = require('@/config');
+
+const cookieDomain = conf.http.cookie_domain || '.pretendo.network';
 
 async function webAuth(request, response, next) {
 	// Get pid and fetch user data
@@ -14,10 +17,9 @@ async function webAuth(request, response, next) {
 			request.session.user = request.user;
 			request.session.pid = request.pid;
 		} catch (ignored) {
-			const domain = request.get('host').replace('juxt-beta', '').replace('juxt', '');
-			response.clearCookie('access_token', { domain: domain, path: '/' });
-			response.clearCookie('refresh_token', { domain: domain, path: '/' });
-			response.clearCookie('token_type', { domain: domain, path: '/' });
+			response.clearCookie('access_token', { domain: cookieDomain, path: '/' });
+			response.clearCookie('refresh_token', { domain: cookieDomain, path: '/' });
+			response.clearCookie('token_type', { domain: cookieDomain, path: '/' });
 			if (request.path === '/login') {
 				response.locals.lang = util.processLanguage();
 				request.token = request.cookies.access_token;
