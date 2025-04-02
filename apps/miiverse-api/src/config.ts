@@ -59,4 +59,5 @@ export const conf = createConfigLoader()
 	.addFromFile('config.json')
 	.addZodSchema(schema)
 	.addConfigFragments(fragments)
+	.setFragmentKey('USE_PRESETS')
 	.load();

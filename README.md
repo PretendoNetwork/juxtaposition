@@ -43,6 +43,8 @@ npm run dev
 
 You have to also make an `.env` file to configure your environment. Inspire it from the schema in `src/config.ts` in each service.
 
+You can use `JXTUI_USE_PRESETS=docker` and `JXTAPI_USE_PRESETS=docker` to automatically set up everything that's in the docker compose file.
+
 # 🤝 Translation
 
 If you'd like to help localize Pretendo Network, you can contribute to the translations on our project on [Weblate](https://hosted.weblate.org/engage/pretendonetwork/).

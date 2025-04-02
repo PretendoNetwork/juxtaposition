@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 const schema = z.object({
 	http: z.object({
-		port: z.coerce.number().default(80)
+		port: z.coerce.number().default(8000)
 	}).default({}),
 	postLimit: z.coerce.number().default(10),
 	accountServerDomain: z.string(),
@@ -70,4 +70,5 @@ export const conf = createConfigLoader()
 	.addFromFile('config.json')
 	.addZodSchema(schema)
 	.addConfigFragments(fragments)
+	.setFragmentKey('USE_PRESETS')
 	.load();
