@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const RedisStore = require('connect-redis').default;
+const { RedisStore } = require('connect-redis');
 const database = require('./database');
 const logger = require('./logger');
 const { redisClient } = require('./redisCache');
@@ -39,7 +39,7 @@ app.use(cookieParser());
 
 app.use(session({
 	store: new RedisStore({ client: redisClient }),
-	secret: config.aes_key,
+	secret: config.aesKey,
 	resave: false,
 	saveUninitialized: false,
 	ttl: 60
