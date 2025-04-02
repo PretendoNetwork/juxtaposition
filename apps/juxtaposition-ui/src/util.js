@@ -129,12 +129,12 @@ function processServiceToken(encryptedToken) {
 	}
 }
 function decryptToken(token) {
-	if (!config.aes_key) {
+	if (!config.aesKey) {
 		throw new Error('Service token AES key not found. Set config.aes_key');
 	}
 
 	const iv = Buffer.alloc(16);
-	const key = Buffer.from(config.aes_key, 'hex');
+	const key = Buffer.from(config.aesKey, 'hex');
 
 	const expectedChecksum = token.readUint32BE();
 	const encryptedBody = token.subarray(4);
