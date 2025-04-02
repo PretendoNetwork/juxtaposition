@@ -1,4 +1,4 @@
-import { zodCoercedBoolean, createConfigLoader } from '@neato/config';
+import { createConfigLoader } from '@neato/config';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -13,15 +13,7 @@ const schema = z.object({
 	serverEnvironment: z.string(),
 	aesKey: z.string(),
 	mongoose: z.object({
-		uri: z.string(),
-		database: z.string(),
-		options: z.object({
-			useNewUrlParser: zodCoercedBoolean().default(true),
-			useUnifiedTopology: zodCoercedBoolean().default(true),
-			directConnection: zodCoercedBoolean().default(true),
-			tls: zodCoercedBoolean().default(false),
-			replicaSet: z.string().optional()
-		}).default({})
+		uri: z.string()
 	}),
 	grpc: z.object({
 		friends: z.object({
@@ -50,9 +42,36 @@ const schema = z.object({
 	})
 });
 
+export const fragments: Record<string, any> = {
+	docker: {
+		http: {
+			cors: 'http://localhost:3000 http://localhost:5173',
+			frontendBaseUrl: 'http://localhost:5173/',
+			backendBaseUrl: 'http://localhost:8080/'
+		},
+		aesKey: '123456',
+		mongoose: {
+			uri: 'mongodb://localhost:27017/miiverse'
+		},
+		aws: {
+			spaces: {
+				key: 'xyz',
+				secret: 'xyz'
+			},
+			endpoint: 'http://localstack:4567',
+			region: 'us-east-1',
+			bucket: 'miiverse'
+		},
+		redis: {
+			host: 'localhost'
+		}
+	}
+};
+
 export const conf = createConfigLoader()
 	.addFromEnvironment('JXTUI_')
 	.addFromFile('.env', { prefix: 'JXTUI_' })
 	.addFromFile('config.json')
 	.addZodSchema(schema)
+	.addConfigFragments(fragments)
 	.load();

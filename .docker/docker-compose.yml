@@ -28,6 +28,28 @@ services:
     volumes:
       - "mongo_data:/data/db"
       - "mongo_config:/data/configdb"
+  localstack:
+    image: localstack/localstack:1.0.4
+    ports:
+      - "4567:4566"
+    environment:
+      - SERVICES=s3:4566
+      - HOSTNAME=localstack
+      - HOSTNAME_EXTERNAL=localstack
+      - DEFAULT_REGION=us-east-1
+  aws-cli:
+    image: amazon/aws-cli
+    depends_on:
+      - localstack
+    volumes:
+      - ./testbucket:/aws
+    environment:
+      - AWS_ACCESS_KEY_ID=xyz
+      - AWS_SECRET_ACCESS_KEY=xyz
+      - AWS_DEFAULT_REGION=us-east-1
+    entrypoint: /bin/sh -c
+    command: |
+      aws --endpoint-url=http://localstack:4566 s3api create-bucket --bucket miiverse
 
 volumes:
   mongo_data:
