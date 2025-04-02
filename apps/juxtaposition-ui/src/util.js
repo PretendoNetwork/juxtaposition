@@ -35,12 +35,12 @@ const accountChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
 const accountClient = grpc.createClient(AccountDefinition, accountChannel);
 
 const s3 = new S3Client({
-	endpoint: config.aws.endpoint,
+	endpoint: config.s3.endpoint,
 	forcePathStyle: true,
-	region: config.aws.region,
+	region: config.s3.region,
 	credentials: {
-		accessKeyId: config.aws.spaces.key,
-		secretAccessKey: config.aws.spaces.secret
+		accessKeyId: config.s3.key,
+		secretAccessKey: config.s3.secret
 	}
 });
 
@@ -328,7 +328,7 @@ async function uploadCDNAsset(key, data, acl) {
 	const awsPutParams = new PutObjectCommand({
 		Body: data,
 		Key: key,
-		Bucket: config.aws.bucket,
+		Bucket: config.s3.bucket,
 		ACL: acl
 	});
 	try {

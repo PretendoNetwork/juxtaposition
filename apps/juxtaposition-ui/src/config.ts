@@ -27,14 +27,12 @@ const schema = z.object({
 			api_key: z.string().optional()
 		})
 	}),
-	aws: z.object({
-		spaces: z.object({
-			key: z.string(),
-			secret: z.string()
-		}),
+	s3: z.object({
 		endpoint: z.string(),
-		region: z.string(),
-		bucket: z.string()
+		key: z.string(),
+		secret: z.string(),
+		bucket: z.string(),
+		region: z.string()
 	}),
 	redis: z.object({
 		host: z.string(),
@@ -53,14 +51,12 @@ export const fragments: Record<string, any> = {
 		mongoose: {
 			uri: 'mongodb://localhost:27017/miiverse'
 		},
-		aws: {
-			spaces: {
-				key: 'xyz',
-				secret: 'xyz'
-			},
+		s3: {
 			endpoint: 'http://localstack:4567',
-			region: 'us-east-1',
-			bucket: 'miiverse'
+			key: 'xyz',
+			secret: 'xyz',
+			bucket: 'juxt',
+			region: 'us-east-1'
 		},
 		redis: {
 			host: 'localhost'
