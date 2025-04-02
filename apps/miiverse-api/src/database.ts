@@ -14,12 +14,10 @@ import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
 import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
-const { mongoose: mongooseConfig } = config;
-
 let connection: mongoose.Connection;
 
 export async function connect(): Promise<void> {
-	await mongoose.connect(mongooseConfig.uri, mongooseConfig.options);
+	await mongoose.connect(config.mongoose.uri);
 
 	connection = mongoose.connection;
 	connection.on('connected', () => {

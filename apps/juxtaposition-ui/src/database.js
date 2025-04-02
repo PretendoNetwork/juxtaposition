@@ -11,13 +11,11 @@ const { REPORT } = require('./models/report');
 const logger = require('./logger');
 const { conf } = require('@/config');
 
-const { uri, database, options } = conf.mongoose;
-
 let connection;
 mongoose.set('strictQuery', true);
 
 async function connect() {
-	await mongoose.connect(`${uri}/${database}`, options);
+	await mongoose.connect(conf.mongoose.uri);
 	connection = mongoose.connection;
 	connection.on('connected', function () {
 		logger.info(`MongoDB connected ${this.name}`);
