@@ -1,19 +1,19 @@
-# ⚡Juxtaposition
+# Juxtaposition
 
 Juxtaposition is the Pretendo made Miiverse replacement and successor.
 
-## 🍄 Philosophy
+## Philosophy
 
-This project is meant not just be a simple clone of Miiverse. We aim to extend what it had to offer and bring the platform into the modern era.
+This project is not meant to be just a simple clone of Miiverse. We aim to evolve it and bring the platform into the modern era.
 
-We want to bring all features originally found in Miiverse into Juxtaposition and expand it with even more features.
+This means we both want to bring all features originally found in Miiverse into Juxtaposition, but go even further with even more features.
 
-## ⚠️ Limitations
+## Limitations
 
-- The web platforms on the 3DS and WiiU are old, thus we need to use old web methodologies like AJAX. 
+- The web platforms on the 3DS and Wii U are old, thus we need to use old web methodologies like AJAX. 
 - The XML API of the Miiverse platform cannot be modified or extended, it needs to stay exactly as the consoles expect it.
 
-# 🧬 Running locally for development
+# Running locally for development
 
 Prerequisites:
 - Clone the repository
@@ -45,10 +45,6 @@ You have to also make an `.env` file to configure your environment. Inspire it f
 
 You can use `JXTUI_USE_PRESETS=docker` and `JXTAPI_USE_PRESETS=docker` to automatically set up everything that's in the docker compose file.
 
-# 🤝 Translation
+# Translation
 
 If you'd like to help localize Pretendo Network, you can contribute to the translations on our project on [Weblate](https://hosted.weblate.org/engage/pretendonetwork/).
-
-# 🤝 Contributors
-
-[![Contributors](https://contrib.rocks/image?repo=pretendoNetwork/juxtaposition)](https://github.com/pretendoNetwork/juxtaposition/graphs/contributors)

@@ -1,6 +1,6 @@
-# ⚡ juxt-api
+# miiverse-api
 
-This is the API server for Juxtaposition. It powers both the Juxt frontends and the in-game Miiverse integrations.
+This is the API server for Miiverse. It powers both the Juxt frontends and the in-game Miiverse integrations.
 
 Check the [main readme.md](../../README.md) for practical information.
 
