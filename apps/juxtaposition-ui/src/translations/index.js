@@ -10,5 +10,4 @@ module.exports = {
 	NL: require('./nl.json'),
 	PT: require('./pt.json'),
 	RU: require('./ru.json')
-
 };
