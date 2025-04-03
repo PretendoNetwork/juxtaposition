@@ -52,8 +52,8 @@ export const fragments: Record<string, any> = {
 };
 
 const unmappedConfig = createConfigLoader()
-	.addFromEnvironment('JXTUI_')
-	.addFromFile('.env', { prefix: 'JXTUI_' })
+	.addFromEnvironment('PN_JUXTAPOSITION_UI_')
+	.addFromFile('.env', { prefix: 'PN_JUXTAPOSITION_UI_' })
 	.addFromFile('config.json')
 	.addZodSchema(schema)
 	.addConfigFragments(fragments)

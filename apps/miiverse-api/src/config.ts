@@ -43,8 +43,8 @@ export const fragments: Record<string, any> = {
 };
 
 const unmappedConfig = createConfigLoader()
-	.addFromEnvironment('JXTAPI_')
-	.addFromFile('.env', { prefix: 'JXTAPI_' })
+	.addFromEnvironment('PN_MIIVERSE_API_')
+	.addFromFile('.env', { prefix: 'PN_MIIVERSE_API_' })
 	.addFromFile('config.json')
 	.addZodSchema(schema)
 	.addConfigFragments(fragments)
