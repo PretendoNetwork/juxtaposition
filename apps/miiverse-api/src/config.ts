@@ -1,35 +1,24 @@
 import { createConfigLoader } from '@neato/config';
 import { z } from 'zod';
 
+// schema is mapped later to nested object to keep env vars consistent with other projects
 const schema = z.object({
-	http: z.object({
-		port: z.coerce.number().default(8080)
-	}).default({}),
+	httpPort: z.coerce.number().default(8080),
 	accountServerAddress: z.string(),
 	aesKey: z.string(),
 	cdnUrl: z.string().url().transform(s => s.replace(/\/$/g, '')),
-	mongoose: z.object({
-		uri: z.string()
-	}),
-	s3: z.object({
-		endpoint: z.string(),
-		key: z.string(),
-		secret: z.string(),
-		bucket: z.string(),
-		region: z.string()
-	}),
-	grpc: z.object({
-		friends: z.object({
-			host: z.string(),
-			port: z.string(),
-			apiKey: z.string()
-		}),
-		account: z.object({
-			host: z.string(),
-			port: z.string(),
-			apiKey: z.string()
-		})
-	})
+	mongooseUri: z.string(),
+	s3Endpoint: z.string(),
+	s3Key: z.string(),
+	s3Secret: z.string(),
+	s3Bucket: z.string(),
+	s3Region: z.string(),
+	grpcFriendsHost: z.string(),
+	grpcFriendsPort: z.string(),
+	grpcFriendsApiKey: z.string(),
+	grpcAccountHost: z.string(),
+	grpcAccountPort: z.string(),
+	grpcAccountApiKey: z.string()
 });
 
 export const fragments: Record<string, any> = {
@@ -53,7 +42,7 @@ export const fragments: Record<string, any> = {
 	}
 };
 
-export const conf = createConfigLoader()
+const unmappedConfig = createConfigLoader()
 	.addFromEnvironment('JXTAPI_')
 	.addFromFile('.env', { prefix: 'JXTAPI_' })
 	.addFromFile('config.json')
@@ -61,3 +50,34 @@ export const conf = createConfigLoader()
 	.addConfigFragments(fragments)
 	.setFragmentKey('USE_PRESETS')
 	.load();
+
+export const conf = {
+	http: {
+		port: unmappedConfig.httpPort
+	},
+	accountServerAddress: unmappedConfig.accountServerAddress,
+	aesKey: unmappedConfig.aesKey,
+	cdnUrl: unmappedConfig.cdnUrl,
+	mongoose: {
+		uri: unmappedConfig.mongooseUri
+	},
+	s3: {
+		endpoint: unmappedConfig.s3Endpoint,
+		key: unmappedConfig.s3Key,
+		secret: unmappedConfig.s3Secret,
+		bucket: unmappedConfig.s3Bucket,
+		region: unmappedConfig.s3Region
+	},
+	grpc: {
+		friends: {
+			host: unmappedConfig.grpcFriendsHost,
+			port: unmappedConfig.grpcFriendsPort,
+			apiKey: unmappedConfig.grpcFriendsApiKey
+		},
+		account: {
+			host: unmappedConfig.grpcAccountHost,
+			port: unmappedConfig.grpcAccountPort,
+			apiKey: unmappedConfig.grpcAccountApiKey
+		}
+	}
+};
