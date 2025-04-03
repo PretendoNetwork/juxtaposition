@@ -1,4 +1,4 @@
-name: "juxt-dev"
+name: "juxtaposition-dev"
 
 services:
   redis:
