@@ -43,7 +43,7 @@ npm run dev
 
 You have to also make an `.env` file to configure your environment. Inspire it from the schema in `src/config.ts` in each service.
 
-You can use `JXTUI_USE_PRESETS=docker` and `JXTAPI_USE_PRESETS=docker` to automatically set up everything that's in the docker compose file.
+You can use `PN_JUXTAPOSITION_UI_USE_PRESETS=docker` and `PN_MIIVERSE_API_USE_PRESETS=docker` to automatically set up everything that's in the docker compose file.
 
 # Translation
 
