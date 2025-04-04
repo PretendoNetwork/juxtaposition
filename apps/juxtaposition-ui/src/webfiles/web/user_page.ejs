@@ -1,0 +1,146 @@
+<html lang="en">
+<head>
+	<% var banned = (userSettings.account_status < 0  || userSettings.account_status > 1 || pnid.accessLevel < 0); %>
+    <%- include('partials/head'); %>
+    <!-- Google / Search Engine Tags -->
+	<% if(!banned) { %>
+	<title>Juxt - <%= pnid.mii.name %></title>
+    <meta itemprop="name" content="<%= pnid.mii.name %> (@<%= pnid.username %>)">
+    <%if(userSettings.profile_comment_visibility){%><meta itemprop="description" content="<%= userSettings.profile_comment%>"> <%}%>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="<%= pnid.mii.name %> (@<%= pnid.username %>)"/>
+    <%if(userSettings.profile_comment_visibility){%><meta property="og:description" content="<%= userSettings.profile_comment%>"/><%}%>
+    <meta property="og:url" content="https://juxt.pretendo.network/users/<%= userSettings.pid %>"/>
+    <meta property="og:site_name" content="Juxtaposition"/>
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="<%= pnid.mii.name %> (@<%= pnid.username %>)"/>
+    <%if(userSettings.profile_comment_visibility){%><meta name="twitter:description" content="<%= userSettings.profile_comment%>"/><%}%>
+    <meta name="twitter:site" content="@PretendoNetwork"/>
+    <meta name="twitter:creator" content="@PretendoNetwork"/>
+	<% } %>
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.user_page %></h2>
+    <%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
+    <div id="toast"></div>
+    <div id="wrapper" class="community-page-post-box">
+        <div class="community-top">
+            <img class="banner" src="/images/banner.png" alt="">
+            <div class="community-info <% if (isActive) {%>active<% } %>">
+                <img class="user-icon <%if(pnid.accessLevel > 2) {%>verified<%}%>" src="<%if (pnid.deleted || banned) { %>/images/bandwidthlost.png<% } else { %><%= cdnURL %>/mii/<%=pnid.pid%>/normal_face.png<%}%>">
+                <h2 class="community-title"><% if(banned) { %>Banned User<% } else if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %> @<%= pnid.username %><%}%><%if(pnid.accessLevel >= 2) {%><span class="verified-badge">✓</span><%}%></h2>
+                <%if(pnid.pid !== pid && pid !== 1000000000 && !pnid.deleted && !banned) {%>
+                <% var following = parentUserContent.followed_users.indexOf(userContent.pid) !== -1; %>
+                <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
+                <%if(following && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>
+                <a href="/friend_messages/new/<%=userContent.pid%>" class="message-button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
+                <%}%>
+                <%}%>
+            </div>
+			<% if (!pnid.deleted && !banned) { %>
+            <h4 class="community-description">
+                <%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment%> <%}else {%><%= lang.global.private %><%}%>
+                    <%if(pnid.tierName) {%>
+                    <%if(pnid.tierName === 'Mario') {%>
+                        <span class="supporter-star mario">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </span>
+                    <%} else if(pnid.tierName === 'Super Mario') {%>
+                        <span class="supporter-star super">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </span>
+                    <%} else if(pnid.tierName === 'Mega Mushroom') {%>
+                        <span class="supporter-star mega">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </span>
+                    <%}%>
+                    <%}%>
+                    <%if(pnid.accessLevel === 3) {%>
+                        <span class="supporter-star dev">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tool">
+                            <defs>
+                                <linearGradient id="rainbow">
+                                    <stop offset="16%" stop-color="red" />
+                                    <stop offset="32%" stop-color="orange" />
+                                    <stop offset="48%" stop-color="yellow" />
+                                    <stop offset="64%" stop-color="green" />
+                                    <stop offset="80%" stop-color="blue" />
+                                    <stop offset="96%" stop-color="purple" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                </span>
+                    <%}%>
+                    <%if(pnid.accessLevel === 2) {%>
+                        <span class="supporter-star mega">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </span>
+                    <%}%>
+                    <%if(pnid.accessLevel === 1) {%>
+                        <span class="supporter-star tester">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor"><path d="M104,32V93.8a8.4,8.4,0,0,1-1.1,4.1l-63.6,106A8,8,0,0,0,46.1,216H209.9a8,8,0,0,0,6.8-12.1l-63.6-106a8.4,8.4,0,0,1-1.1-4.1V32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="32" x2="168" y2="32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M62.6,165c11.8-8.7,32.1-13.6,65.4,3,35.7,17.9,56.5,10.8,67.9,1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+                </span>
+                    <%}%>
+            </h4>
+            <div class="info-boxes-wrapper">
+                <div>
+                    <h4><%= lang.user_page.country %></h4>
+                    <h4><%if(userSettings.country_visibility){%><%=pnid.country%><%}else {%><%= lang.global.private %><%}%></h4>
+                </div>
+                <div>
+                    <h4><%= lang.user_page.birthday %></h4>
+                    <h4><%if(userSettings.birthday_visibility){%><%=moment.utc(pnid.birthdate || pnid.birthday).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></h4>
+                </div>
+                <div>
+                    <h4><%= lang.user_page.game_experience %></h4>
+                    <h4>
+                        <%if(userSettings.game_skill_visibility){%>
+                        <%if(userSettings.game_skill === 0) {%>
+                            <%= lang.setup.experience_text.beginner %>
+                        <%} else if(userSettings.game_skill === 1) {%>
+                            <%= lang.setup.experience_text.intermediate %>
+                        <%} else if(userSettings.game_skill === 2) {%>
+                            <%= lang.setup.experience_text.expert %>
+                        <%} else {%>
+                            N/A
+                        <%}%>
+                        <%}else {%>
+                            <%= lang.global.private %>
+                        <%}%>
+                    </h4>
+                </div>
+                <div>
+                    <h4><%= lang.user_page.followers %></h4>
+                    <h4 id="user-page-followers-tab" id="followers"><%= userContent.following_users.length %></h4>
+                </div>
+                <%if(pnid.pid === pid) {%>
+                <div>
+                    <h4>Download User Data</h4>
+                    <h4 id="user-page-download-tab"><a href="/users/downloadUserData.json">Download</a></h4>
+                </div>
+                <%}%>
+				<% if (moderator && pnid.pid !== pid) { %>
+				<div>
+					<h4 id="user-page-download-tab"><a class="moderate" href="/admin/accounts/<%= pnid.pid %>">Moderate User</a></h4>
+				</div>
+				<% } %>
+            </div>
+        </div>
+		<div class="buttons tabs">
+			<a id="tab-header-post" class="<%if(selection === 0){ %>selected<%}%>" href="<%= link %>"><%= lang.user_page.posts %></a>
+			<a id="tab-header-friends" class="<%if(selection === 1){ %>selected<%}%>" href="<%= link %>friends"><%= lang.user_page.friends %></a>
+			<a id="tab-header-following" class="<%if(selection === 2){ %>selected<%}%>" href="<%= link %>following"><%= lang.user_page.following %></a>
+			<a id="tab-header-followers" class="<%if(selection === 3){ %>selected<%}%>" href="<%= link %>followers"><%= lang.user_page.followers %></a>
+			<a id="tab-header-yeahs" class="<%if(selection === 4){ %>selected<%}%>" href="<%= link %>yeahs"><%= lang.global.yeahs %></a>
+		</div>
+        <%- include('partials/' + template, { bundle }); %>
+		<% } %>
+    </div>
+</div>
+</body>
+</html>

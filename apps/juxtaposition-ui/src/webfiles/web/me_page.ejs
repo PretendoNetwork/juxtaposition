@@ -1,0 +1,87 @@
+<html lang="en">
+<head>
+    <title>Juxt - <%= pnid.mii.name %></title>
+    <%- include('partials/head'); %>
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Juxt - <%= pnid.mii.name %>">
+    <%if(userSettings.profile_comment_visibility){%><meta itemprop="description" content="<%= userSettings.profile_comment %>"> <%}%>
+    <meta itemprop="image" content="<%= cdnURL %>/mii/<%= userSettings.pid %>/smile_open_mouth.png">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Juxt - <%= pnid.mii.name %>"/>
+    <%if(userSettings.profile_comment_visibility){%><meta property="og:description" content="<%= userSettings.profile_comment %>"/><%}%>
+    <meta property="og:url" content="https://juxt.pretendo.cc/users/show?pid=<%= userSettings.pid %>"/>
+    <meta property="og:image" content="<%= cdnURL %>/mii/<%= userSettings.pid %>/smile_open_mouth.png"/>
+    <meta property="og:site_name" content="Juxtaposition" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Juxt - <%= pnid.mii.name %>"/>
+    <%if(userSettings.profile_comment_visibility){%><meta name="twitter:description" content="<%= userSettings.profile_comment %>"/><%}%>
+    <meta name="twitter:site" content="@PretendoNetwork"/>
+    <meta name="twitter:image" content="<%= cdnURL %>/mii/<%= userSettings.pid %>/smile_open_mouth.png"/>
+    <meta name="twitter:creator" content="@PretendoNetwork"/>
+
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.user_page %></h2>
+    <%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
+    <div id="toast"></div>
+    <div id="wrapper">
+        <div class="community-top">
+            <div class="community-info">
+                <img class="user-icon <%if(pnid.access_level >= 2) {%>verified<%}%>" src="<%= cdnURL %>/mii/<%= userSettings.pid %>/normal_face.png">
+                <h2 class="community-title"><%= pnid.mii.name %> (<%= pnid.username %>)<span class="verified-badge" style="<%if(!pnid.access_level >= 2) {%>display: none;<%}%>">✓</span></h2>
+            </div>
+            <h4 class="community-description"><%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
+            <div class="info-boxes-wrapper">
+                <div>
+                    <h4><%= lang.user_page.country %></h4>
+                    <h4><%if(userSettings.country_visibility){%><%=pnid.country%><%}else {%><%= lang.global.private %><%}%></h4>
+                </div>
+                <div>
+                    <h4><%= lang.user_page.birthday %></h4>
+                    <h4><%if(userSettings.birthday_visibility){%><%=moment.utc(pnid.birthdate).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></h4>
+                </div>
+                <div>
+                    <h4><%= lang.user_page.game_experience %></h4>
+                    <h4>
+                        <%if(userSettings.game_skill_visibility){%>
+                        <%if(userSettings.game_skill === 0) {%>
+                            <%= lang.setup.experience_text.beginner %>
+                        <%} else if(userSettings.game_skill === 1) {%>
+                            <%= lang.setup.experience_text.intermediate %>
+                        <%} else if(userSettings.game_skill === 2) {%>
+                            <%= lang.setup.experience_text.expert %>
+                        <%} else {%>
+                            N/A
+                        <%}%>
+                        <%}else {%>
+                            <%= lang.global.private %>
+                        <%}%>
+                    </h4>
+                </div>
+                <div>
+                    <h4><%= lang.user_page.followers %></h4>
+                    <h4 id="user-page-followers-tab"><%= userContent.following_users.length %></h4>
+                </div>
+                <div>
+                    <h4><a onclick="downloadURI('/downloadUserData.json', '<%= userSettings.pid %>.json')">Download Data</a></h4>
+                </div>
+            </div>
+        </div>
+        <% if(newPosts.length === 0) {%>
+            <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
+        <%} else { %>
+            <% newPosts.forEach(function(post) { %>
+                <%- include('post_template', { post: post, reply: false  }); %>
+            <% }); %>
+        <%}%>
+    </div>
+    <div id="wrapper">
+        <button id="load-more-posts-button" data-offset="20" onclick="loadUserPosts(this, '<%= userSettings.pid %>')"><%= lang.global.more %></button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+{
+    "global": {
+        "messages": "Mesaje",
+        "user_page": "Pagina utilizatorului",
+        "activity_feed": "Fluxul de activități",
+        "communities": "Comunități",
+        "notifications": "Notificări",
+        "go_back": "Mergi înapoi",
+        "back": "Înapoi",
+        "yeahs": "Yeah-uri",
+        "more": "Încarcă mai multe postări",
+        "no_posts": "Nicio postare",
+        "private": "Privat",
+        "close": "Închide",
+        "save": "Salvează",
+        "exit": "Ieșire",
+        "next": "Înainte"
+    },
+    "language": "Română",
+    "all_communities": {
+        "announcements": "Anunțuri",
+        "ann_string": "Apasă aici pentru a vedea anunțurile recente!",
+        "popular_places": "Locuri populare",
+        "new_communities": "Comunități noi",
+        "show_all": "Arată toate",
+        "search": "Caută comunități...",
+        "text": "Toate comunitățile"
+    },
+    "community": {
+        "follow": "Urmărește comunitatea",
+        "followers": "Urmăritori",
+        "posts": "Postări",
+        "tags": "Etichete",
+        "recent": "Postări recente",
+        "popular": "Postări populare",
+        "verified": "Postări verificate",
+        "new": "Postare nouă",
+        "following": "Urmărești"
+    },
+    "user_page": {
+        "country": "Țară",
+        "birthday": "Zi de naștere",
+        "game_experience": "Experiență",
+        "posts": "Postări",
+        "friends": "Prieteni",
+        "following": "Urmărește",
+        "followers": "Urmăritori",
+        "follow_user": "Urmărește",
+        "following_user": "Urmărești deja",
+        "befriend": "Deveniți prieteni",
+        "unfriend": "Șterge prieten",
+        "no_following": "Nu urmărește pe nimeni",
+        "no_followers": "Niciun urmăritor",
+        "no_friends": "Niciun prieten",
+        "pending": "În așteptare"
+    },
+    "user_settings": {
+        "profile_settings": "Setările profilului",
+        "show_country": "Arată țara pe profil",
+        "show_birthday": "Arată ziua de naștere pe profil",
+        "show_game": "Arată experiența pe profil",
+        "show_comment": "Arată comentariu pe profil",
+        "profile_comment": "Comentariu de profil",
+        "swearing": "Comentariile de profil nu pot conține limbaj vulgar."
+    },
+    "activity_feed": {
+        "empty": "E gol aici. Urmărește pe cineva!"
+    },
+    "notifications": {
+        "new_follower": "te-a urmărit!",
+        "none": "Nicio notificare."
+    },
+    "new_post": {
+        "new_post_text": "Postare nouă",
+        "post_to": "Postează la",
+        "text_hint": "Apasă aici ca să faci o postare.",
+        "swearing": "Postările nu pot conține limbaj vulgar."
+    },
+    "setup": {
+        "welcome": "Bine ai venit la Juxtaposition!",
+        "beta": "Atenționare beta",
+        "beta_text": {
+            "first": "Sunteți pe cale să testați prima versiune beta publică a Juxt. Asta înseamnă că multe lucruri încă sunt de-a valma și multe lucruri se pot schimba pe viitor.",
+            "second": "Asta include și/sau ștergerea totală a bazei de date la finalul perioadei beta.",
+            "third": "Site-ul web, software-ul său și tot conținutul găsit pe acesta sunt furnizate \"așa cum sunt\" și \"așa cum sunt disponibile\". Rețeaua Pretendo nu oferă nicio garanție, expresă sau implicită, cu privire la adecvarea sau utilizarea site-ului web, a software-ului său sau a oricărui conținut al acestuia."
+        },
+        "info": "Ce e Juxtaposition?",
+        "welcome_text": "Juxt este o comunitate de jocuri care conectează oamenii din jurul lumii folosind personaje Mii. Folosește Juxt pentru a-ți împărtăși experiențele tale din jocuri și a cunoaște oameni din toată lumea.",
+        "info_text": "Juxt este o comunitate de jocuri de noroc condusă de utilizatori, unde puteți interacționa cu oameni din întreaga lume. Puteți scrie sau desena postări în comunitățile de jocuri sau puteți trimite mesaje direct prietenilor dumneavoastră.",
+        "rules": "Regurile Juxt",
+        "rules_text": {
+            "first": "Următoarele sunt câteva orientări importante pentru a face din Juxt o experiență plăcută și distractivă pentru toată lumea. Codul de conduită Juxt conține informații detaliate, așa că vă rugăm să îl citiți cu atenție.",
+            "second": "Posturile pot fi vizualizate în întreaga lume",
+            "fourth": "Fiți drăguți unii cu alții",
+            "sixth": "Nu publicați informații personale - ale dvs. sau ale altora",
+            "eighth": "Nu posta spoilăre",
+            "tenth": "Violați de Codul de conduită",
+            "eleventh": "Golul nostru e să facem Juxt distractiv și plăcut pentru toată lumea. Dacă cineva violează Juxt Codul de conduită, noi osă luăm măsurile , Măsurile pot fi doar să blocăm utilizatorul sau toată consola.",
+            "twelfth": "Ai jucat acest joc?",
+            "seventh": "Nu uitați că a cunoaște pe cineva în Juxt nu este același lucru cu a-l cunoaște în viața reală. Nu împărtășiți niciodată adresa dvs. de e-mail, adresa de acasă, numele de la locul de muncă sau de la școală sau alte informații de identificare personală cu nimeni din Juxt și nu împărtășiți niciodată informațiile altor persoane. În plus, dacă cineva pe care îl cunoașteți în Juxt vă invită să vă întâlniți cu el sau ea în lumea reală, nu acceptați. Juxt este o comunitate online și nu ar trebui să fie folosită pentru a organiza întâlniri în lumea reală.",
+            "third": "Juxt conține multe comunități de jocuri de noroc în care oameni din întreaga lume își pot împărtăși gândurile. Atunci când postați într-o comunitate, nu uitați că toată lumea o poate vedea, așa că vă rugăm să vă exprimați într-un mod care să placă tuturor. Folosiți bunul simț și gândiți-vă înainte de a posta. Juxt este un serviciu care este accesibil și de pe internet, așa că țineți cont de faptul că și persoanele care nu folosesc Juxt vă pot vedea postările. În plus, orice comentariu pe care îl faceți la postările prietenilor dvs. va fi văzut nu doar de prietenii dvs., ci și de oameni din întreaga lume. Vă rugăm să țineți cont de acest lucru.",
+            "fifth": "Pentru ca Juxt să rămână un loc distractiv pentru toată lumea, vă rugăm să fiți atent cu ceilalți utilizatori. Ajutați-ne să menținem Juxt o experiență plăcută, nu postați nimic nepotrivit sau ofensator.",
+            "ninth": "Unii oameni vin la Juxt în căutare de sfaturi și trucuri pentru jocuri, dar alții vor să descopere singuri secretele unui joc. Postările care dezvăluie secrete ale unui joc sau ale poveștii acestuia se numesc \"spoilere\". Dacă postați ceva despre un joc care ar putea fi un spoiler, asigurați-vă că verificați căsuța Spoilers înainte de a trimite postarea. În acest fel, persoanele care nu doresc să primească spoilere nu vă vor vedea mesajul.",
+            "thirteenth": "Dacă postezi în comunitate pentru un joc pe care l-ai jucat, mesajele tale vor avea o pictogramă care indică faptul că l-ai jucat."
+        },
+        "experience": "Experiența de joc",
+        "experience_text": {
+            "info": "Vă rugăm să ne spuneți cum ați descrie nivelul dumneavoastră de experiență în materie de jocuri. Puteți modifica această setare mai târziu.",
+            "beginner": "Începător",
+            "intermediate": "Intermediar",
+            "expert": "Expertul"
+        },
+        "google": "Google Analytics",
+        "google_text": "Juxtaposition utilizează Google Analytics pentru a urmări modul în care utilizatorii utilizează serviciul nostru. Datele colectate includ, dar nu se limitează la ora vizitei, paginile vizitate și timpul petrecut pe site. Aceste date nu vă sunt atașate în niciun fel și nu sunt utilizate pentru reclame de către noi sau Google.",
+        "ready": "Gata să începeți să utilizați Juxt",
+        "ready_text": "În primul rând, verificați câteva comunități și vedeți ce postează oameni din toată lumea. Profitați de această ocazie pentru a vă familiariza cu Juxt. S-ar putea să faceți noi descoperiri pe parcurs!",
+        "done": "Distracție plăcută în Juxt!",
+        "done_button": "Să mergem!",
+        "guest": "Modul oaspete",
+        "guest_text": "Nu putem verifica contul dvs. în acest moment, ceea ce înseamnă probabil că vă conectați cu un cont Nintendo Network. Vei putea în continuare să navighezi pe Juxt, dar nu vei putea să publici mesaje Yeah! sau să faci mesaje proprii până când nu te conectezi cu un cont Pretendo Network. Pentru mai multe informații, verificați serverul Discord.",
+        "guest_button": "Înțeleg"
+    },
+    "messages": {
+        "coming_soon": "Mesajele nu sunt gata încă. Reveniți mai târziu!"
+    }
+}

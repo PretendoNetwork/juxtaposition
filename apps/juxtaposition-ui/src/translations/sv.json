@@ -1,0 +1,126 @@
+{
+    "setup": {
+        "beta_text": {
+            "second": "Detta kan inkludera en total resning av databasen vid slutet av eller under beta perioden.",
+            "first": "Du är påväg att testa den första offentliga betan av Juxt. Detta betyder att mycket ligger fortfarande uppe i luften, och kan ändras när som helst.",
+            "third": "Hemsidan, dess mjukvara och allt innehåll som finns på det är försedd på en \"som den är\" och \"som tillgängligt\" grund. Pretendo Nätverket ger inte iväg några garantier, vare sig om det uttryckts eller är underförstått, när det gäller lämpligheten eller användbarheten av hemsidan, dess mjukvara eller något av dess innehåll."
+        },
+        "rules_text": {
+            "second": "Inlägg Kan Bli Visade Runt Om I Världen",
+            "eighth": "Lägg Inte Upp Spoilers",
+            "tenth": "Brott mot Uppförandekod",
+            "fourth": "Var Snälla mot Varandra",
+            "first": "Det följande är några viktiga riktlinjer för att göra Juxt en kul och trevlig upplevelse för alla. Juxt uppförandekoden innehåller detaljerad information, så läs den snälla noggrant.",
+            "sixth": "Lägg Inte Upp Personlig Information - Din eller Andras",
+            "fifth": "För att hålla Juxt en kul plats för alla, så ber vi dig att vara omtänksam mot andra användare. Hjälp oss hålla Juxt en njutbar upplevelse genom att inte lägga upp något olämpligt eller kränkande.",
+            "eleventh": "Vårt mål är att hålla Juxt kul och njutbart för alla. I händelsen att någon begår ett brott mot Juxt Uppförelsekoden, kommer vi att ta lämplig åtgärd, till och med blockering av den kränkande användaren eller konsolen.",
+            "twelfth": "Har Du Spelat Det Där Spelet?",
+            "seventh": "Kom ihåg, att känna någon i Juxt är inte samma sak som att känna dom i verkligheten. Dela aldrig din e-post adress, hemadress, din arbetsplats eller skolas namn, eller annan personligt identifierbar information med någon på Juxt, och dela aldrig någon annans information heller. Ytterligare, om någon som du möter i Juxt bjuder in dig att träffa hon eller han i verkligheten, tacka nej. Juxt är en online gemenskap och borde inte användas för ordna träffar i den riktiga världen.",
+            "ninth": "Vissa personer kommer till Juxt för att hitta tips och tricks för spel, men andra vill upptäcka ett spels hemligheter själva. Inlägg som avslöjar hemligheter av ett spel eller dess berättelse kallas \"spoilers.\" Om du gör ett inlägg om något om ett spel som kanske är en spoiler, se till att kolla Spoilers rutan innan du skickar ditt inlägg. På det här sättet så kommer personer som inte vill bli spoilade inte se ditt inlägg.",
+            "thirteenth": "Om du gör ett inlägg i ett spel du har spelat, kommer dina inlägg att ha en ikon som indikerar att du har spelat det.",
+            "third": "Juxt har många spelsamhällen där personer från runt om i världen kan dela sina tankar. När du gör ett inlägg i ett samhälle, kom ihåg att alla kan se det, så snälla uttryck dig på ett sätt som alla kan njuta av. Använd sunt förnuft, och tänk innan du gör ett inlägg. Juxt är en tjänst som också är tillgänglig från Internet, så tänk på att personer som inte använder Juxt kan möjligen också se dina inlägg. Dessutom, alla kommentarer som du gör på din vänners inlägg kommer bli sedda av inte bara dina vänner men av personer från runt om i världen."
+        },
+        "experience_text": {
+            "intermediate": "Mellanliggande",
+            "info": "Snälla berätta för us hur du skulle beskriva din nivå av erfarenhet med spel. Du kan ändra det här senare.",
+            "beginner": "Nybörjare",
+            "expert": "Expert"
+        },
+        "ready": "Redo att Börja Använda Juxt",
+        "guest": "Gäst Läge",
+        "welcome": "Välkommen till Juxtaposition!",
+        "beta": "Beta Varning",
+        "welcome_text": "Juxt är en spelgemenskap som kopplar samman människor från runt hela världen genom att använda Mii karaktärer. Använd Juxt för att dela dina spelupplevelser och träffa personer från runt om i världen.",
+        "info": "Vad är Juxtaposition?",
+        "rules": "Juxt Regler",
+        "info_text": "Juxt är en användar-driven spelgemenskap där du kan interagera med personer\n                                    runt om världen. Du kan skriva eller rita inlägg i spelsamhällen eller skicka meddelanden direkt till dina vänner.",
+        "google": "Google Analytics",
+        "done": "Ha kul i Juxt!",
+        "google_text": "Juxtaposition använder Google Analytics för att spåra hur användare använder vår tjänst. Datan som samlas in omfattar men är inte begränsad till din tidpunkt av besök, sidor du besökt, och tid spenderad på sidan. Den är datan är inte knuten dig på något sätt, och är inte använd för annonser av oss eller Google.",
+        "ready_text": "Kolla först in några samhällen och se vad personer från runt om världen gör inlägg om. Ta det här tillfället att göra dig bekant med Juxt. Du kanske gör några nya upptäckter längs vägen!",
+        "guest_text": "Vi kan inte verifiera ditt konto vid tillfället, vilket sannolikt betyder att du loggar för närvarande in med ett Nintendo Nätverk konto. Du kommer fortfarande att kunna bläddra Juxt, men du kommer inte att kunna Ja! inlägg eller göra egna inlägg tills du loggar in med ett Pretendo Nätverk konto. För mer information kolla Discord-servern.",
+        "guest_button": "Jag Förstår",
+        "experience": "Spelupplevelse",
+        "done_button": "Nu Kör Vi!"
+    },
+    "language": "Svenska",
+    "global": {
+        "user_page": "Användarsida",
+        "activity_feed": "Aktivitetsflöde",
+        "communities": "Samhällen",
+        "messages": "Meddelanden",
+        "notifications": "Notifikationer",
+        "back": "Tillbaka",
+        "go_back": "Gå Tillbaka",
+        "exit": "Lämna",
+        "next": "Nästa",
+        "close": "Stäng",
+        "save": "Spara",
+        "no_posts": "Inga Inlägg",
+        "yeahs": "Jan",
+        "private": "Privat",
+        "more": "Ladda Mer Inlägg"
+    },
+    "all_communities": {
+        "text": "Alla Samhällen",
+        "announcements": "Uttalanden",
+        "new_communities": "Nya Samhällen",
+        "search": "Sök samhällen...",
+        "show_all": "Visa Allt",
+        "popular_places": "Populära Ställen",
+        "ann_string": "Klicka här för att visa de nyligen skapade uttalandena!"
+    },
+    "user_settings": {
+        "show_comment": "Visa kommentar på Profil",
+        "show_game": "Visa spelupplevelse på Profil",
+        "profile_comment": "Profilkommentar",
+        "profile_settings": "Profilinställningar",
+        "show_birthday": "Visa Födelsedag på Profil",
+        "show_country": "Visa Land på Profil",
+        "swearing": "Profilkommentar kan inte innehålla olämpligt språk."
+    },
+    "community": {
+        "following": "Följer",
+        "tags": "Taggar",
+        "follow": "Följ Samhälle",
+        "posts": "Inlägg",
+        "followers": "Följare",
+        "verified": "Verifierade Inlägg",
+        "popular": "Populära Inlägg",
+        "new": "Nytt Inlägg",
+        "recent": "Nyligen Skapade Inlägg"
+    },
+    "user_page": {
+        "country": "Land",
+        "posts": "Inlägg",
+        "birthday": "Födelsedag",
+        "game_experience": "Spelupplevelse",
+        "friends": "Vänner",
+        "following": "Följer",
+        "followers": "Följare",
+        "follow_user": "Följa",
+        "following_user": "Följer",
+        "befriend": "Bli vän med",
+        "unfriend": "Ta bort som vän",
+        "pending": "Väntande",
+        "no_following": "Följer Inte Någon",
+        "no_friends": "Inga Vänner",
+        "no_followers": "Inga Följare"
+    },
+    "new_post": {
+        "swearing": "Inlägg kan inte innehålla olämpligt språk.",
+        "new_post_text": "Nytt Inlägg",
+        "post_to": "Publicera inlägg till",
+        "text_hint": "Tryck här för att göra ett inlägg."
+    },
+    "notifications": {
+        "none": "Inga notifikationer.",
+        "new_follower": "följde dig!"
+    },
+    "activity_feed": {
+        "empty": "Det är tomt här. Försök att följa någon!"
+    },
+    "messages": {
+        "coming_soon": "Meddelanden är inte redo ännu. Kom tillbaks senare!"
+    }
+}

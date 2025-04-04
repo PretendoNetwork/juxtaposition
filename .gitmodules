@@ -1,6 +1,0 @@
-[submodule "juxt-web"]
-	path = juxt-web
-	url = https://github.com/PretendoNetwork/juxt-web
-[submodule "olv-api"]
-	path = olv-api
-	url = https://github.com/PretendoNetwork/olv-api

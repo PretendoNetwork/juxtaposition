@@ -1,0 +1,20 @@
+{
+    "language": "中文",
+    "global": {
+        "user_page": "用戶頁面",
+        "exit": "退出",
+        "activity_feed": "活動提要",
+        "messages": "通知",
+        "notifications": "通知",
+        "communities": "社區",
+        "go_back": "返回",
+        "yeahs": "同意",
+        "back": "返回",
+        "more": "加載更多帖子",
+        "private": "私人",
+        "next": "繼續",
+        "no_posts": "沒有帖子",
+        "close": "關閉",
+        "save": "保存"
+    }
+}

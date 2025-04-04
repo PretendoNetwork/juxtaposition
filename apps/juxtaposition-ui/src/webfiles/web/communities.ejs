@@ -1,0 +1,37 @@
+<html>
+<head>
+    <%- include('partials/head'); %>
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
+    <%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
+    <div id="toast"></div>
+    <div id="wrapper">
+        <h3 class="communities-header"><%= lang.all_communities.popular_places %></h3>
+        <div id="popular" class="communities-wrapper">
+            <% for(var i = 0; i < popularCommunities.length; i++) {%>
+            <a class="community-list-wrapper" href="/titles/<%= popularCommunities[i].olive_community_id %>/new">
+                <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= popularCommunities[i].olive_community_id %>/128.png">
+                <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
+                <h4 class="community-list-followers"><%= popularCommunities[i].followers %> followers</h4>
+            </a>
+            <% } %>
+        </div>
+        <h3 class="communities-header"><%= lang.all_communities.new_communities %></h3>
+        <div id="new" class="communities-wrapper">
+            <% for(var j = 0; j < newCommunities.length; j++) {%>
+                <a class="community-list-wrapper" href="/titles/<%= newCommunities[j].olive_community_id %>/new">
+                    <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= newCommunities[j].olive_community_id %>/128.png">
+                    <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
+                    <h4 class="community-list-followers"><%= newCommunities[j].followers %> followers</h4>
+                </a>
+            <% } %>
+        </div>
+    </div>
+    <div id="wrapper" class="bottom">
+        <button id="load-more-posts-button" data-offset="20" onclick="location.href='/titles/all'"><%= lang.all_communities.text %></button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+{
+    "language": "中文",
+    "global": {
+        "user_page": "用户页面",
+        "activity_feed": "活动提要",
+        "communities": "社区",
+        "messages": "通知",
+        "notifications": "通知",
+        "go_back": "返回",
+        "back": "返回",
+        "yeahs": "同意",
+        "more": "加载更多帖子",
+        "no_posts": "没有帖子",
+        "private": "私人",
+        "close": "关闭",
+        "save": "保存",
+        "exit": "退出",
+        "next": "继续"
+    },
+    "all_communities": {
+        "text": "所有社区",
+        "announcements": "公告",
+        "ann_string": "点击这里来查看最近的公告！",
+        "popular_places": "热门地点",
+        "new_communities": "新建社区",
+        "show_all": "显示全部",
+        "search": "搜索社区......"
+    },
+    "community": {
+        "follow": "关注社区",
+        "following": "正在关注",
+        "followers": "关注者",
+        "posts": "帖子",
+        "tags": "标签",
+        "recent": "最近的帖子",
+        "popular": "热门的帖子",
+        "verified": "已被审核的帖子",
+        "new": "新建帖子"
+    },
+    "user_page": {
+        "country": "国家",
+        "birthday": "生日",
+        "game_experience": "游戏经验",
+        "posts": "帖子",
+        "friends": "好友",
+        "following": "正在关注",
+        "followers": "关注者",
+        "follow_user": "关注",
+        "following_user": "正在关注",
+        "befriend": "添加好友",
+        "pending": "正在审核",
+        "unfriend": "删除好友",
+        "no_friends": "没有好友",
+        "no_following": "不在关注任何人",
+        "no_followers": "没有关注者"
+    },
+    "user_settings": {
+        "profile_settings": "用户设置",
+        "show_country": "在名牌上显示国家",
+        "show_birthday": "在名牌上显示生日",
+        "show_game": "在名牌上显示游戏经验",
+        "show_comment": "在名牌上显示评论",
+        "profile_comment": "用户评论",
+        "swearing": "名牌评论不能包含明确的语言。"
+    },
+    "activity_feed": {
+        "empty": "这里是空的。尝试关注某人！"
+    },
+    "notifications": {
+        "none": "无通知。",
+        "new_follower": "关注了你！"
+    },
+    "new_post": {
+        "new_post_text": "新建帖子",
+        "post_to": "发布到",
+        "text_hint": "点击此处发布帖子。",
+        "swearing": "帖子不能包含明确的语言。"
+    },
+    "messages": {
+        "coming_soon": "消息尚未准备好。稍后检查！"
+    },
+    "setup": {
+        "welcome": "欢迎来到Juxtaposition！",
+        "welcome_text": "Juxt 是一个游戏社区，它使用 Mii 将来自世界各地的人们联接起来。使用 Juxt 分享您的游戏体验并结识来自世界各地的人们。",
+        "beta": "测试版免责声明",
+        "beta_text": {
+            "first": "您即将试用 Juxt 的第一个公开测试版。这意味着很多事情还在处理，很多事情随时可能发生变化。",
+            "second": "这可能包括在结束时或测试期间彻底擦除数据库。",
+            "third": "本网站、其软件及其上的所有内容均按“原样”和“可用”提供。 Pretendo Network 不就网站、其软件或其任何内容的适用性或可用性提供任何明示或暗示的保证。"
+        },
+        "info": "什么是 Juxtaposition？",
+        "info_text": "Juxt 是一个用户驱动的游戏社区，您可以与其他来自世界各地的人互动。\n                您可以在游戏社区中撰写或绘制帖子，或直接向您的朋友发送消息。",
+        "rules": "Juxt 的规则",
+        "rules_text": {
+            "first": "以下是使 Juxt 成为每个人的有趣和愉快体验的指南。 Juxt 行为准则包含详细信息，因此请仔细阅读。",
+            "second": "帖子可以在世界各地查看",
+            "third": "Juxt 包含许多游戏社区，来自世界各地的人们可以在这里分享他们的想法。当您在社区中发帖时，请记住每个人都可以看到它，因此请以每个人都喜欢的方式表达自己。使用常识，并在发帖前三思而后行。 Juxt 是一项也可以从网络访问的服务，因此请记住，不使用 Juxt 的人也可能会看到您的帖子。您对朋友的帖子发表的任何评论不仅会被您的朋友看到，也会被世界各地的人看到。",
+            "fourth": "尊重他人",
+            "fifth": "为了让 Juxt 成为每个人都喜欢的地方，我们要求您体谅其他用户。不要发布任何冒犯性的内容，帮助我们保持 Juxt 的愉快体验。",
+            "sixth": "不要发布您的或他人的个人信息",
+            "seventh": "在 Juxt 中认识某人与在现实生活中认识不同。永远不要与 Juxt 上的任何人分享您的电子邮件地址、家庭住址、工作或学校名称或其他个人信息，也不要分享任何其他人的信息。此外，如果您在 Juxt 遇到的某个人邀请您在现实世界中与他或她见面，不要接受。 Juxt 是一个在线社区，不应用于安排现实世界的聚会。",
+            "eighth": "不要发剧透",
+            "ninth": "有些人来到 Juxt 是为了寻找游戏的提示和技巧，而另一些人则想自己发现游戏的秘密。揭示游戏秘密或其故事的帖子都被称为“剧透”。如果发布的游戏内容可能会剧透，请务必在发送帖子前勾选“剧透”框。这样，不想被剧透的人就不会看到你的帖子。",
+            "tenth": "违反行为准则",
+            "eleventh": "我们的目标是让 Juxt 对每个人都充满乐趣。如果有人违反 Juxt 的行为准则，我们将采取措施，包括阻止违规用户或硬件。",
+            "twelfth": "你玩了那个游戏吗？",
+            "thirteenth": "如果您在社区中发布关于您玩过的游戏的帖子，您的帖子将带有一个图标，表明您已经玩过该游戏。"
+        },
+        "experience": "游戏经验",
+        "experience_text": {
+            "info": "告诉我们您如何描述您的游戏体验水平。您可以稍后更改此设置。",
+            "beginner": "新手",
+            "intermediate": "中等",
+            "expert": "高级"
+        },
+        "google": "谷歌 Analytics",
+        "google_text": "Juxtaposition 使用 谷歌 Analytics 来跟踪用户如何使用我们的服务。收集的数据包括但不限于访问时间、访问的页面以及在网站上花费的时间。此数据不会以任何方式附加到您身上，也不会被我们或谷歌用于广告。",
+        "ready": "开始使用 Juxt",
+        "ready_text": "首先看一看一些社区，看看大家都在发布什么。借此机会熟悉 Juxt。一路上你可能会有新发现！",
+        "done": "在 Juxt 玩得开心！",
+        "done_button": "我们走吧！",
+        "guest": "访客模式",
+        "guest_text": "我们目前无法验证您的帐户，这可能意味着您目前正在使用 任天堂 Network 帐户登录。您仍然可以浏览 Juxt，但您将无发评论。在您使用 Pretendo Network 帐户登录之前，您可以发布或创建自己的帖子。有关更多信息，请查看 Discord。",
+        "guest_button": "同意"
+    }
+}

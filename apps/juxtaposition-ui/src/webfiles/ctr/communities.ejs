@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: lang.global.communities }); %>
+<body>
+<div id="body">
+    <header id="header" class="buttons">
+        <h1 id="page-title" class=""><%= lang.global.communities %></h1>
+        <a id="header-communities-button" class="right" href="/titles/all" data-pjax="#body"><%= lang.all_communities.text %></a>
+        <!--<a id="header-communities-button" class="left" href="#" data-pjax="#body" onclick="testOffline();">Test Offline Post</a>-->
+    </header>
+    <div class="body-content">
+        <div class="communities-list">
+            <div class="headline">
+                <h2><%= lang.all_communities.popular_places %></h2>
+            </div>
+            <ul class="list-content-with-icon-column" id="community-new-content">
+                <% for(var i = 0; i < popularCommunities.length; i++) {%>
+                    <% var communityID = popularCommunities[i].olive_community_id; %>
+                    <li id="<%=communityID%>">
+                        <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button">
+                        <span class="icon-container"><img src="<%= cdnURL %>/icons/<%=communityID%>/64.png" class="icon" alt=""></span>
+                        <div class="body">
+                            <div class="body-content">
+                                <span class="community-name title"><%= popularCommunities[i].name %></span>
+                                <br>
+                                <span class="text"><%= popularCommunities[i].followers %> <%= lang.community.followers %></span>
+                            </div>
+                        </div>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+            <div class="headline headline-green">
+                <h2><%= lang.all_communities.new_communities %></h2>
+            </div>
+            <ul class="list-content-with-icon-column" id="community-top-content">
+                <% for(var j = 0; j < newCommunities.length; j++) {%>
+                    <% var communityID = newCommunities[j].olive_community_id; %>
+                    <li id="<%=communityID%>">
+                        <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button">
+                        <span class="icon-container"><img src="<%= cdnURL %>/icons/<%=communityID%>/64.png" class="icon" alt=""></span>
+                        <div class="body">
+                            <div class="body-content">
+                                <span class="community-name title"><%= newCommunities[j].name %></span>
+                                <br>
+                                <span class="text"><%= newCommunities[j].followers %> <%= lang.community.followers %></span>
+                            </div>
+                        </div>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<body onload="stopLoading();">
+</html>

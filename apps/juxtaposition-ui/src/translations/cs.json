@@ -1,0 +1,126 @@
+{
+    "community": {
+        "following": "Sleduji",
+        "followers": "Sledující",
+        "tags": "Štítky",
+        "follow": "Sledovat komunitu",
+        "posts": "Příspěvky",
+        "recent": "Nedávné příspěvky",
+        "new": "Nový příspěvek",
+        "popular": "Populární příspěvky",
+        "verified": "Ověřené příspěvky"
+    },
+    "global": {
+        "user_page": "Uživatelská stránka",
+        "messages": "Zprávy",
+        "back": "Zpět",
+        "close": "Zavřít",
+        "notifications": "Upozornění",
+        "private": "Soukromé",
+        "next": "Další",
+        "save": "Uložit",
+        "communities": "Komunity",
+        "go_back": "Jít zpět",
+        "no_posts": "Žádné příspěvky",
+        "more": "Načíst další příspěvky",
+        "activity_feed": "Přehled aktivity",
+        "yeahs": "Yeahy",
+        "exit": "Konec"
+    },
+    "all_communities": {
+        "show_all": "Zobrazit vše",
+        "text": "Všechny komunity",
+        "search": "Vyhledat komunitu...",
+        "new_communities": "Nové komunity",
+        "announcements": "Oznámení",
+        "ann_string": "Klikněte zde pro zobrazení nedávných oznámení!",
+        "popular_places": "Populární místa"
+    },
+    "user_page": {
+        "birthday": "Narozeniny",
+        "country": "Země",
+        "posts": "Příspěvky",
+        "friends": "Přátelé",
+        "follow_user": "Sledovat",
+        "no_friends": "Žádní přátelé",
+        "no_following": "Nikoho nesleduje",
+        "game_experience": "Zkušenost s hrami",
+        "no_followers": "Žádní sledující",
+        "befriend": "Spřátelit se",
+        "following_user": "Sleduji",
+        "pending": "Nevyřízené",
+        "followers": "Sledující",
+        "unfriend": "Odebrat z přátel",
+        "following": "Sleduji"
+    },
+    "user_settings": {
+        "profile_settings": "Nastavení profilu",
+        "show_birthday": "Zobrazit na profilu narozeniny",
+        "show_game": "Zobrazit na profilu zkušenost s hrami",
+        "show_comment": "Zobrazit na profilu komentář",
+        "profile_comment": "Komentář profilu",
+        "swearing": "Komentář profilu nesmí obsahovat nevhodné výrazy.",
+        "show_country": "Zobrazit na profilu zemi"
+    },
+    "language": "Čeština",
+    "notifications": {
+        "new_follower": "vás začal(a) sledovat!",
+        "none": "Žádná upozornění."
+    },
+    "new_post": {
+        "new_post_text": "Nový příspěvek",
+        "swearing": "Příspěvky nesmí obsahovat nevhodné výrazy.",
+        "text_hint": "Klikněte zde pro vytvoření příspěvku.",
+        "post_to": "Přispět do"
+    },
+    "setup": {
+        "rules_text": {
+            "eleventh": "Naším cílem je udržovat Juxt zábavným pro všechny. V případě, že někdo pravidla poruší, provedeme odpovídající opatření, včetně blokování daného uživatele nebo konzole.",
+            "tenth": "Porušení Pravidel",
+            "third": "Juxt je domovem mnohých komunit, ve kterých můžou lidé z celého světa sdílet své myšlenky. Až budete přidávat příspěvky, pamatujte, že je může vidět každý. Vyjadřujte se proto způsobem, který bude vyhovovat všem. Mějte selský rozum a rozmyslete si, co napíšete. Služba Juxt je též přístupná z internetu, mějte proto na paměti, že Vaše příspěvky můžou vidět i lidé, kteří Juxt nepoužívají. Stejně tak komentáře, které odešlete pod příspěvky přátel, můžou vidět nejen Vaši přátelé, ale i lidé z celého světa. Snažte se toto udržet v paměti.",
+            "thirteenth": "Pokud přispíváte do komunity o hře, kterou jste hrál(a), Vaše příspěvky budou mít ikonku, která toto bude připomínat.",
+            "fifth": "Aby byl Juxt zábavným místem pro každého, žádáme Vás, abyste byl(a) ohleduplná k ostatním uživatelům. Pomozte nám dělat z Juxtu příjemné místo tím, že nebudete přidávat nevhodný nebo urážlivý obsah.",
+            "ninth": "Někteří lidé na Juxtu hledají tipy a triky o hrách, ale jiní zas chtějí objevit všechna tajemství her po svém. Příspěvky, které prozrazují příběh nebo tajemství her nazýváme \"spoilery\". Pokud zveřejňujete něco, co by se dalo považovat za spoiler, ujistěte se, že jste zaškrtl(a) pole Spoiler, než příspěvek odešlete. Lidem, kteří nechtějí spoilery vidět, se tak nezobrazí.",
+            "fourth": "Buďte na sebe milí",
+            "second": "Příspěvky můžou být zobrazeny po celém světě",
+            "sixth": "Nezveřejňujte osobní informace — Vaše i jiných",
+            "first": "Následující pravidla jsou důležitými pokyny, které z Juxtu dělají zábavným a příjemným místem pro každého. Pravidla Juxtu obsahují detailní informace, přečtěte si je, prosím, pozorně.",
+            "eighth": "Dejte pozor na spoilery",
+            "seventh": "Pamatujte, že znát někoho na Juxtu není to samé, jako je znát v reálném světě. Nikdy na Juxtu nesdílejte e-mailovou adresu, bydliště, jméno pracoviště, školy nebo jiné osobní údaje o Vás nebo jiných lidech. Dále také nepříjímejte pozvánky ke schůzkám v reálném světě. Juxt je online komunita a neměla by být používána k plánování schůzek v reálném světě.",
+            "twelfth": "Hrál(a) jste tuto hru?"
+        },
+        "beta_text": {
+            "third": "Webová stránka, její software a obsah na ní jsou poskytovány formou \"tak, jak jsou dodány\" a \"tak, jak jsou k dispozici\". Pretendo Network neposkytuje žádnou záruku, jak expresní tak implikovanou, k vhodnosti a použitelnosti stránky, jejího softwaru a jakéhokoliv obsahu.",
+            "second": "Toto může zahrnovat smazání vzniklého obsahu na konci nebo v průběhu bety.",
+            "first": "Chystáte se vyzkoušet první veřejnou betu Juxtu. To znamená, že mnohé je stále ve hvězdách a mnohé se může kdykoli změnit."
+        },
+        "experience_text": {
+            "expert": "Expert",
+            "info": "Sdělte nám, prosím, jak byste popsal(a) Vaši zkušenost s hraním. Toto nastavení můžete změnit později.",
+            "intermediate": "Pokročilý",
+            "beginner": "Začátečník"
+        },
+        "guest_button": "Rozumím",
+        "done_button": "Jdeme na to!",
+        "guest": "Režim hosta",
+        "ready": "Jste připraven(a) začít s Juxtem",
+        "guest_text": "Váš účet v tuto chvíli nemůžeme ověřit, což nejspíš znamená, že jste přihlášen(a) účtem Nintendo Network. Stále můžete prohlížet Juxt, ale nebudte moct Yeah!ovat příspěvky nebo přidávat své vlastní, dokud se nepřihlásíte s účtem Pretendo Network. Pro více informací nahlédněte do Discord serveru.",
+        "experience": "Zkušenost s hrami",
+        "google": "Google Analytics",
+        "rules": "Pravidla Juxtu",
+        "welcome_text": "Juxt je herní komunita, která propojuje lidi z celého světa prostřednictvím Mii postav. Použijte Juxt pro sdílení Vašich herních zážitků a poznejte lidi z celého světa.",
+        "google_text": "Služba Juxtaposition používá Google Analytics, aby sledovala, jak ji lidé používají. Tato data zahrnují, ale nejsou omezena na: čas přístupu, navštívené stránky a čas strávený na síti. Tato data nejsou spojena s Vaší identitou a nejsou používána Googlem ani námi pro účely reklamy.",
+        "info": "Co je Juxtaposition?",
+        "info_text": "Juxt je uživateli vedená herní komunita, ve které můžete interagovat s lidmi\n                po celém světě. Můžete psát nebo kreslit příspěvky v herních komunitách, nebo posílat zprávy přímo Vaším přátelům.",
+        "ready_text": "Nejdříve se mrkněte na nějaké komunity a zjistěte, o čem si píší lidé z celého světa. Použijte tuto příležitost, abyste se s Juxtem seznámil(a). Možná mezitím objevíte něco nového!",
+        "done": "Užijte si Juxt!",
+        "beta": "Odmítnutí odpovědnosti za Beta verzi",
+        "welcome": "Vítejte v Juxtaposition!"
+    },
+    "activity_feed": {
+        "empty": "Je tu prázdno. Zkuste někoho sledovat!"
+    },
+    "messages": {
+        "coming_soon": "Zprávy zatím nejsou připraveny. Vraťte se jindy!"
+    }
+}

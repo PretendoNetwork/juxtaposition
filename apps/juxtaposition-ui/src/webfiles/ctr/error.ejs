@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: 'Error: ' + code }); %>
+<body>
+<div id="body">
+    <header id="header" class="">
+        <h1 id="page-title" class="">Error <%= code %>: <%= message %></h1>
+    </header>
+    <div class="body-content tab2-content" id="community-post-list">
+        <p>Whoops! Looks like we couldn't find the page you're looking for.</p>
+        <p>Double-check your link or try again later</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<ul class="list-content-with-icon-column arrow-list" id="news-list-content">
+<%if(!bundle.notifications) {%><li><p><%= lang.notifications.none %></p></li><%}%>
+<%if(bundle.notifications){%>
+<% for(var notification of bundle.notifications) {%>
+	<li>
+    <% if(notification.type === 'follow') {%>
+        <a href="/users/<%= notification.objectID %>" data-pjax="#body" class="icon-container notify">
+            <img src="<%= cdnURL %>/mii/<%= notification.objectID %>/normal_face.png" class="icon">
+        </a>
+        <div class="body">
+            <% if(notification.users.length === 1) {%>
+                <p class=""><span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>
+                    <a href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></a>
+                    <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+                </p>
+            <%} else if(notification.users.length === 2) {%>
+                <p class="">
+                    <span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>
+                    <span>and <span class="nick-name"><%= bundle.userMap.get(notification.users[0].user) %></span></span>
+                    <a href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></a>
+                    <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+                </p>
+            <%} else if(notification.users.length > 2) {%>
+                <p class="">
+                    <span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>,
+                    <span class="nick-name"><%= bundle.userMap.get(notification.users[0].user) %></span>,
+                    <span>and <span class="nick-name"><%= notification.users.length - 2%> other(s)</span></span>
+                    <a href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></a>
+                    <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+                </p>
+            <%}%>
+        </div>
+    <%} else if (notification.type === 'notice') {%>
+		<a href="<%= notification.link %>" data-pjax="#body" class="icon-container notify">
+			<img src="<%= notification.image %>" class="icon">
+		</a>
+		<div class="body">
+			<a class="body" href="<%= notification.link %>">
+				<p class="" style="color: black">
+					<span class=""><%= notification.text %></span>
+					<span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+				</p>
+			</a>
+		</div>
+	<%}%>
+	</li>
+<%}%>
+<%}%>
+</ul>

@@ -1,0 +1,126 @@
+{
+    "global": {
+        "back": "Atgal",
+        "notifications": "Pranešimai",
+        "communities": "Bendruomenės",
+        "messages": "Žinutės",
+        "go_back": "Sugryšti",
+        "exit": "Išeiti",
+        "user_page": "Vartotojo puslapis",
+        "more": "Užkrauti daugiau įkelimų",
+        "no_posts": "Nėra įkelimų",
+        "close": "Uždaryti",
+        "save": "Išsaugoti",
+        "activity_feed": "Įrašų puslapis",
+        "private": "Privati",
+        "yeahs": "Patiktukai",
+        "next": "Toliau"
+    },
+    "language": "Lietuvių",
+    "all_communities": {
+        "popular_places": "Populiarios vietos",
+        "new_communities": "Naujos bendruomenės",
+        "show_all": "Rodyti viską",
+        "search": "Ieškoti bendruomenių...",
+        "announcements": "Svarbūs pranešimai",
+        "ann_string": "Spausk čia kad pamatytum naujausius svarbiausius pranešimus!",
+        "text": "Visos bendruomenės"
+    },
+    "community": {
+        "follow": "Sekti bendruomenę",
+        "following": "Sekama",
+        "followers": "Sekėjai",
+        "posts": "Įkėlimai",
+        "tags": "Žymės",
+        "popular": "Populiarus įkelimai",
+        "new": "Naujas įkelimas",
+        "recent": "Naujausi įkelimai",
+        "verified": "Verifikuoti įkelimai"
+    },
+    "user_page": {
+        "country": "Šalis",
+        "birthday": "Gimimo data",
+        "game_experience": "Žadimo Patirtis",
+        "posts": "Įkelimai",
+        "following": "Sekama",
+        "followers": "Sekėjai",
+        "following_user": "Sekama",
+        "befriend": "Draugauti",
+        "pending": "Laukiama",
+        "unfriend": "Nebedraugauti",
+        "no_following": "Neseka nieko",
+        "no_followers": "Nėra sekėjų",
+        "follow_user": "Sekti",
+        "no_friends": "Nėra draugų",
+        "friends": "Draugai"
+    },
+    "messages": {
+        "coming_soon": "Žinutės dar neparuoštos. Prašome sugryšti vėliau!"
+    },
+    "user_settings": {
+        "profile_settings": "Profilio nustatymai",
+        "show_country": "Rodyti šalį profilyje",
+        "show_birthday": "Rodyt gimtadienį profilyje",
+        "show_comment": "Rodyt komentarus profilyje",
+        "profile_comment": "Profilo komentaras",
+        "swearing": "Profilio komentaras negali turėti nešvankios kalbos.",
+        "show_game": "Rodyti žaidimo patitį profilyje"
+    },
+    "activity_feed": {
+        "empty": "Dabar čia tuščia. Pabandyk pasekt kažką!"
+    },
+    "notifications": {
+        "new_follower": "Nuspredė tave sekti!",
+        "none": "Nėra pranešimų."
+    },
+    "new_post": {
+        "new_post_text": "Naujas įrašas",
+        "text_hint": "Žymėk čia kad sukurtum įrašą.",
+        "swearing": "Profilis negali turėti nešvankios kalbos.",
+        "post_to": "Įkelti į"
+    },
+    "setup": {
+        "welcome": "Sveiki atvykę į Juxtaposition!",
+        "beta": "Įspėjimas dėl Beta versijos",
+        "beta_text": {
+            "first": "Tu tuoj išbandysi pirmają Juxt beta versiją. Tai reiškia kad, dalykai gali pasikeisti betkuriuo metu kai tu naudojant Juxt.",
+            "second": "Tai gali apimti visišką databazės išvalymą betos pabaigoje arba perijodo metu.",
+            "third": "Svetainė, jos programinis turinys, ir visas čia rastas turinys yra paduota \"kaip yra\" ir \"kaip pasiekiama\".Pretendo tinklas nesuteikia jokių tiesioginių ar numanomų garantijų dėl svetainės, jos programinės įrangos ar bet kokio turinio tinkamumo ar tinkamumo naudoti."
+        },
+        "info": "Kas yra Juxtaposition?",
+        "rules_text": {
+            "first": "Toliau pateikiamos kelios svarbios gairės, kaip padaryti Juxt smagia ir malonia patirtimi visiems. Juxt elgesio kodekse pateikiama išsami informacija, todėl atidžiai perskaitykite jį.",
+            "second": "Įrašus galima matyti iš viso pasaulio",
+            "fourth": "Būk malonus vienas kitam",
+            "fifth": "Kad palaikytumėm Juxt faina vieta visiems, mes prašom kad būtumėte dėmesingi vienas kitam. Padėkite mums palaikyti Juxt Faina vieta nekeldama/s kažko nepadoraus arba įžulingo.",
+            "sixth": "Nekelkite asmeniškos informacijos. Nei savo nei kitų",
+            "eighth": "Nekelk atkskleidžiančio turinio",
+            "tenth": "Elgesio taisyklių pažeidimas",
+            "third": "Juxt turi daug žaidimo bendruomenių kur žmonės gali iš viso pasaulio pasidalinti savo mintis. Kai tu įkeli į bendruomėnę, prisimink kad visi gali tai matyti, tai prašome atsiduok save tokiu būtu, kad visi galėtų džiaugtis. Naudok logiką, ir pagalvok prieš įkeldamas. Juxt yra servisas kuris yra pasiekiamas su internetu, tai įsimink kad žmonės kurie nenaudoja Juxt gali irgi pamatyti tavo įrašus. Pridėsiu, bet kiokie komentarai palikti ant draugų įrašų bus matyti netik tavo draugų bet draugų iš viso pasaulio irgi. Prašome prisimint tai.",
+            "seventh": "Prisimink, žinodamas kažką Juxt'e nėra tas pats kas žinodamas kažką realybėje. Niekada nesidalink savo e-pašto adresu, namų adresu, darbo arba mokyklos pavadinimo,ar kitos asmeninės tapatybės atskleidimo informacijos su betkuo ant Juxt, ir niekada nesidalink kitų žmonių informacijos, Ir jei kažkas su kuriuo susitikai per Juxt pakviečia tave susitikti su tavim realybėje, nepriimk. Juxt yra internetinė bendruomenė ir jinai negali būti naudojama surengti susitikimus realybėje.",
+            "ninth": "Kai kurie žmonės ateina į Juxt kad surastų visokių patarimų ir triukų žaidimams, bet kiti nori patys atrasti žaidimo paslaptis. Įrašai kurie atskleidžia žaidimo paslaptis vadinasi \"atskleidžantis turinys.\" Jei tu keli kažką apie žaidmą kur gali kažką atskleisti, prašome užpilyti \"atskleidžiantis turinys'' dėžutę prieš įkeliant savo įrašą. Tokiu būdu, žmonės kurie nenori kad būtų atskleista kažkokia paslaptis nematytų tavo įrašo.",
+            "thirteenth": "Jei tu keli apie žaidimą kurį žaidei į bendruomenę, tai tavo įrašai turės ženklelį indikuojantį kad tu jį žaidei.",
+            "twelfth": "Ar tu žaidėi šį žaidimą?",
+            "eleventh": "Mūsų tikslas yra palaikyti Juxt faina ir malonią vietą visiems. Jeigu kažkas pažeidžia Juxt elgesio taisykles, mes imsimės atitinkamų veiksmų, ir kai kuriais atvėjais, užblokuojant vartotoją arba konsolę."
+        },
+        "google": "Google Analitika",
+        "guest": "Svečio režimas",
+        "guest_button": "Aš supratau",
+        "welcome_text": "Juxt yra žaidimų bendruomenė kuri sujungia žmones iš viso pasaulio naudodamasi Mii veikėjus. Naudok Juxt kad galėtum pasidalinti savo žaidimo patirtį ir susipažinti su žmonėms iš viso pasaulio.",
+        "rules": "Juxt Taisyklės",
+        "info_text": "Juxt yra naudotojų vedama žaidimo bendruomenė kur tu gali bendrauti su žmonėmis \n                po visą pasaulį. Tu gali rašyti arba nupiešti įrašus žaidimų bendruomėnėse arba nusiūsti žinutes tiesogiai savo draugams.",
+        "ready": "Pasiruošęs pradėti naudoti Juxt",
+        "guest_text": "Mes dabar neglim patikrinti tavęs, ir tai reiškia kad mes manom kad tu esi prisijungęs su Nintendo Tinklo paskyra. Tu galėsi keliauti pro Juxt bet tu negalėsi Taip!-inti įrašų arba įkelti savo įrašus iki kol neprisijungsi su savo Pretendo Tinklo paskyra. Daugiau informacijos bus mūsų Discord serveryje.",
+        "experience": "Žaidimo patirtis",
+        "experience_text": {
+            "info": "Prašome pasakyti kaip tu paaiškintum savo patirties lygį žaidimuose. Tu galėsi pakeisti šį nustatymą vėliau.",
+            "beginner": "Pradedantysis",
+            "intermediate": "Pažengęs",
+            "expert": "Ekspertas"
+        },
+        "google_text": "Juxtaposition naudoja Google analitikas kad stebėtų kaip vartotojai naudojasi mūsų servisu. Duomenys kurie yra surinkti apima bet neriboja: kada apsilankei, kokius puslapius lankei, ir laiko kiek praleidai svetainėje. Šita informacija jokais būdais nėra suasocijuojama su jumis, ir nei mes nei Google naudoja to reklaminiais tiklsais.",
+        "done": "Pasilinksmink Juxt'e!",
+        "done_button": "Eiti į Juxt!",
+        "ready_text": "Pirma peržvelk bendruomenes ir pažurėk apie ką žmonės iš viso pasaulio kelia. Pasinaudok šia galimybe kad susipažintum su Juxt. Tu gal būt atrasi kažką naujo pakelui!"
+    }
+}

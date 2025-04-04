@@ -1,0 +1,27 @@
+<ul class="list-content-with-icon-and-text arrow-list accounts" id="news-list-content">
+	<% bundle.followers.forEach(function(user) { %>
+		<%if(user.pid === 0) return %>
+		<li id="<%= user.pid %>">
+			<div class="hover">
+				<a href="/users/<%= user.pid %>" data-pjax="#body" class="icon-container notify">
+				<img src="<%= cdnURL %>/mii/<%= user.pid %>/normal_face.png" class="icon">
+			</a>
+			<a class="body" href="/users/<%= user.pid %>">
+				<span class="text"><span class="nick-name"><%= user.screen_name %></span>
+			</a>
+			</div>
+		</li>
+	<% }); %>
+	<% bundle.communities.forEach(function(community) { %>
+		<li id="<%= community %>">
+			<div class="hover">
+				<a href="/titles/<%= community %>/new" data-pjax="#body" class="icon-container notify">
+					<img src="<%= cdnURL %>/icons/<%= community %>/128.png" class="icon">
+				</a>
+				<a class="body" href="/titles/<%= community %>/new">
+					<span class="text"><span class="nick-name"><%= bundle.communityMap.get(community) %></span>
+				</a>
+			</div>
+		</li>
+	<% }); %>
+</ul>

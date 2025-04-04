@@ -1,0 +1,126 @@
+{
+    "setup": {
+        "beta_text": {
+            "first": "Olet aloittamassa Juxtin julkisen betaversion kokeilemisen. Tämä tarkoittaa sitä, että toiminnallisuudesta puuttuu yhä osia ja kerralla voi tapahtua suuriakin muutoksia.",
+            "second": "Tämä voi hyvin mahdollisesti sisältää tietokannan täyden tyhjentämisen betavaiheen aikana tai sen päätyttyä.",
+            "third": "Tämä sivusto, sen ohjelmistot ja kaikki sisältö tarjotaan \"sellaisenaan\" ja \"kulloisenkin saatavuuden\" perusteella. Pretendo Network ei myönnä minkäänlaisia takuita sivuston, ohjelmistojen tai sisällön sopivuudesta tai käyttökelpoisuudesta."
+        },
+        "info": "Mikä on Juxtaposition?",
+        "rules": "Juxtin säännöt",
+        "welcome": "Tervetuloa Juxtapositioniin!",
+        "beta": "Betatestin vastuuvapauslauseke",
+        "rules_text": {
+            "second": "Kirjoituksia voidaan lukea kaikkialta maailmasta",
+            "fourth": "Olkaa ystävällisiä toisillenne",
+            "sixth": "Älä paljasta kirjoituksissasi omaasi tai muiden henkilökohtaista tietoa",
+            "eighth": "Älä spoilaa",
+            "twelfth": "Oletko pelannut tätä peliä?",
+            "thirteenth": "Kun kirjoitat sellaisen pelin yhteisöön, jota olet pelannut, viesteissäsi on kuvake ilmaisemassa että olet pelannut kyseistä peliä.",
+            "third": "Juxtissa on monia peliyhteisöjä, joissa ihmiset ympäri maapallon voivat jakaa ajatuksiaan. Kirjoittaessasi yhteisöön, muista että kuka tahansa voi nähdä sen, joten ilmaise itseäsi siten, että kukaan ei pahastu. Käytä maalaisjärkeä ja ajattele ennen viestisi lähettämistä. Juxtin sisältö on myös julkisesti nähtävillä Internetissä, joten pidä mielessä, että viestisi ovat myös niiden nähtävillä, jotka eivät käytä Juxtia. Lisäksi kommenttisi ystäviesi kirjoituksiin ovat kaikkien nähtävissä, ei ainoastaan ystäviesi. Pidä tämä mielessä.",
+            "fifth": "Pitääksesi Juxtin mukavana paikka kaikille, pyydämme sinua huomioimaan toisten käyttäjien tunteet. Auta pitämään Juxt nautittavana välttämällä sopimattomia tai loukkaavia kirjoituksia.",
+            "seventh": "Muista, että Juxt-tuttavuus ei tarkoita tuttavuutta reaalielämässä. Älä jaa omaa tai kenenkään muun sähköposti- tai kotiosoitetta, työpaikan tai oppilaitoksen nimeä tai muuta tunnistetietoa kenellekään Juxtissa. Lisäksi jos joku Juxtissa tapaamasi pyytää tapaamista reaalielämässä, älä hyväksy pyyntöä. Juxt on verkkoyhteisö ja sitä ei pidä käyttää tapaamisten reaalielämässä sopimiseen.",
+            "tenth": "Käytössääntörikkomukset",
+            "ninth": "Jotkut tulevat Juxtiin etsien vihjeitä ja vinkkejä peleihin, mutta toiset haluavat löytää pelien salaisuudet itsenäisesti. Viestejä, jotka paljastavat pelin tai sen tarinan salaisuuksia kutsutaan \"spoilereiksi\". Jos olet kirjoittamassa pelistä jotain, joka voidaan kokea spoilerina, muista rastittaa \"Spoileri\" ruutu ennen viestin lähettämistä. Täten varmistat ettei spoilereita välttävät näe viestiäsi.",
+            "first": "Seuraavana tulee joitain tärkeitä sääntöjä, joilla Juxt pysyy hauskana ja nautinnollisena kokemuksena käyttäjilleen. Juxtin käytössäännöt (CoC) sisältää yksityiskohtaista informaatiota, joten luethan sen tarkasti.",
+            "eleventh": "Haluamme pitää Juxtin hauskana ja nautinnollisena kaikille. Jonkun rikkoessa Juxtin käytössääntöjä, puutumme asiaan, aina käyttäjätilin ja konsolin estämiseen palvelusta saakka."
+        },
+        "experience": "Kokeneisuus pelaajana",
+        "experience_text": {
+            "info": "Kuvaile miten näet kokeneisuutesi pelaajana. Voit muokata tätä asetusta myöhemmin.",
+            "intermediate": "Keskitasoinen",
+            "expert": "Ekspertti",
+            "beginner": "Aloittelija"
+        },
+        "google": "Googlen analytiikka",
+        "done": "Pidä hauskaa Juxtissa!",
+        "guest": "Vierastila",
+        "guest_button": "Ymmärrän",
+        "welcome_text": "Juxt on maailmanlaajuinen pelaajayhteisö joka käyttää Mii -hahmoja. Jaa pelikokemuksesi ja tapaa ihmisiä ympäri maapalloa Juxtin kautta.",
+        "ready": "Valmiina Juxtin käyttöön",
+        "guest_text": "Emme voi varmistaa tiliäsi tällä hetkellä, joka todennäköisesti tarkoittaa että olet kirjautuneena Nintendo Network:in tilillesi. Voit jatkaa Juxtin selailua, muttet voi tykätä viesteistä tai kirjoittaa omia ennen kuin olet kirjautunut Pretendo Network:in tilillesi. Lisätietoja saat Pretendon Discordista.",
+        "google_text": "Joxtaposition käyttää Googlen analytiikkaa seuratakseen miten käyttäjät käyttävät palveluamme. Kerätty tieto sisältää, mutta ei ole rajoitettu seuraaviin: käyntiaika, vieraillut sivut ja sivustolla vietetty aika. Googlen mukaan tietoa ei ole kytketty mitenkään sinuun ja sitä ei käytetä palvelumme tai Googlen tarjoamiin mainoksiin.",
+        "ready_text": "Aluksi tutustu joihinkin yhteisöihin katsoaksesi mitä ihmiset ympäri maailman keskustelevat. Käytä tätä hyväksesi tutustuaksesi Juxtiin paremmin. Saatat jopa löytää uusia asioita tätä kautta!",
+        "done_button": "Aloitetaan!",
+        "info_text": "Juxt on käyttäjälähtöinen pelaajayhteisö, jossa voit olla vuorovaikutuksessa ihmisten kanssa ympäri maailman.\nVoit kirjoittaa tai piirtää viestejä peliyhteisöihin tai lähettää viestejä suoraan ystävillesi."
+    },
+    "global": {
+        "activity_feed": "Aktiviteetit",
+        "user_page": "Oma sivu",
+        "communities": "Yhteisöt",
+        "back": "Takaisin",
+        "notifications": "Ilmoitukset",
+        "go_back": "Palaa takaisin",
+        "messages": "Yksityisviestit",
+        "more": "Lataa lisää viestejä",
+        "no_posts": "Ei viestejä",
+        "private": "Henkilökohtainen",
+        "yeahs": "Jeet",
+        "save": "Tallenna",
+        "exit": "Poistu",
+        "next": "Seuraava",
+        "close": "Sulje"
+    },
+    "language": "Suomi",
+    "all_communities": {
+        "text": "Kaikki yhteisöt",
+        "announcements": "Ilmoitukset",
+        "ann_string": "Klikkaa tästä nähdäksesi viimeisimmät ilmoitukset!",
+        "popular_places": "Suositut paikat",
+        "new_communities": "Uudet yhteisöt",
+        "show_all": "Näytä kaikki",
+        "search": "Etsi yhteisöjä..."
+    },
+    "user_page": {
+        "no_following": "Ei seurattavia",
+        "birthday": "Syntymäpäivä",
+        "game_experience": "Kokeneisuus pelaajana",
+        "friends": "Ystävät",
+        "following_user": "Seurattavat",
+        "followers": "Seuraajani",
+        "following": "Seuraamani",
+        "pending": "Odottaa",
+        "unfriend": "Poista ystävistä",
+        "no_friends": "Ei ystäviä",
+        "country": "Maa",
+        "follow_user": "Seuraa",
+        "befriend": "Pyydä ystäväksi",
+        "posts": "Aiheet",
+        "no_followers": "Ei seuraajia"
+    },
+    "community": {
+        "follow": "Seuraa yhteisöä",
+        "following": "Seurataan",
+        "tags": "Tagit",
+        "posts": "Viestit",
+        "recent": "Viimeisimmät aiheet",
+        "new": "Uusi aihe",
+        "followers": "Seuraajat",
+        "popular": "Suosituimmat aiheet",
+        "verified": "Todennetut aiheet"
+    },
+    "user_settings": {
+        "profile_settings": "Profiilin asetukset",
+        "show_country": "Näytä maa profiilissa",
+        "show_birthday": "Näytä syntymäpäivä profiilissa",
+        "show_game": "Näytä kokeneisuus palaajana profiilissa",
+        "profile_comment": "Profiilikommentti",
+        "show_comment": "Näytä kommentti profiilissa",
+        "swearing": "Profiilikommentti ei saa sisältää rivoa kielenkäyttöä."
+    },
+    "notifications": {
+        "none": "Ei ilmoituksia.",
+        "new_follower": "seuraa sinua!"
+    },
+    "activity_feed": {
+        "empty": "Tyhjää täynnä. Ala seuraamaan jotakuta!"
+    },
+    "new_post": {
+        "new_post_text": "Uusi aihe",
+        "post_to": "Vastaa",
+        "text_hint": "Napauta tästä aloittaaksesi kirjoittamisen.",
+        "swearing": "Kirjoitus ei saa sisältää rivoa kielenkäyttöä."
+    },
+    "messages": {
+        "coming_soon": "Viestitoiminto ei ole vielä valmiina. Kokeile pian uudelleen!"
+    }
+}
