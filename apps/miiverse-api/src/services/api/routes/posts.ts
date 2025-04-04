@@ -21,7 +21,7 @@ import {
 import { LOG_WARN } from '@/logger';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
-import { conf as config } from '@/config';
+import { config } from '@/config';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';

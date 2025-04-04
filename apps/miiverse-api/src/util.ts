@@ -8,7 +8,7 @@ import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { conf as config } from '@/config';
+import { config } from '@/config';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { ParsedQs } from 'qs';

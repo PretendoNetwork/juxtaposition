@@ -16,7 +16,7 @@ import { getConversationByUsers, getUserSettings, getFriendMessages } from '@/da
 import { LOG_WARN } from '@/logger';
 import { Post } from '@/models/post';
 import { Conversation } from '@/models/conversation';
-import { conf as config } from '@/config';
+import { config } from '@/config';
 import type { FormattedMessage } from '@/types/common/formatted-message';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
