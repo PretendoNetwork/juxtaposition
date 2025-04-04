@@ -8,7 +8,7 @@ const router = express.Router();
 const { POST } = require('../../../../models/post');
 const { COMMUNITY } = require('../../../../models/communities');
 const redis = require('../../../../redisCache');
-const { conf: config } = require('@/config');
+const { config } = require('@/config');
 
 router.get('/', async function (req, res) {
 	const newCommunities = JSON.parse(await redis.getValue('newCommunities')) || await database.getNewCommunities(6);

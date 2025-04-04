@@ -9,7 +9,7 @@ const { POST } = require('../../../../models/post');
 const { REPORT } = require('../../../../models/report');
 const upload = multer({ dest: 'uploads/' });
 const redis = require('../../../../redisCache');
-const { conf: config } = require('@/config');
+const { config } = require('@/config');
 const router = express.Router();
 
 const postLimit = rateLimit({

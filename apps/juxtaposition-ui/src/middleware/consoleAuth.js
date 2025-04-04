@@ -1,5 +1,5 @@
 const util = require('../util');
-const { conf: config } = require('@/config');
+const { config } = require('@/config');
 
 async function auth(request, response, next) {
 	// Get pid and fetch user data

@@ -19,7 +19,7 @@ const { NOTIFICATION } = require('./models/notifications');
 const logger = require('./logger');
 const { CONTENT } = require('./models/content');
 const { SETTINGS } = require('./models/settings');
-const { conf: config } = require('@/config');
+const { config } = require('@/config');
 const communityMap = new HashMap();
 const userMap = new HashMap();
 

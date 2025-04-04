@@ -9,13 +9,13 @@ const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
 const { REPORT } = require('./models/report');
 const logger = require('./logger');
-const { conf } = require('@/config');
+const { config } = require('@/config');
 
 let connection;
 mongoose.set('strictQuery', true);
 
 async function connect() {
-	await mongoose.connect(conf.mongoose.uri);
+	await mongoose.connect(config.mongoose.uri);
 	connection = mongoose.connection;
 	connection.on('connected', function () {
 		logger.info(`MongoDB connected ${this.name}`);

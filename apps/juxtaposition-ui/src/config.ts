@@ -60,7 +60,7 @@ const unmappedConfig = createConfigLoader()
 	.setFragmentKey('USE_PRESETS')
 	.load();
 
-export const conf = {
+export const config = {
 	http: {
 		port: unmappedConfig.httpPort
 	},
