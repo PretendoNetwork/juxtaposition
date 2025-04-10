@@ -36,7 +36,7 @@ export const fragments: Record<string, any> = {
 		},
 		aesKey: '123456',
 		mongoose: {
-			uri: 'mongodb://localhost:27017/miiverse'
+			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'
 		},
 		s3: {
 			endpoint: 'http://localstack:4567',
