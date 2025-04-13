@@ -43,6 +43,7 @@ USER node
 COPY package.json .
 
 COPY --from=dependencies ${app_dir}/node_modules ${app_dir}/node_modules
-COPY --from=build ${app_dir}/dist ${app_dir}/dist
+COPY --from=build ${app_dir}/tsconfig.json ${app_dir}/tsconfig.json
+COPY --from=build ${app_dir}/src ${app_dir}/src
 
-CMD ["node", "."]
+CMD ["npm", "run", "start"]
