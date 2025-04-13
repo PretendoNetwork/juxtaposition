@@ -34,7 +34,7 @@ RUN npm run build
 FROM base AS final
 ARG app_dir
 
-RUN mkdir -p ${app_dir}/src/logs && chown node:node ${app_dir}/src/logs \
+RUN mkdir -p ${app_dir}/logs && chown node:node ${app_dir}/logs \
     && mkdir -p ${app_dir}/uploads && chown node:node ${app_dir}/uploads
 
 ENV NODE_ENV=production
