@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 // schema is mapped later to nested object to keep env vars consistent with other projects
 const schema = z.object({
+	logFolder: z.string().default(`${__dirname}/../logs`),
 	httpPort: z.coerce.number().default(8080),
 	accountServerAddress: z.string(),
 	aesKey: z.string(),
@@ -52,6 +53,7 @@ const unmappedConfig = createConfigLoader()
 	.load();
 
 export const config = {
+	logFolder: unmappedConfig.logFolder,
 	http: {
 		port: unmappedConfig.httpPort
 	},

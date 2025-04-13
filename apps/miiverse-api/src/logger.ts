@@ -1,17 +1,17 @@
 import fs from 'fs-extra';
 import colors from 'colors';
+import { config } from './config';
 
 colors.enable();
 
-const root = process.env.PN_MIIVERSE_API_LOGGER_PATH ? process.env.PN_MIIVERSE_API_LOGGER_PATH : `${__dirname}/..`;
-fs.ensureDirSync(`${root}/logs`);
+fs.ensureDirSync(config.logFolder);
 
 const streams = {
-	latest: fs.createWriteStream(`${root}/logs/latest.log`),
-	success: fs.createWriteStream(`${root}/logs/success.log`),
-	error: fs.createWriteStream(`${root}/logs/error.log`),
-	warn: fs.createWriteStream(`${root}/logs/warn.log`),
-	info: fs.createWriteStream(`${root}/logs/info.log`)
+	latest: fs.createWriteStream(`${config.logFolder}/latest.log`),
+	success: fs.createWriteStream(`${config.logFolder}/success.log`),
+	error: fs.createWriteStream(`${config.logFolder}/error.log`),
+	warn: fs.createWriteStream(`${config.logFolder}/warn.log`),
+	info: fs.createWriteStream(`${config.logFolder}/info.log`)
 } as const;
 
 export function LOG_SUCCESS(input: string): void {

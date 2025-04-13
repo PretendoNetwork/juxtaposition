@@ -1,16 +1,16 @@
 const fs = require('fs-extra');
+const { config } = require('@/config');
 require('colors');
 
-const root = __dirname;
-fs.ensureDirSync(`${root}/../logs`);
+fs.ensureDirSync(config.logFolder);
 
 const streams = {
-	latest: fs.createWriteStream(`${root}/logs/latest.log`),
-	success: fs.createWriteStream(`${root}/logs/success.log`),
-	error: fs.createWriteStream(`${root}/logs/error.log`),
-	warn: fs.createWriteStream(`${root}/logs/warn.log`),
-	info: fs.createWriteStream(`${root}/logs/info.log`),
-	audit: fs.createWriteStream(`${root}/logs/audit.log`)
+	latest: fs.createWriteStream(`${config.logFolder}/latest.log`),
+	success: fs.createWriteStream(`${config.logFolder}/success.log`),
+	error: fs.createWriteStream(`${config.logFolder}/error.log`),
+	warn: fs.createWriteStream(`${config.logFolder}/warn.log`),
+	info: fs.createWriteStream(`${config.logFolder}/info.log`),
+	audit: fs.createWriteStream(`${config.logFolder}/audit.log`)
 };
 
 function success(input) {
