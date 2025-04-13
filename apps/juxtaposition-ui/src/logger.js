@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 require('colors');
 
 const root = __dirname;
-fs.ensureDirSync(`${root}/logs`);
+fs.ensureDirSync(`${root}/../logs`);
 
 const streams = {
 	latest: fs.createWriteStream(`${root}/logs/latest.log`),
