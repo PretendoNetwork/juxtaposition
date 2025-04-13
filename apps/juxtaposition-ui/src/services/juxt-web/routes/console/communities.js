@@ -109,13 +109,13 @@ router.get('/:communityID/:type', async function (req, res) {
 	let type;
 
 	if (req.params.type === 'hot') {
-		posts = await database.getNumberPopularCommunityPostsByID(community, config.post_limit);
+		posts = await database.getNumberPopularCommunityPostsByID(community, config.postLimit);
 		type = 1;
 	} else if (req.params.type === 'verified') {
-		posts = await database.getNumberVerifiedCommunityPostsByID(community, config.post_limit);
+		posts = await database.getNumberVerifiedCommunityPostsByID(community, config.postLimit);
 		type = 2;
 	} else {
-		posts = await database.getNewPostsByCommunity(community, config.post_limit);
+		posts = await database.getNewPostsByCommunity(community, config.postLimit);
 		type = 0;
 	}
 	const numPosts = await database.getTotalPostsByCommunity(community);
@@ -145,7 +145,7 @@ router.get('/:communityID/:type', async function (req, res) {
 		totalNumPosts: numPosts,
 		userSettings: userSettings,
 		userContent: userContent,
-		account_server: config.account_server_domain.slice(8),
+		account_server: config.accountServerAddress.slice(8),
 		pnid: req.user,
 		children,
 		type,
@@ -168,13 +168,13 @@ router.get('/:communityID/:type/more', async function (req, res) {
 	}
 	switch (req.params.type) {
 		case 'popular':
-			posts = await database.getNumberPopularCommunityPostsByID(community, config.post_limit, offset);
+			posts = await database.getNumberPopularCommunityPostsByID(community, config.postLimit, offset);
 			break;
 		case 'verified':
-			posts = await database.getNumberVerifiedCommunityPostsByID(community, config.post_limit, offset);
+			posts = await database.getNumberVerifiedCommunityPostsByID(community, config.postLimit, offset);
 			break;
 		default:
-			posts = await database.getNewPostsByCommunity(community, config.post_limit, offset);
+			posts = await database.getNewPostsByCommunity(community, config.postLimit, offset);
 			break;
 	}
 
@@ -193,7 +193,7 @@ router.get('/:communityID/:type/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8)
+			account_server: config.accountServerAddress.slice(8)
 		});
 	} else {
 		res.sendStatus(204);

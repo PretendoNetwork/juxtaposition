@@ -53,7 +53,7 @@ router.get('/me/settings', async function (req, res) {
 		communityMap: communityMap,
 		moment: moment,
 		userSettings: userSettings,
-		account_server: config.account_server_domain.slice(8)
+		account_server: config.accountServerAddress.slice(8)
 	});
 });
 
@@ -149,7 +149,7 @@ async function userPage(req, res, userID) {
 	const userSettings = await database.getUserSettings(userID);
 	let posts = JSON.parse(await redis.getValue(`${userID}-user_page_posts`));
 	if (!posts) {
-		posts = await database.getNumberUserPostsByID(userID, config.post_limit);
+		posts = await database.getNumberUserPostsByID(userID, config.postLimit);
 		await redis.setValue(`${userID}_user_page_posts`, JSON.stringify(posts), 60 * 60 * 1);
 	}
 
@@ -191,7 +191,7 @@ async function userPage(req, res, userID) {
 		userContent,
 		userSettings,
 		bundle,
-		account_server: config.account_server_domain.slice(8),
+		account_server: config.accountServerAddress.slice(8),
 		link,
 		friends,
 		parentUserContent,
@@ -220,7 +220,7 @@ async function userRelations(req, res, userID) {
 	let selection;
 
 	if (req.params.type === 'yeahs') {
-		const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).limit(config.post_limit);
+		const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).limit(config.postLimit);
 		const communityMap = await util.getCommunityHash();
 		const bundle = {
 			posts,
@@ -246,7 +246,7 @@ async function userRelations(req, res, userID) {
 				userContent,
 				userSettings,
 				bundle,
-				account_server: config.account_server_domain.slice(8),
+				account_server: config.accountServerAddress.slice(8),
 				link,
 				friends,
 				parentUserContent,
@@ -297,7 +297,7 @@ async function userRelations(req, res, userID) {
 		userContent,
 		userSettings,
 		bundle,
-		account_server: config.account_server_domain.slice(8),
+		account_server: config.accountServerAddress.slice(8),
 		link,
 		parentUserContent,
 		isActive: isDateInRange(userSettings.last_active, 10)
@@ -311,7 +311,7 @@ async function morePosts(req, res, userID) {
 	if (!offset) {
 		offset = 0;
 	}
-	const posts = await database.getUserPostsOffset(userID, config.post_limit, offset);
+	const posts = await database.getUserPostsOffset(userID, config.postLimit, offset);
 
 	const bundle = {
 		posts,
@@ -328,7 +328,7 @@ async function morePosts(req, res, userID) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8)
+			account_server: config.accountServerAddress.slice(8)
 		});
 	} else {
 		res.sendStatus(204);
@@ -342,7 +342,7 @@ async function moreYeahPosts(req, res, userID) {
 	if (!offset) {
 		offset = 0;
 	}
-	const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).skip(offset).limit(config.post_limit);
+	const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).skip(offset).limit(config.postLimit);
 
 	const bundle = {
 		posts: posts,
@@ -359,7 +359,7 @@ async function moreYeahPosts(req, res, userID) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8)
+			account_server: config.accountServerAddress.slice(8)
 		});
 	} else {
 		res.sendStatus(204);

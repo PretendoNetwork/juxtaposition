@@ -2,7 +2,7 @@ const db = require('../database');
 const { config } = require('../config');
 
 async function checkDiscovery(request, response, next) {
-	const discovery = await db.getEndPoint(config.server_environment);
+	const discovery = await db.getEndPoint(config.serverEnvironment);
 
 	if (!discovery || discovery.status !== 0) {
 		let message = '';
@@ -29,7 +29,7 @@ async function checkDiscovery(request, response, next) {
 	} else {
 		request.guest_access = discovery ? discovery.guest_access : false;
 		request.new_users = discovery ? discovery.new_users : false;
-		response.locals.cdnURL = config.CDN_domain;
+		response.locals.cdnURL = config.cdnDomain;
 	}
 
 	next();

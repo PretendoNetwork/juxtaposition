@@ -21,7 +21,7 @@ async function checkBan(request, response, next) {
 
 	// Check if user has access to the environment
 	let accessAllowed = false;
-	switch (config.server_environment) {
+	switch (config.serverEnvironment) {
 		case 'dev':
 			accessAllowed = request.developer;
 			break;

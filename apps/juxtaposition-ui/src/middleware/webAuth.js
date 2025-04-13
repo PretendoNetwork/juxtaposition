@@ -1,7 +1,7 @@
 const util = require('../util');
 const { config } = require('../config');
 
-const cookieDomain = config.http.cookie_domain || '.pretendo.network';
+const cookieDomain = config.http.cookieDomain;
 
 async function webAuth(request, response, next) {
 	// Get pid and fetch user data

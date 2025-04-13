@@ -23,11 +23,11 @@ const { config } = require('./config');
 const communityMap = new HashMap();
 const userMap = new HashMap();
 
-const { ip: friendsIP, port: friendsPort, api_key: friendsKey } = config.grpc.friends;
+const { host: friendsIP, port: friendsPort, apiKey: friendsKey } = config.grpc.friends;
 const friendsChannel = grpc.createChannel(`${friendsIP}:${friendsPort}`);
 const friendsClient = grpc.createClient(FriendsDefinition, friendsChannel);
 
-const { ip: apiIP, port: apiPort, api_key: apiKey } = config.grpc.account;
+const { host: apiIP, port: apiPort, apiKey: apiKey } = config.grpc.account;
 const apiChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
 const apiClient = grpc.createClient(APIDefinition, apiChannel);
 
@@ -130,7 +130,7 @@ function processServiceToken(encryptedToken) {
 }
 function decryptToken(token) {
 	if (!config.aesKey) {
-		throw new Error('Service token AES key not found. Set config.aes_key');
+		throw new Error('Service token AES key not found. Set config.aesKey');
 	}
 
 	const iv = Buffer.alloc(16);

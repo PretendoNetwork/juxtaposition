@@ -12,7 +12,7 @@ router.get('/', async function (req, res) {
 	if (!userContent) {
 		return res.redirect('/404');
 	}
-	const posts = await database.getNewsFeed(userContent, config.post_limit);
+	const posts = await database.getNewsFeed(userContent, config.postLimit);
 
 	const bundle = {
 		posts,
@@ -35,7 +35,7 @@ router.get('/', async function (req, res) {
 		userContent: userContent,
 		posts: posts,
 		communityMap: communityMap,
-		account_server: config.account_server_domain.slice(8),
+		account_server: config.accountServerAddress.slice(8),
 		bundle,
 		tab: 0,
 		template: 'posts_list',
@@ -53,7 +53,7 @@ router.get('/all', async function (req, res) {
 		parent: null,
 		message_to_pid: null,
 		removed: false
-	}).limit(config.post_limit).sort({ created_at: -1 });
+	}).limit(config.postLimit).sort({ created_at: -1 });
 
 	const bundle = {
 		posts,
@@ -76,7 +76,7 @@ router.get('/all', async function (req, res) {
 		userContent: userContent,
 		posts: posts,
 		communityMap: communityMap,
-		account_server: config.account_server_domain.slice(8),
+		account_server: config.accountServerAddress.slice(8),
 		bundle,
 		tab: 1,
 		template: 'posts_list'
@@ -90,7 +90,7 @@ router.get('/more', async function (req, res) {
 	if (!offset) {
 		offset = 0;
 	}
-	const posts = await database.getNewsFeedOffset(userContent, config.post_limit, offset);
+	const posts = await database.getNewsFeedOffset(userContent, config.postLimit, offset);
 
 	const bundle = {
 		posts,
@@ -107,7 +107,7 @@ router.get('/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8)
+			account_server: config.accountServerAddress.slice(8)
 		});
 	} else {
 		res.sendStatus(204);
@@ -126,7 +126,7 @@ router.get('/all/more', async function (req, res) {
 		parent: null,
 		message_to_pid: null,
 		removed: false
-	}).skip(offset).limit(config.post_limit).sort({ created_at: -1 });
+	}).skip(offset).limit(config.postLimit).sort({ created_at: -1 });
 
 	const bundle = {
 		posts,
@@ -135,7 +135,7 @@ router.get('/all/more', async function (req, res) {
 		communityMap,
 		userContent,
 		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
+		mii_image_CDN: config.miiImageCdn,
 		link: `/feed/more?offset=${offset + posts.length}&pjax=true`,
 		moderator: req.moderator
 	};
@@ -146,7 +146,7 @@ router.get('/all/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8)
+			account_server: config.accountServerAddress.slice(8)
 		});
 	} else {
 		res.sendStatus(204);
@@ -165,7 +165,7 @@ router.get('/all/more', async function (req, res) {
 		parent: null,
 		message_to_pid: null,
 		removed: false
-	}).skip(offset).limit(config.post_limit).sort({ created_at: -1 });
+	}).skip(offset).limit(config.postLimit).sort({ created_at: -1 });
 
 	const bundle = {
 		posts,
@@ -174,7 +174,7 @@ router.get('/all/more', async function (req, res) {
 		communityMap,
 		userContent,
 		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
+		mii_image_CDN: config.miiImageCdn,
 		link: `/feed/all/more?offset=${offset + posts.length}&pjax=true`,
 		moderator: req.moderator
 	};
@@ -185,10 +185,10 @@ router.get('/all/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
+			account_server: config.accountServerAddress.slice(8),
+			cdnURL: config.cdnDomain,
 			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
+			mii_image_CDN: config.miiImageCdn,
 			pid: req.pid,
 			moderator: req.moderator
 		});

@@ -5,6 +5,7 @@ const { z } = require('zod');
 const schema = z.object({
 	logFolder: z.string().default(`${__dirname}/../logs`),
 	httpPort: z.coerce.number().default(8080),
+	httpCookieDomain: z.string().default('.pretendo.network'),
 	postLimit: z.coerce.number().default(10),
 	miiImageCdn: z.string(),
 	cdnDomain: z.string(),
@@ -64,7 +65,8 @@ const unmappedConfig = createConfigLoader()
 module.exports.config = {
 	logFolder: unmappedConfig.logFolder,
 	http: {
-		port: unmappedConfig.httpPort
+		port: unmappedConfig.httpPort,
+		cookieDomain: unmappedConfig.httpCookieDomain
 	},
 	accountServerAddress: unmappedConfig.accountServerAddress,
 	aesKey: unmappedConfig.aesKey,

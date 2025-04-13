@@ -36,7 +36,7 @@ router.get('/', async function (req, res) {
 		userContent: userContent,
 		posts: posts,
 		communityMap: communityMap,
-		account_server: config.account_server_domain.slice(8),
+		account_server: config.accountServerAddress.slice(8),
 		tab: 1,
 		bundle,
 		template: 'posts_list'
@@ -67,7 +67,7 @@ router.get('/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8)
+			account_server: config.accountServerAddress.slice(8)
 		});
 	} else {
 		res.sendStatus(204);

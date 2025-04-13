@@ -85,7 +85,7 @@ router.get('/accounts/:pid', async function (req, res) {
 		return res.redirect('/404');
 	}
 	const userSettings = await database.getUserSettings(req.params.pid);
-	const posts = await database.getNumberUserPostsByID(req.params.pid, config.post_limit);
+	const posts = await database.getNumberUserPostsByID(req.params.pid, config.postLimit);
 	const communityMap = await util.getCommunityHash();
 
 	res.render(req.directory + '/moderate_user.ejs', {

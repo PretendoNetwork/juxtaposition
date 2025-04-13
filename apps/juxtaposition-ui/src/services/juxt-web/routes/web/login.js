@@ -4,7 +4,7 @@ const database = require('../../../../database');
 const util = require('../../../../util');
 const { config } = require('../../../../config');
 
-const cookieDomain = config.http.cookie_domain || '.pretendo.network';
+const cookieDomain = config.http.cookieDomain;
 
 router.get('/', async function (req, res) {
 	res.render(req.directory + '/login.ejs', { toast: null });
@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
 		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.' });
 	}
 
-	let discovery = await database.getEndPoint(config.server_environment);
+	let discovery = await database.getEndPoint(config.serverEnvironment);
 	if (!discovery) {
 		discovery = {
 			status: 5
