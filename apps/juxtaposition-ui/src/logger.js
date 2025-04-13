@@ -1,5 +1,5 @@
 const fs = require('fs-extra');
-const { config } = require('@/config');
+const { config } = require('./config');
 require('colors');
 
 fs.ensureDirSync(config.logFolder);

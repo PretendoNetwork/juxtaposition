@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const database = require('../../../../database');
 const util = require('../../../../util');
-const { config } = require('@/config');
+const { config } = require('../../../../config');
 
 const cookieDomain = config.http.cookie_domain || '.pretendo.network';
 

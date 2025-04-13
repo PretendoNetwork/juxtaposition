@@ -6,7 +6,7 @@ const util = require('../../../../util');
 const { POST } = require('../../../../models/post');
 const { SETTINGS } = require('../../../../models/settings');
 const redis = require('../../../../redisCache');
-const { config } = require('@/config');
+const { config } = require('../../../../config');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 

@@ -1,5 +1,5 @@
-import { createConfigLoader } from '@neato/config';
-import { z } from 'zod';
+const { createConfigLoader } = require('@neato/config');
+const { z } = require('zod');
 
 // schema is mapped later to nested object to keep env vars consistent with other projects
 const schema = z.object({
@@ -28,7 +28,7 @@ const schema = z.object({
 	redisPort: z.coerce.number().default(6379)
 });
 
-export const fragments: Record<string, any> = {
+module.exports.fragments = {
 	docker: {
 		http: {
 			cors: 'http://localhost:3000 http://localhost:5173',
@@ -57,11 +57,11 @@ const unmappedConfig = createConfigLoader()
 	.addFromFile('.env', { prefix: 'PN_JUXTAPOSITION_UI_' })
 	.addFromFile('config.json')
 	.addZodSchema(schema)
-	.addConfigFragments(fragments)
+	.addConfigFragments(module.exports.fragments)
 	.setFragmentKey('USE_PRESETS')
 	.load();
 
-export const config = {
+module.exports.config = {
 	logFolder: unmappedConfig.logFolder,
 	http: {
 		port: unmappedConfig.httpPort

@@ -9,7 +9,7 @@ const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
 const { REPORT } = require('./models/report');
 const logger = require('./logger');
-const { config } = require('@/config');
+const { config } = require('./config');
 
 let connection;
 mongoose.set('strictQuery', true);
