@@ -9,7 +9,13 @@
         "announcements": "da big cheese nws!!"
     },
     "community": {
-        "follow": "join kitteh klan"
+        "follow": "join kitteh klan",
+        "recent": "wecent p-posts",
+        "following": "Fowwowing",
+        "followers": "Fowwowers",
+        "popular": "Popuwaw P-posts",
+        "verified": "Vewwifiwed P-posts",
+        "new": "Nyew P-Post"
     },
     "global": {
         "communities": "kitteh klans",
@@ -28,5 +34,21 @@
         "notifications": "PINGS",
         "no_posts": "no kittehs, sad :("
     },
-    "language": "lolcat"
+    "language": "lolcat",
+    "user_page": {
+        "no_friends": "Nyo Fwiends",
+        "friends": "Fwends",
+        "posts": "P-posts",
+        "country": "Countwy",
+        "birthday": "Biwthday",
+        "game_experience": "G-G-Game Expewience",
+        "followers": "Fowwowers",
+        "following": "Fowwowing",
+        "follow_user": "Fowwow",
+        "following_user": "Fowwowing",
+        "befriend": "Befwiend",
+        "pending": "Pwending",
+        "unfriend": "Unfwiend",
+        "no_following": "Nyot Fowwowing Anyonye"
+    }
 }
