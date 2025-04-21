@@ -31,25 +31,17 @@ const schema = z.object({
 
 module.exports.fragments = {
 	docker: {
-		http: {
-			cors: 'http://localhost:3000 http://localhost:5173',
-			frontendBaseUrl: 'http://localhost:5173/',
-			backendBaseUrl: 'http://localhost:8080/'
-		},
+		httpCors: 'http://localhost:3000 http://localhost:5173',
+		httpFrontendBaseUrl: 'http://localhost:5173/',
+		httpBackendBaseUrl: 'http://localhost:8080/',
 		aesKey: '123456',
-		mongoose: {
-			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'
-		},
-		s3: {
-			endpoint: 'http://localstack:4567',
-			key: 'xyz',
-			secret: 'xyz',
-			bucket: 'juxt',
-			region: 'us-east-1'
-		},
-		redis: {
-			host: 'localhost'
-		}
+		mongooseUri: 'mongodb://localhost:27017/miiverse?directConnection=true',
+		s3Endpoint: 'http://localstack:4567',
+		s3Key: 'xyz',
+		s3Secret: 'xyz',
+		s3Bucket: 'juxt',
+		s3Region: 'us-east-1',
+		redisHost: 'localhost'
 	}
 };
 
