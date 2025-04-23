@@ -1,7 +1,7 @@
 {
     "global": {
-        "user_page": "Page de l'utilisateur",
-        "activity_feed": "Flux d'activité",
+        "user_page": "Profil",
+        "activity_feed": "Fil d'activité",
         "communities": "Communautés",
         "messages": "Messages",
         "notifications": "Notifications",
