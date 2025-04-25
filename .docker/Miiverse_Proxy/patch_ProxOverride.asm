@@ -13,7 +13,10 @@ ProxHost:
 0x02165d08 = bla GetProxHost
 0x02165d18 = li r0, 8888 ; port number
 
-.origin = 0x1000be3d
+.origin = 0x1000bd28 ; http://.account.nintendo.net
+.string ".pretendo.cc"
+
+.origin = 0x1000be3d ; https://.nintendo.net
 .string ".pretendo.cc"
 
 [Miiverse_SSLPatch]
