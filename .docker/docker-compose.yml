@@ -28,23 +28,41 @@ services:
     volumes:
       - "mongo_data:/data/db"
       - "mongo_config:/data/configdb"
-  localstack:
-    image: localstack/localstack:latest
-    ports:
-      - "4567:4566"
-    volumes:
-      - ./create-buckets.sh:/etc/localstack/init/ready.d/init.sh
+  # mc alias set local http://localhost:9000 minioadmin minioadmin
+  # mc mb --ignore-existing local/miiverse
+  minio:
+    image: minio/minio
     environment:
-      - SERVICES=s3:4566
-      - HOSTNAME=localstack
-      - LOCALSTACK_HOST=localstack
-      - AWS_DEFAULT_REGION=us-east-1
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_DOMAIN: minio
+    command: server /data --console-address ":9001"
+    volumes:
+      minio_data:/data
+    ports:
+      - 127.0.0.1:9000:9000
+      - 127.0.0.1:9001:9001
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      retries: 3
+      timeout: 5s
     networks:
       default:
         aliases:
         # vhost-style bucket naming
-          - s3.localstack
-          - miiverse.s3.localstack
+          - miiverse.minio
+  minio-setup:
+    image: minio/mc
+    depends_on:
+      - minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_DOMAIN: minio
+      BUCKET: miiverse
+    volumes:
+      - './create-buckets.sh:/etc/minio/create-buckets.sh'
+    entrypoint: '/etc/minio/create-buckets.sh'
 
   proxy:
     image: mitmproxy/mitmproxy
@@ -66,11 +84,11 @@ services:
       PN_ACT_CONFIG_HTTP_PORT: 8000
       PN_ACT_CONFIG_GRPC_PORT: 8123
       PN_ACT_CONFIG_MONGO_CONNECTION_STRING: "mongodb://mongo:27017/account?directConnection=true"
-      PN_ACT_CONFIG_S3_ENDPOINT: "http://s3.localstack:4566"
+      PN_ACT_CONFIG_S3_ENDPOINT: "http://minio:9000"
       PN_ACT_CONFIG_S3_REGION: "us-east-1"
       PN_ACT_CONFIG_S3_BUCKET: "miiverse"
-      PN_ACT_CONFIG_S3_ACCESS_KEY: "xyz"
-      PN_ACT_CONFIG_S3_ACCESS_SECRET: "xyz"
+      PN_ACT_CONFIG_S3_ACCESS_KEY: "minioadmin"
+      PN_ACT_CONFIG_S3_ACCESS_SECRET: "minioadmin"
       PN_ACT_CONFIG_CDN_BASE_URL: "http://cdn.pretendo.cc/miiverse"
       PN_ACT_CONFIG_AES_KEY: "1234567812345678123456781234567812345678123456781234567812345678"
       PN_ACT_CONFIG_GRPC_MASTER_API_KEY_ACCOUNT: "12345678123456781234567812345678"
@@ -96,4 +114,5 @@ volumes:
   mongo_data:
   mongo_config:
   redis_data:
+  minio_data:
   

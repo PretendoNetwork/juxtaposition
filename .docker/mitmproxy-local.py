@@ -24,7 +24,7 @@ juxt_domains = [
     "ctr.olv.pretendo.cc",
 ]
 
-localstack_domains = [
+s3_domains = [
     "cdn.pretendo.cc",
 ]
 
@@ -48,9 +48,9 @@ def request(flow: http.HTTPFlow):
         flow.request.scheme = "http"
         flow.request.port = 5173
         flow.request.host_header = old
-    elif flow.request.pretty_host in localstack_domains:
+    elif flow.request.pretty_host in s3_domains:
         old = flow.request.host
-        flow.request.host = "localstack"
+        flow.request.host = "minio"
         flow.request.scheme = "http"
-        flow.request.port = 4566
-        flow.request.host_header = old
+        flow.request.port = 9000
+        #flow.request.host_header = old
