@@ -37,11 +37,63 @@ services:
     environment:
       - SERVICES=s3:4566
       - HOSTNAME=localstack
-      - HOSTNAME_EXTERNAL=localstack
-      - DEFAULT_REGION=us-east-1
+      - LOCALSTACK_HOST=localstack
       - AWS_DEFAULT_REGION=us-east-1
+    networks:
+      default:
+        aliases:
+        # vhost-style bucket naming
+          - s3.localstack
+          - miiverse.s3.localstack
+
+  proxy:
+    image: mitmproxy/mitmproxy
+    command: mitmweb --mode regular@8888 -s /data/mitmproxy-local.py -v --web-host 0.0.0.0 -k --set tls_version_client_min=UNBOUNDED --set tls_version_server_min=UNBOUNDED --set web_password=letmein
+    ports:
+      - 8888:8888
+      - 127.0.0.1:8081:8081
+    volumes:
+      - "./mitmproxy-local.py:/data/mitmproxy-local.py"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  account:
+    image: ghcr.io/pretendonetwork/account:sha-99aec60
+    ports:
+      - '8123:8123' # grpc
+    environment:
+      PN_ACT_CONFIG_REDIS_URL: redis://redis:6379
+      PN_ACT_CONFIG_HTTP_PORT: 8000
+      PN_ACT_CONFIG_GRPC_PORT: 8123
+      PN_ACT_CONFIG_MONGO_CONNECTION_STRING: "mongodb://mongo:27017/account?directConnection=true"
+      PN_ACT_CONFIG_S3_ENDPOINT: "http://s3.localstack:4566"
+      PN_ACT_CONFIG_S3_REGION: "us-east-1"
+      PN_ACT_CONFIG_S3_BUCKET: "miiverse"
+      PN_ACT_CONFIG_S3_ACCESS_KEY: "xyz"
+      PN_ACT_CONFIG_S3_ACCESS_SECRET: "xyz"
+      PN_ACT_CONFIG_CDN_BASE_URL: "http://cdn.pretendo.cc/miiverse"
+      PN_ACT_CONFIG_AES_KEY: "1234567812345678123456781234567812345678123456781234567812345678"
+      PN_ACT_CONFIG_GRPC_MASTER_API_KEY_ACCOUNT: "12345678123456781234567812345678"
+      PN_ACT_CONFIG_GRPC_MASTER_API_KEY_API: "12345678123456781234567812345678"
+  
+  friends:
+    image: ghcr.io/pretendonetwork/friends:sha-5560c1d
+    ports:
+      - '8124:8124' # grpc
+    environment:
+      PN_FRIENDS_CONFIG_DATABASE_URI: "postgres://todo@localhost"
+      PN_FRIENDS_CONFIG_AES_KEY: "1234567812345678123456781234567812345678123456781234567812345678"
+      PN_FRIENDS_CONFIG_GRPC_API_KEY: "12345678123456781234567812345678"
+      PN_FRIENDS_GRPC_SERVER_PORT: 8124
+      PN_FRIENDS_AUTHENTICATION_SERVER_PORT: 60000
+      PN_FRIENDS_SECURE_SERVER_HOST: "friends"
+      PN_FRIENDS_SECURE_SERVER_PORT: 60001
+      PN_FRIENDS_ACCOUNT_GRPC_HOST: "account"
+      PN_FRIENDS_ACCOUNT_GRPC_PORT: 8123
+      PN_FRIENDS_ACCOUNT_GRPC_API_KEY: "12345678123456781234567812345678"
 
 volumes:
   mongo_data:
   mongo_config:
   redis_data:
+  
