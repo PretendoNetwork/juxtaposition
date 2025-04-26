@@ -1,0 +1,6 @@
+[Definition]
+titleIds = 000500301001600A,000500301001610A,000500301001620A
+name = Proxy override
+path = "Miiverse/Proxy override"
+description = Forces Miiverse's proxy to localhost:8888.
+version = 7

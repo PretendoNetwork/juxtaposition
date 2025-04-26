@@ -27,13 +27,21 @@ export const fragments: Record<string, any> = {
 		httpCors: 'http://localhost:3000 http://localhost:5173',
 		httpFrontendBaseUrl: 'http://localhost:5173/',
 		httpBackendBaseUrl: 'http://localhost:8080/',
-		aesKey: '123456',
+		aesKey: '1234567812345678123456781234567812345678123456781234567812345678',
 		mongooseUri: 'mongodb://localhost:27017/miiverse?directConnection=true',
-		s3Endpoint: 'http://localstack:4567',
-		s3Key: 'xyz',
-		s3Secret: 'xyz',
-		s3Bucket: 'juxt',
-		s3Region: 'us-east-1'
+		s3Endpoint: 'http://localhost:9000',
+		s3Key: 'minioadmin',
+		s3Secret: 'minioadmin',
+		s3Bucket: 'miiverse',
+		s3Region: 'us-east-1',
+		accountServerAddress: 'account',
+		cdnUrl: 'http://cdn.pretendo.cc/miiverse',
+		grpcAccountHost: 'localhost',
+		grpcAccountPort: 8123,
+		grpcAccountApiKey: '12345678123456781234567812345678',
+		grpcFriendsHost: 'localhost',
+		grpcFriendsPort: 8124,
+		grpcFriendsApiKey: '12345678123456781234567812345678'
 	}
 };
 
