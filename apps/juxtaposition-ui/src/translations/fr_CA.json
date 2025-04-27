@@ -60,10 +60,10 @@
         "show_game": "Afficher mon expérience de joueur sur le profil",
         "show_comment": "Rendre visible le commentaire de mon profil",
         "profile_comment": "Commentaire du profil",
-        "swearing": "Commentaire de Profil Pouvoir Pas Contenir Langue Explicite."
+        "swearing": "Le commentaire du profil ne peut pas contenir de vocabulaire explicite."
     },
     "activity_feed": {
-        "empty": "Son Vide Ici. Essayer Suivants Quelqu'un!"
+        "empty": "C'est vide ici. Essaie de suivre quelqu'un!"
     },
     "notifications": {
         "none": "Aucune notification.",
@@ -73,32 +73,32 @@
         "new_post_text": "Nouvelle publication",
         "post_to": "Poster à",
         "text_hint": "Entrez ici le texte que vous allez publier.",
-        "swearing": "Poster Pouvoir Pas Contenir Langue Explicite."
+        "swearing": "La publication ne peut pas contenir du vocabulaire explicite."
     },
     "messages": {
         "coming_soon": "Les messages ne sont pas encore disponibles. Revenez bientôt!"
     },
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition!",
-        "welcome_text": "Juxt Est un Communauté de Jeux ça Relier Gens de Tout le Monde Utiliser Personnage Mii. Utiliser Juxt à Partager Ton Expérience de Jeux et Retrouver Gens de Tout le Monde.",
-        "beta": "Bêta Avertissement",
+        "welcome_text": "Juxt est une communauté de jeu qui rassemble du monde de partout à travers le monde en utilisant des personnages Mii. Utilisez Juxt pour partager votre expérience de jeu et rencontrer du monde à l'international.",
+        "beta": "Avertissement de version bêta",
         "beta_text": {
-            "first": "Tu es Tester la Premier public Bêta de Juxt. Ceci Signifier ça Beucoup est Encore au air, et ça Beucoup Pouvoir Changer à de Temps.",
-            "second": "Ceci Pouvoir et il se Peut Que Comprendre un Effacer total à le Conclusion ou Pendant le Période Bêta.",
-            "third": "Le site, son Logiciel et Tout Content Trouvé dans il es Fourni il un \"tel quel\" et \"tel disponible\" base. Le Pretendo Network Pouvoir pas Donner du Garantie, si Formel ou Impliquer, Aussi à le Convenir ou Convivialité de le site, et son Logiciel ou si de son Contenu."
+            "first": "Vous êtes sur le point d'essayer la première version bêta publique de Juxt. Ça veut dire que plusieurs choses sont encore en cours de développement et que tout peut changer à tout moment.",
+            "second": "Cela peut engendrer une suppression totale de la base de données pendant ou à la fin de la période bêta.",
+            "third": "Le site web, son logiciel et tout le contenu présent sont fournis comme tel et selon leur disponibilité. Le Pretendo Network ne fait aucune garantie, implicite ou explicite, quant à la pertinence ou au fonctionnement du site web, de son logiciel ou de son contenu."
         },
         "info": "Qu'est-ce que Juxtaposition?",
-        "info_text": "Juxt est un Utilisateur-Motivé Communauté où tu Pouvoir Interagir avec Gens\nPartout le Montrer. Tu Pouvoir écrire et Dessiner Poster dans Communauté de Jeux ou Envoyer Messages Directement à ton amis.",
+        "info_text": "Juxt est une communauté de jeu axée sur les utilisateurs où vous pouvez intéragir avec du monde de partout à travers le monde.\nVous pouvez écrire ou dessiner des publications dans des communautés de jeu ou envoyer des messages directement à vos amis.",
         "rules": "Règles de Juxt",
         "rules_text": {
-            "first": "Le suivant sommes quelques lignes directrices d'important pour fabrication de Juxt une expérience de sympa et plaisant pour tout le monde. Le Code de Conduite contenir informations détaillé, donc lire lui minutieusement merci.",
-            "second": "Posters Peut être Regardé à Travers le Monde",
-            "fourth": "Sois Gentil à Un Autre",
-            "fifth": "Afin de garder Juxt un endroit gentil pour tout le monde, nous demander que tu être prévenant à autre utilisateurs. Aider nous garder Juxt un expérience plaisant par poster pas n'importe quoi inapproprié ou offensant.",
-            "sixth": "Poster pas informations personnel—Votres ou Autres",
+            "first": "Les directives suivantes sont importantes pour faire de Juxt une expérience amusante et agréable pour tous. Le code de conduite de Juxt contient des informations détaillées, donc veuillez les lire attentivement.",
+            "second": "Vos publications peuvent être vues partout à travers le monde",
+            "fourth": "Soyez gentils avec les autres",
+            "fifth": "Afin que Juxt reste un endroit agréable pour tous, nous vous demandons d'être soucieux des autres utilisateurs. Aidez-nous à faire de Juxt une expérience agréable en ne publiant rien d'inapproprié ou d'offensif.",
+            "sixth": "Ne publiez pas d'informations personnelles — Qu'elles soit les vôtres ou celles des autres",
             "eighth": "Ne Poster pas spoilers",
             "tenth": "Violation du Code de Conduite",
-            "third": "Juxt contenir beaucoup communautés de jeux où gens de à travers le monde pouvoir partager leur idées. Quand tu poster dans le communauté, se souvenir de tout le monde pouvoir vois-le, exprimer donc vous dans les manière que tout le monde pouvoir apprécier. Utiliser bon sens, et penser avant de poster. Juxt est une service que est accessible dans l'internet, donc ne pas perdre de vue gens qui utiliser pas Juxt il se peut que voir ton posters. De plus, tous commentaire tu créer dans ton amis posters aller être voir seulement pas ton amis mais par gens de à travers le monde, aussi. s'il vous plaît ne pas oublier.",
+            "third": "Juxt héberge une panoplie de communautés de jeu dans lesquelles des personnes de partout sur la planète peuvent partager leurs idées. Lorsque vous publiez dans une communauté, souvenez-vous que tout le monde peut le voir, donc veuillez vous exprimer de façon convenable pour tout le monde. Prenez le temps de réfléchir et d'utiliser votre bon sens avant de publier quelque chose. Juxt est un service qui est aussi accessible en ligne, donc rappelez-vous que des personnes n'utilisant pas Juxt peuvent également voir vos publications. De plus, les commentaires que vous faites sur les publications de vos amis ne vont non seulement être vus par vos amis, mais également par des personnes du monde entier. Veuillez garder cela à l'esprit.",
             "seventh": "N'oubliez pas, connaître quelqu'un dans Juxt n'est pas la même chose aussi connaître dans le vraie vie. Jamais partager ton adresse e-mail, adresse de maison, nom de travail ou ecole, ou autre informations de identifier personnellement avec n'importe qui sur Juxt, et Jamais partager l'autre n'importe quis informations, de plus, si quelqu'un tu rencontrer dans Juxt inviter tu rencontrer lui ou elle dans le vraie vie, ne accepter pas. Juxt est un communauté en ligne et devoir pas utiliser à vraie vie se retrouver.",
             "ninth": "Quelques gens venir à Juxt recherche pour \"tips et tricks\" pour jeux, mais autres vouloir faire découvrir secrets de jeux sur leur propre.Posters que révéler secrets de jeux ou intrigue es qui s'appelle \"spoilers.\" si tu es poster quelque chose sur un jeux que il se pourrait que être un spoiler, être sûr à cocher le boîte de spoiler avant de poster tu. Ce façon, gens qui ne vouloir pas à spoiled ne voir pas ton poster.",
             "eleventh": "Nos objectif est à garder sympa et plaisant dans Juxt. Dans l'événement ça quelqu'un Violer du Juxt Code de Conduite, nous aller agir approprié, allant jusqu'à et inclure bouchage le choquant utilisateur ou console.",
