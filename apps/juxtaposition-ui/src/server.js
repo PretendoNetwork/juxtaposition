@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const { RedisStore } = require('connect-redis');
+const expressMetrics = require('express-prom-bundle');
 const database = require('./database');
 const logger = require('./logger');
 const { redisClient } = require('./redisCache');
@@ -14,8 +15,26 @@ process.on('SIGTERM', () => {
 	process.exit(0);
 });
 
-const { http: { port } } = config;
+const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
+const metrics = express();
 const app = express();
+
+// Metrics has to happen first so we can measure the other middleware
+if (metricsEnabled) {
+	logger.info('Setting up metrics');
+	app.use(expressMetrics({
+		// Include full express and nodejs metrics
+		includeMethod: true,
+		includePath: true,
+		promClient: {
+			collectDefaultMetrics: {}
+		},
+
+		// Keep metrics on a different app (so they aren't exposed)
+		autoregister: false,
+		metricsApp: metrics
+	}));
+}
 
 app.set('etag', false);
 app.disable('x-powered-by');
@@ -84,6 +103,12 @@ async function main() {
 	app.listen(port, () => {
 		logger.success(`Server started on port ${port}`);
 	});
+
+	if (metricsEnabled) {
+		metrics.listen(metricsPort, () => {
+			logger.success(`Metrics server started on port ${metricsPort}`);
+		});
+	}
 }
 
 main().catch(console.error);

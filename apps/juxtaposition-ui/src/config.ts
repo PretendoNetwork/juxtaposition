@@ -1,4 +1,4 @@
-import { createConfigLoader } from '@neato/config';
+import { createConfigLoader, zodCoercedBoolean } from '@neato/config';
 import { z } from 'zod';
 
 // schema is mapped later to nested object to keep env vars consistent with other projects
@@ -6,6 +6,8 @@ const schema = z.object({
 	logFolder: z.string().default(`${__dirname}/../logs`),
 	httpPort: z.coerce.number().default(8080),
 	httpCookieDomain: z.string().default('.pretendo.network'),
+	metricsEnabled: zodCoercedBoolean().default(false),
+	metricsPort: z.coerce.number().default(9090),
 	postLimit: z.coerce.number().default(10),
 	miiImageCdn: z.string(),
 	cdnDomain: z.string(),
@@ -71,6 +73,10 @@ export const config = {
 	http: {
 		port: unmappedConfig.httpPort,
 		cookieDomain: unmappedConfig.httpCookieDomain
+	},
+	metrics: {
+		enabled: unmappedConfig.metricsEnabled,
+		port: unmappedConfig.metricsPort
 	},
 	accountServerAddress: unmappedConfig.accountServerAddress,
 	aesKey: unmappedConfig.aesKey,
