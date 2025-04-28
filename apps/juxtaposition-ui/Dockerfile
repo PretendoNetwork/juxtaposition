@@ -27,7 +27,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     npm ci
 
 COPY . .
-# RUN npm run build
+RUN npm run build
 
 
 # * Running the final application
@@ -43,6 +43,6 @@ USER node
 COPY package.json .
 
 COPY --from=dependencies ${app_dir}/node_modules ${app_dir}/node_modules
-COPY --from=build ${app_dir}/src ${app_dir}/src
+COPY --from=build ${app_dir}/dist ${app_dir}/dist
 
 CMD ["npm", "run", "start"]
