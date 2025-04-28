@@ -1,10 +1,27 @@
 import { defineConfig } from 'tsup';
+import { copy } from 'esbuild-plugin-copy';
 
 export default defineConfig({
-	entry: ['src/server.js'],
+	entry: ['src/**/*.{js,ts}'],
 	splitting: false,
 	sourcemap: true,
 	platform: 'node',
 	clean: true,
-	format: ['cjs']
+	bundle: false,
+	format: ['cjs'],
+	esbuildPlugins: [
+		copy({
+			resolveFrom: 'cwd',
+			assets: [
+				{
+					from: ['./src/webfiles/**/*'],
+					to: ['./dist/webfiles']
+				},
+				{
+					from: ['./src/translations/**/*.json'],
+					to: ['./dist/translations']
+				}
+			]
+		})
+	]
 });
