@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
 
 export default defineConfig({
-	entry: ['src/**/*.{js,ts}'],
+	entry: ['src/**/*.{js,ts}', '!src/webfiles/**/*.js'],
 	splitting: false,
 	sourcemap: true,
 	platform: 'node',
