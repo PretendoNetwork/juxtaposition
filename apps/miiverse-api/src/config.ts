@@ -24,22 +24,24 @@ const schema = z.object({
 
 export const fragments: Record<string, any> = {
 	docker: {
-		http: {
-			cors: 'http://localhost:3000 http://localhost:5173',
-			frontendBaseUrl: 'http://localhost:5173/',
-			backendBaseUrl: 'http://localhost:8080/'
-		},
-		aesKey: '123456',
-		mongoose: {
-			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'
-		},
-		s3: {
-			endpoint: 'http://localstack:4567',
-			key: 'xyz',
-			secret: 'xyz',
-			bucket: 'juxt',
-			region: 'us-east-1'
-		}
+		httpCors: 'http://localhost:3000 http://localhost:5173',
+		httpFrontendBaseUrl: 'http://localhost:5173/',
+		httpBackendBaseUrl: 'http://localhost:8080/',
+		aesKey: '1234567812345678123456781234567812345678123456781234567812345678',
+		mongooseUri: 'mongodb://localhost:27017/miiverse?directConnection=true',
+		s3Endpoint: 'http://localhost:9000',
+		s3Key: 'minioadmin',
+		s3Secret: 'minioadmin',
+		s3Bucket: 'miiverse',
+		s3Region: 'us-east-1',
+		accountServerAddress: 'account',
+		cdnUrl: 'http://cdn.pretendo.cc/miiverse',
+		grpcAccountHost: 'localhost',
+		grpcAccountPort: 8123,
+		grpcAccountApiKey: '12345678123456781234567812345678',
+		grpcFriendsHost: 'localhost',
+		grpcFriendsPort: 8124,
+		grpcFriendsApiKey: '12345678123456781234567812345678'
 	}
 };
 
