@@ -5,8 +5,8 @@ services:
     image: redis:7-alpine
     restart: unless-stopped
     ports:
-      - '6379:6379'
-    volumes: 
+      - "6379:6379"
+    volumes:
       - redis_data:/data
   mongo:
     image: mongo:8.0
@@ -38,7 +38,7 @@ services:
       MINIO_DOMAIN: minio
     command: server /data --console-address ":9001"
     volumes:
-      minio_data:/data
+      - "minio_data:/data"
     ports:
       - 127.0.0.1:9000:9000
       - 127.0.0.1:9001:9001
@@ -49,7 +49,7 @@ services:
     networks:
       default:
         aliases:
-        # vhost-style bucket naming
+          # vhost-style bucket naming
           - miiverse.minio
   minio-setup:
     image: minio/mc
@@ -61,8 +61,8 @@ services:
       MINIO_DOMAIN: minio
       BUCKET: miiverse
     volumes:
-      - './create-buckets.sh:/etc/minio/create-buckets.sh'
-    entrypoint: '/etc/minio/create-buckets.sh'
+      - "./create-buckets.sh:/etc/minio/create-buckets.sh"
+    entrypoint: "/etc/minio/create-buckets.sh"
 
   proxy:
     image: mitmproxy/mitmproxy
@@ -78,7 +78,7 @@ services:
   account:
     image: ghcr.io/pretendonetwork/account:sha-99aec60
     ports:
-      - '8123:8123' # grpc
+      - "8123:8123" # grpc
     environment:
       PN_ACT_CONFIG_REDIS_URL: redis://redis:6379
       PN_ACT_CONFIG_HTTP_PORT: 8000
@@ -93,11 +93,11 @@ services:
       PN_ACT_CONFIG_AES_KEY: "1234567812345678123456781234567812345678123456781234567812345678"
       PN_ACT_CONFIG_GRPC_MASTER_API_KEY_ACCOUNT: "12345678123456781234567812345678"
       PN_ACT_CONFIG_GRPC_MASTER_API_KEY_API: "12345678123456781234567812345678"
-  
+
   friends:
     image: ghcr.io/pretendonetwork/friends:sha-5560c1d
     ports:
-      - '8124:8124' # grpc
+      - "8124:8124" # grpc
     environment:
       PN_FRIENDS_CONFIG_DATABASE_URI: "postgres://todo@localhost"
       PN_FRIENDS_CONFIG_AES_KEY: "1234567812345678123456781234567812345678123456781234567812345678"
@@ -115,4 +115,3 @@ volumes:
   mongo_config:
   redis_data:
   minio_data:
-  
