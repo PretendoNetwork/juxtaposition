@@ -1,10 +1,12 @@
-import { createConfigLoader } from '@neato/config';
+import { createConfigLoader, zodCoercedBoolean } from '@neato/config';
 import { z } from 'zod';
 
 // schema is mapped later to nested object to keep env vars consistent with other projects
 const schema = z.object({
 	logFolder: z.string().default(`${__dirname}/../logs`),
 	httpPort: z.coerce.number().default(8080),
+	metricsEnabled: zodCoercedBoolean().default(false),
+	metricsPort: z.coerce.number().default(9090),
 	accountServerAddress: z.string(),
 	aesKey: z.string(),
 	cdnUrl: z.string().url().transform(s => s.replace(/\/$/g, '')),
@@ -58,6 +60,10 @@ export const config = {
 	logFolder: unmappedConfig.logFolder,
 	http: {
 		port: unmappedConfig.httpPort
+	},
+	metrics: {
+		enabled: unmappedConfig.metricsEnabled,
+		port: unmappedConfig.metricsPort
 	},
 	accountServerAddress: unmappedConfig.accountServerAddress,
 	aesKey: unmappedConfig.aesKey,

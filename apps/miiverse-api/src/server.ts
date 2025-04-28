@@ -1,6 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 import xmlbuilder from 'xmlbuilder';
+import expressMetrics from 'express-prom-bundle';
 import { connect as connectDatabase } from '@/database';
 import { LOG_INFO, LOG_SUCCESS } from '@/logger';
 import auth from '@/middleware/auth';
@@ -13,8 +14,26 @@ process.on('SIGTERM', () => {
 	process.exit(0);
 });
 
-const { http: { port } } = config;
+const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
+const metrics = express();
 const app = express();
+
+// Metrics has to happen first so we can measure the other middleware
+if (metricsEnabled) {
+	LOG_INFO('Setting up metrics');
+	app.use(expressMetrics({
+		// Include full express and nodejs metrics
+		includeMethod: true,
+		includePath: true,
+		promClient: {
+			collectDefaultMetrics: {}
+		},
+
+		// Keep metrics on a different app (so they aren't exposed)
+		autoregister: false,
+		metricsApp: metrics
+	}));
+}
 
 app.set('etag', false);
 app.disable('x-powered-by');
@@ -77,6 +96,12 @@ async function main(): Promise<void> {
 	app.listen(port, () => {
 		LOG_SUCCESS(`Server started on port ${port}`);
 	});
+
+	if (metricsEnabled) {
+		metrics.listen(metricsPort, () => {
+			LOG_SUCCESS(`Metrics server started on port ${metricsPort}`);
+		});
+	}
 }
 
 main().catch(console.error);
