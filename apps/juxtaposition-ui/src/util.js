@@ -16,7 +16,7 @@ const database = require('./database');
 const translations = require('./translations');
 const { COMMUNITY } = require('./models/communities');
 const { NOTIFICATION } = require('./models/notifications');
-const logger = require('./logger');
+const { logger } = require('./logger');
 const { CONTENT } = require('./models/content');
 const { SETTINGS } = require('./models/settings');
 const { config } = require('./config');
@@ -99,6 +99,12 @@ async function create_user(pid, experience, notifications) {
 
 	this.setName(pid, pnid.mii.name);
 }
+
+/**
+ * Decodes and converts a Nintendo param pack to a JavaScript object.
+ * @param {string} paramPack base64-encoded param pack
+ * @returns {Record<string, string>}
+ */
 function decodeParamPack(paramPack) {
 	/*  Decode base64 */
 	let dec = Buffer.from(paramPack, 'base64').toString('ascii');

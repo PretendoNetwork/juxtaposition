@@ -8,7 +8,7 @@ const { NOTIFICATION } = require('./models/notifications');
 const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
 const { REPORT } = require('./models/report');
-const logger = require('./logger');
+const { logger } = require('./logger');
 const { config } = require('./config');
 
 let connection;

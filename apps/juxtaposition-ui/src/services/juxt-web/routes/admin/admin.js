@@ -10,7 +10,7 @@ const util = require('../../../../util');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const { config } = require('../../../../config');
-const logger = require('../../../../logger');
+const { logger } = require('../../../../logger');
 const router = express.Router();
 
 router.get('/posts', async function (req, res) {

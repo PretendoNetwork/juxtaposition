@@ -1,16 +1,20 @@
-const pino = require('pino');
-const pinoPretty = require('pino-pretty');
-const { config } = require('./config');
+import pino from 'pino';
+import pinoPretty from 'pino-pretty';
+import { config } from './config';
+import type { SerializedRequest, SerializedResponse } from 'pino';
+import type { Color } from 'colorette';
 
 const pretty = config.log.format == 'pretty'
 	? pinoPretty({
 			customPrettifiers: {
 				// Clean up Express types for developer eyes
-				req(req, _key, _log, { colors }) {
+				req(inputData, _key, _log, { colors }) {
+					const req = inputData as SerializedRequest;
 					return `${colors.bold(req.method)} ${req.headers.host}${req.url} (${req.remoteAddress}:${req.remotePort})`;
 				},
-				res(res, _key, _log, { colors }) {
-					const color = (() => {
+				res(inputData, _key, _log, { colors }) {
+					const res = inputData as SerializedResponse;
+					const color = ((): Color => {
 						if (res.statusCode >= 500) {
 							return colors.red;
 						} else if (res.statusCode >= 400) {
@@ -28,7 +32,8 @@ const pretty = config.log.format == 'pretty'
 		})
 	: undefined;
 
-module.exports = pino({
+// Main logger object
+export const logger = pino({
 	level: config.log.level,
 
 	customLevels: {

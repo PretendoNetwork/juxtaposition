@@ -1,6 +1,6 @@
 const util = require('../util');
 const { config } = require('../config');
-const logger = require('../logger');
+const { logger } = require('../logger');
 
 async function auth(request, response, next) {
 	// Get pid and fetch user data
