@@ -6,13 +6,29 @@
     "configurations": [
         {
             "type": "node-terminal",
-            "name": "Run Script: dev",
+            "name": "miiverse-api",
             "request": "launch",
             "command": "npm run dev",
             "cwd": "${workspaceFolder}/apps/miiverse-api",
             "env": {
                 "PN_MIIVERSE_API_USE_PRESETS": "docker"
             }
+        },
+        {
+            "type": "node-terminal",
+            "name": "juxtaposition-ui",
+            "request": "launch",
+            "command": "npm run dev",
+            "cwd": "${workspaceFolder}/apps/juxtaposition-ui",
+            "env": {
+                "PN_JUXTAPOSITION_UI_USE_PRESETS": "docker"
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Everything",
+            "configurations": ["miiverse-api", "juxtaposition-ui"]
         }
     ]
 }

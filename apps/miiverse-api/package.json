@@ -20,6 +20,7 @@
 		"colors": "^1.4.0",
 		"crc": "^4.3.2",
 		"express": "^4.17.1",
+		"express-prom-bundle": "^7.0.2",
 		"express-subdomain": "^1.0.5",
 		"fs-extra": "^9.0.0",
 		"moment": "^2.24.0",
@@ -30,6 +31,7 @@
 		"node-snowflake": "0.0.1",
 		"pako": "^1.0.11",
 		"pngjs": "^5.0.0",
+		"prom-client": "^15.1.3",
 		"tga": "^1.0.3",
 		"xmlbuilder": "^15.1.1",
 		"zod": "^3.21.4"
