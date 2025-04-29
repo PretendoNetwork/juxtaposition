@@ -15,7 +15,6 @@ let connection;
 mongoose.set('strictQuery', true);
 
 async function connect() {
-	await mongoose.connect(config.mongoose.uri);
 	connection = mongoose.connection;
 	connection.on('connected', function () {
 		logger.info(`MongoDB connected ${this.name}`);
@@ -24,6 +23,8 @@ async function connect() {
 	connection.on('close', () => {
 		connection.removeAllListeners();
 	});
+
+	await mongoose.connect(config.mongoose.uri);
 }
 
 function verifyConnected() {
