@@ -1,5 +1,6 @@
 const util = require('../util');
 const { config } = require('../config');
+const logger = require('../logger');
 
 const cookieDomain = config.http.cookieDomain;
 
@@ -16,7 +17,8 @@ async function webAuth(request, response, next) {
 
 			request.session.user = request.user;
 			request.session.pid = request.pid;
-		} catch (ignored) {
+		} catch (e) {
+			logger.error(e, 'Failed to authenticate user from access token');
 			response.clearCookie('access_token', { domain: cookieDomain, path: '/' });
 			response.clearCookie('refresh_token', { domain: cookieDomain, path: '/' });
 			response.clearCookie('token_type', { domain: cookieDomain, path: '/' });

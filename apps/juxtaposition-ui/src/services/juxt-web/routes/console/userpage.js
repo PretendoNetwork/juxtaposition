@@ -7,6 +7,7 @@ const { POST } = require('../../../../models/post');
 const { SETTINGS } = require('../../../../models/settings');
 const redis = require('../../../../redisCache');
 const { config } = require('../../../../config');
+const logger = require('../../../../logger');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
@@ -139,7 +140,7 @@ async function userPage(req, res, userID) {
 	const pnid = userID === req.pid
 		? req.user
 		: await util.getUserDataFromPid(userID).catch((e) => {
-			console.error(e.details);
+			logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
 		});
 	const userContent = await database.getUserContent(userID);
 	if (isNaN(userID) || !pnid || !userContent) {
@@ -155,12 +156,7 @@ async function userPage(req, res, userID) {
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();
-	let friends = [];
-	try {
-		friends = await util.getFriends(userID);
-	} catch (ignored) {
-		// Do nothing
-	}
+	const friends = await util.getFriends(userID);
 
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {

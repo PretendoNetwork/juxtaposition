@@ -19,7 +19,7 @@ async function connect() {
 	connection.on('connected', function () {
 		logger.info(`MongoDB connected ${this.name}`);
 	});
-	connection.on('error', console.error.bind(console, 'connection error:'));
+	connection.on('error', err => logger.error(err, 'Database connection error'));
 	connection.on('close', () => {
 		connection.removeAllListeners();
 	});

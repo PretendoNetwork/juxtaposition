@@ -124,7 +124,7 @@ function processServiceToken(encryptedToken) {
 
 		return token.pid;
 	} catch (e) {
-		console.error(e);
+		logger.error(e, 'Could not process service token');
 		return null;
 	}
 }
@@ -169,13 +169,14 @@ async function processPainting(painting, isTGA) {
 		try {
 			output = pako.inflate(paintingBuffer);
 		} catch (err) {
-			console.error(err);
+			logger.error(err, 'Could not decompress painting');
+			return null;
 		}
 		let tga;
 		try {
 			tga = new TGA(Buffer.from(output));
 		} catch (e) {
-			console.error(e);
+			logger.error(e, 'Could not parse painting');
 			return null;
 		}
 		const png = new PNG({
@@ -194,7 +195,8 @@ async function processPainting(painting, isTGA) {
 		try {
 			output = pako.deflate(tga, { level: 6 });
 		} catch (err) {
-			console.error(err);
+			logger.error(err, 'Could not compress painting');
+			return null;
 		}
 		return new Buffer(output).toString('base64');
 	}
@@ -246,7 +248,7 @@ async function resizeImage(file, width, height) {
 			.toBuffer()
 			.then((data) => {
 				resolve(data);
-			}).catch(err => console.error(err));
+			}).catch(err => logger.error(err, 'Could not resize image'));
 	});
 }
 
@@ -257,7 +259,8 @@ async function getTGAFromPNG(image) {
 	try {
 		output = pako.deflate(tga, { level: 6 });
 	} catch (err) {
-		console.error(err);
+		logger.error(err, 'Could not decompress image');
+		return null;
 	}
 	return new Buffer(output).toString('base64').trim();
 }
@@ -335,7 +338,7 @@ async function uploadCDNAsset(key, data, acl) {
 		await s3.send(awsPutParams);
 		return true;
 	} catch (e) {
-		console.error(e);
+		logger.error(e, 'Could not upload to CDN');
 		return false;
 	}
 }
@@ -433,7 +436,8 @@ async function getFriends(pid) {
 			})
 		});
 		return pids.pids;
-	} catch (ignored) {
+	} catch (e) {
+		logger.error(e, `Failed to get friends for ${pid}`);
 		return [];
 	}
 }
@@ -447,7 +451,8 @@ async function getFriendRequests(pid) {
 			})
 		});
 		return requests.friendRequests;
-	} catch (ignore) {
+	} catch (e) {
+		logger.error(e, `Failed to get friend requests for ${pid}`);
 		return [];
 	}
 }

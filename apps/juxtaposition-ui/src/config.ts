@@ -3,7 +3,9 @@ import { z } from 'zod';
 
 // schema is mapped later to nested object to keep env vars consistent with other projects
 const schema = z.object({
-	logFolder: z.string().default(`${__dirname}/../logs`),
+	logFormat: z.enum(['json', 'pretty']).default('pretty'),
+	logLevel: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
+	logRedact: zodCoercedBoolean().default(true),
 	httpPort: z.coerce.number().default(8080),
 	httpCookieDomain: z.string().default('.pretendo.network'),
 	metricsEnabled: zodCoercedBoolean().default(false),
@@ -69,7 +71,11 @@ const unmappedConfig = createConfigLoader()
 	.load();
 
 export const config = {
-	logFolder: unmappedConfig.logFolder,
+	log: {
+		format: unmappedConfig.logFormat,
+		level: unmappedConfig.logLevel,
+		redact: unmappedConfig.logRedact
+	},
 	http: {
 		port: unmappedConfig.httpPort,
 		cookieDomain: unmappedConfig.httpCookieDomain
