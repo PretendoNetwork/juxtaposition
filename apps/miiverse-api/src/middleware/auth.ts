@@ -3,6 +3,8 @@ import moment from 'moment';
 import { z } from 'zod';
 import { getUserAccountData, getValueFromHeaders, decodeParamPack, getPIDFromServiceToken } from '@/util';
 import { getEndpoint, getUserSettings } from '@/database';
+import { logger } from '@/logger';
+import { badRequest } from '@/errors';
 import type express from 'express';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
@@ -41,24 +43,24 @@ async function auth(request: express.Request, response: express.Response, next: 
 	}
 
 	if (!encryptedToken) {
-		return badAuth(response, 15, 'NO_TOKEN');
+		return badRequest(response, 15, 'NO_TOKEN');
 	}
 
 	const pid: number = getPIDFromServiceToken(encryptedToken);
 	if (pid === 0) {
-		return badAuth(response, 16, 'BAD_TOKEN');
+		return badRequest(response, 16, 'BAD_TOKEN');
 	}
 
 	const paramPack = getValueFromHeaders(request.headers, 'x-nintendo-parampack');
 	if (!paramPack) {
-		return badAuth(response, 17, 'NO_PARAM');
+		return badRequest(response, 17, 'NO_PARAM');
 	}
 
 	const paramPackData = decodeParamPack(paramPack);
 	const paramPackCheck = ParamPackSchema.safeParse(paramPackData);
 	if (!paramPackCheck.success) {
-		console.log(paramPackCheck.error);
-		return badAuth(response, 18, 'BAD_PARAM');
+		logger.error(paramPackCheck.error, 'Failed to parse param pack');
+		return badRequest(response, 18, 'BAD_PARAM');
 	}
 
 	let user: GetUserDataResponse;
@@ -66,9 +68,8 @@ async function auth(request: express.Request, response: express.Response, next: 
 	try {
 		user = await getUserAccountData(pid);
 	} catch (error) {
-		// TODO - Log this error
-		console.log(error);
-		return badAuth(response, 18, 'BAD_PARAM');
+		logger.error(error, `Failed to get account data for ${pid}`);
+		return badRequest(response, 18, 'BAD_PARAM');
 	}
 
 	let discovery: HydratedEndpointDocument | null;
@@ -80,7 +81,7 @@ async function auth(request: express.Request, response: express.Response, next: 
 	}
 
 	if (!discovery) {
-		return badAuth(response, 19, 'NO_DISCOVERY');
+		return badRequest(response, 19, 'NO_DISCOVERY');
 	}
 
 	if (discovery.status !== 0) {
@@ -95,7 +96,7 @@ async function auth(request: express.Request, response: express.Response, next: 
 	if (!userSettings && request.path === '/v1/endpoint') {
 		return next();
 	} else if (!userSettings) {
-		return badAuth(response, 18, 'BAD_PARAM');
+		return badRequest(response, 18, 'BAD_PARAM');
 	}
 
 	if (moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
@@ -108,28 +109,13 @@ async function auth(request: express.Request, response: express.Response, next: 
 		if (userSettings.account_status === 2 && request.method === 'GET') {
 			return next();
 		} else if (userSettings.account_status === 2) {
-			return badAuth(response, 8, 'PNID_POST_BAN');
+			return badRequest(response, 8, 'PNID_POST_BAN');
 		} else {
-			return badAuth(response, 7, 'PNID_PERM_BAN');
+			return badRequest(response, 7, 'PNID_PERM_BAN');
 		}
 	}
 
 	return next();
-}
-
-function badAuth(response: express.Response, errorCode: number, message: string): void {
-	response.type('application/xml');
-	response.status(400);
-
-	response.send(xmlbuilder.create({
-		result: {
-			has_error: 1,
-			version: 1,
-			code: 400,
-			error_code: errorCode,
-			message: message
-		}
-	}).end({ pretty: true }));
 }
 
 function serverError(response: express.Response, discovery: HydratedEndpointDocument): void {

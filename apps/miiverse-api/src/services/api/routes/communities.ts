@@ -4,7 +4,6 @@ import multer from 'multer';
 import { z } from 'zod';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
-import { LOG_WARN } from '@/logger';
 import { getValueFromQueryString, getUserAccountData } from '@/util';
 import {
 	getMostPopularCommunities,
@@ -199,7 +198,7 @@ router.get('/:communityID/posts', async function (request: express.Request, resp
 		const userContent = await getUserContent(request.pid);
 
 		if (!userContent) {
-			LOG_WARN(`USER PID ${request.pid} HAS NO USER CONTENT`);
+			request.log.warn(`USER PID ${request.pid} HAS NO USER CONTENT`);
 			query.pid = [];
 		} else {
 			query.pid = userContent.following_users;
@@ -272,8 +271,8 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 
 	try {
 		pnid = await getUserAccountData(request.pid);
-	} catch (ignored) {
-		// TODO - Log this error
+	} catch (error) {
+		request.log.error(error, `Failed to get account data for ${request.pid}`);
 		response.sendStatus(403);
 		return;
 	}

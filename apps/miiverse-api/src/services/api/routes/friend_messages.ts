@@ -13,7 +13,6 @@ import {
 	INVALID_POST_BODY_REGEX
 } from '@/util';
 import { getConversationByUsers, getUserSettings, getFriendMessages } from '@/database';
-import { LOG_WARN } from '@/logger';
 import { Post } from '@/models/post';
 import { Conversation } from '@/models/conversation';
 import { config } from '@/config';
@@ -41,7 +40,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	const bodyCheck = sendMessageSchema.safeParse(request.body);
 
 	if (!bodyCheck.success) {
-		LOG_WARN('[Messages] Body check failed');
+		request.log.warn('[Messages] Body check failed');
 		response.sendStatus(422);
 		return;
 	}
@@ -53,7 +52,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	const appData = bodyCheck.data.app_data?.replace(/[^A-Za-z0-9+/=\s]/g, '').trim() || '';
 
 	if (isNaN(recipientPID)) {
-		LOG_WARN('[Messages] PID is not a number');
+		request.log.warn('[Messages] PID is not a number');
 		response.sendStatus(422);
 		return;
 	}
@@ -62,15 +61,15 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 
 	try {
 		sender = await getUserAccountData(request.pid);
-	} catch (ignored) {
-		LOG_WARN('[Messages] Cannot find sender');
+	} catch (err) {
+		request.log.warn(err, `[Messages] Failed to get account data for ${request.pid}`);
 		response.sendStatus(422);
 		return;
 	}
 
 	if (!sender.mii) {
 		// * This should never happen, but TypeScript complains so check anyway
-		LOG_WARN('[Messages] Mii does not exist or is invalid');
+		request.log.warn('[Messages] Mii does not exist or is invalid');
 		response.sendStatus(422);
 		return;
 	}
@@ -79,9 +78,8 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 
 	try {
 		recipient = await getUserAccountData(recipientPID);
-	} catch (ignored) {
-		// TODO - Log this error
-		LOG_WARN('[Messages] Cannot find recipient');
+	} catch (err) {
+		request.log.warn(err, `[Messages] Failed to get account data for recipient ${recipientPID}`);
 		response.type('application/xml');
 		response.status(422);
 
@@ -104,7 +102,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		const user2Settings = await getUserSettings(recipient.pid);
 
 		if (!sender || !recipient || userSettings || user2Settings) {
-			LOG_WARN(`[Messages] Some data is missing:\n${!sender} ${!recipient} ${!userSettings} ${!user2Settings}`);
+			request.log.warn(`[Messages] Some data is missing:\n${!sender} ${!recipient} ${!userSettings} ${!user2Settings}`);
 			response.sendStatus(422);
 			return;
 		}
@@ -134,7 +132,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	const friendPIDs = await getUserFriendPIDs(recipient.pid);
 
 	if (friendPIDs.indexOf(request.pid) === -1) {
-		LOG_WARN('[Messages] Users are not friends');
+		request.log.warn('[Messages] Users are not friends');
 		response.sendStatus(422);
 		return;
 	}
@@ -172,7 +170,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 
 	if (!messageBody?.trim() && !painting?.trim() && !screenshot?.trim()) {
 		response.status(422);
-		LOG_WARN('[Messages] message content is empty');
+		request.log.warn('[Messages] message content is empty');
 		response.redirect(`/friend_messages/${conversation.id}`);
 		return;
 	}
@@ -212,7 +210,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		if (paintingBuffer) {
 			await uploadCDNAsset(`paintings/${request.pid}/${post.id}.png`, paintingBuffer, 'public-read');
 		} else {
-			LOG_WARN(`PAINTING FOR POST ${post.id} FAILED TO PROCESS`);
+			request.log.warn(`PAINTING FOR POST ${post.id} FAILED TO PROCESS`);
 		}
 	}
 

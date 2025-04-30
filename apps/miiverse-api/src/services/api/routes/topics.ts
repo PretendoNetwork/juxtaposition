@@ -28,8 +28,7 @@ router.get('/', async function (request: express.Request, response: express.Resp
 	// try {
 	//	user  = await getUserAccountData(request.pid);
 	// } catch (error) {
-	//	// TODO - Log this error
-	//	response.sendStatus(403);
+	//	request.log.warn(error, `Failed to get account data for ${request.pid}`);
 	//	return;
 	// }
 	//

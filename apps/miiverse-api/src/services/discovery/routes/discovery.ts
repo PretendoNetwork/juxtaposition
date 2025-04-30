@@ -15,8 +15,8 @@ router.get('/', async function (request: express.Request, response: express.Resp
 
 	try {
 		user = await getUserAccountData(request.pid);
-	} catch (ignored) {
-		// TODO - Log this error
+	} catch (err) {
+		request.log.warn(err, `Failed to get account data for ${request.pid}`);
 		response.sendStatus(404);
 		return;
 	}
@@ -31,6 +31,7 @@ router.get('/', async function (request: express.Request, response: express.Resp
 
 	// TODO - Better error
 	if (!discovery) {
+		request.log.warn(user, 'Failed to find discovery endpoint!');
 		response.sendStatus(404);
 		return;
 	}

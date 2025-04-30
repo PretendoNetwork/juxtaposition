@@ -220,8 +220,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 
 	try {
 		user = await getUserAccountData(request.pid);
-	} catch (ignored) {
-		// TODO - Log this error
+	} catch (err) {
+		request.log.warn(err, `Failed to get account data for ${request.pid}`);
 		response.sendStatus(403);
 		return;
 	}
