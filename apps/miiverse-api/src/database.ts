@@ -17,8 +17,6 @@ import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 let connection: mongoose.Connection;
 
 export async function connect(): Promise<void> {
-	await mongoose.connect(config.mongoose.uri);
-
 	connection = mongoose.connection;
 	connection.on('connected', () => {
 		LOG_INFO('MongoDB connected');
@@ -27,6 +25,8 @@ export async function connect(): Promise<void> {
 	connection.on('close', () => {
 		connection.removeAllListeners();
 	});
+
+	await mongoose.connect(config.mongoose.uri);
 }
 
 function verifyConnected(): void {
