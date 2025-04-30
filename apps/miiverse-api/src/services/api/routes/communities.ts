@@ -11,7 +11,7 @@ import {
 	getCommunityByTitleID,
 	getUserContent
 } from '@/database';
-import { badRequest } from '@/errors';
+import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { SubCommunityQuery } from '@/types/mongoose/subcommunity-query';
 import type { CommunityPostsQuery } from '@/types/mongoose/community-posts-query';
@@ -27,22 +27,6 @@ const createNewCommunitySchema = z.object({
 });
 
 const router = express.Router();
-
-function respondCommunityError(response: express.Response, httpStatusCode: number, errorCode: number): void {
-	response.status(httpStatusCode).send(xmlbuilder.create({
-		result: {
-			has_error: 1,
-			version: 1,
-			code: httpStatusCode,
-			error_code: errorCode,
-			message: 'COMMUNITY_ERROR' // This field is unused by the entire nn_olv.rpl
-		}
-	}).end({ pretty: true }));
-}
-
-function respondCommunityNotFound(response: express.Response): void {
-	respondCommunityError(response, 404, 919);
-}
 
 async function commonGetSubCommunity(paramPack: ParamPack, communityID: string | undefined): Promise<HydratedCommunityDocument | null> {
 	const parentCommunity = await getCommunityByTitleID(paramPack.title_id);
@@ -71,8 +55,7 @@ router.get('/', async function (request: express.Request, response: express.Resp
 
 	const parentCommunity = await getCommunityByTitleID(request.paramPack.title_id);
 	if (!parentCommunity) {
-		respondCommunityNotFound(response);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	const type = getValueFromQueryString(request.query, 'type')[0];
@@ -153,7 +136,7 @@ router.get('/:communityID/posts', async function (request: express.Request, resp
 	}
 
 	if (!community) {
-		return respondCommunityNotFound(response);
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	const query: CommunityPostsQuery = {
@@ -258,30 +241,22 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 
 	const parentCommunity = await getCommunityByTitleID(request.paramPack.title_id);
 	if (!parentCommunity) {
-		return respondCommunityNotFound(response);
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	// TODO - Better error codes, maybe do defaults?
 	const bodyCheck = createNewCommunitySchema.safeParse(request.body);
 	if (!bodyCheck.success) {
-		return respondCommunityError(response, 400, 20);
+		return badRequest(response, ApiErrorCode.BAD_COMMUNITY_DATA);
 	}
 
 	if (!request.user) {
-		return badRequest(response, 21, 'ACCOUNT_SERVER_ERROR');
+		return serverError(response, ApiErrorCode.ACCOUNT_SERVER_ERROR);
 	}
 
 	if (request.user.accessLevel < parentCommunity.permissions.minimum_new_community_access_level) {
-		response.send(xmlbuilder.create({
-			result: {
-				has_error: '1',
-				version: '1',
-				code: '403',
-				error_code: '911',
-				message: 'NO_NEW_COMMUNITY'
-			}
-		}).end({ pretty: true, allowEmpty: true }));
-		return;
+		// "too many" if the limit is 0, right? ;)
+		return badRequest(response, ApiErrorCode.CREATE_TOO_MANY_COMMUNITIES, 403);
 	}
 
 	request.body.name = request.body.name.trim();
@@ -297,7 +272,7 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 
 	// Name must be at least 4 character long
 	if (request.body.name.length < 4) {
-		return respondCommunityError(response, 400, 20);
+		return badRequest(response, ApiErrorCode.BAD_COMMUNITY_DATA);
 	}
 
 	// Each user can only have 4 subcommunities per title
@@ -308,7 +283,7 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 
 	const ownedSubcommunityCount = await Community.countDocuments(ownedQuery);
 	if (ownedSubcommunityCount >= 4) {
-		return respondCommunityError(response, 401, 911);
+		return badRequest(response, ApiErrorCode.CREATE_TOO_MANY_COMMUNITIES, 403);
 	}
 
 	// Each user can only have 16 favorite subcommunities per title
@@ -319,7 +294,7 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 
 	const ownedFavoriteCount = await Community.countDocuments(favoriteQuery);
 	if (ownedFavoriteCount >= 16) {
-		return respondCommunityError(response, 401, 912);
+		return badRequest(response, ApiErrorCode.CREATE_TOO_MANY_FAVORITES, 403);
 	}
 
 	const communitiesCount = await Community.count();
@@ -361,13 +336,11 @@ router.post('/:community_id.delete', multer().none(), async function (request: e
 	const community = await commonGetSubCommunity(request.paramPack, request.params.community_id);
 
 	if (!community) {
-		respondCommunityNotFound(response);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	if (community.owner != request.pid) {
-		response.sendStatus(403); // Forbidden
-		return;
+		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 
 	await Community.deleteOne({ _id: community._id });
@@ -388,8 +361,7 @@ router.post('/:community_id.favorite', multer().none(), async function (request:
 	const community = await commonGetSubCommunity(request.paramPack, request.params.community_id);
 
 	if (!community) {
-		respondCommunityNotFound(response);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	// Each user can only have 16 favorite subcommunities per title
@@ -400,7 +372,7 @@ router.post('/:community_id.favorite', multer().none(), async function (request:
 
 	const ownedFavoriteCount = await Community.countDocuments(favoriteQuery);
 	if (ownedFavoriteCount >= 16) {
-		return respondCommunityError(response, 401, 914);
+		return badRequest(response, ApiErrorCode.TOO_MANY_FAVORITES_GAME, 403);
 	}
 
 	await community.addUserFavorite(request.pid);
@@ -423,13 +395,12 @@ router.post('/:community_id.unfavorite', multer().none(), async function (reques
 
 	const community = await commonGetSubCommunity(request.paramPack, request.params.community_id);
 	if (!community) {
-		respondCommunityNotFound(response);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	// You can't remove from your favorites a community you own
 	if (community.owner === request.pid) {
-		return respondCommunityError(response, 401, 916);
+		return badRequest(response, ApiErrorCode.MUST_FAVORITE_OWN_COMMUNITY, 403);
 	}
 
 	await community.delUserFavorite(request.pid);
@@ -453,13 +424,11 @@ router.post('/:community_id', multer().none(), async function (request: express.
 	const community = await commonGetSubCommunity(request.paramPack, request.params.community_id);
 
 	if (!community) {
-		respondCommunityNotFound(response);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	if (community.owner != request.pid) {
-		response.sendStatus(403); // Forbidden
-		return;
+		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 
 	if (request.body.name) {

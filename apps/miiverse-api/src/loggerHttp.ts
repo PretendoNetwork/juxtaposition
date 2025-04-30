@@ -2,10 +2,12 @@ import pinoHttp from 'pino-http';
 import { logger } from './logger';
 import { config } from './config';
 import { decodeParamPack } from './util';
+import { ApiErrorCode } from './errors';
 import type { SerializedRequest, SerializedResponse } from 'pino';
 import type { ParamPack } from './types/common/param-pack';
 
 type SerializedNintendoRequest = SerializedRequest & { param_pack?: ParamPack };
+type SerializedMiiverseResponse = SerializedResponse & { errorCode?: ApiErrorCode; errorCodeStr?: string };
 
 function redactHeaders(headers: Record<string, string>, allowlist: string[]): Record<string, string> {
 	if (config.log.redact) {
@@ -33,10 +35,15 @@ export const loggerHttp = pinoHttp({
 
 			return req;
 		},
-		res(res: SerializedResponse) {
+		res(res: SerializedMiiverseResponse) {
 			// Only log non-sensitive headers
 			const allowlist = ['content-type', 'content-length', 'x-nintendo-whitelist'];
 			res.headers = redactHeaders(res.headers, allowlist);
+
+			if ('errorCode' in res.raw) {
+				res.errorCode = res.raw.errorCode as ApiErrorCode;
+				res.errorCodeStr = ApiErrorCode[res.errorCode];
+			}
 
 			return res;
 		}

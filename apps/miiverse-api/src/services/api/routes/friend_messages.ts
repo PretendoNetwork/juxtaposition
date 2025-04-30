@@ -16,7 +16,7 @@ import { getConversationByUsers, getUserSettings, getFriendMessages } from '@/da
 import { Post } from '@/models/post';
 import { Conversation } from '@/models/conversation';
 import { config } from '@/config';
-import { badRequest } from '@/errors';
+import { ApiErrorCode, badRequest } from '@/errors';
 import type { FormattedMessage } from '@/types/common/formatted-message';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
@@ -59,7 +59,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	}
 
 	if (!request.user) {
-		return badRequest(response, 21, 'ACCOUNT_SERVER_ERROR');
+		return badRequest(response, ApiErrorCode.ACCOUNT_SERVER_ERROR);
 	}
 
 	const sender = request.user;
@@ -77,7 +77,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		recipient = await getUserAccountData(recipientPID);
 	} catch (err) {
 		request.log.warn(err, `[Messages] Failed to get account data for recipient ${recipientPID}`);
-		return badRequest(response, 11, 'User not found');
+		return badRequest(response, ApiErrorCode.PARTNER_SETUP_NOT_COMPLETE);
 	}
 
 	let conversation = await getConversationByUsers([sender.pid, recipient.pid]);

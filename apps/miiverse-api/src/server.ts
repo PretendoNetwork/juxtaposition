@@ -1,5 +1,4 @@
 import express from 'express';
-import xmlbuilder from 'xmlbuilder';
 import expressMetrics from 'express-prom-bundle';
 import { connect as connectDatabase } from '@/database';
 import { logger } from '@/logger';
@@ -8,6 +7,7 @@ import auth from '@/middleware/auth';
 import discovery from '@/services/discovery';
 import api from '@/services/api';
 import { config } from '@/config';
+import { ApiErrorCode, badRequest, serverError } from './errors';
 
 const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
 const metrics = express();
@@ -52,34 +52,13 @@ app.use(api);
 // 404 handler
 logger.info('Creating 404 status handler');
 app.use((_request: express.Request, response: express.Response) => {
-	response.type('application/xml');
-	response.status(404);
-
-	return response.send(xmlbuilder.create({
-		result: {
-			has_error: 1,
-			version: 1,
-			code: 404,
-			message: 'Not Found'
-		}
-	}).end({ pretty: true }));
+	return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
 });
 
 // non-404 error handler
 logger.info('Creating non-404 status handler');
 app.use((_error: unknown, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
-	const status = 500;
-	response.type('application/xml');
-	response.status(404);
-
-	return response.send(xmlbuilder.create({
-		result: {
-			has_error: 1,
-			version: 1,
-			code: status,
-			message: 'Not Found'
-		}
-	}).end({ pretty: true }));
+	return serverError(response, ApiErrorCode.UNKNOWN_ERROR);
 });
 
 async function main(): Promise<void> {
