@@ -4,6 +4,7 @@ import xmlbuilder from 'xmlbuilder';
 import Cache from '@/cache';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
+import { ApiErrorCode, badRequest } from '@/errors';
 import type { IPost } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { WWPResult, WWPTopic } from '@/types/miiverse/wara-wara-plaza';
@@ -49,8 +50,8 @@ router.get('/', async function (request: express.Request, response: express.Resp
 		const communities = await calculateMostPopularCommunities(24, 10);
 
 		if (communities.length < 10) {
-			response.sendStatus(404);
-			return;
+			request.log.warn('Not enough communities exist for topics request');
+			return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 		}
 
 		WARA_WARA_PLAZA_CACHE.update(await generateTopicsData(communities));

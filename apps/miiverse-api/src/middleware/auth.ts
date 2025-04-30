@@ -2,7 +2,6 @@ import moment from 'moment';
 import { z } from 'zod';
 import { getUserAccountData, getValueFromHeaders, decodeParamPack, getPIDFromServiceToken } from '@/util';
 import { getEndpoint, getUserSettings } from '@/database';
-import { logger } from '@/logger';
 import { badRequest, ApiErrorCode, serverError } from '@/errors';
 import type express from 'express';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -57,7 +56,7 @@ async function auth(request: express.Request, response: express.Response, next: 
 	const paramPackData = decodeParamPack(paramPack);
 	const paramPackCheck = ParamPackSchema.safeParse(paramPackData);
 	if (!paramPackCheck.success) {
-		logger.error(paramPackCheck.error, 'Failed to parse param pack');
+		request.log.error(paramPackCheck.error, 'Failed to parse param pack');
 		return badRequest(response, ApiErrorCode.BAD_PARAM_PACK);
 	}
 
@@ -66,21 +65,21 @@ async function auth(request: express.Request, response: express.Response, next: 
 	try {
 		user = await getUserAccountData(pid);
 	} catch (error) {
-		logger.error(error, `Failed to get account data for ${pid}`);
+		request.log.error(error, `Failed to get account data for ${pid}`);
 		return serverError(response, ApiErrorCode.ACCOUNT_SERVER_ERROR);
 	}
 
 	const discovery = await getEndpoint(user.serverAccessLevel);
 
 	if (!discovery) {
-		logger.error(user, `Discovery data is missing for ${user.serverAccessLevel}`);
+		request.log.error(user, `Discovery data is missing for ${user.serverAccessLevel}`);
 		return serverError(response, ApiErrorCode.NO_DISCOVERY_DATA);
 	}
 
 	if (discovery.status > 0 && discovery.status <= 7) {
 		return badRequest(response, discovery.status);
 	} else if (discovery.status !== 0) {
-		logger.error(discovery, `Discovery for ${user.serverAccessLevel} has unexpected status`);
+		request.log.error(discovery, `Discovery for ${user.serverAccessLevel} has unexpected status`);
 		return serverError(response, ApiErrorCode.NO_DISCOVERY_DATA);
 	}
 

@@ -22,10 +22,12 @@ export enum ApiErrorCode {
 	NO_PARAM_PACK = 17,
 	BAD_PARAM_PACK = 18,
 	NO_DISCOVERY_DATA = 19, // TODO this is a server config error, not a client error
-	BAD_COMMUNITY_DATA = 20,
+	BAD_PARAMS = 20,
 
 	ACCOUNT_SERVER_ERROR = 21,
 	FRIENDS_SERVER_ERROR = 22,
+	DATABASE_ERROR = 23,
+	NOT_ALLOWED_SPAM = 24,
 
 	// Matching HTTP errors so we get matching 115-5404 etc.
 	NOT_ALLOWED = 403,

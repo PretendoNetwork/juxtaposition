@@ -247,7 +247,8 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 	// TODO - Better error codes, maybe do defaults?
 	const bodyCheck = createNewCommunitySchema.safeParse(request.body);
 	if (!bodyCheck.success) {
-		return badRequest(response, ApiErrorCode.BAD_COMMUNITY_DATA);
+		request.log.warn('Body failed schema validation');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	if (!request.user) {
@@ -255,8 +256,7 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 	}
 
 	if (request.user.accessLevel < parentCommunity.permissions.minimum_new_community_access_level) {
-		// "too many" if the limit is 0, right? ;)
-		return badRequest(response, ApiErrorCode.CREATE_TOO_MANY_COMMUNITIES, 403);
+		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 
 	request.body.name = request.body.name.trim();
@@ -272,7 +272,8 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 
 	// Name must be at least 4 character long
 	if (request.body.name.length < 4) {
-		return badRequest(response, ApiErrorCode.BAD_COMMUNITY_DATA);
+		request.log.warn('Community name too short');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	// Each user can only have 4 subcommunities per title

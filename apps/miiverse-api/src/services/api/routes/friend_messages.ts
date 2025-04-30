@@ -12,11 +12,11 @@ import {
 	getValueFromQueryString,
 	INVALID_POST_BODY_REGEX
 } from '@/util';
-import { getConversationByUsers, getUserSettings, getFriendMessages } from '@/database';
+import { getConversationByUsers, getFriendMessages } from '@/database';
 import { Post } from '@/models/post';
 import { Conversation } from '@/models/conversation';
 import { config } from '@/config';
-import { ApiErrorCode, badRequest } from '@/errors';
+import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import type { FormattedMessage } from '@/types/common/formatted-message';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
@@ -41,9 +41,8 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	const bodyCheck = sendMessageSchema.safeParse(request.body);
 
 	if (!bodyCheck.success) {
-		request.log.warn('[Messages] Body check failed');
-		response.sendStatus(422);
-		return;
+		request.log.warn('Body check failed!');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	const recipientPID = bodyCheck.data.message_to_pid;
@@ -53,9 +52,8 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	const appData = bodyCheck.data.app_data?.replace(/[^A-Za-z0-9+/=\s]/g, '').trim() || '';
 
 	if (isNaN(recipientPID)) {
-		request.log.warn('[Messages] PID is not a number');
-		response.sendStatus(422);
-		return;
+		request.log.warn('Message recipient is NaN');
+		return badRequest(response, ApiErrorCode.FAIL_NOT_FOUND_USER);
 	}
 
 	if (!request.user) {
@@ -66,9 +64,8 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 
 	if (!sender.mii) {
 		// * This should never happen, but TypeScript complains so check anyway
-		request.log.warn('[Messages] Mii does not exist or is invalid');
-		response.sendStatus(422);
-		return;
+		request.log.warn('Mii does not exist or is invalid');
+		return badRequest(response, ApiErrorCode.ACCOUNT_SERVER_ERROR);
 	}
 
 	let recipient: GetUserDataResponse;
@@ -76,22 +73,13 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	try {
 		recipient = await getUserAccountData(recipientPID);
 	} catch (err) {
-		request.log.warn(err, `[Messages] Failed to get account data for recipient ${recipientPID}`);
+		request.log.warn(err, `Failed to get account data for recipient ${recipientPID}`);
 		return badRequest(response, ApiErrorCode.PARTNER_SETUP_NOT_COMPLETE);
 	}
 
 	let conversation = await getConversationByUsers([sender.pid, recipient.pid]);
 
 	if (!conversation) {
-		const userSettings = await getUserSettings(request.pid);
-		const user2Settings = await getUserSettings(recipient.pid);
-
-		if (!sender || !recipient || userSettings || user2Settings) {
-			request.log.warn(`[Messages] Some data is missing:\n${!sender} ${!recipient} ${!userSettings} ${!user2Settings}`);
-			response.sendStatus(422);
-			return;
-		}
-
 		conversation = await Conversation.create({
 			id: Snowflake.nextId(),
 			users: [
@@ -110,16 +98,14 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	}
 
 	if (!conversation) {
-		response.sendStatus(404);
-		return;
+		return serverError(response, ApiErrorCode.DATABASE_ERROR);
 	}
 
 	const friendPIDs = await getUserFriendPIDs(recipient.pid);
 
 	if (friendPIDs.indexOf(request.pid) === -1) {
-		request.log.warn('[Messages] Users are not friends');
-		response.sendStatus(422);
-		return;
+		request.log.warn('User isn\'t friend of recipient');
+		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 
 	let miiFace = 'normal_face.png';
@@ -142,20 +128,18 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	}
 
 	if (messageBody && INVALID_POST_BODY_REGEX.test(messageBody)) {
-		// TODO - Log this error
-		response.sendStatus(400);
-		return;
+		request.log.warn('Message body failed regex');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	if (messageBody && messageBody.length > 280) {
-		// TODO - Log this error
-		response.sendStatus(400);
-		return;
+		request.log.warn('Message body too long');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	if (!messageBody?.trim() && !painting?.trim() && !screenshot?.trim()) {
-		response.status(422);
-		request.log.warn('[Messages] message content is empty');
+		request.log.warn('Message content is empty');
+		badRequest(response, ApiErrorCode.BAD_PARAMS);
 		response.redirect(`/friend_messages/${conversation.id}`);
 		return;
 	}
@@ -239,8 +223,8 @@ router.get('/', async function (request: express.Request, response: express.Resp
 	}
 
 	if (!request.query.search_key) {
-		response.sendStatus(404);
-		return;
+		request.log.warn('Search key not provided');
+		return badRequest(response, ApiErrorCode.FAIL_NOT_FOUND_POST, 404);
 	}
 
 	const searchKey = getValueFromQueryString(request.query, 'search_key');

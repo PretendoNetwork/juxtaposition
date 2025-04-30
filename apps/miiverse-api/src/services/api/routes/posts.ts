@@ -20,7 +20,7 @@ import {
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
 import { config } from '@/config';
-import { badRequest } from '@/errors';
+import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
 
@@ -54,16 +54,15 @@ router.post('/:post_id.delete', async function (request: express.Request, respon
 	const userContent = await getUserContent(request.pid);
 
 	if (!post || !userContent) {
-		response.sendStatus(504);
-		return;
+		return badRequest(response, ApiErrorCode.FAIL_NOT_FOUND_POST, 404);
 	}
 
-	if (post.pid === userContent.pid) {
-		await post.del('User requested removal');
-		response.sendStatus(200);
-	} else {
-		response.sendStatus(401);
+	if (post.pid !== userContent.pid) {
+		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
+
+	await post.del('User requested removal');
+	response.sendStatus(200);
 });
 
 router.post('/:post_id/empathies', upload.none(), async function (request: express.Request, response: express.Response): Promise<void> {
@@ -72,8 +71,7 @@ router.post('/:post_id/empathies', upload.none(), async function (request: expre
 	const post = await getPostByID(request.params.post_id);
 
 	if (!post) {
-		response.sendStatus(404);
-		return;
+		return badRequest(response, ApiErrorCode.FAIL_NOT_FOUND_POST, 404);
 	}
 
 	if (post.yeahs?.indexOf(request.pid) === -1) {
@@ -129,14 +127,13 @@ router.get('/:post_id/replies', async function (request: express.Request, respon
 	const post = await getPostByID(request.params.post_id);
 
 	if (!post) {
-		response.sendStatus(404);
-		return;
+		return badRequest(response, ApiErrorCode.FAIL_NOT_FOUND_POST, 404);
 	}
 
 	const posts = await getPostReplies(post.id, limit);
 	if (posts.length === 0) {
-		response.sendStatus(404);
-		return;
+		request.log.warn('Post has no replies');
+		return badRequest(response, ApiErrorCode.FAIL_NOT_FOUND_POST, 404);
 	}
 
 	const result: PostRepliesResult = {
@@ -171,32 +168,14 @@ router.get('/', async function (request: express.Request, response: express.Resp
 	const postID = getValueFromQueryString(request.query, 'post_id')[0];
 
 	if (!postID) {
-		response.type('application/xml');
-		response.status(404);
-		response.send(xmlbuilder.create({
-			result: {
-				has_error: 1,
-				version: 1,
-				code: 404,
-				message: 'Not Found'
-			}
-		}).end({ pretty: true }));
-		return;
+		request.log.warn('Post ID wasn\'t provided');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	const post = await getPostByID(postID);
 
 	if (!post) {
-		response.status(404);
-		response.send(xmlbuilder.create({
-			result: {
-				has_error: 1,
-				version: 1,
-				code: 404,
-				message: 'Not Found'
-			}
-		}).end({ pretty: true }));
-		return;
+		return badRequest(response, ApiErrorCode.FAIL_NOT_FOUND_POST, 404);
 	}
 
 	response.send(xmlbuilder.create({
@@ -215,22 +194,22 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	response.type('application/xml');
 
 	if (!request.user) {
-		return badRequest(response, 21, 'ACCOUNT_SERVER_ERROR');
+		return serverError(response, ApiErrorCode.ACCOUNT_SERVER_ERROR);
 	}
 
 	if (!request.user.mii) {
 		// * This should never happen, but TypeScript complains so check anyway
 		// TODO - Better errors
-		response.status(422);
-		return;
+		request.log.warn('Mii does not exist or is invalid');
+		return serverError(response, ApiErrorCode.ACCOUNT_SERVER_ERROR);
 	}
 
 	const userSettings = await getUserSettings(request.pid);
 	const bodyCheck = newPostSchema.safeParse(request.body);
 
 	if (!userSettings || !bodyCheck.success) {
-		response.sendStatus(403);
-		return;
+		request.log.warn('Body check failed');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	const communityID = bodyCheck.data.community_id || '';
@@ -256,8 +235,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		isNaN(platformID) ||
 		isNaN(regionID)
 	) {
-		response.sendStatus(403);
-		return;
+		request.log.warn('Parameters are NaN');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	let community = await getCommunityByID(communityID);
@@ -272,8 +251,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	}
 
 	if (!community || userSettings.account_status !== 0 || community.community_id === 'announcements') {
-		response.sendStatus(403);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	let parentPost: HydratedPostDocument | null = null;
@@ -281,8 +259,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		parentPost = await getPostByID(request.params.post_id.toString());
 
 		if (!parentPost) {
-			response.sendStatus(403);
-			return;
+			request.log.warn('Request missing parent post');
+			return badRequest(response, ApiErrorCode.BAD_PARAMS);
 		}
 	}
 
@@ -291,8 +269,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	if (!(community.admins && community.admins.indexOf(request.pid) !== -1 && userSettings.account_status === 0)) {
 		if (community.type >= 2 || request.user.accessLevel < community.permissions.minimum_new_post_access_level) {
 			if (!(parentPost && request.user.accessLevel >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
-				response.sendStatus(403);
-				return;
+				return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 			}
 		}
 	}
@@ -317,20 +294,18 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	}
 
 	if (messageBody && INVALID_POST_BODY_REGEX.test(messageBody)) {
-		// TODO - Log this error
-		response.sendStatus(400);
-		return;
+		request.log.warn('Message body failed regex');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	if (messageBody && messageBody.length > 280) {
-		// TODO - Log this error
-		response.sendStatus(400);
-		return;
+		request.log.warn('Message body too long');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	if (!messageBody?.trim() && !painting?.trim() && !screenshot?.trim()) {
-		response.status(400);
-		return;
+		request.log.warn('Message content is empty');
+		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
 	if (!Array.isArray(searchKey)) {
@@ -369,17 +344,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	const duplicatePost = await getDuplicatePosts(request.pid, document);
 
 	if (duplicatePost) {
-		response.status(400);
-		response.send(xmlbuilder.create({
-			result: {
-				has_error: 1,
-				version: 1,
-				code: 400,
-				error_code: 7,
-				message: 'DUPLICATE_POST'
-			}
-		}).end({ pretty: true }));
-		return;
+		return badRequest(response, ApiErrorCode.NOT_ALLOWED_SPAM, 403);
 	}
 
 	const post = await Post.create(document);
