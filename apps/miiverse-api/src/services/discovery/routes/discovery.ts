@@ -1,8 +1,6 @@
 import express from 'express';
 import xmlbuilder from 'xmlbuilder';
-import { getUserAccountData } from '@/util';
 import { getEndpoint } from '@/database';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
 
 const router = express.Router();
@@ -11,27 +9,17 @@ const router = express.Router();
 router.get('/', async function (request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
 
-	let user: GetUserDataResponse;
-
-	try {
-		user = await getUserAccountData(request.pid);
-	} catch (err) {
-		request.log.warn(err, `Failed to get account data for ${request.pid}`);
-		response.sendStatus(404);
-		return;
-	}
-
 	let discovery: HydratedEndpointDocument | null;
 
-	if (user) {
-		discovery = await getEndpoint(user.serverAccessLevel);
+	if (request.user) {
+		discovery = await getEndpoint(request.user.serverAccessLevel);
 	} else {
 		discovery = await getEndpoint('prod');
 	}
 
 	// TODO - Better error
 	if (!discovery) {
-		request.log.warn(user, 'Failed to find discovery endpoint!');
+		request.log.warn('Failed to find discovery endpoint!');
 		response.sendStatus(404);
 		return;
 	}

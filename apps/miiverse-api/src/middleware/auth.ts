@@ -69,16 +69,10 @@ async function auth(request: express.Request, response: express.Response, next: 
 		user = await getUserAccountData(pid);
 	} catch (error) {
 		logger.error(error, `Failed to get account data for ${pid}`);
-		return badRequest(response, 18, 'BAD_PARAM');
+		return badRequest(response, 21, 'ACCOUNT_SERVER_ERROR');
 	}
 
-	let discovery: HydratedEndpointDocument | null;
-
-	if (user) {
-		discovery = await getEndpoint(user.serverAccessLevel);
-	} else {
-		discovery = await getEndpoint('prod');
-	}
+	const discovery = await getEndpoint(user.serverAccessLevel);
 
 	if (!discovery) {
 		return badRequest(response, 19, 'NO_DISCOVERY');
@@ -88,6 +82,7 @@ async function auth(request: express.Request, response: express.Response, next: 
 		return serverError(response, discovery);
 	}
 
+	request.user = user;
 	request.pid = pid;
 	request.paramPack = paramPackData;
 

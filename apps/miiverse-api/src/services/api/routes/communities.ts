@@ -4,14 +4,14 @@ import multer from 'multer';
 import { z } from 'zod';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
-import { getValueFromQueryString, getUserAccountData } from '@/util';
+import { getValueFromQueryString } from '@/util';
 import {
 	getMostPopularCommunities,
 	getNewCommunities,
 	getCommunityByTitleID,
 	getUserContent
 } from '@/database';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import { badRequest } from '@/errors';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { SubCommunityQuery } from '@/types/mongoose/subcommunity-query';
 import type { CommunityPostsQuery } from '@/types/mongoose/community-posts-query';
@@ -267,17 +267,11 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 		return respondCommunityError(response, 400, 20);
 	}
 
-	let pnid: GetUserDataResponse;
-
-	try {
-		pnid = await getUserAccountData(request.pid);
-	} catch (error) {
-		request.log.error(error, `Failed to get account data for ${request.pid}`);
-		response.sendStatus(403);
-		return;
+	if (!request.user) {
+		return badRequest(response, 21, 'ACCOUNT_SERVER_ERROR');
 	}
 
-	if (pnid.accessLevel < parentCommunity.permissions.minimum_new_community_access_level) {
+	if (request.user.accessLevel < parentCommunity.permissions.minimum_new_community_access_level) {
 		response.send(xmlbuilder.create({
 			result: {
 				has_error: '1',

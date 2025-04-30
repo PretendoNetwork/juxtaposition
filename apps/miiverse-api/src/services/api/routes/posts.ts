@@ -3,7 +3,6 @@ import multer from 'multer';
 import xmlbuilder from 'xmlbuilder';
 import { z } from 'zod';
 import {
-	getUserAccountData,
 	processPainting,
 	uploadCDNAsset,
 	getValueFromQueryString,
@@ -18,13 +17,12 @@ import {
 	getCommunityByTitleID,
 	getDuplicatePosts
 } from '@/database';
-import { LOG_WARN } from '@/logger';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
 import { config } from '@/config';
+import { badRequest } from '@/errors';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
@@ -216,17 +214,11 @@ router.get('/', async function (request: express.Request, response: express.Resp
 async function newPost(request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
 
-	let user: GetUserDataResponse;
-
-	try {
-		user = await getUserAccountData(request.pid);
-	} catch (err) {
-		request.log.warn(err, `Failed to get account data for ${request.pid}`);
-		response.sendStatus(403);
-		return;
+	if (!request.user) {
+		return badRequest(response, 21, 'ACCOUNT_SERVER_ERROR');
 	}
 
-	if (!user.mii) {
+	if (!request.user.mii) {
 		// * This should never happen, but TypeScript complains so check anyway
 		// TODO - Better errors
 		response.status(422);
@@ -297,8 +289,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	// TODO - Clean this up
 	// * Nesting this because of how many checks there are, extremely unreadable otherwise
 	if (!(community.admins && community.admins.indexOf(request.pid) !== -1 && userSettings.account_status === 0)) {
-		if (community.type >= 2 || user.accessLevel < community.permissions.minimum_new_post_access_level) {
-			if (!(parentPost && user.accessLevel >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
+		if (community.type >= 2 || request.user.accessLevel < community.permissions.minimum_new_post_access_level) {
+			if (!(parentPost && request.user.accessLevel >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
 				response.sendStatus(403);
 				return;
 			}
@@ -364,12 +356,12 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		is_spoiler: (spoiler === '1') ? 1 : 0,
 		is_app_jumpable: (jumpable) ? 1 : 0,
 		language_id: languageID,
-		mii: user.mii.data,
-		mii_face_url: `${config.cdnUrl}/mii/${user.pid}/${miiFace}`,
+		mii: request.user.mii.data,
+		mii_face_url: `${config.cdnUrl}/mii/${request.user.pid}/${miiFace}`,
 		pid: request.pid,
 		platform_id: platformID,
 		region_id: regionID,
-		verified: (user.accessLevel === 2 || user.accessLevel === 3),
+		verified: (request.user.accessLevel === 2 || request.user.accessLevel === 3),
 		parent: parentPost ? parentPost.id : null,
 		removed: false
 	};
@@ -398,7 +390,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		if (paintingBuffer) {
 			await uploadCDNAsset(`paintings/${request.pid}/${post.id}.png`, paintingBuffer, 'public-read');
 		} else {
-			LOG_WARN(`PAINTING FOR POST ${post.id} FAILED TO PROCESS`);
+			request.log.warn(`PAINTING FOR POST ${post.id} FAILED TO PROCESS`);
 		}
 	}
 

@@ -16,6 +16,7 @@ import { getConversationByUsers, getUserSettings, getFriendMessages } from '@/da
 import { Post } from '@/models/post';
 import { Conversation } from '@/models/conversation';
 import { config } from '@/config';
+import { badRequest } from '@/errors';
 import type { FormattedMessage } from '@/types/common/formatted-message';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
@@ -57,15 +58,11 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		return;
 	}
 
-	let sender: GetUserDataResponse;
-
-	try {
-		sender = await getUserAccountData(request.pid);
-	} catch (err) {
-		request.log.warn(err, `[Messages] Failed to get account data for ${request.pid}`);
-		response.sendStatus(422);
-		return;
+	if (!request.user) {
+		return badRequest(response, 21, 'ACCOUNT_SERVER_ERROR');
 	}
+
+	const sender = request.user;
 
 	if (!sender.mii) {
 		// * This should never happen, but TypeScript complains so check anyway
@@ -80,19 +77,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		recipient = await getUserAccountData(recipientPID);
 	} catch (err) {
 		request.log.warn(err, `[Messages] Failed to get account data for recipient ${recipientPID}`);
-		response.type('application/xml');
-		response.status(422);
-
-		response.send(xmlbuilder.create({
-			result: {
-				has_error: 1,
-				version: 1,
-				code: 400,
-				error_code: 11,
-				message: 'User not Found'
-			}
-		}).end({ pretty: true }));
-		return;
+		return badRequest(response, 11, 'User not found');
 	}
 
 	let conversation = await getConversationByUsers([sender.pid, recipient.pid]);
