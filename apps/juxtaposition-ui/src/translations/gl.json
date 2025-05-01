@@ -44,7 +44,83 @@
         "following": "Seguindo",
         "followers": "Seguidores",
         "follow_user": "Segue",
-        "birthday": "Aniversario"
+        "birthday": "Aniversario",
+        "following_user": "Seguindo",
+        "befriend": "Engadir como amigo",
+        "pending": "Pendente",
+        "unfriend": "Borrar como amigo",
+        "no_friends": "Sen amigos",
+        "no_following": "Non Seguindo A Ninguén",
+        "no_followers": "Sen Seguidores"
     },
-    "language": "Galego"
+    "language": "Galego",
+    "setup": {
+        "rules_text": {
+            "eleventh": "A nosa meta é facer que Juxt siga sendo divertido e disfrutáble para tod@s. No momento no que alguén viole o Código de Conducta de Juxt, tomaremos a acción apropiada, incluíndo bloquear o usuario ofensor ou consola.",
+            "twelfth": "Xogaches a Ise Xogo?",
+            "seventh": "Recorde que coñecer a alguén en Juxt non é o mesmo que coñecelo na vida real. Nunca compartas a túa direccion de e-mail, a dirección da túa casa, nome do traballo ou nome do colexio/instituto/universidade, ou outra información identificante con ninguén en Juxt, e nunca compartas a información de outras persoas tampouco. Adicionalmente, si alguén que coñeces en Juxt invítache a coñecerlle na vida real, non aceptes. Juxt é unha comunidade online e non debería ser usada para facer quedadas na vida real.",
+            "third": "Juxt contén moitas comunidades de xogadores onde a xente de todo o mundo pode compartir os seus pensamentos. Cando publica nunha comunidade, recorde que todo o mundo pode velo, así que por favor exprésese nunha maneira na que todos poidan disfrutar. Utilize o sentido común, e pense antes de publicar. Juxt é un serivizo que tamén é accesible desde o Internet, así que teña en mente que a xente que non usa Juxt pode que vexa as súas publicacións. Adicionalmente, calquer comentario que faga nas publicacións dos seus amigos van ser vistos por xente en todo o mundo tamén. Por favor, teña esto en mente.",
+            "first": "As seguintes son algunhas regras para facer Juxt un lugar divertido e disfrutáble para tod@s. O código de conducta de Juxt contén información detallada, así que por favor, léeo con atención.",
+            "thirteenth": "Se estás publicando algo na comunidade dun xogo que xogaches as túas publicacións terán unha ícona indicando que o xogaches.",
+            "second": "As Publicacións Poden Ser Vistas En Todo o Mundo",
+            "fourth": "Ser Agradables",
+            "fifth": "Para facer Juxt un lugar divertido para todo o mundo, pedímoslle que sexas amable aos outros usuarios. Axúdanos a facer que Juxt siga sendo un lugar disfrutáble non publicando nada inapropiado ou ofensivo.",
+            "sixth": "Non Publiques Información Persoal, Xa sexa túa ou de outros",
+            "eighth": "Non Subas Spoilers",
+            "tenth": "Violacións do Código de Conducta",
+            "ninth": "Algunhas persoas veñen a Juxt buscando pistas e trucos para xogos, pero outros queren descubrir os segredos dun xogo eles sós. As publicacións que revelen segredos dun xogo ou da súa historia chámanse \"spoilers\". Se vai a subir algo sobre un xogo que pode que sexa un spoiler, asegúrese de marcar a casilla de Spoilers antes de envíar a súa publicación. De esta maneira, a xente que non quere que lle fagan spoiler non verá a súa publicación."
+        },
+        "google": "Analíticas de Google",
+        "done": "Pásao ben en Juxt!",
+        "done_button": "Vamos alá!",
+        "experience_text": {
+            "info": "Por favor cóntanos como describiría o seu nivel de experiencia de xogos. Podes cambiar iste axuste máis tarde.",
+            "beginner": "Principiante",
+            "expert": "Experto",
+            "intermediate": "Intermedio"
+        },
+        "experience": "Experiencia de Xogo",
+        "ready_text": "Primeiro mira algunhas comunidades e mira sobre o que a xente de todo o mundo está publicando. Utilice esta oportunidade para familiarizarse con Juxt. Pode que fagas algún novo descubrimento polo camiño!",
+        "guest": "Modo Invitado",
+        "beta_text": {
+            "third": "A páxina web, o seu software e todo o contenido nela ofrécese \"tal cal\" e \"segundo a súa dispoñibilidade\". Pretendo Network non da ningunha garantía, xa sea expresado ou implicado, sobre a idoneidade ou usabilidade do sitio web, o seu software ou calquera do seu contido.",
+            "first": "Estás a punto de probar a primeira beta pública de Juxt. Esto significa que hai moitas cousas sen rematar, e moitas cousas poden cambiar en calquera momento.",
+            "second": "Esto pode e quizáis inclúa una eliminación da base de datos no final ou durante a fase beta."
+        },
+        "ready": "Preparado Para Comezar a Usar Juxt",
+        "welcome": "Benvido a Juxtaposition!",
+        "beta": "Aviso De Versión Beta",
+        "info": "Que é Juxtaposition?",
+        "info_text": "Juxt é unha comunidade de xogadores manexada polos usuarios onde podes interactuar con xente\narredor do mundo. Podes escribir ou debuxar publicacións en comunidades de xogos ou enviar mensaxes directamente aos teus amigos (aínda non dispoñíbel).",
+        "rules": "Regras de Juxt",
+        "guest_text": "Non podemos verificar a súa conta en este momento, o que probablemente significa que vostede está iniciando a sesión con unha conta de Nintendo Network account. Vas a ser capaz de mirar Juxt, pero non poderá \"Yeah!\" publicacións e non facer as súas propias publicacións hasta que inicie a sesión con unha conta de Pretendo Network. Para máis información revise o servidor de Discord.",
+        "guest_button": "Entendóo",
+        "welcome_text": "Juxtaposition é unha comunidade de xogadores que conecta xente de todo o mundo usando persoaxes Mii. Usa Juxtaposition para compartir as túas experiencias xogando e coñece a xente de todo o mundo.",
+        "google_text": "Juxtaposition utiliza Google Analytics para ver como os usuarios utilizan o noso servicio. Os datos recollidos inclúen máis non limitan ao tempo de visita, páxinas visitadas e tempo pasado no sito. Estos datos non están unidos a vostede en ningunha maneira, e non está usada para anuncios nosos ou de Google."
+    },
+    "new_post": {
+        "text_hint": "Toca aiquí para facer unha publicación.",
+        "new_post_text": "Nova Publicación",
+        "post_to": "Publicar a",
+        "swearing": "A publicación non pode ter linguaxe explícito."
+    },
+    "user_settings": {
+        "show_comment": "Amosar Comentarios no Perfil",
+        "profile_settings": "Axustes Do Perfil",
+        "show_country": "Amosar País no Perfil",
+        "show_birthday": "Amosar Aniversario no Perfil",
+        "show_game": "Amosar Experiencia En Xogos no Perfil",
+        "profile_comment": "Comentario do Perfil",
+        "swearing": "O comentario do perfil non pode ter linguaxe explícito."
+    },
+    "activity_feed": {
+        "empty": "Está baleiro aiquí. Proba a seguir a alguén!"
+    },
+    "notifications": {
+        "none": "Sen notificacións.",
+        "new_follower": "seguíuche!"
+    },
+    "messages": {
+        "coming_soon": "Está función non está preparada. Volve a mirar pronto!"
+    }
 }
