@@ -31,10 +31,10 @@
         "following": "Siguiendo",
         "followers": "Seguidores",
         "posts": "Publicaciones",
-        "tags": "Etiquetas",
-        "recent": "Publicaciones recientes",
-        "popular": "Publicaciones populares",
-        "verified": "Publicaciones verificados",
+        "tags": "Distintivos de uso",
+        "recent": "Mensajes recientes",
+        "popular": "Mensajes populares",
+        "verified": "Mensajes verificados",
         "new": "Nueva publicación"
     },
     "user_page": {
