@@ -8,6 +8,7 @@ const { logger } = require('@/logger');
 const { loggerHttp } = require('@/loggerHttp');
 const { redisClient } = require('@/redisCache');
 const juxt_web = require('@/services/juxt-web');
+const { healthzRouter } = require('@/services/healthz');
 const { config } = require('@/config');
 
 process.title = 'Pretendo - Juxt-Web';
@@ -48,6 +49,7 @@ logger.info('Setting up Middleware');
 app.use(loggerHttp);
 app.enable('trust proxy');
 app.use(express.json());
+app.use(healthzRouter);
 
 app.use(express.urlencoded({
 	extended: true,
