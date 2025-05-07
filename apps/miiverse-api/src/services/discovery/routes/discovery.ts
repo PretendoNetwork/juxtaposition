@@ -26,7 +26,7 @@ router.get('/', async function (request: express.Request, response: express.Resp
 	if (discovery.status > 0 && discovery.status <= 7) {
 		return badRequest(response, discovery.status);
 	} else if (discovery.status !== 0) {
-		request.log.error(discovery, `Discovery for ${request.user?.serverAccessLevel} has unexpected status`);
+		request.log.error(`Discovery status ${discovery.status} unexpexted for ${request.user?.serverAccessLevel}`);
 		return serverError(response, ApiErrorCode.NO_DISCOVERY_DATA);
 	}
 

@@ -72,14 +72,14 @@ async function auth(request: express.Request, response: express.Response, next: 
 	const discovery = await getEndpoint(user.serverAccessLevel);
 
 	if (!discovery) {
-		request.log.error(user, `Discovery data is missing for ${user.serverAccessLevel}`);
+		request.log.error(`Discovery data is missing for ${user.serverAccessLevel}`);
 		return serverError(response, ApiErrorCode.NO_DISCOVERY_DATA);
 	}
 
 	if (discovery.status > 0 && discovery.status <= 7) {
 		return badRequest(response, discovery.status);
 	} else if (discovery.status !== 0) {
-		request.log.error(discovery, `Discovery for ${user.serverAccessLevel} has unexpected status`);
+		request.log.error(`Discovery status ${discovery.status} unexpexted for ${user.serverAccessLevel}`);
 		return serverError(response, ApiErrorCode.NO_DISCOVERY_DATA);
 	}
 
