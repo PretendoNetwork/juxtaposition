@@ -10,7 +10,8 @@ type SerializedNintendoRequest = SerializedRequest & { param_pack?: ParamPack };
 type SerializedMiiverseResponse = SerializedResponse & { errorCode?: ApiErrorCode; errorCodeStr?: string };
 
 function redactHeaders(headers: Record<string, string>, allowlist: string[]): Record<string, string> {
-	if (config.log.redact) {
+	if (!config.log.sensitive) {
+		// Redact sensitive header types
 		return Object.fromEntries(Object.keys(headers).map(key =>
 			allowlist.includes(key) ? [key, headers[key]] : [key, '[redacted]']
 		));

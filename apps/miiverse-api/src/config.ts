@@ -5,7 +5,7 @@ import { z } from 'zod';
 const schema = z.object({
 	logFormat: z.enum(['json', 'pretty']).default('pretty'),
 	logLevel: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
-	logRedact: zodCoercedBoolean().default(true),
+	logSensitive: zodCoercedBoolean().default(false),
 	httpPort: z.coerce.number().default(8080),
 	metricsEnabled: zodCoercedBoolean().default(false),
 	metricsPort: z.coerce.number().default(9090),
@@ -62,7 +62,7 @@ export const config = {
 	log: {
 		format: unmappedConfig.logFormat,
 		level: unmappedConfig.logLevel,
-		redact: unmappedConfig.logRedact
+		sensitive: unmappedConfig.logSensitive
 	},
 	http: {
 		port: unmappedConfig.httpPort
