@@ -5,7 +5,7 @@ import { z } from 'zod';
 const schema = z.object({
 	logFormat: z.enum(['json', 'pretty']).default('pretty'),
 	logLevel: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
-	logRedact: zodCoercedBoolean().default(true),
+	logSensitive: zodCoercedBoolean().default(false),
 	httpPort: z.coerce.number().default(8080),
 	httpCookieDomain: z.string().default('.pretendo.network'),
 	metricsEnabled: zodCoercedBoolean().default(false),
@@ -74,7 +74,7 @@ export const config = {
 	log: {
 		format: unmappedConfig.logFormat,
 		level: unmappedConfig.logLevel,
-		redact: unmappedConfig.logRedact
+		sensitive: unmappedConfig.logSensitive
 	},
 	http: {
 		port: unmappedConfig.httpPort,
