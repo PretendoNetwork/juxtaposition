@@ -1,6 +1,6 @@
 const express = require('express');
-const database = require('../../../../database');
-const util = require('../../../../util');
+const database = require('@/database');
+const util = require('@/util');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
