@@ -79,7 +79,7 @@ async function auth(request: express.Request, response: express.Response, next: 
 	if (discovery.status > 0 && discovery.status <= 7) {
 		return badRequest(response, discovery.status);
 	} else if (discovery.status !== 0) {
-		request.log.error(`Discovery status ${discovery.status} unexpexted for ${user.serverAccessLevel}`);
+		request.log.error(`Discovery status ${discovery.status} unexpected for ${user.serverAccessLevel}`);
 		return serverError(response, ApiErrorCode.NO_DISCOVERY_DATA);
 	}
 
