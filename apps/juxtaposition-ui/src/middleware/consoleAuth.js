@@ -1,5 +1,6 @@
 const util = require('../util');
 const { config } = require('../config');
+const { logger } = require('../logger');
 
 async function auth(request, response, next) {
 	// Get pid and fetch user data
@@ -32,7 +33,7 @@ async function auth(request, response, next) {
 				request.session.pid = null;
 			}
 		} catch (e) {
-			console.error(e);
+			logger.error(e, 'Failed to authenticate user from access token');
 			request.user = null;
 			request.pid = null;
 		}

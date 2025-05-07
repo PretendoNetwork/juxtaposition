@@ -8,22 +8,23 @@ const { NOTIFICATION } = require('./models/notifications');
 const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
 const { REPORT } = require('./models/report');
-const logger = require('./logger');
+const { logger } = require('./logger');
 const { config } = require('./config');
 
 let connection;
 mongoose.set('strictQuery', true);
 
 async function connect() {
-	await mongoose.connect(config.mongoose.uri);
 	connection = mongoose.connection;
 	connection.on('connected', function () {
 		logger.info(`MongoDB connected ${this.name}`);
 	});
-	connection.on('error', console.error.bind(console, 'connection error:'));
+	connection.on('error', err => logger.error(err, 'Database connection error'));
 	connection.on('close', () => {
 		connection.removeAllListeners();
 	});
+
+	await mongoose.connect(config.mongoose.uri);
 }
 
 function verifyConnected() {

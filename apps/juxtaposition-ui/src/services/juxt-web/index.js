@@ -1,6 +1,6 @@
 const express = require('express');
 const subdomain = require('express-subdomain');
-const logger = require('../../logger');
+const { logger } = require('../../logger');
 const webAuth = require('../../middleware/webAuth');
 const consoleAuth = require('../../middleware/consoleAuth');
 const checkBan = require('../../middleware/checkBan');

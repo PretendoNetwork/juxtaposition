@@ -3,7 +3,9 @@ import { z } from 'zod';
 
 // schema is mapped later to nested object to keep env vars consistent with other projects
 const schema = z.object({
-	logFolder: z.string().default(`${__dirname}/../logs`),
+	logFormat: z.enum(['json', 'pretty']).default('pretty'),
+	logLevel: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
+	logSensitive: zodCoercedBoolean().default(false),
 	httpPort: z.coerce.number().default(8080),
 	metricsEnabled: zodCoercedBoolean().default(false),
 	metricsPort: z.coerce.number().default(9090),
@@ -57,7 +59,11 @@ const unmappedConfig = createConfigLoader()
 	.load();
 
 export const config = {
-	logFolder: unmappedConfig.logFolder,
+	log: {
+		format: unmappedConfig.logFormat,
+		level: unmappedConfig.logLevel,
+		sensitive: unmappedConfig.logSensitive
+	},
 	http: {
 		port: unmappedConfig.httpPort
 	},

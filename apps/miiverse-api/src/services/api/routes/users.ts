@@ -9,9 +9,7 @@ router.get('/:pid/notifications', function (request: express.Request, response: 
 	const titleID = getValueFromQueryString(request.query, 'title_id')[0];
 	const pid = getValueFromQueryString(request.query, 'pid')[0];
 
-	console.log(type);
-	console.log(titleID);
-	console.log(pid);
+	request.log.debug({ type, titleID, pid }, 'STUB notifications request');
 
 	response.type('application/xml');
 	response.send(xmlbuilder.create({

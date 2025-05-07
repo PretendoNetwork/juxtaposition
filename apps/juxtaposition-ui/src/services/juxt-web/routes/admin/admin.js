@@ -10,6 +10,7 @@ const util = require('../../../../util');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const { config } = require('../../../../config');
+const { logger } = require('../../../../logger');
 const router = express.Router();
 
 router.get('/posts', async function (req, res) {
@@ -78,7 +79,7 @@ router.get('/accounts/:pid', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 	const pnid = await util.getUserDataFromPid(req.params.pid).catch((e) => {
-		console.error(e.details);
+		logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
 	});
 	const userContent = await database.getUserContent(req.params.pid);
 	if (isNaN(req.params.pid) || !pnid || !userContent) {

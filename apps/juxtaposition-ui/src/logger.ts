@@ -40,33 +40,3 @@ export const logger = pino({
 		success: 35 // between INFO and WARN
 	}
 }, pretty);
-
-// Compatibility for old logging API
-
-/**
- * @deprecated Old logging api - Please import { logger } and use logger.success!
- */
-export function LOG_SUCCESS(input: string): void {
-	logger.success(input);
-}
-
-/**
- * @deprecated Old logging api - Please import { logger } and use logger.error!
- */
-export function LOG_ERROR(input: string): void {
-	logger.error(input);
-}
-
-/**
- * @deprecated Old logging api - Please import { logger } and use logger.warn!
- */
-export function LOG_WARN(input: string): void {
-	logger.warn(input);
-}
-
-/**
- * @deprecated Old logging api - Please import { logger } and use logger.info!
- */
-export function LOG_INFO(input: string): void {
-	logger.info(input);
-}

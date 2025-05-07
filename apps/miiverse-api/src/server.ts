@@ -1,18 +1,13 @@
 import express from 'express';
-import morgan from 'morgan';
-import xmlbuilder from 'xmlbuilder';
 import expressMetrics from 'express-prom-bundle';
 import { connect as connectDatabase } from '@/database';
-import { LOG_INFO, LOG_SUCCESS } from '@/logger';
+import { logger } from '@/logger';
+import { loggerHttp } from '@/loggerHttp';
 import auth from '@/middleware/auth';
 import discovery from '@/services/discovery';
 import api from '@/services/api';
 import { config } from '@/config';
-
-process.title = 'Pretendo - Miiverse';
-process.on('SIGTERM', () => {
-	process.exit(0);
-});
+import { ApiErrorCode, badRequest, serverError } from './errors';
 
 const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
 const metrics = express();
@@ -20,7 +15,7 @@ const app = express();
 
 // Metrics has to happen first so we can measure the other middleware
 if (metricsEnabled) {
-	LOG_INFO('Setting up metrics');
+	logger.info('Setting up metrics');
 	app.use(expressMetrics({
 		// Include full express and nodejs metrics
 		includeMethod: true,
@@ -39,8 +34,8 @@ app.set('etag', false);
 app.disable('x-powered-by');
 
 // Create router
-LOG_INFO('Setting up Middleware');
-app.use(morgan('dev'));
+logger.info('Setting up Middleware');
+app.use(loggerHttp);
 app.use(express.json());
 
 app.use(express.urlencoded({
@@ -55,53 +50,38 @@ app.use(discovery);
 app.use(api);
 
 // 404 handler
-LOG_INFO('Creating 404 status handler');
+logger.info('Creating 404 status handler');
 app.use((_request: express.Request, response: express.Response) => {
-	response.type('application/xml');
-	response.status(404);
-
-	return response.send(xmlbuilder.create({
-		result: {
-			has_error: 1,
-			version: 1,
-			code: 404,
-			message: 'Not Found'
-		}
-	}).end({ pretty: true }));
+	return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
 });
 
 // non-404 error handler
-LOG_INFO('Creating non-404 status handler');
+logger.info('Creating non-404 status handler');
 app.use((_error: unknown, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
-	const status = 500;
-	response.type('application/xml');
-	response.status(404);
-
-	return response.send(xmlbuilder.create({
-		result: {
-			has_error: 1,
-			version: 1,
-			code: status,
-			message: 'Not Found'
-		}
-	}).end({ pretty: true }));
+	return serverError(response, ApiErrorCode.UNKNOWN_ERROR);
 });
 
 async function main(): Promise<void> {
 	// Starts the server
-	LOG_INFO('Starting server');
+	logger.info('Starting server');
 
 	await connectDatabase();
 
 	app.listen(port, () => {
-		LOG_SUCCESS(`Server started on port ${port}`);
+		logger.info(`Server started on port ${port}`);
 	});
 
 	if (metricsEnabled) {
 		metrics.listen(metricsPort, () => {
-			LOG_SUCCESS(`Metrics server started on port ${metricsPort}`);
+			logger.info(`Metrics server started on port ${metricsPort}`);
 		});
 	}
 }
 
-main().catch(console.error);
+process.title = 'Pretendo - Miiverse';
+process.on('uncaughtException', (err) => {
+	logger.fatal(err, 'Uncaught exception');
+	process.exit(1);
+});
+
+main();
