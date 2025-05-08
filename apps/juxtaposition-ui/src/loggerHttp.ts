@@ -1,7 +1,7 @@
 import pinoHttp from 'pino-http';
-import { logger } from './logger';
-import { config } from './config';
-import { decodeParamPack } from './util';
+import { logger } from '@/logger';
+import { config } from '@/config';
+import { decodeParamPack } from '@/util';
 import type { SerializedRequest, SerializedResponse } from 'pino';
 
 type SerializedNintendoRequest = SerializedRequest & { param_pack?: Record<string, string> };

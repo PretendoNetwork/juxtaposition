@@ -1,5 +1,6 @@
 import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
+import { fixImportsPlugin } from 'esbuild-fix-imports-plugin';
 
 export default defineConfig({
 	entry: ['src/**/*.{js,ts}', '!src/webfiles/**/*.js'],
@@ -10,6 +11,7 @@ export default defineConfig({
 	bundle: false,
 	format: ['cjs'],
 	esbuildPlugins: [
+		fixImportsPlugin(),
 		copy({
 			resolveFrom: 'cwd',
 			assets: [
