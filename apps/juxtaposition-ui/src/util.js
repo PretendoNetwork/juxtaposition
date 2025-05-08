@@ -128,6 +128,11 @@ function processServiceToken(encryptedToken) {
 			return null;
 		}
 
+		// * Check if the token is expired
+		if (token.expire_time < Date.now()) {
+			return null;
+		}
+
 		return token.pid;
 	} catch (e) {
 		logger.error(e, 'Could not process service token');
