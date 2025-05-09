@@ -330,7 +330,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		name: req.body.name,
 		description: req.body.description
 	};
-	await COMMUNITY.findOneAndUpdate({ community_id: communityID }, { $set: document }, { upsert: true }).exec();
+	await COMMUNITY.findOneAndUpdate({ olive_community_id: communityID }, { $set: document }, { upsert: true }).exec();
 
 	res.redirect(`/admin/communities/${communityID}`);
 
