@@ -58,7 +58,7 @@ async function checkBan(request, response, next) {
 			let banMessage = '';
 			switch (userSettings.account_status) {
 				case 2:
-					banMessage = `${request.user.username} has been banned until: ${moment(userSettings.ban_lift_date)}. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
+					banMessage = `${request.user.username} has been banned for ${moment(userSettings.ban_lift_date).fromNow(true)}. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 					break;
 				case 3:
 					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
