@@ -3,13 +3,14 @@ const express = require('express');
 const multer = require('multer');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
-const database = require('../../../../database');
-const util = require('../../../../util');
-const { POST } = require('../../../../models/post');
-const { REPORT } = require('../../../../models/report');
+const { logger } = require('@/logger');
+const database = require('@/database');
+const util = require('@/util');
+const { POST } = require('@/models/post');
+const { REPORT } = require('@/models/report');
 const upload = multer({ dest: 'uploads/' });
-const redis = require('../../../../redisCache');
-const { config } = require('../../../../config');
+const redis = require('@/redisCache');
+const { config } = require('@/config');
 const router = express.Router();
 
 const postLimit = rateLimit({
@@ -196,7 +197,7 @@ async function newPost(req, res) {
 	const community = await database.getCommunityByID(req.body.community_id);
 	if (!community || !userSettings || !req.user) {
 		res.status(403);
-		console.error('missing data');
+		logger.error('Incoming post is missing data - rejecting');
 		return res.redirect('/titles/show');
 	}
 	if (req.params.post_id && (req.body.body === '' && req.body.painting === '' && req.body.screenshot === '')) {

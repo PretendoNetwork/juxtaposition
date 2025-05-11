@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const database = require('../../../../database');
-const util = require('../../../../util');
-const { config } = require('../../../../config');
+const database = require('@/database');
+const util = require('@/util');
+const { config } = require('@/config');
+const { logger } = require('@/logger');
 
 const cookieDomain = config.http.cookieDomain;
 
@@ -13,7 +14,6 @@ router.get('/', async function (req, res) {
 router.post('/', async (req, res) => {
 	const { username, password } = req.body;
 	const login = await util.login(username, password).catch((e) => {
-		console.error(e.details);
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
 				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.' });
@@ -22,6 +22,7 @@ router.post('/', async (req, res) => {
 				res.render(req.directory + '/login.ejs', { toast: 'Password was incorrect.' });
 				break;
 			default:
+				logger.error(e, `Login error for ${username}`);
 				res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.' });
 				break;
 		}

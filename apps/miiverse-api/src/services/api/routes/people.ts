@@ -4,6 +4,7 @@ import moment from 'moment';
 import { getUserContent, getFollowedUsers } from '@/database';
 import { getValueFromQueryString, getUserFriendPIDs } from '@/util';
 import { Post } from '@/models/post';
+import { ApiErrorCode, badRequest } from '@/errors';
 import type { CommunityPostsQuery } from '@/types/mongoose/community-posts-query';
 import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
 import type { PeopleFollowingResult, PeoplePostsResult } from '@/types/miiverse/people';
@@ -17,8 +18,7 @@ router.get('/', async function (request: express.Request, response: express.Resp
 	const userContent = await getUserContent(request.pid);
 
 	if (!userContent) {
-		response.sendStatus(404);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
 	}
 
 	const query: CommunityPostsQuery = {
@@ -112,15 +112,13 @@ router.get('/:pid/following', async function (request: express.Request, response
 	const pid = parseInt(request.params.pid);
 
 	if (isNaN(pid)) {
-		response.sendStatus(404);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
 	}
 
 	const userContent = await getUserContent(pid);
 
 	if (!userContent) {
-		response.sendStatus(404);
-		return;
+		return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
 	}
 
 	const people = await getFollowedUsers(userContent);

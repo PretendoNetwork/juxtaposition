@@ -12,14 +12,14 @@ const bmp = require('bmp-js');
 const sharp = require('sharp');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const crc32 = require('crc/crc32');
-const database = require('./database');
 const translations = require('./translations');
-const { COMMUNITY } = require('./models/communities');
-const { NOTIFICATION } = require('./models/notifications');
-const logger = require('./logger');
-const { CONTENT } = require('./models/content');
-const { SETTINGS } = require('./models/settings');
-const { config } = require('./config');
+const database = require('@/database');
+const { COMMUNITY } = require('@/models/communities');
+const { NOTIFICATION } = require('@/models/notifications');
+const { logger } = require('@/logger');
+const { CONTENT } = require('@/models/content');
+const { SETTINGS } = require('@/models/settings');
+const { config } = require('@/config');
 const communityMap = new HashMap();
 const userMap = new HashMap();
 
@@ -99,6 +99,12 @@ async function create_user(pid, experience, notifications) {
 
 	this.setName(pid, pnid.mii.name);
 }
+
+/**
+ * Decodes and converts a Nintendo param pack to a JavaScript object.
+ * @param {string} paramPack base64-encoded param pack
+ * @returns {Record<string, string>}
+ */
 function decodeParamPack(paramPack) {
 	/*  Decode base64 */
 	let dec = Buffer.from(paramPack, 'base64').toString('ascii');
@@ -124,7 +130,7 @@ function processServiceToken(encryptedToken) {
 
 		return token.pid;
 	} catch (e) {
-		console.error(e);
+		logger.error(e, 'Could not process service token');
 		return null;
 	}
 }
@@ -169,13 +175,14 @@ async function processPainting(painting, isTGA) {
 		try {
 			output = pako.inflate(paintingBuffer);
 		} catch (err) {
-			console.error(err);
+			logger.error(err, 'Could not decompress painting');
+			return null;
 		}
 		let tga;
 		try {
 			tga = new TGA(Buffer.from(output));
 		} catch (e) {
-			console.error(e);
+			logger.error(e, 'Could not parse painting');
 			return null;
 		}
 		const png = new PNG({
@@ -194,7 +201,8 @@ async function processPainting(painting, isTGA) {
 		try {
 			output = pako.deflate(tga, { level: 6 });
 		} catch (err) {
-			console.error(err);
+			logger.error(err, 'Could not compress painting');
+			return null;
 		}
 		return new Buffer(output).toString('base64');
 	}
@@ -246,7 +254,7 @@ async function resizeImage(file, width, height) {
 			.toBuffer()
 			.then((data) => {
 				resolve(data);
-			}).catch(err => console.error(err));
+			}).catch(err => logger.error(err, 'Could not resize image'));
 	});
 }
 
@@ -257,7 +265,8 @@ async function getTGAFromPNG(image) {
 	try {
 		output = pako.deflate(tga, { level: 6 });
 	} catch (err) {
-		console.error(err);
+		logger.error(err, 'Could not decompress image');
+		return null;
 	}
 	return new Buffer(output).toString('base64').trim();
 }
@@ -335,7 +344,7 @@ async function uploadCDNAsset(key, data, acl) {
 		await s3.send(awsPutParams);
 		return true;
 	} catch (e) {
-		console.error(e);
+		logger.error(e, 'Could not upload to CDN');
 		return false;
 	}
 }
@@ -433,7 +442,8 @@ async function getFriends(pid) {
 			})
 		});
 		return pids.pids;
-	} catch (ignored) {
+	} catch (e) {
+		logger.error(e, `Failed to get friends for ${pid}`);
 		return [];
 	}
 }
@@ -447,7 +457,8 @@ async function getFriendRequests(pid) {
 			})
 		});
 		return requests.friendRequests;
-	} catch (ignore) {
+	} catch (e) {
+		logger.error(e, `Failed to get friend requests for ${pid}`);
 		return [];
 	}
 }

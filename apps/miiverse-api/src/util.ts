@@ -9,6 +9,7 @@ import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
 import { config } from '@/config';
+import { logger } from '@/logger';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
@@ -69,7 +70,7 @@ export function getPIDFromServiceToken(token: string): number {
 
 		return unpackedToken.pid;
 	} catch (e) {
-		console.error(e);
+		logger.error(e, 'Failed to extract PID from service token');
 		return 0;
 	}
 }
@@ -112,7 +113,7 @@ export function processPainting(painting: string): Buffer | null {
 	try {
 		output = pako.inflate(paintingBuffer);
 	} catch (error) {
-		console.error(error);
+		logger.error(error, 'Failed to decompress painting');
 		return null;
 	}
 
@@ -156,7 +157,7 @@ export async function uploadCDNAsset(key: string, data: Buffer, acl: string): Pr
 		await s3.putObject(awsPutParams).promise();
 		return true;
 	} catch (e) {
-		console.error(e);
+		logger.error(e, 'Could not upload to CDN');
 		return false;
 	}
 }

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { LOG_INFO } from '@/logger';
+import { logger } from '@/logger';
 import { Community } from '@/models/community';
 import { Content } from '@/models/content';
 import { Conversation } from '@/models/conversation';
@@ -17,16 +17,16 @@ import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 let connection: mongoose.Connection;
 
 export async function connect(): Promise<void> {
-	await mongoose.connect(config.mongoose.uri);
-
 	connection = mongoose.connection;
 	connection.on('connected', () => {
-		LOG_INFO('MongoDB connected');
+		logger.info('MongoDB connected');
 	});
-	connection.on('error', console.error.bind(console, 'connection error:'));
+	connection.on('error', err => logger.error(err, 'Database connection error'));
 	connection.on('close', () => {
 		connection.removeAllListeners();
 	});
+
+	await mongoose.connect(config.mongoose.uri);
 }
 
 function verifyConnected(): void {

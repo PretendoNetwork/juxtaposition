@@ -1,6 +1,6 @@
 const moment = require('moment/moment');
-const db = require('../database');
-const { config } = require('../config');
+const db = require('@/database');
+const { config } = require('@/config');
 
 async function checkBan(request, response, next) {
 	// Initialize access levels so the template engine can always access them

@@ -1,14 +1,15 @@
 const express = require('express');
-const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const { RedisStore } = require('connect-redis');
 const expressMetrics = require('express-prom-bundle');
-const database = require('./database');
-const logger = require('./logger');
-const { redisClient } = require('./redisCache');
-const juxt_web = require('./services/juxt-web');
-const { config } = require('./config');
+const database = require('@/database');
+const { logger } = require('@/logger');
+const { loggerHttp } = require('@/loggerHttp');
+const { redisClient } = require('@/redisCache');
+const juxt_web = require('@/services/juxt-web');
+const { healthzRouter } = require('@/services/healthz');
+const { config } = require('@/config');
 
 process.title = 'Pretendo - Juxt-Web';
 process.on('SIGTERM', () => {
@@ -45,9 +46,10 @@ app.get('/ip', (request, response) => response.send(request.ip));
 
 // Create router
 logger.info('Setting up Middleware');
-app.use(morgan('dev'));
+app.use(loggerHttp);
 app.enable('trust proxy');
 app.use(express.json());
+app.use(healthzRouter);
 
 app.use(express.urlencoded({
 	extended: true,
@@ -70,7 +72,7 @@ app.use(juxt_web);
 // 404 handler
 logger.info('Creating 404 status handler');
 app.use((req, res) => {
-	logger.warn(req.protocol + '://' + req.get('host') + req.originalUrl);
+	req.log.warn('Page not found');
 	res.render(req.directory + '/error.ejs', {
 		code: 404,
 		message: 'Page not found'
@@ -111,4 +113,9 @@ async function main() {
 	}
 }
 
-main().catch(console.error);
+process.on('uncaughtException', (err) => {
+	logger.fatal(err, 'Uncaught exception');
+	process.exit(1);
+});
+
+main();

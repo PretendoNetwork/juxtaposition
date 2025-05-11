@@ -1,12 +1,12 @@
 const express = require('express');
 const subdomain = require('express-subdomain');
-const logger = require('../../logger');
-const webAuth = require('../../middleware/webAuth');
-const consoleAuth = require('../../middleware/consoleAuth');
-const checkBan = require('../../middleware/checkBan');
-const detectVersion = require('../../middleware/detectVersion');
-const checkDiscovery = require('../../middleware/discovery');
 const routes = require('./routes');
+const webAuth = require('@/middleware/webAuth');
+const consoleAuth = require('@/middleware/consoleAuth');
+const checkBan = require('@/middleware/checkBan');
+const detectVersion = require('@/middleware/detectVersion');
+const checkDiscovery = require('@/middleware/discovery');
+const { logger } = require('@/logger');
 
 const router = express.Router();
 const consoleRouter = express.Router();

@@ -1,0 +1,44 @@
+import pinoHttp from 'pino-http';
+import { logger } from '@/logger';
+import { config } from '@/config';
+import { decodeParamPack } from '@/util';
+import type { SerializedRequest, SerializedResponse } from 'pino';
+
+type SerializedNintendoRequest = SerializedRequest & { param_pack?: Record<string, string> };
+
+function redactHeaders(headers: Record<string, string>, allowlist: string[]): Record<string, string> {
+	if (!config.log.sensitive) {
+		// Redact sensitive header types
+		return Object.fromEntries(Object.keys(headers).map(key =>
+			allowlist.includes(key) ? [key, headers[key]] : [key, '[redacted]']
+		));
+	} else {
+		// The redaction case does a clone, so keep the semantics the same
+		return Object.assign({}, headers);
+	}
+}
+
+export const loggerHttp = pinoHttp({
+	logger: logger,
+	serializers: {
+		req(req: SerializedNintendoRequest) {
+			// Only log non-sensitive headers
+			const allowlist = ['host', 'accept', 'accept-encoding', 'accept-language', 'user-agent', 'referer', 'x-nintendo-parampack'];
+			req.headers = redactHeaders(req.headers, allowlist);
+
+			// Decode param pack if we have it
+			if ('x-nintendo-parampack' in req.headers) {
+				req.param_pack = decodeParamPack(req.headers['x-nintendo-parampack']);
+			}
+
+			return req;
+		},
+		res(res: SerializedResponse) {
+			// Only log non-sensitive headers
+			const allowlist = ['content-type', 'content-length', 'x-nintendo-whitelist'];
+			res.headers = redactHeaders(res.headers, allowlist);
+
+			return res;
+		}
+	}
+});
