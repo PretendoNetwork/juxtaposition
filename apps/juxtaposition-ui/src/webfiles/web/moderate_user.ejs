@@ -119,7 +119,7 @@
 			</div>
 			<div class="row mt-2">
 				<div class="col">
-					<label class="labels">Account Status</label>
+					<label for="account_status" class="labels">Account Status</label>
 					<select class="form-select" aria-label="Account Status" name="account_status" id="account_status">
 						<option value="0" <%if (userSettings.account_status == 0) { %>selected<% } %>>Normal</option>
 						<option value="1" <%if (userSettings.account_status == 1) { %>selected<% } %>>Limited from Posting</option>
@@ -128,11 +128,11 @@
 					</select>
 				</div>
 				<div class="col">
-					<label for="ban_date">Banned Until:</label>
+					<label for="ban_lift_date" class="labels">Banned Until:</label>
 					<input type="datetime-local" id="ban_lift_date" name="ban_lift_date" value="<%= userSettings.ban_lift_date %>">
 				</div>
 				<div class="col">
-					<label class="labels">Ban Reason</label>
+					<label for="ban_reason" class="labels">Ban Reason</label>
 					<input id="ban_reason" type="text" class="form-control" placeholder="Ban reason" style="width: 100%;" value="<%= userSettings.ban_reason %>">
 				</div>
 			</div>
@@ -140,6 +140,192 @@
 				<button class="btn btn-primary profile-button" type="button" onclick="savePNID()">Save User</button>
 			</div>
 		</div>
+		<div class="mt-5 text-center">
+			<h4 class="text-right">Recently Reported Posts (limit 5)</h4>
+		</div>
+		<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+			<% reports.forEach(function(report) { %>
+				<% let post = postsMap.find((post) => post.id === report.post_id) %>
+				<% if (!post) return; %>
+				<li class="reports">
+					<details>
+						<summary>
+							<div class="hover">
+								<a href="/users/<%= report.reported_by %>" data-pjax="#body" class="icon-container notify">
+									<img src="<%= cdnURL %>/mii/<%= report.reported_by %>/normal_face.png" class="icon">
+								</a>
+								<span class="body messages report" href="#">
+									<span class="text">
+										<a href="/users/<%= report.reported_by %>" class="nick-name">Reported By: <%= userMap.get(report.reported_by) %></a>
+										<span title="<%= moment(report.created_at) %>" class="timestamp"><%= moment(report.created_at).fromNow() %></span>
+									</span>
+									<span class="text">
+										<h4>
+											<% switch (report.reason) {
+											case 0: %>
+											Spoiler
+											<% break;
+											case 1: %>
+											Personal Information
+											<% break;
+											case 2: %>
+											Violent Content
+											<% break;
+											case 3: %>
+											Inappropriate/Harmful Conduct
+											<% break;
+											case 4: %>
+											Hateful/Bullying
+											<% break;
+											case 5: %>
+											Advertising
+											<% break;
+											case 6: %>
+											Sexually Explicit
+											<% break;
+											case 7: %>
+											Piracy
+											<% break;
+											case 8: %>
+											Inappropriate Behavior in Game
+											<% break;
+											case 9: %>
+											Other
+											<% break;
+											case 10: %>
+											Missing Images; Reach out to Jemma with post link to fix
+											<% break;
+											default: %>
+											Unknown
+											<% break; } %>
+										</h4>
+										<p>
+											<%= report.message %>
+										</p>
+									</span>
+									<% if (report.resolved) { %>
+										<span class="text">
+											<span class="nick-name">Resolved By: <%= userMap.get(report.resolved_by) %></span>
+											<span title="<%= moment(report.resolved_at) %>" class="timestamp"><%= moment(report.resolved_at).fromNow() %></span>
+										</span>
+										<span class="text"><p><%= report.note %></p></span>
+									<% } %>
+								</span>
+							</div>
+						</summary>
+						<%- include('partials/post_template', { post: post, reply: false }); %>
+					</details>
+				</li>
+			<% }); %>
+		</ul>
+		<div class="mt-5 text-center">
+			<h4 class="text-right">Recently Submitted Reports (limit 5)</h4>
+		</div>
+		<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+			<% submittedReports.forEach(function(report) { %>
+				<% let post = postsMap.find((post) => post.id === report.post_id) %>
+				<% if (!post) return; %>
+				<li class="reports">
+					<details>
+						<summary>
+							<div class="hover">
+								<a href="/users/<%= report.reported_by %>" data-pjax="#body" class="icon-container notify">
+									<img src="<%= cdnURL %>/mii/<%= report.reported_by %>/normal_face.png" class="icon">
+								</a>
+								<span class="body messages report" href="#">
+									<span class="text">
+										<a href="/users/<%= report.reported_by %>" class="nick-name">Reported By: <%= userMap.get(report.reported_by) %></a>
+										<span title="<%= moment(report.created_at) %>" class="timestamp"><%= moment(report.created_at).fromNow() %></span>
+									</span>
+									<span class="text">
+										<h4>
+											<% switch (report.reason) {
+											case 0: %>
+											Spoiler
+											<% break;
+											case 1: %>
+											Personal Information
+											<% break;
+											case 2: %>
+											Violent Content
+											<% break;
+											case 3: %>
+											Inappropriate/Harmful Conduct
+											<% break;
+											case 4: %>
+											Hateful/Bullying
+											<% break;
+											case 5: %>
+											Advertising
+											<% break;
+											case 6: %>
+											Sexually Explicit
+											<% break;
+											case 7: %>
+											Piracy
+											<% break;
+											case 8: %>
+											Inappropriate Behavior in Game
+											<% break;
+											case 9: %>
+											Other
+											<% break;
+											case 10: %>
+											Missing Images; Reach out to Jemma with post link to fix
+											<% break;
+											default: %>
+											Unknown
+											<% break; } %>
+										</h4>
+										<p>
+											<%= report.message %>
+										</p>
+									</span>
+									<% if (report.resolved) { %>
+										<span class="text">
+											<span class="nick-name">Resolved By: <%= userMap.get(report.resolved_by) %></span>
+											<span title="<%= moment(report.resolved_at) %>" class="timestamp"><%= moment(report.resolved_at).fromNow() %></span>
+										</span>
+										<span class="text"><p><%= report.note %></p></span>
+									<% } %>
+								</span>
+							</div>
+						</summary>
+						<%- include('partials/post_template', { post: post, reply: false }); %>
+					</details>
+				</li>
+			<% }); %>
+		</ul>
+		<div class="mt-5 text-center">
+			<h4 class="text-right">Recently Removed Posts (limit 10)</h4>
+		</div>
+		<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+			<% removedPosts.forEach(function(post) { %>
+				<li class="reports">
+					<details>
+						<summary>
+							<div class="hover">
+								<a href="/users/<%= post.removed_by %>" data-pjax="#body" class="icon-container notify">
+									<img src="<%= cdnURL %>/mii/<%= post.removed_by %>/normal_face.png" class="icon">
+								</a>
+								<span class="body messages report" href="#">
+									<span class="text">
+										<a href="/users/<%= post.removed_by %>" class="nick-name">Removed By: <%= userMap.get(post.removed_by) %></a>
+										<span title="<%= moment(post.removed_at) %>" class="timestamp"><%= moment(post.removed_at).fromNow() %></span>
+									</span>
+									<span class="text">
+										<p>
+											<%= post.removed_reason %>
+										</p>
+									</span>
+								</span>
+							</div>
+						</summary>
+						<%- include('partials/post_template', { post: post, reply: false }); %>
+					</details>
+				</li>
+			<% }); %>
+		</ul>
 	</div>
 </div>
 <script>

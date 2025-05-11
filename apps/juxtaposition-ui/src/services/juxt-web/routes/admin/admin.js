@@ -88,14 +88,40 @@ router.get('/accounts/:pid', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.params.pid);
 	const posts = await database.getNumberUserPostsByID(req.params.pid, config.postLimit);
 	const communityMap = await util.getCommunityHash();
+	const userMap = util.getUserHash();
+
+	const reports = await database.getReportsByOffender(req.params.pid, 0, 5);
+	const submittedReports = await database.getReportsByReporter(req.params.pid, 0, 5);
+	const postIDs = reports.concat(submittedReports).map(obj => obj.post_id);
+
+	const postsMap = await POST.aggregate([
+		{ $match: { id: { $in: postIDs } } },
+		{
+			$addFields: {
+				__order: { $indexOfArray: [postIDs, '$id'] }
+			}
+		},
+		{ $sort: { __order: 1 } },
+		{ $project: { index: 0, _id: 0 } }
+	]);
+
+	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(10);
 
 	res.render(req.directory + '/moderate_user.ejs', {
 		moment: moment,
 		userSettings,
 		userContent,
+		pnid,
+
 		posts,
+		removedPosts,
+
+		reports,
+		submittedReports,
+
+		userMap,
 		communityMap,
-		pnid
+		postsMap
 	});
 });
 
