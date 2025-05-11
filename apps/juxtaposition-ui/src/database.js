@@ -140,13 +140,13 @@ async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
 	}).limit(numberOfPosts);
 }
 
-async function getNumberUserPostsByID(userID, number) {
+async function getNumberUserPostsByID(userID, number, includeRemoved = false) {
 	verifyConnected();
 	return POST.find({
 		pid: userID,
 		parent: null,
 		message_to_pid: null,
-		removed: false
+		...includeRemoved ? {} : { removed: false }
 	}).sort({ created_at: -1 }).limit(number);
 }
 

@@ -41,7 +41,7 @@
                 <%}%>
                 <%}%>
             </div>
-			<% if (!pnid.deleted && !banned) { %>
+			<% if (!pnid.deleted && !banned || moderatorView) { %>
             <h4 class="community-description">
                 <%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment%> <%}else {%><%= lang.global.private %><%}%>
                     <%if(pnid.tierName) {%>
