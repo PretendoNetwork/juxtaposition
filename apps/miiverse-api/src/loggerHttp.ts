@@ -26,16 +26,19 @@ export const loggerHttp = pinoHttp({
 	logger: logger,
 	serializers: {
 		req(req: SerializedNintendoRequest) {
+			const raw = req.raw as Request;
+
 			// Only log non-sensitive headers
-			const allowlist = ['host', 'accept', 'accept-encoding', 'accept-language', 'user-agent', 'referer', 'x-nintendo-parampack'];
+			const allowlist = ['host', 'accept', 'accept-encoding', 'accept-language', 'cache-control', 'user-agent', 'referer', 'cf-ipcountry'];
 			req.headers = redactHeaders(req.headers, allowlist);
 
 			// Decode param pack if we have it
-			if ('x-nintendo-parampack' in req.headers) {
-				req.param_pack = decodeParamPack(req.headers['x-nintendo-parampack']);
+			const paramPack = raw.headers['x-nintendo-parampack'];
+			if (typeof paramPack === 'string') {
+				req.param_pack = decodeParamPack(paramPack);
 			}
 
-			req.remoteAddress = (req.raw as Request).ip ?? req.remoteAddress;
+			req.remoteAddress = raw.ip ?? req.remoteAddress;
 
 			return req;
 		},
