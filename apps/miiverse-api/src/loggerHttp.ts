@@ -5,6 +5,7 @@ import { decodeParamPack } from './util';
 import { ApiErrorCode } from './errors';
 import type { SerializedRequest, SerializedResponse } from 'pino';
 import type { ParamPack } from './types/common/param-pack';
+import type { Request } from 'express';
 
 type SerializedNintendoRequest = SerializedRequest & { param_pack?: ParamPack };
 type SerializedMiiverseResponse = SerializedResponse & { errorCode?: ApiErrorCode; errorCodeStr?: string };
@@ -33,6 +34,8 @@ export const loggerHttp = pinoHttp({
 			if ('x-nintendo-parampack' in req.headers) {
 				req.param_pack = decodeParamPack(req.headers['x-nintendo-parampack']);
 			}
+
+			req.remoteAddress = (req.raw as Request).ip ?? req.remoteAddress;
 
 			return req;
 		},

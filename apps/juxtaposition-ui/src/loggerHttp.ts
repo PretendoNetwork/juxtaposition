@@ -3,6 +3,7 @@ import { logger } from './logger';
 import { config } from './config';
 import { decodeParamPack } from './util';
 import type { SerializedRequest, SerializedResponse } from 'pino';
+import type { Request } from 'express';
 
 type SerializedNintendoRequest = SerializedRequest & { param_pack?: Record<string, string> };
 
@@ -30,6 +31,8 @@ export const loggerHttp = pinoHttp({
 			if ('x-nintendo-parampack' in req.headers) {
 				req.param_pack = decodeParamPack(req.headers['x-nintendo-parampack']);
 			}
+
+			req.remoteAddress = (req.raw as Request).ip ?? req.remoteAddress;
 
 			return req;
 		},
