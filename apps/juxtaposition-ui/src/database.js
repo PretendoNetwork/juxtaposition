@@ -146,7 +146,7 @@ async function getNumberUserPostsByID(userID, number, includeRemoved = false) {
 		pid: userID,
 		parent: null,
 		message_to_pid: null,
-		...includeRemoved ? {} : { removed: false }
+		...(includeRemoved ? {} : { removed: false })
 	}).sort({ created_at: -1 }).limit(number);
 }
 

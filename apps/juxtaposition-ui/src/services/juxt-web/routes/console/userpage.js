@@ -191,8 +191,7 @@ async function userPage(req, res, userID) {
 		link,
 		friends,
 		parentUserContent,
-		isActive: isDateInRange(userSettings.last_active, 10),
-		moderatorView: res.locals.moderator
+		isActive: isDateInRange(userSettings.last_active, 10)
 	});
 }
 
