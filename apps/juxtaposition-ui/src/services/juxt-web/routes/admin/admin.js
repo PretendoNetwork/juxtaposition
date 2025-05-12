@@ -89,6 +89,7 @@ router.get('/accounts/:pid', async function (req, res) {
 	const posts = await database.getNumberUserPostsByID(req.params.pid, config.postLimit);
 	const communityMap = await util.getCommunityHash();
 	const userMap = util.getUserHash();
+	const reasonMap = util.getReasonMap();
 
 	const reports = await database.getReportsByOffender(req.params.pid, 0, 5);
 	const submittedReports = await database.getReportsByReporter(req.params.pid, 0, 5);
@@ -121,7 +122,8 @@ router.get('/accounts/:pid', async function (req, res) {
 
 		userMap,
 		communityMap,
-		postsMap
+		postsMap,
+		reasonMap
 	});
 });
 

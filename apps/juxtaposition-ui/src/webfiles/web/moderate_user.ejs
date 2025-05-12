@@ -161,43 +161,7 @@
 									</span>
 									<span class="text">
 										<h4>
-											<% switch (report.reason) {
-											case 0: %>
-											Spoiler
-											<% break;
-											case 1: %>
-											Personal Information
-											<% break;
-											case 2: %>
-											Violent Content
-											<% break;
-											case 3: %>
-											Inappropriate/Harmful Conduct
-											<% break;
-											case 4: %>
-											Hateful/Bullying
-											<% break;
-											case 5: %>
-											Advertising
-											<% break;
-											case 6: %>
-											Sexually Explicit
-											<% break;
-											case 7: %>
-											Piracy
-											<% break;
-											case 8: %>
-											Inappropriate Behavior in Game
-											<% break;
-											case 9: %>
-											Other
-											<% break;
-											case 10: %>
-											Missing Images; Reach out to Jemma with post link to fix
-											<% break;
-											default: %>
-											Unknown
-											<% break; } %>
+											<%= reasonMap[report.reason] %>
 										</h4>
 										<p>
 											<%= report.message %>
@@ -239,43 +203,7 @@
 									</span>
 									<span class="text">
 										<h4>
-											<% switch (report.reason) {
-											case 0: %>
-											Spoiler
-											<% break;
-											case 1: %>
-											Personal Information
-											<% break;
-											case 2: %>
-											Violent Content
-											<% break;
-											case 3: %>
-											Inappropriate/Harmful Conduct
-											<% break;
-											case 4: %>
-											Hateful/Bullying
-											<% break;
-											case 5: %>
-											Advertising
-											<% break;
-											case 6: %>
-											Sexually Explicit
-											<% break;
-											case 7: %>
-											Piracy
-											<% break;
-											case 8: %>
-											Inappropriate Behavior in Game
-											<% break;
-											case 9: %>
-											Other
-											<% break;
-											case 10: %>
-											Missing Images; Reach out to Jemma with post link to fix
-											<% break;
-											default: %>
-											Unknown
-											<% break; } %>
+											<%= reasonMap[report.reason] %>
 										</h4>
 										<p>
 											<%= report.message %>

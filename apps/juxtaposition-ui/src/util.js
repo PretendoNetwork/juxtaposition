@@ -246,6 +246,23 @@ function updateCommunityHash(community) {
 	communityMap.set(community.olive_community_id, community.name);
 }
 
+function getReasonMap() {
+	return [
+		'Spoiler',
+		'Personal Information',
+		'Violent Content',
+		'Inappropriate/Harmful Conduct',
+		'Hateful/Bullying',
+		'Advertising',
+		'Sexually Explicit',
+		'Piracy',
+		'Inappropriate Behavior in Game',
+		'Other',
+		'Missing Images; Reach out to Jemma with post link to fix',
+		'Unknown'
+	];
+}
+
 async function resizeImage(file, width, height) {
 	return new Promise(function (resolve) {
 		const image = Buffer.from(file, 'base64');
@@ -515,6 +532,7 @@ module.exports = {
 	refreshCache,
 	setName,
 	updateCommunityHash,
+	getReasonMap,
 	resizeImage,
 	getTGAFromPNG,
 	createBMPTgaBuffer,
