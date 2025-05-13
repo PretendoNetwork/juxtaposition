@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package miiverse.v2;
+
+message SMMRequestPostIdRequest {
+  uint64 course_id = 1;
+  // TODO - Other course/user data?
+}
+
+message SMMRequestPostIdResponse {
+  uint64 post_id = 1;
+}

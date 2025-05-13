@@ -1,0 +1,14 @@
+{
+    "name": "@repo/grpc-client",
+    "version": "0.0.0",
+    "description": "The GRPC client and definitions.",
+    "type": "module",
+    "scripts": {
+        "build": "buf generate"
+    },
+    "devDependencies": {
+        "@bufbuild/buf": "^1.54.0",
+        "nice-grpc-common": "^2.0.2",
+        "typescript": "^5.8.3"
+    }
+}

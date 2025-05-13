@@ -1,0 +1,10 @@
+{
+    "private": true,
+    "workspaces": [
+        "packages/*",
+        "apps/*"
+    ],
+    "devDependencies": {
+        "@bufbuild/buf": "^1.54.0"
+    }
+}

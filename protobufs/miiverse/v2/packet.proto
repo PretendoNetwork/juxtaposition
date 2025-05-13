@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package miiverse.v2;
+
+message Packet {
+  string path = 1;
+  string payload = 2;
+}
+
+message PacketResponse {
+  string payload = 1;
+}
