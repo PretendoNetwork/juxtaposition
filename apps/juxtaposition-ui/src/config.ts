@@ -17,7 +17,6 @@ const schema = z.object({
 	whitelist: z.string(),
 	serverEnvironment: z.string(),
 	aesKey: z.string(),
-	accountServerAddress: z.string(),
 	mongooseUri: z.string(),
 	s3Endpoint: z.string(),
 	s3Key: z.string(),
@@ -53,7 +52,6 @@ export const fragments = {
 		cdnDomain: 'http://cdn.pretendo.cc/miiverse',
 		whitelist: '',
 		serverEnvironment: 'prod',
-		accountServerAddress: 'account',
 		grpcFriendsHost: 'localhost',
 		grpcFriendsPort: 8124,
 		grpcFriendsApiKey: '12345678123456781234567812345678',
@@ -87,7 +85,6 @@ export const config = {
 		enabled: unmappedConfig.metricsEnabled,
 		port: unmappedConfig.metricsPort
 	},
-	accountServerAddress: unmappedConfig.accountServerAddress,
 	aesKey: unmappedConfig.aesKey,
 	postLimit: unmappedConfig.postLimit,
 	miiImageCdn: unmappedConfig.miiImageCdn,

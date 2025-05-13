@@ -145,7 +145,6 @@ router.get('/:communityID/:type', async function (req, res) {
 		totalNumPosts: numPosts,
 		userSettings: userSettings,
 		userContent: userContent,
-		account_server: config.accountServerAddress.slice(8),
 		pnid: req.user,
 		children,
 		type,
@@ -192,8 +191,7 @@ router.get('/:communityID/:type/more', async function (req, res) {
 			communityMap: communityMap,
 			moment: moment,
 			database: database,
-			bundle,
-			account_server: config.accountServerAddress.slice(8)
+			bundle
 		});
 	} else {
 		res.sendStatus(204);

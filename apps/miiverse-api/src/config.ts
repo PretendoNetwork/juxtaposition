@@ -10,7 +10,6 @@ const schema = z.object({
 	httpTrustProxy: z.union([zodStrictBoolean(), z.coerce.number(), z.string()]).default(false),
 	metricsEnabled: zodCoercedBoolean().default(false),
 	metricsPort: z.coerce.number().default(9090),
-	accountServerAddress: z.string(),
 	aesKey: z.string(),
 	cdnUrl: z.string().url().transform(s => s.replace(/\/$/g, '')),
 	mongooseUri: z.string(),
@@ -40,7 +39,6 @@ export const fragments: Record<string, any> = {
 		s3Secret: 'minioadmin',
 		s3Bucket: 'miiverse',
 		s3Region: 'us-east-1',
-		accountServerAddress: 'account',
 		cdnUrl: 'http://cdn.pretendo.cc/miiverse',
 		grpcAccountHost: 'localhost',
 		grpcAccountPort: 8123,
@@ -74,7 +72,6 @@ export const config = {
 		enabled: unmappedConfig.metricsEnabled,
 		port: unmappedConfig.metricsPort
 	},
-	accountServerAddress: unmappedConfig.accountServerAddress,
 	aesKey: unmappedConfig.aesKey,
 	cdnUrl: unmappedConfig.cdnUrl,
 	mongoose: {
