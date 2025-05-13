@@ -5,18 +5,28 @@ import { z } from 'zod';
 const schema = z.object({
 	logFormat: z.enum(['json', 'pretty']).default('pretty'),
 	logLevel: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
+	/** Enable or disable logging of sensitive HTTP headers (cookies, tokens etc.) in the JSON log */
 	logSensitive: zodCoercedBoolean().default(false),
 	httpPort: z.coerce.number().default(8080),
 	httpCookieDomain: z.string().default('.pretendo.network'),
+	/** Configures proxy trust (X-Forwarded-For etc.). Can be `true` to unconditionally trust, or
+	 *  provide a numeric hop count, or comma-seperated CIDR ranges.
+	 *  See https://expressjs.com/en/guide/behind-proxies.html
+	 */
+	httpTrustProxy: z.union([zodStrictBoolean(), z.coerce.number(), z.string()]).default(false),
+	/** Whether to expose Prometheus metrics on a different port, path /metrics. */
 	metricsEnabled: zodCoercedBoolean().default(false),
 	metricsPort: z.coerce.number().default(9090),
+	/** Maximum posts per-page to show on most feeds. Higher settings increase DB load. */
 	postLimit: z.coerce.number().default(10),
-	miiImageCdn: z.string(),
+	/** CDN path hosting Mii images, icons, etc. ${cdnDomain}/mii/100000000/normal_face.png */
 	cdnDomain: z.string(),
+	/** Value for X-Nintedo-Whitelist header. */
 	whitelist: z.string(),
+	/** Environment (prod/test/dev) to use for Discovery and access_level control. */
 	serverEnvironment: z.string(),
+	/** The AES key to use for decrypting service tokens. Must match the account server's. */
 	aesKey: z.string(),
-	accountServerAddress: z.string(),
 	mongooseUri: z.string(),
 	s3Endpoint: z.string(),
 	s3Key: z.string(),
@@ -39,6 +49,7 @@ export const fragments = {
 		httpFrontendBaseUrl: 'http://localhost:5173/',
 		httpBackendBaseUrl: 'http://localhost:8080/',
 		httpPort: 5173,
+		httpTrustProxy: 'loopback',
 		aesKey: '1234567812345678123456781234567812345678123456781234567812345678',
 		mongooseUri: 'mongodb://localhost:27017/miiverse?directConnection=true',
 		s3Endpoint: 'http://localhost:9000',
@@ -47,11 +58,9 @@ export const fragments = {
 		s3Bucket: 'miiverse',
 		s3Region: 'us-east-1',
 		redisHost: 'localhost',
-		miiImageCdn: 'http://cdn.pretendo.cc/miiverse',
 		cdnDomain: 'http://cdn.pretendo.cc/miiverse',
 		whitelist: '',
 		serverEnvironment: 'prod',
-		accountServerAddress: 'account',
 		grpcFriendsHost: 'localhost',
 		grpcFriendsPort: 8124,
 		grpcFriendsApiKey: '12345678123456781234567812345678',
@@ -78,16 +87,15 @@ export const config = {
 	},
 	http: {
 		port: unmappedConfig.httpPort,
-		cookieDomain: unmappedConfig.httpCookieDomain
+		cookieDomain: unmappedConfig.httpCookieDomain,
+		trustProxy: unmappedConfig.httpTrustProxy
 	},
 	metrics: {
 		enabled: unmappedConfig.metricsEnabled,
 		port: unmappedConfig.metricsPort
 	},
-	accountServerAddress: unmappedConfig.accountServerAddress,
 	aesKey: unmappedConfig.aesKey,
 	postLimit: unmappedConfig.postLimit,
-	miiImageCdn: unmappedConfig.miiImageCdn,
 	whitelist: unmappedConfig.whitelist,
 	serverEnvironment: unmappedConfig.serverEnvironment,
 	cdnDomain: unmappedConfig.cdnDomain,
@@ -118,3 +126,24 @@ export const config = {
 		port: unmappedConfig.redisPort
 	}
 };
+
+/**
+ * An "even stricter" boolean parser. Instead of coercing non-bools to "false", it fails.
+ * Useful with z.union; so strings other than "true", "false", "yes", and "no" can be
+ * tried against other parsers.
+ */
+function zodStrictBoolean(): z.ZodEffects<z.ZodBoolean, boolean, unknown> {
+	return z.preprocess((val) => {
+		if (typeof val !== 'string') {
+			return val;
+		}
+		const lval = val.toLocaleLowerCase().trim();
+		if (lval === 'true' || lval === 'yes') {
+			return true;
+		}
+		if (lval === 'false' || lval === 'no') {
+			return false;
+		}
+		return val;
+	}, z.boolean());
+}

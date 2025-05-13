@@ -140,13 +140,13 @@ async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
 	}).limit(numberOfPosts);
 }
 
-async function getNumberUserPostsByID(userID, number) {
+async function getNumberUserPostsByID(userID, number, includeRemoved = false) {
 	verifyConnected();
 	return POST.find({
 		pid: userID,
 		parent: null,
 		message_to_pid: null,
-		removed: false
+		...(includeRemoved ? {} : { removed: false })
 	}).sort({ created_at: -1 }).limit(number);
 }
 
@@ -478,9 +478,14 @@ async function getAllOpenReports(offset, limit) {
 	return REPORT.find({ resolved: false }).sort({ created_at: -1 }).skip(offset).limit(limit);
 }
 
-async function getReportsByUser(pid, offset, limit) {
+async function getReportsByReporter(pid, offset, limit) {
 	verifyConnected();
 	return REPORT.find({ reported_by: pid }).sort({ created_at: -1 }).skip(offset).limit(limit);
+}
+
+async function getReportsByOffender(pid, offset, limit) {
+	verifyConnected();
+	return REPORT.find({ pid: pid }).sort({ created_at: -1 }).skip(offset).limit(limit);
 }
 
 async function getReportsByPost(postID, offset, limit) {
@@ -554,7 +559,8 @@ module.exports = {
 	getRemovedUserPosts,
 	getAllReports,
 	getAllOpenReports,
-	getReportsByUser,
+	getReportsByReporter,
+	getReportsByOffender,
 	getReportsByPost,
 	getDuplicateReports,
 	getReportById

@@ -53,8 +53,7 @@ router.get('/me/settings', async function (req, res) {
 	res.render(req.directory + '/settings.ejs', {
 		communityMap: communityMap,
 		moment: moment,
-		userSettings: userSettings,
-		account_server: config.accountServerAddress.slice(8)
+		userSettings: userSettings
 	});
 });
 
@@ -150,7 +149,7 @@ async function userPage(req, res, userID) {
 	const userSettings = await database.getUserSettings(userID);
 	let posts = JSON.parse(await redis.getValue(`${userID}-user_page_posts`));
 	if (!posts) {
-		posts = await database.getNumberUserPostsByID(userID, config.postLimit);
+		posts = await database.getNumberUserPostsByID(userID, config.postLimit, res.locals.moderator);
 		await redis.setValue(`${userID}_user_page_posts`, JSON.stringify(posts), 60 * 60 * 1);
 	}
 
@@ -187,7 +186,6 @@ async function userPage(req, res, userID) {
 		userContent,
 		userSettings,
 		bundle,
-		account_server: config.accountServerAddress.slice(8),
 		link,
 		friends,
 		parentUserContent,
@@ -242,7 +240,6 @@ async function userRelations(req, res, userID) {
 				userContent,
 				userSettings,
 				bundle,
-				account_server: config.accountServerAddress.slice(8),
 				link,
 				friends,
 				parentUserContent,
@@ -293,7 +290,6 @@ async function userRelations(req, res, userID) {
 		userContent,
 		userSettings,
 		bundle,
-		account_server: config.accountServerAddress.slice(8),
 		link,
 		parentUserContent,
 		isActive: isDateInRange(userSettings.last_active, 10)
@@ -323,8 +319,7 @@ async function morePosts(req, res, userID) {
 			communityMap: communityMap,
 			moment: moment,
 			database: database,
-			bundle,
-			account_server: config.accountServerAddress.slice(8)
+			bundle
 		});
 	} else {
 		res.sendStatus(204);
@@ -354,8 +349,7 @@ async function moreYeahPosts(req, res, userID) {
 			communityMap: communityMap,
 			moment: moment,
 			database: database,
-			bundle,
-			account_server: config.accountServerAddress.slice(8)
+			bundle
 		});
 	} else {
 		res.sendStatus(204);

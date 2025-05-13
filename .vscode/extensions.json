@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "dbaeumer.vscode-eslint",
-        "editorconfig.editorconfig"
+        "editorconfig.editorconfig",
+        "digitalbrainstem.javascript-ejs-support"
     ]
 }

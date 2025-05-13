@@ -21,6 +21,9 @@ if (metricsEnabled) {
 		// Include full express and nodejs metrics
 		includeMethod: true,
 		includePath: true,
+		urlValueParser: {
+			minBase64Length: 15
+		},
 		promClient: {
 			collectDefaultMetrics: {}
 		},
@@ -32,6 +35,7 @@ if (metricsEnabled) {
 }
 
 app.set('etag', false);
+app.set('trust proxy', config.http.trustProxy);
 app.disable('x-powered-by');
 
 // Create router
