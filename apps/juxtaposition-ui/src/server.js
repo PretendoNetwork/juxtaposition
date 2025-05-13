@@ -41,13 +41,12 @@ app.set('etag', false);
 app.disable('x-powered-by');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/webfiles');
-app.set('trust proxy', 2);
+app.set('trust proxy', config.http.trustProxy);
 app.get('/ip', (request, response) => response.send(request.ip));
 
 // Create router
 logger.info('Setting up Middleware');
 app.use(loggerHttp);
-app.enable('trust proxy');
 app.use(express.json());
 app.use(healthzRouter);
 

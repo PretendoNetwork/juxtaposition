@@ -5,6 +5,7 @@ import { decodeParamPack } from './util';
 import { ApiErrorCode } from './errors';
 import type { SerializedRequest, SerializedResponse } from 'pino';
 import type { ParamPack } from './types/common/param-pack';
+import type { Request } from 'express';
 
 type SerializedNintendoRequest = SerializedRequest & { param_pack?: ParamPack };
 type SerializedMiiverseResponse = SerializedResponse & { errorCode?: ApiErrorCode; errorCodeStr?: string };
@@ -12,8 +13,8 @@ type SerializedMiiverseResponse = SerializedResponse & { errorCode?: ApiErrorCod
 function redactHeaders(headers: Record<string, string>, allowlist: string[]): Record<string, string> {
 	if (!config.log.sensitive) {
 		// Redact sensitive header types
-		return Object.fromEntries(Object.keys(headers).map(key =>
-			allowlist.includes(key) ? [key, headers[key]] : [key, '[redacted]']
+		return Object.fromEntries(Object.entries(headers).filter(([key, _value]) =>
+			allowlist.includes(key)
 		));
 	} else {
 		// The redaction case does a clone, so keep the semantics the same
@@ -25,14 +26,19 @@ export const loggerHttp = pinoHttp({
 	logger: logger,
 	serializers: {
 		req(req: SerializedNintendoRequest) {
+			const raw = req.raw as Request;
+
 			// Only log non-sensitive headers
-			const allowlist = ['host', 'accept', 'accept-encoding', 'accept-language', 'user-agent', 'referer', 'x-nintendo-parampack'];
+			const allowlist = ['host', 'accept', 'accept-encoding', 'accept-language', 'cache-control', 'user-agent', 'referer', 'cf-ipcountry'];
 			req.headers = redactHeaders(req.headers, allowlist);
 
 			// Decode param pack if we have it
-			if ('x-nintendo-parampack' in req.headers) {
-				req.param_pack = decodeParamPack(req.headers['x-nintendo-parampack']);
+			const paramPack = raw.headers['x-nintendo-parampack'];
+			if (typeof paramPack === 'string') {
+				req.param_pack = decodeParamPack(paramPack);
 			}
+
+			req.remoteAddress = raw.ip ?? req.remoteAddress;
 
 			return req;
 		},

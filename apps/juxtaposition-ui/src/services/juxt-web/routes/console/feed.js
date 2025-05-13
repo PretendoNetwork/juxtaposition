@@ -35,7 +35,6 @@ router.get('/', async function (req, res) {
 		userContent: userContent,
 		posts: posts,
 		communityMap: communityMap,
-		account_server: config.accountServerAddress.slice(8),
 		bundle,
 		tab: 0,
 		template: 'posts_list',
@@ -76,7 +75,6 @@ router.get('/all', async function (req, res) {
 		userContent: userContent,
 		posts: posts,
 		communityMap: communityMap,
-		account_server: config.accountServerAddress.slice(8),
 		bundle,
 		tab: 1,
 		template: 'posts_list'
@@ -106,8 +104,7 @@ router.get('/more', async function (req, res) {
 			communityMap: communityMap,
 			moment: moment,
 			database: database,
-			bundle,
-			account_server: config.accountServerAddress.slice(8)
+			bundle
 		});
 	} else {
 		res.sendStatus(204);
@@ -135,7 +132,6 @@ router.get('/all/more', async function (req, res) {
 		communityMap,
 		userContent,
 		lang: req.lang,
-		mii_image_CDN: config.miiImageCdn,
 		link: `/feed/more?offset=${offset + posts.length}&pjax=true`,
 		moderator: req.moderator
 	};
@@ -145,8 +141,7 @@ router.get('/all/more', async function (req, res) {
 			communityMap: communityMap,
 			moment: moment,
 			database: database,
-			bundle,
-			account_server: config.accountServerAddress.slice(8)
+			bundle
 		});
 	} else {
 		res.sendStatus(204);
@@ -174,7 +169,6 @@ router.get('/all/more', async function (req, res) {
 		communityMap,
 		userContent,
 		lang: req.lang,
-		mii_image_CDN: config.miiImageCdn,
 		link: `/feed/all/more?offset=${offset + posts.length}&pjax=true`,
 		moderator: req.moderator
 	};
@@ -185,10 +179,8 @@ router.get('/all/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.accountServerAddress.slice(8),
 			cdnURL: config.cdnDomain,
 			lang: req.lang,
-			mii_image_CDN: config.miiImageCdn,
 			pid: req.pid,
 			moderator: req.moderator
 		});

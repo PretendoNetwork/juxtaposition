@@ -32,6 +32,7 @@ if (metricsEnabled) {
 }
 
 app.set('etag', false);
+app.set('trust proxy', config.http.trustProxy);
 app.disable('x-powered-by');
 
 // Create router
