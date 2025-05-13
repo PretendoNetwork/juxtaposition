@@ -132,7 +132,6 @@ router.get('/all/more', async function (req, res) {
 		communityMap,
 		userContent,
 		lang: req.lang,
-		mii_image_CDN: config.miiImageCdn,
 		link: `/feed/more?offset=${offset + posts.length}&pjax=true`,
 		moderator: req.moderator
 	};
@@ -170,7 +169,6 @@ router.get('/all/more', async function (req, res) {
 		communityMap,
 		userContent,
 		lang: req.lang,
-		mii_image_CDN: config.miiImageCdn,
 		link: `/feed/all/more?offset=${offset + posts.length}&pjax=true`,
 		moderator: req.moderator
 	};
@@ -183,7 +181,6 @@ router.get('/all/more', async function (req, res) {
 			bundle,
 			cdnURL: config.cdnDomain,
 			lang: req.lang,
-			mii_image_CDN: config.miiImageCdn,
 			pid: req.pid,
 			moderator: req.moderator
 		});
