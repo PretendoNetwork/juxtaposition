@@ -143,7 +143,7 @@
 		<div class="mt-5 text-center">
 			<h4 class="text-right">Recently Reported Posts (limit 5)</h4>
 		</div>
-		<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+		<ul class="list-content-with-icon-and-text arrow-list">
 			<% reports.forEach(function(report) { %>
 				<% let post = postsMap.find((post) => post.id === report.post_id) %>
 				<% if (!post) return; %>
@@ -185,7 +185,7 @@
 		<div class="mt-5 text-center">
 			<h4 class="text-right">Recently Submitted Reports (limit 5)</h4>
 		</div>
-		<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+		<ul class="list-content-with-icon-and-text arrow-list">
 			<% submittedReports.forEach(function(report) { %>
 				<% let post = postsMap.find((post) => post.id === report.post_id) %>
 				<% if (!post) return; %>
@@ -227,7 +227,7 @@
 		<div class="mt-5 text-center">
 			<h4 class="text-right">Recently Removed Posts (limit 10)</h4>
 		</div>
-		<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+		<ul class="list-content-with-icon-and-text arrow-list">
 			<% removedPosts.forEach(function(post) { %>
 				<li class="reports">
 					<details>
