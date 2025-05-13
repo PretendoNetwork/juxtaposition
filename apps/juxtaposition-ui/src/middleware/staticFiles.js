@@ -1,4 +1,4 @@
-const util = require('../util');
+const util = require('@/util');
 
 async function staticFiles(request, response, next) {
 	// Web files

@@ -2,15 +2,15 @@ const crypto = require('crypto');
 const express = require('express');
 const moment = require('moment');
 const multer = require('multer');
-const database = require('../../../../database');
-const { POST } = require('../../../../models/post');
-const { SETTINGS } = require('../../../../models/settings');
-const { COMMUNITY } = require('../../../../models/communities');
-const util = require('../../../../util');
+const database = require('@/database');
+const { POST } = require('@/models/post');
+const { SETTINGS } = require('@/models/settings');
+const { COMMUNITY } = require('@/models/communities');
+const util = require('@/util');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-const { config } = require('../../../../config');
-const { logger } = require('../../../../logger');
+const { config } = require('@/config');
+const { logger } = require('@/logger');
 const router = express.Router();
 
 router.get('/posts', async function (req, res) {
@@ -330,7 +330,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		name: req.body.name,
 		description: req.body.description
 	};
-	await COMMUNITY.findOneAndUpdate({ community_id: communityID }, { $set: document }, { upsert: true }).exec();
+	await COMMUNITY.findOneAndUpdate({ olive_community_id: communityID }, { $set: document }, { upsert: true }).exec();
 
 	res.redirect(`/admin/communities/${communityID}`);
 

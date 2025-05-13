@@ -1,5 +1,5 @@
-const db = require('../database');
-const { config } = require('../config');
+const db = require('@/database');
+const { config } = require('@/config');
 
 async function checkDiscovery(request, response, next) {
 	const discovery = await db.getEndPoint(config.serverEnvironment);

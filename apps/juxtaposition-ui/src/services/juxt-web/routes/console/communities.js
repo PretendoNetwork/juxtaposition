@@ -1,14 +1,14 @@
 const express = require('express');
 const multer = require('multer');
 const moment = require('moment');
-const database = require('../../../../database');
-const util = require('../../../../util');
+const database = require('@/database');
+const util = require('@/util');
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
-const { POST } = require('../../../../models/post');
-const { COMMUNITY } = require('../../../../models/communities');
-const redis = require('../../../../redisCache');
-const { config } = require('../../../../config');
+const { POST } = require('@/models/post');
+const { COMMUNITY } = require('@/models/communities');
+const redis = require('@/redisCache');
+const { config } = require('@/config');
 
 router.get('/', async function (req, res) {
 	const newCommunities = JSON.parse(await redis.getValue('newCommunities')) || await database.getNewCommunities(6);

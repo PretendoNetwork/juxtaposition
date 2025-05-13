@@ -3,12 +3,13 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const { RedisStore } = require('connect-redis');
 const expressMetrics = require('express-prom-bundle');
-const database = require('./database');
-const { logger } = require('./logger');
-const { loggerHttp } = require('./loggerHttp');
-const { redisClient } = require('./redisCache');
-const juxt_web = require('./services/juxt-web');
-const { config } = require('./config');
+const database = require('@/database');
+const { logger } = require('@/logger');
+const { loggerHttp } = require('@/loggerHttp');
+const { redisClient } = require('@/redisCache');
+const juxt_web = require('@/services/juxt-web');
+const { healthzRouter } = require('@/services/healthz');
+const { config } = require('@/config');
 
 process.title = 'Pretendo - Juxt-Web';
 process.on('SIGTERM', () => {
@@ -47,6 +48,7 @@ app.get('/ip', (request, response) => response.send(request.ip));
 logger.info('Setting up Middleware');
 app.use(loggerHttp);
 app.use(express.json());
+app.use(healthzRouter);
 
 app.use(express.urlencoded({
 	extended: true,

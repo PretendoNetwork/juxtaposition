@@ -6,6 +6,7 @@ import { loggerHttp } from '@/loggerHttp';
 import auth from '@/middleware/auth';
 import discovery from '@/services/discovery';
 import api from '@/services/api';
+import { healthzRouter } from '@/services/healthz';
 import { config } from '@/config';
 import { ApiErrorCode, badRequest, serverError } from './errors';
 
@@ -38,6 +39,7 @@ app.disable('x-powered-by');
 logger.info('Setting up Middleware');
 app.use(loggerHttp);
 app.use(express.json());
+app.use(healthzRouter);
 
 app.use(express.urlencoded({
 	extended: true,

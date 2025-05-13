@@ -1,4 +1,4 @@
-const util = require('../util');
+const util = require('@/util');
 
 async function detectVersion(request, response, next) {
 	request.timerDate = Date.now();
