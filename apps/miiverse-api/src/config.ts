@@ -5,12 +5,20 @@ import { z } from 'zod';
 const schema = z.object({
 	logFormat: z.enum(['json', 'pretty']).default('pretty'),
 	logLevel: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
+	/** Enable or disable logging of sensitive HTTP headers (cookies, tokens etc.) in the JSON log */
 	logSensitive: zodCoercedBoolean().default(false),
 	httpPort: z.coerce.number().default(8080),
+	/** Configures proxy trust (X-Forwarded-For etc.). Can be `true` to unconditionally trust, or
+	 *  provide a numeric hop count, or comma-seperated CIDR ranges.
+	 *  See https://expressjs.com/en/guide/behind-proxies.html
+	 */
 	httpTrustProxy: z.union([zodStrictBoolean(), z.coerce.number(), z.string()]).default(false),
+	/** Whether to expose Prometheus metrics on a different port, path /metrics. */
 	metricsEnabled: zodCoercedBoolean().default(false),
 	metricsPort: z.coerce.number().default(9090),
+	/** The AES key to use for decrypting service tokens. Must match the account server's. */
 	aesKey: z.string(),
+	/** CDN path hosting Mii images. ${cdnUrl}/mii/100000000/normal_face.png */
 	cdnUrl: z.string().url().transform(s => s.replace(/\/$/g, '')),
 	mongooseUri: z.string(),
 	s3Endpoint: z.string(),
