@@ -8,6 +8,7 @@ const schema = z.object({
 	logSensitive: zodCoercedBoolean().default(false),
 	httpPort: z.coerce.number().default(8080),
 	httpCookieDomain: z.string().default('.pretendo.network'),
+	httpTrustProxy: z.union([zodStrictBoolean(), z.coerce.number(), z.string()]).default(false),
 	metricsEnabled: zodCoercedBoolean().default(false),
 	metricsPort: z.coerce.number().default(9090),
 	postLimit: z.coerce.number().default(10),
@@ -39,6 +40,7 @@ export const fragments = {
 		httpFrontendBaseUrl: 'http://localhost:5173/',
 		httpBackendBaseUrl: 'http://localhost:8080/',
 		httpPort: 5173,
+		httpTrustProxy: 'loopback',
 		aesKey: '1234567812345678123456781234567812345678123456781234567812345678',
 		mongooseUri: 'mongodb://localhost:27017/miiverse?directConnection=true',
 		s3Endpoint: 'http://localhost:9000',
@@ -78,7 +80,8 @@ export const config = {
 	},
 	http: {
 		port: unmappedConfig.httpPort,
-		cookieDomain: unmappedConfig.httpCookieDomain
+		cookieDomain: unmappedConfig.httpCookieDomain,
+		trustProxy: unmappedConfig.httpTrustProxy
 	},
 	metrics: {
 		enabled: unmappedConfig.metricsEnabled,
@@ -118,3 +121,24 @@ export const config = {
 		port: unmappedConfig.redisPort
 	}
 };
+
+/**
+ * An "even stricter" boolean parser. Instead of coercing non-bools to "false", it fails.
+ * Useful with z.union; so strings other than "true", "false", "yes", and "no" can be
+ * tried against other parsers.
+ */
+function zodStrictBoolean(): z.ZodEffects<z.ZodBoolean, boolean, unknown> {
+	return z.preprocess((val) => {
+		if (typeof val !== 'string') {
+			return val;
+		}
+		const lval = val.toLocaleLowerCase().trim();
+		if (lval === 'true' || lval === 'yes') {
+			return true;
+		}
+		if (lval === 'false' || lval === 'no') {
+			return false;
+		}
+		return val;
+	}, z.boolean());
+}
