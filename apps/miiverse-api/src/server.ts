@@ -21,6 +21,9 @@ if (metricsEnabled) {
 		// Include full express and nodejs metrics
 		includeMethod: true,
 		includePath: true,
+		urlValueParser: {
+			minBase64Length: 15
+		},
 		promClient: {
 			collectDefaultMetrics: {}
 		},
