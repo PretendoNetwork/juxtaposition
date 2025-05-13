@@ -258,8 +258,7 @@ function getReasonMap() {
 		'Piracy',
 		'Inappropriate Behavior in Game',
 		'Other',
-		'Missing Images; Reach out to Jemma with post link to fix',
-		'Unknown'
+		'Missing Images; Reach out to Jemma with post link to fix'
 	];
 }
 

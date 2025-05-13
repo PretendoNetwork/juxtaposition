@@ -161,7 +161,7 @@
 									</span>
 									<span class="text">
 										<h4>
-											<%= reasonMap[report.reason] %>
+											<%= reasonMap[report.reason] ?? "Unknown" %>
 										</h4>
 										<p>
 											<%= report.message %>
@@ -203,7 +203,7 @@
 									</span>
 									<span class="text">
 										<h4>
-											<%= reasonMap[report.reason] %>
+											<%= reasonMap[report.reason] ?? "Unknown" %>
 										</h4>
 										<p>
 											<%= report.message %>
