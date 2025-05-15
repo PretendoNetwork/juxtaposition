@@ -14,9 +14,9 @@ function isErrorHttpStatus(status: number): boolean {
 
 export async function apiFetch<T>(path: string, options?: FetchOptions): Promise<T> {
 	const defaultedOptions = {
-		...options,
 		method: 'GET',
-		headers: {}
+		headers: {},
+		...options
 	};
 
 	const metadata = Metadata({
