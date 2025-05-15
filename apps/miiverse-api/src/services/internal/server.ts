@@ -24,8 +24,8 @@ const app = express();
 app.use(express.json());
 app.use(internalApiRouter);
 
-const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'] as const;
-const methodsWithBody = ['POST', 'PUT', 'DELETE', 'PATCH'] as const;
+const allowedMethods = ['get', 'post', 'put', 'delete', 'patch'] as const;
+const methodsWithBody = ['post', 'put', 'delete', 'patch'] as const;
 type AllowedMethods = typeof allowedMethods[number];
 
 export async function setupGrpc(): Promise<void> {
@@ -33,16 +33,13 @@ export async function setupGrpc(): Promise<void> {
 
 	server.with(apiKeyMiddleware).add(MiiverseServiceDefinition, {
 		sendPacket: async (request) => {
-			const url = new URL('http://internal.local');
-			url.pathname = request.path;
-
-			if (!allowedMethods.includes(request.method as AllowedMethods)) {
+			if (!allowedMethods.includes(request.method.toLowerCase() as AllowedMethods)) {
 				throw new ServerError(Status.UNIMPLEMENTED, 'Method not implemented');
 			}
-			const method = request.method as AllowedMethods;
+			const method = request.method.toLowerCase() as AllowedMethods;
 			const hasBody = methodsWithBody.includes(method as any);
 
-			let baseRequest = superRequest(app)[method](url.toString());
+			let baseRequest = superRequest(app)[method](request.path);
 			if (hasBody) {
 				baseRequest = baseRequest.send(JSON.parse(request.payload));
 			}
@@ -50,7 +47,7 @@ export async function setupGrpc(): Promise<void> {
 			const result = await baseRequest;
 			return {
 				status: result.status,
-				payload: JSON.stringify(result)
+				payload: JSON.stringify(result.body)
 			};
 		},
 		sMMRequestPostId: async (_request) => {
