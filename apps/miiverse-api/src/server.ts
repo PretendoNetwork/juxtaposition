@@ -8,6 +8,7 @@ import discovery from '@/services/discovery';
 import api from '@/services/api';
 import { healthzRouter } from '@/services/healthz';
 import { config } from '@/config';
+import { setupGrpc } from '@/services/internal/server';
 import { ApiErrorCode, badRequest, serverError } from './errors';
 
 const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
@@ -73,6 +74,8 @@ async function main(): Promise<void> {
 	app.listen(port, () => {
 		logger.info(`Server started on port ${port}`);
 	});
+
+	await setupGrpc();
 
 	if (metricsEnabled) {
 		metrics.listen(metricsPort, () => {
