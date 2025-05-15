@@ -39,6 +39,9 @@ const schema = z.object({
 	grpcAccountHost: z.string(),
 	grpcAccountPort: z.string(),
 	grpcAccountApiKey: z.string(),
+	grpcMiiverseHost: z.string(),
+	grpcMiiversePort: z.string(),
+	grpcMiiverseApiKey: z.string(),
 	redisHost: z.string(),
 	redisPort: z.coerce.number().default(6379)
 });
@@ -66,7 +69,10 @@ export const fragments = {
 		grpcFriendsApiKey: '12345678123456781234567812345678',
 		grpcAccountHost: 'localhost',
 		grpcAccountPort: 8123,
-		grpcAccountApiKey: '12345678123456781234567812345678'
+		grpcAccountApiKey: '12345678123456781234567812345678',
+		grpcMiiverseHost: 'localhost',
+		grpcMiiversePort: 8125,
+		grpcMiiverseApiKey: '12345678123456781234567812345678'
 	}
 };
 
@@ -119,6 +125,11 @@ export const config = {
 			host: unmappedConfig.grpcAccountHost,
 			port: unmappedConfig.grpcAccountPort,
 			apiKey: unmappedConfig.grpcAccountApiKey
+		},
+		miiverse: {
+			host: unmappedConfig.grpcMiiverseHost,
+			port: unmappedConfig.grpcMiiversePort,
+			apiKey: unmappedConfig.grpcMiiverseApiKey
 		}
 	},
 	redis: {
