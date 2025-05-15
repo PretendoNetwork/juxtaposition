@@ -44,7 +44,7 @@ export async function setupGrpc(): Promise<void> {
 
 			let baseRequest = superRequest(app)[method](url.toString());
 			if (hasBody) {
-				baseRequest = baseRequest.send(request.payload);
+				baseRequest = baseRequest.send(JSON.parse(request.payload));
 			}
 
 			const result = await baseRequest;
