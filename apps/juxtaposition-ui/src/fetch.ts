@@ -31,10 +31,21 @@ export async function apiFetch<T>(path: string, options?: FetchOptions): Promise
 		metadata
 	});
 
-	// TODO don't throw away the response payload here
 	if (isErrorHttpStatus(response.status)) {
-		throw new Error(`HTTP error! status: ${response.status}`);
+		throw new Error(`HTTP error! status: ${response.status} ${response.payload}`);
 	}
 
 	return JSON.parse(response.payload) as T;
+}
+
+export async function apiFetchUser<T>(request: any, path: string, options?: FetchOptions): Promise<T> {
+	options = {
+		...options,
+		headers: {
+			'x-service-token': request.serviceToken,
+			'x-oauth-token': request.token,
+			...options?.headers
+		}
+	};
+	return apiFetch<T>(path, options);
 }

@@ -12,6 +12,7 @@ const upload = multer({ dest: 'uploads/' });
 const redis = require('@/redisCache');
 const { config } = require('@/config');
 const router = express.Router();
+const { apiFetchUser } = require('@/fetch');
 
 const postLimit = rateLimit({
 	windowMs: 15 * 1000, // 30 seconds
@@ -108,7 +109,7 @@ router.post('/new', postLimit, upload.none(), async function (req, res) {
 router.get('/:post_id', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	const userContent = await database.getUserContent(req.pid);
-	let post = await database.getPostByID(req.params.post_id.toString());
+	let post = await apiFetchUser(req, `/api/v1/posts/${req.params.post_id}`);
 	if (post === null) {
 		return res.redirect('/404');
 	}
