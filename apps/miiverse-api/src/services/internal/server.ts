@@ -37,9 +37,10 @@ export async function setupGrpc(): Promise<void> {
 				throw new ServerError(Status.UNIMPLEMENTED, 'Method not implemented');
 			}
 			const method = request.method.toLowerCase() as AllowedMethods;
+			const headers = JSON.parse(request.headers);
 			const hasBody = methodsWithBody.includes(method as any);
 
-			let baseRequest = superRequest(app)[method](request.path);
+			let baseRequest = superRequest(app)[method](request.path).set(headers);
 			if (hasBody) {
 				baseRequest = baseRequest.send(JSON.parse(request.payload));
 			}
