@@ -4,6 +4,7 @@ import express from 'express';
 import { MiiverseServiceDefinition } from '@repo/grpc-client/out/miiverse_service';
 import { config } from '@/config';
 import { internalApiRouter } from '@/services/internal';
+import authv2 from '@/middleware/authv2';
 import { logger } from '@/logger';
 import type { CallContext, ServerMiddlewareCall } from 'nice-grpc';
 
@@ -22,6 +23,7 @@ export async function* apiKeyMiddleware<Request, Response>(
 
 const app = express();
 app.use(express.json());
+app.use(authv2);
 app.use(internalApiRouter);
 
 const allowedMethods = ['get', 'post', 'put', 'delete', 'patch'] as const;
