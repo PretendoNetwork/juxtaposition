@@ -8,10 +8,12 @@ import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
+import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import { config } from '@/config';
 import { logger } from '@/logger';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ParamPack } from '@/types/common/param-pack';
@@ -23,6 +25,9 @@ const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
 
 const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
 const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
+
+const gRPCApiChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
+const gRPCApiClient = createClient(APIDefinition, gRPCApiChannel);
 
 const s3 = new aws.S3({
 	endpoint: new aws.Endpoint(config.s3.endpoint),
@@ -186,12 +191,21 @@ export async function getUserFriendRequestsIncoming(pid: number): Promise<Friend
 	return response.friendRequests;
 }
 
-export function getUserAccountData(pid: number): Promise<GetUserDataResponse> {
+export function getUserAccountData(pid: number): Promise<AccountGetUserDataResponse> {
 	return gRPCAccountClient.getUserData({
 		pid: pid
 	}, {
 		metadata: Metadata({
 			'X-API-Key': config.grpc.account.apiKey
+		})
+	});
+}
+
+export function getUserDataFromToken(token: string): Promise<ApiGetUserDataResponse> {
+	return gRPCApiClient.getUserData({}, {
+		metadata: Metadata({
+			'X-API-Key': config.grpc.account.apiKey,
+			'X-Token': token
 		})
 	});
 }
