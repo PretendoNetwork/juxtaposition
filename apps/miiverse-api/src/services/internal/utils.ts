@@ -16,7 +16,7 @@ export function handle(handler: HandlerFunction) {
 			res.status(200).json(result);
 			return;
 		} catch (error) {
-			logger.error('Unhandled exception in handler', error);
+			logger.error(error, 'Unhandled exception in handler');
 			res.status(500).json({ error: 'Internal Server Error' });
 			return;
 		}
