@@ -7,27 +7,28 @@ import { internalApiRouter } from '@/services/internal';
 import authentication from '@/services/internal/middleware/authentication';
 import { logger } from '@/logger';
 import { InternalAPIError } from '@/services/internal/errors';
+import { loggerHttp } from '@/loggerHttp';
 import type { CallContext, ServerMiddlewareCall } from 'nice-grpc';
 
 // API server
 
 const app = express();
 app.use(express.json());
+app.use(loggerHttp);
 app.use(authentication);
 app.use(internalApiRouter);
 
 // API error handler
 app.use((err: Error, _request: express.Request, response: express.Response, next: express.NextFunction) => {
 	if (!(err instanceof InternalAPIError)) {
-		return next();
+		return next(err);
 	}
 
-	logger.warn(err, 'API error');
 	response.status(err.status).json({ message: err.message });
 });
 // Javascript error handler
 app.use((err: Error, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
-	logger.error(err, 'Unhandled error!');
+	response.err = err; // For Pino
 	response.status(500).json({ message: 'Internal server error' });
 });
 
