@@ -4,6 +4,10 @@ import { getUserSettings } from '@/database';
 import type express from 'express';
 import type { AccountData } from '@/types/common/account-data';
 
+/**
+ * Handles authentication for service (NNAS/console) and OAuth (web) tokens. Sets locals.account to AccountData.
+ * Will error if tokens bad or account nonexistent, but otherwise does not check bans or setup status.
+ */
 async function auth(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 	// Used by console applets
 	const serviceToken = getValueFromHeaders(request.headers, 'x-service-token');
