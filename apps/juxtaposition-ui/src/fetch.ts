@@ -31,6 +31,7 @@ export async function apiFetch<T>(path: string, options?: FetchOptions): Promise
 		metadata
 	});
 
+	// TODO don't throw away the response payload here
 	if (isErrorHttpStatus(response.status)) {
 		throw new Error(`HTTP error! status: ${response.status}`);
 	}
