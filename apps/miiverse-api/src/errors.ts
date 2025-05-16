@@ -74,30 +74,10 @@ function sendXMLError(response: express.Response, errorCode: ApiErrorCode, httpC
 	}).end({ pretty: true }));
 }
 
-function sendJSONError(response: express.Response, errorCode: ApiErrorCode, httpCode: number): void {
-	response.status(httpCode);
-	// Save this for the logger
-	response.errorCode = errorCode;
-
-	// TODO actually design this object
-	response.json({
-		error_code: errorCode,
-		message: ApiErrorCode[errorCode]
-	});
-}
-
 export function badRequest(response: express.Response, errorCode: number, httpCode: number = 400): void {
 	return sendXMLError(response, errorCode, httpCode);
 }
 
 export function serverError(response: express.Response, errorCode: ApiErrorCode, httpCode: number = 500): void {
 	return sendXMLError(response, errorCode, httpCode);
-}
-
-export function badRequestV2(response: express.Response, errorCode: number, httpCode: number = 400): void {
-	return sendJSONError(response, errorCode, httpCode);
-}
-
-export function serverErrorV2(response: express.Response, errorCode: ApiErrorCode, httpCode: number = 500): void {
-	return sendJSONError(response, errorCode, httpCode);
 }
