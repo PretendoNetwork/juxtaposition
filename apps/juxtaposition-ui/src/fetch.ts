@@ -20,12 +20,12 @@ export async function apiFetch<T>(path: string, options?: FetchOptions): Promise
 	};
 
 	const metadata = Metadata({
-		...defaultedOptions.headers,
 		'X-API-Key': config.grpc.miiverse.apiKey
 	});
 	const response = await grpcClient.sendPacket({
 		path,
 		method: defaultedOptions.method,
+		headers: JSON.stringify(defaultedOptions.headers),
 		payload: defaultedOptions.body ? JSON.stringify(defaultedOptions.body) : undefined
 	}, {
 		metadata
