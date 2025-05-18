@@ -23,7 +23,7 @@
         "show_all": "Tout afficher",
         "search": "Rechercher des communautés...",
         "text": "Toutes les communautés",
-        "ann_string": "Cliquez ici pour voir les annonces récentes!"
+        "ann_string": "Cliquez ici pour voir les dernières annonces!"
     },
     "community": {
         "follow": "Suivre la communauté",
@@ -34,7 +34,7 @@
         "recent": "Publi. récentes",
         "popular": "Publi. populaires",
         "verified": "Publi. vérifiées",
-        "new": "Nouvelle publication"
+        "new": "Publier"
     },
     "user_page": {
         "country": "Pays",
