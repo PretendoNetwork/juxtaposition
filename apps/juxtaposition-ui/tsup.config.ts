@@ -127,6 +127,10 @@ export default defineConfig([
 						to: ['./dist/webfiles/web']
 					},
 					{
+						from: ['./src/webfiles/web/partials/assets/**'],
+						to: ['./dist/webfiles/web/partials/assets']
+					},
+					{
 						from: ['./src/webfiles/web/images/**'],
 						to: ['./dist/webfiles/web/images']
 					},
