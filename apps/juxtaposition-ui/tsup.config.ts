@@ -31,7 +31,9 @@ export default defineConfig([
 	{
 		entry: ['src/webfiles/ctr/**/*.js', 'src/webfiles/ctr/**/*.css'],
 		sourcemap: true,
-		minify: true,
+		minifyWhitespace: true,
+		minifySyntax: true,
+		minifyIdentifiers: false,
 
 		outDir: 'dist/webfiles/ctr',
 
@@ -66,7 +68,9 @@ export default defineConfig([
 	{
 		entry: ['src/webfiles/portal/**/*.js', 'src/webfiles/portal/**/*.css'],
 		sourcemap: true,
-		minify: true,
+		minifyWhitespace: true,
+		minifySyntax: true,
+		minifyIdentifiers: false,
 
 		outDir: 'dist/webfiles/portal',
 
@@ -101,7 +105,9 @@ export default defineConfig([
 	{
 		entry: ['src/webfiles/web/**/*.js', 'src/webfiles/web/**/*.css'],
 		sourcemap: true,
-		minify: true,
+		minifyWhitespace: true,
+		minifySyntax: true,
+		minifyIdentifiers: false,
 
 		outDir: 'dist/webfiles/web',
 
