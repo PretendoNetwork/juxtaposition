@@ -2,16 +2,18 @@
 
 ARG app_dir="/home/node/app"
 
-FROM node:20-alpine
+FROM node:22-alpine
 ARG app_dir
 WORKDIR ${app_dir}
 
 COPY . .
-
 RUN npm ci
+
+WORKDIR ${app_dir}/apps/miiverse-api
+
+RUN npm run build
 
 ENV NODE_ENV=production
 USER node
 
-WORKDIR ${app_dir}/apps/miiverse-api
 CMD ["npm", "run", "start"]
