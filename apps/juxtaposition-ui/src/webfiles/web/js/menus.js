@@ -20,7 +20,7 @@ export function setupPopup(button) {
 			ev.stopPropagation();
 
 			if (typeof item.cb === 'function') {
-				item.cb(ev);
+				item.cb(item, ev);
 			}
 
 			// Close menu

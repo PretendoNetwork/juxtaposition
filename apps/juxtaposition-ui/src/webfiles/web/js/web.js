@@ -1,5 +1,6 @@
 import { popupItemCb, setupPopup } from './menus';
 import { initReportForm, reportPost } from './reports';
+import { deletePost } from './post';
 
 let pjax;
 setInterval(checkForUpdates, 30000);
@@ -99,13 +100,16 @@ function initPopupMenus() {
 
 		const post = menu.getAttribute('data-post');
 
-		popupItemCb(menu.querySelector('[data-action="report"]'), (_ev) => {
+		popupItemCb(menu.querySelector('[data-action="report"]'), (_item, _ev) => {
 			reportPost(post);
 		});
-		popupItemCb(menu.querySelector('[data-action="delete"]'), (_ev) => {
-			console.log('cool');
+		popupItemCb(menu.querySelector('[data-action="delete"]'), (item, _ev) => {
+			const moderator = item.getAttribute('data-moderator');
+			const reason = moderator === 'true' ? prompt('Provide explanation for removing post:') : '';
+
+			deletePost(post, reason);
 		});
-		popupItemCb(menu.querySelector('[data-action="copy"]'), (_ev) => {
+		popupItemCb(menu.querySelector('[data-action="copy"]'), (_item, _ev) => {
 			copyToClipboard(`${window.location.origin}/posts/${post}`);
 		});
 	});
