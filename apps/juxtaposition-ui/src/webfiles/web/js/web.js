@@ -1,3 +1,5 @@
+import { popupItemCb, setupPopup } from './menus';
+
 let pjax;
 setInterval(checkForUpdates, 30000);
 
@@ -88,11 +90,23 @@ function initTabs() {
 		});
 	}
 }
+
+function initPopupMenus() {
+	document.querySelectorAll('.post-hamburger').forEach((menu) => {
+		const button = menu.parentElement;
+		setupPopup(button);
+
+		popupItemCb(menu.querySelector('[data-action="report"]'), (_ev) => {
+			console.log('yay');
+		});
+		popupItemCb(menu.querySelector('[data-action="delete"]'), (_ev) => {
+			console.log('cool');
+		});
+	});
+}
+
 function initPosts() {
 	const els = document.querySelectorAll('.post-content[data-href]');
-	if (!els) {
-		return;
-	}
 	for (let i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
@@ -100,12 +114,10 @@ function initPosts() {
 	}
 	initYeah();
 	initSpoilers();
+	initPopupMenus();
 }
 function initMorePosts() {
 	const els = document.querySelectorAll('#load-more[data-href]');
-	if (!els) {
-		return;
-	}
 	for (let i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			const el = e.currentTarget;

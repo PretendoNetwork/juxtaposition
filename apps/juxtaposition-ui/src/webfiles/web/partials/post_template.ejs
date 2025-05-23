@@ -60,16 +60,15 @@
 			<%# Heart/Empathy button %>
 			<span
 				data-post="<%= post.id %>"
-				<% if (userContent && post.yeahs && post.yeahs.includes(userContent.pid)) { %>
-					class="selected"
-				<% } %>>
+				<% const selected = userContent && post.yeahs && post.yeahs.includes(userContent.pid); %>
+				class="empathy-button <%= selected ? 'selected' : '' %>">
 
 				<%- include('assets/heart_icon.svg') %>
 				<h4 id="count-<%= post.id %>"><%= post.empathy_count %></h4>
 			</span>
 			
 			<%# Reply "button" %>
-			<span>
+			<span class="reply-button">
 				<%- include('assets/reply_icon.svg') %>
 				<h4><%= post.reply_count %></h4>
 			</span>
@@ -77,6 +76,15 @@
 			<%# Share icon %>
 			<span type="button" onclick="copyToClipboard('https://juxt.pretendo.network/posts/<%=post.id%>');">
 				<%- include('assets/share_icon.svg') %>
+			</span>
+
+			<span type="button" class="post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
+				<%- include('assets/share_icon.svg') %>
+				<ul class="post-hamburger" role="menu" data-post="<%= post.id %>">
+					<li role="menuitem" data-action="report"><%- include('assets/share_icon.svg') %> Report Post</li>
+					<li role="menuitem" data-action="delete"><%- include('assets/share_icon.svg') %> Delete Post</li>
+					<li role="menuitem"><%- include('assets/share_icon.svg') %> Go to a</li>
+				</ul>
 			</span>
 			
 			<%# Flag icon %>

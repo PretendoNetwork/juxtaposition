@@ -261,6 +261,12 @@ header > .selected > svg {
   flex-direction: row;
   align-items: center;
   padding: 0.5em;
+  border-radius: 0.75em;
+}
+
+.post-buttons-wrapper > span:hover {
+  cursor: pointer;
+  background: rgba(255, 0, 0, 0.25);
 }
 
 .post-buttons-wrapper > span:nth-of-type(2):hover {
@@ -271,21 +277,60 @@ header > .selected > svg {
   background: rgba(0, 150, 255, 0.25);
 }
 
-.post-buttons-wrapper > span:hover {
-  cursor: pointer;
-  background: rgba(255, 0, 0, 0.25);
-  border-radius: 0.75em;
-}
-
 .post-buttons-wrapper > span > h4 {
   padding-left: 0.5em;
   margin: 0;
 }
 
+/* Red fill for .selected icons (Yeah'd post) */
 .post-buttons-wrapper > span.selected > svg {
   fill: red;
   stroke: red;
 }
+
+/* Hamburger button on post_template */
+.post-hamburger-button {
+  position: relative;
+}
+
+.post-hamburger {
+  /* Reset <ul> */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  /* Position with button */
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  /* trim off corners */
+  border-radius: 0.75em;
+  overflow: hidden; 
+}
+
+.post-hamburger {
+  display: none;
+}
+[aria-expanded="true"] > .post-hamburger {
+  display: block;
+}
+
+
+.post-hamburger > li {
+  width: 200px;
+  padding: 0.5em 1em;
+
+  background: var(--background-alt-alt);
+}
+.post-hamburger > li:hover {
+  background: var(--background-alt);
+}
+
+/* Images in hamburger items should display inline */
+.post-hamburger > li > * {
+  vertical-align: sub;
+}
+
 
 #load-more {
   width: 632px;
@@ -1255,6 +1300,7 @@ li.reports .posts-wrapper {
   margin-top: 1ch;
 }
 
+/* Don't show Heart/Reply/etc. buttons on reports page */
 li.reports .post-buttons-wrapper {
   display: none;
 }
