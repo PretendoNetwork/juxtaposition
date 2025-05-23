@@ -67,6 +67,7 @@ export default defineConfig([
 	/* Portal/Wii U webfiles (~Chrome 20) */
 	{
 		entry: ['src/webfiles/portal/**/*.js', 'src/webfiles/portal/**/*.css'],
+		bundle: true,
 		sourcemap: true,
 		minifyWhitespace: true,
 		minifySyntax: true,
@@ -76,6 +77,7 @@ export default defineConfig([
 
 		platform: 'browser',
 		target: 'chrome20',
+		format: 'iife',
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*', '/fonts/*'];
@@ -104,6 +106,7 @@ export default defineConfig([
 	/* Main web frontend (Modern browsers) */
 	{
 		entry: ['src/webfiles/web/**/*.js', 'src/webfiles/web/**/*.css'],
+		bundle: true,
 		sourcemap: true,
 		minifyWhitespace: true,
 		minifySyntax: true,
@@ -113,6 +116,7 @@ export default defineConfig([
 
 		platform: 'browser',
 		target: browserslist(),
+		format: 'iife',
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*'];

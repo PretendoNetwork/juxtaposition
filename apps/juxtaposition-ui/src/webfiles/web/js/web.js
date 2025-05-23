@@ -1,3 +1,4 @@
+import Pjax from 'pjax';
 import { popupItemCb, setupPopup } from './menus';
 import { initReportForm, reportPost } from './reports';
 import { deletePost } from './post';
@@ -241,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	initAll();
 });
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/community.ejs and src/webfiles/web/user_page.ejs
 function follow(el) {
 	const id = el.getAttribute('data-community-id');
 	const count = document.getElementById('followers');
@@ -267,6 +267,8 @@ function follow(el) {
 		count.innerText = element.count;
 	});
 }
+window.follow = follow;
+
 function checkForUpdates() {
 	const xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
@@ -348,7 +350,6 @@ function Toast(text) {
 	}, 3000);
 }
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/me_page.ejs
 function downloadURI(uri, name) {
 	const link = document.createElement('a');
 	link.download = name;
@@ -357,8 +358,8 @@ function downloadURI(uri, name) {
 	link.click();
 	document.body.removeChild(link);
 }
+window.downloadURI = downloadURI;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
 function openText() {
 	const textArea = document.getElementById('new-post-text');
 	const paintingArea = document.getElementById('new-post-memo');
@@ -372,8 +373,8 @@ function openText() {
 	paintingArea.style.display = 'none';
 	paintingOverlay.style.display = 'none';
 }
+window.openText = openText;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
 function newPainting(clear) {
 	const textArea = document.getElementById('new-post-text');
 	const paintingArea = document.getElementById('new-post-memo');
@@ -395,10 +396,10 @@ function newPainting(clear) {
 
 	// eslint-disable-next-line no-unused-vars -- Modifies scale from painting.js
 	/* global scale:writeable -- defined from painting.js */
-	scale = c.getBoundingClientRect().width / 320;
+	window.scale = c.getBoundingClientRect().width / 320;
 }
+window.newPainting = newPainting;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/message_thread.ejs
 function closePainting(save) {
 	const paintingArea = document.getElementById('new-post-memo');
 	const paintingOverlay = document.getElementById('painting-wrapper');
@@ -415,3 +416,4 @@ function closePainting(save) {
 
 	paintingOverlay.style.display = 'none';
 }
+window.closePainting = closePainting;
