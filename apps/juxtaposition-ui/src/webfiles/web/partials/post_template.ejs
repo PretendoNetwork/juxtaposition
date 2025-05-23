@@ -73,36 +73,15 @@
 				<h4><%= post.reply_count %></h4>
 			</span>
 			
-			<%# Share icon %>
-			<span type="button" onclick="copyToClipboard('https://juxt.pretendo.network/posts/<%=post.id%>');">
-				<%- include('assets/share_icon.svg') %>
-			</span>
-
+			<%# Hamburger menu %>
 			<span type="button" class="post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
-				<%- include('assets/share_icon.svg') %>
+				<%- include('assets/menu_icon.svg') %>
 				<ul class="post-hamburger" role="menu" data-post="<%= post.id %>">
-					<li role="menuitem" data-action="report"><%- include('assets/share_icon.svg') %> Report Post</li>
-					<li role="menuitem" data-action="delete"><%- include('assets/share_icon.svg') %> Delete Post</li>
-					<li role="menuitem"><%- include('assets/share_icon.svg') %> Go to a</li>
+					<li role="menuitem" data-action="report"><%- include('assets/flag_icon.svg') %> Report Post</li>
+					<li role="menuitem" data-action="delete"><%- include('assets/bin_icon.svg') %> Delete Post</li>
+					<li role="menuitem" data-action="copy"><%- include('assets/share_icon.svg') %> Copy link</li>
 				</ul>
 			</span>
-			
-			<%# Flag icon %>
-			<% if(reply && post.pid !== pid && !locals.mainPost) { %>
-				<span
-					type="button"
-					class="submit report"
-					data-post="<%= post.id %>"
-					onclick="reportPost(this)">
-					
-					<%- include('assets/flag_icon.svg') %>
-				</span>
-			<% } %>
 		</div>
 	<% } %>
 </div>
-<%# "Big" report button %>
-<% if(locals.mainPost && !post.removed && pid !== 1000000000) {%>
-	<button id="header-communities-button" class="report" href="#" data-post="<%= post.id %>" onclick="reportPost(this)">Report Post</button>
-	<a id="report-launcher" style="display: none" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false"></a>
-<% } %>

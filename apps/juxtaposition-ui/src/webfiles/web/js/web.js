@@ -1,4 +1,5 @@
 import { popupItemCb, setupPopup } from './menus';
+import { initReportForm, reportPost } from './reports';
 
 let pjax;
 setInterval(checkForUpdates, 30000);
@@ -96,11 +97,16 @@ function initPopupMenus() {
 		const button = menu.parentElement;
 		setupPopup(button);
 
+		const post = menu.getAttribute('data-post');
+
 		popupItemCb(menu.querySelector('[data-action="report"]'), (_ev) => {
-			console.log('yay');
+			reportPost(post);
 		});
 		popupItemCb(menu.querySelector('[data-action="delete"]'), (_ev) => {
 			console.log('cool');
+		});
+		popupItemCb(menu.querySelector('[data-action="copy"]'), (_ev) => {
+			copyToClipboard(`${window.location.origin}/posts/${post}`);
 		});
 	});
 }
@@ -201,6 +207,7 @@ function initAll() {
 	initPosts();
 	initMorePosts();
 	initPostModules();
+	initReportForm();
 	pjax.refresh();
 }
 
@@ -318,7 +325,6 @@ window.onscroll = function (_ev) {
 	}
 };
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/post_template.ejs
 function copyToClipboard(text) {
 	const inputc = document.getElementsByTagName('header')[0].appendChild(document.createElement('input'));
 	inputc.value = text;
@@ -346,22 +352,6 @@ function downloadURI(uri, name) {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
-}
-
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/post_template.ejs
-function reportPost(post) {
-	const id = post.getAttribute('data-post');
-	const button = document.getElementById('report-launcher');
-	const form = document.getElementById('report-form');
-	const formID = document.getElementById('report-post-id');
-	if (!id || !button || !form || !formID) {
-		return;
-	}
-
-	form.action = '/posts/' + id + '/report';
-	formID.value = id;
-	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, '$1-$2-$3-$4-$5-$6'));
-	button.click();
 }
 
 // eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
