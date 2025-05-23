@@ -321,10 +321,10 @@ header > .selected > svg {
   width: 200px;
   padding: 0.5em 1em;
 
-  background: var(--background-alt-alt);
+  background: var(--background-alt);
 }
 .post-hamburger > li:hover {
-  background: var(--background-alt);
+  background: var(--background-alt-alt);
 }
 
 /* Images in hamburger items should display inline */
