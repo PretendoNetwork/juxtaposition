@@ -69,9 +69,7 @@ export default defineConfig([
 		entry: ['src/webfiles/portal/**/*.js', 'src/webfiles/portal/**/*.css'],
 		bundle: true,
 		sourcemap: true,
-		minifyWhitespace: true,
-		minifySyntax: true,
-		minifyIdentifiers: false,
+		minify: true,
 
 		outDir: 'dist/webfiles/portal',
 
@@ -81,7 +79,6 @@ export default defineConfig([
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*', '/fonts/*'];
-			options.treeShaking = false;
 		},
 		esbuildPlugins: [
 			copy({
@@ -108,9 +105,7 @@ export default defineConfig([
 		entry: ['src/webfiles/web/**/*.js', 'src/webfiles/web/**/*.css'],
 		bundle: true,
 		sourcemap: true,
-		minifyWhitespace: true,
-		minifySyntax: true,
-		minifyIdentifiers: false,
+		minify: true,
 
 		outDir: 'dist/webfiles/web',
 
@@ -120,7 +115,6 @@ export default defineConfig([
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*'];
-			options.treeShaking = false;
 		},
 		esbuildPlugins: [
 			copy({
