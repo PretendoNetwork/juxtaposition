@@ -1,6 +1,6 @@
 export function initReportForm() {
 	const modal = document.getElementById('report-form-modal');
-	if (modal.setupDone) {
+	if (!modal || modal.setupDone) {
 		return;
 	}
 
