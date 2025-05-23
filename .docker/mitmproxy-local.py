@@ -26,6 +26,7 @@ juxt_domains = [
 
 s3_domains = [
     "cdn.pretendo.cc",
+    "r2-cdn.pretendo.cc"
 ]
 
 def request(flow: http.HTTPFlow):

@@ -1,3 +1,5 @@
+import Pjax from 'pjax';
+
 var pjax;
 setInterval(checkForUpdates, 30000);
 setInterval(input, 100);
@@ -274,7 +276,6 @@ function hideScreenShots() {
 	document.getElementById('screenshot-toggle').checked = false;
 }
 
-// eslint-disable-next-line no-unused-vars -- Used by src/webfiles/portal/partials/new_post.ejs
 function chooseScreenShot(value) {
 	var screenshot = document.getElementById('screenshot-value');
 	switch (value) {
@@ -292,8 +293,8 @@ function chooseScreenShot(value) {
 	}
 	hideScreenShots();
 }
+window.chooseScreenShot = chooseScreenShot;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/community.ejs and src/webfiles/portal/user_page.ejs
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
 	var count = document.getElementById('followers');
@@ -318,8 +319,8 @@ function follow(el) {
 		count.innerText = element.count;
 	});
 }
+window.follow = follow;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/new_post.ejs
 function newPainting(reset) {
 	wiiuMemo.open(reset);
 	setTimeout(function () {
@@ -330,6 +331,8 @@ function newPainting(reset) {
 		}
 	}, 250);
 }
+window.newPainting = newPainting;
+
 function stopLoading() {
 	if (typeof wiiuBrowser !== 'undefined' &&
 		typeof wiiuBrowser.endStartUp !== 'undefined') {
@@ -341,8 +344,8 @@ function stopLoading() {
 		wiiuBrowser.lockUserOperation(false);
 	}
 }
+window.stopLoading = stopLoading;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/nav_bar.ejs
 function exit() {
 	wiiu.gamepad.update();
 
@@ -353,8 +356,8 @@ function exit() {
 		wiiuBrowser.closeApplication();
 	}
 }
+window.exit = exit;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/post_template.ejs
 function deletePost(post) {
 	var id = post.getAttribute('data-post');
 	if (!id) {
@@ -372,8 +375,8 @@ function deletePost(post) {
 		});
 	}
 }
+window.deletePost = deletePost;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/post_template.ejs
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
 	var button = document.getElementById('report-launcher');
@@ -388,6 +391,8 @@ function reportPost(post) {
 	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, '$1-$2-$3-$4-$5-$6'));
 	button.click();
 }
+window.reportPost = reportPost;
+
 function checkForUpdates() {
 	GET('/users/notifications.json', function updates(data) {
 		var notificationObj = JSON.parse(data.responseText);
@@ -464,6 +469,7 @@ function back() {
 		document.getElementById('nav-menu').style.display = 'block';
 	}
 }
+window.back = back;
 
 function input() {
 	wiiu.gamepad.update();

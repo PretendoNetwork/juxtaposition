@@ -1,3 +1,8 @@
+import Pjax from 'pjax';
+import { popupItemCb, setupPopup } from './menus';
+import { initReportForm, reportPost } from './reports';
+import { deletePost } from './post';
+
 let pjax;
 setInterval(checkForUpdates, 30000);
 
@@ -88,11 +93,31 @@ function initTabs() {
 		});
 	}
 }
+
+function initPopupMenus() {
+	document.querySelectorAll('.post-hamburger').forEach((menu) => {
+		const button = menu.parentElement;
+		setupPopup(button);
+
+		const post = menu.getAttribute('data-post');
+
+		popupItemCb(menu.querySelector('[data-action="report"]'), (_item, _ev) => {
+			reportPost(post);
+		});
+		popupItemCb(menu.querySelector('[data-action="delete"]'), (item, _ev) => {
+			const moderator = item.hasAttribute('data-moderator');
+			const reason = moderator ? prompt('Provide explanation for removing post:') : '';
+
+			deletePost(post, reason);
+		});
+		popupItemCb(menu.querySelector('[data-action="copy"]'), (_item, _ev) => {
+			copyToClipboard(`${window.location.origin}/posts/${post}`);
+		});
+	});
+}
+
 function initPosts() {
 	const els = document.querySelectorAll('.post-content[data-href]');
-	if (!els) {
-		return;
-	}
 	for (let i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
@@ -100,12 +125,10 @@ function initPosts() {
 	}
 	initYeah();
 	initSpoilers();
+	initPopupMenus();
 }
 function initMorePosts() {
 	const els = document.querySelectorAll('#load-more[data-href]');
-	if (!els) {
-		return;
-	}
 	for (let i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			const el = e.currentTarget;
@@ -189,6 +212,7 @@ function initAll() {
 	initPosts();
 	initMorePosts();
 	initPostModules();
+	initReportForm();
 	pjax.refresh();
 }
 
@@ -218,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	initAll();
 });
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/community.ejs and src/webfiles/web/user_page.ejs
 function follow(el) {
 	const id = el.getAttribute('data-community-id');
 	const count = document.getElementById('followers');
@@ -244,6 +267,8 @@ function follow(el) {
 		count.innerText = element.count;
 	});
 }
+window.follow = follow;
+
 function checkForUpdates() {
 	const xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function () {
@@ -306,7 +331,6 @@ window.onscroll = function (_ev) {
 	}
 };
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/post_template.ejs
 function copyToClipboard(text) {
 	const inputc = document.getElementsByTagName('header')[0].appendChild(document.createElement('input'));
 	inputc.value = text;
@@ -326,7 +350,6 @@ function Toast(text) {
 	}, 3000);
 }
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/me_page.ejs
 function downloadURI(uri, name) {
 	const link = document.createElement('a');
 	link.download = name;
@@ -335,24 +358,8 @@ function downloadURI(uri, name) {
 	link.click();
 	document.body.removeChild(link);
 }
+window.downloadURI = downloadURI;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/post_template.ejs
-function reportPost(post) {
-	const id = post.getAttribute('data-post');
-	const button = document.getElementById('report-launcher');
-	const form = document.getElementById('report-form');
-	const formID = document.getElementById('report-post-id');
-	if (!id || !button || !form || !formID) {
-		return;
-	}
-
-	form.action = '/posts/' + id + '/report';
-	formID.value = id;
-	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, '$1-$2-$3-$4-$5-$6'));
-	button.click();
-}
-
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
 function openText() {
 	const textArea = document.getElementById('new-post-text');
 	const paintingArea = document.getElementById('new-post-memo');
@@ -366,8 +373,8 @@ function openText() {
 	paintingArea.style.display = 'none';
 	paintingOverlay.style.display = 'none';
 }
+window.openText = openText;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
 function newPainting(clear) {
 	const textArea = document.getElementById('new-post-text');
 	const paintingArea = document.getElementById('new-post-memo');
@@ -389,10 +396,10 @@ function newPainting(clear) {
 
 	// eslint-disable-next-line no-unused-vars -- Modifies scale from painting.js
 	/* global scale:writeable -- defined from painting.js */
-	scale = c.getBoundingClientRect().width / 320;
+	window.scale = c.getBoundingClientRect().width / 320;
 }
+window.newPainting = newPainting;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/message_thread.ejs
 function closePainting(save) {
 	const paintingArea = document.getElementById('new-post-memo');
 	const paintingOverlay = document.getElementById('painting-wrapper');
@@ -409,3 +416,4 @@ function closePainting(save) {
 
 	paintingOverlay.style.display = 'none';
 }
+window.closePainting = closePainting;

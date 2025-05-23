@@ -70,10 +70,11 @@
 					<button class="primary" onclick="closePainting(true)">OK</button>
 			   </div>
 			</div>
-			<script src="/js/painting.js"></script>
+			<script src="/js/painting.global.js"></script>
 		</div>
     </div>
 	<img src="" onerror="setTimeout(function() { window.scrollTo(0, 50000); }, 500)">
+	<%- include('partials/report_modal', { pid }) %>
 </div>
 </body>
 </html>
