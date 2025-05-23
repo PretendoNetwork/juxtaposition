@@ -5,7 +5,9 @@
   "license": "AGPL-3.0-only",
   "main": "./dist/server.js",
   "scripts": {
-    "dev": "nodemon -x '/bin/sh -c' -- 'tsup && node --enable-source-maps dist/server.js'",
+    "dev": "nodemon --exec 'npm run dev:buildrun'",
+    "dev:buildrun": "run-s dev:build start",
+    "dev:build": "tsup",
     "ejslint": "ejslint **/*.ejs",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -58,6 +60,7 @@
     "eslint": "^9.21.0",
     "globals": "^16.0.0",
     "nodemon": "^3.1.10",
+    "npm-run-all": "^4.1.5",
     "tsup": "^8.5.0",
     "typescript": "^5.7.3"
   }
