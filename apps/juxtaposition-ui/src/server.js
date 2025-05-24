@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const { RedisStore } = require('connect-redis');
 const expressMetrics = require('express-prom-bundle');
+require('express-async-errors'); // See package docs
 const database = require('@/database');
 const { logger } = require('@/logger');
 const { loggerHttp } = require('@/loggerHttp');
