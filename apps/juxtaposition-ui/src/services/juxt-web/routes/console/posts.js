@@ -114,7 +114,7 @@ router.get('/:post_id', async function (req, res) {
 		return res.redirect('/404');
 	}
 	if (post.parent) {
-		post = await database.getPostByID(post.parent);
+		post = await apiFetchUser(req, `/api/v1/posts/${post.parent}`);
 		if (post === null) {
 			return res.sendStatus(404);
 		}
