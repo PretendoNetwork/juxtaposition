@@ -12,7 +12,7 @@ const upload = multer({ dest: 'uploads/' });
 const redis = require('@/redisCache');
 const { config } = require('@/config');
 const router = express.Router();
-const { apiFetchUser } = require('@/fetch');
+const backend = require('@/backend');
 
 const postLimit = rateLimit({
 	windowMs: 15 * 1000, // 30 seconds
@@ -42,7 +42,7 @@ const yeahLimit = rateLimit({
 });
 
 router.get('/:post_id/oembed.json', async function (req, res) {
-	const post = await database.getPostByID(req.params.post_id.toString());
+	const post = await backend.getPostById(req.tokens, req.params.post_id);
 	const doc = {
 		author_name: post.screen_name,
 		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid
@@ -109,16 +109,11 @@ router.post('/new', postLimit, upload.none(), async function (req, res) {
 router.get('/:post_id', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	const userContent = await database.getUserContent(req.pid);
-	let post = await apiFetchUser(req, `/api/v1/posts/${req.params.post_id}`);
-	if (post === null) {
-		return res.redirect('/404');
-	}
+
+	const post = await backend.getPostById(req.tokens, req.params.post_id);
 	if (post.parent) {
-		post = await apiFetchUser(req, `/api/v1/posts/${post.parent}`);
-		if (post === null) {
-			return res.sendStatus(404);
-		}
-		return res.redirect(`/posts/${post.id}`);
+		const parent = await backend.getPostById(req.tokens, post.parent);
+		return res.redirect(`/posts/${parent.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);
 	const communityMap = await util.getCommunityHash();
@@ -166,7 +161,7 @@ router.post('/:post_id/new', postLimit, upload.none(), async function (req, res)
 
 router.post('/:post_id/report', upload.none(), async function (req, res) {
 	const { reason, message, post_id } = req.body;
-	const post = await database.getPostByID(post_id);
+	const post = await backend.getPostByID(req.tokens, post_id);
 	if (!reason || !post_id || !post) {
 		return res.redirect('/404');
 	}

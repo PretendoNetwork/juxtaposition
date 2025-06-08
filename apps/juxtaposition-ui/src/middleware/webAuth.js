@@ -31,7 +31,7 @@ async function webAuth(request, response, next) {
 		}
 	}
 
-	request.token = request.cookies.access_token;
+	request.tokens = { oauthToken: request.cookies.access_token };
 
 	// Open access pages
 	if (isStartOfPath(request.path, '/users/') ||
