@@ -91,6 +91,13 @@ app.use((error, req, res, next) => {
 		return next(error);
 	}
 
+	// small hack because token expiry is weird
+	if (error.status === 401) {
+		req.session.user = undefined;
+		req.session.pid = undefined;
+		return res.redirect('/login');
+	}
+
 	const status = error.status || 500;
 	res.status(status);
 

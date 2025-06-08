@@ -24,7 +24,7 @@ async function webAuth(request, response, next) {
 			response.clearCookie('token_type', { domain: cookieDomain, path: '/' });
 			if (request.path === '/login') {
 				response.locals.lang = util.processLanguage();
-				request.token = request.cookies.access_token;
+				request.tokens = {};
 				request.paramPackData = null;
 				return next();
 			}
