@@ -76,23 +76,29 @@ app.use(juxt_web);
 logger.info('Creating 404 status handler');
 app.use((req, res) => {
 	req.log.warn('Page not found');
+	res.status(404);
 	res.render(req.directory + '/error.ejs', {
 		code: 404,
-		message: 'Page not found'
+		message: 'Page not found',
+		id: req.id
 	});
 });
 
 // non-404 error handler
 logger.info('Creating non-404 status handler');
-app.use((error, request, response) => {
+app.use((error, req, res, next) => {
+	if (res.headersSent) {
+		return next(error);
+	}
+
 	const status = error.status || 500;
+	res.status(status);
 
-	response.status(status);
-
-	response.json({
-		app: 'api',
-		status,
-		error: error.message
+	req.log.error(error, 'Request failed!');
+	res.render(req.directory + '/error.ejs', {
+		code: status,
+		message: 'Error',
+		id: req.id
 	});
 });
 
