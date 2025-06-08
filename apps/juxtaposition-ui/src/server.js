@@ -95,7 +95,7 @@ app.use((error, req, res, next) => {
 	if (error.status === 401) {
 		req.session.user = undefined;
 		req.session.pid = undefined;
-		return res.redirect('/login');
+		return res.redirect(`/login?redirect=${req.originalUrl}`);
 	}
 
 	const status = error.status || 500;
