@@ -23,7 +23,8 @@ async function auth(request: express.Request, response: express.Response, next: 
 	} else if (oAuthToken) {
 		response.locals.account = await webAuth(oAuthToken);
 	} else {
-		throw new errors.unauthorized('Authentication token not provided');
+		// Guest access
+		response.locals.account = null;
 	}
 
 	return next();
