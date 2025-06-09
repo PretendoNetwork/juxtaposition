@@ -190,6 +190,32 @@ router.post('/:post_id/report', upload.none(), async function (req, res) {
 	return res.redirect(`/posts/${post.id}`);
 });
 
+function canPost(community, userSettings, parentPost, user) {
+	const isReply = !!parentPost;
+	const isPublicPostableCommunity = community.type < 2;
+	const isOpenCommunity = community.permissions.open;
+
+	const isCommunityAdmin = (community.admins ?? []).includes(user.pid);
+	const isUserLimitedFromPosting = userSettings.account_status > 0;
+	const hasAccessLevelRequirement = isReply
+		? user.accessLevel >= community.permissions.minimum_new_comment_access_level
+		: user.accessLevel >= community.permissions.minimum_new_post_access_level;
+
+	if (isUserLimitedFromPosting) {
+		return false;
+	}
+
+	if (isCommunityAdmin) {
+		return true; // admins can always post (if not limited)
+	}
+
+	if (!hasAccessLevelRequirement) {
+		return false;
+	}
+
+	return isReply ? isOpenCommunity : isPublicPostableCommunity;
+}
+
 async function newPost(req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	let parentPost = null;
@@ -211,13 +237,9 @@ async function newPost(req, res) {
 		}
 	}
 
-	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0)) {
-		if (community.type >= 2 || req.user.access_level < community.permissions.minimum_new_post_access_level) {
-			if (!(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
-				res.status(403);
-				return res.redirect(`/titles/${community.olive_community_id}/new`);
-			}
-		}
+	if (!canPost(community, userSettings, parentPost, req.user)) {
+		res.status(403);
+		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
 	let painting = '';
