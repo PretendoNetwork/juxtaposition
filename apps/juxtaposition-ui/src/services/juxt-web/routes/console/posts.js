@@ -210,10 +210,14 @@ async function newPost(req, res) {
 			return res.sendStatus(403);
 		}
 	}
-	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0) && req.user.access_level >= community.permissions.minimum_new_post_access_level &&
-		(community.type >= 2) && !(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
-		res.status(403);
-		return res.redirect(`/titles/${community.olive_community_id}/new`);
+
+	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0)) {
+		if (community.type >= 2 || req.user.access_level < community.permissions.minimum_new_post_access_level) {
+			if (!(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
+				res.status(403);
+				return res.redirect(`/titles/${community.olive_community_id}/new`);
+			}
+		}
 	}
 
 	let painting = '';
