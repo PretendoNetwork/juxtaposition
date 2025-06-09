@@ -195,11 +195,11 @@ router.get('/', async function (request: express.Request, response: express.Resp
 
 function canPost(community: HydratedCommunityDocument, userSettings: HydratedSettingsDocument, parentPost: HydratedPostDocument | null, user: GetUserDataResponse): boolean {
 	const isReply = !!parentPost;
-	const isPublicPostableCommunity = community.type < 2;
+	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
 	const isOpenCommunity = community.permissions.open;
 
 	const isCommunityAdmin = (community.admins ?? []).includes(user.pid);
-	const isUserLimitedFromPosting = userSettings.account_status > 0;
+	const isUserLimitedFromPosting = userSettings.account_status !== 0;
 	const hasAccessLevelRequirement = isReply
 		? user.accessLevel >= community.permissions.minimum_new_comment_access_level
 		: user.accessLevel >= community.permissions.minimum_new_post_access_level;
