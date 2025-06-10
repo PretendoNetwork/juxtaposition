@@ -65,7 +65,8 @@ router.post('/', async (req, res) => {
 	res.cookie('access_token', login.accessToken, { domain: cookieDomain, maxAge: expiration });
 	res.cookie('refresh_token', login.refreshToken, { domain: cookieDomain });
 	res.cookie('token_type', 'Bearer', { domain: cookieDomain });
-	res.redirect(redirect);
+
+	res.redirect(/^\/[^/.]/.test(redirect) ? redirect : '/');
 });
 
 module.exports = router;
