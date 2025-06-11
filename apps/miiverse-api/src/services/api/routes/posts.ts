@@ -23,6 +23,9 @@ import { config } from '@/config';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
+import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
@@ -190,6 +193,32 @@ router.get('/', async function (request: express.Request, response: express.Resp
 	}).end({ pretty: true, allowEmpty: true }));
 });
 
+function canPost(community: HydratedCommunityDocument, userSettings: HydratedSettingsDocument, parentPost: HydratedPostDocument | null, user: GetUserDataResponse): boolean {
+	const isReply = !!parentPost;
+	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
+	const isOpenCommunity = community.permissions.open;
+
+	const isCommunityAdmin = (community.admins ?? []).includes(user.pid);
+	const isUserLimitedFromPosting = userSettings.account_status !== 0;
+	const hasAccessLevelRequirement = isReply
+		? user.accessLevel >= community.permissions.minimum_new_comment_access_level
+		: user.accessLevel >= community.permissions.minimum_new_post_access_level;
+
+	if (isUserLimitedFromPosting) {
+		return false;
+	}
+
+	if (isCommunityAdmin) {
+		return true; // admins can always post (if not limited)
+	}
+
+	if (!hasAccessLevelRequirement) {
+		return false;
+	}
+
+	return isReply ? isOpenCommunity : isPublicPostableCommunity;
+}
+
 async function newPost(request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
 
@@ -264,14 +293,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		}
 	}
 
-	// TODO - Clean this up
-	// * Nesting this because of how many checks there are, extremely unreadable otherwise
-	if (!(community.admins && community.admins.indexOf(request.pid) !== -1 && userSettings.account_status === 0)) {
-		if (community.type >= 2 || request.user.accessLevel < community.permissions.minimum_new_post_access_level) {
-			if (!(parentPost && request.user.accessLevel >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
-				return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
-			}
-		}
+	if (!canPost(community, userSettings, parentPost, request.user)) {
+		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 
 	let miiFace = 'normal_face.png';

@@ -31,7 +31,9 @@ const schema = z.object({
 	grpcFriendsApiKey: z.string(),
 	grpcAccountHost: z.string(),
 	grpcAccountPort: z.string(),
-	grpcAccountApiKey: z.string()
+	grpcAccountApiKey: z.string(),
+	grpcServerPort: z.coerce.number().default(8125),
+	grpcServerApiKey: z.string()
 });
 
 export const fragments: Record<string, any> = {
@@ -53,7 +55,9 @@ export const fragments: Record<string, any> = {
 		grpcAccountApiKey: '12345678123456781234567812345678',
 		grpcFriendsHost: 'localhost',
 		grpcFriendsPort: 8124,
-		grpcFriendsApiKey: '12345678123456781234567812345678'
+		grpcFriendsApiKey: '12345678123456781234567812345678',
+		grpcServerPort: 8125,
+		grpcServerApiKey: '12345678123456781234567812345678'
 	}
 };
 
@@ -102,6 +106,10 @@ export const config = {
 			host: unmappedConfig.grpcAccountHost,
 			port: unmappedConfig.grpcAccountPort,
 			apiKey: unmappedConfig.grpcAccountApiKey
+		},
+		server: {
+			port: unmappedConfig.grpcServerPort,
+			apiKey: unmappedConfig.grpcServerApiKey
 		}
 	}
 };

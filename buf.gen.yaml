@@ -1,0 +1,16 @@
+version: v2
+managed:
+  enabled: true
+inputs:
+  - directory: ./protobufs
+plugins:
+  - local: protoc-gen-ts_proto
+    strategy: all
+    opt: 
+      - outputServices=nice-grpc
+      - outputServices=generic-definitions
+      - useExactTypes=false
+      - esModuleInterop=true
+      - env=node
+      - forceLong=bigint
+    out: javascript

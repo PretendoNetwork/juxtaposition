@@ -80,7 +80,7 @@ function initPostModules() {
 			cave.toolbar_setCallback(99, back);
 		}
 		cave.transition_end();
-		/* global initNewPost -- Defined in juxt.min.js */
+		/* global initNewPost -- Defined in juxt.js */
 		initNewPost();
 	}
 }

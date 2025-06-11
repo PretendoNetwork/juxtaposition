@@ -21,7 +21,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        working-directory: ./apps/${{ matrix.repo }}
 
       - name: Lint
         run: npm run lint

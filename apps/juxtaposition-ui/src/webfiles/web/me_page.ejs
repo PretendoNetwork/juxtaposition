@@ -82,6 +82,7 @@
     <div id="wrapper">
         <button id="load-more-posts-button" data-offset="20" onclick="loadUserPosts(this, '<%= userSettings.pid %>')"><%= lang.global.more %></button>
     </div>
+    <%- include('partials/report_modal', { pid }) %>
 </div>
 </body>
 </html>
