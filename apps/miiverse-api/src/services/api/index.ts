@@ -1,5 +1,6 @@
 import express from 'express';
 import subdomain from 'express-subdomain';
+import { rateLimit } from 'express-rate-limit';
 import { LOG_INFO } from '@/logger';
 import postsHandlers from '@/services/api/routes/posts';
 import friendMessagesHandlers from '@/services/api/routes/friend_messages';
@@ -14,6 +15,15 @@ const router = express.Router();
 
 // Router to handle the subdomain restriction
 const api = express.Router();
+
+// Global API ratelimit (todo: make this more fine-grained for heavy queries)
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // 100 requests every 15 mins
+	standardHeaders: true,
+	legacyHeaders: true
+});
+router.use(limiter);
 
 // Create subdomains
 LOG_INFO('[MIIVERSE] Creating \'api\' subdomain');
