@@ -66,7 +66,10 @@ router.post('/', async (req, res) => {
 	res.cookie('refresh_token', login.refreshToken, { domain: cookieDomain });
 	res.cookie('token_type', 'Bearer', { domain: cookieDomain });
 
-	res.redirect(/^\/[^/.]/.test(redirect) ? redirect : '/');
+	/* Only allow relative URLs (leading /) or absolute ones on config.http.baseUrl. */
+	const safe_redirect = new URL(redirect, config.http.baseUrl).origin == config.http.baseUrl ? redirect : '/';
+
+	res.redirect(safe_redirect);
 });
 
 module.exports = router;

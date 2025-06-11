@@ -9,6 +9,8 @@ const schema = z.object({
 	logSensitive: zodCoercedBoolean().default(false),
 	httpPort: z.coerce.number().default(8080),
 	httpCookieDomain: z.string().default('.pretendo.network'),
+	/** "Safe" base origin for login-redirect validation */
+	httpBaseUrl: z.string().default('https://juxt.pretendo.network'),
 	/** Configures proxy trust (X-Forwarded-For etc.). Can be `true` to unconditionally trust, or
 	 *  provide a numeric hop count, or comma-seperated CIDR ranges.
 	 *  See https://expressjs.com/en/guide/behind-proxies.html
@@ -94,7 +96,8 @@ export const config = {
 	http: {
 		port: unmappedConfig.httpPort,
 		cookieDomain: unmappedConfig.httpCookieDomain,
-		trustProxy: unmappedConfig.httpTrustProxy
+		trustProxy: unmappedConfig.httpTrustProxy,
+		baseUrl: unmappedConfig.httpBaseUrl
 	},
 	metrics: {
 		enabled: unmappedConfig.metricsEnabled,
