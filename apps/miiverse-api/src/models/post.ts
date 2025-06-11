@@ -7,29 +7,28 @@ import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { PostToJSONOptions } from '@/types/mongoose/post-to-json-options';
 import type { PostData, PostPainting, PostScreenshot, PostTopicTag } from '@/types/miiverse/post';
 
+/* Constraints here (default, required etc.) apply to new documents being added
+ * See IPost for expected shape of query results
+ * If you add default: or required:, please also update IPost and IPostInput!
+ */
 const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
-	id: String,
-	title_id: String,
-	screen_name: String,
-	body: String,
-	app_data: String,
-	painting: String,
-	screenshot: String,
-	screenshot_length: Number,
-	search_key: {
-		type: [String],
-		default: undefined
-	},
-	topic_tag: {
-		type: String,
-		default: undefined
-	},
-	community_id: {
-		type: String,
-		default: undefined
-	},
-	created_at: Date,
-	feeling_id: Number,
+	id: { type: String, required: true },
+	title_id: { type: String },
+	screen_name: { type: String, required: true },
+	body: { type: String, required: true },
+	app_data: { type: String },
+
+	painting: { type: String },
+	screenshot: { type: String },
+	screenshot_length: { type: Number },
+
+	search_key: { type: [String] },
+	topic_tag: { type: String },
+
+	community_id: { type: String, required: true },
+	created_at: { type: Date, required: true },
+	feeling_id: { type: Number },
+
 	is_autopost: {
 		type: Number,
 		default: 0
@@ -46,6 +45,7 @@ const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 		type: Number,
 		default: 0
 	},
+
 	empathy_count: {
 		type: Number,
 		default: 0,
@@ -59,12 +59,15 @@ const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 		type: Number,
 		default: 1
 	},
-	mii: String,
-	mii_face_url: String,
-	pid: Number,
-	platform_id: Number,
-	region_id: Number,
-	parent: String,
+
+	mii: { type: String, required: true },
+	mii_face_url: { type: String, required: true },
+
+	pid: { type: Number, required: true },
+	platform_id: { type: Number },
+	region_id: { type: Number },
+	parent: { type: String },
+
 	reply_count: {
 		type: Number,
 		default: 0
@@ -73,17 +76,21 @@ const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 		type: Boolean,
 		default: false
 	},
+
 	message_to_pid: {
 		type: String,
 		default: null
 	},
+
 	removed: {
 		type: Boolean,
 		default: false
 	},
-	removed_reason: String,
-	yeahs: [Number],
-	number: Number
+	removed_reason: { type: String },
+	removed_by: { type: Number },
+	removed_at: { type: Date },
+
+	yeahs: { type: [Number], default: [] }
 }, {
 	id: false // * Disables the .id() getter used by Mongoose in TypeScript. Needed to have our own .id field
 });
@@ -114,12 +121,12 @@ PostSchema.method<HydratedPostDocument>('cleanedMiiData', function cleanedMiiDat
 	return this.mii.replace(/[^A-Za-z0-9+/=]/g, '').replace(/[\n\r]+/gm, '').trim();
 });
 
-PostSchema.method<HydratedPostDocument>('cleanedPainting', function cleanedPainting(): string {
-	return this.painting.replace(/[\n\r]+/gm, '').trim();
+PostSchema.method<HydratedPostDocument>('cleanedPainting', function cleanedPainting(): string | undefined {
+	return this.painting?.replace(/[\n\r]+/gm, '').trim();
 });
 
-PostSchema.method<HydratedPostDocument>('cleanedAppData', function cleanedAppData(): string {
-	return this.app_data.replace(/[^A-Za-z0-9+/=]/g, '').replace(/[\n\r]+/gm, '').trim();
+PostSchema.method<HydratedPostDocument>('cleanedAppData', function cleanedAppData(): string | undefined {
+	return this.app_data?.replace(/[^A-Za-z0-9+/=]/g, '').replace(/[\n\r]+/gm, '').trim();
 });
 
 PostSchema.method<HydratedPostDocument>('formatPainting', function formatPainting(): PostPainting | undefined {
@@ -146,7 +153,7 @@ PostSchema.method<HydratedPostDocument>('formatTopicTag', function formatTopicTa
 	if (this.topic_tag?.trim()) {
 		return {
 			name: this.topic_tag,
-			title_id: this.title_id
+			title_id: this.title_id ?? ''
 		};
 	}
 });
@@ -158,26 +165,26 @@ PostSchema.method<HydratedPostDocument>('json', function json(options: PostToJSO
 		community_id: this.community_id, // TODO - This sucks
 		country_id: this.country_id,
 		created_at: moment(this.created_at).format('YYYY-MM-DD HH:MM:SS'),
-		feeling_id: this.feeling_id,
+		feeling_id: this.feeling_id ?? 0,
 		id: this.id,
 		is_autopost: this.is_autopost ? 1 : 0,
 		is_community_private_autopost: this.is_community_private_autopost ? 1 : 0,
 		is_spoiler: this.is_spoiler ? 1 : 0,
 		is_app_jumpable: this.is_app_jumpable ? 1 : 0,
-		empathy_count: this.empathy_count || 0,
+		empathy_count: this.empathy_count,
 		language_id: this.language_id,
 		mii: undefined, // * Conditionally set later
 		mii_face_url: undefined, // * Conditionally set later
 		number: 0,
 		painting: this.formatPainting(),
 		pid: this.pid,
-		platform_id: this.platform_id,
-		region_id: this.region_id,
-		reply_count: this.reply_count || 0,
+		platform_id: this.platform_id ?? 1,
+		region_id: this.region_id ?? 0,
+		reply_count: this.reply_count,
 		screen_name: this.screen_name,
 		screenshot: this.formatScreenshot(),
 		topic_tag: undefined, // * Conditionally set later
-		title_id: this.title_id
+		title_id: this.title_id ?? ''
 	};
 
 	if (options.app_data) {

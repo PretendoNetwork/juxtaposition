@@ -22,7 +22,7 @@ import { Community } from '@/models/community';
 import { config } from '@/config';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import type { PostRepliesResult } from '@/types/miiverse/post';
-import type { HydratedPostDocument } from '@/types/mongoose/post';
+import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
@@ -312,7 +312,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		searchKey = [searchKey];
 	}
 
-	const document = {
+	const document: IPostInput = {
 		id: '', // * This gets changed when saving the document for the first time
 		title_id: request.paramPack.title_id,
 		community_id: community.olive_community_id,
