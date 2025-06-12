@@ -4,14 +4,14 @@ import type express from 'express';
 /**
  * Guest access is fine
  */
-export async function authGuest(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
+export async function guest(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 	return next();
 }
 
 /**
  * Fail on guest access
  */
-export async function authUsers(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
+export async function user(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 	const account = response.locals.account;
 	if (account === null) {
 		// Guest access
@@ -24,7 +24,7 @@ export async function authUsers(request: express.Request, response: express.Resp
 /**
  * Moderators only
  */
-export async function authModerators(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
+export async function moderator(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 	const account = response.locals.account;
 	if (account === null) {
 		// Guest access
@@ -37,3 +37,9 @@ export async function authModerators(request: express.Request, response: express
 
 	return next();
 }
+
+export const guards = {
+	guest,
+	user,
+	moderator
+};

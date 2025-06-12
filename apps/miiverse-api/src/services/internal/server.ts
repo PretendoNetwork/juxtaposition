@@ -4,11 +4,11 @@ import express from 'express';
 import { MiiverseServiceDefinition } from '@repo/grpc-client/out/miiverse_service';
 import { config } from '@/config';
 import { internalApiRouter } from '@/services/internal';
-import authentication from '@/services/internal/middleware/authentication';
-import checkUserAccount from '@/services/internal/middleware/check-user-account';
 import { logger } from '@/logger';
 import { InternalAPIError } from '@/services/internal/errors';
 import { loggerHttp } from '@/loggerHttp';
+import { authPopulate } from '@/services/internal/middleware/auth-populate';
+import { authAccessCheck } from '@/services/internal/middleware/auth-accesscheck';
 import type { CallContext, ServerMiddlewareCall } from 'nice-grpc';
 
 // API server
@@ -16,8 +16,8 @@ import type { CallContext, ServerMiddlewareCall } from 'nice-grpc';
 const app = express();
 app.use(express.json());
 app.use(loggerHttp);
-app.use(authentication);
-app.use(checkUserAccount);
+app.use(authPopulate);
+app.use(authAccessCheck);
 app.use(internalApiRouter);
 
 // API error handler

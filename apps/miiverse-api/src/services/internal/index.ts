@@ -4,4 +4,4 @@ import { postsRouter } from '@/services/internal/routes/posts';
 
 export const internalApiRouter = express.Router();
 internalApiRouter.use('/api/v1', testRouter);
-internalApiRouter.use('/api/v1/posts', postsRouter);
+internalApiRouter.use('/api/v1', postsRouter);

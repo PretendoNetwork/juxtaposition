@@ -4,7 +4,7 @@ import type express from 'express';
 /**
  * Checks the user account is valid for this request (not banned, setup complete, etc.)
  */
-async function checkUserAccount(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
+export async function authAccessCheck(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
 	const account = response.locals.account;
 	if (account === null) {
 		// Guest access
@@ -19,5 +19,3 @@ async function checkUserAccount(request: express.Request, response: express.Resp
 
 	return next();
 }
-
-export default checkUserAccount;
