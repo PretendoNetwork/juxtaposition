@@ -12,7 +12,7 @@ const upload = multer({ dest: 'uploads/' });
 const redis = require('@/redisCache');
 const { config } = require('@/config');
 const router = express.Router();
-const backend = require('@/backend');
+const { getPostById } = require('@/api/post');
 
 const postLimit = rateLimit({
 	windowMs: 15 * 1000, // 30 seconds
@@ -42,7 +42,7 @@ const yeahLimit = rateLimit({
 });
 
 router.get('/:post_id/oembed.json', async function (req, res) {
-	const post = await backend.getPostById(req.tokens, req.params.post_id);
+	const post = await getPostById(req.tokens, req.params.post_id);
 	const doc = {
 		author_name: post.screen_name,
 		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid
@@ -110,9 +110,9 @@ router.get('/:post_id', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	const userContent = await database.getUserContent(req.pid);
 
-	const post = await backend.getPostById(req.tokens, req.params.post_id);
+	const post = await getPostById(req.tokens, req.params.post_id);
 	if (post.parent) {
-		const parent = await backend.getPostById(req.tokens, post.parent);
+		const parent = await getPostById(req.tokens, post.parent);
 		return res.redirect(`/posts/${parent.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);
@@ -161,7 +161,7 @@ router.post('/:post_id/new', postLimit, upload.none(), async function (req, res)
 
 router.post('/:post_id/report', upload.none(), async function (req, res) {
 	const { reason, message, post_id } = req.body;
-	const post = await backend.getPostByID(req.tokens, post_id);
+	const post = await getPostById(req.tokens, post_id);
 	if (!reason || !post_id || !post) {
 		return res.redirect('/404');
 	}
