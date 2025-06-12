@@ -43,6 +43,9 @@ const yeahLimit = rateLimit({
 
 router.get('/:post_id/oembed.json', async function (req, res) {
 	const post = await getPostById(req.tokens, req.params.post_id);
+	if (!post) {
+		return res.sendStatus(404);
+	}
 	const doc = {
 		author_name: post.screen_name,
 		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid
@@ -111,8 +114,14 @@ router.get('/:post_id', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
 
 	const post = await getPostById(req.tokens, req.params.post_id);
+	if (!post) {
+		return res.redirect('/404');
+	}
 	if (post.parent) {
 		const parent = await getPostById(req.tokens, post.parent);
+		if (!parent) {
+			return res.redirect('/404');
+		}
 		return res.redirect(`/posts/${parent.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);

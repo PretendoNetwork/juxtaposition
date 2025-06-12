@@ -26,7 +26,7 @@ function isErrorHttpStatus(status: number): boolean {
 	return status >= 400 && status < 600;
 }
 
-export async function apiFetch<T>(path: string, options?: FetchOptions): Promise<T> {
+export async function apiFetch<T>(path: string, options?: FetchOptions): Promise<T | null> {
 	const defaultedOptions = {
 		method: 'GET',
 		headers: {},
@@ -45,7 +45,9 @@ export async function apiFetch<T>(path: string, options?: FetchOptions): Promise
 		metadata
 	});
 
-	if (isErrorHttpStatus(response.status)) {
+	if (response.status === 404) {
+		return null;
+	} else if (isErrorHttpStatus(response.status)) {
 		throw FetchError(response, `HTTP error! status: ${response.status} ${response.payload}`);
 	}
 
@@ -57,7 +59,7 @@ export type UserTokens = {
 	oauthToken?: string;
 };
 
-export async function apiFetchUser<T>(tokens: UserTokens, path: string, options?: FetchOptions): Promise<T> {
+export async function apiFetchUser<T>(tokens: UserTokens, path: string, options?: FetchOptions): Promise<T | null> {
 	options = {
 		...options,
 		headers: {

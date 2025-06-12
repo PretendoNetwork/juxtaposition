@@ -59,7 +59,7 @@ export type PostDto = {
  * @param post_id The ID of the post to get.
  * @returns Post object
  */
-export async function getPostById(tokens: UserTokens, post_id: string): Promise<PostDto> {
+export async function getPostById(tokens: UserTokens, post_id: string): Promise<PostDto | null> {
 	const post = await apiFetchUser<PostDto>(tokens, `/api/v1/posts/${post_id}`);
 	return post;
 }
