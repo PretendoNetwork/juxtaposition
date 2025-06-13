@@ -18,6 +18,12 @@ export async function user(request: express.Request, response: express.Response,
 		throw new errors.unauthorized('Authentication token not provided');
 	}
 
+	if (account.settings === null) {
+		// Most endpoints expect users to have completed the account setup flow
+		// TODO eventually this will need a carveout for the setup flow itself
+		throw new errors.forbidden('Account setup not complete');
+	}
+
 	return next();
 }
 
@@ -31,7 +37,11 @@ export async function moderator(request: express.Request, response: express.Resp
 		throw new errors.unauthorized('Authentication token not provided');
 	}
 
-	if (account.pnid.accessLevel < 2) {
+	if (account.settings === null) {
+		throw new errors.forbidden('Account setup not complete');
+	}
+
+	if (account.moderator !== true) {
 		throw new errors.forbidden('You cannot access this endpoint');
 	}
 
