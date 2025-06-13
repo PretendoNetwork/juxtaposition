@@ -19,7 +19,7 @@ const api = express.Router();
 // Global API ratelimit (todo: make this more fine-grained for heavy queries)
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 100, // 100 requests every 15 mins
+	limit: 400, // 26 per minute
 	standardHeaders: true,
 	legacyHeaders: true
 });
