@@ -11,7 +11,7 @@ import type { HydratedConversationDocument } from '@/types/mongoose/conversation
 import type { HydratedContentDocument } from '@/types/mongoose/content';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
-import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
+import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
 let connection: mongoose.Connection;
@@ -97,7 +97,7 @@ export async function getPostReplies(postID: string, limit: number): Promise<Hyd
 	}).limit(limit);
 }
 
-export async function getDuplicatePosts(pid: number, post: IPost): Promise<HydratedPostDocument | null> {
+export async function getDuplicatePosts(pid: number, post: IPostInput): Promise<HydratedPostDocument | null> {
 	verifyConnected();
 
 	return Post.findOne({

@@ -3,41 +3,73 @@ import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { PostToJSONOptions } from '@/types/mongoose/post-to-json-options';
 import type { PostData, PostPainting, PostScreenshot, PostTopicTag } from '@/types/miiverse/post';
 
+/* This type needs to reflect "reality" as it is in the DB
+ * Thus, all the optionals, since some legacy documents are missing many fields
+ */
 export interface IPost {
 	id: string;
-	title_id: string;
+	title_id?: string; // u64
 	screen_name: string;
 	body: string;
-	app_data: string;
-	painting: string;
-	screenshot: string;
-	screenshot_length: number;
-	search_key: string[];
-	topic_tag: string;
-	community_id: string;
+	app_data?: string; // nintendo base64
+
+	painting?: string; // base64, can be empty or undefined
+	screenshot?: string; // url fragment (leading /), can be empty or undefined
+	screenshot_length?: number;
+
+	search_key?: string[]; // can be empty or undefined
+	topic_tag?: string;
+
+	community_id: string; // actually a number
 	created_at: Date;
-	feeling_id: number;
-	is_autopost: number;
-	is_community_private_autopost?: number;
-	is_spoiler: number;
-	is_app_jumpable: number;
-	empathy_count?: number;
+	feeling_id?: number; // missing on PMs
+
+	is_autopost: number; // 0 | 1
+	is_community_private_autopost: number; // 0 | 1
+	is_spoiler: number; // 0 | 1
+	is_app_jumpable: number; // 0 | 1
+
+	empathy_count: number;
 	country_id: number;
 	language_id: number;
-	mii: string;
-	mii_face_url: string;
+
+	mii: string; // nintendo base64
+	mii_face_url: string; // fully qualified (usually cdn. or r2-cdn.)
+
 	pid: number;
-	platform_id: number;
-	region_id: number;
-	parent: string;
-	reply_count?: number;
+	platform_id?: number; // missing on PMs
+	region_id?: number; // missing on PMs
+	parent?: string | null; // both undef and null exist in db
+
+	reply_count: number;
 	verified: boolean;
-	message_to_pid?: string;
+
+	message_to_pid: string | null;
+
 	removed: boolean;
 	removed_reason?: string;
-	yeahs?: Types.Array<number>;
-	number?: number;
+	removed_by?: number;
+	removed_at?: Date;
+
+	yeahs: Types.Array<number>;
 }
+// Fields that have "default: " in the Mongoose schema should also be listed here to make them optional
+// on input but not output
+// We really need an ORM
+type PostDefaultedFields =
+	'is_autopost' |
+	'is_community_private_autopost' |
+	'is_spoiler' |
+	'is_app_jumpable' |
+	'empathy_count' |
+	'country_id' |
+	'language_id' |
+	'reply_count' |
+	'verified' |
+	'message_to_pid' |
+	'removed' |
+	'yeahs';
+export type IPostInput = Omit<IPost, PostDefaultedFields> & Partial<Pick<IPost, PostDefaultedFields>>;
 
 export interface IPostMethods {
 	del(reason: string): Promise<void>;
@@ -52,6 +84,6 @@ export interface IPostMethods {
 	json(options: PostToJSONOptions, community?: HydratedCommunityDocument): PostData;
 }
 
-export type PostModel = Model<IPost, object, IPostMethods>;
+export type PostModel = Model<IPost, {}, IPostMethods>;
 
 export type HydratedPostDocument = HydratedDocument<IPost, IPostMethods>;

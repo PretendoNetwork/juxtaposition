@@ -57,7 +57,7 @@ export enum ApiErrorCode {
 	FAIL_POST_NOCOMMENT = 935
 }
 
-function sendError(response: express.Response, errorCode: ApiErrorCode, httpCode: number): void {
+function sendXMLError(response: express.Response, errorCode: ApiErrorCode, httpCode: number): void {
 	response.type('application/xml');
 	response.status(httpCode);
 	// Save this for the logger
@@ -75,9 +75,9 @@ function sendError(response: express.Response, errorCode: ApiErrorCode, httpCode
 }
 
 export function badRequest(response: express.Response, errorCode: number, httpCode: number = 400): void {
-	return sendError(response, errorCode, httpCode);
+	return sendXMLError(response, errorCode, httpCode);
 }
 
 export function serverError(response: express.Response, errorCode: ApiErrorCode, httpCode: number = 500): void {
-	return sendError(response, errorCode, httpCode);
+	return sendXMLError(response, errorCode, httpCode);
 }

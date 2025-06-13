@@ -5,7 +5,36 @@ import { MiiverseServiceDefinition } from '@repo/grpc-client/out/miiverse_servic
 import { config } from '@/config';
 import { internalApiRouter } from '@/services/internal';
 import { logger } from '@/logger';
+import { InternalAPIError } from '@/services/internal/errors';
+import { loggerHttp } from '@/loggerHttp';
+import { authPopulate } from '@/services/internal/middleware/auth-populate';
+import { authAccessCheck } from '@/services/internal/middleware/auth-accesscheck';
 import type { CallContext, ServerMiddlewareCall } from 'nice-grpc';
+
+// API server
+
+const app = express();
+app.use(express.json());
+app.use(loggerHttp);
+app.use(authPopulate);
+app.use(authAccessCheck);
+app.use(internalApiRouter);
+
+// API error handler
+app.use((err: Error, _request: express.Request, response: express.Response, next: express.NextFunction) => {
+	if (!(err instanceof InternalAPIError)) {
+		return next(err);
+	}
+
+	response.status(err.status).json({ message: err.message });
+});
+// Javascript error handler
+app.use((err: Error, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
+	response.err = err; // For Pino
+	response.status(500).json({ message: 'Internal server error' });
+});
+
+// gRPC glue
 
 export async function* apiKeyMiddleware<Request, Response>(
 	call: ServerMiddlewareCall<Request, Response>,
@@ -20,10 +49,6 @@ export async function* apiKeyMiddleware<Request, Response>(
 	return yield* call.next(call.request, context);
 }
 
-const app = express();
-app.use(express.json());
-app.use(internalApiRouter);
-
 const allowedMethods = ['get', 'post', 'put', 'delete', 'patch'] as const;
 const methodsWithBody = ['post', 'put', 'delete', 'patch'] as const;
 type AllowedMethods = typeof allowedMethods[number];
@@ -37,9 +62,10 @@ export async function setupGrpc(): Promise<void> {
 				throw new ServerError(Status.UNIMPLEMENTED, 'Method not implemented');
 			}
 			const method = request.method.toLowerCase() as AllowedMethods;
+			const headers = JSON.parse(request.headers);
 			const hasBody = methodsWithBody.includes(method as any);
 
-			let baseRequest = superRequest(app)[method](request.path);
+			let baseRequest = superRequest(app)[method](request.path).set(headers);
 			if (hasBody) {
 				baseRequest = baseRequest.send(JSON.parse(request.payload));
 			}

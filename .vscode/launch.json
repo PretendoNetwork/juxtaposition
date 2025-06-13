@@ -23,6 +23,13 @@
             "env": {
                 "PN_JUXTAPOSITION_UI_USE_PRESETS": "docker"
             }
+        },
+        {
+            "type": "node-terminal",
+            "name": "Rebuild gRPC",
+            "request": "launch",
+            "command": "npm rebuild @repo/grpc-client",
+            "cwd": "${workspaceFolder}"
         }
     ],
     "compounds": [
