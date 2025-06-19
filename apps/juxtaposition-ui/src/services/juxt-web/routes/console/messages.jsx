@@ -1,3 +1,6 @@
+import { buildContext } from '@/services/juxt-web/views/context';
+import { MessagesView } from '@/services/juxt-web/views/messages';
+
 const crypto = require('crypto');
 const express = require('express');
 const moment = require('moment');
@@ -11,12 +14,7 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
 	const conversations = await database.getConversations(req.pid);
-	const usersMap = await util.getUserHash();
-	res.render(req.directory + '/messages.ejs', {
-		moment: moment,
-		conversations: conversations,
-		usersMap: usersMap
-	});
+	res.jsx(<MessagesView conversations={conversations} ctx={buildContext()}  />);
 });
 
 router.post('/new', async function (req, res) {
