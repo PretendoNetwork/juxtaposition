@@ -4,9 +4,11 @@ import { NavBar } from "@/services/juxt-web/views/navbar";
 import moment from "moment";
 import type { ReactNode } from "react";
 
+type ConversationModel = any; // types not yet known
+
 export type MessagesViewProps = {
   ctx: RenderContext;
-  conversations: any[]; // TODO add types
+  conversations: ConversationModel[];
 };
 
 export function MessagesView(props: MessagesViewProps): ReactNode {

@@ -8,6 +8,7 @@
         "@bufbuild/buf": "^1.54.0"
     },
     "dependencies": {
+        "@types/hashmap": "^2.3.4",
         "@types/react": "^19.1.8",
         "@types/react-dom": "^19.1.6",
         "react": "^19.1.0",
