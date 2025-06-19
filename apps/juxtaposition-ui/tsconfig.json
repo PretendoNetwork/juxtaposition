@@ -11,6 +11,7 @@
 		"outDir": "dist",
 		"allowJs": true,
 		"target": "es2022",
+		"jsx": "react-jsx",
 		"noEmitOnError": true,
 		"noImplicitAny": true,
 		"strictPropertyInitialization": true,
