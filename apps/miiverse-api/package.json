@@ -14,7 +14,7 @@
 	},
 	"dependencies": {
 		"@neato/config": "^3.0.0",
-		"@pretendonetwork/grpc": "^2.0.0",
+		"@pretendonetwork/grpc": "^2.2.1",
 		"@repo/grpc-client": "^0.0.0",
 		"aws-sdk": "^2.1204.0",
 		"bmp-js": "^0.1.0",
