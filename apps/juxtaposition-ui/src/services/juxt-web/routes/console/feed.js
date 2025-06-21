@@ -132,43 +132,6 @@ router.get('/all/more', async function (req, res) {
 		communityMap,
 		userContent,
 		lang: req.lang,
-		link: `/feed/more?offset=${offset + posts.length}&pjax=true`,
-		moderator: req.moderator
-	};
-
-	if (posts.length > 0) {
-		res.render(req.directory + '/partials/posts_list.ejs', {
-			communityMap: communityMap,
-			moment: moment,
-			database: database,
-			bundle
-		});
-	} else {
-		res.sendStatus(204);
-	}
-});
-
-router.get('/all/more', async function (req, res) {
-	let offset = parseInt(req.query.offset);
-	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
-	if (!offset) {
-		offset = 0;
-	}
-
-	const posts = await POST.find({
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).skip(offset).limit(config.postLimit).sort({ created_at: -1 });
-
-	const bundle = {
-		posts,
-		numPosts: posts.length,
-		open: true,
-		communityMap,
-		userContent,
-		lang: req.lang,
 		link: `/feed/all/more?offset=${offset + posts.length}&pjax=true`,
 		moderator: req.moderator
 	};
