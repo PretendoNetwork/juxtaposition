@@ -108,6 +108,8 @@ router.get('/accounts/:pid', async function (req, res) {
 
 	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(10);
 
+	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 10);
+
 	res.render(req.directory + '/moderate_user.ejs', {
 		moment: moment,
 		userSettings,
@@ -123,7 +125,9 @@ router.get('/accounts/:pid', async function (req, res) {
 		userMap,
 		communityMap,
 		postsMap,
-		reasonMap
+		reasonMap,
+
+		auditLog
 	});
 });
 
@@ -133,6 +137,19 @@ router.post('/accounts/:pid', async (req, res) => {
 	}
 
 	const { pid } = req.params;
+	const userSettings = await database.getUserSettings(pid);
+
+	if (!userSettings) {
+		res.json({
+			error: true
+		});
+		return;
+	}
+
+	if (req.body.ban_lift_date == '') {
+		req.body.ban_lift_date = null;
+	}
+
 	await SETTINGS.findOneAndUpdate({ pid: pid }, {
 		account_status: req.body.account_status,
 		ban_lift_date: req.body.ban_lift_date,
@@ -153,6 +170,41 @@ router.post('/accounts/:pid', async (req, res) => {
 			link: '/titles/2551084080/new'
 		});
 	}
+
+	let action = 'UPDATE_USER';
+	const changes = [];
+	if (userSettings.account_status !== req.body.account_status) {
+		switch (req.body.account_status) {
+			case 0:
+				action = 'UNBAN';
+				break;
+			case 1:
+				action = 'LIMIT_POSTING';
+				break;
+			case 2:
+				action = 'TEMP_BAN';
+				break;
+			case 3:
+				action = 'PERMA_BAN';
+				break;
+		}
+		changes.push(`Account_status changed from "${userSettings.account_status}" to "${req.body.account_status}"`);
+	}
+
+	if (userSettings.ban_lift_date !== req.body.ban_lift_date) {
+		changes.push(`Ban_lift_date changed from "${userSettings.ban_lift_date}" to "${req.body.ban_lift_date}"`);
+	}
+
+	if (userSettings.ban_reason !== req.body.ban_reason) {
+		changes.push(`Ban_reason changed from "${userSettings.ban_reason}" to "${req.body.ban_reason}"`);
+	}
+
+	await util.createLogEntry(
+		req.pid,
+		action,
+		pid,
+		changes.join('\n')
+	);
 });
 
 router.delete('/:reportID', async function (req, res) {
@@ -172,13 +224,22 @@ router.delete('/:reportID', async function (req, res) {
 	await post.removePost(reason, req.pid);
 	await report.resolve(req.pid, reason);
 
+	const postType = post.parent ? 'comment' : 'post';
+
 	await util.newNotification({
 		pid: post.pid,
 		type: 'notice',
-		text: `Your post "${post.id}" has been removed for the following reason: "${reason}"`,
+		text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
 		image: '/images/bandwidthalert.png',
 		link: '/titles/2551084080/new'
 	});
+
+	await util.createLogEntry(
+		req.pid,
+		'REMOVE_POST',
+		post.pid,
+		`Post ${post.id} removed for: "${reason}"`
+	);
 
 	return res.sendStatus(200);
 });
@@ -194,6 +255,13 @@ router.put('/:reportID', async function (req, res) {
 	}
 
 	await report.resolve(req.pid, req.query.reason);
+
+	await util.createLogEntry(
+		req.pid,
+		'IGNORE_REPORT',
+		req.params.reportID,
+		`Report ${report.id} ignored for: "${req.query.reason}"`
+	);
 
 	return res.sendStatus(200);
 });
@@ -259,6 +327,9 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 		return res.sendStatus(422);
 	}
 
+	req.body.has_shop_page = req.body.has_shop_page === 'on' ? 1 : 0;
+	req.body.is_recommended = req.body.is_recommended === 'on' ? 1 : 0;
+
 	const document = {
 		platform_id: req.body.platform,
 		name: req.body.name,
@@ -284,6 +355,13 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	res.redirect(`/admin/communities/${communityID}`);
 
 	util.updateCommunityHash(document);
+
+	await util.createLogEntry(
+		req.pid,
+		'MAKE_COMMUNITY',
+		communityID,
+		`Community ${communityID} created with name "${req.body.name}" and type "${req.body.type}"`
+	);
 });
 
 router.get('/communities/:community_id', async function (req, res) {
@@ -314,6 +392,12 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	JSON.parse(JSON.stringify(req.files));
 	const communityID = req.params.id;
 	let tgaIcon;
+
+	const community = await COMMUNITY.findOne({ olive_community_id: communityID }).exec();
+
+	if (!community) {
+		return res.redirect('/404');
+	}
 
 	// browser icon
 	if (req.files.browserIcon) {
@@ -346,6 +430,9 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		}
 	}
 
+	req.body.has_shop_page = req.body.has_shop_page === 'on' ? 1 : 0;
+	req.body.is_recommended = req.body.is_recommended === 'on' ? 1 : 0;
+
 	const document = {
 		type: req.body.type,
 		has_shop_page: req.body.has_shop_page,
@@ -363,6 +450,52 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	res.redirect(`/admin/communities/${communityID}`);
 
 	util.updateCommunityHash(document);
+
+	// determine the changes made to the community
+	const changes = [];
+	if (community.type !== parseInt(document.type)) {
+		changes.push(`Type changed from "${community.type}" to "${document.type}"`);
+	}
+	if (community.has_shop_page !== document.has_shop_page) {
+		changes.push(`Has_shop_page changed from "${community.has_shop_page}" to "${document.has_shop_page}"`);
+	}
+	if (community.platform_id !== parseInt(document.platform_id)) {
+		changes.push(`Platform_id changed from "${community.platform_id}" to "${document.platform_id}"`);
+	}
+	if (req.files.browserIcon) {
+		changes.push('Icon changed');
+	}
+	if (req.files.CTRbrowserHeader) {
+		changes.push('3DS Banner changed');
+	}
+	if (req.files.WiiUbrowserHeader) {
+		changes.push('Wii U Banner changed');
+	}
+	if (community.title_id.toString() !== document.title_id.toString()) {
+		changes.push(`Title IDs changed from "${community.title_id.toString()}" to "${document.title_id.toString()}"`);
+	}
+	if (community.parent !== document.parent) {
+		changes.push(`Parent changed from "${community.parent}" to "${document.parent}"`);
+	}
+	if (community.app_data !== document.app_data) {
+		changes.push(`App data changed from "${community.app_data}" to "${document.app_data}"`);
+	}
+	if (community.is_recommended !== document.is_recommended) {
+		changes.push(`Is_recommended changed from "${community.is_recommended}" to "${document.is_recommended}"`);
+	}
+	if (community.name !== document.name) {
+		changes.push(`Name changed from "${community.name}" to "${document.name}"`);
+	}
+	if (community.description !== document.description) {
+		changes.push(`Description changed from "${community.description}" to "${document.description}"`);
+	}
+
+	await util.createLogEntry(
+		req.pid,
+		'UPDATE_COMMUNITY',
+		community.olive_community_id,
+		changes.join('\n')
+	);
 });
 
 router.delete('/communities/:id', async (req, res) => {
@@ -376,6 +509,45 @@ router.delete('/communities/:id', async (req, res) => {
 
 	res.json({
 		error: false
+	});
+
+	await util.createLogEntry(
+		req.pid,
+		'DELETE_COMMUNITY',
+		id,
+		`Community ${id} deleted`
+	);
+});
+
+router.get('/audit', async function (req, res) {
+	if (!res.locals.moderator) {
+		return res.redirect('/titles/show');
+	}
+
+	const reports = await database.getAllClosedReports();
+	const communityMap = await util.getCommunityHash();
+	const userContent = await database.getUserContent(req.pid);
+	const userMap = util.getUserHash();
+	const postIDs = reports.map(obj => obj.post_id);
+
+	const posts = await POST.aggregate([
+		{ $match: { id: { $in: postIDs } } },
+		{
+			$addFields: {
+				__order: { $indexOfArray: [postIDs, '$id'] }
+			}
+		},
+		{ $sort: { __order: 1 } },
+		{ $project: { index: 0, _id: 0 } }
+	]);
+
+	res.render(req.directory + '/reports.ejs', {
+		moment: moment,
+		userMap,
+		communityMap,
+		userContent,
+		reports,
+		posts
 	});
 });
 
