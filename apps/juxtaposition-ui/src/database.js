@@ -565,7 +565,6 @@ module.exports = {
 	getRemovedUserPosts,
 	getAllReports,
 	getAllOpenReports,
-	getAllClosedReports,
 	getReportsByReporter,
 	getReportsByOffender,
 	getReportsByPost,
