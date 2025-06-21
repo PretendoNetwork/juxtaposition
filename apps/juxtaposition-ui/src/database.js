@@ -8,6 +8,7 @@ const { NOTIFICATION } = require('@/models/notifications');
 const { POST } = require('@/models/post');
 const { SETTINGS } = require('@/models/settings');
 const { REPORT } = require('@/models/report');
+const { LOGS } = require('@/models/logs');
 const { logger } = require('@/logger');
 const { config } = require('@/config');
 
@@ -506,6 +507,11 @@ async function getReportById(id) {
 	return REPORT.findById(id);
 }
 
+async function getLogsForTarget(targetPID, offset, limit) {
+	verifyConnected();
+	return LOGS.find({ target: targetPID }).sort({ timestamp: -1 }).skip(offset).limit(limit);
+}
+
 module.exports = {
 	connect,
 	getCommunities,
@@ -559,9 +565,11 @@ module.exports = {
 	getRemovedUserPosts,
 	getAllReports,
 	getAllOpenReports,
+	getAllClosedReports,
 	getReportsByReporter,
 	getReportsByOffender,
 	getReportsByPost,
 	getDuplicateReports,
-	getReportById
+	getReportById,
+	getLogsForTarget
 };

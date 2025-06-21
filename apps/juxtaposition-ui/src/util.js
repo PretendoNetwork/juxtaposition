@@ -19,6 +19,7 @@ const { NOTIFICATION } = require('@/models/notifications');
 const { logger } = require('@/logger');
 const { CONTENT } = require('@/models/content');
 const { SETTINGS } = require('@/models/settings');
+const { LOGS } = require('@/models/logs');
 const { config } = require('@/config');
 const communityMap = new HashMap();
 const userMap = new HashMap();
@@ -519,6 +520,15 @@ async function getPid(token) {
 	const user = await this.getUserDataFromToken(token);
 	return user.pid;
 }
+async function createLogEntry(actor, action, target, context) {
+	const newLog = new LOGS({
+		actor: actor,
+		action: action,
+		target: target,
+		context: context
+	});
+	await newLog.save();
+}
 module.exports = {
 	decodeParamPack,
 	processServiceToken,
@@ -546,5 +556,6 @@ module.exports = {
 	getUserDataFromPid,
 	getPid,
 	create_user,
-	INVALID_POST_BODY_REGEX
+	INVALID_POST_BODY_REGEX,
+	createLogEntry
 };
