@@ -14,8 +14,8 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
 	const conversations = await database.getConversations(req.pid);
-	res.jsx(<MessagesView conversations={conversations} ctx={buildContext()}  />);
-});
+	res.jsx(<MessagesView conversations={conversations} ctx={buildContext(res)}  />);
+});	
 
 router.post('/new', async function (req, res) {
 	let conversation = await database.getConversationByID(req.body.community_id);

@@ -71,9 +71,9 @@ export function NavBar(props: NavBarProps): ReactNode {
               viewBox="0 0 24 24"
               fill="none"
               stroke="#A1A8D9"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="feather feather-home"
             >
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -89,9 +89,9 @@ export function NavBar(props: NavBarProps): ReactNode {
               viewBox="0 0 24 24"
               fill="none"
               stroke="#A1A8D9"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="feather feather-users"
             >
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -109,9 +109,9 @@ export function NavBar(props: NavBarProps): ReactNode {
               viewBox="0 0 24 24"
               fill="none"
               stroke="#A1A8D9"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="feather feather-mail"
             >
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -128,9 +128,9 @@ export function NavBar(props: NavBarProps): ReactNode {
               viewBox="0 0 24 24"
               fill="none"
               stroke="#A1A8D9"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="feather feather-bell"
             >
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
@@ -157,9 +157,9 @@ export function NavBar(props: NavBarProps): ReactNode {
                     transform="translate(-14.79 92.28) rotate(-45)"
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="16"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="16"
                   />
                   <rect
                     x="138.75"
@@ -170,9 +170,9 @@ export function NavBar(props: NavBarProps): ReactNode {
                     transform="translate(-51.24 180.28) rotate(-45)"
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="16"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="16"
                   />
                   <line
                     x1="145.66"
@@ -181,9 +181,9 @@ export function NavBar(props: NavBarProps): ReactNode {
                     y2="110.34"
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="16"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="16"
                   />
                   <line
                     x1="89.66"
@@ -192,17 +192,17 @@ export function NavBar(props: NavBarProps): ReactNode {
                     y2="166.34"
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="16"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="16"
                   />
                   <path
                     d="M132,148,61,219a17,17,0,0,1-24,0h0a17,17,0,0,1,0-24l71-71"
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="16"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="16"
                   />
                 </svg>
                 <span id="news-badge" className="badge"></span>
