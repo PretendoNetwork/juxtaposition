@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const grpc = require('nice-grpc');
-const { AccountDefinition } = require('@pretendonetwork/grpc/account/account_service');
+const { AccountServiceDefinition } = require('@pretendonetwork/grpc/account/v2/account_service');
 const { FriendsDefinition } = require('@pretendonetwork/grpc/friends/friends_service');
 const { APIDefinition } = require('@pretendonetwork/grpc/api/api_service');
 const HashMap = require('hashmap');
@@ -32,7 +32,7 @@ const apiChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
 const apiClient = grpc.createClient(APIDefinition, apiChannel);
 
 const accountChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
-const accountClient = grpc.createClient(AccountDefinition, accountChannel);
+const accountClient = grpc.createClient(AccountServiceDefinition, accountChannel);
 
 const s3 = new S3Client({
 	endpoint: config.s3.endpoint,

@@ -4,7 +4,7 @@ import { getUserAccountData, getValueFromHeaders, decodeParamPack, getPIDFromSer
 import { getEndpoint, getUserSettings } from '@/database';
 import { badRequest, ApiErrorCode, serverError } from '@/errors';
 import type express from 'express';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 
 const ParamPackSchema = z.object({
 	title_id: z.string(),
