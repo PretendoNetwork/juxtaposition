@@ -137,9 +137,9 @@ router.post('/accounts/:pid', async (req, res) => {
 	}
 
 	const { pid } = req.params;
-	const userSettings = await database.getUserSettings(pid);
+	const oldUserSettings = await database.getUserSettings(pid);
 
-	if (!userSettings) {
+	if (!oldUserSettings) {
 		res.json({
 			error: true
 		});
@@ -173,7 +173,7 @@ router.post('/accounts/:pid', async (req, res) => {
 
 	let action = 'UPDATE_USER';
 	const changes = [];
-	if (userSettings.account_status !== req.body.account_status) {
+	if (oldUserSettings.account_status !== req.body.account_status) {
 		switch (req.body.account_status) {
 			case 0:
 				action = 'UNBAN';
@@ -188,15 +188,15 @@ router.post('/accounts/:pid', async (req, res) => {
 				action = 'PERMA_BAN';
 				break;
 		}
-		changes.push(`Account_status changed from "${userSettings.account_status}" to "${req.body.account_status}"`);
+		changes.push(`Account_status changed from "${oldUserSettings.account_status}" to "${req.body.account_status}"`);
 	}
 
-	if (userSettings.ban_lift_date !== req.body.ban_lift_date) {
-		changes.push(`Ban_lift_date changed from "${userSettings.ban_lift_date}" to "${req.body.ban_lift_date}"`);
+	if (oldUserSettings.ban_lift_date !== req.body.ban_lift_date) {
+		changes.push(`Ban_lift_date changed from "${oldUserSettings.ban_lift_date}" to "${req.body.ban_lift_date}"`);
 	}
 
-	if (userSettings.ban_reason !== req.body.ban_reason) {
-		changes.push(`Ban_reason changed from "${userSettings.ban_reason}" to "${req.body.ban_reason}"`);
+	if (oldUserSettings.ban_reason !== req.body.ban_reason) {
+		changes.push(`Ban_reason changed from "${oldUserSettings.ban_reason}" to "${req.body.ban_reason}"`);
 	}
 
 	await util.createLogEntry(
@@ -393,9 +393,9 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	const communityID = req.params.id;
 	let tgaIcon;
 
-	const community = await COMMUNITY.findOne({ olive_community_id: communityID }).exec();
+	const oldCommunity = await COMMUNITY.findOne({ olive_community_id: communityID }).exec();
 
-	if (!community) {
+	if (!oldCommunity) {
 		return res.redirect('/404');
 	}
 
@@ -453,14 +453,14 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 
 	// determine the changes made to the community
 	const changes = [];
-	if (community.type !== parseInt(document.type)) {
-		changes.push(`Type changed from "${community.type}" to "${document.type}"`);
+	if (oldCommunity.type !== parseInt(document.type)) {
+		changes.push(`Type changed from "${oldCommunity.type}" to "${document.type}"`);
 	}
-	if (community.has_shop_page !== document.has_shop_page) {
-		changes.push(`Has_shop_page changed from "${community.has_shop_page}" to "${document.has_shop_page}"`);
+	if (oldCommunity.has_shop_page !== document.has_shop_page) {
+		changes.push(`Has_shop_page changed from "${oldCommunity.has_shop_page}" to "${document.has_shop_page}"`);
 	}
-	if (community.platform_id !== parseInt(document.platform_id)) {
-		changes.push(`Platform_id changed from "${community.platform_id}" to "${document.platform_id}"`);
+	if (oldCommunity.platform_id !== parseInt(document.platform_id)) {
+		changes.push(`Platform_id changed from "${oldCommunity.platform_id}" to "${document.platform_id}"`);
 	}
 	if (req.files.browserIcon) {
 		changes.push('Icon changed');
@@ -471,29 +471,29 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	if (req.files.WiiUbrowserHeader) {
 		changes.push('Wii U Banner changed');
 	}
-	if (community.title_id.toString() !== document.title_id.toString()) {
-		changes.push(`Title IDs changed from "${community.title_id.toString()}" to "${document.title_id.toString()}"`);
+	if (oldCommunity.title_id.toString() !== document.title_id.toString()) {
+		changes.push(`Title IDs changed from "${oldCommunity.title_id.toString()}" to "${document.title_id.toString()}"`);
 	}
-	if (community.parent !== document.parent) {
-		changes.push(`Parent changed from "${community.parent}" to "${document.parent}"`);
+	if (oldCommunity.parent !== document.parent) {
+		changes.push(`Parent changed from "${oldCommunity.parent}" to "${document.parent}"`);
 	}
-	if (community.app_data !== document.app_data) {
-		changes.push(`App data changed from "${community.app_data}" to "${document.app_data}"`);
+	if (oldCommunity.app_data !== document.app_data) {
+		changes.push(`App data changed from "${oldCommunity.app_data}" to "${document.app_data}"`);
 	}
-	if (community.is_recommended !== document.is_recommended) {
-		changes.push(`Is_recommended changed from "${community.is_recommended}" to "${document.is_recommended}"`);
+	if (oldCommunity.is_recommended !== document.is_recommended) {
+		changes.push(`Is_recommended changed from "${oldCommunity.is_recommended}" to "${document.is_recommended}"`);
 	}
-	if (community.name !== document.name) {
-		changes.push(`Name changed from "${community.name}" to "${document.name}"`);
+	if (oldCommunity.name !== document.name) {
+		changes.push(`Name changed from "${oldCommunity.name}" to "${document.name}"`);
 	}
-	if (community.description !== document.description) {
-		changes.push(`Description changed from "${community.description}" to "${document.description}"`);
+	if (oldCommunity.description !== document.description) {
+		changes.push(`Description changed from "${oldCommunity.description}" to "${document.description}"`);
 	}
 
 	await util.createLogEntry(
 		req.pid,
 		'UPDATE_COMMUNITY',
-		community.olive_community_id,
+		oldCommunity.olive_community_id,
 		changes.join('\n')
 	);
 });
