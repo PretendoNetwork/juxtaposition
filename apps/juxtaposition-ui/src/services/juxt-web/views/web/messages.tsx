@@ -1,6 +1,6 @@
-import { Root } from "@/services/juxt-web/views/common";
 import type { RenderContext } from "@/services/juxt-web/views/context";
-import { NavBar } from "@/services/juxt-web/views/navbar";
+import { WebNavBar } from "@/services/juxt-web/views/web/navbar";
+import { WebRoot } from "@/services/juxt-web/views/web/root";
 import moment from "moment";
 import type { ReactNode } from "react";
 
@@ -11,13 +11,13 @@ export type MessagesViewProps = {
   conversations: ConversationModel[];
 };
 
-export function MessagesView(props: MessagesViewProps): ReactNode {
+export function WebMessagesView(props: MessagesViewProps): ReactNode {
   return (
-    <Root>
+    <WebRoot>
       <h2 id="title" className="page-header">
         {props.ctx.lang.global.messages}
       </h2>
-      <NavBar ctx={props.ctx} selection={3} />
+      <WebNavBar ctx={props.ctx} selection={3} />
       <div id="toast"></div>
       <div id="wrapper">
         {props.conversations.length === 0 ? (
@@ -78,6 +78,6 @@ export function MessagesView(props: MessagesViewProps): ReactNode {
           </ul>
         )}
       </div>
-    </Root>
+    </WebRoot>
   );
 }

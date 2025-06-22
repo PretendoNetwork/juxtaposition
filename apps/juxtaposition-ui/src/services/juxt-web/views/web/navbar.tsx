@@ -7,7 +7,7 @@ export type NavBarProps = {
   selection: number;
 };
 
-export function NavBar(props: NavBarProps): ReactNode {
+export function WebNavBar(props: NavBarProps): ReactNode {
   const selectedClasses = (id: number) =>
     id === props.selection ? "selected" : "";
 
