@@ -1,4 +1,5 @@
 import { buildContext } from '@/services/juxt-web/views/context';
+import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 
 const crypto = require('crypto');
@@ -16,6 +17,7 @@ router.get('/', async function (req, res) {
 	const conversations = await database.getConversations(req.pid);
 	res.jsxForDirectory({
 		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
+		portal: <PortalMessagesView conversations={conversations} ctx={buildContext(res)} />
 	});
 });
 

@@ -19,6 +19,7 @@
     "@neato/config": "^3.0.0",
     "@pretendonetwork/grpc": "^2.0.1",
     "@repo/grpc-client": "^0.0.0",
+    "classnames": "^2.5.1",
     "colors": "^1.4.0",
     "connect-redis": "^8.0.1",
     "cookie-parser": "^1.4.7",

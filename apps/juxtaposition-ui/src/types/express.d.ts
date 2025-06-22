@@ -12,6 +12,6 @@ declare namespace Express {
 		/**
 		 * Render JSX for directory set on req.directory as static markup. Only static! No state or event handlers are supported.
 		 */
-		jsxForDirectory: (el: Record<Request['directory'], ReactElement?>) => Response;
+		jsxForDirectory: (el: Partial<Record<Request['directory'], ReactElement>>) => Response;
 	}
 }
