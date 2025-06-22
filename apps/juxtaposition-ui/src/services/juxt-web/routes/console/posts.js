@@ -147,7 +147,6 @@ router.delete('/:post_id', async function (req, res) {
 	if (res.locals.moderator && req.pid !== post.pid) {
 		const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
 		await post.removePost(reason, req.pid);
-		// TODO: Create log for this removal
 		await util.createLogEntry(
 			req.pid,
 			'REMOVE_POST',
