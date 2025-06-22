@@ -17,7 +17,9 @@ router.get('/', async function (req, res) {
 	const conversations = await database.getConversations(req.pid);
 	res.jsxForDirectory({
 		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
-		portal: <PortalMessagesView conversations={conversations} ctx={buildContext(res)} />
+		portal: <PortalMessagesView conversations={conversations} ctx={buildContext(res)} />,
+		ctx: <CtrMessagesView  conversations={conversations} ctx={buildContext(res)} />,
+		disableDoctypeFor: ['ctr']
 	});
 });
 
