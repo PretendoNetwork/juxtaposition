@@ -106,8 +106,14 @@ function initPopupMenus() {
 		});
 		popupItemCb(menu.querySelector('[data-action="delete"]'), (item, _ev) => {
 			const moderator = item.hasAttribute('data-moderator');
-			const reason = moderator ? prompt('Provide explanation for removing post:') : '';
+			let reason = '';
+			if (moderator) {
+				reason = prompt('Provide explanation for removing post:');
+			}
 
+			if (reason == null) {
+				return; // User canceled
+			}
 			deletePost(post, reason);
 		});
 		popupItemCb(menu.querySelector('[data-action="copy"]'), (_item, _ev) => {
