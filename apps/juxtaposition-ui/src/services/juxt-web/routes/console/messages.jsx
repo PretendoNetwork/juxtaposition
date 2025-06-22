@@ -1,4 +1,5 @@
 import { buildContext } from '@/services/juxt-web/views/context';
+import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 
@@ -18,7 +19,7 @@ router.get('/', async function (req, res) {
 	res.jsxForDirectory({
 		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
 		portal: <PortalMessagesView conversations={conversations} ctx={buildContext(res)} />,
-		ctx: <CtrMessagesView  conversations={conversations} ctx={buildContext(res)} />,
+		ctr: <CtrMessagesView conversations={conversations} ctx={buildContext(res)} />,
 		disableDoctypeFor: ['ctr']
 	});
 });

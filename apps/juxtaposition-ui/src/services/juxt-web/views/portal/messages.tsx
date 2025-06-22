@@ -10,7 +10,7 @@ import type { MessagesViewProps } from "@/services/juxt-web/views/web/messages";
 
 export function PortalMessagesView(props: MessagesViewProps): ReactNode {
   return (
-    <PortalRoot>
+    <PortalRoot title={props.ctx.lang.global.messages}>
       <PortalNavBar ctx={props.ctx} selection={3} />
       <PortalPageBody>
         <header id="header">

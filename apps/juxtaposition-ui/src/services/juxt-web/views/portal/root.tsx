@@ -13,7 +13,7 @@ function DefaultHead(): ReactNode {
 export type HtmlProps = {
   children?: ReactNode;
   head?: ReactNode;
-  title?: string;
+  title: string;
 };
 
 export function PortalRoot(props: HtmlProps): ReactNode {
@@ -21,12 +21,10 @@ export function PortalRoot(props: HtmlProps): ReactNode {
     <html lang="en">
       <head>
         <DefaultHead />
-        {props.title ? <title>{props.title}</title> : null}
+        <title>{props.title}</title>
         {props.head}
       </head>
-      <body>
-        <div id="body">{props.children}</div>
-      </body>
+      <body>{props.children}</body>
     </html>
   );
 }
