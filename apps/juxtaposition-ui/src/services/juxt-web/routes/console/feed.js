@@ -37,8 +37,7 @@ router.get('/', async function (req, res) {
 		communityMap: communityMap,
 		bundle,
 		tab: 0,
-		template: 'posts_list',
-		moderator: req.moderator
+		template: 'posts_list'
 	});
 });
 
@@ -131,9 +130,7 @@ router.get('/all/more', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		link: `/feed/all/more?offset=${offset + posts.length}&pjax=true`,
-		moderator: req.moderator
+		link: `/feed/all/more?offset=${offset + posts.length}&pjax=true`
 	};
 
 	if (posts.length > 0) {
@@ -141,11 +138,7 @@ router.get('/all/more', async function (req, res) {
 			communityMap: communityMap,
 			moment: moment,
 			database: database,
-			bundle,
-			cdnURL: config.cdnDomain,
-			lang: req.lang,
-			pid: req.pid,
-			moderator: req.moderator
+			bundle
 		});
 	} else {
 		res.sendStatus(204);
