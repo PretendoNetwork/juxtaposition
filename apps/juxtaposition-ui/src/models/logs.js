@@ -17,8 +17,7 @@ const auditLogSchema = new Schema({
 	actor: Number,
 	action: {
 		type: String,
-		enum: actionEnum,
-		default: 'user'
+		enum: actionEnum
 	},
 	target: String,
 	context: String,
