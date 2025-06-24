@@ -210,13 +210,15 @@ router.post('/accounts/:pid', async (req, res) => {
 		changes.push(`Ban reason changed from "${oldUserSettings.ban_reason}" to "${req.body.ban_reason}"`);
 	}
 
-	await util.createLogEntry(
-		req.pid,
-		action,
-		pid,
-		changes.join('\n'),
-		fields
-	);
+	if (changes.length > 0) {
+		await util.createLogEntry(
+			req.pid,
+			action,
+			pid,
+			changes.join('\n'),
+			fields
+		);
+	}
 });
 
 router.delete('/:reportID', async function (req, res) {
@@ -549,13 +551,15 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		changes.push(`Has Shop Page changed from "${oldCommunity.has_shop_page}" to "${document.has_shop_page}"`);
 	}
 
-	await util.createLogEntry(
-		req.pid,
-		'UPDATE_COMMUNITY',
-		oldCommunity.olive_community_id,
-		changes.join('\n'),
-		fields
-	);
+	if (changes.length > 0) {
+		await util.createLogEntry(
+			req.pid,
+			'UPDATE_COMMUNITY',
+			oldCommunity.olive_community_id,
+			changes.join('\n'),
+			fields
+		);
+	}
 });
 
 router.delete('/communities/:id', async (req, res) => {
