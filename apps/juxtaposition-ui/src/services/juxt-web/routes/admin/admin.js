@@ -173,6 +173,8 @@ router.post('/accounts/:pid', async (req, res) => {
 
 	let action = 'UPDATE_USER';
 	const changes = [];
+	const fields = [];
+
 	if (oldUserSettings.account_status !== req.body.account_status) {
 		const oldStatus = getAccountStatus(oldUserSettings.account_status);
 		const newStatus = getAccountStatus(req.body.account_status);
@@ -194,15 +196,17 @@ router.post('/accounts/:pid', async (req, res) => {
 				action = 'PERMA_BAN';
 				break;
 		}
-
+		fields.push('account_status');
 		changes.push(`Account Status changed from "${oldStatus}" to "${newStatus}"`);
 	}
 
 	if (oldUserSettings.ban_lift_date !== req.body.ban_lift_date) {
+		fields.push('ban_lift_date');
 		changes.push(`User Ban Lift Date changed from "${oldUserSettings.ban_lift_date}" to "${req.body.ban_lift_date}"`);
 	}
 
 	if (oldUserSettings.ban_reason !== req.body.ban_reason) {
+		fields.push('ban_reason');
 		changes.push(`Ban reason changed from "${oldUserSettings.ban_reason}" to "${req.body.ban_reason}"`);
 	}
 
@@ -210,7 +214,8 @@ router.post('/accounts/:pid', async (req, res) => {
 		req.pid,
 		action,
 		pid,
-		changes.join('\n')
+		changes.join('\n'),
+		fields
 	);
 });
 
@@ -474,45 +479,58 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 
 	// determine the changes made to the community
 	const changes = [];
+	const fields = [];
 
 	if (oldCommunity.name !== document.name) {
+		fields.push('name');
 		changes.push(`Name changed from "${oldCommunity.name}" to "${document.name}"`);
 	}
 	if (oldCommunity.description !== document.description) {
+		fields.push('description');
 		changes.push(`Description changed from "${oldCommunity.description}" to "${document.description}"`);
 	}
 	if (oldCommunity.platform_id !== parseInt(document.platform_id)) {
 		const oldCommunityPlatform = getCommunityPlatform(oldCommunity.platform_id);
 		const newCommunityPlatform = getCommunityPlatform(document.platform_id);
+		fields.push('platform_id');
 		changes.push(`Platform ID changed from "${oldCommunityPlatform}" to "${newCommunityPlatform}"`);
 	}
 	if (oldCommunity.type !== parseInt(document.type)) {
 		const oldCommunityType = getCommunityType(oldCommunity.type);
 		const newCommunityType = getCommunityType(document.type);
+		fields.push('type');
 		changes.push(`Type changed from "${oldCommunityType}" to "${newCommunityType}"`);
 	}
 	if (oldCommunity.title_id.toString() !== document.title_id.toString()) {
+		fields.push('title_id');
 		changes.push(`Title IDs changed from "${oldCommunity.title_id.join(', ')}" to "${document.title_id.join(', ')}"`);
 	}
 	if (req.files.browserIcon) {
+		fields.push('browserIcon');
 		changes.push('Icon changed');
 	}
 	if (req.files.CTRbrowserHeader) {
+		fields.push('CTRbrowserHeader');
 		changes.push('3DS Banner changed');
 	}
 	if (req.files.WiiUbrowserHeader) {
+		fields.push('WiiUbrowserHeader');
 		changes.push('Wii U Banner changed');
 	}
 	if (oldCommunity.parent !== document.parent) {
+		fields.push('parent');
 		changes.push(`Parent changed from "${oldCommunity.parent}" to "${document.parent}"`);
 	}
 	if (oldCommunity.app_data !== document.app_data) {
+		fields.push('app_data');
 		changes.push(`App data changed from "${oldCommunity.app_data}" to "${document.app_data}"`);
 	}
 	if (oldCommunity.is_recommended !== document.is_recommended) {
+		fields.push('is_recommended');
 		changes.push(`Is Recommended changed from "${oldCommunity.is_recommended}" to "${document.is_recommended}"`);
 	}
 	if (oldCommunity.has_shop_page !== document.has_shop_page) {
+		fields.push('has_shop_page');
 		changes.push(`Has Shop Page changed from "${oldCommunity.has_shop_page}" to "${document.has_shop_page}"`);
 	}
 
@@ -520,7 +538,8 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		req.pid,
 		'UPDATE_COMMUNITY',
 		oldCommunity.olive_community_id,
-		changes.join('\n')
+		changes.join('\n'),
+		fields
 	);
 });
 

@@ -520,12 +520,13 @@ async function getPid(token) {
 	const user = await this.getUserDataFromToken(token);
 	return user.pid;
 }
-async function createLogEntry(actor, action, target, context) {
+async function createLogEntry(actor, action, target, context, fields) {
 	const newLog = new LOGS({
 		actor: actor,
 		action: action,
 		target: target,
-		context: context
+		context: context,
+		fields: fields
 	});
 	await newLog.save();
 }

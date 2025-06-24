@@ -24,6 +24,10 @@ const auditLogSchema = new Schema({
 	timestamp: {
 		type: Date,
 		default: Date.now
+	},
+	changed_fields: {
+		type: [String],
+		default: []
 	}
 });
 
