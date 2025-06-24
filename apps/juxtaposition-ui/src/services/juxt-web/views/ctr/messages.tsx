@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
-import type { MessagesViewProps } from "@/services/juxt-web/views/web/messages";
+import type {
+  ConversationUserModel,
+  MessagesViewProps,
+} from "@/services/juxt-web/views/web/messages";
 import moment from "moment";
 import cx from "classnames";
 
@@ -13,8 +16,8 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
         <p className="no-posts-text">{props.ctx.lang.messages.coming_soon}</p>
       ) : (
         props.conversations.map((convo) => {
-          // get the PID of the opposite user
-          let userObj, me;
+          let userObj: ConversationUserModel | null = null;
+          let me: ConversationUserModel | null = null;
           if (convo.users[0].pid === props.ctx.pid) {
             userObj = convo.users[1];
             me = convo.users[0];
@@ -22,6 +25,9 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
             userObj = convo.users[0];
             me = convo.users[1];
           }
+          if (!me || !userObj) return null;
+          if (!userObj.pid || !me.pid) return null; // Prevent rendering with incomplete data
+
           return (
             <li>
               <a

@@ -1,10 +1,13 @@
+import type { ConversationSchema } from "@/models/conversation";
 import type { RenderContext } from "@/services/juxt-web/views/context";
 import { WebNavBar } from "@/services/juxt-web/views/web/navbar";
 import { WebRoot } from "@/services/juxt-web/views/web/root";
 import moment from "moment";
+import type { InferSchemaType } from "mongoose";
 import type { ReactNode } from "react";
 
-type ConversationModel = any; // types not yet known
+export type ConversationModel = InferSchemaType<typeof ConversationSchema>;
+export type ConversationUserModel = ConversationModel["users"][number];
 
 export type MessagesViewProps = {
   ctx: RenderContext;
@@ -30,7 +33,8 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
             id="news-list-content"
           >
             {props.conversations.map((convo) => {
-              let userObj, me;
+              let userObj: ConversationUserModel | null = null;
+              let me: ConversationUserModel | null = null;
               if (convo.users[0].pid === props.ctx.pid) {
                 userObj = convo.users[1];
                 me = convo.users[0];
@@ -38,6 +42,8 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
                 userObj = convo.users[0];
                 me = convo.users[1];
               }
+              if (!me || !userObj) return null;
+              if (!userObj.pid || !me.pid) return null; // Prevent rendering with incomplete data
               return (
                 <li>
                   <div className="hover">

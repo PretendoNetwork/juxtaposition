@@ -6,7 +6,10 @@ import {
 } from "@/services/juxt-web/views/portal/root";
 import moment from "moment";
 import type { ReactNode } from "react";
-import type { MessagesViewProps } from "@/services/juxt-web/views/web/messages";
+import type {
+  ConversationUserModel,
+  MessagesViewProps,
+} from "@/services/juxt-web/views/web/messages";
 
 export function PortalMessagesView(props: MessagesViewProps): ReactNode {
   return (
@@ -24,7 +27,8 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
               </p>
             ) : (
               props.conversations.map((convo) => {
-                let userObj, me;
+                let userObj: ConversationUserModel | null = null;
+                let me: ConversationUserModel | null = null;
                 if (convo.users[0].pid === props.ctx.pid) {
                   userObj = convo.users[1];
                   me = convo.users[0];
@@ -32,6 +36,8 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
                   userObj = convo.users[0];
                   me = convo.users[1];
                 }
+                if (!me || !userObj) return null;
+                if (!userObj.pid || !me.pid) return null; // Prevent rendering with incomplete data
                 return (
                   <li>
                     <a
