@@ -174,6 +174,9 @@ router.post('/accounts/:pid', async (req, res) => {
 	let action = 'UPDATE_USER';
 	const changes = [];
 	if (oldUserSettings.account_status !== req.body.account_status) {
+		const oldStatus = getAccountStatus(oldUserSettings.account_status);
+		const newStatus = getAccountStatus(req.body.account_status);
+
 		switch (req.body.account_status) {
 			case 0:
 				action = 'UNBAN';
@@ -187,16 +190,20 @@ router.post('/accounts/:pid', async (req, res) => {
 			case 3:
 				action = 'PERMA_BAN';
 				break;
+			default:
+				action = 'PERMA_BAN';
+				break;
 		}
-		changes.push(`Account_status changed from "${oldUserSettings.account_status}" to "${req.body.account_status}"`);
+
+		changes.push(`Account Status changed from "${oldStatus}" to "${newStatus}"`);
 	}
 
 	if (oldUserSettings.ban_lift_date !== req.body.ban_lift_date) {
-		changes.push(`Ban_lift_date changed from "${oldUserSettings.ban_lift_date}" to "${req.body.ban_lift_date}"`);
+		changes.push(`User Ban Lift Date changed from "${oldUserSettings.ban_lift_date}" to "${req.body.ban_lift_date}"`);
 	}
 
 	if (oldUserSettings.ban_reason !== req.body.ban_reason) {
-		changes.push(`Ban_reason changed from "${oldUserSettings.ban_reason}" to "${req.body.ban_reason}"`);
+		changes.push(`Ban reason changed from "${oldUserSettings.ban_reason}" to "${req.body.ban_reason}"`);
 	}
 
 	await util.createLogEntry(
@@ -237,7 +244,7 @@ router.delete('/:reportID', async function (req, res) {
 	await util.createLogEntry(
 		req.pid,
 		'REMOVE_POST',
-		post.pid,
+		post.id,
 		`Post ${post.id} removed for: "${reason}"`
 	);
 
@@ -259,7 +266,7 @@ router.put('/:reportID', async function (req, res) {
 	await util.createLogEntry(
 		req.pid,
 		'IGNORE_REPORT',
-		req.params.reportID,
+		report.id,
 		`Report ${report.id} ignored for: "${req.query.reason}"`
 	);
 
@@ -356,11 +363,25 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 
 	util.updateCommunityHash(document);
 
+	const communityType = getCommunityType(document.type);
+	const communityPlatform = getCommunityPlatform(document.platform_id);
+	const changes = [];
+
+	changes.push(`Name set to "${document.name}"`);
+	changes.push(`Description set to "${document.description}"`);
+	changes.push(`Platform ID set to "${communityPlatform}"`);
+	changes.push(`Type set to "${communityType}"`);
+	changes.push(`Title IDs set to "${document.title_id.join(', ')}"`);
+	changes.push(`Parent set to "${document.parent}"`);
+	changes.push(`App data set to "${document.app_data}"`);
+	changes.push(`Is Recommended set to "${document.is_recommended}"`);
+	changes.push(`Has Shop Page set to "${document.has_shop_page}"`);
+
 	await util.createLogEntry(
 		req.pid,
 		'MAKE_COMMUNITY',
 		communityID,
-		`Community ${communityID} created with name "${req.body.name}" and type "${req.body.type}"`
+		changes.join('\n')
 	);
 });
 
@@ -453,14 +474,25 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 
 	// determine the changes made to the community
 	const changes = [];
-	if (oldCommunity.type !== parseInt(document.type)) {
-		changes.push(`Type changed from "${oldCommunity.type}" to "${document.type}"`);
+
+	if (oldCommunity.name !== document.name) {
+		changes.push(`Name changed from "${oldCommunity.name}" to "${document.name}"`);
 	}
-	if (oldCommunity.has_shop_page !== document.has_shop_page) {
-		changes.push(`Has_shop_page changed from "${oldCommunity.has_shop_page}" to "${document.has_shop_page}"`);
+	if (oldCommunity.description !== document.description) {
+		changes.push(`Description changed from "${oldCommunity.description}" to "${document.description}"`);
 	}
 	if (oldCommunity.platform_id !== parseInt(document.platform_id)) {
-		changes.push(`Platform_id changed from "${oldCommunity.platform_id}" to "${document.platform_id}"`);
+		const oldCommunityPlatform = getCommunityPlatform(oldCommunity.platform_id);
+		const newCommunityPlatform = getCommunityPlatform(document.platform_id);
+		changes.push(`Platform ID changed from "${oldCommunityPlatform}" to "${newCommunityPlatform}"`);
+	}
+	if (oldCommunity.type !== parseInt(document.type)) {
+		const oldCommunityType = getCommunityType(oldCommunity.type);
+		const newCommunityType = getCommunityType(document.type);
+		changes.push(`Type changed from "${oldCommunityType}" to "${newCommunityType}"`);
+	}
+	if (oldCommunity.title_id.toString() !== document.title_id.toString()) {
+		changes.push(`Title IDs changed from "${oldCommunity.title_id.join(', ')}" to "${document.title_id.join(', ')}"`);
 	}
 	if (req.files.browserIcon) {
 		changes.push('Icon changed');
@@ -471,9 +503,6 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	if (req.files.WiiUbrowserHeader) {
 		changes.push('Wii U Banner changed');
 	}
-	if (oldCommunity.title_id.toString() !== document.title_id.toString()) {
-		changes.push(`Title IDs changed from "${oldCommunity.title_id.toString()}" to "${document.title_id.toString()}"`);
-	}
 	if (oldCommunity.parent !== document.parent) {
 		changes.push(`Parent changed from "${oldCommunity.parent}" to "${document.parent}"`);
 	}
@@ -481,13 +510,10 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		changes.push(`App data changed from "${oldCommunity.app_data}" to "${document.app_data}"`);
 	}
 	if (oldCommunity.is_recommended !== document.is_recommended) {
-		changes.push(`Is_recommended changed from "${oldCommunity.is_recommended}" to "${document.is_recommended}"`);
+		changes.push(`Is Recommended changed from "${oldCommunity.is_recommended}" to "${document.is_recommended}"`);
 	}
-	if (oldCommunity.name !== document.name) {
-		changes.push(`Name changed from "${oldCommunity.name}" to "${document.name}"`);
-	}
-	if (oldCommunity.description !== document.description) {
-		changes.push(`Description changed from "${oldCommunity.description}" to "${document.description}"`);
+	if (oldCommunity.has_shop_page !== document.has_shop_page) {
+		changes.push(`Has Shop Page changed from "${oldCommunity.has_shop_page}" to "${document.has_shop_page}"`);
 	}
 
 	await util.createLogEntry(
@@ -556,6 +582,51 @@ async function generateCommunityUID(length) {
 	const inuse = await COMMUNITY.findOne({ community_id: id });
 	id = (inuse ? await generateCommunityUID(length) : id);
 	return id;
+}
+
+function getAccountStatus(status) {
+	switch (status) {
+		case 0:
+			return 'Normal';
+		case 1:
+			return 'Limited from Posting';
+		case 2:
+			return 'Temporary Ban';
+		case 3:
+			return 'Permanent Ban';
+		default:
+			return `Unknown (${status})`;
+	}
+}
+
+function getCommunityType(type) {
+	type = Number(type);
+	switch (type) {
+		case 0:
+			return 'Main';
+		case 1:
+			return 'Sub';
+		case 2:
+			return 'Announcement';
+		case 3:
+			return 'Private';
+		default:
+			return `Unknown (${type})`;
+	}
+}
+
+function getCommunityPlatform(platform_id) {
+	platform_id = Number(platform_id);
+	switch (platform_id) {
+		case 0:
+			return 'Wii U';
+		case 1:
+			return '3DS';
+		case 2:
+			return 'Both';
+		default:
+			return `Unknown (${platform_id})`;
+	}
 }
 
 module.exports = router;
