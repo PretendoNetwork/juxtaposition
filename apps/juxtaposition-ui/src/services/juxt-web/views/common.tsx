@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 export function InlineScript(props: { src: string }): ReactNode {
-  return <script dangerouslySetInnerHTML={{ __html: props.src }} />;
+	return <script dangerouslySetInnerHTML={{ __html: props.src }} />;
 }
 
 export function InlineStyle(props: { src: string }): ReactNode {
-  return <style dangerouslySetInnerHTML={{ __html: props.src }} />;
+	return <style dangerouslySetInnerHTML={{ __html: props.src }} />;
 }

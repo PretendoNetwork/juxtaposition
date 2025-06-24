@@ -55,7 +55,7 @@
     "tsx": "^4.19.3"
   },
   "devDependencies": {
-    "@pretendonetwork/eslint-config": "^0.0.8",
+    "@pretendonetwork/eslint-config": "^0.0.11",
     "@types/hashmap": "^2.3.4",
     "@types/node": "^22.13.8",
     "@types/react": "^19.1.8",

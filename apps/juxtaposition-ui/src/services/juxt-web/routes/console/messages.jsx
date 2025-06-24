@@ -1,8 +1,8 @@
+/* eslint-disable import/no-unresolved -- eslint config is broken */
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
-
 const crypto = require('crypto');
 const express = require('express');
 const moment = require('moment');
