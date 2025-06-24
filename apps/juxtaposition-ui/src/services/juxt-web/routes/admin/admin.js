@@ -108,7 +108,7 @@ router.get('/accounts/:pid', async function (req, res) {
 
 	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(10);
 
-	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 10);
+	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 20);
 
 	res.render(req.directory + '/moderate_user.ejs', {
 		moment: moment,
