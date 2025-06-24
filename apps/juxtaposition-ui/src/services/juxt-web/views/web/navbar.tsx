@@ -11,6 +11,7 @@ export function WebNavBar(props: NavBarProps): ReactNode {
   const selectedClasses = (id: number) =>
     id === props.selection ? "selected" : "";
 
+  // TODO replace SVG icons with better methods for inline SVG (raw imports / Icon component)
   return (
     <header id="nav-menu">
       <a href="/" className="logo-link">

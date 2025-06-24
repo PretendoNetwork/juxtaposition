@@ -10,6 +10,7 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
   const selectedClasses = (id: number) =>
     id === props.selection ? "selected" : "";
 
+  // TODO replace SVG icons with better methods for inline SVG (raw imports / Icon component)
   return (
     <menu id="nav-menu">
       <li id="nav-menu-me" data-tab="me" className={selectedClasses(0)}>
