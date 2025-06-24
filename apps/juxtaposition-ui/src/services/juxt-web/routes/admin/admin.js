@@ -579,38 +579,6 @@ router.delete('/communities/:id', async (req, res) => {
 	);
 });
 
-router.get('/audit', async function (req, res) {
-	if (!res.locals.moderator) {
-		return res.redirect('/titles/show');
-	}
-
-	const reports = await database.getAllClosedReports();
-	const communityMap = await util.getCommunityHash();
-	const userContent = await database.getUserContent(req.pid);
-	const userMap = util.getUserHash();
-	const postIDs = reports.map(obj => obj.post_id);
-
-	const posts = await POST.aggregate([
-		{ $match: { id: { $in: postIDs } } },
-		{
-			$addFields: {
-				__order: { $indexOfArray: [postIDs, '$id'] }
-			}
-		},
-		{ $sort: { __order: 1 } },
-		{ $project: { index: 0, _id: 0 } }
-	]);
-
-	res.render(req.directory + '/reports.ejs', {
-		moment: moment,
-		userMap,
-		communityMap,
-		userContent,
-		reports,
-		posts
-	});
-});
-
 async function generateCommunityUID(length) {
 	let id = crypto.getRandomValues(new Uint32Array(1)).toString().substring(0, length);
 	const inuse = await COMMUNITY.findOne({ community_id: id });
