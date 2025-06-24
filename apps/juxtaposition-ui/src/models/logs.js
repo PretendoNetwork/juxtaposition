@@ -14,20 +14,32 @@ const actionEnum = [
 ];
 
 const auditLogSchema = new Schema({
-	actor: Number,
+	actor: {
+		type: Number,
+		required: true
+	},
 	action: {
 		type: String,
-		enum: actionEnum
+		enum: actionEnum,
+		required: true
 	},
-	target: String,
-	context: String,
+	target: {
+		type: String,
+		required: true
+	},
+	context: {
+		type: String,
+		required: true
+	},
 	timestamp: {
 		type: Date,
-		default: Date.now
+		default: Date.now,
+		required: true
 	},
 	changed_fields: {
 		type: [String],
-		default: []
+		default: [],
+		required: true
 	}
 });
 
