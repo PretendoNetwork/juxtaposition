@@ -382,11 +382,26 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	changes.push(`Is Recommended set to "${document.is_recommended}"`);
 	changes.push(`Has Shop Page set to "${document.has_shop_page}"`);
 
+	const fields = [
+		'name',
+		'description',
+		'platform_id',
+		'type',
+		'title_id',
+		'browserIcon',
+		'CTRbrowserHeader',
+		'WiiUbrowserHeader',
+		'parent',
+		'app_data',
+		'is_recommended',
+		'has_shop_page'
+	];
 	await util.createLogEntry(
 		req.pid,
 		'MAKE_COMMUNITY',
 		communityID,
-		changes.join('\n')
+		changes.join('\n'),
+		fields
 	);
 });
 

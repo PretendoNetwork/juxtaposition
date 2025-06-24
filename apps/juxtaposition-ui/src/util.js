@@ -526,7 +526,7 @@ async function createLogEntry(actor, action, target, context, fields) {
 		action: action,
 		target: target,
 		context: context,
-		fields: fields
+		changed_fields: fields
 	});
 	await newLog.save();
 }
