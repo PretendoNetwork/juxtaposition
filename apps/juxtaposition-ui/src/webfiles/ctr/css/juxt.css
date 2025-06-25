@@ -520,6 +520,7 @@ header svg {
     margin-bottom: 0
 }
 
+/* Hide the post buttons when we have "real" cave only */
 body[data-cave-ok] .olv-modal-close-button,
 body[data-cave-ok] .post-button {
     display: none

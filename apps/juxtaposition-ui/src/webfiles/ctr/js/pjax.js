@@ -1,4 +1,4 @@
-var Pjax = {
+export var Pjax = {
 	elements: null,
 	selectors: null,
 	href: null,
