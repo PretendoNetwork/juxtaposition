@@ -3,12 +3,13 @@ import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
+import { processPainting } from '@/images';
+import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, INVALID_POST_BODY_REGEX } from '@/util';
 const crypto = require('crypto');
 const express = require('express');
 const moment = require('moment');
 const snowflake = require('node-snowflake').Snowflake;
 const database = require('@/database');
-const util = require('@/util');
 const { POST } = require('@/models/post');
 const { CONVERSATION } = require('@/models/conversation');
 const { config } = require('@/config');
@@ -26,9 +27,9 @@ router.get('/', async function (req, res) {
 
 router.post('/new', async function (req, res) {
 	let conversation = await database.getConversationByID(req.body.community_id);
-	const user2 = await util.getUserDataFromPid(req.body.message_to_pid);
+	const user2 = await getUserAccountData(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
-	const friends = await util.getFriends(user2.pid);
+	const friends = await getUserFriendPIDs(user2.pid);
 	if (req.body.community_id === 0) {
 		return res.sendStatus(404);
 	}
@@ -70,8 +71,8 @@ router.post('/new', async function (req, res) {
 	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
-		paintingURI = await util.processPainting(painting, true);
-		if (!await util.uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		paintingURI = await processPainting(painting, true);
+		if (!await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -81,7 +82,7 @@ router.post('/new', async function (req, res) {
 	}
 	if (req.body.screenshot) {
 		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		if (await util.uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+		if (await uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -112,7 +113,7 @@ router.post('/new', async function (req, res) {
 			break;
 	}
 	const body = req.body.body;
-	if (body && util.INVALID_POST_BODY_REGEX.test(body)) {
+	if (body && INVALID_POST_BODY_REGEX.test(body)) {
 		// TODO - Log this error
 		return res.sendStatus(422);
 	}
@@ -163,8 +164,8 @@ router.post('/new', async function (req, res) {
 });
 
 router.get('/new/:pid', async function (req, res) {
-	const user2 = await util.getUserDataFromPid(req.params.pid);
-	const friends = await util.getFriends(user2.pid);
+	const user2 = await getUserAccountData(req.params.pid);
+	const friends = await getUserFriendPIDs(user2.pid);
 	if (!req.user || !user2) {
 		return res.sendStatus(422);
 	}
@@ -226,7 +227,7 @@ router.get('/:message_id', async function (req, res) {
 		res.redirect('/');
 	}
 	const messages = await database.getConversationMessages(conversation.id, 200, 0);
-	const userMap = await util.getUserHash();
+	const userMap = await getUserHash();
 	res.render(req.directory + '/message_thread.ejs', {
 		moment: moment,
 		user2: user2,

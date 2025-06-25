@@ -3,6 +3,7 @@ const multer = require('multer');
 const moment = require('moment');
 const database = require('@/database');
 const util = require('@/util');
+const { getUserFriendPids } = util;
 const { POST } = require('@/models/post');
 const { SETTINGS } = require('@/models/settings');
 const redis = require('@/redisCache');
@@ -138,7 +139,7 @@ async function userPage(req, res, userID) {
 	}
 	const pnid = userID === req.pid
 		? req.user
-		: await util.getUserDataFromPid(userID).catch((e) => {
+		: await util.getUserAccountData(userID).catch((e) => {
 			logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
 		});
 	const userContent = await database.getUserContent(userID);
@@ -155,7 +156,7 @@ async function userPage(req, res, userID) {
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();
-	const friends = await util.getFriends(userID);
+	const friends = await getUserFriendPids(userID);
 
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {
@@ -194,12 +195,12 @@ async function userPage(req, res, userID) {
 }
 
 async function userRelations(req, res, userID) {
-	const pnid = userID === req.pid ? req.user : await util.getUserDataFromPid(userID);
+	const pnid = userID === req.pid ? req.user : await util.getUserAccountData(userID);
 	const userContent = await database.getUserContent(userID);
 	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
 	const numPosts = await database.getTotalPostsByUserID(userID);
-	const friends = await util.getFriends(userID);
+	const friends = await getUserFriendPids(userID);
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {
 		parentUserContent = await database.getUserContent(req.pid);
