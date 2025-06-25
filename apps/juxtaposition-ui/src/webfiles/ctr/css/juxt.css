@@ -520,8 +520,8 @@ header svg {
     margin-bottom: 0
 }
 
-.olv-modal-close-button,
-.post-button {
+body[data-cave-ok] .olv-modal-close-button,
+body[data-cave-ok] .post-button {
     display: none
 }
 

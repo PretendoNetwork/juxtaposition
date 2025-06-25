@@ -11,7 +11,12 @@ if (typeof cave !== 'undefined') {
 			alert('error: ' + evt.type + ' from element: ' + (evt.srcElement || evt.target));
 		}
 	}
+	// Set a note somewhere readable from CSS that we have real cave not fake cave
+	document.addEventListener('DOMContentLoaded', function () {
+		document.querySelector('body').setAttribute('data-cave-ok', true);
+	});
 }
+
 if (typeof cave === 'undefined') {
 	window.cave = {
 		/**
