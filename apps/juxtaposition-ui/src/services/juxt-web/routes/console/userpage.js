@@ -3,7 +3,7 @@ const multer = require('multer');
 const moment = require('moment');
 const database = require('@/database');
 const util = require('@/util');
-const { getUserFriendPids } = util;
+const { getUserFriendPIDs } = util;
 const { POST } = require('@/models/post');
 const { SETTINGS } = require('@/models/settings');
 const redis = require('@/redisCache');
@@ -156,7 +156,7 @@ async function userPage(req, res, userID) {
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();
-	const friends = await getUserFriendPids(userID);
+	const friends = await getUserFriendPIDs(userID);
 
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {
@@ -200,7 +200,7 @@ async function userRelations(req, res, userID) {
 	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
 	const numPosts = await database.getTotalPostsByUserID(userID);
-	const friends = await getUserFriendPids(userID);
+	const friends = await getUserFriendPIDs(userID);
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {
 		parentUserContent = await database.getUserContent(req.pid);
