@@ -2,7 +2,7 @@
   "watch": [
     "src/"
   ],
-  "ext": "js,ts,ejs,json,css",
+  "ext": "js,ts,ejs,tsx,jsx,json,css",
   "env": {
     "NODE_ENV": "development"
   }

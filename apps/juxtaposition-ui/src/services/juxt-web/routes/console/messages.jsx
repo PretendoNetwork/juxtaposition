@@ -1,3 +1,8 @@
+/* eslint-disable import/no-unresolved -- eslint config is broken */
+import { buildContext } from '@/services/juxt-web/views/context';
+import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
+import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
+import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 const crypto = require('crypto');
 const express = require('express');
 const moment = require('moment');
@@ -11,11 +16,11 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
 	const conversations = await database.getConversations(req.pid);
-	const usersMap = await util.getUserHash();
-	res.render(req.directory + '/messages.ejs', {
-		moment: moment,
-		conversations: conversations,
-		usersMap: usersMap
+	res.jsxForDirectory({
+		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
+		portal: <PortalMessagesView conversations={conversations} ctx={buildContext(res)} />,
+		ctr: <CtrMessagesView conversations={conversations} ctx={buildContext(res)} />,
+		disableDoctypeFor: ['ctr']
 	});
 });
 

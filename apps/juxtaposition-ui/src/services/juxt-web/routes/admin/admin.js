@@ -108,6 +108,8 @@ router.get('/accounts/:pid', async function (req, res) {
 
 	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(10);
 
+	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 20);
+
 	res.render(req.directory + '/moderate_user.ejs', {
 		moment: moment,
 		userSettings,
@@ -123,7 +125,9 @@ router.get('/accounts/:pid', async function (req, res) {
 		userMap,
 		communityMap,
 		postsMap,
-		reasonMap
+		reasonMap,
+
+		auditLog
 	});
 });
 
@@ -133,6 +137,19 @@ router.post('/accounts/:pid', async (req, res) => {
 	}
 
 	const { pid } = req.params;
+	const oldUserSettings = await database.getUserSettings(pid);
+
+	if (!oldUserSettings) {
+		res.json({
+			error: true
+		});
+		return;
+	}
+
+	if (req.body.ban_lift_date == '') {
+		req.body.ban_lift_date = null;
+	}
+
 	await SETTINGS.findOneAndUpdate({ pid: pid }, {
 		account_status: req.body.account_status,
 		ban_lift_date: req.body.ban_lift_date,
@@ -153,6 +170,55 @@ router.post('/accounts/:pid', async (req, res) => {
 			link: '/titles/2551084080/new'
 		});
 	}
+
+	let action = 'UPDATE_USER';
+	const changes = [];
+	const fields = [];
+
+	if (oldUserSettings.account_status !== req.body.account_status) {
+		const oldStatus = getAccountStatus(oldUserSettings.account_status);
+		const newStatus = getAccountStatus(req.body.account_status);
+
+		switch (req.body.account_status) {
+			case 0:
+				action = 'UNBAN';
+				break;
+			case 1:
+				action = 'LIMIT_POSTING';
+				break;
+			case 2:
+				action = 'TEMP_BAN';
+				break;
+			case 3:
+				action = 'PERMA_BAN';
+				break;
+			default:
+				action = 'PERMA_BAN';
+				break;
+		}
+		fields.push('account_status');
+		changes.push(`Account Status changed from "${oldStatus}" to "${newStatus}"`);
+	}
+
+	if (oldUserSettings.ban_lift_date !== req.body.ban_lift_date) {
+		fields.push('ban_lift_date');
+		changes.push(`User Ban Lift Date changed from "${oldUserSettings.ban_lift_date}" to "${req.body.ban_lift_date}"`);
+	}
+
+	if (oldUserSettings.ban_reason !== req.body.ban_reason) {
+		fields.push('ban_reason');
+		changes.push(`Ban reason changed from "${oldUserSettings.ban_reason}" to "${req.body.ban_reason}"`);
+	}
+
+	if (changes.length > 0) {
+		await util.createLogEntry(
+			req.pid,
+			action,
+			pid,
+			changes.join('\n'),
+			fields
+		);
+	}
 });
 
 router.delete('/:reportID', async function (req, res) {
@@ -172,13 +238,22 @@ router.delete('/:reportID', async function (req, res) {
 	await post.removePost(reason, req.pid);
 	await report.resolve(req.pid, reason);
 
+	const postType = post.parent ? 'comment' : 'post';
+
 	await util.newNotification({
 		pid: post.pid,
 		type: 'notice',
-		text: `Your post "${post.id}" has been removed for the following reason: "${reason}"`,
+		text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
 		image: '/images/bandwidthalert.png',
 		link: '/titles/2551084080/new'
 	});
+
+	await util.createLogEntry(
+		req.pid,
+		'REMOVE_POST',
+		post.id,
+		`Post ${post.id} removed for: "${reason}"`
+	);
 
 	return res.sendStatus(200);
 });
@@ -194,6 +269,13 @@ router.put('/:reportID', async function (req, res) {
 	}
 
 	await report.resolve(req.pid, req.query.reason);
+
+	await util.createLogEntry(
+		req.pid,
+		'IGNORE_REPORT',
+		report.id,
+		`Report ${report.id} ignored for: "${req.query.reason}"`
+	);
 
 	return res.sendStatus(200);
 });
@@ -259,6 +341,9 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 		return res.sendStatus(422);
 	}
 
+	req.body.has_shop_page = req.body.has_shop_page === 'on' ? 1 : 0;
+	req.body.is_recommended = req.body.is_recommended === 'on' ? 1 : 0;
+
 	const document = {
 		platform_id: req.body.platform,
 		name: req.body.name,
@@ -284,6 +369,42 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	res.redirect(`/admin/communities/${communityID}`);
 
 	util.updateCommunityHash(document);
+
+	const communityType = getCommunityType(document.type);
+	const communityPlatform = getCommunityPlatform(document.platform_id);
+	const changes = [];
+
+	changes.push(`Name set to "${document.name}"`);
+	changes.push(`Description set to "${document.description}"`);
+	changes.push(`Platform ID set to "${communityPlatform}"`);
+	changes.push(`Type set to "${communityType}"`);
+	changes.push(`Title IDs set to "${document.title_id.join(', ')}"`);
+	changes.push(`Parent set to "${document.parent}"`);
+	changes.push(`App data set to "${document.app_data}"`);
+	changes.push(`Is Recommended set to "${document.is_recommended}"`);
+	changes.push(`Has Shop Page set to "${document.has_shop_page}"`);
+
+	const fields = [
+		'name',
+		'description',
+		'platform_id',
+		'type',
+		'title_id',
+		'browserIcon',
+		'CTRbrowserHeader',
+		'WiiUbrowserHeader',
+		'parent',
+		'app_data',
+		'is_recommended',
+		'has_shop_page'
+	];
+	await util.createLogEntry(
+		req.pid,
+		'MAKE_COMMUNITY',
+		communityID,
+		changes.join('\n'),
+		fields
+	);
 });
 
 router.get('/communities/:community_id', async function (req, res) {
@@ -314,6 +435,12 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	JSON.parse(JSON.stringify(req.files));
 	const communityID = req.params.id;
 	let tgaIcon;
+
+	const oldCommunity = await COMMUNITY.findOne({ olive_community_id: communityID }).exec();
+
+	if (!oldCommunity) {
+		return res.redirect('/404');
+	}
 
 	// browser icon
 	if (req.files.browserIcon) {
@@ -346,6 +473,9 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		}
 	}
 
+	req.body.has_shop_page = req.body.has_shop_page === 'on' ? 1 : 0;
+	req.body.is_recommended = req.body.is_recommended === 'on' ? 1 : 0;
+
 	const document = {
 		type: req.body.type,
 		has_shop_page: req.body.has_shop_page,
@@ -363,6 +493,73 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	res.redirect(`/admin/communities/${communityID}`);
 
 	util.updateCommunityHash(document);
+
+	// determine the changes made to the community
+	const changes = [];
+	const fields = [];
+
+	if (oldCommunity.name !== document.name) {
+		fields.push('name');
+		changes.push(`Name changed from "${oldCommunity.name}" to "${document.name}"`);
+	}
+	if (oldCommunity.description !== document.description) {
+		fields.push('description');
+		changes.push(`Description changed from "${oldCommunity.description}" to "${document.description}"`);
+	}
+	if (oldCommunity.platform_id !== parseInt(document.platform_id)) {
+		const oldCommunityPlatform = getCommunityPlatform(oldCommunity.platform_id);
+		const newCommunityPlatform = getCommunityPlatform(document.platform_id);
+		fields.push('platform_id');
+		changes.push(`Platform ID changed from "${oldCommunityPlatform}" to "${newCommunityPlatform}"`);
+	}
+	if (oldCommunity.type !== parseInt(document.type)) {
+		const oldCommunityType = getCommunityType(oldCommunity.type);
+		const newCommunityType = getCommunityType(document.type);
+		fields.push('type');
+		changes.push(`Type changed from "${oldCommunityType}" to "${newCommunityType}"`);
+	}
+	if (oldCommunity.title_id.toString() !== document.title_id.toString()) {
+		fields.push('title_id');
+		changes.push(`Title IDs changed from "${oldCommunity.title_id.join(', ')}" to "${document.title_id.join(', ')}"`);
+	}
+	if (req.files.browserIcon) {
+		fields.push('browserIcon');
+		changes.push('Icon changed');
+	}
+	if (req.files.CTRbrowserHeader) {
+		fields.push('CTRbrowserHeader');
+		changes.push('3DS Banner changed');
+	}
+	if (req.files.WiiUbrowserHeader) {
+		fields.push('WiiUbrowserHeader');
+		changes.push('Wii U Banner changed');
+	}
+	if (oldCommunity.parent !== document.parent) {
+		fields.push('parent');
+		changes.push(`Parent changed from "${oldCommunity.parent}" to "${document.parent}"`);
+	}
+	if (oldCommunity.app_data !== document.app_data) {
+		fields.push('app_data');
+		changes.push(`App data changed from "${oldCommunity.app_data}" to "${document.app_data}"`);
+	}
+	if (oldCommunity.is_recommended !== document.is_recommended) {
+		fields.push('is_recommended');
+		changes.push(`Is Recommended changed from "${oldCommunity.is_recommended}" to "${document.is_recommended}"`);
+	}
+	if (oldCommunity.has_shop_page !== document.has_shop_page) {
+		fields.push('has_shop_page');
+		changes.push(`Has Shop Page changed from "${oldCommunity.has_shop_page}" to "${document.has_shop_page}"`);
+	}
+
+	if (changes.length > 0) {
+		await util.createLogEntry(
+			req.pid,
+			'UPDATE_COMMUNITY',
+			oldCommunity.olive_community_id,
+			changes.join('\n'),
+			fields
+		);
+	}
 });
 
 router.delete('/communities/:id', async (req, res) => {
@@ -377,6 +574,13 @@ router.delete('/communities/:id', async (req, res) => {
 	res.json({
 		error: false
 	});
+
+	await util.createLogEntry(
+		req.pid,
+		'DELETE_COMMUNITY',
+		id,
+		`Community ${id} deleted`
+	);
 });
 
 async function generateCommunityUID(length) {
@@ -384,6 +588,51 @@ async function generateCommunityUID(length) {
 	const inuse = await COMMUNITY.findOne({ community_id: id });
 	id = (inuse ? await generateCommunityUID(length) : id);
 	return id;
+}
+
+function getAccountStatus(status) {
+	switch (status) {
+		case 0:
+			return 'Normal';
+		case 1:
+			return 'Limited from Posting';
+		case 2:
+			return 'Temporary Ban';
+		case 3:
+			return 'Permanent Ban';
+		default:
+			return `Unknown (${status})`;
+	}
+}
+
+function getCommunityType(type) {
+	type = Number(type);
+	switch (type) {
+		case 0:
+			return 'Main';
+		case 1:
+			return 'Sub';
+		case 2:
+			return 'Announcement';
+		case 3:
+			return 'Private';
+		default:
+			return `Unknown (${type})`;
+	}
+}
+
+function getCommunityPlatform(platform_id) {
+	platform_id = Number(platform_id);
+	switch (platform_id) {
+		case 0:
+			return 'Wii U';
+		case 1:
+			return '3DS';
+		case 2:
+			return 'Both';
+		default:
+			return `Unknown (${platform_id})`;
+	}
 }
 
 module.exports = router;

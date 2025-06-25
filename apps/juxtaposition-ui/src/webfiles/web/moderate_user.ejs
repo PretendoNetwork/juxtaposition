@@ -141,6 +141,33 @@
 			</div>
 		</div>
 		<div class="mt-5 text-center">
+			<h4 class="text-right">Recent Profile Actions (limit 20)</h4>
+		</div>
+		<ul class="list-content-with-icon-and-text arrow-list">
+			<% auditLog.forEach(function(log) { %>
+				<li class="reports">
+					<details>
+						<summary>
+							<div class="hover">
+								<a href="/users/<%= log.actor %>" data-pjax="#body" class="icon-container notify">
+									<img src="<%= cdnURL %>/mii/<%= log.actor %>/normal_face.png" class="icon" style="width: 32px; height: 32px;">
+								</a>
+								<span class="body messages report" href="#">
+									<span class="text">
+										<a href="/users/<%= log.actor %>" class="nick-name"><%= userMap.get(log.actor) %></a>
+										<span title="<%= moment(log.timestamp) %>" class="timestamp">: <%= log.action %> <%= moment(log.timestamp).fromNow() %></span>
+									</span>
+								</span>
+							</div>
+						</summary>
+						<span class="text">
+							<p style="white-space: pre-line; padding: 0 30px"><%= log.context.trim() %></p>
+						</span>
+					</details>
+				</li>
+			<% }); %>
+		</ul>
+		<div class="mt-5 text-center">
 			<h4 class="text-right">Recently Reported Posts (limit 5)</h4>
 		</div>
 		<ul class="list-content-with-icon-and-text arrow-list">

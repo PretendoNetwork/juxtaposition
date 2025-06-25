@@ -10,6 +10,7 @@ const { redisClient } = require('@/redisCache');
 const juxt_web = require('@/services/juxt-web');
 const { healthzRouter } = require('@/services/healthz');
 const { config } = require('@/config');
+const { jsxRenderer } = require('@/middleware/jsx');
 
 process.title = 'Pretendo - Juxt-Web';
 process.on('SIGTERM', () => {
@@ -49,6 +50,7 @@ app.get('/ip', (request, response) => response.send(request.ip));
 
 // Create router
 logger.info('Setting up Middleware');
+app.use(jsxRenderer);
 app.use(loggerHttp);
 app.use(express.json());
 app.use(healthzRouter);
