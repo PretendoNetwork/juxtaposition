@@ -4,8 +4,9 @@ import { config } from '@/config';
 import { decodeParamPack } from '@/util';
 import type { SerializedRequest, SerializedResponse } from 'pino';
 import type { Request } from 'express';
+import type { ParamPack } from '@/types/common/param-pack';
 
-type SerializedNintendoRequest = SerializedRequest & { param_pack?: Record<string, string> };
+type SerializedNintendoRequest = SerializedRequest & { param_pack?: ParamPack };
 
 function redactHeaders(headers: Record<string, string>, allowlist: string[]): Record<string, string> {
 	if (!config.log.sensitive) {
