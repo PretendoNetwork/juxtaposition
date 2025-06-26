@@ -7,6 +7,7 @@ body {
 
 #body,
 #header,
+.header,
 body {
     overflow-x: clip
 }
@@ -50,7 +51,8 @@ ul {
     padding: 0
 }
 
-#header {
+#header,
+.header {
     display: block;
     width: 400px;
     height: 220px;
@@ -60,7 +62,8 @@ ul {
     margin-bottom: 10px
 }
 
-#header.buttons {
+#header.buttons,
+.header.buttons {
     margin-bottom: 35px
 }
 
@@ -73,11 +76,11 @@ ul {
     white-space: nowrap;
     display: inline;
     padding-left: 15px;
-    background: #fff;
     width: 385px
 }
 
-#header > a {
+#header > a,
+.header > a {
     position: absolute;
     margin: 0;
     bottom: -31px;
@@ -90,13 +93,15 @@ ul {
     border: 1px solid #cecece
 }
 
-#header a.right {
+#header a.right,
+.header a.right {
     right: 0;
     padding-right: 45px;
     border-bottom-left-radius: 10px
 }
 
-#header a.left {
+#header a.left,
+.header a.left {
     left: 0;
     padding-left: 45px;
     border-bottom-right-radius: 10px
@@ -108,6 +113,7 @@ ul {
 }
 
 #body > .body-content,
+.bottom-screen-content,
 #posts-form {
     width: 322px;
     margin-left: 39px;
@@ -905,7 +911,7 @@ menu.tab-header.no-margin {
 	text-align: center;
 }
 #report-post-page .report > .textarea-text {
-	width: 377px;
+	width: 302px;
 	margin: 4px;
 	padding: 4px;
 }

@@ -41,6 +41,15 @@ function initPostModules() {
 		var message = el.getAttribute('data-message');
 		var screenshot = el.getAttribute('data-screenshot');
 
+		var submitButton = el.getAttribute('data-submit-sel');
+		if (submitButton === null) {
+			submitButton = '#submit';
+		}
+		var closeButton = el.getAttribute('data-close-sel');
+		if (closeButton === null) {
+			closeButton = '#close-modal-button';
+		}
+
 		if (sound) {
 			cave.snd_playSe(sound);
 		}
@@ -51,7 +60,7 @@ function initPostModules() {
 		document.getElementById(show).style.display = 'block';
 		if (header === 'true') {
 			document.getElementById('header').style.display = 'block';
-		} else {
+		} else if (header === 'false') {
 			document.getElementById('header').style.display = 'none';
 		}
 		if (screenshot) {
@@ -62,7 +71,7 @@ function initPostModules() {
 			}
 		}
 		function tempBk() {
-			document.getElementById('close-modal-button').click();
+			document.querySelector(closeButton).click();
 		}
 		if (message) {
 			cave.toolbar_setWideButtonMessage(message);
@@ -73,7 +82,7 @@ function initPostModules() {
 			cave.toolbar_setCallback(8, function () {
 				cave.toolbar_setMode(0);
 				cave.toolbar_setButtonType(0);
-				document.getElementById('submit').click();
+				document.querySelector(submitButton).click();
 			});
 		} else {
 			cave.toolbar_setMode(0);
@@ -242,21 +251,6 @@ function deletePost(post) {
 	}
 }
 window.deletePost = deletePost;
-
-function reportPost(post) {
-	var id = post.getAttribute('data-post');
-	var button = document.getElementById('report-launcher');
-	var form = document.getElementById('report-form');
-	var formID = document.getElementById('report-post-id');
-	if (!id || !button || !form || !formID) {
-		return;
-	}
-
-	form.action = '/posts/' + id + '/report';
-	formID.value = id;
-	button.click();
-}
-window.reportPost = reportPost;
 
 function back() {
 	if (!pjax.canGoBack()) {
