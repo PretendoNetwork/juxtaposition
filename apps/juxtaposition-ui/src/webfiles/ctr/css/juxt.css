@@ -521,8 +521,8 @@ header svg {
 }
 
 /* Hide the post buttons when we have "real" cave only */
-body[data-cave-ok] .olv-modal-close-button,
-body[data-cave-ok] .post-button {
+body:not([data-cave-emulated]) .olv-modal-close-button,
+body:not([data-cave-emulated]) .post-button {
     display: none
 }
 

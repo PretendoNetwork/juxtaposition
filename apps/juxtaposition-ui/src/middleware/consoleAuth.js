@@ -59,13 +59,15 @@ async function auth(request, response, next) {
 		});
 	}
 	const userAgent = request.headers['user-agent'];
-	if (request.user.accessLevel < 3 && (request.cookies.access_token || (!userAgent.includes('Nintendo WiiU') && !userAgent.includes('Nintendo 3DS')))) {
+	const uaIsConsole = userAgent.includes('Nintendo WiiU') || userAgent.includes('Nintendo 3DS');
+	if (request.user.accessLevel < 3 && (request.cookies.access_token || !uaIsConsole)) {
 		return response.render('portal/partials/ban_notification.ejs', {
 			user: null,
 			error: 'Invalid authentication method used.'
 		});
 	}
 
+	response.locals.uaIsConsole = uaIsConsole;
 	response.locals.lang = util.processLanguage(request.paramPackData);
 	response.locals.pid = request.pid;
 	return next();

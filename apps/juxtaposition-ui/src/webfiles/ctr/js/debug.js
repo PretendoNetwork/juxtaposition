@@ -1,23 +1,9 @@
-if (typeof cave !== 'undefined') {
-	window.addEventListener('error', handleError, true);
-
-	function handleError(evt) {
-		if (evt.message) { // Chrome sometimes provides this
-			alert('error: ' + evt.message + ' at linenumber: ' + evt.lineno + ' of file: ' + evt.filename);
-		} else {
-			if ((evt.srcElement || evt.target).toString().indexOf('HTMLImageElement') !== -1) {
-				return;
-			}
-			alert('error: ' + evt.type + ' from element: ' + (evt.srcElement || evt.target));
-		}
-	}
-	// Set a note somewhere readable from CSS that we have real cave not fake cave
-	document.addEventListener('DOMContentLoaded', function () {
-		document.querySelector('body').setAttribute('data-cave-ok', true);
-	});
-}
-
 if (typeof cave === 'undefined') {
+	// Set a note somewhere readable from CSS that we are emulating cave
+	document.addEventListener('DOMContentLoaded', function () {
+		document.querySelector('body').setAttribute('data-cave-emulated', true);
+	});
+
 	window.cave = {
 		/**
          * Enables or disabled the back button on the toolbar
