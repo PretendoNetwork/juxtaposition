@@ -10,12 +10,14 @@ import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
 import { config } from '@/config';
 import { logger } from '@/logger';
+import { SystemType } from '@/types/common/system-types';
+import { TokenType } from '@/types/common/token-types';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ParamPack } from '@/types/common/param-pack';
-import type { ServiceToken } from '@/types/common/token';
+import type { ServiceToken } from '@/types/common/service-token';
 
 // * nice-grpc doesn't export ChannelImplementation so this can't be typed
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
@@ -48,30 +50,33 @@ export function decodeParamPack(paramPack: string): ParamPack {
 	return Object.fromEntries(entries);
 }
 
-export function getPIDFromServiceToken(token: string): number {
+export function getPIDFromServiceToken(token: string): number | null {
 	try {
 		const decryptedToken = decryptToken(Buffer.from(token, 'base64'));
 
 		if (!decryptedToken) {
-			return 0;
+			return null;
 		}
 
 		const unpackedToken = unpackServiceToken(decryptedToken);
+		if (unpackedToken === null) {
+			return null;
+		}
 
 		// * Only allow token types 1 (Wii U) and 2 (3DS)
-		if (unpackedToken.system_type !== 1 && unpackedToken.system_type !== 2) {
-			return 0;
+		if (unpackedToken.system_type !== SystemType.CTR && unpackedToken.system_type !== SystemType.WUP) {
+			return null;
 		}
 
 		// * Check if the token is expired
 		if (unpackedToken.issue_time + (24n * 3600n * 1000n) < Date.now()) {
-			return 0;
+			return null;
 		}
 
 		return unpackedToken.pid;
 	} catch (e) {
 		logger.error(e, 'Failed to extract PID from service token');
-		return 0;
+		return null;
 	}
 }
 
@@ -95,7 +100,12 @@ export function decryptToken(token: Buffer): Buffer {
 	return decrypted;
 }
 
-export function unpackServiceToken(token: Buffer): ServiceToken {
+export function unpackServiceToken(token: Buffer): ServiceToken | null {
+	const token_type = token.readUInt8(0x1);
+	if (token_type !== TokenType.IndependentService) {
+		return null;
+	}
+
 	return {
 		system_type: token.readUInt8(0x0),
 		token_type: token.readUInt8(0x1),

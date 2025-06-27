@@ -14,12 +14,14 @@ import { CONTENT } from '@/models/content';
 import { SETTINGS } from '@/models/settings';
 import { LOGS } from '@/models/logs';
 import { config } from '@/config';
+import { SystemType } from '@/types/common/system-types';
+import { TokenType } from '@/types/common/token-types';
 import translations from './translations';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { NotificationSchema } from '@/models/notifications';
 import type { CommunitySchema } from '@/models/communities';
 import type { ParamPack } from '@/types/common/param-pack';
-import type { ServiceToken } from '@/types/common/token';
+import type { ServiceToken } from '@/types/common/service-token';
 import type { InferSchemaType } from 'mongoose';
 import type { Notification } from '@/types/juxt/notification';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -165,9 +167,12 @@ export function getPIDFromServiceToken(token: string): number | null {
 		}
 
 		const unpackedToken = unpackServiceToken(decryptedToken);
+		if (unpackedToken === null) {
+			return null;
+		}
 
 		// * Only allow token types 1 (Wii U) and 2 (3DS)
-		if (unpackedToken.system_type !== 1 && unpackedToken.system_type !== 2) {
+		if (unpackedToken.system_type !== SystemType.CTR && unpackedToken.system_type !== SystemType.WUP) {
 			return null;
 		}
 
@@ -203,7 +208,12 @@ function decryptToken(token: Buffer): Buffer {
 	return decrypted;
 }
 
-export function unpackServiceToken(token: Buffer): ServiceToken {
+export function unpackServiceToken(token: Buffer): ServiceToken | null {
+	const token_type = token.readUInt8(0x1);
+	if (token_type !== TokenType.IndependentService) {
+		return null;
+	}
+
 	return {
 		system_type: token.readUInt8(0x0),
 		token_type: token.readUInt8(0x1),
