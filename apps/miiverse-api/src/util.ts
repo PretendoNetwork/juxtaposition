@@ -7,11 +7,11 @@ import aws from 'aws-sdk';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
-import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
+import { AccountServiceDefinition } from '@pretendonetwork/grpc/account/v2/account_service';
 import { config } from '@/config';
 import { logger } from '@/logger';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ParamPack } from '@/types/common/param-pack';
@@ -22,7 +22,7 @@ const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.g
 const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
 
 const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
-const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
+const gRPCAccountClient = createClient(AccountServiceDefinition, gRPCAccountChannel);
 
 const s3 = new aws.S3({
 	endpoint: new aws.Endpoint(config.s3.endpoint),

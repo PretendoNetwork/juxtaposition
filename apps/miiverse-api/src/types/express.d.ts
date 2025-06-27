@@ -1,5 +1,5 @@
 import type { ParamPack } from '@/types/common/param-pack';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { ApiErrorCode } from '@/errors';
 
 declare global {

@@ -25,7 +25,7 @@ import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
