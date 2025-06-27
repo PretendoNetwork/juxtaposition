@@ -122,10 +122,15 @@ function processServiceToken(encryptedToken) {
 	try {
 		const B64token = Buffer.from(encryptedToken, 'base64');
 		const decryptedToken = this.decryptToken(B64token);
-		const token = this.unpackToken(decryptedToken);
+		const token = this.unpackServiceToken(decryptedToken);
 
 		// * Only allow token types 1 (Wii U) and 2 (3DS)
 		if (token.system_type !== 1 && token.system_type !== 2) {
+			return null;
+		}
+
+		// * Check if the token is expired
+		if (token.issue_time + (24n * 3600n * 1000n) < Date.now()) {
 			return null;
 		}
 
@@ -159,12 +164,12 @@ function decryptToken(token) {
 
 	return decrypted;
 }
-function unpackToken(token) {
+function unpackServiceToken(token) {
 	return {
 		system_type: token.readUInt8(0x0),
 		token_type: token.readUInt8(0x1),
 		pid: token.readUInt32LE(0x2),
-		expire_time: token.readBigUInt64LE(0x6),
+		issue_time: token.readBigUInt64LE(0x6),
 		title_id: token.readBigUInt64LE(0xE),
 		access_level: token.readInt8(0x16)
 	};
@@ -534,7 +539,7 @@ module.exports = {
 	decodeParamPack,
 	processServiceToken,
 	decryptToken,
-	unpackToken,
+	unpackServiceToken,
 	processPainting,
 	nintendoPasswordHash,
 	getCommunityHash,
