@@ -245,20 +245,20 @@ router.get('/', async function (request: express.Request, response: express.Resp
 				is_app_jumpable: message.is_app_jumpable,
 				empathy_added: message.empathy_count,
 				language_id: message.language_id,
-				message_to_pid: message.message_to_pid,
+				message_to_pid: message.message_to_pid ?? undefined,
 				mii: message.mii,
 				mii_face_url: message.mii_face_url,
-				number: message.number || 0,
+				number: 0,
 				pid: message.pid,
 				platform_id: message.platform_id || 0,
 				region_id: message.region_id || 0,
 				reply_count: message.reply_count,
 				screen_name: message.screen_name,
 				topic_tag: {
-					name: message.topic_tag,
+					name: message.topic_tag ?? '',
 					title_id: 0
 				},
-				title_id: message.title_id
+				title_id: message.title_id ?? ''
 			}
 		});
 	}

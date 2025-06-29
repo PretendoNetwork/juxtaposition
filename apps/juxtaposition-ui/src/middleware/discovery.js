@@ -19,7 +19,7 @@ async function checkDiscovery(request, response, next) {
 				break;
 		}
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', { toast: message });
+			return response.render('web/login.ejs', { toast: message, redirect: request.originalUrl });
 		} else {
 			return response.render('portal/partials/ban_notification.ejs', {
 				user: null,
