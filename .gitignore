@@ -5,3 +5,5 @@ dist/
 newman
 config.json
 uploads/
+
+.docker/mitmproxy-data

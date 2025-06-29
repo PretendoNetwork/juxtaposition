@@ -43,8 +43,8 @@ async function auth(request: express.Request, response: express.Response, next: 
 		return badRequest(response, ApiErrorCode.NO_TOKEN);
 	}
 
-	const pid: number = getPIDFromServiceToken(encryptedToken);
-	if (pid === 0) {
+	const pid = getPIDFromServiceToken(encryptedToken);
+	if (pid === null) {
 		return badRequest(response, ApiErrorCode.BAD_TOKEN);
 	}
 

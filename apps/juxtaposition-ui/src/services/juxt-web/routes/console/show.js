@@ -44,7 +44,7 @@ router.post('/newUser', async function (req, res) {
 		return res.sendStatus(504);
 	}
 
-	await util.create_user(req.pid, req.body.experience, req.body.notifications);
+	await util.createUser(req.pid, req.body.experience, req.body.notifications);
 	if (await database.getUserSettings(req.pid) !== null) {
 		res.sendStatus(200);
 	} else {

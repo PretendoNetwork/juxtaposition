@@ -67,12 +67,18 @@ services:
 
   proxy:
     image: mitmproxy/mitmproxy
-    command: mitmweb --mode regular@8888 -s /data/mitmproxy-local.py -v --web-host 0.0.0.0 -k --set tls_version_client_min=UNBOUNDED --set tls_version_server_min=UNBOUNDED --set web_password=letmein
+    command: > 
+      mitmweb -v --mode regular@8888
+      -s /data/mitmproxy-local.py
+      --web-host 0.0.0.0 --set web_password=letmein
+      -k --set tls_version_client_min=UNBOUNDED --set tls_version_server_min=UNBOUNDED 
+      --set key_size=1024
     ports:
       - 8888:8888
       - 127.0.0.1:8081:8081
     volumes:
       - "./mitmproxy-local.py:/data/mitmproxy-local.py"
+      - "./mitmproxy-data/:/home/mitmproxy/.mitmproxy/"
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

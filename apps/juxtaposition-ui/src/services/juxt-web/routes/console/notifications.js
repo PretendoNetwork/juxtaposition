@@ -2,6 +2,7 @@ const express = require('express');
 const moment = require('moment');
 const database = require('@/database');
 const util = require('@/util');
+const { getUserFriendRequestsIncoming } = util;
 const router = express.Router();
 
 router.get('/my_news', async function (req, res) {
@@ -31,7 +32,7 @@ router.get('/my_news', async function (req, res) {
 });
 
 router.get('/friend_requests', async function (req, res) {
-	let requests = (await util.getFriendRequests(req.pid)).reverse();
+	let requests = (await getUserFriendRequestsIncoming(req.pid)).reverse();
 	const now = new Date();
 	requests = requests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
 	const userMap = util.getUserHash();

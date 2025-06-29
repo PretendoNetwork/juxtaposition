@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const express = require('express');
 const moment = require('moment');
 const multer = require('multer');
+const { resizeImage, getTGAFromPNG } = require('@/images');
 const database = require('@/database');
 const { POST } = require('@/models/post');
 const { SETTINGS } = require('@/models/settings');
@@ -78,7 +79,7 @@ router.get('/accounts/:pid', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
-	const pnid = await util.getUserDataFromPid(req.params.pid).catch((e) => {
+	const pnid = await util.getUserAccountData(req.params.pid).catch((e) => {
 		logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
 	});
 	const userContent = await database.getUserContent(req.params.pid);
@@ -319,9 +320,9 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	}
 
 	// browser icon
-	const icon128 = await util.resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 128, 128);
-	const icon64 = await util.resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 64, 64);
-	const icon32 = await util.resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 32, 32);
+	const icon128 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 128, 128);
+	const icon64 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 64, 64);
+	const icon32 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 32, 32);
 
 	if (!await util.uploadCDNAsset(`icons/${communityID}/128.png`, icon128, 'public-read') ||
 		!await util.uploadCDNAsset(`icons/${communityID}/64.png`, icon64, 'public-read') ||
@@ -330,11 +331,11 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	}
 
 	// TGA icon
-	const tgaIcon = await util.getTGAFromPNG(icon128);
+	const tgaIcon = await getTGAFromPNG(icon128);
 	// 3DS Header
-	const CTRHeader = await util.resizeImage(req.files.CTRbrowserHeader[0].buffer.toString('base64'), 400, 220);
+	const CTRHeader = await resizeImage(req.files.CTRbrowserHeader[0].buffer.toString('base64'), 400, 220);
 	// Wii U Header
-	const WiiUHeader = await util.resizeImage(req.files.WiiUbrowserHeader[0].buffer.toString('base64'), 1280, 180);
+	const WiiUHeader = await resizeImage(req.files.WiiUbrowserHeader[0].buffer.toString('base64'), 1280, 180);
 
 	if (!await util.uploadCDNAsset(`headers/${communityID}/3DS.png`, CTRHeader, 'public-read') ||
 		!await util.uploadCDNAsset(`headers/${communityID}/WiiU.png`, WiiUHeader, 'public-read')) {
@@ -444,9 +445,9 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 
 	// browser icon
 	if (req.files.browserIcon) {
-		const icon128 = await util.resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 128, 128);
-		const icon64 = await util.resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 64, 64);
-		const icon32 = await util.resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 32, 32);
+		const icon128 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 128, 128);
+		const icon64 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 64, 64);
+		const icon32 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 32, 32);
 
 		if (!await util.uploadCDNAsset(`icons/${communityID}/128.png`, icon128, 'public-read') ||
 			!await util.uploadCDNAsset(`icons/${communityID}/64.png`, icon64, 'public-read') ||
@@ -455,11 +456,11 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		}
 
 		// TGA icon
-		tgaIcon = await util.getTGAFromPNG(icon128);
+		tgaIcon = await getTGAFromPNG(icon128);
 	}
 	// 3DS Header
 	if (req.files.CTRbrowserHeader) {
-		const CTRHeader = await util.resizeImage(req.files.CTRbrowserHeader[0].buffer.toString('base64'), 400, 220);
+		const CTRHeader = await resizeImage(req.files.CTRbrowserHeader[0].buffer.toString('base64'), 400, 220);
 		if (!await util.uploadCDNAsset(`headers/${communityID}/3DS.png`, CTRHeader, 'public-read')) {
 			return res.sendStatus(422);
 		}
@@ -467,7 +468,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 
 	// Wii U Header
 	if (req.files.WiiUbrowserHeader) {
-		const WiiUHeader = await util.resizeImage(req.files.WiiUbrowserHeader[0].buffer.toString('base64'), 1280, 180);
+		const WiiUHeader = await resizeImage(req.files.WiiUbrowserHeader[0].buffer.toString('base64'), 1280, 180);
 		if (!await util.uploadCDNAsset(`headers/${communityID}/WiiU.png`, WiiUHeader, 'public-read')) {
 			return res.sendStatus(422);
 		}
