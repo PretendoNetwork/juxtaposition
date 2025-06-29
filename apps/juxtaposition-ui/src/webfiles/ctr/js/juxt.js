@@ -1,4 +1,7 @@
+import 'url-search-params-polyfill';
+
 import { Pjax } from './pjax';
+import { jtmxInit } from './../../jtmx/index.ts';
 
 var pjax;
 setInterval(checkForUpdates, 30000);
@@ -449,6 +452,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		selectors: ['title', '#body']
 	});
 	console.debug('Pjax initialized.', pjax);
+	jtmxInit();
 	initAll();
 	stopLoading();
 });
@@ -460,6 +464,7 @@ document.addEventListener('PjaxLoaded', function (e) {
 	console.log(e);
 });
 document.addEventListener('PjaxDone', function (_e) {
+	jtmxInit();
 	initAll();
 	cave.brw_scrollImmediately(0, 0);
 	if (pjax.canGoBack()) {

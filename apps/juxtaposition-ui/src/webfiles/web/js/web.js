@@ -1,4 +1,5 @@
 import Pjax from 'pjax';
+import { jtmxInit } from './../../jtmx/index.ts';
 import { popupItemCb, setupPopup } from './menus';
 import { initReportForm, reportPost } from './reports';
 import { deletePost } from './post';
@@ -245,6 +246,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
 	});
 	console.debug('Pjax initialized.', pjax);
+	jtmxInit();
+	console.debug('JTMX running.');
 	initAll();
 });
 

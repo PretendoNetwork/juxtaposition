@@ -1,4 +1,7 @@
+import 'url-search-params-polyfill';
+
 import Pjax from 'pjax';
+import { jtmxInit } from './../../jtmx/index.ts';
 
 var pjax;
 setInterval(checkForUpdates, 30000);
@@ -258,6 +261,8 @@ document.addEventListener('pjax:success', function () {
 		back.classList.add('none');
 		close.classList.remove('none');
 	}
+	// Relying on the idea that PJAX always swaps body
+	jtmxInit();
 	initAll();
 });
 document.addEventListener('DOMContentLoaded', function () {
@@ -268,6 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
 	});
 	console.debug('Pjax initialized.', pjax);
+	jtmxInit();
 	initAll();
 	stopLoading();
 });

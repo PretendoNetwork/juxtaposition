@@ -6,7 +6,7 @@ import browserslist from 'browserslist-to-esbuild';
 export default defineConfig([
 	/* Main server app (Node) */
 	{
-		entry: ['src/**/*.{js,ts,tsx,jsx}', '!src/webfiles/**/*.js'],
+		entry: ['src/**/*.{js,ts,tsx,jsx}', '!src/webfiles/**'],
 		splitting: false,
 		sourcemap: true,
 		platform: 'node',
@@ -44,6 +44,7 @@ export default defineConfig([
 			options.external = ['/images/*', '/fonts/*'];
 		},
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
@@ -80,6 +81,7 @@ export default defineConfig([
 			options.external = ['/images/*', '/fonts/*'];
 		},
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
@@ -116,6 +118,7 @@ export default defineConfig([
 			options.external = ['/images/*'];
 		},
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [

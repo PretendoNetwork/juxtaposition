@@ -13,13 +13,13 @@
     </div>
     <div class="body-content" id="activity-feed">
 		<menu class="tab-header">
-			<li id="tab-header-my-feed" class="tab-button <%if(tab === 0){ %>selected<%}%>" data-show-post-button="1">
-				<a href="/feed/" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+			<li id="tab-header-my-feed" class="<%if(tab === 0){ %>selected<%}%>" data-show-post-button="1">
+				<a h-get="/feed/" h-target="html">
 					<span class="new-post">My Feed</span>
 				</a>
 			</li>
-			<li id="tab-header-global-feed" class="tab-button <%if(tab === 1){ %>selected<%}%>">
-				<a href="/feed/all" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+			<li id="tab-header-global-feed" class="<%if(tab === 1){ %>selected<%}%>">
+				<a h-get="/feed/all" h-target="html">
 					<span>Global Feed</span>
 				</a>
 			</li>
