@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors'; // See package docs
 import expressMetrics from 'express-prom-bundle';
 import { connect as connectDatabase } from '@/database';
 import { logger } from '@/logger';

@@ -298,7 +298,7 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 		return badRequest(response, ApiErrorCode.CREATE_TOO_MANY_FAVORITES, 403);
 	}
 
-	const communitiesCount = await Community.count();
+	const communitiesCount = await Community.countDocuments();
 	const communityID = (parseInt(parentCommunity.community_id) + (5000 * communitiesCount)); // Change this to auto increment
 	const community = await Community.create({
 		platform_id: 0, // WiiU
