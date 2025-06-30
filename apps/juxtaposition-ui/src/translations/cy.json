@@ -60,7 +60,8 @@
         "show_country": "Ddangos Gwlad Ar Profil",
         "show_birthday": "Ddangos Penblwydd Ar Profil",
         "profile_comment": "Sylwadau profil",
-        "swearing": "Ni all gynnwys iaith eglur ar sylwadau profil."
+        "swearing": "Ni all gynnwys iaith eglur ar sylwadau profil.",
+        "show_game": ""
     },
     "new_post": {
         "new_post_text": "Llwyth newydd",
@@ -72,7 +73,17 @@
         "rules_text": {
             "second": "Pobol dros y byd yn gallu spio ar eich llwythau",
             "eighth": "Ddim Llwythio Sbeilwyr",
-            "twelfth": "Ydach chi wedi chwarae gem yna?"
+            "twelfth": "Ydach chi wedi chwarae gem yna?",
+            "eleventh": "",
+            "tenth": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "sixth": "",
+            "first": "",
+            "seventh": ""
         },
         "ready": "Barod I i ddechrau defnyddio juxt",
         "done": "Cael Hwyl Yn Juxt!",
@@ -81,7 +92,26 @@
         "guest_button": "Dwi'n Deall",
         "welcome": "Croeso I Jusxtaposition!",
         "rules": "Rheol Juxt",
-        "info": "Beth ydy juxtaposition?"
+        "info": "Beth ydy juxtaposition?",
+        "beta_text": {
+            "third": "",
+            "second": "",
+            "first": ""
+        },
+        "experience_text": {
+            "expert": "",
+            "info": "",
+            "intermediate": "",
+            "beginner": ""
+        },
+        "guest_text": "",
+        "experience": "",
+        "google": "",
+        "welcome_text": "",
+        "google_text": "",
+        "info_text": "",
+        "ready_text": "",
+        "beta": ""
     },
     "activity_feed": {
         "empty": "Maen wag yma. Ceishwch dilyn rhywun!"
