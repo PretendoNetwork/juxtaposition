@@ -11,7 +11,10 @@
         "next": "Sledeće",
         "go_back": "Vrati se",
         "close": "Zatvori",
-        "more": "Učitaj još objava"
+        "more": "Učitaj još objava",
+        "yeahs": "",
+        "activity_feed": "",
+        "user_page": ""
     },
     "language": "Srpski",
     "community": {
@@ -33,7 +36,14 @@
         "friends": "Prijatelji",
         "follow_user": "Zaprati",
         "followers": "Pratioci",
-        "pending": "U toku"
+        "pending": "U toku",
+        "game_experience": "",
+        "no_following": "",
+        "befriend": "",
+        "unfriend": "",
+        "no_followers": "",
+        "no_friends": "",
+        "following": ""
     },
     "all_communities": {
         "new_communities": "Nove zajednice",
@@ -51,12 +61,17 @@
     "user_settings": {
         "profile_settings": "Podešavanja profila",
         "show_country": "Prikaži zemlju na profilu",
-        "show_birthday": "Prikaži rođendan na profilu"
+        "show_birthday": "Prikaži rođendan na profilu",
+        "show_game": "",
+        "show_comment": "",
+        "profile_comment": "",
+        "swearing": ""
     },
     "new_post": {
         "new_post_text": "Nova objava",
         "post_to": "Objavi na",
-        "text_hint": "Dodirni ovde da napraviš objavu."
+        "text_hint": "Dodirni ovde da napraviš objavu.",
+        "swearing": ""
     },
     "activity_feed": {
         "empty": "Ovde je prazno. Pokušaj da pratiš nekoga!"
@@ -66,7 +81,19 @@
     },
     "setup": {
         "rules_text": {
-            "eighth": "Ne objavljuj spojlere"
+            "eighth": "Ne objavljuj spojlere",
+            "eleventh": "",
+            "tenth": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "second": "",
+            "sixth": "",
+            "first": "",
+            "seventh": "",
+            "twelfth": ""
         },
         "experience_text": {
             "beginner": "Početnik",
@@ -75,7 +102,9 @@
             "info": "Molimo vas da opišete vaš nivo iskustva sa igricama. Ovo podešavanje se može promeniti kasnije."
         },
         "beta_text": {
-            "second": "Ovo može podrazumevati brisanje cele baze podataka po završetku ili za vreme probnog perioda."
+            "second": "Ovo može podrazumevati brisanje cele baze podataka po završetku ili za vreme probnog perioda.",
+            "third": "",
+            "first": ""
         },
         "experience": "Iskustvo sa Igricama",
         "google": "Google Analitika",
@@ -83,6 +112,15 @@
         "ready": "Spremni da Koristite Juxt",
         "done": "Uživajte u Juxt-u!",
         "done_button": "Krenimo!",
-        "ready_text": "Prvo proverite zajednice i vidite o čemu ljudi objavljuju oko celog sveta. Iskoristite ovu priliku da se upoznate sa Juxt-om. Možda ćete napraviti zanimljiva otkrića!"
+        "ready_text": "Prvo proverite zajednice i vidite o čemu ljudi objavljuju oko celog sveta. Iskoristite ovu priliku da se upoznate sa Juxt-om. Možda ćete napraviti zanimljiva otkrića!",
+        "guest_button": "",
+        "guest": "",
+        "guest_text": "",
+        "rules": "",
+        "welcome_text": "",
+        "info": "",
+        "info_text": "",
+        "beta": "",
+        "welcome": ""
     }
 }
