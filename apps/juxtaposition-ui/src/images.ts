@@ -42,7 +42,7 @@ export async function processPainting(painting: string): Promise<Buffer | null> 
 		logger.error(err, 'Could not decompress painting');
 		return null;
 	}
-	let tga;
+	let tga: TGA;
 	try {
 		tga = new TGA(Buffer.from(output.buffer));
 	} catch (e) {
@@ -78,7 +78,7 @@ export async function resizeImage(data: string, width: number, height: number): 
 export async function getTGAFromPNG(image: Buffer): Promise<string | null> {
 	const pngData = await imagePixels(Buffer.from(image));
 	const tga = TGA.createTgaBuffer(pngData.width, pngData.height, pngData.data);
-	let output;
+	let output: Uint8Array;
 	try {
 		output = deflate(tga, { level: 6 });
 	} catch (err) {
