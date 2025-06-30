@@ -63,3 +63,9 @@ export async function getPostById(tokens: UserTokens, post_id: string): Promise<
 	const post = await apiFetchUser<PostDto>(tokens, `/api/v1/posts/${post_id}`);
 	return post;
 }
+
+export async function getPostsByPoster(tokens: UserTokens, poster_pid: number): Promise<PostDto[] | null> {
+	const params = new URLSearchParams({ posted_by: poster_pid.toString() });
+	const posts = await apiFetchUser<PostDto[]>(tokens, `/api/v1/posts?${params}`);
+	return posts;
+}
