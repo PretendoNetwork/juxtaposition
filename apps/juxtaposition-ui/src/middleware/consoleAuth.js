@@ -10,8 +10,8 @@ async function auth(request, response, next) {
 		request.tokens = request.session.tokens;
 	} else {
 		request.tokens = { serviceToken: request.headers['x-nintendo-servicetoken'] };
-		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
-		request.user = request.pid ? await util.getUserDataFromPid(request.pid) : null;
+		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.getPIDFromServiceToken(request.headers['x-nintendo-servicetoken']) : null;
+		request.user = request.pid ? await util.getUserAccountData(request.pid) : null;
 
 		request.session.user = request.user;
 		request.session.pid = request.pid;

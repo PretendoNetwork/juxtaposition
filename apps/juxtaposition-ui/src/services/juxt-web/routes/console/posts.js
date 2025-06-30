@@ -11,6 +11,7 @@ const { REPORT } = require('@/models/report');
 const upload = multer({ dest: 'uploads/' });
 const redis = require('@/redisCache');
 const { config } = require('@/config');
+const { processBmpPainting, processPainting } = require('@/images');
 const router = express.Router();
 const { getPostById } = require('@/api/post');
 
@@ -127,7 +128,7 @@ router.get('/:post_id', async function (req, res) {
 	const community = await database.getCommunityByID(post.community_id);
 	const communityMap = await util.getCommunityHash();
 	const replies = await database.getPostReplies(req.params.post_id.toString(), 25);
-	const postPNID = await util.getUserDataFromPid(post.pid);
+	const postPNID = await util.getUserAccountData(post.pid);
 	res.render(req.directory + '/post.ejs', {
 		moment: moment,
 		userSettings: userSettings,
@@ -259,11 +260,11 @@ async function newPost(req, res) {
 	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		if (req.body.bmp === 'true') {
-			painting = await util.processPainting(req.body.painting.replace(/\0/g, '').trim(), false);
+			painting = await processBmpPainting(req.body.painting.replace(/\0/g, '').trim());
 		} else {
 			painting = req.body.painting;
 		}
-		paintingURI = await util.processPainting(painting, true);
+		paintingURI = await processPainting(painting);
 		if (!await util.uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
