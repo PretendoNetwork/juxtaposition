@@ -32,7 +32,9 @@
         "posts": "פוסטים",
         "recent": "פוסטים אחרונים",
         "popular": "פוסטים פופולריים",
-        "verified": "פוסטים מאומתים"
+        "verified": "פוסטים מאומתים",
+        "tags": "",
+        "followers": ""
     },
     "user_page": {
         "birthday": "יוֹם הוּלֶדֶת",
@@ -45,10 +47,80 @@
         "pending": "תָלוּי וְעוֹמֵד",
         "no_friends": "אין חברים",
         "no_following": "לא עוקב אחרי אף אחד",
-        "no_followers": "אין עוקבים"
+        "no_followers": "אין עוקבים",
+        "befriend": "",
+        "followers": "",
+        "unfriend": "",
+        "country": ""
     },
     "user_settings": {
         "profile_settings": "הגדרות פרופיל",
-        "show_birthday": "הצג יום הולדת בפרופיל"
+        "show_birthday": "הצג יום הולדת בפרופיל",
+        "show_game": "",
+        "show_comment": "",
+        "profile_comment": "",
+        "swearing": "",
+        "show_country": ""
+    },
+    "setup": {
+        "rules_text": {
+            "eleventh": "",
+            "tenth": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "second": "",
+            "sixth": "",
+            "first": "",
+            "eighth": "",
+            "seventh": "",
+            "twelfth": ""
+        },
+        "beta_text": {
+            "third": "",
+            "second": "",
+            "first": ""
+        },
+        "experience_text": {
+            "expert": "",
+            "info": "",
+            "intermediate": "",
+            "beginner": ""
+        },
+        "guest_button": "",
+        "done_button": "",
+        "guest": "",
+        "ready": "",
+        "guest_text": "",
+        "experience": "",
+        "google": "",
+        "rules": "",
+        "welcome_text": "",
+        "google_text": "",
+        "info": "",
+        "info_text": "",
+        "ready_text": "",
+        "done": "",
+        "beta": "",
+        "welcome": ""
+    },
+    "notifications": {
+        "none": "",
+        "new_follower": ""
+    },
+    "new_post": {
+        "swearing": "",
+        "text_hint": "",
+        "new_post_text": "",
+        "post_to": ""
+    },
+    "language": "",
+    "activity_feed": {
+        "empty": ""
+    },
+    "messages": {
+        "coming_soon": ""
     }
 }
