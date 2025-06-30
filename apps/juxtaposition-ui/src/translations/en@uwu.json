@@ -15,7 +15,9 @@
         "followers": "Fowwowers",
         "popular": "Popuwaw P-posts",
         "verified": "Vewwifiwed P-posts",
-        "new": "Nyew P-Post"
+        "new": "Nyew P-Post",
+        "posts": "",
+        "tags": ""
     },
     "global": {
         "communities": "kitteh klans",
@@ -49,6 +51,76 @@
         "befriend": "Befwiend",
         "pending": "Pwending",
         "unfriend": "Unfwiend",
-        "no_following": "Nyot Fowwowing Anyonye"
+        "no_following": "Nyot Fowwowing Anyonye",
+        "no_followers": ""
+    },
+    "setup": {
+        "rules_text": {
+            "eleventh": "",
+            "tenth": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "second": "",
+            "sixth": "",
+            "first": "",
+            "eighth": "",
+            "seventh": "",
+            "twelfth": ""
+        },
+        "beta_text": {
+            "third": "",
+            "second": "",
+            "first": ""
+        },
+        "experience_text": {
+            "expert": "",
+            "info": "",
+            "intermediate": "",
+            "beginner": ""
+        },
+        "guest_button": "",
+        "done_button": "",
+        "guest": "",
+        "ready": "",
+        "guest_text": "",
+        "experience": "",
+        "google": "",
+        "rules": "",
+        "welcome_text": "",
+        "google_text": "",
+        "info": "",
+        "info_text": "",
+        "ready_text": "",
+        "done": "",
+        "beta": "",
+        "welcome": ""
+    },
+    "notifications": {
+        "none": "",
+        "new_follower": ""
+    },
+    "new_post": {
+        "swearing": "",
+        "text_hint": "",
+        "new_post_text": "",
+        "post_to": ""
+    },
+    "user_settings": {
+        "show_game": "",
+        "show_comment": "",
+        "show_birthday": "",
+        "profile_settings": "",
+        "profile_comment": "",
+        "swearing": "",
+        "show_country": ""
+    },
+    "activity_feed": {
+        "empty": ""
+    },
+    "messages": {
+        "coming_soon": ""
     }
 }
