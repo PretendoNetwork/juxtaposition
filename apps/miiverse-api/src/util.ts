@@ -41,18 +41,38 @@ const s3 = new aws.S3({
 export const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
 
 export function decodeParamPack(paramPack: string): ParamPack {
-	const values = Buffer.from(paramPack, 'base64').toString().split('\\');
-	const entries = values.filter(value => value).reduce((entries: string[][], value: string, index: number) => {
-		if (0 === index % 2) {
-			entries.push([value]);
-		} else {
-			entries[Math.ceil(index / 2 - 1)].push(value);
+	const values = Buffer.from(paramPack, 'base64').toString().split('\\').filter(v => v.length > 0).values();
+	const entries: Record<string, string> = {};
+	for (let i = 0; i < 16; i++) { /* Enforce an upper limit on ParamPack decoding */
+		// Keys and values are sibling list entries
+		const paramKey = values.next().value;
+		const paramVal = values.next().value;
+		// We hit the end of the list
+		if (paramKey === undefined || paramVal === undefined) {
+			break;
 		}
 
-		return entries;
-	}, []);
+		entries[paramKey] = paramVal;
+	}
 
-	return Object.fromEntries(entries);
+	// normalize and prevent any funny businiess from clients
+	// one day this can be a proper DTO
+	return {
+		title_id: entries.title_id ?? '',
+		access_key: entries.access_key ?? '',
+		platform_id: entries.platform_id ?? '',
+		region_id: entries.region_id ?? '',
+		language_id: entries.language_id ?? '',
+		country_id: entries.country_id ?? '',
+		area_id: entries.area_id ?? '',
+		network_restriction: entries.network_restriction ?? '',
+		friend_restriction: entries.friend_restriction ?? '',
+		rating_restriction: entries.rating_restriction ?? '',
+		rating_organization: entries.rating_organization ?? '',
+		transferable_id: entries.transferable_id ?? '',
+		tz_name: entries.tz_name ?? '',
+		utc_offset: entries.utc_offset ?? ''
+	};
 }
 
 export function getPIDFromServiceToken(token: string): number | null {
