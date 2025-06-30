@@ -22,7 +22,13 @@
             "fourth": "Vær sød or rare ved hinanden",
             "second": "Oplæg Kan Ses Verdenen Over",
             "eighth": "Del ikke Spoilere",
-            "tenth": "Retningslinjer Overtrædelser"
+            "tenth": "Retningslinjer Overtrædelser",
+            "eleventh": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "seventh": ""
         },
         "beta": "Beta Ansvarsfralæggelse",
         "done_button": "Lad os komme i gang!",
@@ -36,7 +42,12 @@
         },
         "ready_text": "Først og fremmest check ud nogle af fællesskaberne for at se hvad folk rund om verdenen snakker om. Brug det øjeblik til at gøre dig mere bekendt med Juxt. Måske opstår der endda nogle nye opdagelser på vejen!",
         "done": "Mor dig i Juxt!",
-        "info_text": "Juxt er et brugerdrevet spilfællesskab, hvor du kan kommunikere med folk\nfra hele verdenen. Du kan skrive eller tegne oplag i spilfælleskaber eller sende beskeder direkte til dine venner."
+        "info_text": "Juxt er et brugerdrevet spilfællesskab, hvor du kan kommunikere med folk\nfra hele verdenen. Du kan skrive eller tegne oplag i spilfælleskaber eller sende beskeder direkte til dine venner.",
+        "guest": "",
+        "ready": "",
+        "guest_text": "",
+        "google": "",
+        "google_text": ""
     },
     "user_page": {
         "followers": "Følgere",
