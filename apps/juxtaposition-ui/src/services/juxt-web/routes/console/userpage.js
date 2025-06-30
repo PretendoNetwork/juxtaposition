@@ -1,12 +1,12 @@
 const express = require('express');
 const multer = require('multer');
 const moment = require('moment');
+const { getPostsByPoster } = require('@/api/post');
 const database = require('@/database');
 const util = require('@/util');
 const { getUserFriendPIDs } = util;
 const { POST } = require('@/models/post');
 const { SETTINGS } = require('@/models/settings');
-const redis = require('@/redisCache');
 const { config } = require('@/config');
 const { logger } = require('@/logger');
 const router = express.Router();
@@ -148,11 +148,7 @@ async function userPage(req, res, userID) {
 	}
 
 	const userSettings = await database.getUserSettings(userID);
-	let posts = JSON.parse(await redis.getValue(`${userID}-user_page_posts`));
-	if (!posts) {
-		posts = await database.getNumberUserPostsByID(userID, config.postLimit, res.locals.moderator);
-		await redis.setValue(`${userID}_user_page_posts`, JSON.stringify(posts), 60 * 60 * 1);
-	}
+	const posts = await getPostsByPoster(req.tokens, userID);
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();

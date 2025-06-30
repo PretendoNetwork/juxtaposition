@@ -40,7 +40,7 @@
 		"supertest": "^7.1.1",
 		"tga": "^1.0.3",
 		"xmlbuilder": "^15.1.1",
-		"zod": "^3.21.4"
+		"zod": "^3.25.7"
 	},
 	"devDependencies": {
 		"@pretendonetwork/eslint-config": "^0.0.11",
