@@ -57,16 +57,22 @@ export async function processPainting(painting: string): Promise<Buffer | null> 
 	return PNG.sync.write(png);
 }
 
-export async function resizeImage(file: string, width: number, height: number): Promise<Buffer> {
-	return new Promise(function (resolve) {
-		const image = Buffer.from(file, 'base64');
-		sharp(image)
-			.resize({ height: height, width: width })
-			.toBuffer()
-			.then((data) => {
-				resolve(data);
-			}).catch(err => logger.error(err, 'Could not resize image'));
-	});
+/**
+ * Rezise an image.
+ * @param data base64-encoded input image, most codecs OK (check Sharp docs)
+ * @param width Target width in pixels
+ * @param height Target height in pixels
+ * @returns New image, same codec as the input (not base64'd!)
+ */
+export async function resizeImage(data: string, width: number, height: number): Promise<Buffer> {
+	const image = Buffer.from(data, 'base64');
+	return sharp(image)
+		.resize({ height, width })
+		.toBuffer()
+		.catch((err) => {
+			logger.error(err, 'Could not resize image!');
+			throw err;
+		});
 }
 
 export async function getTGAFromPNG(image: Buffer): Promise<string | null> {
