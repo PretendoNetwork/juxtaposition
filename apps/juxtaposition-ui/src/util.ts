@@ -264,34 +264,23 @@ export function processLanguage(paramPack?: ParamPack): typeof translations.EN {
 	if (!paramPack) {
 		return translations.EN;
 	}
-	switch (paramPack.language_id) {
-		case '0':
-			return translations.JA;
-		case '1':
-			return translations.EN;
-		case '2':
-			return translations.FR;
-		case '3':
-			return translations.DE;
-		case '4':
-			return translations.IT;
-		case '5':
-			return translations.ES;
-		case '6':
-			return translations.ZH;
-		case '7':
-			return translations.KO;
-		case '8':
-			return translations.NL;
-		case '9':
-			return translations.PT;
-		case '10':
-			return translations.RU;
-		case '11':
-			return translations.ZH;
-		default:
-			return translations.EN;
-	}
+	const languageIdMap: Record<string, keyof typeof translations> = {
+		0: 'JA',
+		1: 'EN',
+		2: 'FR',
+		3: 'DE',
+		4: 'IT',
+		5: 'ES',
+		6: 'ZH',
+		7: 'KO',
+		8: 'NL',
+		9: 'PT',
+		10: 'RU',
+		11: 'ZH'
+	};
+
+	const language = languageIdMap[paramPack.language_id] ?? 'EN';
+	return translations[language];
 }
 
 export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCannedACL): Promise<boolean> {
