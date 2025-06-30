@@ -42,7 +42,7 @@ export async function authPopulate(request: express.Request, response: express.R
 
 async function consoleAuth(_request: express.Request, serviceToken: string): Promise<GetUserDataResponse> {
 	const pid = getPIDFromServiceToken(serviceToken);
-	if (pid === 0) {
+	if (pid === null) {
 		throw new errors.unauthorized('Invalid service token');
 	}
 
