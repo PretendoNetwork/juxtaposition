@@ -71,7 +71,7 @@ router.post('/new', async function (req, res) {
 	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
-		paintingURI = await processPainting(painting, true);
+		paintingURI = await processPainting(painting);
 		if (!await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
