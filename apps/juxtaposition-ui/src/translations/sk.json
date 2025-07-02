@@ -1,0 +1,126 @@
+{
+    "language": "Slovenčina",
+    "global": {
+        "communities": "Komunity",
+        "notifications": "Pripomienky",
+        "private": "Súkromné",
+        "close": "Zavrieť",
+        "save": "Uložiť",
+        "exit": "Ukončiť",
+        "next": "Ďalší",
+        "no_posts": "Žiadne príspevky",
+        "messages": "Správy",
+        "user_page": "Používateľská stránka",
+        "activity_feed": "Informačný kanál aktivity",
+        "go_back": "Choď späť",
+        "back": "Späť",
+        "more": "Načítať ďalšie príspevky",
+        "yeahs": ""
+    },
+    "community": {
+        "following": "Odoberané",
+        "followers": "Odoberatelia",
+        "posts": "Príspevky",
+        "recent": "Čerstvé príspevky",
+        "popular": "Populárne príspevky",
+        "verified": "Overené príspevky",
+        "new": "Nové príspevky",
+        "follow": "Odoberané komunity",
+        "tags": "Tagy"
+    },
+    "user_page": {
+        "country": "Krajina",
+        "friends": "Priatelia",
+        "following": "Odoberané",
+        "followers": "Odoberatelia",
+        "follow_user": "Odoberať",
+        "following_user": "Odoberané",
+        "unfriend": "Odstrániť priateľa",
+        "no_friends": "Žiadny priatelia",
+        "posts": "Príspevky",
+        "birthday": "Dátum narodenia",
+        "no_followers": "Žiadni odoberatelia",
+        "game_experience": "Herný zážitok",
+        "befriend": "Spriateliť sa",
+        "pending": "Čaká na spracovanie",
+        "no_following": "Nikoho nesledujem"
+    },
+    "all_communities": {
+        "text": "Všetky komunity",
+        "popular_places": "Populárne miesta",
+        "show_all": "Ukázať všetky",
+        "new_communities": "Nové komunity",
+        "announcements": "Oznamy",
+        "ann_string": "Kliknutím sem zobrazíte najnovšie oznámenia!",
+        "search": "Hľadať komunity..."
+    },
+    "user_settings": {
+        "profile_settings": "Nastavenia profilu",
+        "show_country": "Ukázať krajinu na profile",
+        "show_birthday": "Ukázať dátum narodenia na profile",
+        "show_game": "Zobraziť herný zážitok na profile",
+        "show_comment": "Zobraziť komentár k profilu",
+        "profile_comment": "Komentár k profilu",
+        "swearing": "Komentár profilu nemôže obsahovať explicitné výrazy."
+    },
+    "notifications": {
+        "new_follower": "vás odoberá!",
+        "none": "Žiadne pripomienky."
+    },
+    "new_post": {
+        "text_hint": "Ťuknite sem na vytvorenie príspevku.",
+        "swearing": "Príspevok nemôže obsahovať nadávky.",
+        "new_post_text": "Nový príspevok",
+        "post_to": "Uverejniť na"
+    },
+    "setup": {
+        "welcome": "Vitajte v Juxtaposition!",
+        "info": "Čo je Juxtaposition?",
+        "rules": "Pravidlá Juxta",
+        "rules_text": {
+            "eighth": "Neposielajte spoilery",
+            "third": "Juxt obsahuje mnoho herných komunít, kde môžu ľudia z celého sveta zdieľať svoje myšlienky. Keď uverejňujete príspevok v komunite, pamätajte na to, že ho môže vidieť každý, preto sa prosím vyjadrite spôsobom, ktorý bude baviť každého. Použite zdravý rozum a premýšľajte skôr, ako uverejníte príspevok. Juxt je služba, ktorá je dostupná aj z internetu, takže majte na pamäti, že vaše príspevky môžu vidieť aj ľudia, ktorí nepoužívajú Juxt. Navyše, všetky komentáre, ktoré pridáte k príspevkom svojich priateľov, uvidia nielen vaši priatelia, ale aj ľudia na celom svete. Majte to prosím na pamäti.",
+            "seventh": "Pamätajte, že poznať niekoho v Juxte nie je to isté ako poznať ho v skutočnom živote. Nikdy nezdieľajte svoju e-mailovú adresu, domácu adresu, meno do práce alebo školy ani iné osobné identifikačné údaje s nikým na Juxt a nikdy nezdieľajte informácie nikoho iného. Navyše, ak vás niekto, koho stretnete v Juxte, pozve, aby ste sa s ním stretli v skutočnom svete, neprijmite ho. Juxt je online komunita a nemala by sa používať na organizovanie stretnutí v reálnom svete.",
+            "ninth": "Niektorí ľudia prichádzajú do Juxtu hľadať tipy a triky pre hry, no iní chcú objaviť tajomstvá hry úplne sami. Príspevky, ktoré odhaľujú tajomstvá hry alebo jej príbeh, sa nazývajú „spoilery“. Ak uverejňujete niečo o hre, ktorá by mohla byť spoilerom, pred odoslaním príspevku nezabudnite zaškrtnúť políčko Spoilers. Týmto spôsobom ľudia, ktorí nechcú byť rozmaznaní, neuvidia váš príspevok.",
+            "first": "Nasleduje niekoľko dôležitých pokynov na to, aby bol Juxt zábavný a príjemný pre každého. Etický kódex Juxt obsahuje podrobné informácie, preto si ho pozorne prečítajte.",
+            "second": "Príspevky je možné prezerať po celom svete",
+            "fourth": "Buďte k sebe milí",
+            "fifth": "Aby bol Juxt zábavným miestom pre každého, žiadame vás, aby ste boli ohľaduplní k ostatným používateľom. Pomôžte nám udržať Juxt príjemný zážitok tým, že nebudete uverejňovať nič nevhodné alebo urážlivé.",
+            "sixth": "Neuverejňujte osobné informácie – vaše alebo iných",
+            "tenth": "Porušenie kódexu správania",
+            "eleventh": "Naším cieľom je, aby bol Juxt zábavný a príjemný pre každého. V prípade, že niekto poruší Etický kódex Juxt, podnikneme príslušné kroky, vrátane zablokovania porušujúceho používateľa alebo konzoly.",
+            "twelfth": "Hrali ste túto hru?",
+            "thirteenth": "Ak uverejňujete príspevok v komunite pre hru, ktorú ste hrali, vaše príspevky budú mať ikonu označujúcu, že ste ju hrali."
+        },
+        "experience_text": {
+            "beginner": "Začiatočník",
+            "expert": "Expert",
+            "info": "Povedzte nám, ako by ste opísali úroveň svojich skúseností s hrami. Toto nastavenie môžete neskôr zmeniť.",
+            "intermediate": "Stredne pokročilý"
+        },
+        "guest_button": "Rozumiem",
+        "ready": "Pripavený začať používať Juxt",
+        "done_button": "Poďme do toho!",
+        "guest": "Režim návštevníka",
+        "beta_text": {
+            "first": "Chystáte sa vyskúšať prvú verejnú beta verziu Juxtu. To znamená, že veľa je stále vo vzduchu a veľa sa môže kedykoľvek zmeniť.",
+            "third": "Webová lokalita, jej softvér a všetok obsah, ktorý sa na nej nachádza, sú poskytované „tak ako sú“ a „ako sú dostupné“. Sieť Pretendo neposkytuje žiadne záruky, či už výslovné alebo predpokladané, pokiaľ ide o vhodnosť alebo použiteľnosť webovej stránky, jej softvéru alebo akéhokoľvek obsahu.",
+            "second": "To môže a môže zahŕňať úplné vymazanie databázy na konci alebo počas beta obdobia."
+        },
+        "welcome_text": "Juxt je herná komunita, ktorá spája ľudí z celého sveta pomocou postavičiek Mii. Pomocou Juxt môžete zdieľať svoje herné zážitky a stretnúť sa s ľuďmi z celého sveta.",
+        "beta": "Vyhlásenie beta verzie",
+        "info_text": "Juxt je herná komunita riadená používateľmi, kde môžete komunikovať s ľuďmi\n                po celom svete. Môžete písať alebo kresliť príspevky v herných komunitách alebo posielať správy priamo svojim priateľom.",
+        "ready_text": "Najprv si pozrite niektoré komunity a zistite, o čom píšu ľudia z celého sveta. Využite túto príležitosť a zoznámte sa s Juxtom. Na ceste môžete urobiť nejaké nové objavy!",
+        "experience": "Herný zážitok",
+        "google": "Google Analytics",
+        "google_text": "Juxtaposition používa Google Analytics na sledovanie toho, ako používatelia používajú našu službu. Zhromaždené údaje zahŕňajú, ale nie sú obmedzené na čas návštevy, navštívené stránky a čas strávený na stránke. Tieto údaje sa k vám žiadnym spôsobom nepripájajú a nepoužívajú sa ani my, ani spoločnosť Google.",
+        "done": "Bavte sa v Juxte!",
+        "guest_text": "Momentálne nemôžeme overiť váš účet, čo pravdepodobne znamená, že sa momentálne prihlasujete pomocou účtu Nintendo Network. Stále budete môcť prehliadať Juxt, ale nebudete môcť Áno! príspevky alebo vytvorte vlastné príspevky, kým sa neprihlásite pomocou účtu Pretendo Network. Pre viac informácií skontrolujte Discord server."
+    },
+    "activity_feed": {
+        "empty": "Je to tu prázdne. Skúste niekoho odoberať!"
+    },
+    "messages": {
+        "coming_soon": "Správy ešte nie sú pripravené. Vráťte sa sem čoskoro!"
+    }
+}

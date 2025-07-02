@@ -5,7 +5,8 @@ package miiverse.v2;
 message Packet {
   string path = 1;
   string method = 2;
-  string payload = 3;
+  string headers = 3;
+  string payload = 4;
 }
 
 message PacketResponse {

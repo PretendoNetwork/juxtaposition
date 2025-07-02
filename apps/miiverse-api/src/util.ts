@@ -8,14 +8,18 @@ import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
+import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import { config } from '@/config';
 import { logger } from '@/logger';
+import { SystemType } from '@/types/common/system-types';
+import { TokenType } from '@/types/common/token-types';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ParamPack } from '@/types/common/param-pack';
-import type { ServiceToken } from '@/types/common/token';
+import type { ServiceToken } from '@/types/common/service-token';
 
 // * nice-grpc doesn't export ChannelImplementation so this can't be typed
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
@@ -23,6 +27,9 @@ const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
 
 const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
 const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
+
+const gRPCApiChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
+const gRPCApiClient = createClient(APIDefinition, gRPCApiChannel);
 
 const s3 = new aws.S3({
 	endpoint: new aws.Endpoint(config.s3.endpoint),
@@ -34,44 +41,67 @@ const s3 = new aws.S3({
 export const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
 
 export function decodeParamPack(paramPack: string): ParamPack {
-	const values = Buffer.from(paramPack, 'base64').toString().split('\\');
-	const entries = values.filter(value => value).reduce((entries: string[][], value: string, index: number) => {
-		if (0 === index % 2) {
-			entries.push([value]);
-		} else {
-			entries[Math.ceil(index / 2 - 1)].push(value);
+	const values = Buffer.from(paramPack, 'base64').toString().split('\\').filter(v => v.length > 0).values();
+	const entries: Record<string, string> = {};
+	for (let i = 0; i < 16; i++) { /* Enforce an upper limit on ParamPack decoding */
+		// Keys and values are sibling list entries
+		const paramKey = values.next().value;
+		const paramVal = values.next().value;
+		// We hit the end of the list
+		if (paramKey === undefined || paramVal === undefined) {
+			break;
 		}
 
-		return entries;
-	}, []);
+		entries[paramKey] = paramVal;
+	}
 
-	return Object.fromEntries(entries);
+	// normalize and prevent any funny businiess from clients
+	// one day this can be a proper DTO
+	return {
+		title_id: entries.title_id ?? '',
+		access_key: entries.access_key ?? '',
+		platform_id: entries.platform_id ?? '',
+		region_id: entries.region_id ?? '',
+		language_id: entries.language_id ?? '',
+		country_id: entries.country_id ?? '',
+		area_id: entries.area_id ?? '',
+		network_restriction: entries.network_restriction ?? '',
+		friend_restriction: entries.friend_restriction ?? '',
+		rating_restriction: entries.rating_restriction ?? '',
+		rating_organization: entries.rating_organization ?? '',
+		transferable_id: entries.transferable_id ?? '',
+		tz_name: entries.tz_name ?? '',
+		utc_offset: entries.utc_offset ?? ''
+	};
 }
 
-export function getPIDFromServiceToken(token: string): number {
+export function getPIDFromServiceToken(token: string): number | null {
 	try {
 		const decryptedToken = decryptToken(Buffer.from(token, 'base64'));
 
 		if (!decryptedToken) {
-			return 0;
+			return null;
 		}
 
 		const unpackedToken = unpackServiceToken(decryptedToken);
+		if (unpackedToken === null) {
+			return null;
+		}
 
 		// * Only allow token types 1 (Wii U) and 2 (3DS)
-		if (unpackedToken.system_type !== 1 && unpackedToken.system_type !== 2) {
-			return 0;
+		if (unpackedToken.system_type !== SystemType.CTR && unpackedToken.system_type !== SystemType.WUP) {
+			return null;
 		}
 
 		// * Check if the token is expired
 		if (unpackedToken.issue_time + (24n * 3600n * 1000n) < Date.now()) {
-			return 0;
+			return null;
 		}
 
 		return unpackedToken.pid;
 	} catch (e) {
 		logger.error(e, 'Failed to extract PID from service token');
-		return 0;
+		return null;
 	}
 }
 
@@ -95,7 +125,12 @@ export function decryptToken(token: Buffer): Buffer {
 	return decrypted;
 }
 
-export function unpackServiceToken(token: Buffer): ServiceToken {
+export function unpackServiceToken(token: Buffer): ServiceToken | null {
+	const token_type = token.readUInt8(0x1);
+	if (token_type !== TokenType.IndependentService) {
+		return null;
+	}
+
 	return {
 		system_type: token.readUInt8(0x0),
 		token_type: token.readUInt8(0x1),
@@ -186,12 +221,21 @@ export async function getUserFriendRequestsIncoming(pid: number): Promise<Friend
 	return response.friendRequests;
 }
 
-export function getUserAccountData(pid: number): Promise<GetUserDataResponse> {
+export function getUserAccountData(pid: number): Promise<AccountGetUserDataResponse> {
 	return gRPCAccountClient.getUserData({
 		pid: pid
 	}, {
 		metadata: Metadata({
 			'X-API-Key': config.grpc.account.apiKey
+		})
+	});
+}
+
+export function getUserDataFromToken(token: string): Promise<ApiGetUserDataResponse> {
+	return gRPCApiClient.getUserData({}, {
+		metadata: Metadata({
+			'X-API-Key': config.grpc.account.apiKey,
+			'X-Token': token
 		})
 	});
 }

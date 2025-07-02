@@ -1,1 +1,126 @@
-{}
+{
+    "language": "қазақша",
+    "global": {
+        "go_back": "Артқа",
+        "more": "Қосымша хабарламаларды жүктеңіз",
+        "yeahs": "Иә",
+        "user_page": "Пайдаланушы беті",
+        "activity_feed": "Белсенділік арнасы",
+        "communities": "Қауымдастықтар",
+        "messages": "Хабарламалар",
+        "notifications": "Хабарландырулар",
+        "back": "Артқа",
+        "no_posts": "Посттар жоқ",
+        "private": "Жеке",
+        "close": "Жабу",
+        "save": "Сақтаңыз",
+        "exit": "Шығу",
+        "next": "Келесі"
+    },
+    "all_communities": {
+        "text": "Барлық қауымдастықтар",
+        "announcements": "Хабарландырулар",
+        "ann_string": "Соңғы хабарландыруларды көру үшін осы жерді басыңыз!",
+        "popular_places": "Танымал орындар",
+        "new_communities": "Жаңа қауымдастықтар",
+        "show_all": "Барлығын көрсетіңіз",
+        "search": "Қауымдастықтарды іздеу..."
+    },
+    "community": {
+        "follow": "Қауымдастықты бақылаңыз",
+        "following": "Төменде",
+        "followers": "Ізбасарлар",
+        "posts": "Хабарламалар",
+        "tags": "Тегтер",
+        "recent": "Соңғы жазбалар",
+        "popular": "Танымал жазбалар",
+        "verified": "Тексерілген хабарламалар",
+        "new": "Жаңа пост"
+    },
+    "user_page": {
+        "country": "Ел",
+        "birthday": "Туған күн",
+        "game_experience": "Ойын тәжірибесі",
+        "friends": "Достар",
+        "posts": "Жазбалар",
+        "follow_user": "",
+        "no_following": "",
+        "befriend": "",
+        "following_user": "",
+        "pending": "",
+        "followers": "",
+        "unfriend": "",
+        "no_followers": "",
+        "no_friends": "",
+        "following": ""
+    },
+    "setup": {
+        "experience_text": {
+            "info": "Ойындар бойынша тәжірибе деңгейіңізді қалай сипаттайтыныңызды айтыңыз. Бұл параметрді кейінірек өзгертуге болады.",
+            "intermediate": "Орташа",
+            "expert": "",
+            "beginner": ""
+        },
+        "google": "Google Analytics",
+        "rules_text": {
+            "eighth": "Спойлер жазбаңыз",
+            "eleventh": "",
+            "tenth": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "second": "",
+            "sixth": "",
+            "first": "",
+            "seventh": "",
+            "twelfth": ""
+        },
+        "ready": "Juxt пайдалануды бастауға дайын",
+        "guest_button": "Мен түссіндім",
+        "beta_text": {
+            "third": "",
+            "second": "",
+            "first": ""
+        },
+        "done_button": "",
+        "guest": "",
+        "guest_text": "",
+        "experience": "",
+        "rules": "",
+        "welcome_text": "",
+        "google_text": "",
+        "info": "",
+        "info_text": "",
+        "ready_text": "",
+        "done": "",
+        "beta": "",
+        "welcome": ""
+    },
+    "notifications": {
+        "none": "",
+        "new_follower": ""
+    },
+    "new_post": {
+        "swearing": "",
+        "text_hint": "",
+        "new_post_text": "",
+        "post_to": ""
+    },
+    "user_settings": {
+        "show_game": "",
+        "show_comment": "",
+        "show_birthday": "",
+        "profile_settings": "",
+        "profile_comment": "",
+        "swearing": "",
+        "show_country": ""
+    },
+    "activity_feed": {
+        "empty": ""
+    },
+    "messages": {
+        "coming_soon": ""
+    }
+}

@@ -1,0 +1,126 @@
+{
+    "user_page": {
+        "country": "Gwlad",
+        "game_experience": "Profiad gem",
+        "followers": "Dilynwyr",
+        "following": "Dilynwch",
+        "pending": "Yn yr arfaeth",
+        "unfriend": "Ddim bod yn ffrind",
+        "no_friends": "Dim Ffrindiau",
+        "no_following": "Ddim yn dilynwch unrhyw",
+        "posts": "Swyddi",
+        "friends": "Ffrindiau",
+        "follow_user": "Dilyn",
+        "following_user": "Yn dilyn",
+        "befriend": "Bod yn ffrind",
+        "no_followers": "Ddim dilynwyr",
+        "birthday": "Penblwydd"
+    },
+    "global": {
+        "back": "Yn ôl",
+        "yeahs": "Ydychau",
+        "more": "Swyddi mwy llwyth",
+        "no_posts": "Dim llwythau",
+        "private": "Preifat",
+        "close": "Cau",
+        "save": "Safiwch",
+        "exit": "Adael",
+        "next": "Nesaf",
+        "user_page": "Tudalen Defnyddiwr",
+        "activity_feed": "Porthiant gweithgaredd",
+        "communities": "Cymunedau",
+        "messages": "Negeuseon",
+        "notifications": "Hysbysiadau",
+        "go_back": "Fynd Yn ôl"
+    },
+    "language": "Cymraeg",
+    "all_communities": {
+        "announcements": "Cyhoeddiad",
+        "ann_string": "Clicwch yma i spio cyhoeddiad newydd!",
+        "show_all": "Dangos Pob beth",
+        "search": "Chwilio Cymunedau...",
+        "text": "Pob cymunedau",
+        "popular_places": "Lleoedd Poblogaidd",
+        "new_communities": "Gymunedau Newydd"
+    },
+    "community": {
+        "followers": "Dilynwyr",
+        "follow": "Dilyn Cymuned",
+        "popular": "Llwythyr poblogaidd",
+        "verified": "Swyddi gwirio",
+        "new": "Swydd newydd",
+        "following": "Dilynwch",
+        "posts": "Llywythau",
+        "tags": "Tagiau",
+        "recent": "Llywthau diweddar"
+    },
+    "user_settings": {
+        "show_comment": "Ddangos sylwadau ar profil",
+        "profile_settings": "Gosodiadau profil",
+        "show_country": "Ddangos Gwlad Ar Profil",
+        "show_birthday": "Ddangos Penblwydd Ar Profil",
+        "profile_comment": "Sylwadau profil",
+        "swearing": "Ni all gynnwys iaith eglur ar sylwadau profil.",
+        "show_game": ""
+    },
+    "new_post": {
+        "new_post_text": "Llwyth newydd",
+        "post_to": "Llwyth I",
+        "text_hint": "Tapiwch yma i creu llwyth.",
+        "swearing": "Llwyth ddim gallu cynnwys iaith eglur."
+    },
+    "setup": {
+        "rules_text": {
+            "second": "Pobol dros y byd yn gallu spio ar eich llwythau",
+            "eighth": "Ddim Llwythio Sbeilwyr",
+            "twelfth": "Ydach chi wedi chwarae gem yna?",
+            "eleventh": "",
+            "tenth": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "sixth": "",
+            "first": "",
+            "seventh": ""
+        },
+        "ready": "Barod I i ddechrau defnyddio juxt",
+        "done": "Cael Hwyl Yn Juxt!",
+        "done_button": "Fynd!",
+        "guest": "Modd gwestai",
+        "guest_button": "Dwi'n Deall",
+        "welcome": "Croeso I Jusxtaposition!",
+        "rules": "Rheol Juxt",
+        "info": "Beth ydy juxtaposition?",
+        "beta_text": {
+            "third": "",
+            "second": "",
+            "first": ""
+        },
+        "experience_text": {
+            "expert": "",
+            "info": "",
+            "intermediate": "",
+            "beginner": ""
+        },
+        "guest_text": "",
+        "experience": "",
+        "google": "",
+        "welcome_text": "",
+        "google_text": "",
+        "info_text": "",
+        "ready_text": "",
+        "beta": ""
+    },
+    "activity_feed": {
+        "empty": "Maen wag yma. Ceishwch dilyn rhywun!"
+    },
+    "notifications": {
+        "none": "Ddim hysbysiadau.",
+        "new_follower": "Wedi dilynwch chdi!"
+    },
+    "messages": {
+        "coming_soon": "Nif yw negeseuon yn barod. eto gwiriwch yn ol yn fuan!"
+    }
+}

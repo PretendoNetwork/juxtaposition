@@ -4,7 +4,7 @@
         "notifications": "Pranešimai",
         "communities": "Bendruomenės",
         "messages": "Žinutės",
-        "go_back": "Sugryšti",
+        "go_back": "Grįžti",
         "exit": "Išeiti",
         "user_page": "Vartotojo puslapis",
         "more": "Užkrauti daugiau įkelimų",
@@ -12,7 +12,7 @@
         "close": "Uždaryti",
         "save": "Išsaugoti",
         "activity_feed": "Įrašų puslapis",
-        "private": "Privati",
+        "private": "Privatus",
         "yeahs": "Patiktukai",
         "next": "Toliau"
     },
@@ -35,7 +35,7 @@
         "popular": "Populiarus įkelimai",
         "new": "Naujas įkelimas",
         "recent": "Naujausi įkelimai",
-        "verified": "Verifikuoti įkelimai"
+        "verified": "Patvirtinti įkėlimai"
     },
     "user_page": {
         "country": "Šalis",
@@ -83,9 +83,9 @@
         "welcome": "Sveiki atvykę į Juxtaposition!",
         "beta": "Įspėjimas dėl Beta versijos",
         "beta_text": {
-            "first": "Tu tuoj išbandysi pirmają Juxt beta versiją. Tai reiškia kad, dalykai gali pasikeisti betkuriuo metu kai tu naudojant Juxt.",
-            "second": "Tai gali apimti visišką databazės išvalymą betos pabaigoje arba perijodo metu.",
-            "third": "Svetainė, jos programinis turinys, ir visas čia rastas turinys yra paduota \"kaip yra\" ir \"kaip pasiekiama\".Pretendo tinklas nesuteikia jokių tiesioginių ar numanomų garantijų dėl svetainės, jos programinės įrangos ar bet kokio turinio tinkamumo ar tinkamumo naudoti."
+            "first": "Tu tuoj išbandysi pirmają Juxt beta versiją. Tai reiškia kad, dalykai gali pasikeisti betkuriuo metu.",
+            "second": "Tai gali apimti visišką duomenų bazės išvalymą Betos stafijos pabaigoje arba periodo metu.",
+            "third": "Svetainė, jos programinis turinys, ir visas čia rastas turinys yra paduota \"kaip yra\" ir \"kaip pasiekiama\". Pretendo tinklas nesuteikia jokių tiesioginių ar numanomų garantijų dėl svetainės, jos programinės įrangos ar bet kokio turinio tinkamumo ar tinkamumo naudoti."
         },
         "info": "Kas yra Juxtaposition?",
         "rules_text": {

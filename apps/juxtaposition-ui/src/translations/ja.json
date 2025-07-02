@@ -1,28 +1,28 @@
 {
     "language": "日本語",
     "global": {
-        "user_page": "マイメニュー",
+        "user_page": "ユーザーページ",
         "activity_feed": "みんなの活動",
         "communities": "コミュニティ",
         "messages": "メッセージ",
-        "notifications": "おしらせ",
-        "go_back": "もどる",
-        "back": "もどる",
+        "notifications": "お知らせ",
+        "go_back": "戻る",
+        "back": "戻る",
         "yeahs": "そうだね",
-        "more": "もっと読み込む",
+        "more": "さらに読み込む",
         "no_posts": "投稿がありません",
         "private": "非公開",
-        "close": "おわる",
+        "close": "閉じる",
         "save": "保存",
         "exit": "閉じる",
         "next": "次へ"
     },
     "all_communities": {
         "text": "すべてのコミュニティ",
-        "announcements": "おしらせ",
-        "ann_string": "最新のお知らせはこちら！",
-        "popular_places": "人気コミュニティ",
-        "new_communities": "新着コミュニティ",
+        "announcements": "お知らせ",
+        "ann_string": "最新のお知らせはこちら!",
+        "popular_places": "人気のコミュニティ",
+        "new_communities": "新しいコミュニティ",
         "show_all": "すべて見る",
         "search": "コミュニティをさがす..."
     },
@@ -32,9 +32,9 @@
         "followers": "フォロワー",
         "posts": "投稿",
         "tags": "タグ",
-        "recent": "新しい投稿",
+        "recent": "最近の投稿",
         "popular": "人気の投稿",
-        "verified": "プレイ済みの投稿",
+        "verified": "確認済みの投稿",
         "new": "投稿する"
     },
     "user_page": {
@@ -51,7 +51,7 @@
         "pending": "承認待機中",
         "unfriend": "フレンドから外す",
         "no_friends": "フレンドがいません",
-        "no_following": "フォローがいません",
+        "no_following": "誰もフォローしていません",
         "no_followers": "フォロワーがいません"
     },
     "user_settings": {
@@ -61,7 +61,7 @@
         "show_game": "プロフィールにゲームの腕前を表示",
         "show_comment": "プロフィールに自己紹介を表示",
         "profile_comment": "自己紹介",
-        "swearing": "自己紹介に悪口を含めることはできません。"
+        "swearing": "自己紹介に悪口を含めないでください。"
     },
     "activity_feed": {
         "empty": "空っぽです。誰かをフォローしてみましょう！"
@@ -74,13 +74,13 @@
         "new_post_text": "投稿する",
         "post_to": "次に投稿する:",
         "text_hint": "ここをタップして投稿します。",
-        "swearing": "投稿に露骨な表現を含めることはできません。"
+        "swearing": "投稿に露骨な表現を含めないでください。"
     },
     "messages": {
-        "coming_soon": "メッセージはまだ準備ができていません。すぐにもう一度チェックしてください！"
+        "coming_soon": "メッセージはまだ準備ができていません。すぐにもう一度確認してください!"
     },
     "setup": {
-        "welcome": "Juxtapositionへようこそ！",
+        "welcome": "Juxtapositionへようこそ!",
         "welcome_text": "Juxtは、Miiキャラクターを使って世界中の人々をつなぐゲームコミュニティです。 Juxt を使用して、ゲーム体験を共有し、世界中の人々と出会いましょう。",
         "beta": "ベータ版免責事項",
         "beta_text": {
@@ -88,7 +88,7 @@
             "second": "これはベータ期間中や終了後、データベースの完全な消去に繋がることがあります。",
             "third": "このウェブサイト、そのソフトウェア及びその中のすべてのコンテンツは「そのまま」、「利用できる状態で」提供されます。Pretendo Networkは、ウェブサイト、ソフトウェア及びその中のコンテンツの適切性や有用性についていかなる明示的、黙示的保証もしません。"
         },
-        "info": "Juxtってなんですか？",
+        "info": "Juxtとは?",
         "info_text": "Juxtは世界中の人々と交流できる、ユーザー主導のゲームコミュニティです。ゲームコミュニティで\n                文字や絵を用いて投稿をしたり、直接友達とメッセージ交換ができます。",
         "rules": "Juxtのルール",
         "rules_text": {

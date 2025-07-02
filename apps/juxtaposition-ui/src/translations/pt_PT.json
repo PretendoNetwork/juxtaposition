@@ -1,0 +1,126 @@
+{
+    "language": "Português",
+    "global": {
+        "user_page": "Perfil do Utilizador",
+        "activity_feed": "Atividade",
+        "communities": "Comunidades",
+        "messages": "Mensagens",
+        "notifications": "Notificações",
+        "go_back": "Voltar",
+        "back": "Anterior",
+        "yeahs": "Fixes",
+        "more": "Carregar mais publicações",
+        "no_posts": "Sem publicações",
+        "private": "Privado",
+        "close": "Fechar",
+        "save": "Guardar",
+        "exit": "Sair",
+        "next": "Seguinte"
+    },
+    "all_communities": {
+        "text": "Todas as comunidades",
+        "announcements": "Anúncios",
+        "ann_string": "Clica aqui para veres os anúncios recentes!",
+        "popular_places": "Lugares Populares",
+        "new_communities": "Novas Comunidades",
+        "show_all": "Mostrar todas",
+        "search": "Procurar comunidades..."
+    },
+    "community": {
+        "recent": "Publicações Recentes",
+        "follow": "Seguir Comunidade",
+        "following": "A seguir",
+        "followers": "Seguidores",
+        "posts": "Publicações",
+        "tags": "Tags",
+        "popular": "Publicações Populares",
+        "verified": "Publicações Verificadas",
+        "new": "Nova Publicação"
+    },
+    "user_page": {
+        "country": "País",
+        "birthday": "Aniversário",
+        "game_experience": "Experiência de Jogo",
+        "posts": "Publicações",
+        "followers": "Seguidores",
+        "follow_user": "Seguir",
+        "following_user": "Seguidores",
+        "friends": "Amigos",
+        "following": "A seguir",
+        "befriend": "Tornar-se Amigo",
+        "pending": "Pendente",
+        "unfriend": "Remover Amizade",
+        "no_friends": "Sem Amigos",
+        "no_following": "Não segue ninguém",
+        "no_followers": "Sem seguidores"
+    },
+    "notifications": {
+        "none": "Sem notificações.",
+        "new_follower": "seguiu-te!"
+    },
+    "setup": {
+        "rules_text": {
+            "fifth": "De forma a mantermos Juxt um lugar divertido para todos, pedimos-te que penses nas outras pessoas. Ajuda-nos a manter Juxt uma boa experiência ao não fazer publicações impróprias ou ofensivas.",
+            "sixth": "Não partilhes informações pessoais",
+            "third": "Juxt contém várias comunidades de jogadores onde pessoas de todo o mundo podem partilhar as suas ideias. Quando publicas numa comunidade, lembra-te que todos podem ver as tuas publicações, por isto expressa-te de uma maneira que possa ser divertida para todos. Usa o senso comum e pensa antes de publicar. Juxt é um serviço que também está acessível pela Internet, por isto pessoas que não usam Juxt também podem ver as tuas publicações. Adicionalmente, quaisquer comentários que faças em publicações de amigos são visíveis não só por estes, mas também por pessoas de todo o mundo. Tem isto em consideração.",
+            "first": "Estas são algumas regras que permitem que Juxt seja uma experiência divertida para todos. O código de conduta Juxt contém informação detalhada, por isso lê-o com atenção.",
+            "second": "Publicações podem ser vistas em todo o mundo",
+            "fourth": "Sê simpático com os outros",
+            "tenth": "Violações do código de conduta",
+            "seventh": "Lembra-te, conhecer alguém em Juxt não é o mesmo que conhecer alguém na vida real. Nunca partilhes com ninguém em Juxt o teu endereço de e-mail, morada, trabalho, nome da escola ou qualquer outra informação que te possa identificar nem partilhes informação de outras pessoas. Adicionalmente, se alguém que conheceres em Juxt te convidar para que se conheçam no mundo real, não aceites. Juxt é uma comunidade online e não deve ser usada para marcar encontros presenciais.",
+            "eighth": "Não publiques Spoilers",
+            "ninth": "Algumas pessoas vêm a Juxt à procura de dicas e truques para jogos, mas outras preferem descobrir os jogos por si mesmas. Publicações que revelam segredos de um jogo ou a sua história são chaamdas de \"spoilers.\" Se vais publicar algo sobre um jogo que pode ser um spoiler, marca a respetiva caixa antes de enviares a tua publicação. Desta forma, pessoas que não querem ver spoilers não verão a tua publicação.",
+            "eleventh": "O nosso objetivo é fazer de Juxt uma comunidade divertida para todos. No caso de alguém violar o Código de Conduta de Juxt, iremos tomar as medidas necessárias que poderão incluir banir o utilizador ou a consola.",
+            "twelfth": "Já jogaste este jogo?",
+            "thirteenth": "Se publicares numa comunidade de um jogo que já jogaste, as tuas publicações irão incluir um ícone que indica que já o jogaste."
+        },
+        "welcome": "Bem-vindo a Juxtaposition!",
+        "welcome_text": "Juxt é uma comunidade de jogadores que liga pessoas de todo o mundo utilizando personagens Mii. Usa Juxt para partilhar as tuas experiências de jogo e conhecer novas pessoas de todo o mundo.",
+        "beta": "Nota sobre Beta",
+        "beta_text": {
+            "first": "Estás prestes a experimentar a primeira versão beta pública de Juxt. Isto significa que ainda há muito a fazer e que muitas coisas ainda poderão mudar a qualquer momento.",
+            "second": "No final do período beta, os dados registados na plataforma poderão vir a ser apagados.",
+            "third": "Este website, o seu software e todos os conteúdos nele conteúdos são disponibilizados “tal como estão” e “quando disponíveis”. A Pretendo Network não oferece quaisquer garantias, quer expressas quer implícitas, a respeito da integridade ou disponibilidade do website, do seu software ou dos seus conteúdos."
+        },
+        "info": "O que é Juxtaposition?",
+        "info_text": "Juxt é uma comunidade de utilizadores que liga pessoas\n                de todo o mundo. Podes escrever ou desenhar publicações nas comunidades dos jogos ou enviar mensagens diretamente aos teus amigos.",
+        "rules": "Regras de Juxt",
+        "google_text": "Juxtaposition usa Google Analytics de forma a recolher informações de como os utilizadores usam o serviço. Os dados recolhidos incluem, mas não estão limitados a, hora da visita, páginas visitadas e tempo passado no site. Estes dados não estão associados a ti de maneira nenhuma e não são usados para anúncios por nós nem pela Google.",
+        "experience": "Experiência de jogo",
+        "experience_text": {
+            "info": "Fala-nos um pouco da tua experiência com jogos. Podes alterar estas definições mais tarde.",
+            "beginner": "Iniciante",
+            "intermediate": "Intermédio",
+            "expert": "Avançado"
+        },
+        "google": "Google Analytics",
+        "ready": "Pronto para usar Juxt",
+        "ready_text": "Começa por explorar algumas comunidades e ver o que as pessoas de todo o mundo estão a publicar. Aproveita esta oportunidade para te familiarizares com Juxt. Pode ser que descubras algo novo pelo caminho!",
+        "done": "Diverte-te com Juxt!",
+        "done_button": "Vamos a isso!",
+        "guest": "Modo de convidado",
+        "guest_text": "Não nos foi possível verificar a tua conta de momento, o que provavelmente significa que tens sessão iniciada com uma conta Nintendo Network. Podes explorar Juxt, mas não te será possível marcar publicações com Fixe! ou fazer publicações até que inicies sessão com uma conta Pretendo Network. Para mais informações visita o nosso servidor Discord.",
+        "guest_button": "Compreendo"
+    },
+    "user_settings": {
+        "profile_settings": "Preferências de Perfil",
+        "show_country": "Mostrar país no perfil",
+        "show_birthday": "Mostrar data de aniversário no perfil",
+        "show_game": "Mostrar experiência de jogo no perfil",
+        "show_comment": "Mostrar comentário no perfil",
+        "profile_comment": "Comentário do Perfil",
+        "swearing": "O comentário do perfil não pode ter linguagem obscena."
+    },
+    "activity_feed": {
+        "empty": "Isto está muito vazio. Começa a seguir alguém!"
+    },
+    "new_post": {
+        "new_post_text": "Nova publicação",
+        "post_to": "Publicar em",
+        "text_hint": "Toca aqui para criar uma publicação.",
+        "swearing": "A publicação não pode ter linguagem obscena."
+    },
+    "messages": {
+        "coming_soon": "A funcionalidade de mensagens ainda não está disponível. Volta em breve!"
+    }
+}

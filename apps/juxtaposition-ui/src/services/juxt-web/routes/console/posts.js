@@ -11,7 +11,9 @@ const { REPORT } = require('@/models/report');
 const upload = multer({ dest: 'uploads/' });
 const redis = require('@/redisCache');
 const { config } = require('@/config');
+const { processBmpPainting, processPainting } = require('@/images');
 const router = express.Router();
+const { getPostById } = require('@/api/post');
 
 const postLimit = rateLimit({
 	windowMs: 15 * 1000, // 30 seconds
@@ -41,7 +43,10 @@ const yeahLimit = rateLimit({
 });
 
 router.get('/:post_id/oembed.json', async function (req, res) {
-	const post = await database.getPostByID(req.params.post_id.toString());
+	const post = await getPostById(req.tokens, req.params.post_id);
+	if (!post) {
+		return res.sendStatus(404);
+	}
 	const doc = {
 		author_name: post.screen_name,
 		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid
@@ -108,21 +113,22 @@ router.post('/new', postLimit, upload.none(), async function (req, res) {
 router.get('/:post_id', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	const userContent = await database.getUserContent(req.pid);
-	let post = await database.getPostByID(req.params.post_id.toString());
-	if (post === null) {
+
+	const post = await getPostById(req.tokens, req.params.post_id);
+	if (!post) {
 		return res.redirect('/404');
 	}
 	if (post.parent) {
-		post = await database.getPostByID(post.parent);
-		if (post === null) {
-			return res.sendStatus(404);
+		const parent = await getPostById(req.tokens, post.parent);
+		if (!parent) {
+			return res.redirect('/404');
 		}
-		return res.redirect(`/posts/${post.id}`);
+		return res.redirect(`/posts/${parent.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);
 	const communityMap = await util.getCommunityHash();
 	const replies = await database.getPostReplies(req.params.post_id.toString(), 25);
-	const postPNID = await util.getUserDataFromPid(post.pid);
+	const postPNID = await util.getUserAccountData(post.pid);
 	res.render(req.directory + '/post.ejs', {
 		moment: moment,
 		userSettings: userSettings,
@@ -172,7 +178,7 @@ router.post('/:post_id/new', postLimit, upload.none(), async function (req, res)
 
 router.post('/:post_id/report', upload.none(), async function (req, res) {
 	const { reason, message, post_id } = req.body;
-	const post = await database.getPostByID(post_id);
+	const post = await getPostById(req.tokens, post_id);
 	if (!reason || !post_id || !post) {
 		return res.redirect('/404');
 	}
@@ -254,11 +260,11 @@ async function newPost(req, res) {
 	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		if (req.body.bmp === 'true') {
-			painting = await util.processPainting(req.body.painting.replace(/\0/g, '').trim(), false);
+			painting = await processBmpPainting(req.body.painting.replace(/\0/g, '').trim());
 		} else {
 			painting = req.body.painting;
 		}
-		paintingURI = await util.processPainting(painting, true);
+		paintingURI = await processPainting(painting);
 		if (!await util.uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {

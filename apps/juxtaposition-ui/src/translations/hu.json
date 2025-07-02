@@ -1,0 +1,126 @@
+{
+    "global": {
+        "user_page": "Profil",
+        "activity_feed": "Tevékenység csatorna",
+        "communities": "Közösségek",
+        "go_back": "Vissza",
+        "back": "Vissza",
+        "yeahs": "Yeahs",
+        "no_posts": "Nincs bejegyzés",
+        "private": "Privát",
+        "close": "Bezár",
+        "exit": "Kilépés",
+        "next": "Tovább",
+        "messages": "Üzenetek",
+        "more": "Több bejegyzés betöltése",
+        "save": "Mentés",
+        "notifications": "Értesítések"
+    },
+    "all_communities": {
+        "ann_string": "Kattints ide a legfrissebb bejelentések megtekintéséhez!",
+        "popular_places": "Népszerű helyek",
+        "show_all": "Mindet mutatja",
+        "text": "Minden közösség",
+        "new_communities": "Új közösségek",
+        "announcements": "Bejelentések",
+        "search": "Közösségek keresése..."
+    },
+    "community": {
+        "follow": "Közösség követése",
+        "following": "Követed",
+        "posts": "Bejegyzés",
+        "tags": "Címke",
+        "recent": "Legutolsó bejegyzések",
+        "followers": "Követő",
+        "popular": "Népszerű bejegyzések",
+        "verified": "Ellenőrzött bejegyzések",
+        "new": "Új bejegyzés"
+    },
+    "user_page": {
+        "country": "Ország",
+        "game_experience": "Játék tapasztalat",
+        "posts": "Bejegyzések",
+        "friends": "Barátok",
+        "followers": "Követő",
+        "follow_user": "Követ",
+        "following_user": "Követve",
+        "befriend": "Barátnak jelöl",
+        "pending": "Folyamatban",
+        "unfriend": "Barátok közül töröl",
+        "no_friends": "Nincsennek barátok",
+        "no_following": "Nem követ senkit",
+        "no_followers": "Nincsennek követők",
+        "birthday": "Születésnap",
+        "following": "Követed"
+    },
+    "user_settings": {
+        "show_country": "Ország megjelenítése a Profilon",
+        "show_birthday": "Születésnap megjelenítése a Profilon",
+        "profile_comment": "Profil megjegyzés",
+        "profile_settings": "Profil beállítások",
+        "show_game": "Játéktapasztalat megjelenítése a Profilon",
+        "show_comment": "Megjegyzés megjelenítése a Profilon",
+        "swearing": "A profil megjegyzés nem tartalmazhat csúnya beszédet."
+    },
+    "notifications": {
+        "none": "Nincsennek értesítések.",
+        "new_follower": "követ téged!"
+    },
+    "new_post": {
+        "new_post_text": "Új bejegyzés",
+        "post_to": "Bejegyzés ehhez:",
+        "swearing": "A bejegyzés nem tartalmazhat csúnya beszédet.",
+        "text_hint": "Koppints ide egy új bejegyzés létrehozásához."
+    },
+    "messages": {
+        "coming_soon": "Az Üzenetek még nincs kész. Nézz vissza később!"
+    },
+    "setup": {
+        "welcome": "Köszöntünk Juxtaposition-ben!",
+        "beta": "Béta Jogi nyilatkozat",
+        "beta_text": {
+            "first": "A Juxt első publikus bétáját fogod kipróbálni. Ez azt jelenti, hogy egy csomó minden lóg a levegőben, és változhat idővel.",
+            "third": "A weboldal, a szoftver és mindent tartalom “as is” és “as available” alapon biztosított. A Pretendo Network nem biztosít semmilyen garanciát, akár közvetlen, akár beleértett, a megfelelőségéről és használhatóságáról a weboldalnak a szoftvernek, vagy bármilyen tartalomnak.",
+            "second": "Ez jelentheti az adatbázis teljes törlését valamilyen döntést követően vagy a béta periódus végén."
+        },
+        "info": "Mi az a Juxtaposition?",
+        "info_text": "A Juxt egy felhasználó alapú játék közösség, ahol kapcsolatba léphetsz emberekkel\n                 a világ minden tájáról. Írhatsz és rajzolhatsz bejegyzéseket a játék közösségekbe, vagy küldhetsz közvetlen üzenetet barátaidnak.",
+        "rules": "Juxt szabályok",
+        "rules_text": {
+            "second": "A bejegyzéseket az egész világon megtekinthetik",
+            "fourth": "Legyetek kedvesek egymáshoz",
+            "fifth": "Annak érdekében, hogy a Juxt mindenki számára szórakoztató hely maradjon, kérjük, légy figyelmes más felhasználókkal szemben. Segíts nekünk abban, hogy a Juxt élvezetes élmény legyen azáltal, hogy nem teszel közzé semmi nem helyénvalót vagy sértőt.",
+            "sixth": "Ne posztolj személyes információt - se sajátodat, se másokét",
+            "tenth": "Magatartási kódex megsértése",
+            "eighth": "Ne posztolj spoilereket",
+            "eleventh": "Célunk, hogy a Juxt szórakoztató és élvezetes legyen mindenki számára. Abban az esetben, ha valaki megsérti a Juxt magatartási kódexét, megtesszük a megfelelő lépéseket, beleértve a jogsértő felhasználó vagy konzol letiltását is.",
+            "twelfth": "Játszottál már azzal a játékkal?",
+            "thirteenth": "Ha a közösségbe posztolod egy játékról, hogy játszottad, a posztjaid tartalmazni fognak egy ikont, hogy játszottál vele.",
+            "seventh": "Ne feledd, hogy valakit a Juxt-ban ismerni nem ugyanaz, mint a való életben. Soha ne oszd meg e-mail címed, otthoni címed, munkahelyed vagy iskolád nevét vagy más személyazonosításra alkalmas adatod senkivel a Juxt-on, és soha ne oszd meg más adatait sem. Továbbá, ha valaki, akivel a Juxt-ban találkozol, meghív, hogy találkozz vele a való világban, ne fogadd el. A Juxt egy online közösség, és nem javasolt valós találkozók szervezésére használni.",
+            "ninth": "Vannak, akik azért jönnek a Juxt-hoz, hogy tippeket és trükköket keressenek a játékokhoz, de mások egyedül szeretnék felfedezni egy játék titkait. Azokat a bejegyzéseket, amelyek egy játék vagy annak történetének titkait fedik fel, „spoilereknek” nevezzük. Ha egy játékról teszel közzé valamit, ami spoiler lehet, a bejegyzés elküldése előtt feltétlenül jelöld be a \"spoilers\" négyzetet. Így azok, akik nem akarnak spoilert látni, nem fogják látni a bejegyzésedet.",
+            "first": "Az alábbiakban felsorolunk néhány fontos irányelvet, amelyekkel a Juxt mindenki számára szórakoztató és élvezetes élmény lehet. A Juxt magatartási kódexe részletes információkat tartalmaz, ezért kérjük, figyelmesen olvassa el azt.",
+            "third": "A Juxt számos játékközösséget tartalmaz, ahol az emberek a világ minden tájáról megoszthatják gondolataikat. Amikor közzé teszel valamit egy közösségben, ne feledd, hogy mindenki láthatja, ezért kérjük, fejezd ki magad úgy, hogy az mindenki számára élvezetes legyen. Használd a józan eszedet, és gondolkozz, mielőtt posztolsz. A Juxt egy olyan szolgáltatás, amely az internetről is elérhető, ezért ne feledd, hogy azok is láthatják a bejegyzéseid, akik nem használják a Juxt-ot. Ezenkívül az ismerőseid bejegyzéseihez írt megjegyzéseid nemcsak az ismerőseid, hanem a világ minden tájáról. Kérjük, tartsd ezt szem előtt."
+        },
+        "experience": "Játék tapasztalat",
+        "experience_text": {
+            "info": "Kérjük írd le magadról hogy milyen szinten van tapasztalatod a játékokkal. Módosíthatod ezt később.",
+            "beginner": "Kezdő",
+            "intermediate": "Középszint",
+            "expert": "Profi"
+        },
+        "google": "Google Analytics",
+        "ready": "Készen állsz használni a Juxt-ot",
+        "ready_text": "Először nézz meg néhány közösséget, és nézd meg, miről posztolnak az emberek a világ minden tájáról. Használd ki az alkalmat, hogy megismerkedj a Juxttal. Útközben új felfedezéseket tehetsz!",
+        "done": "Jó szórakozást a Juxt-ban!",
+        "done_button": "Kezdjük!",
+        "guest": "Vendég mód",
+        "guest_text": "Jelenleg nem tudjuk ellenőrizni fiókod, ami valószínűleg azt jelenti, hogy egy Nintendo Network fiókkal vagy bejelentkezve. Továbbra is böngészhetsz a Juxtban, de nem fogsz tudni a Yeah! bejegyzéseket vagy saját bejegyzéseket készíteni, amíg be nem jelentkezel egy Pretendo Network fiókkal. További információkért nézd meg a Discord szervert.",
+        "guest_button": "Megértettem",
+        "welcome_text": "A Juxt egy játék közösség, ami összeköti az embereket a világ minden tájáról Mii karakterek használatával. Használd a Juxt-ot, hogy megoszd játék tapasztalataid és találkozz emberekkel a világ minden tájáról.",
+        "google_text": "A Juxtaposition a Google Analytics szolgáltatást használja annak nyomon követésére, hogy a felhasználók hogyan használják szolgáltatásunkat. Az összegyűjtött adatok magukban foglalják, de nem kizárólagosan a látogatás idejét, a meglátogatott oldalakat és az oldalon töltött időt. Ezeket az adatokat semmilyen módon nem kapcsoljuk Önhöz, és sem mi, sem a Google nem használja fel hirdetésekhez."
+    },
+    "activity_feed": {
+        "empty": "Nagyon üres itt. Próbálj meg valakit követni!"
+    },
+    "language": "Magyar"
+}

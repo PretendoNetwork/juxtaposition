@@ -1,0 +1,126 @@
+{
+    "new_post": {
+        "swearing": "Opslag må ikke indeholde upassende sprog.",
+        "new_post_text": "Ny Post",
+        "post_to": "Post til",
+        "text_hint": "Tryk her for at lave et opslag."
+    },
+    "setup": {
+        "welcome": "Velkommen til Juxtaposition!",
+        "welcome_text": "Juxt er et spilfællesskab, der forbinder folk over hele verdenen ved brug af Mii karakterer. Brug Juxt til at dele dine spiloplevelser og mød nye folk over hele verdenen rundt.",
+        "rules": "Juxt Regler",
+        "info": "Hvad er Juxtaposition?",
+        "beta_text": {
+            "first": "Du er i gang med at prøve den første offentlige beta af Juxt. Dette betyder at der kan foretages en masse ændringer hen af vejen.",
+            "third": "Hjemmesiden, dets software og alt indhold der findes på siden er stillet til rådighed på en \"som der er\" og \"som tilgængeligt\" grundlag. Pretendo Netværket udsteder ikke nogen garantier, eten direkte udtrykt eller underforstået, for at egnetheden eller brugbarheden af hjemmesiden, dets software eller noget at dets indhold.",
+            "second": "Dette kan inkludere en fuldstændig fjernelse af alt data i løbet af eller i slutningen betaen."
+        },
+        "rules_text": {
+            "first": "Det følgende er nogle vigtige retningslinjer, der sørger for at Juxt er en god oplevelse for alle. Juxts adfærdskodeks indeholder vigtig information, så vær rar med at give dig selv tid til at læse det omhyggeligt.",
+            "sixth": "Del ikke personlige oplysninger - Dine eller Andres",
+            "twelfth": "Har du spillet det spil?",
+            "fourth": "Vær sød or rare ved hinanden",
+            "second": "Oplæg Kan Ses Verdenen Over",
+            "eighth": "Del ikke Spoilere",
+            "tenth": "Retningslinjer Overtrædelser",
+            "eleventh": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "seventh": ""
+        },
+        "beta": "Beta Ansvarsfralæggelse",
+        "done_button": "Lad os komme i gang!",
+        "guest_button": "Jeg forstår",
+        "experience": "Spilerfaring",
+        "experience_text": {
+            "info": "Fortæl os hvordan du ville forklare dit niveau af erfaring med spil. Du kan ændre denne indstilling senere.",
+            "beginner": "Begynder",
+            "intermediate": "Øvet",
+            "expert": "Ekspert"
+        },
+        "ready_text": "Først og fremmest check ud nogle af fællesskaberne for at se hvad folk rund om verdenen snakker om. Brug det øjeblik til at gøre dig mere bekendt med Juxt. Måske opstår der endda nogle nye opdagelser på vejen!",
+        "done": "Mor dig i Juxt!",
+        "info_text": "Juxt er et brugerdrevet spilfællesskab, hvor du kan kommunikere med folk\nfra hele verdenen. Du kan skrive eller tegne oplag i spilfælleskaber eller sende beskeder direkte til dine venner.",
+        "guest": "",
+        "ready": "",
+        "guest_text": "",
+        "google": "",
+        "google_text": ""
+    },
+    "user_page": {
+        "followers": "Følgere",
+        "country": "Land",
+        "birthday": "Fødselsdag",
+        "friends": "Venner",
+        "pending": "Afventer",
+        "no_friends": "Ingen Venner",
+        "no_followers": "Ingen Følgere",
+        "game_experience": "Spilerfaring",
+        "posts": "Oplæg",
+        "following": "Følger",
+        "follow_user": "Følg",
+        "following_user": "Følger",
+        "befriend": "Bliv Venner",
+        "unfriend": "Afslut Venskab",
+        "no_following": "Følger Ikke Nogen"
+    },
+    "user_settings": {
+        "swearing": "Kommentaren må ikke indeholde upassende sprog.",
+        "profile_settings": "Profilindstillinger",
+        "show_birthday": "Vis Fødselsdag på Profil",
+        "show_country": "Vis Land på Profil",
+        "show_game": "Vis Spilerfaring på Profil",
+        "show_comment": "Vis Kommentar på Profil",
+        "profile_comment": "Profilkommentar"
+    },
+    "global": {
+        "no_posts": "Ingen Opslag",
+        "communities": "Fællesskaber",
+        "notifications": "Notifikationer",
+        "go_back": "Gå Tilbage",
+        "yeahs": "Yeah'er",
+        "more": "Indlæs Flere Opslag",
+        "exit": "Afslut",
+        "next": "Næste",
+        "user_page": "Bruger Side",
+        "activity_feed": "Aktivitetsside",
+        "messages": "Beskeder",
+        "back": "Tilbage",
+        "private": "Privat",
+        "close": "Luk",
+        "save": "Gem"
+    },
+    "all_communities": {
+        "announcements": "Meddelelser",
+        "popular_places": "Populære Steder",
+        "new_communities": "Nye Fællesskaber",
+        "search": "Søg efter fællesskaber...",
+        "text": "Alle Fællesskaber",
+        "ann_string": "Klik her for at se nye meddelelser!",
+        "show_all": "Vis Alle"
+    },
+    "community": {
+        "following": "Følger",
+        "followers": "Følgere",
+        "tags": "Etiketter",
+        "verified": "Verificerede Opslag",
+        "popular": "Populære Opslag",
+        "new": "Nyt Opslag",
+        "follow": "Følg Fællesskab",
+        "posts": "Opslag",
+        "recent": "Nylige Opslag"
+    },
+    "activity_feed": {
+        "empty": "Det ser tomt ud her. Prøv at følge nogen!"
+    },
+    "notifications": {
+        "none": "Ingen notifikationer.",
+        "new_follower": "følger dig!"
+    },
+    "messages": {
+        "coming_soon": "Beskeder er ikke klar endnu. Prøv igen senere!"
+    },
+    "language": "Dansk"
+}

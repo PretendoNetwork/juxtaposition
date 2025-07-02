@@ -1,0 +1,126 @@
+{
+    "global": {
+        "user_page": "Profilo",
+        "activity_feed": "Novaĵoj",
+        "communities": "Komunumoj",
+        "messages": "Mesaĝoj",
+        "notifications": "Avizoj",
+        "go_back": "Reiri",
+        "back": "Reen",
+        "yeahs": "Ŝatoj",
+        "more": "Videbligi pli da afiŝoj",
+        "no_posts": "Neniuj afiŝoj",
+        "private": "Privata",
+        "close": "Fermi",
+        "save": "Konservi",
+        "exit": "Eliri",
+        "next": "Sekvanto"
+    },
+    "language": "Esperanto",
+    "all_communities": {
+        "text": "Ĉiuj Komunumoj",
+        "announcements": "Anoncoj",
+        "ann_string": "Klaku ĉi tie, por vidi lastatempajn anoncojn!",
+        "new_communities": "Novaj Komunumoj",
+        "show_all": "Montri Ĉiun",
+        "search": "Serĉi Komunumojn...",
+        "popular_places": "Popularaj Komunumoj"
+    },
+    "community": {
+        "followers": "Abonantoj",
+        "following": "Abonanta",
+        "follow": "Aboni Komunumon",
+        "posts": "Afiŝoj",
+        "tags": "Etikedoj",
+        "recent": "Lastatempaj Afiŝoj",
+        "popular": "Popularaj Afiŝoj",
+        "verified": "Kontrolitaj Afiŝoj",
+        "new": "Nova Afiŝo"
+    },
+    "user_page": {
+        "country": "Lando",
+        "birthday": "Naskiĝtago",
+        "game_experience": "Ludosperto",
+        "posts": "Afiŝoj",
+        "friends": "Amikoj",
+        "following": "Abonanta",
+        "followers": "Abonantoj",
+        "follow_user": "Aboni",
+        "following_user": "Abonanta",
+        "befriend": "Amikiĝi",
+        "pending": "Atendanta",
+        "unfriend": "Malamikiĝi",
+        "no_friends": "Neniuj Amikoj",
+        "no_following": "Ne Abonas Iun",
+        "no_followers": "Neniuj Abonantoj"
+    },
+    "user_settings": {
+        "profile_settings": "Profilagordoj",
+        "profile_comment": "Profilrimarko",
+        "show_country": "Montri Landon en Profilo",
+        "show_birthday": "Montri Naskiĝtagon en Profilo",
+        "show_game": "Montri Ludosperton en Profilo",
+        "swearing": "La profilrimarko ne povas enhavi maldecaĵojn.",
+        "show_comment": "Montri komenton en profilo"
+    },
+    "activity_feed": {
+        "empty": "Malplenas ĉi tie. Provu aboni iun!"
+    },
+    "notifications": {
+        "none": "Neniuj avizoj.",
+        "new_follower": "abonis vin!"
+    },
+    "new_post": {
+        "new_post_text": "Novo Afiŝo",
+        "post_to": "Afiŝi al",
+        "text_hint": "Tuŝu ĉi tie por afiŝi.",
+        "swearing": "La afiŝo ne povas enhavi maldecaĵojn"
+    },
+    "messages": {
+        "coming_soon": "Mesaĝoj ankoraŭ ne estas disponeblaj. Baldaŭ revenu!"
+    },
+    "setup": {
+        "welcome": "Bonvenu en Juxtaposition!",
+        "beta": "Beta-disklerigo",
+        "welcome_text": "Juxt estas videoludado-komunumo kuniganta homojn el ĉiuj partoj de la mondo per Mii-figuroj. Uzu Juxt por diskonigi viajn ludadospertojn kaj renkontiĝi homojn el ĉiu angulo de la mondo.",
+        "beta_text": {
+            "first": "Vi tuj provas unuan publikan beton de Juxt. Tio signifas ke multe ankoraŭ ne estas klara, kaj iam ajn multe povas ŝanĝiĝi.",
+            "second": "Tio povas enteni totalan forviŝon de la datenbankon je la konludo de, aŭ dum la betoperiodo.",
+            "third": "La retejo, ĝia programaro kaj ĉiom da ĝia enhavo proviziĝas kiel ili estas kaj laŭ havebleco. La Pretendo-reto donas neniajn garantiojn, nek eksplicitajn nek implicitajn, pri la taŭgeco aŭ uzebleco de la retejo, ĝia programaro aŭ iom da ĝia enhavo."
+        },
+        "rules_text": {
+            "third": "Juxt enhavas multajn videoludokomunumojn kie homoj de la tuta mondo povas dividi siajn pensojn. Afiŝante en komunumo, memoru ke ĉiu povas vidi ĝin, do bonvolu esprimi vin kiel ĉiu povas ĝui ĝin. Prudente agu, kaj pensu antaŭ ol vi afiŝas. Juxt estas medio ankaŭ disponebla per la Interreto, do konsideru ke neuzantoj de Juxt ankaŭ povus vidi viajn afiŝojn. Krome ĉiujn komentojn faritajn sub la afiŝoj de viaj amikoj ne nur viaj amikoj, sed ankaŭ homoj tra mondo vidos. Bonvolu pripensi ĉi tion.",
+            "second": "Afiŝoj Estas Videblaj Tra la Mondo",
+            "first": "Sekvante kelkaj gravaj gvidlinioj por ke Juxt estu amuza kaj ĝuable sperto por ĉiuj. La kodo de konduto de Juxt enhavas detalajn informojn, do bonvolu diligente legi.",
+            "fourth": "Estu Agrabla Unu al la Alia",
+            "fifth": "Por ke Juxt restu agrabla loko por ĉiu, ni petas ke vi estu konsiderema al aliaj uzantoj. Asistu nin restigi Juxt agrablan sperton per afiŝi nek maldecaĵojn nek ofendaĵojn.",
+            "sixth": "Ne afiŝu privatajn informojn, nek viajn, nek alies",
+            "ninth": "Kelkaj homoj venas al Juxt serĉante konsilojn kaj lertaĵojn por ludoj, sed aliaj volas malkovri la sekretojn de ludo tute memstare. Afiŝoj kiuj rivelas sekretojn de ludo aŭ ĝia rakonto estas nomitaj \"spoilers\". Se vi afiŝas ion pri ludo, kiu povus esti spoiler, nepre kontrolu la skatolon Spoilers antaŭ sendi vian afiŝon. Tiel homoj, kiuj ne volas esti difektitaj, ne vidos vian afiŝon.",
+            "eighth": "Ne Afiŝu Fimalkaŝojn",
+            "tenth": "Malrespekti la Kondutkodon",
+            "twelfth": "Ĉu Vi Ludis Tiun Ludon?",
+            "seventh": "Memoru, koni iun sur Juxt ne estas la sama kiel koni tiun en la reala vivo. Neniam dividu vian retpoŝtadreson, hejman adreson, laboran aŭ lernejan nomon, aŭ aliajn persone identigeblajn informojn kun iu ajn sur Juxt, kaj ankaŭ neniam dividu la informojn de iu alia. Aldone, se iu, kiun vi renkontas en Juxt, invitas vin renkonti tiun en la reala mondo, ne akceptu. Juxt estas interreta komunumo kaj ne estu uzata por aranĝi verajn kunvenojn.",
+            "eleventh": "Nia celo estas teni Juxt agrabla kaj ĝuebla por ĉiu. En la kazo ke iu malrespektas la Juxt-an Kondutkodon, ni adekvate agu, ĝis kaj inkluzive bari la malrespektintan uzanton aŭ konzolon.",
+            "thirteenth": "Se vi afiŝas en komunumo por ludo ludita de vi, viaj afiŝoj havos piktogramon indikantan ke vi jam ludis ĝin."
+        },
+        "info": "Kio estas Juxtaposition?",
+        "info_text": "Juxt estas uzantobazita videoludokomunumo kie oni povas interagi kun homoj\n                de la tuta mondo. Oni povas skribi aŭ desegni afiŝojn en videoludokomunumoj aŭ rekte mesaĝi al viaj amikoj.",
+        "rules": "reguloj de Juxt",
+        "google_text": "Juntapozicio uzas Google Analytics por spuri kiel uzantoj uzas nian servon. La datumoj kolektitaj inkluzivas sed ne estas limigitaj al tempo de vizito, paĝoj vizititaj kaj tempo pasigita en la retejo. Ĉi tiuj datumoj neniel estas ligitaj al vi, kaj ne estas uzataj por reklamoj de ni aŭ Guglo.",
+        "experience": "Ludosperto",
+        "experience_text": {
+            "expert": "Eksperto",
+            "beginner": "Komencanto",
+            "intermediate": "Mezo",
+            "info": "Bonvolu rakonti al ni kiel vi priskribus vian spertonivelon pri ludoj. Vi povas poste ŝanĝi tiun ĉi agordon."
+        },
+        "google": "Google Analytics",
+        "ready_text": "Komence, miru kelkajn komunumojn kaj vidu pri kio afiŝadas homoj de la tuta mondo. Profitu ĉi tiun ŝancon por kutimiĝi kun Juxt. Eble kutimiĝante vi malkovrus ion aŭ iojn!",
+        "done": "Amuziĝu en Juxt!",
+        "ready": "Preta por Uzi Juxt",
+        "done_button": "Ni Iru!",
+        "guest": "Gastmodo",
+        "guest_button": "Mi Komprenas",
+        "guest_text": "Ni ĉi-momente ne povas konfirmi vian konton. Tio verŝajne signifas ke vi enŝultadas per Nintendo Network-konto. Vi povos paĝumi Juxt-e, sed vi ne povos Jes-i afiŝojn aŭ fari viajn proprajn afiŝojn ĝis vi enŝultas per Pretendo Network-konto. Por pli da informoj vidu en la Discord-servilo."
+    }
+}

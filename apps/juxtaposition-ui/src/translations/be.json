@@ -43,7 +43,84 @@
         "posts": "Пасты",
         "friends": "Сябры",
         "following": "Падпіскі",
-        "followers": "Падпісчыкі"
+        "followers": "Падпісчыкі",
+        "follow_user": "Сачыць",
+        "following_user": "Далей",
+        "befriend": "Сябраваць",
+        "pending": "Дапытлівы",
+        "no_following": "",
+        "unfriend": "",
+        "no_followers": "",
+        "no_friends": ""
     },
-    "language": "Беларуская"
+    "language": "Беларуская",
+    "setup": {
+        "experience_text": {
+            "beginner": "Пачатковец",
+            "expert": "Эксперт",
+            "info": "",
+            "intermediate": ""
+        },
+        "rules_text": {
+            "tenth": "Парушэнні Кодэкса паводзін",
+            "thirteenth": "Калі вы размяшчаеце паведамленні ў суполцы аб гульні, у якую вы гулялі, вашы паведамленні будуць мець значок, які паказвае, што вы ў яе гулялі.",
+            "eleventh": "",
+            "third": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "second": "",
+            "sixth": "",
+            "first": "",
+            "eighth": "",
+            "seventh": "",
+            "twelfth": ""
+        },
+        "experience": "Вопыт гульні",
+        "beta_text": {
+            "third": "",
+            "second": "",
+            "first": ""
+        },
+        "guest_button": "",
+        "done_button": "",
+        "guest": "",
+        "ready": "",
+        "guest_text": "",
+        "google": "",
+        "rules": "",
+        "welcome_text": "",
+        "google_text": "",
+        "info": "",
+        "info_text": "",
+        "ready_text": "",
+        "done": "",
+        "beta": "",
+        "welcome": ""
+    },
+    "notifications": {
+        "none": "",
+        "new_follower": ""
+    },
+    "new_post": {
+        "swearing": "",
+        "text_hint": "",
+        "new_post_text": "",
+        "post_to": ""
+    },
+    "user_settings": {
+        "show_game": "",
+        "show_comment": "",
+        "show_birthday": "",
+        "profile_settings": "",
+        "profile_comment": "",
+        "swearing": "",
+        "show_country": ""
+    },
+    "activity_feed": {
+        "empty": ""
+    },
+    "messages": {
+        "coming_soon": ""
+    }
 }
