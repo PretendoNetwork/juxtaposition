@@ -57,6 +57,8 @@ export interface IPost {
 // on input but not output
 // We really need an ORM
 type PostDefaultedFields =
+	'id' | // generated in save hook
+	'body' |
 	'is_autopost' |
 	'is_community_private_autopost' |
 	'is_spoiler' |

@@ -65,7 +65,12 @@ app.use((_request: express.Request, response: express.Response) => {
 
 // non-404 error handler
 logger.info('Creating non-404 status handler');
-app.use((_error: unknown, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
+app.use((error: unknown, request: express.Request, response: express.Response, next: express.NextFunction) => {
+	if (response.headersSent) {
+		return next(error);
+	}
+
+	request.log.error(request, 'Request failed!');
 	return serverError(response, ApiErrorCode.UNKNOWN_ERROR);
 });
 

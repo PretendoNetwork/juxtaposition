@@ -12,10 +12,13 @@ import type { PostData, PostPainting, PostScreenshot, PostTopicTag } from '@/typ
  * If you add default: or required:, please also update IPost and IPostInput!
  */
 const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
-	id: { type: String, required: true },
+	id: { type: String }, // generated in save hook
 	title_id: { type: String },
 	screen_name: { type: String, required: true },
-	body: { type: String, required: true },
+	body: {
+		type: String,
+		default: ''
+	},
 	app_data: { type: String },
 
 	painting: { type: String },
