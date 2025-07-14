@@ -19,7 +19,7 @@ const PermissionsSchema = new Schema<ICommunityPermissions>({
 	},
 	minimum_new_community_access_level: {
 		type: Number,
-		default: 0
+		default: 3
 	}
 });
 
