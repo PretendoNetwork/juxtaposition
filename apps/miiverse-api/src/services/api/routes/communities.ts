@@ -3,7 +3,7 @@ import xmlbuilder from 'xmlbuilder';
 import multer from 'multer';
 import { z } from 'zod';
 import { Post } from '@/models/post';
-import { Community } from '@/models/community';
+import { Community, tryCreateCommunity } from '@/models/community';
 import { getValueFromQueryString } from '@/util';
 import {
 	getMostPopularCommunities,
@@ -298,9 +298,7 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 		return badRequest(response, ApiErrorCode.CREATE_TOO_MANY_FAVORITES, 403);
 	}
 
-	const communitiesCount = await Community.countDocuments();
-	const communityID = (parseInt(parentCommunity.community_id) + (5000 * communitiesCount)); // Change this to auto increment
-	const community = await Community.create({
+	const community = await tryCreateCommunity({
 		platform_id: 0, // WiiU
 		name: request.body.name,
 		description: request.body.description || '',
@@ -311,9 +309,7 @@ router.post('/', multer().none(), async function (request: express.Request, resp
 		admins: parentCommunity.admins,
 		owner: request.pid,
 		icon: request.body.icon,
-		title_id: request.paramPack.title_id,
-		community_id: communityID.toString(),
-		olive_community_id: communityID.toString(),
+		title_id: [request.paramPack.title_id],
 		app_data: request.body.app_data || '',
 		user_favorites: [request.pid]
 	});
