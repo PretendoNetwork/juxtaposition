@@ -163,7 +163,7 @@ export async function tryCreateCommunity(community: Omit<ICommunityInput, 'commu
 
 	// Community ID is a random 32-bit int, but ensure larger than 524288. Values lower than this
 	// are reserved for game-specific hardcoding
-	const community_id = (crypto.randomBytes(4).readUInt32BE(0) | 0x80000).toString();
+	const community_id = crypto.randomInt(0x80000, 0xFFFFFFFF).toString();
 	// Olive community ID is random 64-bit, but some games (MK8?) seem to prefer if the top bit is set
 	const olive_community_id = (crypto.randomBytes(8).readBigUInt64BE(0) | (1n << 63n)).toString();
 
