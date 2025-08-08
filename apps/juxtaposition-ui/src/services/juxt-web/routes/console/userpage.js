@@ -1,13 +1,12 @@
 const express = require('express');
 const multer = require('multer');
 const moment = require('moment');
-const { getPostsByPoster } = require('@/api/post');
+const { getPostsByPoster, getPostsByEmpathy } = require('@/api/post');
 const database = require('@/database');
 const util = require('@/util');
 const { getUserFriendPIDs } = util;
 const { POST } = require('@/models/post');
 const { SETTINGS } = require('@/models/settings');
-const { config } = require('@/config');
 const { logger } = require('@/logger');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
@@ -148,7 +147,7 @@ async function userPage(req, res, userID) {
 	}
 
 	const userSettings = await database.getUserSettings(userID);
-	const posts = await getPostsByPoster(req.tokens, userID);
+	const posts = await getPostsByPoster(req.tokens, userID, 0);
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();
@@ -211,7 +210,7 @@ async function userRelations(req, res, userID) {
 	let selection;
 
 	if (req.params.type === 'yeahs') {
-		const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).limit(config.postLimit);
+		const posts = await getPostsByEmpathy(req.tokens, userID, 0);
 		const communityMap = await util.getCommunityHash();
 		const bundle = {
 			posts,
@@ -300,7 +299,7 @@ async function morePosts(req, res, userID) {
 	if (!offset) {
 		offset = 0;
 	}
-	const posts = await database.getUserPostsOffset(userID, config.postLimit, offset);
+	const posts = await getPostsByPoster(req.tokens, userID, offset);
 
 	const bundle = {
 		posts,
@@ -330,7 +329,7 @@ async function moreYeahPosts(req, res, userID) {
 	if (!offset) {
 		offset = 0;
 	}
-	const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).skip(offset).limit(config.postLimit);
+	const posts = await getPostsByEmpathy(req.tokens, userID, offset);
 
 	const bundle = {
 		posts: posts,

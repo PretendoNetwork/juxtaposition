@@ -15,15 +15,17 @@ postsRouter.get('/posts', guards.user, handle(async ({ req, res }) => {
 	const query = z.object({
 		topic_tag: z.string().optional(),
 		posted_by: z.coerce.number().optional(),
-		empathy_by: z.coerce.number().optional()
+		empathy_by: z.coerce.number().optional(),
+		offset: z.coerce.number().default(0)
 	}).parse(req.query);
 
 	const posts = await Post.find(deleteOptional({
+		message_to_pid: null, // messages aren't really posts
 		pid: query.posted_by,
 		topic_tag: query.topic_tag,
 		yeahs: query.empathy_by,
 		...filterRemovedPosts(res.locals.account)
-	})).sort({ created_at: -1 }).limit(10); // TODO configure postLimit?
+	})).sort({ created_at: -1 }).skip(query.offset).limit(10); // TODO configure postLimit?
 
 	// PostDto[]
 	return posts.map(mapPost);
