@@ -5,19 +5,19 @@ import { errors } from '@/services/internal/errors';
 import { deleteOptional, filterRemovedPosts, handle } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPost } from '@/services/internal/contract/post';
+import { mapPages } from '@/services/internal/contract/page';
+import { pageSchema } from '@/services/internal/pagination';
 
 export const postsRouter = express.Router();
 
 // Get posts by topic tag, poster, or empathy
-// TODO paging
 postsRouter.get('/posts', guards.user, handle(async ({ req, res }) => {
 	// the idea is that any combination of these can be left undefined
 	const query = z.object({
 		topic_tag: z.string().optional(),
 		posted_by: z.coerce.number().optional(),
-		empathy_by: z.coerce.number().optional(),
-		offset: z.coerce.number().default(0)
-	}).parse(req.query);
+		empathy_by: z.coerce.number().optional()
+	}).and(pageSchema()).parse(req.query);
 
 	const posts = await Post.find(deleteOptional({
 		message_to_pid: null, // messages aren't really posts
@@ -25,10 +25,10 @@ postsRouter.get('/posts', guards.user, handle(async ({ req, res }) => {
 		topic_tag: query.topic_tag,
 		yeahs: query.empathy_by,
 		...filterRemovedPosts(res.locals.account)
-	})).sort({ created_at: -1 }).skip(query.offset).limit(10); // TODO configure postLimit?
+	})).sort({ created_at: -1 }).skip(query.offset).limit(query.limit);
 
-	// PostDto[]
-	return posts.map(mapPost);
+	// PageDto<PostDto>
+	return mapPages(posts.map(mapPost));
 }));
 
 // Get post by id

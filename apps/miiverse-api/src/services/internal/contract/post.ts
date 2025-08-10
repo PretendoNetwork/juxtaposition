@@ -1,7 +1,7 @@
 import type { IPost } from '@/types/mongoose/post';
 
 /* !!! HEY
- * This type has a copy in apps/juxtaposition-ui/src/models/api/post.ts
+ * This type has a copy in apps/juxtaposition-ui/src/api/post.ts
  * Make sure to copy over any modifications! */
 
 /* This type is the contract for the frontend. If we make changes to the db, this shape should be kept. */

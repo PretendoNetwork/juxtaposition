@@ -147,7 +147,7 @@ async function userPage(req, res, userID) {
 	}
 
 	const userSettings = await database.getUserSettings(userID);
-	const posts = await getPostsByPoster(req.tokens, userID, 0);
+	const posts = (await getPostsByPoster(req.tokens, userID, 0))?.items;
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();
@@ -210,7 +210,7 @@ async function userRelations(req, res, userID) {
 	let selection;
 
 	if (req.params.type === 'yeahs') {
-		const posts = await getPostsByEmpathy(req.tokens, userID, 0);
+		const posts = (await getPostsByEmpathy(req.tokens, userID, 0))?.items;
 		const communityMap = await util.getCommunityHash();
 		const bundle = {
 			posts,
@@ -299,7 +299,7 @@ async function morePosts(req, res, userID) {
 	if (!offset) {
 		offset = 0;
 	}
-	const posts = await getPostsByPoster(req.tokens, userID, offset);
+	const posts = (await getPostsByPoster(req.tokens, userID, offset))?.items;
 
 	const bundle = {
 		posts,
@@ -329,7 +329,7 @@ async function moreYeahPosts(req, res, userID) {
 	if (!offset) {
 		offset = 0;
 	}
-	const posts = await getPostsByEmpathy(req.tokens, userID, offset);
+	const posts = (await getPostsByEmpathy(req.tokens, userID, offset))?.items;
 
 	const bundle = {
 		posts: posts,
