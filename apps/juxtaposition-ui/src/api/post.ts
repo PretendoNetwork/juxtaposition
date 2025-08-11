@@ -76,7 +76,7 @@ export async function getPostsByPoster(tokens: UserTokens, poster_pid: number, o
 
 export async function getPostsByEmpathy(tokens: UserTokens, empathy_by: number, offset: number): Promise<PageDto<PostDto> | null> {
 	const params = new URLSearchParams({
-		posted_by: empathy_by.toString(),
+		empathy_by: empathy_by.toString(),
 		offset: offset.toString()
 	});
 	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts?${params}`);
