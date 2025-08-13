@@ -102,15 +102,6 @@ async function getPostByID(postID) {
 	});
 }
 
-async function getPostsByUserID(userID) {
-	verifyConnected();
-	return POST.find({
-		pid: userID,
-		parent: null,
-		removed: false
-	});
-}
-
 async function getPostReplies(postID, number) {
 	verifyConnected();
 	return POST.find({
@@ -139,16 +130,6 @@ async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
 		message_to_pid: null,
 		removed: false
 	}).limit(numberOfPosts);
-}
-
-async function getNumberUserPostsByID(userID, number, includeRemoved = false) {
-	verifyConnected();
-	return POST.find({
-		pid: userID,
-		parent: null,
-		message_to_pid: null,
-		...(includeRemoved ? {} : { removed: false })
-	}).sort({ created_at: -1 }).limit(number);
 }
 
 async function getTotalPostsByUserID(userID) {
@@ -252,16 +233,6 @@ async function getUserPostsAfterTimestamp(post, numberOfPosts) {
 		message_to_pid: null,
 		removed: false
 	}).limit(numberOfPosts);
-}
-
-async function getUserPostsOffset(pid, limit, offset) {
-	verifyConnected();
-	return POST.find({
-		pid: pid,
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).skip(offset).limit(limit).sort({ created_at: -1 });
 }
 
 async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
@@ -529,17 +500,14 @@ module.exports = {
 	getNumberVerifiedCommunityPostsByID,
 	getNewPostsByCommunity,
 	getPostsByCommunityKey,
-	getPostsByUserID,
 	getPostReplies,
 	getUserPostRepliesAfterTimestamp,
-	getNumberUserPostsByID,
 	getTotalPostsByUserID,
 	getPostByID,
 	getDuplicatePosts,
 	getEndpoints,
 	getEndPoint,
 	getUserPostsAfterTimestamp,
-	getUserPostsOffset,
 	getCommunityPostsAfterTimestamp,
 	getNewsFeed,
 	getNewsFeedAfterTimestamp,
