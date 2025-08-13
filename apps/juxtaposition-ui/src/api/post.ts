@@ -1,4 +1,5 @@
 import { apiFetchUser } from '@/fetch';
+import type { PageDto } from '@/api/page';
 import type { UserTokens } from '@/fetch';
 
 /* !!! HEY
@@ -62,4 +63,23 @@ export type PostDto = {
 export async function getPostById(tokens: UserTokens, post_id: string): Promise<PostDto | null> {
 	const post = await apiFetchUser<PostDto>(tokens, `/api/v1/posts/${post_id}`);
 	return post;
+}
+
+export async function getPostsByPoster(tokens: UserTokens, poster_pid: number, offset: number): Promise<PageDto<PostDto> | null> {
+	const params = new URLSearchParams({
+		posted_by: poster_pid.toString(),
+		offset: offset.toString()
+	});
+	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts?${params}`);
+	return posts;
+}
+
+export async function getPostsByEmpathy(tokens: UserTokens, empathy_by: number, offset: number): Promise<PageDto<PostDto> | null> {
+	const params = new URLSearchParams({
+		empathy_by: empathy_by.toString(),
+		offset: offset.toString(),
+		include_replies: 'true'
+	});
+	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts?${params}`);
+	return posts;
 }

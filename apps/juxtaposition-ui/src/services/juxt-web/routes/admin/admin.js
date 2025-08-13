@@ -10,8 +10,8 @@ const { COMMUNITY } = require('@/models/communities');
 const util = require('@/util');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-const { config } = require('@/config');
 const { logger } = require('@/logger');
+const { getPostsByPoster } = require('@/api/post');
 const router = express.Router();
 
 router.get('/posts', async function (req, res) {
@@ -87,7 +87,7 @@ router.get('/accounts/:pid', async function (req, res) {
 		return res.redirect('/404');
 	}
 	const userSettings = await database.getUserSettings(req.params.pid);
-	const posts = await database.getNumberUserPostsByID(req.params.pid, config.postLimit);
+	const posts = (await getPostsByPoster(req.tokens, req.params.pid, 0)).items;
 	const communityMap = await util.getCommunityHash();
 	const userMap = util.getUserHash();
 	const reasonMap = util.getReasonMap();
