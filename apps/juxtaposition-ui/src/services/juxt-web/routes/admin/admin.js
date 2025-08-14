@@ -1,20 +1,20 @@
-const crypto = require('crypto');
-const express = require('express');
-const moment = require('moment');
-const multer = require('multer');
-const { resizeImage, getTGAFromPNG } = require('@/images');
-const database = require('@/database');
-const { POST } = require('@/models/post');
-const { SETTINGS } = require('@/models/settings');
-const { COMMUNITY } = require('@/models/communities');
-const util = require('@/util');
+import crypto from 'crypto';
+import express from 'express';
+import moment from 'moment';
+import multer from 'multer';
+import { resizeImage, getTGAFromPNG } from '@/images';
+import * as database from '@/database';
+import { POST } from '@/models/post';
+import { SETTINGS } from '@/models/settings';
+import { COMMUNITY } from '@/models/communities';
+import * as util from '@/util';
+import { logger } from '@/logger';
+import { getPostsByPoster } from '@/api/post';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-const { logger } = require('@/logger');
-const { getPostsByPoster } = require('@/api/post');
-const router = express.Router();
+export const adminRouter = express.Router();
 
-router.get('/posts', async function (req, res) {
+adminRouter.get('/posts', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
@@ -46,7 +46,7 @@ router.get('/posts', async function (req, res) {
 	});
 });
 
-router.get('/accounts', async function (req, res) {
+adminRouter.get('/accounts', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
@@ -75,7 +75,7 @@ router.get('/accounts', async function (req, res) {
 	});
 });
 
-router.get('/accounts/:pid', async function (req, res) {
+adminRouter.get('/accounts/:pid', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
@@ -132,7 +132,7 @@ router.get('/accounts/:pid', async function (req, res) {
 	});
 });
 
-router.post('/accounts/:pid', async (req, res) => {
+adminRouter.post('/accounts/:pid', async (req, res) => {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
@@ -222,7 +222,7 @@ router.post('/accounts/:pid', async (req, res) => {
 	}
 });
 
-router.delete('/:reportID', async function (req, res) {
+adminRouter.delete('/:reportID', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.sendStatus(401);
 	}
@@ -259,7 +259,7 @@ router.delete('/:reportID', async function (req, res) {
 	return res.sendStatus(200);
 });
 
-router.put('/:reportID', async function (req, res) {
+adminRouter.put('/:reportID', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.sendStatus(401);
 	}
@@ -281,7 +281,7 @@ router.put('/:reportID', async function (req, res) {
 	return res.sendStatus(200);
 });
 
-router.get('/communities', async function (req, res) {
+adminRouter.get('/communities', async function (req, res) {
 	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
@@ -300,7 +300,7 @@ router.get('/communities', async function (req, res) {
 	});
 });
 
-router.get('/communities/new', async function (req, res) {
+adminRouter.get('/communities/new', async function (req, res) {
 	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
@@ -310,7 +310,7 @@ router.get('/communities/new', async function (req, res) {
 	});
 });
 
-router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 1 }, { name: 'CTRbrowserHeader', maxCount: 1 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
+adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 1 }, { name: 'CTRbrowserHeader', maxCount: 1 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
 	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
@@ -408,7 +408,7 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	);
 });
 
-router.get('/communities/:community_id', async function (req, res) {
+adminRouter.get('/communities/:community_id', async function (req, res) {
 	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
@@ -425,7 +425,7 @@ router.get('/communities/:community_id', async function (req, res) {
 	});
 });
 
-router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 1 }, {
+adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 1 }, {
 	name: 'CTRbrowserHeader',
 	maxCount: 1
 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
@@ -563,7 +563,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	}
 });
 
-router.delete('/communities/:id', async (req, res) => {
+adminRouter.delete('/communities/:id', async (req, res) => {
 	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
@@ -635,5 +635,3 @@ function getCommunityPlatform(platform_id) {
 			return `Unknown (${platform_id})`;
 	}
 }
-
-module.exports = router;

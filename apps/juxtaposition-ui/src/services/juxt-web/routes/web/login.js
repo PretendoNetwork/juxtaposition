@@ -1,17 +1,17 @@
-const express = require('express');
-const router = express.Router();
-const database = require('@/database');
-const util = require('@/util');
-const { config } = require('@/config');
-const { logger } = require('@/logger');
+import * as express from 'express';
+import * as database from '@/database';
+import * as util from '@/util';
+import { config } from '@/config';
+import { logger } from '@/logger';
 
+export const loginRouter = express.Router();
 const cookieDomain = config.http.cookieDomain;
 
-router.get('/', async function (req, res) {
+loginRouter.get('/', async function (req, res) {
 	res.render(req.directory + '/login.ejs', { toast: null, redirect: req.query.redirect ?? '/' });
 });
 
-router.post('/', async (req, res) => {
+loginRouter.post('/', async (req, res) => {
 	const { username, password, redirect } = req.body;
 	const login = await util.login(username, password).catch((e) => {
 		switch (e.details) {
@@ -71,5 +71,3 @@ router.post('/', async (req, res) => {
 
 	res.redirect(safe_redirect);
 });
-
-module.exports = router;

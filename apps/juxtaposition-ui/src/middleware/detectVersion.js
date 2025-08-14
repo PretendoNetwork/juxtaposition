@@ -1,4 +1,4 @@
-const util = require('@/util');
+import * as util from "@/util";
 
 async function detectVersion(request, response, next) {
 	request.timerDate = Date.now();
@@ -19,4 +19,4 @@ function includes(request, domain) {
 	return request.subdomains.findIndex(element => element.includes(domain)) !== -1;
 }
 
-module.exports = detectVersion;
+export default detectVersion;

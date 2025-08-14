@@ -1,9 +1,9 @@
-const redis = require('redis');
-const { logger } = require('@/logger');
-const { config } = require('@/config');
+import * as redis from 'redis';
+import { logger } from '@/logger';
+import { config } from '@/config';
 const { host, port } = config.redis;
 
-const redisClient = redis.createClient({
+export const redisClient = redis.createClient({
 	url: `redis://${host}:${port}`
 });
 
@@ -15,7 +15,7 @@ redisClient.on('connect', () => {
 	logger.success('Redis connected');
 });
 
-async function setValue(key, value, expireTime) {
+export async function setValue(key, value, expireTime) {
 	if (!redisClient.isOpen) {
 		return false;
 	}
@@ -26,7 +26,7 @@ async function setValue(key, value, expireTime) {
 	return true;
 }
 
-async function getValue(key) {
+export async function getValue(key) {
 	if (!redisClient.isOpen) {
 		return false;
 	}
@@ -35,7 +35,7 @@ async function getValue(key) {
 	return result;
 }
 
-async function removeValue(key) {
+export async function removeValue(key) {
 	if (!redisClient.isOpen) {
 		return false;
 	}
@@ -43,10 +43,3 @@ async function removeValue(key) {
 	await redisClient.del(key);
 	return true;
 }
-
-module.exports = {
-	redisClient,
-	setValue,
-	getValue,
-	removeValue
-};

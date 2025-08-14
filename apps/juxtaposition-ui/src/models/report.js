@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const ReportSchema = new Schema({
+export const ReportSchema = new Schema({
 	pid: Number,
 	reported_by: Number,
 	post_id: String,
@@ -27,9 +27,4 @@ ReportSchema.methods.resolve = async function (pid, note) {
 	await this.save();
 };
 
-const REPORT = model('REPORT', ReportSchema);
-
-module.exports = {
-	ReportSchema,
-	REPORT
-};
+export const REPORT = model('REPORT', ReportSchema);

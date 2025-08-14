@@ -1,9 +1,9 @@
-const express = require('express');
-const database = require('@/database');
-const util = require('@/util');
-const router = express.Router();
+import * as express from 'express';
+import * as database from '@/database';
+import * as util from '@/util';
+export const showRouter = express.Router();
 
-router.get('/', async function (req, res) {
+showRouter.get('/', async function (req, res) {
 	if (req.pid === 1000000000) {
 		return res.render(req.directory + '/guest_notice.ejs');
 	}
@@ -30,11 +30,11 @@ router.get('/', async function (req, res) {
 	}
 });
 
-router.get('/first', async function (req, res) {
+showRouter.get('/first', async function (req, res) {
 	res.render(req.directory + '/first_run.ejs');
 });
 
-router.post('/newUser', async function (req, res) {
+showRouter.post('/newUser', async function (req, res) {
 	if (req.pid === null || !req.new_users || req.directory === 'web') {
 		return res.sendStatus(401);
 	}
@@ -51,5 +51,3 @@ router.post('/newUser', async function (req, res) {
 		res.sendStatus(504);
 	}
 });
-
-module.exports = router;

@@ -1,28 +1,27 @@
-const express = require('express');
-const multer = require('multer');
-const moment = require('moment');
-const { getPostsByPoster, getPostsByEmpathy } = require('@/api/post');
-const database = require('@/database');
-const util = require('@/util');
-const { getUserFriendPIDs } = util;
-const { POST } = require('@/models/post');
-const { SETTINGS } = require('@/models/settings');
-const { logger } = require('@/logger');
-const router = express.Router();
+import express from 'express';
+import multer from 'multer';
+import moment from 'moment';
+import { getPostsByPoster, getPostsByEmpathy } from '@/api/post';
+import * as database from '@/database';
+import { getUserFriendPIDs } from '@/util';
+import { POST } from '@/models/post';
+import { SETTINGS } from '@/models/settings';
+import { logger } from '@/logger';
+export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
-router.get('/menu', async function (req, res) {
+userPageRouter.get('/menu', async function (req, res) {
 	const user = await database.getUserSettings(req.pid);
 	res.render('ctr/user_menu.ejs', {
 		user: user
 	});
 });
 
-router.get('/me', async function (req, res) {
+userPageRouter.get('/me', async function (req, res) {
 	await userPage(req, res, req.pid);
 });
 
-router.get('/notifications.json', async function (req, res) {
+userPageRouter.get('/notifications.json', async function (req, res) {
 	const notifications = await database.getUnreadNotificationCount(req.pid);
 	const messagesCount = await database.getUnreadConversationCount(req.pid);
 	res.send(
@@ -33,7 +32,7 @@ router.get('/notifications.json', async function (req, res) {
 	);
 });
 
-router.get('/downloadUserData.json', async function (req, res) {
+userPageRouter.get('/downloadUserData.json', async function (req, res) {
 	res.set('Content-Type', 'text/json');
 	res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
 	const posts = await POST.find({ pid: req.pid });
@@ -47,7 +46,7 @@ router.get('/downloadUserData.json', async function (req, res) {
 	res.send(doc);
 });
 
-router.get('/me/settings', async function (req, res) {
+userPageRouter.get('/me/settings', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	const communityMap = await util.getCommunityHash();
 	res.render(req.directory + '/settings.ejs', {
@@ -57,11 +56,11 @@ router.get('/me/settings', async function (req, res) {
 	});
 });
 
-router.get('/me/:type', async function (req, res) {
+userPageRouter.get('/me/:type', async function (req, res) {
 	await userRelations(req, res, req.pid);
 });
 
-router.post('/me/settings', upload.none(), async function (req, res) {
+userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 
 	userSettings.country_visibility = !!req.body.country;
@@ -78,24 +77,24 @@ router.post('/me/settings', upload.none(), async function (req, res) {
 	res.redirect('/users/me');
 });
 
-router.get('/show', async function (req, res) {
+userPageRouter.get('/show', async function (req, res) {
 	res.redirect(`/users/${req.query.pid}`);
 });
 
-router.get('/:pid/more', async function (req, res) {
+userPageRouter.get('/:pid/more', async function (req, res) {
 	await morePosts(req, res, req.params.pid);
 });
 
-router.get('/:pid/yeahs/more', async function (req, res) {
+userPageRouter.get('/:pid/yeahs/more', async function (req, res) {
 	await moreYeahPosts(req, res, req.params.pid);
 });
 
-router.get('/:pid/:type', async function (req, res) {
+userPageRouter.get('/:pid/:type', async function (req, res) {
 	await userRelations(req, res, req.params.pid);
 });
 
 // TODO: Remove the need for a parameter to toggle the following state
-router.post('/follow', upload.none(), async function (req, res) {
+userPageRouter.post('/follow', upload.none(), async function (req, res) {
 	const userToFollowContent = await database.getUserContent(req.body.id);
 	const userContent = await database.getUserContent(req.pid);
 	if (userContent !== null && userContent.followed_users.indexOf(userToFollowContent.pid) === -1) {
@@ -116,7 +115,7 @@ router.post('/follow', upload.none(), async function (req, res) {
 	}
 });
 
-router.get('/:pid', async function (req, res) {
+userPageRouter.get('/:pid', async function (req, res) {
 	const userID = req.params.pid;
 	if (userID === 'me' || Number(userID) === req.pid) {
 		return res.redirect('/users/me');
@@ -124,7 +123,7 @@ router.get('/:pid', async function (req, res) {
 	await userPage(req, res, userID);
 });
 
-router.get('/:pid/:type', async function (req, res) {
+userPageRouter.get('/:pid/:type', async function (req, res) {
 	const userID = req.params.pid;
 	if (userID === 'me' || Number(userID) === req.pid) {
 		return res.redirect('/users/me');
@@ -360,5 +359,3 @@ function isDateInRange(date, minutes) {
 	// console.log('ten min ago: ' + tenMinutesAgo);
 	return date >= tenMinutesAgo && date <= now;
 }
-
-module.exports = router;

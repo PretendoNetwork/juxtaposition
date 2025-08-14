@@ -1,12 +1,12 @@
-const express = require('express');
-const moment = require('moment');
-const database = require('@/database');
-const util = require('@/util');
-const { POST } = require('@/models/post');
-const { config } = require('@/config');
-const router = express.Router();
+import * as express from 'express';
+import * as moment from 'moment';
+import * as database from '@/database';
+import * as util from '@/util';
+import { POST } from '@/models/post';
+import { config } from '@/config';
+export const feedRouter = express.Router();
 
-router.get('/', async function (req, res) {
+feedRouter.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.getCommunityHash();
 	if (!userContent) {
@@ -41,7 +41,7 @@ router.get('/', async function (req, res) {
 	});
 });
 
-router.get('/all', async function (req, res) {
+feedRouter.get('/all', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.getCommunityHash();
 	if (!userContent) {
@@ -80,7 +80,7 @@ router.get('/all', async function (req, res) {
 	});
 });
 
-router.get('/more', async function (req, res) {
+feedRouter.get('/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.getCommunityHash();
@@ -110,7 +110,7 @@ router.get('/more', async function (req, res) {
 	}
 });
 
-router.get('/all/more', async function (req, res) {
+feedRouter.get('/all/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.getCommunityHash();
@@ -144,5 +144,3 @@ router.get('/all/more', async function (req, res) {
 		res.sendStatus(204);
 	}
 });
-
-module.exports = router;

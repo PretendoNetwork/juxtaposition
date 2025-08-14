@@ -1,17 +1,17 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const { RedisStore } = require('connect-redis');
-const expressMetrics = require('express-prom-bundle');
-require('express-async-errors'); // See package docs
-const database = require('@/database');
-const { logger } = require('@/logger');
-const { loggerHttp } = require('@/loggerHttp');
-const { redisClient } = require('@/redisCache');
-const juxt_web = require('@/services/juxt-web');
-const { healthzRouter } = require('@/services/healthz');
-const { config } = require('@/config');
-const { jsxRenderer } = require('@/middleware/jsx');
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import { RedisStore } from 'connect-redis';
+import expressMetrics from 'express-prom-bundle';
+import 'express-async-errors'; // See package docs
+import * as database from '@/database';
+import { logger } from '@/logger';
+import { loggerHttp } from '@/loggerHttp';
+import { redisClient } from '@/redisCache';
+import * as juxt_web from '@/services/juxt-web';
+import { healthzRouter } from '@/services/healthz';
+import { config } from '@/config';
+import { jsxRenderer } from '@/middleware/jsx';
 
 process.title = 'Pretendo - Juxt-Web';
 process.on('SIGTERM', () => {

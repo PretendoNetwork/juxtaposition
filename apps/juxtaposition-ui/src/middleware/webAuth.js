@@ -1,6 +1,6 @@
-const util = require('@/util');
-const { config } = require('@/config');
-const { logger } = require('@/logger');
+import * as util from "@/util";
+import { config } from "@/config";
+import { logger } from "@/logger";
 
 const cookieDomain = config.http.cookieDomain;
 
@@ -68,4 +68,4 @@ BigInt.prototype['toJSON'] = function () {
 	return this.toString();
 };
 
-module.exports = webAuth;
+export default webAuth;

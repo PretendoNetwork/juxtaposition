@@ -1,4 +1,4 @@
-const util = require('@/util');
+import * as util from "@/util";
 
 async function staticFiles(request, response, next) {
 	// Web files
@@ -28,4 +28,4 @@ function isStartOfPath(path, value) {
 	return path.indexOf(value) === 0;
 }
 
-module.exports = staticFiles;
+export default staticFiles;

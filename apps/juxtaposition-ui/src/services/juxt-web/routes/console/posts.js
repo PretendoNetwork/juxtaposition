@@ -1,19 +1,19 @@
-const crypto = require('crypto');
-const express = require('express');
-const multer = require('multer');
-const moment = require('moment');
-const rateLimit = require('express-rate-limit');
-const { logger } = require('@/logger');
-const database = require('@/database');
-const util = require('@/util');
-const { POST } = require('@/models/post');
-const { REPORT } = require('@/models/report');
+import crypto from 'crypto';
+import express from 'express';
+import multer from 'multer';
+import moment from 'moment';
+import rateLimit from 'express-rate-limit';
+import { logger } from '@/logger';
+import * as database from '@/database';
+import * as util from '@/util';
+import { POST } from '@/models/post';
+import { REPORT } from '@/models/report';
+import * as redis from '@/redisCache';
+import { config } from '@/config';
+import { processBmpPainting, processPainting } from '@/images';
+import { getPostById } from '@/api/post';
 const upload = multer({ dest: 'uploads/' });
-const redis = require('@/redisCache');
-const { config } = require('@/config');
-const { processBmpPainting, processPainting } = require('@/images');
-const router = express.Router();
-const { getPostById } = require('@/api/post');
+export const postsRouter = express.Router();
 
 const postLimit = rateLimit({
 	windowMs: 15 * 1000, // 30 seconds
@@ -42,7 +42,7 @@ const yeahLimit = rateLimit({
 	legacyHeaders: true
 });
 
-router.get('/:post_id/oembed.json', async function (req, res) {
+postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	const post = await getPostById(req.tokens, req.params.post_id);
 	if (!post) {
 		return res.sendStatus(404);
@@ -54,7 +54,7 @@ router.get('/:post_id/oembed.json', async function (req, res) {
 	res.send(doc);
 });
 
-router.post('/empathy', yeahLimit, async function (req, res) {
+postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 	const post = await database.getPostByID(req.body.postID);
 	if (!post) {
 		return res.sendStatus(404);
@@ -106,11 +106,11 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 	await redis.removeValue(`${post.pid}_user_page_posts`);
 });
 
-router.post('/new', postLimit, upload.none(), async function (req, res) {
+postsRouter.post('/new', postLimit, upload.none(), async function (req, res) {
 	await newPost(req, res);
 });
 
-router.get('/:post_id', async function (req, res) {
+postsRouter.get('/:post_id', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	const userContent = await database.getUserContent(req.pid);
 
@@ -142,7 +142,7 @@ router.get('/:post_id', async function (req, res) {
 	});
 });
 
-router.delete('/:post_id', async function (req, res) {
+postsRouter.delete('/:post_id', async function (req, res) {
 	const post = await database.getPostByID(req.params.post_id);
 	if (!post) {
 		return res.sendStatus(404);
@@ -172,11 +172,11 @@ router.delete('/:post_id', async function (req, res) {
 	await redis.removeValue(`${post.pid}_user_page_posts`);
 });
 
-router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
+postsRouter.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
 	await newPost(req, res);
 });
 
-router.post('/:post_id/report', upload.none(), async function (req, res) {
+postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 	const { reason, message, post_id } = req.body;
 	const post = await getPostById(req.tokens, post_id);
 	if (!reason || !post_id || !post) {
@@ -374,5 +374,3 @@ async function generatePostUID(length) {
 	id = (inuse ? await generatePostUID() : id);
 	return id;
 }
-
-module.exports = router;

@@ -1,15 +1,29 @@
-module.exports = {
-	PORTAL_SHOW: require('./console/show'),
-	PORTAL_COMMUNITIES: require('./console/communities'),
-	PORTAL_USER: require('./console/userpage'),
-	PORTAL_POST: require('./console/posts'),
-	PORTAL_FEED: require('./console/feed'),
-	PORTAL_NEWS: require('./console/notifications'),
-	PORTAL_MESSAGES: require('./console/messages'),
-	PORTAL_TOPICS: require('./console/topics'),
-	WEB_LOGIN: require('./web/login'),
-	ROBOTS: require('./web/robots'),
-	PWA: require('./web/pwa'),
-	ADMIN: require('./admin/admin'),
-	WEB_FILES: require('./console/web')
+import { communitiesRouter } from './console/communities';
+import { showRouter } from './console/show';
+import { postsRouter } from './console/posts';
+import { userPageRouter } from './console/userpage';
+import { feedRouter } from './console/feed';
+import { notificationRouter } from './console/notifications';
+import { messagesRouter } from './console/messages';
+import { topicsRouter } from './console/topics';
+import { loginRouter } from './web/login';
+import { robotsRouter } from './web/robots';
+import { pwaRouter } from './web/pwa';
+import { adminRouter } from './admin/admin';
+import { webRouter } from './console/web';
+
+export const routes = {
+	PORTAL_SHOW: showRouter,
+	PORTAL_COMMUNITIES: communitiesRouter,
+	PORTAL_USER: userPageRouter,
+	PORTAL_POST: postsRouter,
+	PORTAL_FEED: feedRouter,
+	PORTAL_NEWS: notificationRouter,
+	PORTAL_MESSAGES: messagesRouter,
+	PORTAL_TOPICS: topicsRouter,
+	WEB_LOGIN: loginRouter,
+	ROBOTS: robotsRouter,
+	PWA: pwaRouter,
+	ADMIN: adminRouter,
+	WEB_FILES: webRouter
 };

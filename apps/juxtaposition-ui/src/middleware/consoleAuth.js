@@ -1,6 +1,6 @@
-const util = require('@/util');
-const { config } = require('@/config');
-const { logger } = require('@/logger');
+import * as util from "@/util";
+import { config } from "@/config";
+import { logger } from "@/logger";
 
 async function auth(request, response, next) {
 	// Get pid and fetch user data
@@ -74,4 +74,4 @@ async function auth(request, response, next) {
 	return next();
 }
 
-module.exports = auth;
+export default auth;

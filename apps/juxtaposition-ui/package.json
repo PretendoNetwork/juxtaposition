@@ -3,7 +3,8 @@
   "version": "3.0.0",
   "description": "Frontend for Juxtaposition",
   "license": "AGPL-3.0-only",
-  "main": "./dist/server.js",
+  "type": "module",
+  "exports": null,
   "scripts": {
     "dev": "nodemon --exec 'npm run dev:buildrun'",
     "dev:buildrun": "run-s dev:build start",
@@ -12,7 +13,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsup && tsc --noEmit",
-    "start": "node --enable-source-maps dist/server.js"
+    "start": "node --enable-source-maps dist/server.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.729.0",
@@ -51,6 +52,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "redis": "^4.7.0",
+    "require2import": "^1.0.1",
     "sharp": "^0.33.5",
     "tga": "^1.0.7",
     "tsx": "^4.19.3",

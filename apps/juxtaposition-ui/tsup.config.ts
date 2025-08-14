@@ -9,11 +9,17 @@ export default defineConfig([
 		entry: ['src/**/*.{js,ts,tsx,jsx}', '!src/webfiles/**/*.js'],
 		splitting: false,
 		sourcemap: true,
-		platform: 'node',
 		clean: true,
 		bundle: false,
-		format: ['cjs'],
+
+		platform: 'node',
+		// https://github.com/egoist/tsup/issues/1289#issuecomment-2654012955
+		target: 'esnext',
+		format: ['esm'],
+
 		outDir: 'dist',
+		outExtension: (): any => ({ js: '.mjs' }),
+
 		esbuildPlugins: [
 			fixImportsPlugin(),
 			copy({
