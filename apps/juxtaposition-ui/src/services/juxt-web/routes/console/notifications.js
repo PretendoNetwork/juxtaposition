@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as moment from 'moment';
-import * as database from '@/database';
+import { database } from '@/database';
 import { getUserFriendRequestsIncoming } from '@/util';
 export const notificationRouter = express.Router();
 

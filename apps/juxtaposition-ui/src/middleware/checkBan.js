@@ -1,5 +1,5 @@
 import moment from 'moment';
-import * as db from '@/database';
+import { database as db } from '@/database';
 import { config } from '@/config';
 
 async function checkBan(request, response, next) {

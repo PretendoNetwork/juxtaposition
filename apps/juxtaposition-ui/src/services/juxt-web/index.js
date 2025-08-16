@@ -8,7 +8,7 @@ import detectVersion from '@/middleware/detectVersion';
 import checkDiscovery from '@/middleware/discovery';
 import { logger } from '@/logger';
 
-const router = express.Router();
+export const router = express.Router();
 const consoleRouter = express.Router();
 const webRouter = express.Router();
 
@@ -63,5 +63,3 @@ webRouter.use('/friend_messages', routes.PORTAL_MESSAGES);
 webRouter.use('/news', routes.PORTAL_NEWS);
 webRouter.use('/login', routes.WEB_LOGIN);
 webRouter.use('/admin', routes.ADMIN);
-
-export default router;

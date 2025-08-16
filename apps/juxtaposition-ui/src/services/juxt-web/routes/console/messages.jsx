@@ -9,7 +9,7 @@ import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 import { processPainting } from '@/images';
 import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, INVALID_POST_BODY_REGEX } from '@/util';
-import * as database from '@/database';
+import { database } from '@/database';
 import { POST } from '@/models/post';
 import { CONVERSATION } from '@/models/conversation';
 import { config } from '@/config';

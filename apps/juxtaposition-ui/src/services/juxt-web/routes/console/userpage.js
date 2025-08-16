@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import moment from 'moment';
 import { getPostsByPoster, getPostsByEmpathy } from '@/api/post';
-import * as database from '@/database';
+import { database } from '@/database';
 import { getUserFriendPIDs } from '@/util';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';

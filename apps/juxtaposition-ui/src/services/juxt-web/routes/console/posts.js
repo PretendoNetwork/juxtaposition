@@ -4,7 +4,7 @@ import multer from 'multer';
 import moment from 'moment';
 import rateLimit from 'express-rate-limit';
 import { logger } from '@/logger';
-import * as database from '@/database';
+import { database } from '@/database';
 import * as util from '@/util';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';

@@ -1,5 +1,5 @@
 import * as express from 'express';
-import * as database from '@/database';
+import { database } from '@/database';
 import * as util from '@/util';
 import { config } from '@/config';
 import { logger } from '@/logger';

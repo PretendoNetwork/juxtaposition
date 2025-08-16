@@ -3,7 +3,7 @@ import express from 'express';
 import moment from 'moment';
 import multer from 'multer';
 import { resizeImage, getTGAFromPNG } from '@/images';
-import * as database from '@/database';
+import { database } from '@/database';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { COMMUNITY } from '@/models/communities';

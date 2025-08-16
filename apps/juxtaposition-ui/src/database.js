@@ -483,7 +483,7 @@ async function getLogsForTarget(targetPID, offset, limit) {
 	return LOGS.find({ target: targetPID }).sort({ timestamp: -1 }).skip(offset).limit(limit);
 }
 
-export default {
+export const database = {
 	connect,
 	getCommunities,
 	getCommunitiesFuzzySearch,

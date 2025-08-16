@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
@@ -6,7 +8,7 @@ import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import HashMap from 'hashmap';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
-import database from '@/database';
+import { database } from '@/database';
 import { COMMUNITY } from '@/models/communities';
 import { NOTIFICATION } from '@/models/notifications';
 import { logger } from '@/logger';
@@ -461,3 +463,7 @@ export async function createLogEntry(actor: number, action: string, target: stri
 	});
 	await newLog.save();
 }
+
+const filename = fileURLToPath(import.meta.url);
+// The root of the dist/ folder.
+export const distFolder = path.dirname(filename);
