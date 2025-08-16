@@ -10,7 +10,7 @@ import { processBmpPainting, processPainting } from '@/images';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
-import * as redis from '@/redisCache';
+import { redisRemove } from '@/redisCache';
 import { createLogEntry, getCommunityHash, getUserAccountData, INVALID_POST_BODY_REGEX, newNotification, uploadCDNAsset } from '@/util';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
@@ -103,7 +103,7 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 	} else {
 		res.send({ status: 423, id: post.id, count: post.empathy_count });
 	}
-	await redis.removeValue(`${post.pid}_user_page_posts`);
+	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
 postsRouter.post('/new', postLimit, upload.none(), async function (req, res) {
@@ -169,7 +169,7 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	} else {
 		res.send('/users/me');
 	}
-	await redis.removeValue(`${post.pid}_user_page_posts`);
+	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
 postsRouter.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
@@ -361,10 +361,10 @@ async function newPost(req, res) {
 	}
 	if (parentPost) {
 		res.redirect('/posts/' + req.params.post_id.toString());
-		await redis.removeValue(`${parentPost.pid}_user_page_posts`);
+		await redisRemove(`${parentPost.pid}_user_page_posts`);
 	} else {
 		res.redirect('/titles/' + community.olive_community_id + '/new');
-		await redis.removeValue(`${req.pid}_user_page_posts`);
+		await redisRemove(`${req.pid}_user_page_posts`);
 	}
 }
 

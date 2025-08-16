@@ -15,7 +15,7 @@ redisClient.on('connect', () => {
 	logger.success('Redis connected');
 });
 
-export async function setValue(key, value, expireTime) {
+export async function redisSet(key, value, expireTime) {
 	if (!redisClient.isOpen) {
 		return false;
 	}
@@ -26,7 +26,7 @@ export async function setValue(key, value, expireTime) {
 	return true;
 }
 
-export async function getValue(key) {
+export async function redisGet(key) {
 	if (!redisClient.isOpen) {
 		return false;
 	}
@@ -35,7 +35,7 @@ export async function getValue(key) {
 	return result;
 }
 
-export async function removeValue(key) {
+export async function redisRemove(key) {
 	if (!redisClient.isOpen) {
 		return false;
 	}

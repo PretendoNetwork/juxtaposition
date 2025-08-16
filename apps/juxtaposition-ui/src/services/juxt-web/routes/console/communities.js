@@ -1,18 +1,18 @@
 import express from 'express';
-import multer from 'multer';
 import moment from 'moment';
-import { database } from '@/database';
-import { getCommunityHash } from '@/util';
-import { POST } from '@/models/post';
-import { COMMUNITY } from '@/models/communities';
-import * as redis from '@/redisCache';
+import multer from 'multer';
 import { config } from '@/config';
+import { database } from '@/database';
+import { COMMUNITY } from '@/models/communities';
+import { POST } from '@/models/post';
+import { redisGet, redisSet } from '@/redisCache';
+import { getCommunityHash } from '@/util';
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
 
 communitiesRouter.get('/', async function (req, res) {
-	const newCommunities = JSON.parse(await redis.getValue('newCommunities')) || await database.getNewCommunities(6);
-	let popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
+	const newCommunities = JSON.parse(await redisGet('newCommunities')) || await database.getNewCommunities(6);
+	let popularCommunities = JSON.parse(await redisGet('popularCommunities'));
 
 	if (!popularCommunities) {
 		const last24Hours = await calculateMostPopularCommunities();
@@ -27,8 +27,8 @@ communitiesRouter.get('/', async function (req, res) {
 			{ $limit: 9 },
 			{ $project: { index: 0, _id: 0 } }
 		]);
-		redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
-		redis.setValue('newCommunities', JSON.stringify(newCommunities), 60 * 60);
+		redisSet('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+		redisSet('newCommunities', JSON.stringify(newCommunities), 60 * 60);
 	}
 
 	res.render(req.directory + '/communities.ejs', {
@@ -201,7 +201,7 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 	const community = await database.getCommunityByID(req.body.id);
 	const userContent = await database.getUserContent(req.pid);
-	const popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
+	const popularCommunities = JSON.parse(await redisGet('popularCommunities'));
 	let updated = false;
 
 	if (userContent !== null && userContent.followed_communities.indexOf(community.olive_community_id) === -1) {
@@ -222,7 +222,7 @@ communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 		const index = popularCommunities.findIndex(element => element.olive_community_id === community.olive_community_id);
 		if (index !== -1) {
 			popularCommunities[index].followers = community.followers;
-			redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+			redisSet('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
 		}
 	}
 });
