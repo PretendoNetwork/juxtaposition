@@ -1,6 +1,6 @@
 import * as util from '@/util';
 
-async function detectVersion(request, response, next) {
+export async function detectVersion(request, response, next) {
 	request.timerDate = Date.now();
 	// Check the domain and set the directory
 	if (includes(request, 'juxt')) {
@@ -18,5 +18,3 @@ async function detectVersion(request, response, next) {
 function includes(request, domain) {
 	return request.subdomains.findIndex(element => element.includes(domain)) !== -1;
 }
-
-export default detectVersion;

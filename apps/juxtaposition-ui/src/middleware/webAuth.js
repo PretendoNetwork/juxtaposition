@@ -4,7 +4,7 @@ import { logger } from '@/logger';
 
 const cookieDomain = config.http.cookieDomain;
 
-async function webAuth(request, response, next) {
+export async function webAuth(request, response, next) {
 	// Get pid and fetch user data
 
 	if (request.session && request.session.user && request.session.pid && !request.isWrite && request.cookies.access_token) {
@@ -67,5 +67,3 @@ function isStartOfPath(path, value) {
 BigInt.prototype['toJSON'] = function () {
 	return this.toString();
 };
-
-export default webAuth;

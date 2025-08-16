@@ -2,7 +2,7 @@ import * as util from '@/util';
 import { config } from '@/config';
 import { logger } from '@/logger';
 
-async function auth(request, response, next) {
+export async function consoleAuth(request, response, next) {
 	// Get pid and fetch user data
 	if (request.session && request.session.user && request.session.pid && !request.isWrite) {
 		request.user = request.session.user;
@@ -73,5 +73,3 @@ async function auth(request, response, next) {
 	response.locals.pid = request.pid;
 	return next();
 }
-
-export default auth;

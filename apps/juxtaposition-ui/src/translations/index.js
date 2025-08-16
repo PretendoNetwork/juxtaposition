@@ -10,7 +10,7 @@ import NL from './nl.json' with { type: 'json' };
 import PT from './pt.json' with { type: 'json' };
 import RU from './ru.json' with { type: 'json' };
 
-export default {
+export const translations = {
 	JA,
 	EN,
 	FR,

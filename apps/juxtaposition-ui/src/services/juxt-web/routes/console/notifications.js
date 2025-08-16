@@ -54,5 +54,3 @@ notificationRouter.get('/friend_requests', async function (req, res) {
 		template: 'requests'
 	});
 });
-
-export default notificationRouter;

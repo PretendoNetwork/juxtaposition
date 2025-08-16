@@ -1,12 +1,12 @@
 import express from 'express';
 import subdomain from 'express-subdomain';
-import { routes } from './routes';
-import webAuth from '@/middleware/webAuth';
-import consoleAuth from '@/middleware/consoleAuth';
-import checkBan from '@/middleware/checkBan';
-import detectVersion from '@/middleware/detectVersion';
-import checkDiscovery from '@/middleware/discovery';
+import { webAuth } from '@/middleware/webAuth';
+import { consoleAuth } from '@/middleware/consoleAuth';
+import { checkBan } from '@/middleware/checkBan';
+import { detectVersion } from '@/middleware/detectVersion';
+import { checkDiscovery } from '@/middleware/discovery';
 import { logger } from '@/logger';
+import { routes } from './routes';
 
 export const router = express.Router();
 const consoleRouter = express.Router();

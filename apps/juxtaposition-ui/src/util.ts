@@ -18,7 +18,7 @@ import { LOGS } from '@/models/logs';
 import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
-import translations from './translations';
+import { translations } from '@/translations';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { NotificationSchema } from '@/models/notifications';
 import type { CommunitySchema } from '@/models/communities';
