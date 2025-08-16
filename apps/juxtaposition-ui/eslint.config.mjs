@@ -4,6 +4,14 @@ import globals from 'globals';
 export default [
 	...eslintConfig,
 	{
+		// Use TypeScript module resolution for .js files too
+		settings: {
+			'import/resolver': {
+				typescript: {}
+			}
+		}
+	},
+	{
 		// Allow browser globals in webfiles
 		languageOptions: {
 			globals: {
