@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import { database } from '@/database';
 import * as util from '@/util';
 export const showRouter = express.Router();

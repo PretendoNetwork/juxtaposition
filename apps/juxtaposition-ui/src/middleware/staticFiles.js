@@ -1,4 +1,4 @@
-import * as util from "@/util";
+import * as util from '@/util';
 
 async function staticFiles(request, response, next) {
 	// Web files

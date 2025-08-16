@@ -1,6 +1,6 @@
-import * as express from 'express';
-import * as moment from 'moment';
-import * as database from '@/database';
+import express from 'express';
+import moment from 'moment';
+import { database } from '@/database';
 import * as util from '@/util';
 import { POST } from '@/models/post';
 

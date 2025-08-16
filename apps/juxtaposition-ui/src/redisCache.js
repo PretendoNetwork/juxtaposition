@@ -1,4 +1,4 @@
-import * as redis from 'redis';
+import redis from 'redis';
 import { logger } from '@/logger';
 import { config } from '@/config';
 const { host, port } = config.redis;

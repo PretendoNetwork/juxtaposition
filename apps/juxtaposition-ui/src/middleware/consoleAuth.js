@@ -1,6 +1,6 @@
-import * as util from "@/util";
-import { config } from "@/config";
-import { logger } from "@/logger";
+import * as util from '@/util';
+import { config } from '@/config';
+import { logger } from '@/logger';
 
 async function auth(request, response, next) {
 	// Get pid and fetch user data

@@ -1,5 +1,5 @@
-import * as path from 'path';
-import * as express from 'express';
+import path from 'path';
+import express from 'express';
 import { distFolder } from '@/util';
 
 export const robotsRouter = express.Router();

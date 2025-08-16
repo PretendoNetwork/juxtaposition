@@ -1,6 +1,6 @@
-import * as util from "@/util";
-import { config } from "@/config";
-import { logger } from "@/logger";
+import * as util from '@/util';
+import { config } from '@/config';
+import { logger } from '@/logger';
 
 const cookieDomain = config.http.cookieDomain;
 

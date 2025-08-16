@@ -1,5 +1,5 @@
-import * as db from "@/database";
-import { config } from "@/config";
+import { database as db } from '@/database';
+import { config } from '@/config';
 
 async function checkDiscovery(request, response, next) {
 	const discovery = await db.getEndPoint(config.serverEnvironment);

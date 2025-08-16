@@ -1,12 +1,12 @@
-import * as express from 'express';
-import * as moment from 'moment';
+import express from 'express';
+import moment from 'moment';
 import { database } from '@/database';
-import { getUserFriendRequestsIncoming } from '@/util';
+import { getUserHash, getUserFriendRequestsIncoming } from '@/util';
 export const notificationRouter = express.Router();
 
 notificationRouter.get('/my_news', async function (req, res) {
 	const notifications = await database.getNotifications(req.pid, 25, 0);
-	const userMap = util.getUserHash();
+	const userMap = getUserHash();
 	const bundle = {
 		notifications,
 		userMap
@@ -34,7 +34,7 @@ notificationRouter.get('/friend_requests', async function (req, res) {
 	let requests = (await getUserFriendRequestsIncoming(req.pid)).reverse();
 	const now = new Date();
 	requests = requests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
-	const userMap = util.getUserHash();
+	const userMap = getUserHash();
 	const bundle = {
 		requests: requests ? requests : [],
 		userMap

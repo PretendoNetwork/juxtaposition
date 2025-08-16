@@ -1,7 +1,6 @@
-/* eslint-disable import/no-unresolved -- eslint config is broken */
-import * as crypto from 'crypto';
-import * as express from 'express';
-import * as moment from 'moment';
+import crypto from 'crypto';
+import express from 'express';
+import moment from 'moment';
 import { Snowflake as snowflake } from 'node-snowflake';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
@@ -13,6 +12,7 @@ import { database } from '@/database';
 import { POST } from '@/models/post';
 import { CONVERSATION } from '@/models/conversation';
 import { config } from '@/config';
+
 export const messagesRouter = express.Router();
 
 messagesRouter.get('/', async function (req, res) {
