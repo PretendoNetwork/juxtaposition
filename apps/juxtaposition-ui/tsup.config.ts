@@ -18,7 +18,6 @@ export default defineConfig([
 		format: ['esm'],
 
 		outDir: 'dist',
-		// outExtension: (): any => ({ js: '.mjs' }),
 
 		esbuildPlugins: [
 			fixImportsPlugin(),
