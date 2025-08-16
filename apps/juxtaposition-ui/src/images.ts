@@ -1,61 +1,90 @@
 import { Buffer } from 'node:buffer';
+import { readFile } from 'node:fs/promises';
 // @ts-expect-error Missing upstream types for this library
 import TGA from 'tga';
 // @ts-expect-error Missing upstream types for this library
 import imagePixels from 'image-pixels';
 import { inflate, deflate } from 'pako';
-import { PNG } from 'pngjs';
-import bmp from 'bmp-js';
 import sharp from 'sharp';
+import { ColorType, ImageMagick, initializeImageMagick } from '@imagemagick/magick-wasm';
 import { logger } from '@/logger';
+import { uploadCDNAsset } from '@/util';
+import type { IMagickImage } from '@imagemagick/magick-wasm';
 
-/** Ingests a BMP-format painting and converts it to the usual TGA format.
- * @param painting base64-encoded bmp image
- * @returns base64-encoded zlib-compressed TGA
- */
-export async function processBmpPainting(painting: string): Promise<string | null> {
-	const paintingBuffer = Buffer.from(painting, 'base64');
-	const bitmap = bmp.decode(paintingBuffer);
-	const tga = createTgaFromPixelData(bitmap.width, bitmap.height, bitmap.data, false);
+export type Painting = {
+	png: Buffer;
+	tgaz: Buffer;
+};
 
-	let output: Uint8Array;
-	try {
-		output = deflate(tga, { level: 6 });
-	} catch (err) {
-		logger.error(err, 'Could not compress painting');
-		return null;
-	}
-	return Buffer.from(output.buffer).toString('base64');
+function processPainting(image: IMagickImage): Painting | null {
+	image.crop(320, 120);
+	// Paintings only have black pixels and white pixels
+	// Notifying the codec of this gets good compression gains!
+	image.colorType = ColorType.Bilevel;
+	// Remove EXIF whatever
+	image.strip();
+
+	// Tuned to match pngcrush on bilevel painting data
+	image.settings.setDefine('PNG', 'compression-level', 9);
+	image.settings.setDefine('PNG', 'compression-filter', 0);
+	image.settings.setDefine('PNG', 'compression-strategy', 1);
+
+	return {
+		png: image.write('PNG', Buffer.from),
+		tgaz: image.write('TGA', (tga) => {
+			const tgaz = deflate(tga, { level: 6 });
+			return Buffer.from(tgaz);
+		})
+	};
 }
 
 /**
- * Ingests a raw painting and converts it for CDN upload.
- * @param painting base64-encoded zlib-compressed TGA
- * @returns PNG in buffer
+ * Processes, sanitises and converts BMP-format paintings.
+ * @param painting Buffer of BMP painting.
+ * @returns PNG and TGAZ-encoded paintings.
  */
-export async function processPainting(painting: string): Promise<Buffer | null> {
-	const paintingBuffer = Buffer.from(painting, 'base64');
-	let output: Uint8Array;
-	try {
-		output = inflate(paintingBuffer);
-	} catch (err) {
-		logger.error(err, 'Could not decompress painting');
-		return null;
-	}
-	let tga: TGA;
-	try {
-		tga = new TGA(Buffer.from(output.buffer));
-	} catch (e) {
-		logger.error(e, 'Could not parse painting');
-		return null;
-	}
-	const png = new PNG({
-		width: tga.width,
-		height: tga.height
-	});
-	png.data = tga.pixels;
-	return PNG.sync.write(png);
+export function processBmpPainting(painting: Buffer): Painting | null {
+	return ImageMagick.read(painting, 'BMP', processPainting);
 }
+/**
+ * Processes, sanitises and converts TGAZ-format paintings.
+ * @param painting Buffer of TGAZ painting.
+ * @returns PNG and TGAZ-encoded paintings.
+ */
+export function processTgazPainting(painting: Buffer): Painting | null {
+	const tga = inflate(painting);
+	return ImageMagick.read(tga, 'TGA', processPainting);
+}
+
+/**
+ * Processes and uploads a new painting to the CDN - to paintings/${pid}/${postID}.png.
+ * @param paintingBlob base64 TGAZ or BMP blob from the client request body.
+ * @param bmp 'true' if the image should be decoded as BMP (as on 3DS).
+ * @param pid Poster PID.
+ * @param postID Post ID.
+ * @returns base64 TGAZ blob, sanitised.
+ */
+export async function uploadPainting(paintingBlob: string, bmp: string, pid: number, postID: string): Promise<string | null> {
+	const paintingBuf = Buffer.from(paintingBlob.replace(/\0/g, '').trim(), 'base64');
+	const paintings = bmp === 'true' ? processBmpPainting(paintingBuf) : processTgazPainting(paintingBuf);
+	if (paintings === null) {
+		return null;
+	}
+
+	if (!await uploadCDNAsset(`paintings/${pid}/${postID}.png`, paintings.png, 'public-read')) {
+		return null;
+	}
+
+	return paintings.tgaz.toString('base64');
+}
+
+async function loadMagick(): Promise<void> {
+	const wasmPath = new URL(import.meta.resolve('@imagemagick/magick-wasm/magick.wasm'));
+	const wasm = await readFile(wasmPath);
+	await initializeImageMagick(wasm);
+	logger.success('Started up ImageMagick engine');
+}
+await loadMagick();
 
 /**
  * Rezise an image.
@@ -86,44 +115,4 @@ export async function getTGAFromPNG(image: Buffer): Promise<string | null> {
 		return null;
 	}
 	return Buffer.from(output.buffer).toString('base64').trim();
-}
-
-/**
- * Makes a new TGA from BGRX pixel data
- * @param width Width of the data
- * @param height Height of the data
- * @param pixels [B1, G1, R1, X1, B2, R2, G2, X2...]
- * @param dontFlipY Invert the y-axis
- * @returns Buffer with TGA data
- *
- * Modified from https://github.com/steel1990/tga/blob/dcd2bff6536c1c75719ed4309389cd66f991d8d3/src/index.js#L16-L45
- */
-function createTgaFromPixelData(width: number, height: number, pixels: Buffer, dontFlipY: boolean): Buffer {
-	const buffer = Buffer.alloc(18 + pixels.length);
-	// write header
-	buffer.writeInt8(0, 0);
-	buffer.writeInt8(0, 1);
-	buffer.writeInt8(2, 2);
-	buffer.writeInt16LE(0, 3);
-	buffer.writeInt16LE(0, 5);
-	buffer.writeInt8(0, 7);
-	buffer.writeInt16LE(0, 8);
-	buffer.writeInt16LE(0, 10);
-	buffer.writeInt16LE(width, 12);
-	buffer.writeInt16LE(height, 14);
-	buffer.writeInt8(32, 16);
-	buffer.writeInt8(8, 17);
-
-	let offset = 18;
-	for (let i = 0; i < height; i++) {
-		for (let j = 0; j < width; j++) {
-			const idx = ((dontFlipY ? i : height - i - 1) * width + j) * 4;
-			buffer.writeUInt8(pixels[idx + 1], offset++); // b
-			buffer.writeUInt8(pixels[idx + 2], offset++); // g
-			buffer.writeUInt8(pixels[idx + 3], offset++); // r
-			buffer.writeUInt8(255, offset++); // a
-		}
-	}
-
-	return buffer;
 }

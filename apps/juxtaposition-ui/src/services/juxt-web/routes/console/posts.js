@@ -6,12 +6,12 @@ import multer from 'multer';
 import { getPostById } from '@/api/post';
 import { config } from '@/config';
 import { database } from '@/database';
-import { processBmpPainting, processPainting } from '@/images';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
 import { createLogEntry, getCommunityHash, getUserAccountData, INVALID_POST_BODY_REGEX, newNotification, uploadCDNAsset } from '@/util';
+import { uploadPainting } from '@/images';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -255,17 +255,11 @@ async function newPost(req, res) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	let painting = '';
-	let paintingURI = '';
+	let paintingBlob = '';
 	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		if (req.body.bmp === 'true') {
-			painting = await processBmpPainting(req.body.painting.replace(/\0/g, '').trim());
-		} else {
-			painting = req.body.painting;
-		}
-		paintingURI = await processPainting(painting);
-		if (!await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		paintingBlob = await uploadPainting(req.body.painting, req.body.bmp, req.pid, postID);
+		if (paintingBlob === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -320,7 +314,7 @@ async function newPost(req, res) {
 		community_id: community.olive_community_id,
 		screen_name: userSettings.screen_name,
 		body: body,
-		painting: painting,
+		painting: paintingBlob,
 		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),

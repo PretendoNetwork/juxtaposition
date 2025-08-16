@@ -2,16 +2,16 @@ import crypto from 'crypto';
 import express from 'express';
 import moment from 'moment';
 import { Snowflake as snowflake } from 'node-snowflake';
+import { config } from '@/config';
+import { database } from '@/database';
+import { uploadPainting } from '@/images';
+import { CONVERSATION } from '@/models/conversation';
+import { POST } from '@/models/post';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
-import { processPainting } from '@/images';
-import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, INVALID_POST_BODY_REGEX } from '@/util';
-import { database } from '@/database';
-import { POST } from '@/models/post';
-import { CONVERSATION } from '@/models/conversation';
-import { config } from '@/config';
+import { getUserAccountData, getUserFriendPIDs, getUserHash, INVALID_POST_BODY_REGEX, uploadCDNAsset } from '@/util';
 
 export const messagesRouter = express.Router();
 
@@ -66,13 +66,11 @@ messagesRouter.post('/new', async function (req, res) {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	let painting = '';
-	let paintingURI = '';
+	let paintingBlob = '';
 	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		painting = req.body.painting.replace(/\0/g, '').trim();
-		paintingURI = await processPainting(painting);
-		if (!await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		paintingBlob = await uploadPainting(req.body.painting, req.body.bmp, req.pid, postID);
+		if (paintingBlob === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -127,7 +125,7 @@ messagesRouter.post('/new', async function (req, res) {
 		community_id: conversation.id,
 		screen_name: req.user.mii.name,
 		body: body,
-		painting: painting,
+		painting: paintingBlob,
 		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
