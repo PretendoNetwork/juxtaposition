@@ -1,6 +1,6 @@
 import express from 'express';
 import { database } from '@/database';
-import * as util from '@/util';
+import { passwordLogin, getUserDataFromToken } from '@/util';
 import { config } from '@/config';
 import { logger } from '@/logger';
 
@@ -13,7 +13,7 @@ loginRouter.get('/', async function (req, res) {
 
 loginRouter.post('/', async (req, res) => {
 	const { username, password, redirect } = req.body;
-	const login = await util.login(username, password).catch((e) => {
+	const login = await passwordLogin(username, password).catch((e) => {
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
 				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.', redirect });
@@ -31,7 +31,7 @@ loginRouter.post('/', async (req, res) => {
 		return;
 	}
 
-	const PNID = await util.getUserDataFromToken(login.accessToken);
+	const PNID = await getUserDataFromToken(login.accessToken);
 	if (!PNID) {
 		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', redirect });
 	}

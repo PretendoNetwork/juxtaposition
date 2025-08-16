@@ -2,14 +2,14 @@ import crypto from 'crypto';
 import express from 'express';
 import moment from 'moment';
 import multer from 'multer';
-import { resizeImage, getTGAFromPNG } from '@/images';
+import { getPostsByPoster } from '@/api/post';
 import { database } from '@/database';
+import { getTGAFromPNG, resizeImage } from '@/images';
+import { logger } from '@/logger';
+import { COMMUNITY } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { COMMUNITY } from '@/models/communities';
-import * as util from '@/util';
-import { logger } from '@/logger';
-import { getPostsByPoster } from '@/api/post';
+import { createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash, uploadCDNAsset } from '@/util';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
@@ -20,9 +20,9 @@ adminRouter.get('/posts', async function (req, res) {
 	}
 
 	const reports = await database.getAllOpenReports();
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	const userContent = await database.getUserContent(req.pid);
-	const userMap = util.getUserHash();
+	const userMap = getUserHash();
 	const postIDs = reports.map(obj => obj.post_id);
 
 	const posts = await POST.aggregate([
@@ -56,7 +56,7 @@ adminRouter.get('/accounts', async function (req, res) {
 	const limit = 20;
 
 	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
-	const userMap = await util.getUserHash();
+	const userMap = await getUserHash();
 	const userCount = await SETTINGS.count();
 	const activeUsers = await SETTINGS.find({
 		last_active: {
@@ -79,7 +79,7 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
-	const pnid = await util.getUserAccountData(req.params.pid).catch((e) => {
+	const pnid = await getUserAccountData(req.params.pid).catch((e) => {
 		logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
 	});
 	const userContent = await database.getUserContent(req.params.pid);
@@ -88,9 +88,9 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	}
 	const userSettings = await database.getUserSettings(req.params.pid);
 	const posts = (await getPostsByPoster(req.tokens, req.params.pid, 0)).items;
-	const communityMap = await util.getCommunityHash();
-	const userMap = util.getUserHash();
-	const reasonMap = util.getReasonMap();
+	const communityMap = await getCommunityHash();
+	const userMap = getUserHash();
+	const reasonMap = getReasonMap();
 
 	const reports = await database.getReportsByOffender(req.params.pid, 0, 5);
 	const submittedReports = await database.getReportsByReporter(req.params.pid, 0, 5);
@@ -163,7 +163,7 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 	});
 
 	if (req.body.account_status === 1) {
-		await util.newNotification({
+		await newNotification({
 			pid: pid,
 			type: 'notice',
 			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: "${req.body.ban_reason}". If you have any questions contact the moderators in the Discord server or forum.`,
@@ -212,7 +212,7 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 	}
 
 	if (changes.length > 0) {
-		await util.createLogEntry(
+		await createLogEntry(
 			req.pid,
 			action,
 			pid,
@@ -241,7 +241,7 @@ adminRouter.delete('/:reportID', async function (req, res) {
 
 	const postType = post.parent ? 'comment' : 'post';
 
-	await util.newNotification({
+	await newNotification({
 		pid: post.pid,
 		type: 'notice',
 		text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
@@ -249,7 +249,7 @@ adminRouter.delete('/:reportID', async function (req, res) {
 		link: '/titles/2551084080/new'
 	});
 
-	await util.createLogEntry(
+	await createLogEntry(
 		req.pid,
 		'REMOVE_POST',
 		post.id,
@@ -271,7 +271,7 @@ adminRouter.put('/:reportID', async function (req, res) {
 
 	await report.resolve(req.pid, req.query.reason);
 
-	await util.createLogEntry(
+	await createLogEntry(
 		req.pid,
 		'IGNORE_REPORT',
 		report.id,
@@ -324,9 +324,9 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 	const icon64 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 64, 64);
 	const icon32 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 32, 32);
 
-	if (!await util.uploadCDNAsset(`icons/${communityID}/128.png`, icon128, 'public-read') ||
-		!await util.uploadCDNAsset(`icons/${communityID}/64.png`, icon64, 'public-read') ||
-		!await util.uploadCDNAsset(`icons/${communityID}/32.png`, icon32, 'public-read')) {
+	if (!await uploadCDNAsset(`icons/${communityID}/128.png`, icon128, 'public-read') ||
+		!await uploadCDNAsset(`icons/${communityID}/64.png`, icon64, 'public-read') ||
+		!await uploadCDNAsset(`icons/${communityID}/32.png`, icon32, 'public-read')) {
 		return res.sendStatus(422);
 	}
 
@@ -337,8 +337,8 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 	// Wii U Header
 	const WiiUHeader = await resizeImage(req.files.WiiUbrowserHeader[0].buffer.toString('base64'), 1280, 180);
 
-	if (!await util.uploadCDNAsset(`headers/${communityID}/3DS.png`, CTRHeader, 'public-read') ||
-		!await util.uploadCDNAsset(`headers/${communityID}/WiiU.png`, WiiUHeader, 'public-read')) {
+	if (!await uploadCDNAsset(`headers/${communityID}/3DS.png`, CTRHeader, 'public-read') ||
+		!await uploadCDNAsset(`headers/${communityID}/WiiU.png`, WiiUHeader, 'public-read')) {
 		return res.sendStatus(422);
 	}
 
@@ -369,7 +369,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 	await newCommunity.save();
 	res.redirect(`/admin/communities/${communityID}`);
 
-	util.updateCommunityHash(document);
+	updateCommunityHash(document);
 
 	const communityType = getCommunityType(document.type);
 	const communityPlatform = getCommunityPlatform(document.platform_id);
@@ -399,7 +399,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		'is_recommended',
 		'has_shop_page'
 	];
-	await util.createLogEntry(
+	await createLogEntry(
 		req.pid,
 		'MAKE_COMMUNITY',
 		communityID,
@@ -449,9 +449,9 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		const icon64 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 64, 64);
 		const icon32 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 32, 32);
 
-		if (!await util.uploadCDNAsset(`icons/${communityID}/128.png`, icon128, 'public-read') ||
-			!await util.uploadCDNAsset(`icons/${communityID}/64.png`, icon64, 'public-read') ||
-			!await util.uploadCDNAsset(`icons/${communityID}/32.png`, icon32, 'public-read')) {
+		if (!await uploadCDNAsset(`icons/${communityID}/128.png`, icon128, 'public-read') ||
+			!await uploadCDNAsset(`icons/${communityID}/64.png`, icon64, 'public-read') ||
+			!await uploadCDNAsset(`icons/${communityID}/32.png`, icon32, 'public-read')) {
 			return res.sendStatus(422);
 		}
 
@@ -461,7 +461,7 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	// 3DS Header
 	if (req.files.CTRbrowserHeader) {
 		const CTRHeader = await resizeImage(req.files.CTRbrowserHeader[0].buffer.toString('base64'), 400, 220);
-		if (!await util.uploadCDNAsset(`headers/${communityID}/3DS.png`, CTRHeader, 'public-read')) {
+		if (!await uploadCDNAsset(`headers/${communityID}/3DS.png`, CTRHeader, 'public-read')) {
 			return res.sendStatus(422);
 		}
 	}
@@ -469,7 +469,7 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	// Wii U Header
 	if (req.files.WiiUbrowserHeader) {
 		const WiiUHeader = await resizeImage(req.files.WiiUbrowserHeader[0].buffer.toString('base64'), 1280, 180);
-		if (!await util.uploadCDNAsset(`headers/${communityID}/WiiU.png`, WiiUHeader, 'public-read')) {
+		if (!await uploadCDNAsset(`headers/${communityID}/WiiU.png`, WiiUHeader, 'public-read')) {
 			return res.sendStatus(422);
 		}
 	}
@@ -493,7 +493,7 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 
 	res.redirect(`/admin/communities/${communityID}`);
 
-	util.updateCommunityHash(document);
+	updateCommunityHash(document);
 
 	// determine the changes made to the community
 	const changes = [];
@@ -553,7 +553,7 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	}
 
 	if (changes.length > 0) {
-		await util.createLogEntry(
+		await createLogEntry(
 			req.pid,
 			'UPDATE_COMMUNITY',
 			oldCommunity.olive_community_id,
@@ -576,7 +576,7 @@ adminRouter.delete('/communities/:id', async (req, res) => {
 		error: false
 	});
 
-	await util.createLogEntry(
+	await createLogEntry(
 		req.pid,
 		'DELETE_COMMUNITY',
 		id,

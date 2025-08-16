@@ -1,14 +1,14 @@
 import express from 'express';
 import moment from 'moment';
 import { database } from '@/database';
-import * as util from '@/util';
+import { getCommunityHash } from '@/util';
 import { POST } from '@/models/post';
 import { config } from '@/config';
 export const feedRouter = express.Router();
 
 feedRouter.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -43,7 +43,7 @@ feedRouter.get('/', async function (req, res) {
 
 feedRouter.get('/all', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -83,7 +83,7 @@ feedRouter.get('/all', async function (req, res) {
 feedRouter.get('/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}
@@ -113,7 +113,7 @@ feedRouter.get('/more', async function (req, res) {
 feedRouter.get('/all/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}

@@ -1,17 +1,17 @@
 import crypto from 'crypto';
 import express from 'express';
-import multer from 'multer';
-import moment from 'moment';
 import rateLimit from 'express-rate-limit';
-import { logger } from '@/logger';
+import moment from 'moment';
+import multer from 'multer';
+import { getPostById } from '@/api/post';
+import { config } from '@/config';
 import { database } from '@/database';
-import * as util from '@/util';
+import { processBmpPainting, processPainting } from '@/images';
+import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import * as redis from '@/redisCache';
-import { config } from '@/config';
-import { processBmpPainting, processPainting } from '@/images';
-import { getPostById } from '@/api/post';
+import { createLogEntry, getCommunityHash, getUserAccountData, INVALID_POST_BODY_REGEX, newNotification, uploadCDNAsset } from '@/util';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -76,7 +76,7 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 		});
 		res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
 		if (req.pid !== post.pid) {
-			await util.newNotification({
+			await newNotification({
 				pid: post.pid,
 				type: 'yeah',
 				objectID: post.id,
@@ -126,9 +126,9 @@ postsRouter.get('/:post_id', async function (req, res) {
 		return res.redirect(`/posts/${parent.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	const replies = await database.getPostReplies(req.params.post_id.toString(), 25);
-	const postPNID = await util.getUserAccountData(post.pid);
+	const postPNID = await getUserAccountData(post.pid);
 	res.render(req.directory + '/post.ejs', {
 		moment: moment,
 		userSettings: userSettings,
@@ -153,7 +153,7 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	if (res.locals.moderator && req.pid !== post.pid) {
 		const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
 		await post.removePost(reason, req.pid);
-		await util.createLogEntry(
+		await createLogEntry(
 			req.pid,
 			'REMOVE_POST',
 			post.pid,
@@ -265,7 +265,7 @@ async function newPost(req, res) {
 			painting = req.body.painting;
 		}
 		paintingURI = await processPainting(painting);
-		if (!await util.uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		if (!await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -275,7 +275,7 @@ async function newPost(req, res) {
 	}
 	if (req.body.screenshot) {
 		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		if (!await util.uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+		if (!await uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -306,7 +306,7 @@ async function newPost(req, res) {
 			break;
 	}
 	const body = req.body.body;
-	if (body && util.INVALID_POST_BODY_REGEX.test(body)) {
+	if (body && INVALID_POST_BODY_REGEX.test(body)) {
 		// TODO - Log this error
 		return res.sendStatus(422);
 	}
@@ -352,7 +352,7 @@ async function newPost(req, res) {
 		parentPost.save();
 	}
 	if (parentPost && (parentPost.pid !== req.user.pid)) {
-		await util.newNotification({
+		await newNotification({
 			pid: parentPost.pid,
 			type: 'reply',
 			user: req.pid,

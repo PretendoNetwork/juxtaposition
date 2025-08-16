@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import moment from 'moment';
 import { database } from '@/database';
-import * as util from '@/util';
+import { getCommunityHash } from '@/util';
 import { POST } from '@/models/post';
 import { COMMUNITY } from '@/models/communities';
 import * as redis from '@/redisCache';
@@ -66,7 +66,7 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 	if (!community) {
 		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found' });
 	}
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
 	if (!children) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
@@ -100,7 +100,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		};
 		await community.save();
 	}
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	let children = await database.getSubCommunities(community.olive_community_id);
 	if (children.length === 0) {
 		children = null;
@@ -156,7 +156,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	let posts;
 	const community = await database.getCommunityByID(req.params.communityID);
 	if (!community) {

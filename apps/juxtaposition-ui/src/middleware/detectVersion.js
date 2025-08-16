@@ -1,11 +1,11 @@
-import * as util from '@/util';
+import { processLanguage } from '@/util';
 
 export async function detectVersion(request, response, next) {
 	request.timerDate = Date.now();
 	// Check the domain and set the directory
 	if (includes(request, 'juxt')) {
 		request.directory = 'web';
-		response.locals.lang = util.processLanguage();
+		response.locals.lang = processLanguage();
 	} else {
 		request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
 	}

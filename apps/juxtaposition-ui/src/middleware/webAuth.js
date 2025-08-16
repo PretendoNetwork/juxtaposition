@@ -1,6 +1,6 @@
-import * as util from '@/util';
 import { config } from '@/config';
 import { logger } from '@/logger';
+import { getUserDataFromToken, processLanguage } from '@/util';
 
 const cookieDomain = config.http.cookieDomain;
 
@@ -12,7 +12,7 @@ export async function webAuth(request, response, next) {
 		request.pid = request.session.pid;
 	} else {
 		try {
-			request.user = await util.getUserDataFromToken(request.cookies.access_token);
+			request.user = await getUserDataFromToken(request.cookies.access_token);
 			request.pid = request.user.pid;
 
 			request.session.user = request.user;
@@ -23,7 +23,7 @@ export async function webAuth(request, response, next) {
 			response.clearCookie('refresh_token', { domain: cookieDomain, path: '/' });
 			response.clearCookie('token_type', { domain: cookieDomain, path: '/' });
 			if (request.path === '/login') {
-				response.locals.lang = util.processLanguage();
+				response.locals.lang = processLanguage();
 				request.tokens = {};
 				request.paramPackData = null;
 				return next();

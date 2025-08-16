@@ -430,7 +430,7 @@ export async function getUserDataFromToken(token: string): Promise<ApiGetUserDat
 	});
 }
 
-export async function login(username: string, password: string): Promise<LoginResponse> {
+export async function passwordLogin(username: string, password: string): Promise<LoginResponse> {
 	return await gRPCApiClient.login({
 		username: username,
 		password: password,

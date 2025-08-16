@@ -1,6 +1,6 @@
 import express from 'express';
 import { database } from '@/database';
-import * as util from '@/util';
+import { createUser, setName } from '@/util';
 export const showRouter = express.Router();
 
 showRouter.get('/', async function (req, res) {
@@ -24,7 +24,7 @@ showRouter.get('/', async function (req, res) {
 
 	const usrMii = await database.getUserSettings(req.pid);
 	if (req.user.mii.name !== usrMii.screen_name) {
-		util.setName(req.pid, req.user.mii.name);
+		setName(req.pid, req.user.mii.name);
 		usrMii.screen_name = req.user.mii.name;
 		await usrMii.save();
 	}
@@ -44,7 +44,7 @@ showRouter.post('/newUser', async function (req, res) {
 		return res.sendStatus(504);
 	}
 
-	await util.createUser(req.pid, req.body.experience, req.body.notifications);
+	await createUser(req.pid, req.body.experience, req.body.notifications);
 	if (await database.getUserSettings(req.pid) !== null) {
 		res.sendStatus(200);
 	} else {

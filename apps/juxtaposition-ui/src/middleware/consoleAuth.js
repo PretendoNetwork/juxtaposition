@@ -1,6 +1,6 @@
-import * as util from '@/util';
 import { config } from '@/config';
 import { logger } from '@/logger';
+import { decodeParamPack, getPIDFromServiceToken, getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
 
 export async function consoleAuth(request, response, next) {
 	// Get pid and fetch user data
@@ -10,8 +10,8 @@ export async function consoleAuth(request, response, next) {
 		request.tokens = request.session.tokens;
 	} else {
 		request.tokens = { serviceToken: request.headers['x-nintendo-servicetoken'] };
-		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.getPIDFromServiceToken(request.headers['x-nintendo-servicetoken']) : null;
-		request.user = request.pid ? await util.getUserAccountData(request.pid) : null;
+		request.pid = request.headers['x-nintendo-servicetoken'] ? await getPIDFromServiceToken(request.headers['x-nintendo-servicetoken']) : null;
+		request.user = request.pid ? await getUserAccountData(request.pid) : null;
 
 		request.session.user = request.user;
 		request.session.pid = request.pid;
@@ -19,12 +19,12 @@ export async function consoleAuth(request, response, next) {
 	}
 
 	// Set headers
-	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.decodeParamPack(request.headers['x-nintendo-parampack']) : null;
+	request.paramPackData = request.headers['x-nintendo-parampack'] ? decodeParamPack(request.headers['x-nintendo-parampack']) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
 
 	if (!request.user) {
 		try {
-			request.user = await util.getUserDataFromToken(request.cookies.access_token);
+			request.user = await getUserDataFromToken(request.cookies.access_token);
 			request.pid = request.user.pid;
 
 			request.session.user = request.user;
@@ -69,7 +69,7 @@ export async function consoleAuth(request, response, next) {
 		});
 	}
 
-	response.locals.lang = util.processLanguage(request.paramPackData);
+	response.locals.lang = processLanguage(request.paramPackData);
 	response.locals.pid = request.pid;
 	return next();
 }
