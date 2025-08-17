@@ -1,12 +1,12 @@
 import express from 'express';
-import multer from 'multer';
 import moment from 'moment';
-import { getPostsByPoster, getPostsByEmpathy } from '@/api/post';
+import multer from 'multer';
+import { getPostsByEmpathy, getPostsByPoster } from '@/api/post';
 import { database } from '@/database';
-import { getUserFriendPIDs } from '@/util';
+import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { logger } from '@/logger';
+import { getCommunityHash, getUserAccountData, getUserFriendPIDs, newNotification } from '@/util';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
@@ -48,7 +48,7 @@ userPageRouter.get('/downloadUserData.json', async function (req, res) {
 
 userPageRouter.get('/me/settings', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	res.render(req.directory + '/settings.ejs', {
 		communityMap: communityMap,
 		moment: moment,
@@ -104,7 +104,7 @@ userPageRouter.post('/follow', upload.none(), async function (req, res) {
 		const picked = await database.getNotification(userToFollowContent.pid, 2, userContent.pid);
 		// pid, type, reference_id, origin_pid, title, content
 		if (picked === null) {
-			await util.newNotification({ pid: userToFollowContent.pid, type: 'follow', objectID: req.pid, link: `/users/${req.pid}` });
+			await newNotification({ pid: userToFollowContent.pid, type: 'follow', objectID: req.pid, link: `/users/${req.pid}` });
 		}
 	} else if (userContent !== null && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1) {
 		userToFollowContent.removeFromFollowers(userContent.pid);
@@ -137,9 +137,9 @@ async function userPage(req, res, userID) {
 	}
 	const pnid = userID === req.pid
 		? req.user
-		: await util.getUserAccountData(userID).catch((e) => {
-			logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
-		});
+		: await getUserAccountData(userID).catch((e) => {
+				logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
+			});
 	const userContent = await database.getUserContent(userID);
 	if (isNaN(userID) || !pnid || !userContent) {
 		return res.redirect('/404');
@@ -149,7 +149,7 @@ async function userPage(req, res, userID) {
 	const posts = (await getPostsByPoster(req.tokens, userID, 0))?.items;
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	const friends = await getUserFriendPIDs(userID);
 
 	let parentUserContent;
@@ -189,7 +189,7 @@ async function userPage(req, res, userID) {
 }
 
 async function userRelations(req, res, userID) {
-	const pnid = userID === req.pid ? req.user : await util.getUserAccountData(userID);
+	const pnid = userID === req.pid ? req.user : await getUserAccountData(userID);
 	const userContent = await database.getUserContent(userID);
 	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
@@ -210,7 +210,7 @@ async function userRelations(req, res, userID) {
 
 	if (req.params.type === 'yeahs') {
 		const posts = (await getPostsByEmpathy(req.tokens, userID, 0))?.items;
-		const communityMap = await util.getCommunityHash();
+		const communityMap = await getCommunityHash();
 		const bundle = {
 			posts,
 			open: true,
@@ -254,7 +254,7 @@ async function userRelations(req, res, userID) {
 	} else {
 		followers = await database.getFollowedUsers(userContent);
 		communities = userContent.followed_communities;
-		communityMap = await util.getCommunityHash();
+		communityMap = await getCommunityHash();
 		selection = 2;
 	}
 
@@ -294,7 +294,7 @@ async function userRelations(req, res, userID) {
 async function morePosts(req, res, userID) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}
@@ -324,7 +324,7 @@ async function morePosts(req, res, userID) {
 async function moreYeahPosts(req, res, userID) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(userID);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}

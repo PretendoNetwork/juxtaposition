@@ -1,4 +1,4 @@
-import pino from 'pino';
+import { pino } from 'pino';
 import pinoPretty from 'pino-pretty';
 import { config } from '@/config';
 import type { SerializedRequest, SerializedResponse } from 'pino';

@@ -44,6 +44,8 @@ export default defineConfig([
 
 		platform: 'browser',
 		target: 'ie7',
+		// Prevent .cjs extension
+		outExtension: (): any => ({ js: '.js' }),
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*', '/fonts/*'];
