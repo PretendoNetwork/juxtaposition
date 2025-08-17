@@ -2,13 +2,13 @@ import { Buffer } from 'node:buffer';
 import { readFile } from 'node:fs/promises';
 // @ts-expect-error Missing upstream types for this library
 import TGA from 'tga';
+import { ColorType, ImageMagick, initializeImageMagick, Orientation } from '@imagemagick/magick-wasm';
 // @ts-expect-error Missing upstream types for this library
 import imagePixels from 'image-pixels';
-import { inflate, deflate } from 'pako';
+import { deflate, inflate } from 'pako';
 import sharp from 'sharp';
-import { ColorType, ImageMagick, initializeImageMagick } from '@imagemagick/magick-wasm';
-import { logger } from '@/logger';
 import { uploadCDNAsset } from '@/util';
+import { logger } from '@/logger';
 import type { IMagickImage } from '@imagemagick/magick-wasm';
 
 export type Painting = {
@@ -31,9 +31,17 @@ function processPainting(image: IMagickImage): Painting | null {
 
 	return {
 		png: image.write('PNG', Buffer.from),
-		tgaz: image.write('TGA', (tga) => {
-			const tgaz = deflate(tga, { level: 6 });
-			return Buffer.from(tgaz);
+		tgaz: image.clone((image) => {
+			// Ingame TGA decoders don't support all the fun stuff.
+			image.colorType = ColorType.TrueColorAlpha;
+			// Only this orientation is supported.
+			image.orientation = Orientation.BottomLeft;
+			image.flip();
+
+			return image.write('TGA', (tga) => {
+				const tgaz = deflate(tga, { level: 6 });
+				return Buffer.from(tgaz);
+			});
 		})
 	};
 }
