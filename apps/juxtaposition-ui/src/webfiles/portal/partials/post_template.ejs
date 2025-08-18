@@ -43,7 +43,7 @@
                     <p class="post-content-text"><%= post.body %></p>
                 <%}%>
                 <% if(post.screenshot !== '') { %>
-                    <img class="post-screenshot" src="<%= cdnURL %><%= post.screenshot %>">
+                    <img class="post-screenshot post-screenshot-<%= post.screenshot_aspect %>" src="<%= cdnURL %><%= post.screenshot %>">
                 <%}%>
                 <% if(post.painting !== '') { %>
                 <img class="post-memo" src="<%= cdnURL %>/paintings/<%=post.pid%>/<%=post.id%>.png">
