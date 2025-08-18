@@ -2,7 +2,7 @@ import { Buffer } from 'node:buffer';
 import { readFile } from 'node:fs/promises';
 // @ts-expect-error Missing upstream types for this library
 import TGA from 'tga';
-import { ColorType, ImageMagick, initializeImageMagick, Orientation } from '@imagemagick/magick-wasm';
+import { ColorType, FilterType, Gravity, ImageMagick, initializeImageMagick, Interlace, Orientation } from '@imagemagick/magick-wasm';
 // @ts-expect-error Missing upstream types for this library
 import imagePixels from 'image-pixels';
 import { deflate, inflate } from 'pako';
@@ -84,6 +84,88 @@ export async function uploadPainting(paintingBlob: string, bmp: string, pid: num
 	}
 
 	return paintings.tgaz.toString('base64');
+}
+
+export type Aspect = '16:9' | '5:4' | '4:3';
+
+export type Screenshot = {
+	jpg: Buffer;
+	thumb: Buffer;
+	aspect: Aspect;
+};
+
+type ScreenshotRes = {
+	// full res
+	w: number;
+	h: number;
+	// thumbnail res
+	tw: number;
+	th: number;
+	// other
+	aspect: Aspect;
+};
+
+const validResolutions: ScreenshotRes[] = [
+	{ w: 800, h: 450, tw: 320, th: 180, aspect: '16:9' },
+	{ w: 400, h: 240, tw: 320, th: 192, aspect: '5:4' },
+	{ w: 320, h: 240, tw: 320, th: 240, aspect: '4:3' },
+	{ w: 640, h: 480, tw: 320, th: 240, aspect: '4:3' }
+];
+
+function processScreenshot(image: IMagickImage): Screenshot | null {
+	const res = validResolutions.find(({ w, h }) => w === image.width && h === image.height);
+	if (res === undefined) {
+		return null;
+	}
+	// Remove EXIF whatever
+	image.strip();
+
+	image.quality = 85;
+	image.settings.setDefine('JPEG', 'sampling-factor', '2x1');
+	image.settings.interlace = Interlace.Jpeg;
+
+	return {
+		jpg: image.write('JPEG', Buffer.from),
+		thumb: image.clone((image) => {
+			image.filterType = FilterType.Lanczos2;
+			image.resize(res.tw, res.th);
+			image.extent(res.tw, res.th, Gravity.Center);
+			image.quality = 75; // smash 'em
+			return image.write('JPEG', Buffer.from);
+		}),
+		aspect: res.aspect
+	};
+}
+
+export function processJpgScreenshot(painting: Buffer): Screenshot | null {
+	return ImageMagick.read(painting, 'JPG', processScreenshot);
+}
+
+export type ScreenshotUrls = {
+	full: string;
+	thumb: string;
+	aspect: Aspect;
+};
+
+export async function uploadScreenshot(screenshotBlob: string, pid: number, postID: string): Promise<ScreenshotUrls | null> {
+	const screenshotBuf = Buffer.from(screenshotBlob.replace(/\0/g, '').trim(), 'base64');
+	const screenshots = processJpgScreenshot(screenshotBuf);
+	if (screenshots === null) {
+		return null;
+	}
+
+	const full = `/screenshots/${pid}/${postID}.jpg`;
+	const thumb = `/screenshots/${pid}/${postID}-thumb.jpg`;
+
+	if (!await uploadCDNAsset(full, screenshots.jpg, 'public-read')) {
+		return null;
+	}
+
+	if (!await uploadCDNAsset(thumb, screenshots.thumb, 'public-read')) {
+		return null;
+	}
+
+	return { full, thumb, aspect: screenshots.aspect };
 }
 
 async function loadMagick(): Promise<void> {

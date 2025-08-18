@@ -334,7 +334,19 @@ menu.tab-header.user-page li:last-child {
 }
 
 .post-screenshot {
-    height: 178px
+    height: 178px;
+}
+
+.post-screenshot-16\3A 9 {
+    height: 180px;
+}
+
+.post-screenshot-5\3A 4 {
+    height: 192px;
+}
+
+.post-screenshot-4\3A 3 {
+    height: 240px;
 }
 
 .post-list .post .timestamp {

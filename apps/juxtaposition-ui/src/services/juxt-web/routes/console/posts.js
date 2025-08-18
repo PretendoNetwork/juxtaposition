@@ -10,8 +10,8 @@ import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, getCommunityHash, getUserAccountData, INVALID_POST_BODY_REGEX, newNotification, uploadCDNAsset } from '@/util';
-import { uploadPainting } from '@/images';
+import { createLogEntry, getCommunityHash, getUserAccountData, INVALID_POST_BODY_REGEX, newNotification } from '@/util';
+import { uploadPainting, uploadScreenshot } from '@/images';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -256,7 +256,6 @@ async function newPost(req, res) {
 	}
 
 	let paintingBlob = '';
-	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		paintingBlob = await uploadPainting(req.body.painting, req.body.bmp, req.pid, postID);
 		if (paintingBlob === null) {
@@ -267,9 +266,10 @@ async function newPost(req, res) {
 			});
 		}
 	}
+	let screenshots = null;
 	if (req.body.screenshot) {
-		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		if (!await uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+		screenshots = await uploadScreenshot(req.body.screenshot, req.pid, postID);
+		if (screenshots === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -315,7 +315,9 @@ async function newPost(req, res) {
 		screen_name: userSettings.screen_name,
 		body: body,
 		painting: paintingBlob,
-		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
+		screenshot: screenshots?.full ?? '',
+		screenshot_thumb: screenshots?.thumb ?? '',
+		screenshot_aspect: screenshots?.aspect ?? '',
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
