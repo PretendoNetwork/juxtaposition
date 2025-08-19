@@ -4,12 +4,12 @@ import moment from 'moment';
 import multer from 'multer';
 import { getPostsByPoster } from '@/api/post';
 import { database } from '@/database';
-import { getTGAFromPNG, resizeImage } from '@/images';
 import { logger } from '@/logger';
 import { COMMUNITY } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash, uploadCDNAsset } from '@/util';
+import { createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash } from '@/util';
+import { uploadHeaders, uploadIcons } from '@/images';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
@@ -319,26 +319,9 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		return res.sendStatus(422);
 	}
 
-	// browser icon
-	const icon128 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 128, 128);
-	const icon64 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 64, 64);
-	const icon32 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 32, 32);
-
-	if (!await uploadCDNAsset(`icons/${communityID}/128.png`, icon128, 'public-read') ||
-		!await uploadCDNAsset(`icons/${communityID}/64.png`, icon64, 'public-read') ||
-		!await uploadCDNAsset(`icons/${communityID}/32.png`, icon32, 'public-read')) {
-		return res.sendStatus(422);
-	}
-
-	// TGA icon
-	const tgaIcon = await getTGAFromPNG(icon128);
-	// 3DS Header
-	const CTRHeader = await resizeImage(req.files.CTRbrowserHeader[0].buffer.toString('base64'), 400, 220);
-	// Wii U Header
-	const WiiUHeader = await resizeImage(req.files.WiiUbrowserHeader[0].buffer.toString('base64'), 1280, 180);
-
-	if (!await uploadCDNAsset(`headers/${communityID}/3DS.png`, CTRHeader, 'public-read') ||
-		!await uploadCDNAsset(`headers/${communityID}/WiiU.png`, WiiUHeader, 'public-read')) {
+	const icons = await uploadIcons(req.files.browserIcon[0].buffer, communityID);
+	const headers = await uploadHeaders(req.files.CTRbrowserHeader[0].buffer, req.files.WiiUbrowserHeader[0].buffer, communityID);
+	if (icons === null || headers === null) {
 		return res.sendStatus(422);
 	}
 
@@ -358,7 +341,9 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		empathy_count: 0,
 		followers: 0,
 		has_shop_page: req.body.has_shop_page,
-		icon: tgaIcon,
+		icon: icons.tgaBlob,
+		ctr_header: headers.ctr,
+		wup_header: headers.wup,
 		title_id: req.body.title_ids.replace(/ /g, '').split(','),
 		community_id: communityID,
 		olive_community_id: communityID,
@@ -435,7 +420,6 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 
 	JSON.parse(JSON.stringify(req.files));
 	const communityID = req.params.id;
-	let tgaIcon;
 
 	const oldCommunity = await COMMUNITY.findOne({ olive_community_id: communityID }).exec();
 
@@ -444,32 +428,18 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	}
 
 	// browser icon
+	let icons = null;
 	if (req.files.browserIcon) {
-		const icon128 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 128, 128);
-		const icon64 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 64, 64);
-		const icon32 = await resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 32, 32);
-
-		if (!await uploadCDNAsset(`icons/${communityID}/128.png`, icon128, 'public-read') ||
-			!await uploadCDNAsset(`icons/${communityID}/64.png`, icon64, 'public-read') ||
-			!await uploadCDNAsset(`icons/${communityID}/32.png`, icon32, 'public-read')) {
-			return res.sendStatus(422);
-		}
-
-		// TGA icon
-		tgaIcon = await getTGAFromPNG(icon128);
-	}
-	// 3DS Header
-	if (req.files.CTRbrowserHeader) {
-		const CTRHeader = await resizeImage(req.files.CTRbrowserHeader[0].buffer.toString('base64'), 400, 220);
-		if (!await uploadCDNAsset(`headers/${communityID}/3DS.png`, CTRHeader, 'public-read')) {
+		icons = await uploadIcons(req.files.browserIcon[0].buffer, communityID);
+		if (icons === null) {
 			return res.sendStatus(422);
 		}
 	}
-
-	// Wii U Header
-	if (req.files.WiiUbrowserHeader) {
-		const WiiUHeader = await resizeImage(req.files.WiiUbrowserHeader[0].buffer.toString('base64'), 1280, 180);
-		if (!await uploadCDNAsset(`headers/${communityID}/WiiU.png`, WiiUHeader, 'public-read')) {
+	// 3DS / Wii U Header
+	let headers = null;
+	if (req.files.CTRbrowserHeader && req.files.WiiUbrowserHeader) {
+		headers = await uploadHeaders(req.files.CTRbrowserHeader[0].buffer, req.files.WiiUbrowserHeader[0].buffer, communityID);
+		if (headers === null) {
 			return res.sendStatus(422);
 		}
 	}
@@ -481,7 +451,9 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		type: req.body.type,
 		has_shop_page: req.body.has_shop_page,
 		platform_id: req.body.platform,
-		icon: tgaIcon,
+		icon: icons?.tgaBlob ?? oldCommunity.icon,
+		ctr_header: headers?.ctr ?? oldCommunity.ctr_header,
+		wup_header: headers?.wup ?? oldCommunity.wup_header,
 		title_id: req.body.title_ids.replace(/ /g, '').split(','),
 		parent: req.body.parent === 'null' || req.body.parent.trim() === '' ? null : req.body.parent,
 		app_data: req.body.app_data,

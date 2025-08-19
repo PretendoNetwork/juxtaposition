@@ -98,14 +98,22 @@
 				<input type="file" id="CTRbrowserHeader" accept="image/jpg" name="CTRbrowserHeader">
 			</div>
 			<div class="col-md-3">
-				<img src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png" id="CTRbrowserHeaderPreview">
+				<% if (community.ctr_header) { %>
+					<img src="<%= cdnURL %><%= community.ctr_header %>" id="CTRbrowserHeaderPreview">
+				<% } else { %>
+					<img src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png" id="CTRbrowserHeaderPreview">
+				<% } %>
 			</div>
 			<div class="col-md-3">
 				<label class="labels" for="WiiUbrowserHeader">Wii U Browser Banner (1280px x 180px)</label>
 				<input type="file" id="WiiUbrowserHeader" accept="image/jpg" name="WiiUbrowserHeader">
 			</div>
 			<div class="col-md-3">
-				<img src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png" id="WiiUbrowserHeaderPreview">
+				<% if (community.wup_header) { %>
+					<img src="<%= cdnURL %><%= community.wup_header %>" id="WiiUbrowserHeaderPreview">
+				<% } else { %>
+					<img src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png" id="WiiUbrowserHeaderPreview">
+				<% } %>
 			</div>
 			<div class="col-md-4">
 				<label class="labels" for="parent">Parent Community ID:</label>
