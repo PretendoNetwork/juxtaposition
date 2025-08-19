@@ -1,5 +1,5 @@
-const { Schema, model } = require('mongoose');
-const snowflake = require('node-snowflake').Snowflake;
+import { Schema, model } from 'mongoose';
+import { Snowflake as snowflake } from 'node-snowflake';
 
 const user = new Schema({
 	pid: Number,
@@ -13,7 +13,7 @@ const user = new Schema({
 	}
 });
 
-const ConversationSchema = new Schema({
+export const ConversationSchema = new Schema({
 	id: {
 		type: String,
 		default: snowflake.nextId()
@@ -51,9 +51,4 @@ ConversationSchema.methods.markAsRead = async function (receiverPID) {
 	await this.save();
 };
 
-const CONVERSATION = model('CONVERSATION', ConversationSchema);
-
-module.exports = {
-	ConversationSchema: ConversationSchema,
-	CONVERSATION: CONVERSATION
-};
+export const CONVERSATION = model('CONVERSATION', ConversationSchema);

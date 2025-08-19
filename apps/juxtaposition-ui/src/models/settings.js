@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const SettingsSchema = new Schema({
+export const SettingsSchema = new Schema({
 	pid: Number,
 	screen_name: String,
 	account_status: {
@@ -97,9 +97,4 @@ SettingsSchema.methods.favCommunityVisible = async function (active) {
 	await this.save();
 };
 
-const SETTINGS = model('SETTINGS', SettingsSchema);
-
-module.exports = {
-	SettingsSchema,
-	SETTINGS
-};
+export const SETTINGS = model('SETTINGS', SettingsSchema);

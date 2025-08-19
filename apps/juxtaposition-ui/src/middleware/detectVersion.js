@@ -1,11 +1,11 @@
-const util = require('@/util');
+import { processLanguage } from '@/util';
 
-async function detectVersion(request, response, next) {
+export async function detectVersion(request, response, next) {
 	request.timerDate = Date.now();
 	// Check the domain and set the directory
 	if (includes(request, 'juxt')) {
 		request.directory = 'web';
-		response.locals.lang = util.processLanguage();
+		response.locals.lang = processLanguage();
 	} else {
 		request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
 	}
@@ -18,5 +18,3 @@ async function detectVersion(request, response, next) {
 function includes(request, domain) {
 	return request.subdomains.findIndex(element => element.includes(domain)) !== -1;
 }
-
-module.exports = detectVersion;

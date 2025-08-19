@@ -1,14 +1,14 @@
-const express = require('express');
-const moment = require('moment');
-const database = require('@/database');
-const util = require('@/util');
-const { POST } = require('@/models/post');
+import express from 'express';
+import moment from 'moment';
+import { database } from '@/database';
+import { getCommunityHash } from '@/util';
+import { POST } from '@/models/post';
 
-const router = express.Router();
+export const topicsRouter = express.Router();
 
-router.get('/', async function (req, res) {
+topicsRouter.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	const tag = req.query.topic_tag;
 	if (!userContent || !tag) {
 		return res.redirect('/404');
@@ -42,9 +42,9 @@ router.get('/', async function (req, res) {
 	});
 });
 
-router.get('/more', async function (req, res) {
+topicsRouter.get('/more', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	const tag = req.query.topic_tag;
 	if (!tag) {
 		return res.sendStatus(204);
@@ -71,5 +71,3 @@ router.get('/more', async function (req, res) {
 		res.sendStatus(204);
 	}
 });
-
-module.exports = router;

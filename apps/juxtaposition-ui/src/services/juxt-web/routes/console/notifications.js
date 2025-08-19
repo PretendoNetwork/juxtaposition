@@ -1,13 +1,12 @@
-const express = require('express');
-const moment = require('moment');
-const database = require('@/database');
-const util = require('@/util');
-const { getUserFriendRequestsIncoming } = util;
-const router = express.Router();
+import express from 'express';
+import moment from 'moment';
+import { database } from '@/database';
+import { getUserHash, getUserFriendRequestsIncoming } from '@/util';
+export const notificationRouter = express.Router();
 
-router.get('/my_news', async function (req, res) {
+notificationRouter.get('/my_news', async function (req, res) {
 	const notifications = await database.getNotifications(req.pid, 25, 0);
-	const userMap = util.getUserHash();
+	const userMap = getUserHash();
 	const bundle = {
 		notifications,
 		userMap
@@ -31,11 +30,11 @@ router.get('/my_news', async function (req, res) {
 	});
 });
 
-router.get('/friend_requests', async function (req, res) {
+notificationRouter.get('/friend_requests', async function (req, res) {
 	let requests = (await getUserFriendRequestsIncoming(req.pid)).reverse();
 	const now = new Date();
 	requests = requests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
-	const userMap = util.getUserHash();
+	const userMap = getUserHash();
 	const bundle = {
 		requests: requests ? requests : [],
 		userMap
@@ -55,5 +54,3 @@ router.get('/friend_requests', async function (req, res) {
 		template: 'requests'
 	});
 });
-
-module.exports = router;

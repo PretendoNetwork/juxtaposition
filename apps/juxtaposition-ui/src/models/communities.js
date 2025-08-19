@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const PermissionsSchema = new Schema({
 	open: {
@@ -19,7 +19,7 @@ const PermissionsSchema = new Schema({
 	}
 });
 
-const CommunitySchema = new Schema({
+export const CommunitySchema = new Schema({
 	platform_id: Number,
 	name: String,
 	description: String,
@@ -104,9 +104,4 @@ CommunitySchema.methods.downFollower = async function () {
 	await this.save();
 };
 
-const COMMUNITY = model('COMMUNITY', CommunitySchema);
-
-module.exports = {
-	CommunitySchema,
-	COMMUNITY
-};
+export const COMMUNITY = model('COMMUNITY', CommunitySchema);

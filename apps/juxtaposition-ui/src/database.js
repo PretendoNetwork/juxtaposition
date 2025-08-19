@@ -1,16 +1,16 @@
-const mongoose = require('mongoose');
-const { FuzzySearch } = require('mongoose-fuzzy-search-next');
-const { COMMUNITY } = require('@/models/communities');
-const { CONTENT } = require('@/models/content');
-const { CONVERSATION } = require('@/models/conversation');
-const { ENDPOINT } = require('@/models/endpoint');
-const { NOTIFICATION } = require('@/models/notifications');
-const { POST } = require('@/models/post');
-const { SETTINGS } = require('@/models/settings');
-const { REPORT } = require('@/models/report');
-const { LOGS } = require('@/models/logs');
-const { logger } = require('@/logger');
-const { config } = require('@/config');
+import mongoose from 'mongoose';
+import { FuzzySearch } from 'mongoose-fuzzy-search-next';
+import { COMMUNITY } from '@/models/communities';
+import { CONTENT } from '@/models/content';
+import { CONVERSATION } from '@/models/conversation';
+import { ENDPOINT } from '@/models/endpoint';
+import { NOTIFICATION } from '@/models/notifications';
+import { POST } from '@/models/post';
+import { SETTINGS } from '@/models/settings';
+import { REPORT } from '@/models/report';
+import { LOGS } from '@/models/logs';
+import { logger } from '@/logger';
+import { config } from '@/config';
 
 let connection;
 mongoose.set('strictQuery', true);
@@ -483,7 +483,7 @@ async function getLogsForTarget(targetPID, offset, limit) {
 	return LOGS.find({ target: targetPID }).sort({ timestamp: -1 }).skip(offset).limit(limit);
 }
 
-module.exports = {
+export const database = {
 	connect,
 	getCommunities,
 	getCommunitiesFuzzySearch,

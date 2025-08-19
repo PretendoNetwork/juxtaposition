@@ -1,14 +1,14 @@
-const express = require('express');
-const subdomain = require('express-subdomain');
-const routes = require('./routes');
-const webAuth = require('@/middleware/webAuth');
-const consoleAuth = require('@/middleware/consoleAuth');
-const checkBan = require('@/middleware/checkBan');
-const detectVersion = require('@/middleware/detectVersion');
-const checkDiscovery = require('@/middleware/discovery');
-const { logger } = require('@/logger');
+import express from 'express';
+import subdomain from 'express-subdomain';
+import { webAuth } from '@/middleware/webAuth';
+import { consoleAuth } from '@/middleware/consoleAuth';
+import { checkBan } from '@/middleware/checkBan';
+import { detectVersion } from '@/middleware/detectVersion';
+import { checkDiscovery } from '@/middleware/discovery';
+import { logger } from '@/logger';
+import { routes } from './routes';
 
-const router = express.Router();
+export const router = express.Router();
 const consoleRouter = express.Router();
 const webRouter = express.Router();
 
@@ -63,5 +63,3 @@ webRouter.use('/friend_messages', routes.PORTAL_MESSAGES);
 webRouter.use('/news', routes.PORTAL_NEWS);
 webRouter.use('/login', routes.WEB_LOGIN);
 webRouter.use('/admin', routes.ADMIN);
-
-module.exports = router;

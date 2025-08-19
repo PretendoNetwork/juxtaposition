@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const ContentSchema = new Schema({
+export const ContentSchema = new Schema({
 	pid: Number,
 	followed_communities: {
 		type: [String],
@@ -52,9 +52,4 @@ ContentSchema.methods.removeFromFollowers = async function (postID) {
 	await this.save();
 };
 
-const CONTENT = model('CONTENT', ContentSchema);
-
-module.exports = {
-	ContentSchema,
-	CONTENT
-};
+export const CONTENT = model('CONTENT', ContentSchema);
