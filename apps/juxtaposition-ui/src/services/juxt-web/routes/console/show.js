@@ -1,9 +1,9 @@
-const express = require('express');
-const database = require('@/database');
-const util = require('@/util');
-const router = express.Router();
+import express from 'express';
+import { database } from '@/database';
+import { createUser, setName } from '@/util';
+export const showRouter = express.Router();
 
-router.get('/', async function (req, res) {
+showRouter.get('/', async function (req, res) {
 	if (req.pid === 1000000000) {
 		return res.render(req.directory + '/guest_notice.ejs');
 	}
@@ -24,17 +24,17 @@ router.get('/', async function (req, res) {
 
 	const usrMii = await database.getUserSettings(req.pid);
 	if (req.user.mii.name !== usrMii.screen_name) {
-		util.setName(req.pid, req.user.mii.name);
+		setName(req.pid, req.user.mii.name);
 		usrMii.screen_name = req.user.mii.name;
 		await usrMii.save();
 	}
 });
 
-router.get('/first', async function (req, res) {
+showRouter.get('/first', async function (req, res) {
 	res.render(req.directory + '/first_run.ejs');
 });
 
-router.post('/newUser', async function (req, res) {
+showRouter.post('/newUser', async function (req, res) {
 	if (req.pid === null || !req.new_users || req.directory === 'web') {
 		return res.sendStatus(401);
 	}
@@ -44,12 +44,10 @@ router.post('/newUser', async function (req, res) {
 		return res.sendStatus(504);
 	}
 
-	await util.createUser(req.pid, req.body.experience, req.body.notifications);
+	await createUser(req.pid, req.body.experience, req.body.notifications);
 	if (await database.getUserSettings(req.pid) !== null) {
 		res.sendStatus(200);
 	} else {
 		res.sendStatus(504);
 	}
 });
-
-module.exports = router;

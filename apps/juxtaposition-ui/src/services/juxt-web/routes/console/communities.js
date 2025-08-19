@@ -1,18 +1,18 @@
-const express = require('express');
-const multer = require('multer');
-const moment = require('moment');
-const database = require('@/database');
-const util = require('@/util');
+import express from 'express';
+import moment from 'moment';
+import multer from 'multer';
+import { config } from '@/config';
+import { database } from '@/database';
+import { COMMUNITY } from '@/models/communities';
+import { POST } from '@/models/post';
+import { redisGet, redisSet } from '@/redisCache';
+import { getCommunityHash } from '@/util';
 const upload = multer({ dest: 'uploads/' });
-const router = express.Router();
-const { POST } = require('@/models/post');
-const { COMMUNITY } = require('@/models/communities');
-const redis = require('@/redisCache');
-const { config } = require('@/config');
+export const communitiesRouter = express.Router();
 
-router.get('/', async function (req, res) {
-	const newCommunities = JSON.parse(await redis.getValue('newCommunities')) || await database.getNewCommunities(6);
-	let popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
+communitiesRouter.get('/', async function (req, res) {
+	const newCommunities = JSON.parse(await redisGet('newCommunities')) || await database.getNewCommunities(6);
+	let popularCommunities = JSON.parse(await redisGet('popularCommunities'));
 
 	if (!popularCommunities) {
 		const last24Hours = await calculateMostPopularCommunities();
@@ -27,8 +27,8 @@ router.get('/', async function (req, res) {
 			{ $limit: 9 },
 			{ $project: { index: 0, _id: 0 } }
 		]);
-		redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
-		redis.setValue('newCommunities', JSON.stringify(newCommunities), 60 * 60);
+		redisSet('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+		redisSet('newCommunities', JSON.stringify(newCommunities), 60 * 60);
 	}
 
 	res.render(req.directory + '/communities.ejs', {
@@ -38,14 +38,14 @@ router.get('/', async function (req, res) {
 	});
 });
 
-router.get('/all', async function (req, res) {
+communitiesRouter.get('/all', async function (req, res) {
 	const communities = await database.getCommunities(90);
 	res.render(req.directory + '/all_communities.ejs', {
 		communities: communities
 	});
 });
 
-router.get('/:communityID', async function (req, res) {
+communitiesRouter.get('/:communityID', async function (req, res) {
 	if (req.query.title_id) {
 		const community = await database.getCommunityByTitleID(req.query.title_id);
 		if (!community) {
@@ -56,7 +56,7 @@ router.get('/:communityID', async function (req, res) {
 	res.redirect(`/titles/${req.params.communityID}/new`);
 });
 
-router.get('/:communityID/related', async function (req, res) {
+communitiesRouter.get('/:communityID/related', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	const userContent = await database.getUserContent(req.pid);
 	if (!userContent || !userSettings) {
@@ -66,7 +66,7 @@ router.get('/:communityID/related', async function (req, res) {
 	if (!community) {
 		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found' });
 	}
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
 	if (!children) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
@@ -80,7 +80,7 @@ router.get('/:communityID/related', async function (req, res) {
 	});
 });
 
-router.get('/:communityID/:type', async function (req, res) {
+communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	const userContent = await database.getUserContent(req.pid);
 	if (!userContent || !userSettings) {
@@ -100,7 +100,7 @@ router.get('/:communityID/:type', async function (req, res) {
 		};
 		await community.save();
 	}
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	let children = await database.getSubCommunities(community.olive_community_id);
 	if (children.length === 0) {
 		children = null;
@@ -153,10 +153,10 @@ router.get('/:communityID/:type', async function (req, res) {
 	});
 });
 
-router.get('/:communityID/:type/more', async function (req, res) {
+communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	let posts;
 	const community = await database.getCommunityByID(req.params.communityID);
 	if (!community) {
@@ -198,10 +198,10 @@ router.get('/:communityID/:type/more', async function (req, res) {
 	}
 });
 
-router.post('/follow', upload.none(), async function (req, res) {
+communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 	const community = await database.getCommunityByID(req.body.id);
 	const userContent = await database.getUserContent(req.pid);
-	const popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
+	const popularCommunities = JSON.parse(await redisGet('popularCommunities'));
 	let updated = false;
 
 	if (userContent !== null && userContent.followed_communities.indexOf(community.olive_community_id) === -1) {
@@ -222,7 +222,7 @@ router.post('/follow', upload.none(), async function (req, res) {
 		const index = popularCommunities.findIndex(element => element.olive_community_id === community.olive_community_id);
 		if (index !== -1) {
 			popularCommunities[index].followers = community.followers;
-			redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+			redisSet('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
 		}
 	}
 });
@@ -242,5 +242,3 @@ async function calculateMostPopularCommunities() {
 		.sort((a, b) => b[1] - a[1])
 		.map(entry => entry[0]);
 }
-
-module.exports = router;

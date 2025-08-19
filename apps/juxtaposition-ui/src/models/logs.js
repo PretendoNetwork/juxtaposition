@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
 const actionEnum = [
 	'REMOVE_POST',
@@ -13,7 +13,7 @@ const actionEnum = [
 	'DELETE_COMMUNITY'
 ];
 
-const auditLogSchema = new Schema({
+export const auditLogSchema = new Schema({
 	actor: {
 		type: Number,
 		required: true
@@ -43,9 +43,4 @@ const auditLogSchema = new Schema({
 	}
 });
 
-const LOGS = model('LOGS', auditLogSchema);
-
-module.exports = {
-	auditLogSchema,
-	LOGS
-};
+export const LOGS = model('LOGS', auditLogSchema);

@@ -1,8 +1,8 @@
-const moment = require('moment/moment');
-const db = require('@/database');
-const { config } = require('@/config');
+import moment from 'moment';
+import { database as db } from '@/database';
+import { config } from '@/config';
 
-async function checkBan(request, response, next) {
+export async function checkBan(request, response, next) {
 	// Initialize access levels so the template engine can always access them
 	response.locals.tester = false;
 	response.locals.moderator = false;
@@ -84,5 +84,3 @@ async function checkBan(request, response, next) {
 
 	next();
 }
-
-module.exports = checkBan;

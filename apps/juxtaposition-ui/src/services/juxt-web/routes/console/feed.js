@@ -1,14 +1,14 @@
-const express = require('express');
-const moment = require('moment');
-const database = require('@/database');
-const util = require('@/util');
-const { POST } = require('@/models/post');
-const { config } = require('@/config');
-const router = express.Router();
+import express from 'express';
+import moment from 'moment';
+import { database } from '@/database';
+import { getCommunityHash } from '@/util';
+import { POST } from '@/models/post';
+import { config } from '@/config';
+export const feedRouter = express.Router();
 
-router.get('/', async function (req, res) {
+feedRouter.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -41,9 +41,9 @@ router.get('/', async function (req, res) {
 	});
 });
 
-router.get('/all', async function (req, res) {
+feedRouter.get('/all', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -80,10 +80,10 @@ router.get('/all', async function (req, res) {
 	});
 });
 
-router.get('/more', async function (req, res) {
+feedRouter.get('/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}
@@ -110,10 +110,10 @@ router.get('/more', async function (req, res) {
 	}
 });
 
-router.get('/all/more', async function (req, res) {
+feedRouter.get('/all/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = await getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}
@@ -144,5 +144,3 @@ router.get('/all/more', async function (req, res) {
 		res.sendStatus(204);
 	}
 });
-
-module.exports = router;

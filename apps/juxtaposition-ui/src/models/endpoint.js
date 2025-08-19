@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const endpointSchema = new Schema({
+export const endpointSchema = new Schema({
 	status: Number,
 	server_access_level: String,
 	topics: Boolean,
@@ -15,9 +15,4 @@ const endpointSchema = new Schema({
 	n3ds_host: String
 });
 
-const ENDPOINT = model('ENDPOINT', endpointSchema);
-
-module.exports = {
-	endpointSchema,
-	ENDPOINT
-};
+export const ENDPOINT = model('ENDPOINT', endpointSchema);

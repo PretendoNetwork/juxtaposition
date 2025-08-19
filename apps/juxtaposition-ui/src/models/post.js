@@ -1,6 +1,6 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const PostSchema = new Schema({
+export const PostSchema = new Schema({
 	id: String,
 	title_id: String,
 	screen_name: String,
@@ -116,9 +116,4 @@ PostSchema.methods.unRemove = async function (reason) {
 	await this.save();
 };
 
-const POST = model('POST', PostSchema);
-
-module.exports = {
-	PostSchema,
-	POST
-};
+export const POST = model('POST', PostSchema);

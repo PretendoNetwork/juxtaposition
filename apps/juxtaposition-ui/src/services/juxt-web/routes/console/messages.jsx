@@ -1,21 +1,21 @@
-/* eslint-disable import/no-unresolved -- eslint config is broken */
+import crypto from 'crypto';
+import express from 'express';
+import moment from 'moment';
+import { Snowflake as snowflake } from 'node-snowflake';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 import { processPainting } from '@/images';
-import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, INVALID_POST_BODY_REGEX } from '@/util';
-const crypto = require('crypto');
-const express = require('express');
-const moment = require('moment');
-const snowflake = require('node-snowflake').Snowflake;
-const database = require('@/database');
-const { POST } = require('@/models/post');
-const { CONVERSATION } = require('@/models/conversation');
-const { config } = require('@/config');
-const router = express.Router();
+import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, getInvalidPostRegex } from '@/util';
+import { database } from '@/database';
+import { POST } from '@/models/post';
+import { CONVERSATION } from '@/models/conversation';
+import { config } from '@/config';
 
-router.get('/', async function (req, res) {
+export const messagesRouter = express.Router();
+
+messagesRouter.get('/', async function (req, res) {
 	const conversations = await database.getConversations(req.pid);
 	res.jsxForDirectory({
 		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
@@ -25,7 +25,7 @@ router.get('/', async function (req, res) {
 	});
 });
 
-router.post('/new', async function (req, res) {
+messagesRouter.post('/new', async function (req, res) {
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await getUserAccountData(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
@@ -113,7 +113,7 @@ router.post('/new', async function (req, res) {
 			break;
 	}
 	const body = req.body.body;
-	if (body && INVALID_POST_BODY_REGEX.test(body)) {
+	if (body && getInvalidPostRegex().test(body)) {
 		// TODO - Log this error
 		return res.sendStatus(422);
 	}
@@ -163,7 +163,7 @@ router.post('/new', async function (req, res) {
 	await conversation.newMessage(postPreviewText, user2.pid);
 });
 
-router.get('/new/:pid', async function (req, res) {
+messagesRouter.get('/new/:pid', async function (req, res) {
 	const user2 = await getUserAccountData(req.params.pid);
 	const friends = await getUserFriendPIDs(user2.pid);
 	if (!req.user || !user2) {
@@ -217,7 +217,7 @@ router.get('/new/:pid', async function (req, res) {
 	res.redirect(`/friend_messages/${conversation.id}`);
 });
 
-router.get('/:message_id', async function (req, res) {
+messagesRouter.get('/:message_id', async function (req, res) {
 	const conversation = await database.getConversationByID(req.params.message_id.toString());
 	if (!conversation) {
 		return res.sendStatus(404);
@@ -244,5 +244,3 @@ async function generatePostUID(length) {
 	id = (inuse ? await generatePostUID() : id);
 	return id;
 }
-
-module.exports = router;

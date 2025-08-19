@@ -1,17 +1,19 @@
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const { RedisStore } = require('connect-redis');
-const expressMetrics = require('express-prom-bundle');
-require('express-async-errors'); // See package docs
-const database = require('@/database');
-const { logger } = require('@/logger');
-const { loggerHttp } = require('@/loggerHttp');
-const { redisClient } = require('@/redisCache');
-const juxt_web = require('@/services/juxt-web');
-const { healthzRouter } = require('@/services/healthz');
-const { config } = require('@/config');
-const { jsxRenderer } = require('@/middleware/jsx');
+import path from 'node:path';
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import { RedisStore } from 'connect-redis';
+import expressMetrics from 'express-prom-bundle';
+import 'express-async-errors'; // See package docs
+import { database } from '@/database';
+import { logger } from '@/logger';
+import { loggerHttp } from '@/loggerHttp';
+import { redisClient } from '@/redisCache';
+import { router } from '@/services/juxt-web';
+import { healthzRouter } from '@/services/healthz';
+import { config } from '@/config';
+import { jsxRenderer } from '@/middleware/jsx';
+import { distFolder } from '@/util';
 
 process.title = 'Pretendo - Juxt-Web';
 process.on('SIGTERM', () => {
@@ -45,7 +47,7 @@ if (metricsEnabled) {
 app.set('etag', false);
 app.disable('x-powered-by');
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '/webfiles');
+app.set('views', path.join(distFolder, '/webfiles'));
 app.set('trust proxy', config.http.trustProxy);
 app.get('/ip', (request, response) => response.send(request.ip));
 
@@ -72,7 +74,7 @@ app.use(session({
 }));
 
 // import the servers into one
-app.use(juxt_web);
+app.use(router);
 
 // 404 handler
 logger.info('Creating 404 status handler');

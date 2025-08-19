@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
@@ -6,7 +8,7 @@ import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import HashMap from 'hashmap';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
-import database from '@/database';
+import { database } from '@/database';
 import { COMMUNITY } from '@/models/communities';
 import { NOTIFICATION } from '@/models/notifications';
 import { logger } from '@/logger';
@@ -16,7 +18,7 @@ import { LOGS } from '@/models/logs';
 import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
-import translations from './translations';
+import { translations } from '@/translations';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { NotificationSchema } from '@/models/notifications';
 import type { CommunitySchema } from '@/models/communities';
@@ -115,7 +117,9 @@ export function updateCommunityHash(community: InferSchemaType<typeof CommunityS
 }
 
 // TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
-export const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+export function getInvalidPostRegex(): RegExp {
+	return /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+}
 
 export async function createUser(pid: number, experience: number, notifications: boolean): Promise<void> {
 	const pnid = await getUserAccountData(pid);
@@ -428,7 +432,7 @@ export async function getUserDataFromToken(token: string): Promise<ApiGetUserDat
 	});
 }
 
-export async function login(username: string, password: string): Promise<LoginResponse> {
+export async function passwordLogin(username: string, password: string): Promise<LoginResponse> {
 	return await gRPCApiClient.login({
 		username: username,
 		password: password,
@@ -461,3 +465,7 @@ export async function createLogEntry(actor: number, action: string, target: stri
 	});
 	await newLog.save();
 }
+
+const filename = fileURLToPath(import.meta.url);
+// The root of the dist/ folder.
+export const distFolder = path.dirname(filename);

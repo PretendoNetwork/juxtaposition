@@ -1,10 +1,10 @@
-const util = require('@/util');
-const { config } = require('@/config');
-const { logger } = require('@/logger');
+import { config } from '@/config';
+import { logger } from '@/logger';
+import { getUserDataFromToken, processLanguage } from '@/util';
 
 const cookieDomain = config.http.cookieDomain;
 
-async function webAuth(request, response, next) {
+export async function webAuth(request, response, next) {
 	// Get pid and fetch user data
 
 	if (request.session && request.session.user && request.session.pid && !request.isWrite && request.cookies.access_token) {
@@ -12,7 +12,7 @@ async function webAuth(request, response, next) {
 		request.pid = request.session.pid;
 	} else {
 		try {
-			request.user = await util.getUserDataFromToken(request.cookies.access_token);
+			request.user = await getUserDataFromToken(request.cookies.access_token);
 			request.pid = request.user.pid;
 
 			request.session.user = request.user;
@@ -23,7 +23,7 @@ async function webAuth(request, response, next) {
 			response.clearCookie('refresh_token', { domain: cookieDomain, path: '/' });
 			response.clearCookie('token_type', { domain: cookieDomain, path: '/' });
 			if (request.path === '/login') {
-				response.locals.lang = util.processLanguage();
+				response.locals.lang = processLanguage();
 				request.tokens = {};
 				request.paramPackData = null;
 				return next();
@@ -67,5 +67,3 @@ function isStartOfPath(path, value) {
 BigInt.prototype['toJSON'] = function () {
 	return this.toString();
 };
-
-module.exports = webAuth;

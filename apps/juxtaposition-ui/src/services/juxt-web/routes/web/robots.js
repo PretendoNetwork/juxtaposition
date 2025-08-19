@@ -1,10 +1,10 @@
-const path = require('path');
-const express = require('express');
-const router = express.Router();
+import path from 'path';
+import express from 'express';
+import { distFolder } from '@/util';
 
-router.get('/', function (req, res) {
+export const robotsRouter = express.Router();
+
+robotsRouter.get('/', function (req, res) {
 	res.set('Content-Type', 'text/css');
-	res.sendFile('robots.txt', { root: path.join(__dirname, '../../../../webfiles/web') });
+	res.sendFile('robots.txt', { root: path.join(distFolder, '/webfiles/web') });
 });
-
-module.exports = router;
