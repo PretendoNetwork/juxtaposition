@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: Poppins, Arial, serif;
+    font-family: Arial, serif;
     width: 400px;
     background: #00f
 }
@@ -67,8 +67,8 @@ ul {
 #page-title {
     position: absolute;
     bottom: 0;
-    height: 55px;
-    line-height: 50px;
+    height: 52px;
+    line-height: 47px;
     font-size: 25px;
     white-space: nowrap;
     display: inline;
