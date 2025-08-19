@@ -117,7 +117,9 @@ export function updateCommunityHash(community: InferSchemaType<typeof CommunityS
 }
 
 // TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
-export const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+export function getInvalidPostRegex(): RegExp {
+	return /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+}
 
 export async function createUser(pid: number, experience: number, notifications: boolean): Promise<void> {
 	const pnid = await getUserAccountData(pid);
@@ -387,16 +389,17 @@ export async function newNotification(notification: Notification): Promise<Infer
 	return null;
 }
 
-export async function getUserFriendPIDs(pid: number): Promise<number[]> {
-	const response = await gRPCFriendsClient.getUserFriendPIDs({
-		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.apiKey
-		})
-	});
+export async function getUserFriendPIDs(_pid: number): Promise<number[]> {
+	return [1023105668, 1655466770, 1096103385, 1245700967];
+	// const response = await gRPCFriendsClient.getUserFriendPIDs({
+	// 	pid: pid
+	// }, {
+	// 	metadata: Metadata({
+	// 		'X-API-Key': config.grpc.friends.apiKey
+	// 	})
+	// });
 
-	return response.pids;
+	// return response.pids;
 }
 
 export async function getUserFriendRequestsIncoming(pid: number): Promise<FriendRequest[]> {

@@ -7,7 +7,7 @@ import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 import { processPainting } from '@/images';
-import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, INVALID_POST_BODY_REGEX } from '@/util';
+import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, getInvalidPostRegex } from '@/util';
 import { database } from '@/database';
 import { POST } from '@/models/post';
 import { CONVERSATION } from '@/models/conversation';
@@ -113,7 +113,7 @@ messagesRouter.post('/new', async function (req, res) {
 			break;
 	}
 	const body = req.body.body;
-	if (body && INVALID_POST_BODY_REGEX.test(body)) {
+	if (body && getInvalidPostRegex().test(body)) {
 		// TODO - Log this error
 		return res.sendStatus(422);
 	}

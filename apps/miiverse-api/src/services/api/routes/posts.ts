@@ -6,7 +6,7 @@ import {
 	processPainting,
 	uploadCDNAsset,
 	getValueFromQueryString,
-	INVALID_POST_BODY_REGEX
+	getInvalidPostRegex
 } from '@/util';
 import {
 	getPostByID,
@@ -316,7 +316,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 			break;
 	}
 
-	if (messageBody && INVALID_POST_BODY_REGEX.test(messageBody)) {
+	if (messageBody && getInvalidPostRegex().test(messageBody)) {
 		request.log.warn('Message body failed regex');
 		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
