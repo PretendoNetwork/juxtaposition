@@ -389,17 +389,16 @@ export async function newNotification(notification: Notification): Promise<Infer
 	return null;
 }
 
-export async function getUserFriendPIDs(_pid: number): Promise<number[]> {
-	return [1023105668, 1655466770, 1096103385, 1245700967];
-	// const response = await gRPCFriendsClient.getUserFriendPIDs({
-	// 	pid: pid
-	// }, {
-	// 	metadata: Metadata({
-	// 		'X-API-Key': config.grpc.friends.apiKey
-	// 	})
-	// });
+export async function getUserFriendPIDs(pid: number): Promise<number[]> {
+	const response = await gRPCFriendsClient.getUserFriendPIDs({
+		pid: pid
+	}, {
+		metadata: Metadata({
+			'X-API-Key': config.grpc.friends.apiKey
+		})
+	});
 
-	// return response.pids;
+	return response.pids;
 }
 
 export async function getUserFriendRequestsIncoming(pid: number): Promise<FriendRequest[]> {
