@@ -10,7 +10,7 @@ import {
 	processPainting,
 	uploadCDNAsset,
 	getValueFromQueryString,
-	INVALID_POST_BODY_REGEX
+	getInvalidPostRegex
 } from '@/util';
 import { getConversationByUsers, getFriendMessages } from '@/database';
 import { Post } from '@/models/post';
@@ -127,7 +127,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 			break;
 	}
 
-	if (messageBody && INVALID_POST_BODY_REGEX.test(messageBody)) {
+	if (messageBody && getInvalidPostRegex().test(messageBody)) {
 		request.log.warn('Message body failed regex');
 		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}

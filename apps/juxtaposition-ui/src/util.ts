@@ -118,7 +118,9 @@ export function updateCommunityHash(community: InferSchemaType<typeof CommunityS
 }
 
 // TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
-export const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+export function getInvalidPostRegex(): RegExp {
+	return /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+}
 
 export async function createUser(pid: number, experience: number, notifications: boolean): Promise<void> {
 	const pnid = await getUserAccountData(pid);

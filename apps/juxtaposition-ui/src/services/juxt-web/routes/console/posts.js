@@ -10,7 +10,7 @@ import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, getCommunityHash, getUserAccountData, INVALID_POST_BODY_REGEX, newNotification } from '@/util';
+import { createLogEntry, getCommunityHash, getUserAccountData, getInvalidPostRegex, newNotification } from '@/util';
 import { uploadPainting, uploadScreenshot } from '@/images';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
@@ -300,7 +300,7 @@ async function newPost(req, res) {
 			break;
 	}
 	const body = req.body.body;
-	if (body && INVALID_POST_BODY_REGEX.test(body)) {
+	if (body && getInvalidPostRegex().test(body)) {
 		// TODO - Log this error
 		return res.sendStatus(422);
 	}

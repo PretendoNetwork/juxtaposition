@@ -38,7 +38,9 @@ const s3 = new aws.S3({
 });
 
 // TODO - This doesn't really belong here
-export const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+export function getInvalidPostRegex(): RegExp {
+	return /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+}
 
 export function decodeParamPack(paramPack: string): ParamPack {
 	const values = Buffer.from(paramPack, 'base64').toString().split('\\').filter(v => v.length > 0).values();

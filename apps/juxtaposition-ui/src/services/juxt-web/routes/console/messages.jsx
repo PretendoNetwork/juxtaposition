@@ -11,7 +11,7 @@ import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
-import { getUserAccountData, getUserFriendPIDs, getUserHash, INVALID_POST_BODY_REGEX, uploadCDNAsset } from '@/util';
+import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, getInvalidPostRegex } from '@/util';
 
 export const messagesRouter = express.Router();
 
@@ -111,7 +111,7 @@ messagesRouter.post('/new', async function (req, res) {
 			break;
 	}
 	const body = req.body.body;
-	if (body && INVALID_POST_BODY_REGEX.test(body)) {
+	if (body && getInvalidPostRegex().test(body)) {
 		// TODO - Log this error
 		return res.sendStatus(422);
 	}
