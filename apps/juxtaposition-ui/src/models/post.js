@@ -8,7 +8,9 @@ export const PostSchema = new Schema({
 	app_data: String,
 	painting: String,
 	screenshot: String,
+	screenshot_thumb: String,
 	screenshot_length: Number,
+	screenshot_aspect: String,
 	search_key: {
 		type: [String],
 		default: undefined

@@ -19,8 +19,13 @@
 				</header>
 				<div class="body-content tab2-content" id="community-post-list">
 					<div class="header-banner-container">
-						<img src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"
+						<% if (community.wup_header) { %>
+							<img src="<%= cdnURL %><%= community.wup_header %>"
 							class="header-banner with-top-button">
+						<% } else { %>
+							<img src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"
+							class="header-banner with-top-button">
+						<% } %>	
 					</div>
 
 					<div class="community-info info-content with-header-banner">

@@ -6,12 +6,12 @@ import multer from 'multer';
 import { getPostById } from '@/api/post';
 import { config } from '@/config';
 import { database } from '@/database';
-import { processBmpPainting, processPainting } from '@/images';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, getCommunityHash, getUserAccountData, getInvalidPostRegex, newNotification, uploadCDNAsset } from '@/util';
+import { createLogEntry, getCommunityHash, getUserAccountData, getInvalidPostRegex, newNotification } from '@/util';
+import { uploadPainting, uploadScreenshot } from '@/images';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -255,17 +255,10 @@ async function newPost(req, res) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	let painting = '';
-	let paintingURI = '';
-	let screenshot = null;
+	let paintingBlob = '';
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		if (req.body.bmp === 'true') {
-			painting = await processBmpPainting(req.body.painting.replace(/\0/g, '').trim());
-		} else {
-			painting = req.body.painting;
-		}
-		paintingURI = await processPainting(painting);
-		if (!await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		paintingBlob = await uploadPainting(req.body.painting, req.body.bmp, req.pid, postID);
+		if (paintingBlob === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -273,9 +266,10 @@ async function newPost(req, res) {
 			});
 		}
 	}
+	let screenshots = null;
 	if (req.body.screenshot) {
-		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		if (!await uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+		screenshots = await uploadScreenshot(req.body.screenshot, req.pid, postID);
+		if (screenshots === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -320,8 +314,10 @@ async function newPost(req, res) {
 		community_id: community.olive_community_id,
 		screen_name: userSettings.screen_name,
 		body: body,
-		painting: painting,
-		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
+		painting: paintingBlob,
+		screenshot: screenshots?.full ?? '',
+		screenshot_thumb: screenshots?.thumb ?? '',
+		screenshot_aspect: screenshots?.aspect ?? '',
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,

@@ -3,7 +3,13 @@
 <%- include('partials/head', { title: community.name }); %>
 <body>
 <div id="body">
-    <header id="header" style="background: url('<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png')">
+    <header id="header"
+    <% if (community.ctr_header) { %>
+        style="background: url('<%= cdnURL %><%= community.ctr_header %>')"
+    <% } else { %>
+        style="background: url('<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png')"
+        class="header-legacy"
+    <% } %>>
         <h1 id="page-title" class="community">
             <span>
                 <span class="icon-container">

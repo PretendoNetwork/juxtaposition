@@ -33,6 +33,8 @@ export interface ICommunity {
 	followers: number;
 	has_shop_page: number;
 	icon: string;
+	ctr_header?: string;
+	wup_header?: string;
 	title_ids?: string[]; // Does not exist on any community
 	title_id: string[];
 	community_id: string;
