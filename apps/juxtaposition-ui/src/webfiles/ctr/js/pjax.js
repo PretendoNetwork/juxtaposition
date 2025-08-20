@@ -1,4 +1,4 @@
-var Pjax = {
+export var Pjax = {
 	elements: null,
 	selectors: null,
 	href: null,
@@ -48,7 +48,7 @@ var Pjax = {
 		xhttp.onreadystatechange = function () {
 			if (this.readyState === 4) {
 				document.dispatchEvent(Pjax.events.PjaxLoaded);
-				this.responseURL = url;
+				this.finalURL = url;
 				return callback(this);
 			}
 		};
@@ -70,7 +70,7 @@ var Pjax = {
 			}
 			console.log(data);
 			Pjax.refresh();
-			Pjax.href = data.responseURL;
+			Pjax.href = data.finalURL;
 			document.dispatchEvent(Pjax.events.PjaxDone);
 		}
 	},

@@ -1,17 +1,3 @@
-if (typeof cave !== 'undefined') {
-	window.addEventListener('error', handleError, true);
-
-	function handleError(evt) {
-		if (evt.message) { // Chrome sometimes provides this
-			alert('error: ' + evt.message + ' at linenumber: ' + evt.lineno + ' of file: ' + evt.filename);
-		} else {
-			if ((evt.srcElement || evt.target).toString().indexOf('HTMLImageElement') !== -1) {
-				return;
-			}
-			alert('error: ' + evt.type + ' from element: ' + (evt.srcElement || evt.target));
-		}
-	}
-}
 if (typeof cave === 'undefined') {
 	window.cave = {
 		/**
