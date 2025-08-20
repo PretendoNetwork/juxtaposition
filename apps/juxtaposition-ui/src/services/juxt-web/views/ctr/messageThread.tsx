@@ -46,7 +46,7 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
 
 	return (
-		<CtrRoot title={props.ctx.lang.global.messages}>
+		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.messages}>
 			<CtrPageBody>
 				<header id="header" className="buttons">
 					<h1 id="page-title">{otherUserName}</h1>
