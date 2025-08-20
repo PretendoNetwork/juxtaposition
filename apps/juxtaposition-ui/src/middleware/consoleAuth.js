@@ -24,12 +24,18 @@ export async function consoleAuth(request, response, next) {
 
 	if (!request.user) {
 		try {
-			request.user = await getUserDataFromToken(request.cookies.access_token);
-			request.pid = request.user.pid;
+			// Developer accounts may also use an OAuth token for console frontends
+			const user = await getUserDataFromToken(request.cookies.access_token);
+			if (user.accessLevel === 3) {
+				request.user = user;
+				request.pid = user.pid;
 
-			request.session.user = request.user;
-			request.session.pid = request.pid;
-			if (request.user.accessLevel !== 3) {
+				request.session.user = request.user;
+				request.session.pid = request.pid;
+
+				request.tokens = { oauthToken: request.cookies.access_token };
+				request.session.tokens = request.tokens;
+			} else {
 				request.user = null;
 				request.pid = null;
 				request.session.user = null;
