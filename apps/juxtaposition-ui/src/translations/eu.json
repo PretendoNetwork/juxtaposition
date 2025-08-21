@@ -1,1 +1,27 @@
-{}
+{
+    "language": "Euskara",
+    "global": {
+        "user_page": "Erabiltzailearen orria",
+        "activity_feed": "Jarduera",
+        "communities": "Komunitateak",
+        "messages": "Mezuak",
+        "notifications": "Jakinarazpenak",
+        "go_back": "Atzera joan",
+        "back": "Atzera",
+        "save": "Gorde",
+        "more": "Argitarapen gehiago erakutsi",
+        "no_posts": "Ez dago argitarapenik",
+        "private": "Pribatua",
+        "close": "Itxi",
+        "exit": "Irten",
+        "next": "Hurrengoa"
+    },
+    "all_communities": {
+        "text": "Komunitate denak",
+        "announcements": "Iragarpenak",
+        "ann_string": "Hemen klik egin notizia berriak ikusteko!",
+        "popular_places": "Toki ospetsuak",
+        "new_communities": "Komunitate berriak",
+        "show_all": "Dena erakutsi"
+    }
+}
