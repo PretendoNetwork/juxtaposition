@@ -1,13 +1,12 @@
 import crypto from 'crypto';
 import express from 'express';
-import moment from 'moment';
 import { Snowflake as snowflake } from 'node-snowflake';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 import { processPainting } from '@/images';
-import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, getInvalidPostRegex } from '@/util';
+import { getUserFriendPIDs, getUserAccountData, uploadCDNAsset, getInvalidPostRegex } from '@/util';
 import { database } from '@/database';
 import { POST } from '@/models/post';
 import { CONVERSATION } from '@/models/conversation';
@@ -150,8 +149,7 @@ messagesRouter.post('/new', async function (req, res) {
 		return res.redirect('/posts/' + req.params.post_id);
 	}
 	const newPost = new POST(document);
-	newPost.save();
-	res.redirect(`/friend_messages/${conversation.id}`);
+	await newPost.save();
 	let postPreviewText;
 	if (document.painting) {
 		postPreviewText = 'sent a Drawing';
@@ -161,6 +159,7 @@ messagesRouter.post('/new', async function (req, res) {
 		postPreviewText = document.body;
 	}
 	await conversation.newMessage(postPreviewText, user2.pid);
+	return res.redirect(`/friend_messages/${conversation.id}`);
 });
 
 messagesRouter.get('/new/:pid', async function (req, res) {
@@ -224,18 +223,24 @@ messagesRouter.get('/:message_id', async function (req, res) {
 	}
 	const user2 = conversation.users[0].pid === req.pid ? conversation.users[1] : conversation.users[0];
 	if (req.pid !== conversation.users[0].pid && req.pid !== conversation.users[1].pid) {
-		res.redirect('/');
+		return res.redirect('/');
 	}
 	const messages = await database.getConversationMessages(conversation.id, 200, 0);
-	const userMap = await getUserHash();
-	res.render(req.directory + '/message_thread.ejs', {
-		moment: moment,
-		user2: user2,
-		conversation: conversation,
-		messages: messages,
-		userMap: userMap
-	});
+
 	await conversation.markAsRead(req.pid);
+	// res.render(req.directory + '/message_thread.ejs', {
+	// 	moment: moment,
+	// 	user2: user2,
+	// 	conversation: conversation,
+	// 	messages: messages,
+	// 	userMap: userMap
+	// });
+	res.jsxForDirectory({
+		web: <WebMessagesView conversations={conversations} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
+		portal: <PortalMessagesView conversations={conversations} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
+		ctr: <CtrMessagesView conversations={conversations} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
+		disableDoctypeFor: ['ctr']
+	});
 });
 
 async function generatePostUID(length) {
