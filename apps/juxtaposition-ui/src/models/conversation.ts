@@ -1,7 +1,27 @@
 import { Schema, model } from 'mongoose';
 import { Snowflake as snowflake } from 'node-snowflake';
+import type { HydratedDocument, Types } from 'mongoose';
 
-const user = new Schema({
+export type ConversationUser = {
+	pid: number;
+	official: boolean;
+	read: boolean;
+} & Document;
+
+export type Conversation = {
+	id: string;
+	created_at: Date;
+	last_updated: Date;
+	message_preview: string;
+	users: Types.Array<ConversationUser>;
+
+	newMessage(message: string, senderPid: number): Promise<void>;
+	markAsRead(receiverPid: number): Promise<void>;
+} & Document;
+
+export type HydratedConversationDocument = HydratedDocument<Conversation>;
+
+const user = new Schema<ConversationUser>({
 	pid: Number,
 	official: {
 		type: Boolean,
@@ -13,7 +33,7 @@ const user = new Schema({
 	}
 });
 
-export const ConversationSchema = new Schema({
+export const ConversationSchema = new Schema<Conversation>({
 	id: {
 		type: String,
 		default: snowflake.nextId()
@@ -33,7 +53,7 @@ export const ConversationSchema = new Schema({
 	users: [user]
 });
 
-ConversationSchema.methods.newMessage = async function (message, senderPID) {
+ConversationSchema.method<HydratedConversationDocument>('newMessage', async function (message, senderPID) {
 	this.last_updated = new Date();
 	this.message_preview = message;
 	const sender = this.users.find(user => user.pid === senderPID);
@@ -41,14 +61,14 @@ ConversationSchema.methods.newMessage = async function (message, senderPID) {
 		sender.read = false;
 	}
 	await this.save();
-};
+});
 
-ConversationSchema.methods.markAsRead = async function (receiverPID) {
+ConversationSchema.method<HydratedConversationDocument>('newMessage', async function (receiverPID) {
 	const receiver = this.users.find(user => user.pid === receiverPID);
 	if (receiver) {
 		receiver.read = true;
 	}
 	await this.save();
-};
+});
 
 export const CONVERSATION = model('CONVERSATION', ConversationSchema);

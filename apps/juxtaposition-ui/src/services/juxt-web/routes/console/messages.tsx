@@ -14,7 +14,7 @@ import { config } from '@/config';
 import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
 import { PortalMessageThreadView } from '@/services/juxt-web/views/portal/messageThread';
 import { CtrMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
-import { getAuthedRequest, type AuthRequest } from '@/types/middleware';
+import { getAuthedRequest } from '@/types/middleware';
 
 export const messagesRouter = express.Router();
 
