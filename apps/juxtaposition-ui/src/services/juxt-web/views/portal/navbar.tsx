@@ -58,12 +58,12 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 					</span>
 				</a>
 			</li>
-			<li id="nav-menu-exit" onclick="exit()">
+			<li id="nav-menu-exit" evt-click="exit()">
 				<a role="button" data-sound="SE_WAVE_EXIT">
 					{props.ctx.lang.global.close}
 				</a>
 			</li>
-			<li id="nav-menu-back" className="none" onclick="back()">
+			<li id="nav-menu-back" className="none" evt-click="back()">
 				<a role="button" className="accesskey-B" data-sound="SE_WAVE_BACK">
 					{props.ctx.lang.global.go_back}
 				</a>

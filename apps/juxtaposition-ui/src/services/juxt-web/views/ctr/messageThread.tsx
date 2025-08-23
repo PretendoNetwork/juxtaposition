@@ -67,7 +67,7 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
 				</div>
 				<CtrNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
-				<img src="" onerror="cave.toolbar_setActiveButton(4);setTimeout(function() { window.scrollTo(0, 500000); }, 1000)" />
+				<img src="" evt-error="cave.toolbar_setActiveButton(4);setTimeout(function() { window.scrollTo(0, 500000); }, 1000)" />
 			</CtrPageBody>
 		</CtrRoot>
 	);

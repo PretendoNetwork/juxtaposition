@@ -79,7 +79,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 							data-toggle="dropdown"
 							className="dropdown-toggle"
 							data-sound="SE_WAVE_BALLOON_OPEN"
-							onclick="window.alert('Screenshots are not ready yet. Check back soon!')"
+							evt-click="window.alert('Screenshots are not ready yet. Check back soon!')"
 						>
 							<img className="preview-image sprite" src="" />
 						</button>
@@ -95,7 +95,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 									value="body"
 									checked
 									data-sound=""
-									onclick="newText()"
+									evt-click="newText()"
 								/>
 								<textarea
 									name="body"
@@ -114,9 +114,9 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 									name="_post_type"
 									value="painting"
 									data-sound=""
-									onclick="newPainting(false)"
+									evt-click="newPainting(false)"
 								/>
-								<div className="textarea-memo" id="post-memo" data-sound="" onclick="newPainting(false)">
+								<div className="textarea-memo" id="post-memo" data-sound="" evt-click="newPainting(false)">
 									<img id="memo" className="textarea-memo-preview" src="" />
 									<input id="memo-value" type="hidden" name="painting" />
 								</div>
@@ -146,7 +146,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 					id="submit"
 					className="post-button fixed-bottom-button"
 					value="Post"
-					onclick="wiiuBrowser.lockUserOperation(true);"
+					evt-click="wiiuBrowser.lockUserOperation(true);"
 				/>
 			</form>
 		</div>

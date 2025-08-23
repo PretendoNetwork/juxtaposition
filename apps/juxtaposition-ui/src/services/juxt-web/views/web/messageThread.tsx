@@ -80,44 +80,44 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					<div id="painting-content">
 						<div className="tools">
 							<div>
-								<button className="clear" onclick="clearCanvas()"></button>
+								<button className="clear" evt-click="clearCanvas()"></button>
 								<button className="undo"></button>
 							</div>
 							<div>
 								<ul className="buttons pencil">
 									<li>
-										<input onclick="setPen(0)" type="radio" value="0" className="pencil small" name="tool" checked />
+										<input evt-click="setPen(0)" type="radio" value="0" className="pencil small" name="tool" checked />
 									</li>
 									<li>
-										<input onclick="setPen(1)" type="radio" value="1" className="pencil medium" name="tool" />
+										<input evt-click="setPen(1)" type="radio" value="1" className="pencil medium" name="tool" />
 									</li>
 									<li>
-										<input onclick="setPen(2)" type="radio" value="2" className="pencil large" name="tool" />
+										<input evt-click="setPen(2)" type="radio" value="2" className="pencil large" name="tool" />
 									</li>
 								</ul>
 								<ul className="buttons eraser">
 									<li>
-										<input onclick="setEraser(0)" type="radio" value="0" className="eraser small" name="tool" />
+										<input evt-click="setEraser(0)" type="radio" value="0" className="eraser small" name="tool" />
 									</li>
 									<li>
-										<input onclick="setEraser(1)" type="radio" value="1" className="eraser medium" name="tool" />
+										<input evt-click="setEraser(1)" type="radio" value="1" className="eraser medium" name="tool" />
 									</li>
 									<li>
-										<input onclick="setEraser(2)" type="radio" value="2" className="eraser large" name="tool" />
+										<input evt-click="setEraser(2)" type="radio" value="2" className="eraser large" name="tool" />
 									</li>
 								</ul>
 							</div>
 						</div>
 						<canvas width="320" height="120" id="painting">Your browser does not support the HTML canvas tag.</canvas>
 						<div id="button-wrapper">
-							<button onclick="closePainting(false)">Cancel</button>
-							<button className="primary" onclick="closePainting(true)">OK</button>
+							<button evt-click="closePainting(false)">Cancel</button>
+							<button className="primary" evt-click="closePainting(true)">OK</button>
 						</div>
 					</div>
 					<script src="/js/painting.global.js" />
 				</div>
 			</div>
-			<img src="" onerror="setTimeout(function() { window.scrollTo(0, 50000); }, 500)" />
+			<img src="" evt-error="setTimeout(function() { window.scrollTo(0, 50000); }, 500)" />
 			<WebReportModalView ctx={props.ctx} />
 		</WebRoot>
 	);

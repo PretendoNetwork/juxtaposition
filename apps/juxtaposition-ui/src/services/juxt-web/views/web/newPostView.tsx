@@ -76,14 +76,14 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 					<div className="textarea-container textarea-with-menu active-text">
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
-								<input type="radio" name="_post_type" value="body" checked data-sound="" onclick="openText()" />
+								<input type="radio" name="_post_type" value="body" checked data-sound="" evt-click="openText()" />
 							</li>
 							<li className="textarea-menu-memo">
-								<input type="radio" name="_post_type" value="painting" data-sound="" onclick="newPainting(false)" disabled />
+								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" disabled />
 							</li>
 						</menu>
 						<textarea id="new-post-text" name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..."></textarea>
-						<div id="new-post-memo" className="textarea-memo trigger" data-sound="" onclick="newPainting(false)" style={{ display: 'none' }}>
+						<div id="new-post-memo" className="textarea-memo trigger" data-sound="" evt-click="newPainting(false)" style={{ display: 'none' }}>
 							<img id="memo" className="textarea-memo-preview" src="" />
 							<input id="memo-value" type="hidden" name="painting" />
 						</div>

@@ -57,7 +57,7 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
 				</div>
 				<PortalNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
-				<img src="" onerror="setTimeout(function() { window.scrollTo(0, 50000); }, 500)" />
+				<img src="" evt-error="setTimeout(function() { window.scrollTo(0, 50000); }, 500)" />
 			</PortalPageBody>
 		</PortalRoot>
 	);

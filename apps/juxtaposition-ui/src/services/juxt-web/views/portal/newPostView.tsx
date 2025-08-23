@@ -78,15 +78,15 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 							<div className="image-selector-window dropdown-menu">
 								<menu className="screenshot-menu">
 									<li className="image-wrapper">
-										<input type="radio" name="_screenshot_value" value="top" checked data-sound="" onclick="chooseScreenShot(0)" />
+										<input type="radio" name="_screenshot_value" value="top" checked data-sound="" evt-click="chooseScreenShot(0)" />
 										<img id="top-screen" src="" className="capture-image" />
 									</li>
 									<li className="image-wrapper">
-										<input type="radio" name="_screenshot_value" value="bottom" data-sound="" onclick="chooseScreenShot(1)" />
+										<input type="radio" name="_screenshot_value" value="bottom" data-sound="" evt-click="chooseScreenShot(1)" />
 										<img id="bottom-screen" src="" className="capture-image" />
 									</li>
 									<li className="button">
-										<input type="radio" name="_screenshot_value" value="none" data-sound="" onclick="chooseScreenShot()" />
+										<input type="radio" name="_screenshot_value" value="none" data-sound="" evt-click="chooseScreenShot()" />
 										No Screenshot
 									</li>
 								</menu>
@@ -98,11 +98,11 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
 								<input type="radio" name="_post_type" value="body" checked data-sound="" />
-								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={props.ctx.lang.user_settings.swearing} onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
+								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={props.ctx.lang.user_settings.swearing} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
 							</li>
 							<li className="textarea-menu-memo">
-								<input type="radio" name="_post_type" value="painting" data-sound="" onclick="newPainting(false)" />
-								<div className="textarea-memo trigger" data-sound="" onclick="newPainting(false)">
+								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" />
+								<div className="textarea-memo trigger" data-sound="" evt-click="newPainting(false)">
 									<img id="memo" className="textarea-memo-preview" src="" />
 									<input id="memo-value" type="hidden" name="painting" />
 								</div>
@@ -126,7 +126,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 					data-header="true"
 					data-menu="true"
 				/>
-				<input type="submit" className="post-button fixed-bottom-button" value="Post" onclick="wiiuBrowser.lockUserOperation(true);" />
+				<input type="submit" className="post-button fixed-bottom-button" value="Post" evt-click="wiiuBrowser.lockUserOperation(true);" />
 			</form>
 		</div>
 	);
