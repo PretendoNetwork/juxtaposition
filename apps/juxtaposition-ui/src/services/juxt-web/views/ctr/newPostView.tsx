@@ -51,8 +51,8 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				</h1>
 			</header>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
-				<input type="hidden" name="community_id" value={props.id} />
-				<input type="hidden" name="bmp" value="true" />
+				<input type="hidden" name="community_id" defaultValue={props.id} />
+				<input type="hidden" name="bmp" defaultValue="true" />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
 						<img src={`${props.ctx.cdnUrl}/mii/${props.ctx.pid}/normal_face.png`} id="mii-face" className="icon" />
@@ -62,10 +62,10 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 									<input
 										type="radio"
 										name="feeling_id"
-										value={v.value}
+										defaultValue={v.value}
 										className={v.className}
 										data-mii-face-url={`${props.ctx.cdnUrl}/mii/${props.ctx.pid}/${v.miiFaceFile}`}
-										checked
+										defaultChecked
 										data-sound={v.sound}
 									/>
 								</li>
@@ -83,7 +83,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 						>
 							<img className="preview-image sprite" src="" />
 						</button>
-						<input id="screenshot-value" type="hidden" name="screenshot" value="" />
+						<input id="screenshot-value" type="hidden" name="screenshot" defaultValue="" />
 					</div>
 					<div className="textarea-container textarea-with-menu active-text">
 						<menu className="textarea-menu">
@@ -92,8 +92,8 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								<input
 									type="radio"
 									name="_post_type"
-									value="body"
-									checked
+									defaultValue="body"
+									defaultChecked
 									data-sound=""
 									evt-click="newText()"
 								/>
@@ -101,7 +101,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 									name="body"
 									id="post-text"
 									className="textarea-text selected"
-									value=""
+									defaultValue=""
 									maxLength={280}
 									placeholder="Share your thoughts in a post to a community or to your followers."
 								>
@@ -112,7 +112,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								<input
 									type="radio"
 									name="_post_type"
-									value="painting"
+									defaultValue="painting"
 									data-sound=""
 									evt-click="newPainting(false)"
 								/>
@@ -126,16 +126,16 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 					<div className="checkbox-container spoiler-button">
 						<span>
 							<label htmlFor="spoiler">Spoiler</label>
-							<input type="checkbox" id="spoiler" name="spoiler" value="true" />
+							<input type="checkbox" id="spoiler" name="spoiler" defaultValue="true" />
 						</span>
 					</div>
 				</div>
-				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
+				<input id="message_to_pid" type="hidden" name="message_to_pid" defaultValue={props.messagePid ?? undefined} />
 				<input
 					id="close-modal-button"
 					type="button"
 					className="olv-modal-close-button fixed-bottom-button left"
-					value="Cancel"
+					defaultValue="Cancel"
 					data-sound="SE_WAVE_CANCEL"
 					data-module-show={props.show}
 					data-module-hide="add-post-page"
@@ -145,7 +145,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 					type="submit"
 					id="submit"
 					className="post-button fixed-bottom-button"
-					value="Post"
+					defaultValue="Post"
 					evt-click="wiiuBrowser.lockUserOperation(true);"
 				/>
 			</form>

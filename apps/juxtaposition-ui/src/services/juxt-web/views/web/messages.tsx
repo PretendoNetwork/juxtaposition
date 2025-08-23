@@ -51,7 +51,7 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 										return null;
 									} // Prevent rendering with incomplete data
 									return (
-										<li>
+										<li key={convo.id}>
 											<div className="hover">
 												<a
 													href={`/users/${userObj.pid}`}
