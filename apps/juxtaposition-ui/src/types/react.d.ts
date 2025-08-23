@@ -1,12 +1,12 @@
 declare namespace React {
 	export interface DOMAttributes {
-		onclick?: string; // Allow for plain attribute usage of onclick
-		onClick?: never; // make react version made unusable
+		'evt-click'?: string; // alias for the plain attribute onclick
+		'onClick'?: never; // make react version made unusable
 
-		onerror?: string; // Allow for plain attribute usage of onerror
-		onError?: never; // make react version made unusable
+		'evt-error'?: string; // alias for the plain attribute onerror
+		'onError'?: never; // make react version made unusable
 
-		onchange?: string; // Allow for plain attribute usage of onchange
-		onChange?: never; // make react version made unusable
+		'evt-change'?: string; // alias for the plain attribute onchange
+		'onChange'?: never; // make react version made unusable
 	}
 }

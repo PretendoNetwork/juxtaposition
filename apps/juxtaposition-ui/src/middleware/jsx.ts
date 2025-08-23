@@ -1,7 +1,14 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import type { RequestHandler } from 'express';
+import type { ReactElement } from 'react';
 
 const htmlDoctype = '<!DOCTYPE html>';
+
+export function renderJsx(el: ReactElement): string {
+	const html = renderToStaticMarkup(el);
+	const htmlWithEvents = html.replace(/evt-([a-zA-Z]+)="/g, 'on$1=');
+	return htmlWithEvents;
+}
 
 /**
  * Render JSX as static markup. Only static! No state or event handlers are supported.
@@ -9,7 +16,7 @@ const htmlDoctype = '<!DOCTYPE html>';
 export const jsxRenderer: RequestHandler = (request, response, next) => {
 	response.jsx = (el, addDoctype): typeof response => {
 		const prefix = addDoctype ? htmlDoctype + '\n' : '';
-		response.send(prefix + renderToStaticMarkup(el));
+		response.send(prefix + renderJsx(el));
 		return response;
 	};
 
