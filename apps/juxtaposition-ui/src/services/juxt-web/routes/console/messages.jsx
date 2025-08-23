@@ -11,6 +11,8 @@ import { database } from '@/database';
 import { POST } from '@/models/post';
 import { CONVERSATION } from '@/models/conversation';
 import { config } from '@/config';
+import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
+import { CtrMessageThreadView, PortalMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
 
 export const messagesRouter = express.Router();
 
@@ -228,18 +230,10 @@ messagesRouter.get('/:message_id', async function (req, res) {
 	const messages = await database.getConversationMessages(conversation.id, 200, 0);
 
 	await conversation.markAsRead(req.pid);
-	// res.render(req.directory + '/message_thread.ejs', {
-	// 	moment: moment,
-	// 	user2: user2,
-	// 	conversation: conversation,
-	// 	messages: messages,
-	// 	userMap: userMap
-	// });
 	res.jsxForDirectory({
-		web: <WebMessagesView conversations={conversations} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
-		portal: <PortalMessagesView conversations={conversations} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
-		ctr: <CtrMessagesView conversations={conversations} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
-		disableDoctypeFor: ['ctr']
+		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
+		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
+		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />
 	});
 });
 

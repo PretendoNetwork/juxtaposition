@@ -35,7 +35,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	);
 }
 
-export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNode {
+export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	if (!props.otherUser.pid) {
 		throw new Error('Other PID is undefined');
 	}
