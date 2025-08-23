@@ -110,7 +110,7 @@ services:
     ports:
       - "8124:8124" # grpc
     environment:
-      PN_FRIENDS_CONFIG_DATABASE_URI: "postgres://todo@localhost"
+      PN_FRIENDS_CONFIG_DATABASE_URI: "postgres://postgres:postgres@postgres:5432/friends?sslmode=disable"
       PN_FRIENDS_CONFIG_AES_KEY: "1234567812345678123456781234567812345678123456781234567812345678"
       PN_FRIENDS_CONFIG_GRPC_API_KEY: "12345678123456781234567812345678"
       PN_FRIENDS_GRPC_SERVER_PORT: 8124
@@ -121,6 +121,15 @@ services:
       PN_FRIENDS_ACCOUNT_GRPC_PORT: 8123
       PN_FRIENDS_ACCOUNT_GRPC_API_KEY: "12345678123456781234567812345678"
 
+  postgres:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER: "postgres"
+      POSTGRES_DB: "friends"
 volumes:
   mongo_data:
   mongo_config:
