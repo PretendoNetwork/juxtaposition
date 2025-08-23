@@ -6,7 +6,8 @@ const empathies = [
 		value: 0,
 		miiFaceFile: 'normal_face.png',
 		sound: 'SE_WAVE_MII_FACE_00',
-		className: 'feeling-button-normal'
+		className: 'feeling-button-normal',
+		isDefault: true
 	},
 	{
 		value: 1,
@@ -66,7 +67,7 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 										defaultValue={v.value}
 										className={v.className}
 										data-mii-face-url={`${props.ctx.cdnUrl}/mii/${props.ctx.pid}/${v.miiFaceFile}`}
-										defaultChecked
+										defaultChecked={v.isDefault}
 										data-sound={v.sound}
 									/>
 								</li>
