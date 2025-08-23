@@ -2,6 +2,8 @@ import moment from 'moment';
 import cx from 'classnames';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot } from '@/services/juxt-web/views/web/root';
+import { WebNewPostView } from '@/services/juxt-web/views/web/newPostView';
+import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
 import type { ReactNode } from 'react';
@@ -52,15 +54,19 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	);
 }
 
-// TODO include partials!
 export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	if (!props.otherUser.pid) {
 		throw new Error('Other PID is undefined');
 	}
+	if (!props.conversation.id) {
+		throw new Error('Conversation does not have an ID');
+	}
+	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
+
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				{props.ctx.usersMap.get(props.otherUser.pid)}
+				{otherUserName}
 			</h2>
 			<WebNavBar ctx={props.ctx} selection={3} />
 			<div id="toast" />
@@ -69,7 +75,7 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					<button id="header-post-button" className="header-button" href="#" data-module-hide="message-page" data-module-show="add-post-page" data-header="true" data-menu="true">+</button>
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
 				</div>
-				{/* <%- include('partials/new_post', { pid, lang, id: conversation.id, name: userMap.get(user2.pid), url: '/friend_messages/new', show: 'message-page', message_pid: user2.pid  }); %> */}
+				<WebNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
 				<div id="painting-wrapper" className="painting-wrapper" style={{ display: 'none' }}>
 					<div id="painting-content">
 						<div className="tools">
@@ -112,7 +118,7 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 				</div>
 			</div>
 			<img src="" onerror="setTimeout(function() { window.scrollTo(0, 50000); }, 500)" />
-			{/* <%- include('partials/report_modal', { pid }) %> */}
+			<WebReportModalView ctx={props.ctx} />
 		</WebRoot>
 	);
 }
