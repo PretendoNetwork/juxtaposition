@@ -72,7 +72,7 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 			<div id="toast" />
 			<div id="wrapper">
 				<div className="body-content message-post-list" id="message-page">
-					<button id="header-post-button" className="header-button" href="#" data-module-hide="message-page" data-module-show="add-post-page" data-header="true" data-menu="true">+</button>
+					<button id="header-post-button" className="header-button" data-module-hide="message-page" data-module-show="add-post-page" data-header="true" data-menu="true">+</button>
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
 				</div>
 				<WebNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
