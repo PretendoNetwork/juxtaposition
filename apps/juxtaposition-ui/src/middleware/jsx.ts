@@ -6,7 +6,7 @@ const htmlDoctype = '<!DOCTYPE html>';
 
 export function renderJsx(el: ReactElement): string {
 	const html = renderToStaticMarkup(el);
-	const htmlWithEvents = html.replace(/evt-([a-zA-Z]+)="/g, 'on$1=');
+	const htmlWithEvents = html.replace(/ evt-([a-z]+)="/g, ' on$1="');
 	return htmlWithEvents;
 }
 
