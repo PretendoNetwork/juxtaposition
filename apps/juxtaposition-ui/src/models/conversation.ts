@@ -63,7 +63,7 @@ ConversationSchema.method<HydratedConversationDocument>('newMessage', async func
 	await this.save();
 });
 
-ConversationSchema.method<HydratedConversationDocument>('newMessage', async function (receiverPID) {
+ConversationSchema.method<HydratedConversationDocument>('markAsRead', async function (receiverPID) {
 	const receiver = this.users.find(user => user.pid === receiverPID);
 	if (receiver) {
 		receiver.read = true;
