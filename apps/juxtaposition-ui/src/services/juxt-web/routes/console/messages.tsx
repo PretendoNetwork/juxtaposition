@@ -35,7 +35,9 @@ messagesRouter.post('/new', async function (rawReq, res) {
 	const user2 = await getUserAccountData(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
 	const friends = await getUserFriendPIDs(user2.pid);
-	if (!req.user.mii) throw new Error("No mii found on user")
+	if (!req.user.mii) {
+		throw new Error('No mii found on user');
+	}
 	if (req.body.community_id === 0) {
 		return res.sendStatus(404);
 	}
@@ -150,7 +152,6 @@ messagesRouter.post('/new', async function (rawReq, res) {
 		verified: (req.user.accessLevel >= 2),
 		message_to_pid: req.body.message_to_pid
 	};
-	const duplicatePost = await database.getDuplicatePosts(req.pid, document);
 	const newPost = new POST(document);
 	await newPost.save();
 	let postPreviewText;
@@ -172,7 +173,9 @@ messagesRouter.get('/new/:pid', async function (rawReq, res) {
 	if (!req.user || !user2) {
 		return res.sendStatus(422);
 	}
-	if (!req.user.mii) throw new Error("No mii found on user")
+	if (!req.user.mii) {
+		throw new Error('No mii found on user');
+	}
 	let conversation = await database.getConversationByUsers([req.pid, user2.pid]);
 	if (conversation) {
 		return res.redirect(`/friend_messages/${conversation.id}`);
@@ -242,7 +245,7 @@ messagesRouter.get('/:message_id', async function (rawReq, res) {
 	});
 });
 
-async function generatePostUID(length: number) {
+async function generatePostUID(length: number): Promise<string> {
 	let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, '').substring(0, length);
 	const inuse = await POST.findOne({ id });
 	id = (inuse ? await generatePostUID(length) : id);
