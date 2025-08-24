@@ -130,7 +130,10 @@ services:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "friends"
+    volumes:
+      - "pg_data:/var/lib/postgresql"
 volumes:
+  pg_data:
   mongo_data:
   mongo_config:
   redis_data:
