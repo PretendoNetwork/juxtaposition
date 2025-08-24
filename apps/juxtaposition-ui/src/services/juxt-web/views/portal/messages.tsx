@@ -45,7 +45,7 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 											return null;
 										} // Prevent rendering with incomplete data
 										return (
-											<li>
+											<li key={convo.id}>
 												<a
 													href={`/users/show?pid=${userObj.pid}`}
 													data-pjax="#body"

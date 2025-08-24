@@ -35,7 +35,7 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 							} // Prevent rendering with incomplete data
 
 							return (
-								<li>
+								<li key={convo.id}>
 									<a
 										href={`/users/${userObj.pid}`}
 										data-pjax="#body"
