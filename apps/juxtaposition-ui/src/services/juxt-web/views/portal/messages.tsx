@@ -5,6 +5,7 @@ import {
 	PortalPageBody,
 	PortalRoot
 } from '@/services/juxt-web/views/portal/root';
+import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -47,12 +48,12 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 										return (
 											<li key={convo.id}>
 												<a
-													href={`/users/show?pid=${userObj.pid}`}
+													href={utils.url('/users/show', { pid: userObj.pid })}
 													data-pjax="#body"
 													className="icon-container trigger"
 												>
 													<img
-														src={`${props.ctx.cdnUrl}/mii/${userObj.pid}/normal_face.png`}
+														src={utils.cdn(props.ctx, `/mii/${userObj.pid}/normal_face.png`)}
 														className={cx('icon', {
 															verified: userObj.official
 														})}

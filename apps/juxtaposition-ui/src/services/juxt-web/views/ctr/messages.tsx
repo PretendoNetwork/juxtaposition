@@ -1,5 +1,6 @@
 import moment from 'moment';
 import cx from 'classnames';
+import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -44,7 +45,7 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 										})}
 									>
 										<img
-											src={`${props.ctx.cdnUrl}/mii/${userObj.pid}/normal_face.png`}
+											src={utils.cdn(props.ctx, `/mii/${userObj.pid}/normal_face.png`)}
 											className="icon"
 										/>
 									</a>

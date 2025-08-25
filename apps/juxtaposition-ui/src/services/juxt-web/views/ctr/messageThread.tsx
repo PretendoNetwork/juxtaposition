@@ -2,6 +2,7 @@ import moment from 'moment';
 import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
+import { utils } from '@/services/juxt-web/views/utils';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 import type { ReactNode } from 'react';
 
@@ -9,9 +10,9 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	const msg = props.message;
 	let content = <p className="post-content">{ msg.body }</p>;
 	if (msg.screenshot) {
-		content = <img className="message-viewer-bubble-sent-screenshot" src={`${props.ctx.cdnUrl}${msg.screenshot}`} />;
+		content = <img className="message-viewer-bubble-sent-screenshot" src={utils.cdn(props.ctx, msg.screenshot)} />;
 	} else if (msg.painting) {
-		content = <img className="message-viewer-bubble-sent-memo" src={`${props.ctx.cdnUrl}/paintings/${msg.pid}/${msg.id}.png`} />;
+		content = <img className="message-viewer-bubble-sent-memo" src={utils.cdn(props.ctx, `/paintings/${msg.pid}/${msg.id}.png`)} />;
 	}
 
 	return (
@@ -22,7 +23,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 				'other-post': msg.pid !== props.ctx.pid
 			})}
 		>
-			<a href={`/users/show?pid=${msg.pid}`} data-pjax="#body" className="scroll-focus mii-icon-container">
+			<a href={utils.url('/users/show', { pid: msg.pid })} data-pjax="#body" className="scroll-focus mii-icon-container">
 				<img src={msg.mii_face_url?.replace('http:', 'https:')} className="mii-icon" />
 			</a>
 			<header>

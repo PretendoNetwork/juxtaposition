@@ -1,3 +1,4 @@
+import { utils } from '@/services/juxt-web/views/utils';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ReactNode } from 'react';
 
@@ -17,7 +18,7 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 				<a href="/users/me" data-pjax="#body" data-sound="SE_WAVE_MENU">
 					<span className="mii-icon">
 						<img
-							src={`${props.ctx.cdnUrl}/mii/${props.ctx.pid}/normal_face.png`}
+							src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)}
 							alt="User Page"
 						/>
 					</span>

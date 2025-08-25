@@ -1,3 +1,4 @@
+import { utils } from '@/services/juxt-web/views/utils';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ReactNode } from 'react';
 
@@ -57,7 +58,7 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 				<input type="hidden" name="community_id" defaultValue={props.id} />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
-						<img src={`${props.ctx.cdnUrl}/mii/${props.ctx.pid}/normal_face.png`} id="mii-face" className="icon" />
+						<img src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)} id="mii-face" className="icon" />
 						<ul className="buttons">
 							{empathies.map(v => (
 								<li key={v.value}>
@@ -66,7 +67,7 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 										name="feeling_id"
 										defaultValue={v.value}
 										className={v.className}
-										data-mii-face-url={`${props.ctx.cdnUrl}/mii/${props.ctx.pid}/${v.miiFaceFile}`}
+										data-mii-face-url={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/${v.miiFaceFile}`)}
 										defaultChecked={v.isDefault}
 										data-sound={v.sound}
 									/>
