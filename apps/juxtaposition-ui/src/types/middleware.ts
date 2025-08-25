@@ -1,10 +1,9 @@
 import type { Request } from 'express';
-import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { ParamPack } from '@/types/common/param-pack';
 
 export type AuthRequest<TReq extends Request = Request> = TReq & {
-	user: ApiGetUserDataResponse | AccountGetUserDataResponse;
+	user: AccountGetUserDataResponse;
 	pid: number;
 	tokens: {
 		serviceToken?: string;
