@@ -122,7 +122,7 @@ async function main() {
 	logger.success('Database connected');
 	await redisClient.connect();
 
-	app.listen(port, () => {
+	app.listen(port, '0.0.0.0', () => {
 		logger.success(`Server started on port ${port}`);
 	});
 

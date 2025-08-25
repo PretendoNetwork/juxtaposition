@@ -72,3 +72,4 @@ ConversationSchema.method<HydratedConversationDocument>('markAsRead', async func
 });
 
 export const Conversation = model('Conversation', ConversationSchema);
+export const CONVERSATION = Conversation; // for old utils still using it

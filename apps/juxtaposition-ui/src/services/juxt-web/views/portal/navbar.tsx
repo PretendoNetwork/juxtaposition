@@ -1,3 +1,4 @@
+import { utils } from '@/services/juxt-web/views/utils';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ReactNode } from 'react';
 
@@ -17,7 +18,7 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 				<a href="/users/me" data-pjax="#body" data-sound="SE_WAVE_MENU">
 					<span className="mii-icon">
 						<img
-							src={`${props.ctx.cdnUrl}/mii/${props.ctx.pid}/normal_face.png`}
+							src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)}
 							alt="User Page"
 						/>
 					</span>
@@ -58,12 +59,12 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 					</span>
 				</a>
 			</li>
-			<li id="nav-menu-exit" onclick="exit()">
+			<li id="nav-menu-exit" evt-click="exit()">
 				<a role="button" data-sound="SE_WAVE_EXIT">
 					{props.ctx.lang.global.close}
 				</a>
 			</li>
-			<li id="nav-menu-back" className="none" onclick="back()">
+			<li id="nav-menu-back" className="none" evt-click="back()">
 				<a role="button" className="accesskey-B" data-sound="SE_WAVE_BACK">
 					{props.ctx.lang.global.go_back}
 				</a>
