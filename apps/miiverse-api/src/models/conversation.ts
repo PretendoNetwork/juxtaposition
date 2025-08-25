@@ -1,11 +1,42 @@
 import { Schema, model } from 'mongoose';
-import { Snowflake } from 'node-snowflake';
-import type { IConversation, IConversationMethods, ConversationModel, HydratedConversationDocument } from '@/types/mongoose/conversation';
+import { Snowflake as snowflake } from 'node-snowflake';
+import type { HydratedDocument, Types } from 'mongoose';
 
-const ConversationSchema = new Schema<IConversation, ConversationModel, IConversationMethods>({
+export type ConversationUser = {
+	pid: number;
+	official: boolean;
+	read: boolean;
+} & Document;
+
+export type Conversation = {
+	id: string;
+	created_at: Date;
+	last_updated: Date;
+	message_preview: string;
+	users: Types.Array<ConversationUser>;
+
+	newMessage(message: string, senderPid: number): Promise<void>;
+	markAsRead(receiverPid: number): Promise<void>;
+} & Document;
+
+export type HydratedConversationDocument = HydratedDocument<Conversation>;
+
+const user = new Schema<ConversationUser>({
+	pid: Number,
+	official: {
+		type: Boolean,
+		default: false
+	},
+	read: {
+		type: Boolean,
+		default: true
+	}
+});
+
+export const ConversationSchema = new Schema<Conversation>({
 	id: {
 		type: String,
-		default: Snowflake.nextId()
+		default: snowflake.nextId()
 	},
 	created_at: {
 		type: Date,
@@ -19,20 +50,10 @@ const ConversationSchema = new Schema<IConversation, ConversationModel, IConvers
 		type: String,
 		default: ''
 	},
-	users: [{
-		pid: Number,
-		official: {
-			type: Boolean,
-			default: false
-		},
-		read: {
-			type: Boolean,
-			default: true
-		}
-	}]
+	users: [user]
 });
 
-ConversationSchema.method<HydratedConversationDocument>('newMessage', async function newMessage(message: string, senderPID: number) {
+ConversationSchema.method<HydratedConversationDocument>('newMessage', async function (message, senderPID) {
 	this.last_updated = new Date();
 	this.message_preview = message;
 	const sender = this.users.find(user => user.pid === senderPID);
@@ -42,4 +63,12 @@ ConversationSchema.method<HydratedConversationDocument>('newMessage', async func
 	await this.save();
 });
 
-export const Conversation = model<IConversation, ConversationModel>('Conversation', ConversationSchema);
+ConversationSchema.method<HydratedConversationDocument>('markAsRead', async function (receiverPID) {
+	const receiver = this.users.find(user => user.pid === receiverPID);
+	if (receiver) {
+		receiver.read = true;
+	}
+	await this.save();
+});
+
+export const Conversation = model('Conversation', ConversationSchema);
