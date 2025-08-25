@@ -10,7 +10,7 @@ function buildUrl(u: string, query?: Record<string, Serializable>): string {
 			originalParams.set(entry[0], entry[1].toString());
 		}
 	});
-	return pathName + originalParams.toString();
+	return pathName + (originalParams.size > 0 ? '?' + originalParams.toString() : '');
 }
 
 function buildCdnUrl(ctx: RenderContext, path: string): string {
