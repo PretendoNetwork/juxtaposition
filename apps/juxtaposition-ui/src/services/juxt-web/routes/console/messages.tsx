@@ -1,21 +1,25 @@
 import crypto from 'crypto';
 import express from 'express';
-import moment from 'moment';
 import { Snowflake as snowflake } from 'node-snowflake';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 import { processPainting } from '@/images';
-import { getUserFriendPIDs, getUserAccountData, getUserHash, uploadCDNAsset, getInvalidPostRegex } from '@/util';
+import { getUserFriendPIDs, getUserAccountData, uploadCDNAsset, getInvalidPostRegex } from '@/util';
 import { database } from '@/database';
 import { POST } from '@/models/post';
 import { CONVERSATION } from '@/models/conversation';
 import { config } from '@/config';
+import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
+import { PortalMessageThreadView } from '@/services/juxt-web/views/portal/messageThread';
+import { CtrMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
+import { getAuthedRequest } from '@/types/middleware';
 
 export const messagesRouter = express.Router();
 
-messagesRouter.get('/', async function (req, res) {
+messagesRouter.get('/', async function (rawReq, res) {
+	const req = getAuthedRequest(rawReq);
 	const conversations = await database.getConversations(req.pid);
 	res.jsxForDirectory({
 		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
@@ -25,11 +29,15 @@ messagesRouter.get('/', async function (req, res) {
 	});
 });
 
-messagesRouter.post('/new', async function (req, res) {
+messagesRouter.post('/new', async function (rawReq, res) {
+	const req = getAuthedRequest(rawReq);
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await getUserAccountData(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
 	const friends = await getUserFriendPIDs(user2.pid);
+	if (!req.user.mii) {
+		throw new Error('No mii found on user');
+	}
 	if (req.body.community_id === 0) {
 		return res.sendStatus(404);
 	}
@@ -67,12 +75,11 @@ messagesRouter.post('/new', async function (req, res) {
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
 	let painting = '';
-	let paintingURI = '';
 	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
-		paintingURI = await processPainting(painting);
-		if (!await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		const paintingURI = await processPainting(painting);
+		if (!paintingURI || !await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -145,13 +152,8 @@ messagesRouter.post('/new', async function (req, res) {
 		verified: (req.user.accessLevel >= 2),
 		message_to_pid: req.body.message_to_pid
 	};
-	const duplicatePost = await database.getDuplicatePosts(req.pid, document);
-	if (duplicatePost && req.params.post_id) {
-		return res.redirect('/posts/' + req.params.post_id);
-	}
 	const newPost = new POST(document);
-	newPost.save();
-	res.redirect(`/friend_messages/${conversation.id}`);
+	await newPost.save();
 	let postPreviewText;
 	if (document.painting) {
 		postPreviewText = 'sent a Drawing';
@@ -161,13 +163,18 @@ messagesRouter.post('/new', async function (req, res) {
 		postPreviewText = document.body;
 	}
 	await conversation.newMessage(postPreviewText, user2.pid);
+	return res.redirect(`/friend_messages/${conversation.id}`);
 });
 
-messagesRouter.get('/new/:pid', async function (req, res) {
-	const user2 = await getUserAccountData(req.params.pid);
+messagesRouter.get('/new/:pid', async function (rawReq, res) {
+	const req = getAuthedRequest(rawReq);
+	const user2 = await getUserAccountData(parseInt(req.params.pid));
 	const friends = await getUserFriendPIDs(user2.pid);
 	if (!req.user || !user2) {
 		return res.sendStatus(422);
+	}
+	if (!req.user.mii) {
+		throw new Error('No mii found on user');
 	}
 	let conversation = await database.getConversationByUsers([req.pid, user2.pid]);
 	if (conversation) {
@@ -197,6 +204,7 @@ messagesRouter.get('/new/:pid', async function (req, res) {
 	if (!conversation) {
 		return res.sendStatus(404);
 	}
+
 	const body = `${req.user.mii.name} started a new chat!`;
 	const newMessage = {
 		screen_name: req.user.mii.name,
@@ -217,30 +225,29 @@ messagesRouter.get('/new/:pid', async function (req, res) {
 	res.redirect(`/friend_messages/${conversation.id}`);
 });
 
-messagesRouter.get('/:message_id', async function (req, res) {
+messagesRouter.get('/:message_id', async function (rawReq, res) {
+	const req = getAuthedRequest(rawReq);
 	const conversation = await database.getConversationByID(req.params.message_id.toString());
 	if (!conversation) {
 		return res.sendStatus(404);
 	}
 	const user2 = conversation.users[0].pid === req.pid ? conversation.users[1] : conversation.users[0];
 	if (req.pid !== conversation.users[0].pid && req.pid !== conversation.users[1].pid) {
-		res.redirect('/');
+		return res.redirect('/');
 	}
 	const messages = await database.getConversationMessages(conversation.id, 200, 0);
-	const userMap = await getUserHash();
-	res.render(req.directory + '/message_thread.ejs', {
-		moment: moment,
-		user2: user2,
-		conversation: conversation,
-		messages: messages,
-		userMap: userMap
-	});
+
 	await conversation.markAsRead(req.pid);
+	res.jsxForDirectory({
+		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
+		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
+		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />
+	});
 });
 
-async function generatePostUID(length) {
+async function generatePostUID(length: number): Promise<string> {
 	let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, '').substring(0, length);
 	const inuse = await POST.findOne({ id });
-	id = (inuse ? await generatePostUID() : id);
+	id = (inuse ? await generatePostUID(length) : id);
 	return id;
 }
