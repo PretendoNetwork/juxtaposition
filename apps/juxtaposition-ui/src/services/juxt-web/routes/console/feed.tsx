@@ -1,14 +1,22 @@
 import express from 'express';
 import moment from 'moment';
+import { z } from 'zod';
 import { database } from '@/database';
 import { getCommunityHash } from '@/util';
 import { POST } from '@/models/post';
 import { config } from '@/config';
+import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+
 export const feedRouter = express.Router();
 
 feedRouter.get('/', async function (req, res) {
-	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await getCommunityHash();
+	const { auth, query } = parseReq(req, {
+		query: z.object({
+			pjax: z.string().optional()
+		})
+	});
+	const userContent = await database.getUserContent(auth().pid);
+	const communityMap = getCommunityHash();
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -22,7 +30,7 @@ feedRouter.get('/', async function (req, res) {
 		link: `/feed/more?offset=${posts.length}&pjax=true`
 	};
 
-	if (req.query.pjax) {
+	if (query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
 			moment
@@ -42,8 +50,13 @@ feedRouter.get('/', async function (req, res) {
 });
 
 feedRouter.get('/all', async function (req, res) {
-	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await getCommunityHash();
+	const { auth, query } = parseReq(req, {
+		query: z.object({
+			pjax: z.string().optional()
+		})
+	});
+	const userContent = await database.getUserContent(auth().pid);
+	const communityMap = getCommunityHash();
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -61,7 +74,7 @@ feedRouter.get('/all', async function (req, res) {
 		link: `/feed/all/more?offset=${posts.length}&pjax=true`
 	};
 
-	if (req.query.pjax) {
+	if (query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
 			moment
@@ -81,13 +94,15 @@ feedRouter.get('/all', async function (req, res) {
 });
 
 feedRouter.get('/more', async function (req, res) {
-	let offset = parseInt(req.query.offset);
-	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await getCommunityHash();
-	if (!offset) {
-		offset = 0;
-	}
-	const posts = await database.getNewsFeedOffset(userContent, config.postLimit, offset);
+	const { auth, query } = parseReq(req, {
+		query: z.object({
+			pjax: z.string().optional(),
+			offset: z.coerce.number().nonnegative().default(0)
+		})
+	});
+	const userContent = await database.getUserContent(auth().pid);
+	const communityMap = getCommunityHash();
+	const posts = await database.getNewsFeedOffset(userContent, config.postLimit, query.offset);
 
 	const bundle = {
 		posts,
@@ -95,34 +110,36 @@ feedRouter.get('/more', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		link: `/feed/more?offset=${offset + posts.length}&pjax=true`
+		link: `/feed/more?offset=${query.offset + posts.length}&pjax=true`
 	};
 
-	if (posts.length > 0) {
-		res.render(req.directory + '/partials/posts_list.ejs', {
-			communityMap: communityMap,
-			moment: moment,
-			database: database,
-			bundle
-		});
-	} else {
-		res.sendStatus(204);
+	if (posts.length === 0) {
+		return res.sendStatus(204);
 	}
+
+	res.render(req.directory + '/partials/posts_list.ejs', {
+		communityMap: communityMap,
+		moment: moment,
+		database: database,
+		bundle
+	});
 });
 
 feedRouter.get('/all/more', async function (req, res) {
-	let offset = parseInt(req.query.offset);
-	const userContent = await database.getUserContent(req.pid);
+	const { auth, query } = parseReq(req, {
+		query: z.object({
+			pjax: z.string().optional(),
+			offset: z.coerce.number().nonnegative().default(0)
+		})
+	});
+	const userContent = await database.getUserContent(auth().pid);
 	const communityMap = await getCommunityHash();
-	if (!offset) {
-		offset = 0;
-	}
 
 	const posts = await POST.find({
 		parent: null,
 		message_to_pid: null,
 		removed: false
-	}).skip(offset).limit(config.postLimit).sort({ created_at: -1 });
+	}).skip(query.offset).limit(config.postLimit).sort({ created_at: -1 });
 
 	const bundle = {
 		posts,
@@ -130,17 +147,17 @@ feedRouter.get('/all/more', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		link: `/feed/all/more?offset=${offset + posts.length}&pjax=true`
+		link: `/feed/all/more?offset=${query.offset + posts.length}&pjax=true`
 	};
 
-	if (posts.length > 0) {
-		res.render(req.directory + '/partials/posts_list.ejs', {
-			communityMap: communityMap,
-			moment: moment,
-			database: database,
-			bundle
-		});
-	} else {
-		res.sendStatus(204);
+	if (posts.length === 0) {
+		return res.sendStatus(204);
 	}
+
+	res.render(req.directory + '/partials/posts_list.ejs', {
+		communityMap: communityMap,
+		moment: moment,
+		database: database,
+		bundle
+	});
 });

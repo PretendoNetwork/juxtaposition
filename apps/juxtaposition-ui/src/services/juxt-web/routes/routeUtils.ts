@@ -1,9 +1,9 @@
 import type { ParamPack } from '@/types/common/param-pack';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { Request } from 'express';
-import type { z, ZodSchema } from 'zod';
+import type { AnyZodObject, z, ZodSchema } from 'zod';
 
-type AnySchema = ZodSchema | undefined | null;
+type AnySchema = AnyZodObject | undefined | null;
 
 export type AuthRequest<TReq extends Request = Request> = TReq & {
 	user: AccountGetUserDataResponse;
@@ -26,8 +26,8 @@ export type AuthContext = {
 };
 
 export type ParseRequestOptions<TBody extends AnySchema, TQuery extends AnySchema> = {
-	body: TBody;
-	query: TQuery;
+	body?: TBody;
+	query?: TQuery;
 };
 
 export type ParsedRequest<TBody extends AnySchema, TQuery extends AnySchema> = {
@@ -43,7 +43,7 @@ export function getAuthedRequest<TReq extends Request = Request>(req: TReq): Aut
 	return req as AuthRequest<TReq>;
 }
 
-export function parseReq<TBody extends AnySchema, TQuery extends AnySchema>(req: Request, ops?: ParseRequestOptions<TBody, TQuery>): ParsedRequest<TBody, TQuery> {
+export function parseReq<TBody extends AnySchema = undefined, TQuery extends AnySchema = undefined>(req: Request, ops?: ParseRequestOptions<TBody, TQuery>): ParsedRequest<TBody, TQuery> {
 	let body: any = undefined;
 	let query: any = undefined;
 
