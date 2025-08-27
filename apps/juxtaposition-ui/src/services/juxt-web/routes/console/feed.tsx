@@ -133,7 +133,7 @@ feedRouter.get('/all/more', async function (req, res) {
 		})
 	});
 	const userContent = await database.getUserContent(auth().pid);
-	const communityMap = await getCommunityHash();
+	const communityMap = getCommunityHash();
 
 	const posts = await POST.find({
 		parent: null,
