@@ -1,11 +1,13 @@
 import express from 'express';
-import moment from 'moment';
 import { z } from 'zod';
 import { database } from '@/database';
 import { getCommunityHash } from '@/util';
 import { POST } from '@/models/post';
 import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { WebGlobalFeedView, WebPersonalFeedView } from '@/services/juxt-web/views/web/feed';
+import { buildContext } from '@/services/juxt-web/views/context';
+import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 
 export const feedRouter = express.Router();
 
@@ -27,25 +29,24 @@ feedRouter.get('/', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		link: `/feed/more?offset=${posts.length}&pjax=true`
+		nextLink: `/feed/more?offset=${posts.length}&pjax=true`
 	};
 
 	if (query.pjax) {
-		return res.render(req.directory + '/partials/posts_list.ejs', {
-			bundle,
-			moment
+		// TODO port ctr and portal
+		return res.jsxForDirectory({
+			web: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+			portal: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+			ctr: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 		});
 	}
 
-	res.render(req.directory + '/feed.ejs', {
-		moment: moment,
-		title: res.locals.lang.global.activity_feed,
-		userContent: userContent,
-		posts: posts,
-		communityMap: communityMap,
-		bundle,
-		tab: 0,
-		template: 'posts_list'
+	// TODO port this setting: "title: res.locals.lang.global.activity_feed"
+	// TODO port ctr and portal
+	return res.jsxForDirectory({
+		web: <WebPersonalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		portal: <WebPersonalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		ctr: <WebPersonalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 	});
 });
 
@@ -71,25 +72,24 @@ feedRouter.get('/all', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		link: `/feed/all/more?offset=${posts.length}&pjax=true`
+		nextLink: `/feed/all/more?offset=${posts.length}&pjax=true`
 	};
 
 	if (query.pjax) {
-		return res.render(req.directory + '/partials/posts_list.ejs', {
-			bundle,
-			moment
+		// TODO port ctr and portal
+		return res.jsxForDirectory({
+			web: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+			portal: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+			ctr: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 		});
 	}
 
-	res.render(req.directory + '/feed.ejs', {
-		moment: moment,
-		title: res.locals.lang.global.activity_feed,
-		userContent: userContent,
-		posts: posts,
-		communityMap: communityMap,
-		bundle,
-		tab: 1,
-		template: 'posts_list'
+	// TODO port this setting: "title: res.locals.lang.global.activity_feed"
+	// TODO port ctr and portal
+	return res.jsxForDirectory({
+		web: <WebGlobalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		portal: <WebGlobalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		ctr: <WebGlobalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 	});
 });
 
@@ -101,6 +101,9 @@ feedRouter.get('/more', async function (req, res) {
 		})
 	});
 	const userContent = await database.getUserContent(auth().pid);
+	if (!userContent) {
+		throw new Error('Usercontent not found on new page');
+	}
 	const communityMap = getCommunityHash();
 	const posts = await database.getNewsFeedOffset(userContent, config.postLimit, query.offset);
 
@@ -110,18 +113,18 @@ feedRouter.get('/more', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		link: `/feed/more?offset=${query.offset + posts.length}&pjax=true`
+		nextLink: `/feed/more?offset=${query.offset + posts.length}&pjax=true`
 	};
 
 	if (posts.length === 0) {
 		return res.sendStatus(204);
 	}
 
-	res.render(req.directory + '/partials/posts_list.ejs', {
-		communityMap: communityMap,
-		moment: moment,
-		database: database,
-		bundle
+	// TODO port ctr and portal
+	return res.jsxForDirectory({
+		web: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		portal: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		ctr: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 	});
 });
 
@@ -133,6 +136,9 @@ feedRouter.get('/all/more', async function (req, res) {
 		})
 	});
 	const userContent = await database.getUserContent(auth().pid);
+	if (!userContent) {
+		throw new Error('Usercontent not found on new page');
+	}
 	const communityMap = getCommunityHash();
 
 	const posts = await POST.find({
@@ -147,17 +153,17 @@ feedRouter.get('/all/more', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		link: `/feed/all/more?offset=${query.offset + posts.length}&pjax=true`
+		nextLink: `/feed/all/more?offset=${query.offset + posts.length}&pjax=true`
 	};
 
 	if (posts.length === 0) {
 		return res.sendStatus(204);
 	}
 
-	res.render(req.directory + '/partials/posts_list.ejs', {
-		communityMap: communityMap,
-		moment: moment,
-		database: database,
-		bundle
+	// TODO port ctr and portal
+	return res.jsxForDirectory({
+		web: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		portal: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		ctr: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 	});
 });
