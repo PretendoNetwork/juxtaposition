@@ -8,6 +8,8 @@ import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebGlobalFeedView, WebPersonalFeedView } from '@/services/juxt-web/views/web/feed';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { CtrGlobalFeedView, CtrPersonalFeedView } from '@/services/juxt-web/views/ctr/feed';
+import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 
 export const feedRouter = express.Router();
 
@@ -37,16 +39,16 @@ feedRouter.get('/', async function (req, res) {
 		return res.jsxForDirectory({
 			web: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
 			portal: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
-			ctr: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
+			ctr: <CtrPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 		});
 	}
 
-	// TODO port this setting: "title: res.locals.lang.global.activity_feed"
 	// TODO port ctr and portal
+	const title = res.locals.lang.global.activity_feed;
 	return res.jsxForDirectory({
-		web: <WebPersonalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
-		portal: <WebPersonalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
-		ctr: <WebPersonalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
+		web: <WebPersonalFeedView ctx={buildContext(res)} title={title} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		portal: <WebPersonalFeedView ctx={buildContext(res)} title={title} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		ctr: <CtrPersonalFeedView ctx={buildContext(res)} title={title} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 	});
 });
 
@@ -80,16 +82,16 @@ feedRouter.get('/all', async function (req, res) {
 		return res.jsxForDirectory({
 			web: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
 			portal: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
-			ctr: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
+			ctr: <CtrPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 		});
 	}
 
-	// TODO port this setting: "title: res.locals.lang.global.activity_feed"
 	// TODO port ctr and portal
+	const title = res.locals.lang.global.activity_feed;
 	return res.jsxForDirectory({
-		web: <WebGlobalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
-		portal: <WebGlobalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
-		ctr: <WebGlobalFeedView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
+		web: <WebGlobalFeedView ctx={buildContext(res)} title={title} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		portal: <WebGlobalFeedView ctx={buildContext(res)} title={title} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
+		ctr: <CtrGlobalFeedView ctx={buildContext(res)} title={title} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 	});
 });
 
@@ -124,7 +126,7 @@ feedRouter.get('/more', async function (req, res) {
 	return res.jsxForDirectory({
 		web: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
 		portal: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
-		ctr: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
+		ctr: <CtrPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 	});
 });
 
@@ -164,6 +166,6 @@ feedRouter.get('/all/more', async function (req, res) {
 	return res.jsxForDirectory({
 		web: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
 		portal: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />,
-		ctr: <WebPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
+		ctr: <CtrPostListView ctx={buildContext(res)} nextLink={bundle.nextLink} posts={bundle.posts} userContent={bundle.userContent} />
 	});
 });

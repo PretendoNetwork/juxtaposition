@@ -11,6 +11,7 @@ export type PostViewProps = {
 	ctx: RenderContext;
 	userContent: InferSchemaType<typeof ContentSchema>;
 	post: InferSchemaType<typeof PostSchema>;
+	isReply?: boolean;
 };
 
 export function WebPostView(props: PostViewProps): ReactNode {
@@ -76,7 +77,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				{post.body !== '' ? <h4>{post.body}</h4> : null}
 				{post.screenshot && post.screenshot !== '' ? <img id={post.id} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
 				{post.painting !== '' ? <img id={post.id} className="painting" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
-				{/* {post.url ? <iframe width="760" height="427.5" src={post.url.replace('watch?v=', 'embed/')} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> : null} */}
+				{/* TODO add post.url back */}
 			</div>
 
 			<div className="post-buttons-wrapper">

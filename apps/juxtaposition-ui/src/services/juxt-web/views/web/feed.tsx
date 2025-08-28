@@ -11,6 +11,7 @@ import type { PostSchema } from '@/models/post';
 
 export type FeedViewProps = {
 	ctx: RenderContext;
+	title: string;
 	userContent: InferSchemaType<typeof ContentSchema>;
 	posts: InferSchemaType<typeof PostSchema>[];
 	nextLink: string;
