@@ -12,6 +12,7 @@ export type PostViewProps = {
 	userContent: InferSchemaType<typeof ContentSchema>;
 	post: InferSchemaType<typeof PostSchema>;
 	isReply?: boolean;
+	isMainPost?: boolean;
 };
 
 export function WebPostView(props: PostViewProps): ReactNode {
