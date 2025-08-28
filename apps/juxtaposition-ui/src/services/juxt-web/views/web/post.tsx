@@ -76,7 +76,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				{post.body !== '' ? <h4>{post.body}</h4> : null}
 				{post.screenshot && post.screenshot !== '' ? <img id={post.id} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
 				{post.painting !== '' ? <img id={post.id} className="painting" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
-				{post.url ? <iframe width="760" height="427.5" src={post.url.replace('watch?v=', 'embed/')} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> : null}
+				{/* {post.url ? <iframe width="760" height="427.5" src={post.url.replace('watch?v=', 'embed/')} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> : null} */}
 			</div>
 
 			<div className="post-buttons-wrapper">
@@ -99,7 +99,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				</span>
 
 				{/* Hamburger menu */}
-				<span type="button" class="post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
+				<span className="post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
 					{/* TODO include('assets/menu_icon.svg') */}
 					<ul className="post-hamburger" role="menu" data-post={post.id}>
 						<li role="menuitem" data-action="report">
