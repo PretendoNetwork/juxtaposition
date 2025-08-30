@@ -8,13 +8,14 @@ import { CONVERSATION } from '@/models/conversation';
 import { POST } from '@/models/post';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
-import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
-import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
-import { getUserFriendPIDs, getUserAccountData, getInvalidPostRegex } from '@/util';
-import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
-import { PortalMessageThreadView } from '@/services/juxt-web/views/portal/messageThread';
 import { CtrMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
+import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
+import { PortalMessageThreadView } from '@/services/juxt-web/views/portal/messageThread';
+import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
+import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
 import { getAuthedRequest } from '@/types/middleware';
+import { getInvalidPostRegex, getUserAccountData, getUserFriendPIDs } from '@/util';
+import type { ScreenshotUrls } from '@/images';
 
 export const messagesRouter = express.Router();
 
@@ -33,7 +34,7 @@ messagesRouter.post('/new', async function (rawReq, res) {
 	const req = getAuthedRequest(rawReq);
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await getUserAccountData(req.body.message_to_pid);
-	const postID = await generatePostUID(21);
+	const postId = await generatePostUID(21);
 	const friends = await getUserFriendPIDs(user2.pid);
 	if (!req.user.mii) {
 		throw new Error('No mii found on user');
@@ -74,9 +75,14 @@ messagesRouter.post('/new', async function (rawReq, res) {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	let paintingBlob = null;
+	let paintingBlob: string | null = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		paintingBlob = await uploadPainting(req.body.painting, req.body.bmp, req.pid, postID);
+		paintingBlob = await uploadPainting({
+			blob: req.body.painting,
+			isBmp: req.body.bmp === 'true',
+			pid: req.pid,
+			postId
+		});
 		if (paintingBlob === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
@@ -85,9 +91,13 @@ messagesRouter.post('/new', async function (rawReq, res) {
 			});
 		}
 	}
-	let screenshots = null;
+	let screenshots: ScreenshotUrls | null = null;
 	if (req.body.screenshot) {
-		screenshots = await uploadScreenshot(req.body.screenshot, req.pid, postID);
+		screenshots = await uploadScreenshot({
+			blob: req.body.screenshot,
+			pid: req.pid,
+			postId
+		});
 		if (screenshots === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
@@ -140,7 +150,7 @@ messagesRouter.post('/new', async function (rawReq, res) {
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
-		id: postID,
+		id: postId,
 		is_autopost: 0,
 		is_spoiler: (req.body.spoiler) ? 1 : 0,
 		is_app_jumpable: req.body.is_app_jumpable,

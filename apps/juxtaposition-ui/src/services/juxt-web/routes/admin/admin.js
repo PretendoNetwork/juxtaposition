@@ -4,12 +4,12 @@ import moment from 'moment';
 import multer from 'multer';
 import { getPostsByPoster } from '@/api/post';
 import { database } from '@/database';
+import { uploadHeaders, uploadIcons } from '@/images';
 import { logger } from '@/logger';
 import { COMMUNITY } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash } from '@/util';
-import { uploadHeaders, uploadIcons } from '@/images';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
@@ -314,13 +314,20 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
-	const communityID = await generateCommunityUID();
+	const communityId = await generateCommunityUID();
 	if (!req.files || !req.files.browserIcon || !req.files.CTRbrowserHeader || !req.files.WiiUbrowserHeader) {
 		return res.sendStatus(422);
 	}
 
-	const icons = await uploadIcons(req.files.browserIcon[0].buffer, communityID);
-	const headers = await uploadHeaders(req.files.CTRbrowserHeader[0].buffer, req.files.WiiUbrowserHeader[0].buffer, communityID);
+	const icons = await uploadIcons({
+		icon: req.files.browserIcon[0].buffer,
+		communityId
+	});
+	const headers = await uploadHeaders({
+		ctr_header: req.files.CTRbrowserHeader[0].buffer,
+		wup_header: req.files.WiiUbrowserHeader[0].buffer,
+		communityId
+	});
 	if (icons === null || headers === null) {
 		return res.sendStatus(422);
 	}
@@ -345,14 +352,14 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		ctr_header: headers.ctr,
 		wup_header: headers.wup,
 		title_id: req.body.title_ids.replace(/ /g, '').split(','),
-		community_id: communityID,
-		olive_community_id: communityID,
+		community_id: communityId,
+		olive_community_id: communityId,
 		is_recommended: req.body.is_recommended,
 		app_data: req.body.app_data
 	};
 	const newCommunity = new COMMUNITY(document);
 	await newCommunity.save();
-	res.redirect(`/admin/communities/${communityID}`);
+	res.redirect(`/admin/communities/${communityId}`);
 
 	updateCommunityHash(document);
 
@@ -387,7 +394,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 	await createLogEntry(
 		req.pid,
 		'MAKE_COMMUNITY',
-		communityID,
+		communityId,
 		changes.join('\n'),
 		fields
 	);
@@ -419,9 +426,9 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	}
 
 	JSON.parse(JSON.stringify(req.files));
-	const communityID = req.params.id;
+	const communityId = req.params.id;
 
-	const oldCommunity = await COMMUNITY.findOne({ olive_community_id: communityID }).exec();
+	const oldCommunity = await COMMUNITY.findOne({ olive_community_id: communityId }).exec();
 
 	if (!oldCommunity) {
 		return res.redirect('/404');
@@ -430,7 +437,10 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	// browser icon
 	let icons = null;
 	if (req.files.browserIcon) {
-		icons = await uploadIcons(req.files.browserIcon[0].buffer, communityID);
+		icons = await uploadIcons({
+			icon: req.files.browserIcon[0].buffer,
+			communityId
+		});
 		if (icons === null) {
 			return res.sendStatus(422);
 		}
@@ -438,7 +448,11 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	// 3DS / Wii U Header
 	let headers = null;
 	if (req.files.CTRbrowserHeader && req.files.WiiUbrowserHeader) {
-		headers = await uploadHeaders(req.files.CTRbrowserHeader[0].buffer, req.files.WiiUbrowserHeader[0].buffer, communityID);
+		headers = await uploadHeaders({
+			ctr_header: req.files.CTRbrowserHeader[0].buffer,
+			wup_header: req.files.WiiUbrowserHeader[0].buffer,
+			communityId
+		});
 		if (headers === null) {
 			return res.sendStatus(422);
 		}
@@ -461,9 +475,9 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		name: req.body.name,
 		description: req.body.description
 	};
-	await COMMUNITY.findOneAndUpdate({ olive_community_id: communityID }, { $set: document }, { upsert: true }).exec();
+	await COMMUNITY.findOneAndUpdate({ olive_community_id: communityId }, { $set: document }, { upsert: true }).exec();
 
-	res.redirect(`/admin/communities/${communityID}`);
+	res.redirect(`/admin/communities/${communityId}`);
 
 	updateCommunityHash(document);
 

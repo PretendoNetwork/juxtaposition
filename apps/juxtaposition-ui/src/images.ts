@@ -11,8 +11,9 @@ export type Painting = {
 	tgaz: Buffer;
 };
 
-function processPainting(image: IMagickImage): Painting | null {
+function processPainting(image: IMagickImage): Painting {
 	image.crop(320, 120);
+	image.extent(320, 120);
 	// Paintings only have black pixels and white pixels
 	// Notifying the codec of this gets good compression gains!
 	image.colorType = ColorType.Bilevel;
@@ -46,7 +47,7 @@ function processPainting(image: IMagickImage): Painting | null {
  * @param painting Buffer of BMP painting.
  * @returns PNG and TGAZ-encoded paintings.
  */
-export function processBmpPainting(painting: Buffer): Painting | null {
+export function processBmpPainting(painting: Buffer): Painting {
 	return ImageMagick.read(painting, 'BMP', processPainting);
 }
 /**
@@ -54,11 +55,17 @@ export function processBmpPainting(painting: Buffer): Painting | null {
  * @param painting Buffer of TGAZ painting.
  * @returns PNG and TGAZ-encoded paintings.
  */
-export function processTgazPainting(painting: Buffer): Painting | null {
+export function processTgazPainting(painting: Buffer): Painting {
 	const tga = inflate(painting);
 	return ImageMagick.read(tga, 'TGA', processPainting);
 }
 
+export type ProcessPaintingOptions = {
+	blob: string;
+	isBmp: boolean;
+	pid: number;
+	postId: string;
+};
 /**
  * Processes and uploads a new painting to the CDN - to paintings/${pid}/${postID}.png.
  * @param paintingBlob base64 TGAZ or BMP blob from the client request body.
@@ -67,14 +74,11 @@ export function processTgazPainting(painting: Buffer): Painting | null {
  * @param postID Post ID.
  * @returns base64 TGAZ blob, sanitised.
  */
-export async function uploadPainting(paintingBlob: string, bmp: string, pid: number, postID: string): Promise<string | null> {
-	const paintingBuf = Buffer.from(paintingBlob.replace(/\0/g, '').trim(), 'base64');
-	const paintings = bmp === 'true' ? processBmpPainting(paintingBuf) : processTgazPainting(paintingBuf);
-	if (paintings === null) {
-		return null;
-	}
+export async function uploadPainting(opts: ProcessPaintingOptions): Promise<string | null> {
+	const paintingBuf = Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
+	const paintings = opts.isBmp ? processBmpPainting(paintingBuf) : processTgazPainting(paintingBuf);
 
-	if (!await uploadCDNAsset(`paintings/${pid}/${postID}.png`, paintings.png, 'public-read')) {
+	if (!await uploadCDNAsset(`paintings/${opts.pid}/${opts.postId}.png`, paintings.png, 'public-read')) {
 		return null;
 	}
 
@@ -142,15 +146,20 @@ export type ScreenshotUrls = {
 	aspect: Aspect;
 };
 
-export async function uploadScreenshot(screenshotBlob: string, pid: number, postID: string): Promise<ScreenshotUrls | null> {
-	const screenshotBuf = Buffer.from(screenshotBlob.replace(/\0/g, '').trim(), 'base64');
+export type UploadScreenshotOptions = {
+	blob: string;
+	pid: number;
+	postId: string;
+};
+export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<ScreenshotUrls | null> {
+	const screenshotBuf = Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
 	const screenshots = processJpgScreenshot(screenshotBuf);
 	if (screenshots === null) {
 		return null;
 	}
 
-	const full = `/screenshots/${pid}/${postID}.jpg`;
-	const thumb = `/screenshots/${pid}/${postID}-thumb.jpg`;
+	const full = `/screenshots/${opts.pid}/${opts.postId}.jpg`;
+	const thumb = `/screenshots/${opts.pid}/${opts.postId}-thumb.jpg`;
 
 	if (!await uploadCDNAsset(full, screenshots.jpg, 'public-read')) {
 		return null;
@@ -216,16 +225,20 @@ export type IconUrls = {
 	icon128: string;
 	tgaBlob: string;
 };
+export type UploadIconsOptions = {
+	icon: Buffer;
+	communityId: string;
+};
 
-export async function uploadIcons(icon: Buffer, communityID: string): Promise<IconUrls | null> {
-	const icons = ImageMagick.read(icon, 'PNG', processIcon);
+export async function uploadIcons(opts: UploadIconsOptions): Promise<IconUrls | null> {
+	const icons = ImageMagick.read(opts.icon, 'PNG', processIcon);
 	if (icons === null) {
 		return null;
 	}
 
-	const icon32 = `/icons/${communityID}/32.png`;
-	const icon64 = `/icons/${communityID}/64.png`;
-	const icon128 = `/icons/${communityID}/128.png`;
+	const icon32 = `/icons/${opts.communityId}/32.png`;
+	const icon64 = `/icons/${opts.communityId}/64.png`;
+	const icon128 = `/icons/${opts.communityId}/128.png`;
 
 	if (!await uploadCDNAsset(icon32, icons.icon32, 'public-read') ||
 		!await uploadCDNAsset(icon64, icons.icon64, 'public-read') ||
@@ -276,16 +289,21 @@ export type HeaderUrls = {
 	ctr: string;
 	wup: string;
 };
+export type UploadHeadersOptions = {
+	ctr_header: Buffer;
+	wup_header: Buffer;
+	communityId: string;
+};
 
-export async function uploadHeaders(ctr_header: Buffer, wup_header: Buffer, communityID: string): Promise<HeaderUrls | null> {
-	const ctr_processed = ImageMagick.read(ctr_header, 'PNG', processCtrHeader);
-	const wup_processed = ImageMagick.read(wup_header, 'PNG', processWupHeader);
+export async function uploadHeaders(opts: UploadHeadersOptions): Promise<HeaderUrls | null> {
+	const ctr_processed = ImageMagick.read(opts.ctr_header, 'PNG', processCtrHeader);
+	const wup_processed = ImageMagick.read(opts.wup_header, 'PNG', processWupHeader);
 	if (ctr_processed === null || wup_processed == null) {
 		return null;
 	}
 
-	const ctr = `/headers/${communityID}/3DS.jpg`;
-	const wup = `/headers/${communityID}/WiiU.jpg`;
+	const ctr = `/headers/${opts.communityId}/3DS.jpg`;
+	const wup = `/headers/${opts.communityId}/WiiU.jpg`;
 
 	if (!await uploadCDNAsset(ctr, ctr_processed, 'public-read') ||
 		!await uploadCDNAsset(wup, wup_processed, 'public-read')) {

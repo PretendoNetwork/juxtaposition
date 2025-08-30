@@ -6,12 +6,12 @@ import multer from 'multer';
 import { getPostById } from '@/api/post';
 import { config } from '@/config';
 import { database } from '@/database';
+import { uploadPainting, uploadScreenshot } from '@/images';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, getCommunityHash, getUserAccountData, getInvalidPostRegex, newNotification } from '@/util';
-import { uploadPainting, uploadScreenshot } from '@/images';
+import { createLogEntry, getCommunityHash, getInvalidPostRegex, getUserAccountData, newNotification } from '@/util';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -232,7 +232,7 @@ function canPost(community, userSettings, parentPost, user) {
 async function newPost(req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	let parentPost = null;
-	const postID = await generatePostUID(21);
+	const postId = await generatePostUID(21);
 	const community = await database.getCommunityByID(req.body.community_id);
 	if (!community || !userSettings || !req.user) {
 		res.status(403);
@@ -257,7 +257,12 @@ async function newPost(req, res) {
 
 	let paintingBlob = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		paintingBlob = await uploadPainting(req.body.painting, req.body.bmp, req.pid, postID);
+		paintingBlob = await uploadPainting({
+			blob: req.body.painting,
+			isBmp: req.body.bmp === 'true',
+			pid: req.pid,
+			postId
+		});
 		if (paintingBlob === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
@@ -268,7 +273,11 @@ async function newPost(req, res) {
 	}
 	let screenshots = null;
 	if (req.body.screenshot) {
-		screenshots = await uploadScreenshot(req.body.screenshot, req.pid, postID);
+		screenshots = await uploadScreenshot({
+			blob: req.body.screenshot,
+			pid: req.pid,
+			postId
+		});
 		if (screenshots === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
@@ -321,7 +330,7 @@ async function newPost(req, res) {
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
-		id: postID,
+		id: postId,
 		is_autopost: 0,
 		is_spoiler: (req.body.spoiler) ? 1 : 0,
 		is_app_jumpable: req.body.is_app_jumpable,
