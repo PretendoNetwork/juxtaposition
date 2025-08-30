@@ -145,6 +145,7 @@ messagesRouter.post('/new', async function (rawReq, res) {
 		body: body,
 		painting: paintingBlob ?? '',
 		screenshot: screenshots?.full ?? '',
+		screenshot_length: screenshots?.fullLength ?? 0,
 		screenshot_thumb: screenshots?.thumb ?? '',
 		screenshot_aspect: screenshots?.aspect ?? '',
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,

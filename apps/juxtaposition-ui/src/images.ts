@@ -142,6 +142,7 @@ export function processJpgScreenshot(painting: Buffer): Screenshot | null {
 
 export type ScreenshotUrls = {
 	full: string;
+	fullLength: number;
 	thumb: string;
 	aspect: Aspect;
 };
@@ -161,6 +162,8 @@ export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<S
 	const full = `/screenshots/${opts.pid}/${opts.postId}.jpg`;
 	const thumb = `/screenshots/${opts.pid}/${opts.postId}-thumb.jpg`;
 
+	const fullLength = screenshots.jpg.byteLength;
+
 	if (!await uploadCDNAsset(full, screenshots.jpg, 'public-read')) {
 		return null;
 	}
@@ -169,7 +172,7 @@ export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<S
 		return null;
 	}
 
-	return { full, thumb, aspect: screenshots.aspect };
+	return { full, fullLength, thumb, aspect: screenshots.aspect };
 }
 
 type Icon = {
