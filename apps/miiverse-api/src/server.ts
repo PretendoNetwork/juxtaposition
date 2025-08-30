@@ -80,7 +80,7 @@ async function main(): Promise<void> {
 
 	await connectDatabase();
 
-	app.listen(port, () => {
+	app.listen(port, '0.0.0.0', () => {
 		logger.info(`Server started on port ${port}`);
 	});
 

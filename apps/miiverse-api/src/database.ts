@@ -7,7 +7,7 @@ import { Endpoint } from '@/models/endpoint';
 import { Post } from '@/models/post';
 import { Settings } from '@/models/settings';
 import { config } from '@/config';
-import type { HydratedConversationDocument } from '@/types/mongoose/conversation';
+import type { HydratedConversationDocument } from '@/models/conversation';
 import type { HydratedContentDocument } from '@/types/mongoose/content';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';

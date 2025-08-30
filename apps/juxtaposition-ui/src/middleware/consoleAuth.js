@@ -27,7 +27,7 @@ export async function consoleAuth(request, response, next) {
 			// Developer accounts may also use an OAuth token for console frontends
 			const user = await getUserDataFromToken(request.cookies.access_token);
 			if (user.accessLevel === 3) {
-				request.user = user;
+				request.user = await getUserAccountData(user.pid);
 				request.pid = user.pid;
 
 				request.session.user = request.user;
