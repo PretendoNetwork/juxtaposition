@@ -14,13 +14,13 @@ import { config } from '@/config';
 import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
 import { PortalMessageThreadView } from '@/services/juxt-web/views/portal/messageThread';
 import { CtrMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
-import { getAuthedRequest } from '@/types/middleware';
+import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 
 export const messagesRouter = express.Router();
 
-messagesRouter.get('/', async function (rawReq, res) {
-	const req = getAuthedRequest(rawReq);
-	const conversations = await database.getConversations(req.pid);
+messagesRouter.get('/', async function (req, res) {
+	const { auth } = parseReq(req);
+	const conversations = await database.getConversations(auth().pid);
 	res.jsxForDirectory({
 		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
 		portal: <PortalMessagesView conversations={conversations} ctx={buildContext(res)} />,
@@ -29,28 +29,30 @@ messagesRouter.get('/', async function (rawReq, res) {
 	});
 });
 
-messagesRouter.post('/new', async function (rawReq, res) {
-	const req = getAuthedRequest(rawReq);
+messagesRouter.post('/new', async function (req, res) {
+	// TODO add body validation
+	const { auth } = parseReq(req);
+	const authCtx = auth();
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await getUserAccountData(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
 	const friends = await getUserFriendPIDs(user2.pid);
-	if (!req.user.mii) {
+	if (!authCtx.user.mii) {
 		throw new Error('No mii found on user');
 	}
 	if (req.body.community_id === 0) {
 		return res.sendStatus(404);
 	}
 	if (!conversation) {
-		if (!req.user || !user2) {
+		if (!authCtx.user || !user2) {
 			return res.sendStatus(422);
 		}
 		const document = {
 			id: snowflake.nextId(),
 			users: [
 				{
-					pid: req.pid,
-					official: (req.user.accessLevel >= 2),
+					pid: authCtx.pid,
+					official: (authCtx.user.accessLevel >= 2),
 					read: true
 				},
 				{
@@ -67,7 +69,7 @@ messagesRouter.post('/new', async function (rawReq, res) {
 	if (!conversation) {
 		return res.sendStatus(404);
 	}
-	if (!friends || friends.indexOf(req.pid) === -1) {
+	if (!friends || friends.indexOf(authCtx.pid) === -1) {
 		return res.sendStatus(422);
 	}
 	if (req.body.body === '' && req.body.painting === '' && req.body.screenshot === '') {
@@ -79,7 +81,7 @@ messagesRouter.post('/new', async function (rawReq, res) {
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
 		const paintingURI = await processPainting(painting);
-		if (!paintingURI || !await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		if (!paintingURI || !await uploadCDNAsset(`paintings/${authCtx.pid}/${postID}.png`, paintingURI, 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -89,7 +91,7 @@ messagesRouter.post('/new', async function (rawReq, res) {
 	}
 	if (req.body.screenshot) {
 		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		if (await uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+		if (await uploadCDNAsset(`screenshots/${authCtx.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -132,11 +134,11 @@ messagesRouter.post('/new', async function (rawReq, res) {
 
 	const document = {
 		community_id: conversation.id,
-		screen_name: req.user.mii.name,
+		screen_name: authCtx.user.mii.name,
 		body: body,
 		painting: painting,
-		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
-		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
+		screenshot: screenshot ? `/screenshots/${authCtx.pid}/${postID}.jpg` : '',
+		country_id: authCtx.paramPackData ? authCtx.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
 		id: postID,
@@ -144,12 +146,12 @@ messagesRouter.post('/new', async function (rawReq, res) {
 		is_spoiler: (req.body.spoiler) ? 1 : 0,
 		is_app_jumpable: req.body.is_app_jumpable,
 		language_id: req.body.language_id,
-		mii: req.user.mii.data,
-		mii_face_url: `${config.cdnDomain}/mii/${req.pid}/${miiFace}`,
-		pid: req.pid,
-		platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
-		region_id: req.paramPackData ? req.paramPackData.region_id : 2,
-		verified: (req.user.accessLevel >= 2),
+		mii: authCtx.user.mii.data,
+		mii_face_url: `${config.cdnDomain}/mii/${authCtx.pid}/${miiFace}`,
+		pid: authCtx.pid,
+		platform_id: authCtx.paramPackData ? authCtx.paramPackData.platform_id : 0,
+		region_id: authCtx.paramPackData ? authCtx.paramPackData.region_id : 2,
+		verified: (authCtx.user.accessLevel >= 2),
 		message_to_pid: req.body.message_to_pid
 	};
 	const newPost = new POST(document);
@@ -166,29 +168,30 @@ messagesRouter.post('/new', async function (rawReq, res) {
 	return res.redirect(`/friend_messages/${conversation.id}`);
 });
 
-messagesRouter.get('/new/:pid', async function (rawReq, res) {
-	const req = getAuthedRequest(rawReq);
+messagesRouter.get('/new/:pid', async function (req, res) {
+	const { auth } = parseReq(req);
+	const authCtx = auth();
 	const user2 = await getUserAccountData(parseInt(req.params.pid));
 	const friends = await getUserFriendPIDs(user2.pid);
-	if (!req.user || !user2) {
+	if (!authCtx.user || !user2) {
 		return res.sendStatus(422);
 	}
-	if (!req.user.mii) {
+	if (!authCtx.user.mii) {
 		throw new Error('No mii found on user');
 	}
-	let conversation = await database.getConversationByUsers([req.pid, user2.pid]);
+	let conversation = await database.getConversationByUsers([authCtx.pid, user2.pid]);
 	if (conversation) {
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	if (!friends || friends.indexOf(req.pid) === -1) {
+	if (!friends || friends.indexOf(authCtx.pid) === -1) {
 		return res.sendStatus(422);
 	}
 	const document = {
 		id: snowflake.nextId(),
 		users: [
 			{
-				pid: req.user.pid,
-				official: (req.user.accessLevel >= 2),
+				pid: authCtx.user.pid,
+				official: (authCtx.user.accessLevel >= 2),
 				read: true
 			},
 			{
@@ -205,39 +208,40 @@ messagesRouter.get('/new/:pid', async function (rawReq, res) {
 		return res.sendStatus(404);
 	}
 
-	const body = `${req.user.mii.name} started a new chat!`;
+	const body = `${authCtx.user.mii.name} started a new chat!`;
 	const newMessage = {
-		screen_name: req.user.mii.name,
+		screen_name: authCtx.user.mii.name,
 		body: body,
 		created_at: new Date(),
 		id: await generatePostUID(21),
-		mii: req.user.mii.data,
-		mii_face_url: `${config.cdnDomain}/mii/${req.pid}/normal_face.png`,
-		pid: req.pid,
-		verified: (req.user.accessLevel >= 2),
+		mii: authCtx.user.mii.data,
+		mii_face_url: `${config.cdnDomain}/mii/${authCtx.pid}/normal_face.png`,
+		pid: authCtx.pid,
+		verified: (authCtx.user.accessLevel >= 2),
 		parent: null,
 		community_id: conversation.id,
 		message_to_pid: user2.pid
 	};
 	const newPost = new POST(newMessage);
 	newPost.save();
-	await conversation.newMessage(`${req.user.mii.name} started a new chat!`, user2.pid);
+	await conversation.newMessage(`${authCtx.user.mii.name} started a new chat!`, user2.pid);
 	res.redirect(`/friend_messages/${conversation.id}`);
 });
 
-messagesRouter.get('/:message_id', async function (rawReq, res) {
-	const req = getAuthedRequest(rawReq);
+messagesRouter.get('/:message_id', async function (req, res) {
+	const { auth } = parseReq(req);
+	const authCtx = auth();
 	const conversation = await database.getConversationByID(req.params.message_id.toString());
 	if (!conversation) {
 		return res.sendStatus(404);
 	}
-	const user2 = conversation.users[0].pid === req.pid ? conversation.users[1] : conversation.users[0];
-	if (req.pid !== conversation.users[0].pid && req.pid !== conversation.users[1].pid) {
+	const user2 = conversation.users[0].pid === authCtx.pid ? conversation.users[1] : conversation.users[0];
+	if (authCtx.pid !== conversation.users[0].pid && authCtx.pid !== conversation.users[1].pid) {
 		return res.redirect('/');
 	}
 	const messages = await database.getConversationMessages(conversation.id, 200, 0);
 
-	await conversation.markAsRead(req.pid);
+	await conversation.markAsRead(authCtx.pid);
 	res.jsxForDirectory({
 		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
 		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,

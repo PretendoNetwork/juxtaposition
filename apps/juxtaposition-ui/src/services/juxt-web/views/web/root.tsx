@@ -47,3 +47,15 @@ export function WebRoot(props: HtmlProps): ReactNode {
 		</html>
 	);
 }
+
+export type WrapperProps = {
+	children?: ReactNode;
+};
+
+export function WebWrapper(props: WrapperProps): ReactNode {
+	return (
+		<div id="wrapper">
+			{props.children}
+		</div>
+	);
+}
