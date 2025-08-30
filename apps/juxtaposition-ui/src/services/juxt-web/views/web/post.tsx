@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
+import { WebIcon } from '@/services/juxt-web/views/web/icons';
 import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -89,36 +90,36 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					})}
 				>
 
-					{/* TODO include('assets/heart_icon.svg') */}
+					<WebIcon name="heart" />
 					<h4 id={`count-${post.id}`}>{post.empathy_count}</h4>
 				</span>
 
 				{/* Reply "button" */}
 				<span className="reply-button">
-					{/* TODO include('assets/reply_icon.svg') */}
+					<WebIcon name="reply" />
 					<h4>{post.reply_count}</h4>
 				</span>
 
 				{/* Hamburger menu */}
 				<span className="post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
-					{/* TODO include('assets/menu_icon.svg') */}
+					<WebIcon name="menu" />
 					<ul className="post-hamburger" role="menu" data-post={post.id}>
 						<li role="menuitem" data-action="report">
-							{/* TODO include('assets/flag_icon.svg') */}
+							<WebIcon name="flag" />
 							{' '}
 							Report Post
 						</li>
 						{ isModerator
 							? (
 									<li role="menuitem" data-action="delete" data-moderator>
-										{/* TODO include('assets/bin_icon.svg') */}
+										<WebIcon name="bin" />
 										{' '}
 										Delete Post
 									</li>
 								)
 							: null}
 						<li role="menuitem" data-action="copy">
-							{/* TODO include('assets/share_icon.svg') */}
+							<WebIcon name="share" />
 							{' '}
 							Copy link
 						</li>
