@@ -316,10 +316,9 @@ export async function uploadHeaders(opts: UploadHeadersOptions): Promise<HeaderU
 	};
 }
 
-async function loadMagick(): Promise<void> {
+export async function initImageProcessing(): Promise<void> {
 	const wasmPath = new URL(import.meta.resolve('@imagemagick/magick-wasm/magick.wasm'));
 	const wasm = await readFile(wasmPath);
 	await initializeImageMagick(wasm);
-	logger.success('Started up ImageMagick engine');
+	logger.success('Started up image processing engine');
 }
-await loadMagick();
