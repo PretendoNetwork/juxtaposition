@@ -27,9 +27,12 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 					id={post.id}
 				>
 					<header>
-						<span className="screen-name">{post.screen_name}</span>
+						<span className="screen-name">
+							{post.screen_name}
+						</span>
+						{' '}
 						<span className="timestamp">
-							-
+							{'- '}
 							{moment(post.created_at).fromNow()}
 						</span>
 						{post.topic_tag

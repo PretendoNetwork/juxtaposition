@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { WebRoot } from '@/services/juxt-web/views/web/root';
+import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -56,8 +56,10 @@ export function WebPersonalFeedView(props: FeedViewProps): ReactNode {
 			</h2>
 			<WebNavBar ctx={props.ctx} selection={1} />
 			<div id="toast"></div>
-			<WebFeedTabs selected={0} />
-			<WebPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+			<WebWrapper>
+				<WebFeedTabs selected={0} />
+				<WebPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+			</WebWrapper>
 			<WebReportModalView ctx={props.ctx} />
 		</WebRoot>
 	);
@@ -71,8 +73,10 @@ export function WebGlobalFeedView(props: FeedViewProps): ReactNode {
 			</h2>
 			<WebNavBar ctx={props.ctx} selection={1} />
 			<div id="toast"></div>
-			<WebFeedTabs selected={1} />
-			<WebPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+			<WebWrapper>
+				<WebFeedTabs selected={1} />
+				<WebPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+			</WebWrapper>
 			<WebReportModalView ctx={props.ctx} />
 		</WebRoot>
 	);

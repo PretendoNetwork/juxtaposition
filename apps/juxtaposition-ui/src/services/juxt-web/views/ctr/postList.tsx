@@ -10,7 +10,7 @@ export function CtrPostListView(props: PostListViewProps): ReactNode {
 	return (
 		<>
 			{props.posts.map(v => (
-				<CtrPostView ctx={props.ctx} post={v} userContent={props.userContent} />
+				<CtrPostView key={v.id} ctx={props.ctx} post={v} userContent={props.userContent} />
 			))}
 			<div className="button-wrapper center">
 				<button type="button" className="load-more" data-href={props.nextLink}>{props.ctx.lang.global.more}</button>

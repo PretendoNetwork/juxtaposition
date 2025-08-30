@@ -10,10 +10,10 @@ export function PortalPostListView(props: PostListViewProps): ReactNode {
 	return (
 		<>
 			{props.posts.map(v => (
-				<PortalPostView ctx={props.ctx} post={v} userContent={props.userContent} />
+				<PortalPostView key={v.id} ctx={props.ctx} post={v} userContent={props.userContent} />
 			))}
-			<div id="wrapper" className="bottom">
-				<button id="load-more" data-href={props.nextLink}>{props.ctx.lang.global.more}</button>
+			<div className="button-wrapper center">
+				<button type="button" className="load-more" data-href={props.nextLink}>{props.ctx.lang.global.more}</button>
 			</div>
 		</>
 	);
