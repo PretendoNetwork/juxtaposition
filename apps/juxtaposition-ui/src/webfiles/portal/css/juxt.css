@@ -591,9 +591,22 @@ header svg {
  border-radius:10px
 }
 .post-list .post .post-screenshot {
+ /* fallback for screenshots without aspect info */
  width:740px;
  height:416px;
  border-radius:10px
+}
+.post-list .post .post-screenshot-16\3A 9 {
+ width:740px;
+ height:416px;
+}
+.post-list .post .post-screenshot-5\3A 4 {
+ width:520px;
+ height:416px;
+}
+.post-list .post .post-screenshot-4\3A 3 {
+ width:555px;
+ height:416px;
 }
 .post-list .post .post-buttons {
  clear:both;

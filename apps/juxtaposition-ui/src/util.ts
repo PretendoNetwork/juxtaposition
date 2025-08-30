@@ -30,6 +30,7 @@ import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretend
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
+import type { GetUserFriendPIDsResponse } from '@pretendonetwork/grpc/friends/get_user_friend_pids_rpc';
 
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
 const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
@@ -396,6 +397,9 @@ export async function getUserFriendPIDs(pid: number): Promise<number[]> {
 		metadata: Metadata({
 			'X-API-Key': config.grpc.friends.apiKey
 		})
+	}).catch((err): GetUserFriendPIDsResponse => {
+		logger.error(err, `Couldn't fetch friends for user ${pid}`);
+		return { pids: [] };
 	});
 
 	return response.pids;

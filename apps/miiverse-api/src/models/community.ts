@@ -88,6 +88,8 @@ const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods
 		type: String,
 		required: true
 	},
+	ctr_header: { type: String },
+	wup_header: { type: String },
 	title_ids: {
 		type: [String],
 		default: undefined
