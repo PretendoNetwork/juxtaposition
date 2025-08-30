@@ -87,6 +87,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 							data-post={post.id}
 						>
 						</button>
+						{' '}
 						<a href={!props.isReply ? `/posts/${post.id}` : undefined} className="to-permalink-button" data-pjax="#body">
 							{ props.isReply && post.pid !== props.ctx.pid && !isModerator
 								? (
@@ -105,12 +106,14 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 							{ !props.isMainPost
 								? (
 										<>
+											{' '}
 											<span className="feeling" id={`count-${post.id}`}>{post.empathy_count}</span>
 											{ !props.isReply
 												? (
 														<span className="reply">{post.reply_count}</span>
 													)
 												: null}
+											{' '}
 										</>
 									)
 								: null}

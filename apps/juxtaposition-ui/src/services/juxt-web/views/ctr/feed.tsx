@@ -39,9 +39,8 @@ export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 				<header id="header">
 					<h1 id="page-title">{props.title}</h1>
 				</header>
-				<CtrFeedTabs selected={0} />
 				<div className="body-content tab2-content" id="community-post-list">
-
+					<CtrFeedTabs selected={0} />
 					<div className="tab-body post-list">
 						<CtrPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>
@@ -58,9 +57,8 @@ export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
 				<header id="header">
 					<h1 id="page-title">{props.title}</h1>
 				</header>
-				<CtrFeedTabs selected={1} />
 				<div className="body-content tab2-content" id="community-post-list">
-
+					<CtrFeedTabs selected={1} />
 					<div className="tab-body post-list">
 						<CtrPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>

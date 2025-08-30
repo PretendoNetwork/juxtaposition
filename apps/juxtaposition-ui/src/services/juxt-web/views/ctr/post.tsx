@@ -29,8 +29,9 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 				>
 					<header>
 						<span className="screen-name">{post.screen_name}</span>
+						{' '}
 						<span className="timestamp">
-							-
+							{'- '}
 							{moment(post.created_at).fromNow()}
 						</span>
 						{ post.topic_tag
@@ -45,7 +46,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 							: null }
 					</header>
 
-					{ props.isReply
+					{ !props.isReply
 						? (
 								<a href={`/titles/${post.community_id}`} className="community-banner" data-pjax="#body">
 									<span className="title-icon-container" data-pjax="#body">
@@ -95,7 +96,8 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 						</button>
 						<a href={`/posts/${post.id}`} className="to-permalink-button" data-pjax="#body">
 							<span className="sprite feeling" id={`count-${post.id}`}>{post.empathy_count}</span>
-							{props.isReply
+							{' '}
+							{!props.isReply
 								? (
 										<span className="sprite reply">{post.reply_count}</span>
 									)
