@@ -255,7 +255,7 @@ async function newPost(req, res) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	let paintingBlob = '';
+	let paintingBlob = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		paintingBlob = await uploadPainting(req.body.painting, req.body.bmp, req.pid, postID);
 		if (paintingBlob === null) {
@@ -314,7 +314,7 @@ async function newPost(req, res) {
 		community_id: community.olive_community_id,
 		screen_name: userSettings.screen_name,
 		body: body,
-		painting: paintingBlob,
+		painting: paintingBlob ?? '',
 		screenshot: screenshots?.full ?? '',
 		screenshot_thumb: screenshots?.thumb ?? '',
 		screenshot_aspect: screenshots?.aspect ?? '',

@@ -3,14 +3,14 @@ import express from 'express';
 import { Snowflake as snowflake } from 'node-snowflake';
 import { config } from '@/config';
 import { database } from '@/database';
-import { uploadPainting } from '@/images';
+import { uploadPainting, uploadScreenshot } from '@/images';
 import { CONVERSATION } from '@/models/conversation';
 import { POST } from '@/models/post';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
 import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
-import { getUserFriendPIDs, getUserAccountData, uploadCDNAsset, getInvalidPostRegex } from '@/util';
+import { getUserFriendPIDs, getUserAccountData, getInvalidPostRegex } from '@/util';
 import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
 import { PortalMessageThreadView } from '@/services/juxt-web/views/portal/messageThread';
 import { CtrMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
@@ -75,7 +75,6 @@ messagesRouter.post('/new', async function (rawReq, res) {
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
 	let paintingBlob = null;
-	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		paintingBlob = await uploadPainting(req.body.painting, req.body.bmp, req.pid, postID);
 		if (paintingBlob === null) {
@@ -86,9 +85,10 @@ messagesRouter.post('/new', async function (rawReq, res) {
 			});
 		}
 	}
+	let screenshots = null;
 	if (req.body.screenshot) {
-		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		if (await uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+		screenshots = await uploadScreenshot(req.body.screenshot, req.pid, postID);
+		if (screenshots === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -134,7 +134,9 @@ messagesRouter.post('/new', async function (rawReq, res) {
 		screen_name: req.user.mii.name,
 		body: body,
 		painting: paintingBlob ?? '',
-		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
+		screenshot: screenshots?.full ?? '',
+		screenshot_thumb: screenshots?.thumb ?? '',
+		screenshot_aspect: screenshots?.aspect ?? '',
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
