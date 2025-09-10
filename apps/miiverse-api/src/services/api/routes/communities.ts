@@ -174,7 +174,7 @@ router.get('/:communityID/posts', async function (request: express.Request, resp
 
 	// TODO: There probably is a type for text and screenshots too, will have to investigate
 	if (postType === 'memo') {
-		query.painting = { $ne: null };
+		query.painting = { $nin: [null, ''] };
 	}
 
 	if (queryBy === 'followings') {
