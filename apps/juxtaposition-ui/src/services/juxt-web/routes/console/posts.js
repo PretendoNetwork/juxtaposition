@@ -259,6 +259,7 @@ async function newPost(req, res) {
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		paintingBlob = await uploadPainting({
 			blob: req.body.painting,
+			autodetectFormat: false,
 			isBmp: req.body.bmp === 'true',
 			pid: req.pid,
 			postId

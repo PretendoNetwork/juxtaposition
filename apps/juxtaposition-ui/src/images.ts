@@ -59,10 +59,26 @@ export function processTgazPainting(painting: Buffer): Painting {
 	const tga = inflate(painting);
 	return ImageMagick.read(tga, 'TGA', processPainting);
 }
+/**
+ * Autodetects a BMPZ or TGAZ painting based on the file header and processes it accordingly.
+ * This is used in the api, where 3DS uses BMPZ and Wii U uses TGAZ.
+ * @param painting Buffer of BMPZ or TGAZ painting.
+ * @returns PNG and TGAZ-encoded paintings.
+ */
+function processAutozPainting(painting: Buffer): Painting {
+	const data = inflate(painting);
+	// todo this sucks
+	if (data.length > 0 && data[0] == 66 /* 'B' */) {
+		return ImageMagick.read(data, 'BMP', processPainting);
+	} else {
+		return ImageMagick.read(data, 'TGA', processPainting);
+	}
+}
 
 export type ProcessPaintingOptions = {
 	blob: string;
 	isBmp: boolean;
+	autodetectFormat: boolean;
 	pid: number;
 	postId: string;
 };
@@ -76,7 +92,15 @@ export type ProcessPaintingOptions = {
  */
 export async function uploadPainting(opts: ProcessPaintingOptions): Promise<string | null> {
 	const paintingBuf = Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
-	const paintings = opts.isBmp ? processBmpPainting(paintingBuf) : processTgazPainting(paintingBuf);
+	const paintings = ((): Painting => {
+		if (opts.autodetectFormat) {
+			return processAutozPainting(paintingBuf);
+		} else if (opts.isBmp) {
+			return processBmpPainting(paintingBuf);
+		} else {
+			return processTgazPainting(paintingBuf);
+		}
+	})();
 
 	if (!await uploadCDNAsset(`paintings/${opts.pid}/${opts.postId}.png`, paintings.png, 'public-read')) {
 		return null;
