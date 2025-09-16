@@ -63,7 +63,7 @@ export const fragments = {
 		s3Bucket: 'miiverse',
 		s3Region: 'us-east-1',
 		redisHost: 'localhost',
-		cdnDomain: 'http://cdn.pretendo.cc/miiverse',
+		cdnDomain: 'https://cdn.pretendo.cc/miiverse',
 		whitelist: '',
 		serverEnvironment: 'prod',
 		grpcFriendsHost: 'localhost',

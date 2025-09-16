@@ -6,12 +6,12 @@ import multer from 'multer';
 import { getPostById } from '@/api/post';
 import { config } from '@/config';
 import { database } from '@/database';
-import { processBmpPainting, processPainting } from '@/images';
+import { uploadPainting, uploadScreenshot } from '@/images';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, getCommunityHash, getUserAccountData, getInvalidPostRegex, newNotification, uploadCDNAsset } from '@/util';
+import { createLogEntry, getCommunityHash, getInvalidPostRegex, getUserAccountData, newNotification } from '@/util';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -232,7 +232,7 @@ function canPost(community, userSettings, parentPost, user) {
 async function newPost(req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	let parentPost = null;
-	const postID = await generatePostUID(21);
+	const postId = await generatePostUID(21);
 	const community = await database.getCommunityByID(req.body.community_id);
 	if (!community || !userSettings || !req.user) {
 		res.status(403);
@@ -255,17 +255,16 @@ async function newPost(req, res) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	let painting = '';
-	let paintingURI = '';
-	let screenshot = null;
+	let paintingBlob = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		if (req.body.bmp === 'true') {
-			painting = await processBmpPainting(req.body.painting.replace(/\0/g, '').trim());
-		} else {
-			painting = req.body.painting;
-		}
-		paintingURI = await processPainting(painting);
-		if (!await uploadCDNAsset(`paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		paintingBlob = await uploadPainting({
+			blob: req.body.painting,
+			autodetectFormat: false,
+			isBmp: req.body.bmp === 'true',
+			pid: req.pid,
+			postId
+		});
+		if (paintingBlob === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -273,9 +272,14 @@ async function newPost(req, res) {
 			});
 		}
 	}
+	let screenshots = null;
 	if (req.body.screenshot) {
-		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		if (!await uploadCDNAsset(`screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+		screenshots = await uploadScreenshot({
+			blob: req.body.screenshot,
+			pid: req.pid,
+			postId
+		});
+		if (screenshots === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -320,12 +324,15 @@ async function newPost(req, res) {
 		community_id: community.olive_community_id,
 		screen_name: userSettings.screen_name,
 		body: body,
-		painting: painting,
-		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
+		painting: paintingBlob ?? '',
+		screenshot: screenshots?.full ?? '',
+		screenshot_length: screenshots?.fullLength ?? 0,
+		screenshot_thumb: screenshots?.thumb ?? '',
+		screenshot_aspect: screenshots?.aspect ?? '',
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
-		id: postID,
+		id: postId,
 		is_autopost: 0,
 		is_spoiler: (req.body.spoiler) ? 1 : 0,
 		is_app_jumpable: req.body.is_app_jumpable,

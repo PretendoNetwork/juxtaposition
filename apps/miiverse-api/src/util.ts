@@ -1,8 +1,4 @@
 import crypto from 'node:crypto';
-import TGA from 'tga';
-import BMP from 'bmp-js';
-import pako from 'pako';
-import { PNG } from 'pngjs';
 import aws from 'aws-sdk';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
@@ -141,45 +137,6 @@ export function unpackServiceToken(token: Buffer): ServiceToken | null {
 		title_id: token.readBigUInt64LE(0xE),
 		access_level: token.readInt8(0x16)
 	};
-}
-
-export function processPainting(painting: string): Buffer | null {
-	const paintingBuffer = Buffer.from(painting, 'base64');
-	let output: Uint8Array;
-
-	try {
-		output = pako.inflate(paintingBuffer);
-	} catch (error) {
-		logger.error(error, 'Failed to decompress painting');
-		return null;
-	}
-
-	// 3DS is a BMP, Wii U is a TGA. God isn't real so we need to edit the
-	// alpha layer of the BMP to covert it to a PNG for the web app
-	if (output[0] === 66) {
-		const bitmap = BMP.decode(Buffer.from(output));
-		const png = new PNG({
-			width: bitmap.width,
-			height: bitmap.height
-		});
-
-		const bpmBuffer = bitmap.getData();
-		bpmBuffer.swap32();
-		png.data = bpmBuffer;
-		for (let i = 3; i < bpmBuffer.length; i += 4) {
-			bpmBuffer[i] = 255;
-		}
-		return PNG.sync.write(png);
-	} else {
-		const tga = new TGA(Buffer.from(output));
-		const png = new PNG({
-			width: tga.width,
-			height: tga.height
-		});
-
-		png.data = Buffer.from(tga.pixels);
-		return PNG.sync.write(png);
-	}
 }
 
 export async function uploadCDNAsset(key: string, data: Buffer, acl: string): Promise<boolean> {

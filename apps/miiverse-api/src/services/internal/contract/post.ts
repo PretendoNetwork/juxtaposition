@@ -14,7 +14,9 @@ export type PostDto = {
 
 	painting?: string; // base64 or '', undef for PMs
 	screenshot?: string; // URL frag (leading /) or '', undef for PMs
+	screenshot_thumb?: string; // URL frag (leading /) or '', undef for PMs/old posts
 	screenshot_length?: number;
+	screenshot_aspect?: string; // '4:3' '5:4' '16:9'
 
 	search_key?: string[]; // can be []
 	topic_tag?: string; // can be ''
@@ -68,7 +70,9 @@ export function mapPost(post: IPost): PostDto {
 
 		painting: post.painting,
 		screenshot: post.screenshot,
+		screenshot_thumb: post.screenshot_thumb,
 		screenshot_length: post.screenshot_length,
+		screenshot_aspect: post.screenshot_aspect,
 
 		search_key: post.search_key,
 		topic_tag: post.topic_tag,

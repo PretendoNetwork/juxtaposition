@@ -58,6 +58,8 @@ export const CommunitySchema = new Schema({
 		default: 0
 	},
 	icon: String,
+	ctr_header: { type: String },
+	wup_header: { type: String },
 	title_ids: {
 		type: [String],
 		default: undefined

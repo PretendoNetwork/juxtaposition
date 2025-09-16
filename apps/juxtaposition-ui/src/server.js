@@ -14,6 +14,7 @@ import { healthzRouter } from '@/services/healthz';
 import { config } from '@/config';
 import { jsxRenderer } from '@/middleware/jsx';
 import { distFolder } from '@/util';
+import { initImageProcessing } from '@/images';
 
 process.title = 'Pretendo - Juxt-Web';
 process.on('SIGTERM', () => {
@@ -121,6 +122,7 @@ async function main() {
 	await database.connect();
 	logger.success('Database connected');
 	await redisClient.connect();
+	await initImageProcessing();
 
 	app.listen(port, '0.0.0.0', () => {
 		logger.success(`Server started on port ${port}`);
