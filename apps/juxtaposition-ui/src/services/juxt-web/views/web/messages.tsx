@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot } from '@/services/juxt-web/views/web/root';
+import { utils } from '@/services/juxt-web/views/utils';
 import type { ConversationSchema } from '@/models/conversation';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { InferSchemaType } from 'mongoose';
@@ -51,7 +52,7 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 										return null;
 									} // Prevent rendering with incomplete data
 									return (
-										<li>
+										<li key={convo.id}>
 											<div className="hover">
 												<a
 													href={`/users/${userObj.pid}`}
@@ -59,7 +60,7 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 													className="icon-container notify"
 												>
 													<img
-														src={`${props.ctx.cdnUrl}/mii/${userObj.pid}/normal_face.png`}
+														src={utils.cdn(props.ctx, `/mii/${userObj.pid}/normal_face.png`)}
 														className="icon"
 													/>
 												</a>

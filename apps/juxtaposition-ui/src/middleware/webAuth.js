@@ -1,6 +1,6 @@
 import { config } from '@/config';
 import { logger } from '@/logger';
-import { getUserDataFromToken, processLanguage } from '@/util';
+import { getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
 
 const cookieDomain = config.http.cookieDomain;
 
@@ -12,8 +12,8 @@ export async function webAuth(request, response, next) {
 		request.pid = request.session.pid;
 	} else {
 		try {
-			request.user = await getUserDataFromToken(request.cookies.access_token);
-			request.pid = request.user.pid;
+			request.pid = (await getUserDataFromToken(request.cookies.access_token)).pid;
+			request.user = await getUserAccountData(request.pid);
 
 			request.session.user = request.user;
 			request.session.pid = request.pid;

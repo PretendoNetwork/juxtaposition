@@ -10,6 +10,7 @@ import api from '@/services/api';
 import { healthzRouter } from '@/services/healthz';
 import { config } from '@/config';
 import { setupGrpc } from '@/services/internal/server';
+import { initImageProcessing } from '@/images';
 import { ApiErrorCode, badRequest, serverError } from './errors';
 
 const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
@@ -79,8 +80,9 @@ async function main(): Promise<void> {
 	logger.info('Starting server');
 
 	await connectDatabase();
+	await initImageProcessing();
 
-	app.listen(port, () => {
+	app.listen(port, '0.0.0.0', () => {
 		logger.info(`Server started on port ${port}`);
 	});
 

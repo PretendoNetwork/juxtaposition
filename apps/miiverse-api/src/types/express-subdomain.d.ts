@@ -1,6 +1,6 @@
 // * Credit to https://github.com/bmullan91/express-subdomain/pull/61 for the types!
 
-declare module 'express-subdomain'{
+declare module 'express-subdomain' {
 	import type { Request, Response, Router } from 'express';
 
 	/**

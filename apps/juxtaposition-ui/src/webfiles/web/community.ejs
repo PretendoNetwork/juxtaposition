@@ -30,7 +30,11 @@
     <div id="toast"></div>
     <div id="wrapper" class="community-page-post-box">
         <div class="community-top">
-            <img class="banner" src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"/>
+            <% if (community.wup_header) { %>
+                <img class="banner" src="<%= cdnURL %><%= community.wup_header %>"/>
+            <% } else { %>
+                <img class="banner" src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"/>
+            <% } %>
             <div class="community-info">
                 <img class="user-icon" src="<%= cdnURL %>/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png"/>
                 <h2 class="community-title"><%= community.name %></h2>

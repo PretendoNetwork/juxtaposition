@@ -13,7 +13,7 @@ export interface CommunityPostsQuery {
 	search_key?: string;
 	is_spoiler?: 0 | 1;
 	painting?: {
-		$ne: null;
+		$nin: [null, ''];
 	};
 	pid?: number | number[] | {
 		$in: number[];
