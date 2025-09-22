@@ -458,12 +458,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	initAll();
 	stopLoading();
 });
-document.addEventListener('PjaxRequest', function (e) {
-	console.log(e);
+document.addEventListener('PjaxRequest', function (_e) {
+	// console.log(e);
 	cave.transition_begin();
 });
-document.addEventListener('PjaxLoaded', function (e) {
-	console.log(e);
+document.addEventListener('PjaxLoaded', function (_e) {
+	// console.log(e);
 });
 document.addEventListener('PjaxDone', function (_e) {
 	initAll();
@@ -473,5 +473,6 @@ document.addEventListener('PjaxDone', function (_e) {
 	} else {
 		cave.toolbar_setButtonType(0);
 	}
+	cave.requestGc();
 	cave.transition_end();
 });

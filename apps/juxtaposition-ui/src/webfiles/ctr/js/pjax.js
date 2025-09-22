@@ -24,8 +24,8 @@ export var Pjax = {
 		if (!els) {
 			return;
 		}
-		console.log(this.elements);
-		console.log(els);
+		// console.log(this.elements);
+		// console.log(els);
 		for (var i = 0; i < els.length; i++) {
 			els[i].addEventListener('click', function (e) {
 				pageWrapper(e, this);
@@ -41,7 +41,7 @@ export var Pjax = {
 		if (!push && Pjax.href.indexOf(url) === -1) {
 			Pjax.history.push(Pjax.href);
 		}
-		console.log(url);
+		// console.log(url);
 	},
 	get: function (url, callback) {
 		var xhttp = new XMLHttpRequest();
@@ -68,7 +68,7 @@ export var Pjax = {
 				}
 				oldElement.outerHTML = newElement.outerHTML;
 			}
-			console.log(data);
+			// console.log(data);
 			Pjax.refresh();
 			Pjax.href = data.finalURL;
 			document.dispatchEvent(Pjax.events.PjaxDone);
