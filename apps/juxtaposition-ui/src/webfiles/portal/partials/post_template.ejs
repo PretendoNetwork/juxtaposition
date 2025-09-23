@@ -42,6 +42,7 @@
                 <% if(post.body !== '') { %>
                     <p class="post-content-text"><%= post.body %></p>
                 <%}%>
+                <%# NOTE to future JSX'ers - please normalise post.screenshot to remove the leading / and move it to cdnURL! %>
                 <% if(post.screenshot !== '') { %>
                     <img class="post-screenshot post-screenshot-<%= post.screenshot_aspect %>" src="<%= cdnURL %><%= post.screenshot %>">
                 <%}%>
