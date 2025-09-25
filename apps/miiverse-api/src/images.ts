@@ -183,18 +183,21 @@ export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<S
 		return null;
 	}
 
-	const full = `/screenshots/${opts.pid}/${opts.postId}.jpg`;
-	const thumb = `/screenshots/${opts.pid}/${opts.postId}-thumb.jpg`;
+	const fullKey = `screenshots/${opts.pid}/${opts.postId}.jpg`;
+	const thumbKey = `screenshots/${opts.pid}/${opts.postId}-thumb.jpg`;
 
 	const fullLength = screenshots.jpg.byteLength;
 
-	if (!await uploadCDNAsset(full, screenshots.jpg, 'public-read')) {
+	if (!await uploadCDNAsset(fullKey, screenshots.jpg, 'public-read')) {
 		return null;
 	}
 
-	if (!await uploadCDNAsset(thumb, screenshots.thumb, 'public-read')) {
+	if (!await uploadCDNAsset(thumbKey, screenshots.thumb, 'public-read')) {
 		return null;
 	}
+
+	const full = `/${fullKey}`;
+	const thumb = `/${thumbKey}`;
 
 	return { full, fullLength, thumb, aspect: screenshots.aspect };
 }
@@ -263,15 +266,19 @@ export async function uploadIcons(opts: UploadIconsOptions): Promise<IconUrls | 
 		return null;
 	}
 
-	const icon32 = `/icons/${opts.communityId}/32.png`;
-	const icon64 = `/icons/${opts.communityId}/64.png`;
-	const icon128 = `/icons/${opts.communityId}/128.png`;
+	const icon32Key = `/icons/${opts.communityId}/32.png`;
+	const icon64Key = `/icons/${opts.communityId}/64.png`;
+	const icon128Key = `/icons/${opts.communityId}/128.png`;
 
-	if (!await uploadCDNAsset(icon32, icons.icon32, 'public-read') ||
-		!await uploadCDNAsset(icon64, icons.icon64, 'public-read') ||
-		!await uploadCDNAsset(icon128, icons.icon128, 'public-read')) {
+	if (!await uploadCDNAsset(icon32Key, icons.icon32, 'public-read') ||
+		!await uploadCDNAsset(icon64Key, icons.icon64, 'public-read') ||
+		!await uploadCDNAsset(icon128Key, icons.icon128, 'public-read')) {
 		return null;
 	}
+
+	const icon32 = `/${icon32Key}`;
+	const icon64 = `/${icon64Key}`;
+	const icon128 = `/${icon128Key}`;
 
 	return {
 		icon32,
@@ -329,13 +336,16 @@ export async function uploadHeaders(opts: UploadHeadersOptions): Promise<HeaderU
 		return null;
 	}
 
-	const ctr = `/headers/${opts.communityId}/3DS.jpg`;
-	const wup = `/headers/${opts.communityId}/WiiU.jpg`;
+	const ctrKey = `headers/${opts.communityId}/3DS.jpg`;
+	const wupKey = `headers/${opts.communityId}/WiiU.jpg`;
 
-	if (!await uploadCDNAsset(ctr, ctr_processed, 'public-read') ||
-		!await uploadCDNAsset(wup, wup_processed, 'public-read')) {
+	if (!await uploadCDNAsset(ctrKey, ctr_processed, 'public-read') ||
+		!await uploadCDNAsset(wupKey, wup_processed, 'public-read')) {
 		return null;
 	}
+
+	const ctr = `/${ctrKey}`;
+	const wup = `/${wupKey}`;
 
 	return {
 		ctr,
