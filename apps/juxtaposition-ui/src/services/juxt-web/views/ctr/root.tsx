@@ -6,11 +6,12 @@ export type DefaultHeadProps = {
 };
 
 function DefaultHead(props: DefaultHeadProps): ReactNode {
+	const addDebugJs = !props.ctx.uaIsConsole; // Only serve debug js to non-console browsers
 	return (
 		<>
 			<link rel="stylesheet" type="text/css" href="/css/juxt.css" />
 			{/* Debug allows non-console browsers to have some amount of the cave API. */}
-			{props.ctx.uaIsConsole ?? true ? <></> : <script src="/js/debug.global.js"></script>}
+			{addDebugJs ? <script src="/js/debug.global.js"></script> : null}
 			<script src="/js/juxt.global.js"></script>
 		</>
 	);
