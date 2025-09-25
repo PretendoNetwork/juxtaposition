@@ -32,24 +32,25 @@ export default defineConfig([
 			})
 		]
 	},
-	/* CTR/3DS webfiles (~IE7) */
+	/* CTR/3DS webfiles (Chrome 4) */
 	{
-		entry: ['src/webfiles/ctr/**/*.js', 'src/webfiles/ctr/**/*.css'],
+		entry: [
+			'src/webfiles/ctr/js/juxt.js',
+			'src/webfiles/ctr/js/debug.js',
+			'src/webfiles/ctr/css/juxt.css'
+		],
+		bundle: true,
 		sourcemap: true,
-		minifyWhitespace: true,
-		minifySyntax: true,
-		minifyIdentifiers: false,
+		minify: true,
 
 		outDir: 'dist/webfiles/ctr',
 
 		platform: 'browser',
-		target: 'ie7',
-		// Prevent .cjs extension
-		outExtension: (): any => ({ js: '.js' }),
+		target: 'chrome4',
+		format: 'iife',
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*', '/fonts/*'];
-			options.treeShaking = false;
 		},
 		esbuildPlugins: [
 			copy({

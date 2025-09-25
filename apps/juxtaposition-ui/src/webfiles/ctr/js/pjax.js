@@ -1,4 +1,4 @@
-var Pjax = {
+export var Pjax = {
 	elements: null,
 	selectors: null,
 	href: null,
@@ -24,8 +24,8 @@ var Pjax = {
 		if (!els) {
 			return;
 		}
-		console.log(this.elements);
-		console.log(els);
+		// console.log(this.elements);
+		// console.log(els);
 		for (var i = 0; i < els.length; i++) {
 			els[i].addEventListener('click', function (e) {
 				pageWrapper(e, this);
@@ -41,14 +41,14 @@ var Pjax = {
 		if (!push && Pjax.href.indexOf(url) === -1) {
 			Pjax.history.push(Pjax.href);
 		}
-		console.log(url);
+		// console.log(url);
 	},
 	get: function (url, callback) {
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function () {
 			if (this.readyState === 4) {
 				document.dispatchEvent(Pjax.events.PjaxLoaded);
-				this.responseURL = url;
+				this.finalURL = url;
 				return callback(this);
 			}
 		};
@@ -68,9 +68,9 @@ var Pjax = {
 				}
 				oldElement.outerHTML = newElement.outerHTML;
 			}
-			console.log(data);
+			// console.log(data);
 			Pjax.refresh();
-			Pjax.href = data.responseURL;
+			Pjax.href = data.finalURL;
 			document.dispatchEvent(Pjax.events.PjaxDone);
 		}
 	},
