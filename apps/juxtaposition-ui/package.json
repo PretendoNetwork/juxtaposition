@@ -32,7 +32,7 @@
     "express-async-errors": "^3.1.1",
     "express-prom-bundle": "^7.0.2",
     "express-rate-limit": "^7.5.0",
-    "express-session": "^1.18.1",
+    "express-session": "^1.18.2",
     "express-subdomain": "^1.0.6",
     "fs-extra": "^11.3.0",
     "hashmap": "^2.4.0",
