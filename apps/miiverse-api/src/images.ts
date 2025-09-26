@@ -143,7 +143,7 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 	// Remove EXIF whatever
 	image.strip();
 
-	image.quality = 85;
+	image.quality = 90;
 	image.settings.setDefine('JPEG', 'sampling-factor', '2x2');
 	image.settings.interlace = Interlace.Jpeg;
 
@@ -153,7 +153,7 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 			image.filterType = FilterType.Lanczos2;
 			image.resize(res.tw, res.th);
 			image.extent(res.tw, res.th, Gravity.Center);
-			image.quality = 75; // smash 'em
+			image.quality = 80; // smash 'em
 			return image.write('JPEG', Buffer.from);
 		}),
 		aspect: res.aspect
@@ -266,9 +266,9 @@ export async function uploadIcons(opts: UploadIconsOptions): Promise<IconUrls | 
 		return null;
 	}
 
-	const icon32Key = `/icons/${opts.communityId}/32.png`;
-	const icon64Key = `/icons/${opts.communityId}/64.png`;
-	const icon128Key = `/icons/${opts.communityId}/128.png`;
+	const icon32Key = `icons/${opts.communityId}/32.png`;
+	const icon64Key = `icons/${opts.communityId}/64.png`;
+	const icon128Key = `icons/${opts.communityId}/128.png`;
 
 	if (!await uploadCDNAsset(icon32Key, icons.icon32, 'public-read') ||
 		!await uploadCDNAsset(icon64Key, icons.icon64, 'public-read') ||
@@ -299,7 +299,7 @@ function processCtrHeader(image: IMagickImage): Buffer | null {
 	image.extent(400, 220, Gravity.North);
 
 	image.strip();
-	image.quality = 85;
+	image.quality = 90;
 	image.settings.setDefine('JPEG', 'sampling-factor', '2x2');
 	image.settings.interlace = Interlace.Jpeg;
 
@@ -312,7 +312,7 @@ function processWupHeader(image: IMagickImage): Buffer | null {
 	}
 
 	image.strip();
-	image.quality = 85;
+	image.quality = 90;
 	image.settings.setDefine('JPEG', 'sampling-factor', '2x2');
 	image.settings.interlace = Interlace.Jpeg;
 
