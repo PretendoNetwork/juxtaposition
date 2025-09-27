@@ -23,7 +23,7 @@
     "@repo/grpc-client": "^0.0.0",
     "classnames": "^2.5.1",
     "colors": "^1.4.0",
-    "connect-redis": "^8.0.1",
+    "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
     "crc": "^4.3.2",
     "ejs": "^3.1.10",
