@@ -77,7 +77,7 @@
         "swearing": "No se puede incluir lenguaje inapropiado en las publicaciones."
     },
     "messages": {
-        "coming_soon": "La función de mensajes no esta lista. ¡Vuelve más tarde!"
+        "coming_soon": "No hay mensajes"
     },
     "setup": {
         "welcome": "¡Bienvenido a Juxtaposition!",
