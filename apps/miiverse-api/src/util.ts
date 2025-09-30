@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import aws from 'aws-sdk';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
@@ -9,6 +9,7 @@ import { config } from '@/config';
 import { logger } from '@/logger';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
+import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
@@ -27,10 +28,14 @@ const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
 const gRPCApiChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
 const gRPCApiClient = createClient(APIDefinition, gRPCApiChannel);
 
-const s3 = new aws.S3({
-	endpoint: new aws.Endpoint(config.s3.endpoint),
-	accessKeyId: config.s3.key,
-	secretAccessKey: config.s3.secret
+const s3 = new S3Client({
+	endpoint: config.s3.endpoint,
+	forcePathStyle: true,
+	region: config.s3.region,
+	credentials: {
+		accessKeyId: config.s3.key,
+		secretAccessKey: config.s3.secret
+	}
 });
 
 // TODO - This doesn't really belong here
@@ -139,16 +144,15 @@ export function unpackServiceToken(token: Buffer): ServiceToken | null {
 	};
 }
 
-export async function uploadCDNAsset(key: string, data: Buffer, acl: string): Promise<boolean> {
-	const awsPutParams = {
+export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCannedACL): Promise<boolean> {
+	const awsPutParams = new PutObjectCommand({
 		Body: data,
 		Key: key,
 		Bucket: config.s3.bucket,
 		ACL: acl
-	};
-
+	});
 	try {
-		await s3.putObject(awsPutParams).promise();
+		await s3.send(awsPutParams);
 		return true;
 	} catch (e) {
 		logger.error(e, 'Could not upload to CDN');
