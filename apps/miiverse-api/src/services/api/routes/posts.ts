@@ -63,7 +63,7 @@ router.post('/:post_id.delete', async function (request: express.Request, respon
 		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 
-	await post.del('User requested removal');
+	await post.del('User requested removal', request.pid);
 	response.sendStatus(200);
 });
 
