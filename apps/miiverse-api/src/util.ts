@@ -161,6 +161,10 @@ export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCanne
 }
 
 export async function bulkDeleteCDNAsset(keys: string[]): Promise<boolean> {
+	if (keys.length === 0) {
+		return true;
+	}
+
 	const awsDeleteParams = new DeleteObjectsCommand({
 		Bucket: config.s3.bucket,
 		Delete: {
