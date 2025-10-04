@@ -7,6 +7,7 @@ import { guards } from '@/services/internal/middleware/guards';
 import { mapPost } from '@/services/internal/contract/post';
 import { mapPages } from '@/services/internal/contract/page';
 import { pageSchema } from '@/services/internal/pagination';
+import { mapResult } from '@/services/internal/contract/result';
 
 export const postsRouter = express.Router();
 
@@ -17,6 +18,7 @@ postsRouter.get('/posts', guards.user, handle(async ({ req, res }) => {
 		topic_tag: z.string().optional(),
 		posted_by: z.coerce.number().optional(),
 		empathy_by: z.coerce.number().optional(),
+		parent_id: z.string().length(21).optional(),
 		include_replies: z.stringbool().default(false)
 	}).and(pageSchema()).parse(req.query);
 
@@ -24,6 +26,7 @@ postsRouter.get('/posts', guards.user, handle(async ({ req, res }) => {
 		pid: query.posted_by,
 		topic_tag: query.topic_tag,
 		yeahs: query.empathy_by,
+		parent: query.parent_id,
 
 		message_to_pid: null, // messages aren't really posts
 		...query.include_replies ? {} : { parent: null },
@@ -50,4 +53,43 @@ postsRouter.get('/posts/:post_id', guards.guest, handle(async ({ req, res }) => 
 
 	// PostDto
 	return mapPost(post);
+}));
+
+// Delete post by id
+postsRouter.delete('/posts/:post_id', guards.user, handle(async ({ req, res }) => {
+	const params = z.object({
+		post_id: z.string().length(21)
+	}).parse(req.params);
+
+	const query = z.object({
+		// Reason is only for moderators
+		reason: z.string().optional()
+	}).parse(req.query);
+
+	const post = await Post.findOne({
+		id: params.post_id,
+		...filterRemovedPosts(res.locals.account)
+	});
+	if (!post) {
+		throw new errors.notFound('Post not found');
+	}
+
+	// guards.user makes this safe
+	const account = res.locals.account!;
+
+	let reason = 'User requested removal';
+	if (post.pid !== account.pnid.pid) {
+		if (account.moderator) {
+			// If a moderator deletes someone else's post, they can provide a reason
+			reason = query.reason ?? 'Removed by moderator';
+		} else {
+			// Non-moderators can't delete other posts
+			throw new errors.forbidden('Not allowed');
+		}
+	}
+
+	post.del(reason, account.pnid.pid);
+
+	// ResultDto
+	return mapResult('success');
 }));

@@ -1,4 +1,5 @@
 import { apiFetchUser } from '@/fetch';
+import type { ResultDto } from '@/api/result';
 import type { PageDto } from '@/api/page';
 import type { UserTokens } from '@/fetch';
 
@@ -84,4 +85,23 @@ export async function getPostsByEmpathy(tokens: UserTokens, empathy_by: number, 
 	});
 	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts?${params}`);
 	return posts;
+}
+
+export async function getPostsByParentId(tokens: UserTokens, parent_id: string, offset: number): Promise<PageDto<PostDto> | null> {
+	const params = new URLSearchParams({
+		parent_id: parent_id,
+		offset: offset.toString()
+	});
+	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts?${params}`);
+	return posts;
+}
+
+export async function deletePostById(tokens: UserTokens, post_id: string, reason?: string): Promise<ResultDto | null> {
+	const params = reason !== undefined
+		? new URLSearchParams({
+			reason
+		})
+		: '';
+	const result = apiFetchUser<ResultDto>(tokens, `/api/v1/posts/${post_id}?${params}`, { method: 'DELETE' });
+	return result;
 }

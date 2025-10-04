@@ -3,7 +3,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import moment from 'moment';
 import multer from 'multer';
-import { getPostById } from '@/api/post';
+import { deletePostById, getPostById, getPostsByParentId } from '@/api/post';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
@@ -127,7 +127,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(post.community_id);
 	const communityMap = await getCommunityHash();
-	const replies = await database.getPostReplies(req.params.post_id.toString(), 25);
+	const replies = (await getPostsByParentId(req.tokens, post.id, 0))?.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
 	res.render(req.directory + '/post.ejs', {
 		moment: moment,
@@ -143,24 +143,25 @@ postsRouter.get('/:post_id', async function (req, res) {
 });
 
 postsRouter.delete('/:post_id', async function (req, res) {
-	const post = await database.getPostByID(req.params.post_id);
+	const post = await getPostById(req.params.post_id);
 	if (!post) {
 		return res.sendStatus(404);
 	}
-	if (req.pid !== post.pid && !res.locals.moderator) {
-		return res.sendStatus(401);
+
+	const result = await deletePostById(req.tokens, post.id, req.query.reason);
+	if (result === null) {
+		return res.sendStatus(404);
 	}
+
+	// TODO move audit logging to backend
 	if (res.locals.moderator && req.pid !== post.pid) {
 		const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
-		await post.removePost(reason, req.pid);
 		await createLogEntry(
 			req.pid,
 			'REMOVE_POST',
 			post.pid,
 			`Post ${post.id} removed for: "${reason}"`
 		);
-	} else {
-		await post.removePost('User requested removal', req.pid);
 	}
 
 	res.statusCode = 200;
