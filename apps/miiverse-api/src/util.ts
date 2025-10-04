@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectsCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
@@ -156,6 +156,29 @@ export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCanne
 		return true;
 	} catch (e) {
 		logger.error(e, 'Could not upload to CDN');
+		return false;
+	}
+}
+
+export async function bulkDeleteCDNAsset(keys: string[]): Promise<boolean> {
+	if (keys.length === 0) {
+		return true;
+	}
+
+	const awsDeleteParams = new DeleteObjectsCommand({
+		Bucket: config.s3.bucket,
+		Delete: {
+			Objects: keys.map(v => ({
+				Key: v
+			})),
+			Quiet: true
+		}
+	});
+	try {
+		await s3.send(awsDeleteParams);
+		return true;
+	} catch (e) {
+		logger.error(e, 'Could not delete from CDN');
 		return false;
 	}
 }
