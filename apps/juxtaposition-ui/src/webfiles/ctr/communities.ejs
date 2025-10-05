@@ -3,7 +3,9 @@
 <%- include('partials/head', { title: lang.global.communities }); %>
 <body>
 <div id="body">
-    <header id="header" class="buttons">
+    <header id="header" class="buttons"
+		data-toolbar-config
+		data-toolbar-active-button="3"
         <h1 id="page-title" class=""><%= lang.global.communities %></h1>
         <a id="header-communities-button" class="right" href="/titles/all" data-pjax="#body"><%= lang.all_communities.text %></a>
     </header>
