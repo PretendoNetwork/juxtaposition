@@ -924,3 +924,12 @@ menu.tab-header.no-margin {
 	margin: 4px;
 	padding: 4px;
 }
+
+.settings-list > li {
+    display: inline-block;
+}
+
+p.settings-label {
+	float: left;
+	width: 275px;
+}

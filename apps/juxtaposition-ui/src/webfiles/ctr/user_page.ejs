@@ -4,7 +4,12 @@
 <%- include('partials/head', { title: pnid.mii.name }); %>
 <body>
 <div id="body">
-    <header id="header" class="buttons">
+	<header id="header" class="buttons"
+		data-toolbar-config
+		data-toolbar-mode="0"
+		<%if(pnid.pid === pid) {%>
+		data-toolbar-active-button="5"
+		<%}%>>
         <h1 id="page-title" class="community">
             <span>
                 <span class="icon-container">
