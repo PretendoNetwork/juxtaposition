@@ -51,9 +51,39 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	if (!post) {
 		return res.sendStatus(404);
 	}
+
+	const community = await database.getCommunityByID(post.community_id);
+	const postPNID = await getUserAccountData(post.pid);
+
+	let img = {};
+	if (post.painting !== '') {
+		img = {
+			thumbnail_url: `${res.locals.cdnURL}/paintings/${post.pid}/${post.id}.png`,
+			thumbnail_width: 320,
+			thumbnail_height: 120
+		};
+	} else if (post.screenshot_thumb !== '') {
+		img = {
+			thumbnail_url: `${res.locals.cdnURL}${post.screenshot_thumb}`
+		};
+	} else {
+		img = {
+			thumbnail_url: 'https://pretendo.network/assets/images/opengraph/opengraph-image.png',
+			thumbnail_width: 727,
+			thumbnail_height: 298
+		};
+	}
+
 	const doc = {
+		type: 'link',
+		version: '1.0',
+		title: `${post.screen_name} (@${postPNID.username}) - ${community?.name}`,
+		description: post.body,
 		author_name: post.screen_name,
-		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid
+		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid,
+		provider_name: 'Juxtaposition - Pretendo Network',
+		provider_url: `https://juxt.pretendo.network`,
+		...img
 	};
 	res.send(doc);
 });
