@@ -90,7 +90,8 @@ export async function getPostsByEmpathy(tokens: UserTokens, empathy_by: number, 
 export async function getPostsByParentId(tokens: UserTokens, parent_id: string, offset: number): Promise<PageDto<PostDto> | null> {
 	const params = new URLSearchParams({
 		parent_id: parent_id,
-		offset: offset.toString()
+		offset: offset.toString(),
+		include_replies: 'true'
 	});
 	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts?${params}`);
 	return posts;

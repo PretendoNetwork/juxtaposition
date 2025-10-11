@@ -22,6 +22,10 @@ postsRouter.get('/posts', guards.user, handle(async ({ req, res }) => {
 		include_replies: z.stringbool().default(false)
 	}).and(pageSchema()).parse(req.query);
 
+	if (query.parent_id && !query.include_replies) {
+		throw new errors.badRequest('Please set include_replies=true to get replies to a parent');
+	}
+
 	const posts = await Post.find(deleteOptional({
 		pid: query.posted_by,
 		topic_tag: query.topic_tag,
