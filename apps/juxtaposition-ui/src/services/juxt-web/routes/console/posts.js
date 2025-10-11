@@ -12,6 +12,7 @@ import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
 import { createLogEntry, getCommunityHash, getInvalidPostRegex, getUserAccountData, newNotification } from '@/util';
+import { addEmpathyById, removeEmpathyById } from '@/api/empathy';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -55,54 +56,31 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 });
 
 postsRouter.post('/empathy', yeahLimit, async function (req, res) {
-	const post = await database.getPostByID(req.body.postID);
+	const post = await getPostById(req.tokens, req.body.postID);
 	if (!post) {
 		return res.sendStatus(404);
 	}
-	if (post.yeahs.indexOf(req.pid) === -1) {
-		await POST.updateOne({
-			id: post.id,
-			yeahs: {
-				$ne: req.pid
-			}
-		},
-		{
-			$inc: {
-				empathy_count: 1
-			},
-			$push: {
-				yeahs: req.pid
-			}
-		});
-		res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
-		if (req.pid !== post.pid) {
-			await newNotification({
-				pid: post.pid,
-				type: 'yeah',
-				objectID: post.id,
-				userPID: req.pid,
-				link: `/posts/${post.id}`
-			});
-		}
-	} else if (post.yeahs.indexOf(req.pid) !== -1) {
-		await POST.updateOne({
-			id: post.id,
-			yeahs: {
-				$eq: req.pid
-			}
-		},
-		{
-			$inc: {
-				empathy_count: -1
-			},
-			$pull: {
-				yeahs: req.pid
-			}
-		});
-		res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
-	} else {
+
+	const existingEmpathy = post.yeahs.indexOf(req.pid) !== -1;
+	const result = !existingEmpathy
+		? await addEmpathyById(req.tokens, post.id)
+		: await removeEmpathyById(req.tokens, post.id);
+	if (result === null) {
 		res.send({ status: 423, id: post.id, count: post.empathy_count });
 	}
+
+	res.send({ status: 200, id: result.post_id, count: result.empathy_count });
+
+	if (result.action === 'add' && req.pid !== post.pid) {
+		await newNotification({
+			pid: post.pid,
+			type: 'yeah',
+			objectID: post.id,
+			userPID: req.pid,
+			link: `/posts/${post.id}`
+		});
+	}
+
 	await redisRemove(`${post.pid}_user_page_posts`);
 });
 

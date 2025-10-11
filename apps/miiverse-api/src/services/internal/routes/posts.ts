@@ -8,6 +8,7 @@ import { mapPost } from '@/services/internal/contract/post';
 import { mapPages } from '@/services/internal/contract/page';
 import { pageSchema } from '@/services/internal/pagination';
 import { mapResult } from '@/services/internal/contract/result';
+import { mapEmpathy } from '@/services/internal/contract/empathy';
 
 export const postsRouter = express.Router();
 
@@ -96,4 +97,53 @@ postsRouter.delete('/posts/:post_id', guards.user, handle(async ({ req, res }) =
 
 	// ResultDto
 	return mapResult('success');
+}));
+
+// Add or remove empathy
+postsRouter.post('/posts/:post_id/empathies', guards.user, handle(async ({ req, res }) => {
+	const params = z.object({
+		post_id: z.string().length(21)
+	}).parse(req.params);
+
+	const body = z.object({
+		action: z.literal(['add', 'remove'])
+	}).parse(req.body);
+
+	let post = await Post.findOne({
+		id: params.post_id,
+		...filterRemovedPosts(res.locals.account)
+	});
+	if (!post) {
+		throw new errors.notFound('Post not found');
+	}
+
+	// guards.user makes this safe
+	const account = res.locals.account!;
+	const pid = account.pnid.pid;
+
+	if (body.action === 'add') {
+		/* We have to re-query here rather than use updateOne to ensure idempotence on empathy_count
+		 * If we ever used yeahs.length we could stop bothering with this */
+		post = await Post.findOneAndUpdate({
+			_id: post._id,
+			yeahs: { $ne: pid }
+		}, {
+			$addToSet: { yeahs: pid },
+			$inc: { empathy_count: 1 }
+		}, { new: true });
+	} else {
+		post = await Post.findOneAndUpdate({
+			_id: post._id,
+			yeahs: pid
+		}, {
+			$pull: { yeahs: pid },
+			$inc: { empathy_count: -1 }
+		}, { new: true });
+	}
+	if (!post) {
+		throw new errors.notFound('Post not found');
+	}
+
+	// EmpathyDto
+	return mapEmpathy(body.action, post);
 }));
