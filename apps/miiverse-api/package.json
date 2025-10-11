@@ -50,7 +50,7 @@
 		"@types/pako": "^2.0.4",
 		"@types/supertest": "^6.0.3",
 		"axios": "^1.12.2",
-		"eslint": "^9.21.0",
+		"eslint": "^9.37.0",
 		"newman": "^6.0.0",
 		"ora": "^5.4.1",
 		"postman-collection": "^4.1.7",
