@@ -95,6 +95,14 @@ postsRouter.delete('/posts/:post_id', guards.user, handle(async ({ req, res }) =
 
 	post.del(reason, account.pnid.pid);
 
+	if (post.parent) {
+		await Post.findOneAndUpdate({
+			id: post.parent
+		}, {
+			$inc: { reply_count: -1 }
+		});
+	}
+
 	// ResultDto
 	return mapResult('success');
 }));
