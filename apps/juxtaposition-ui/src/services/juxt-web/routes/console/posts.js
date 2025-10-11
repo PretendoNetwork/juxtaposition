@@ -40,7 +40,10 @@ const yeahLimit = rateLimit({
 	windowMs: 60 * 1000, // 1 minute
 	max: 10, // Limit each IP to 60 requests per `window`
 	standardHeaders: true,
-	legacyHeaders: true
+	legacyHeaders: true,
+	message: (req, _res) => {
+		return { status: 423, id: req.body.postID, count: 0 };
+	}
 });
 
 postsRouter.get('/:post_id/oembed.json', async function (req, res) {
