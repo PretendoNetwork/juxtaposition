@@ -53,7 +53,7 @@
 		"eslint": "^9.37.0",
 		"newman": "^6.0.0",
 		"ora": "^5.4.1",
-		"postman-collection": "^4.1.7",
+		"postman-collection": "^5.2.0",
 		"table": "^6.8.1",
 		"tsup": "^8.5.0",
 		"typescript": "^5.7.3",
