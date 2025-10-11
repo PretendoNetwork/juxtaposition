@@ -1,4 +1,5 @@
 import { apiFetchUser } from '@/fetch';
+import { deleteOptional } from '@/util';
 import type { ResultDto } from '@/api/result';
 import type { PageDto } from '@/api/page';
 import type { UserTokens } from '@/fetch';
@@ -98,11 +99,9 @@ export async function getPostsByParentId(tokens: UserTokens, parent_id: string, 
 }
 
 export async function deletePostById(tokens: UserTokens, post_id: string, reason?: string): Promise<ResultDto | null> {
-	const params = reason !== undefined
-		? new URLSearchParams({
-			reason
-		})
-		: '';
+	const params = new URLSearchParams(deleteOptional({
+		reason
+	}));
 	const result = apiFetchUser<ResultDto>(tokens, `/api/v1/posts/${post_id}?${params}`, { method: 'DELETE' });
 	return result;
 }

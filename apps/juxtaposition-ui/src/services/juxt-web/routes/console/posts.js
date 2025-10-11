@@ -143,7 +143,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 });
 
 postsRouter.delete('/:post_id', async function (req, res) {
-	const post = await getPostById(req.params.post_id);
+	const post = await getPostById(req.tokens, req.params.post_id);
 	if (!post) {
 		return res.sendStatus(404);
 	}

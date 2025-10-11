@@ -50,7 +50,7 @@ export async function* apiKeyMiddleware<Request, Response>(
 }
 
 const allowedMethods = ['get', 'post', 'put', 'delete', 'patch'] as const;
-const methodsWithBody = ['post', 'put', 'delete', 'patch'] as const;
+const methodsWithBody = ['post', 'put', 'patch'] as const;
 type AllowedMethods = typeof allowedMethods[number];
 
 export async function setupGrpc(): Promise<void> {
