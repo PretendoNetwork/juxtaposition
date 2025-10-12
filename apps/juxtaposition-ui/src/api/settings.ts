@@ -26,11 +26,11 @@ export type UserSettingsDto = {
 };
 
 export async function getUserSettings(tokens: UserTokens): Promise<UserSettingsDto | null> {
-	const settings = await apiFetchUser<UserSettingsDto>(tokens, `/api/v1/users/@me/settings`);
+	const settings = await apiFetchUser<UserSettingsDto>(tokens, `/api/v1/users/@me/profile/settings`);
 	return settings;
 }
 
 export async function getUserSettingsForPid(tokens: UserTokens, pid: number): Promise<UserSettingsDto | null> {
-	const settings = await apiFetchUser<UserSettingsDto>(tokens, `/api/v1/users/${pid}/settings`);
+	const settings = await apiFetchUser<UserSettingsDto>(tokens, `/api/v1/users/${pid}/profile/settings`);
 	return settings;
 }
