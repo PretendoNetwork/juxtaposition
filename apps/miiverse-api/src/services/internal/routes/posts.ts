@@ -13,7 +13,7 @@ import { mapEmpathy } from '@/services/internal/contract/empathy';
 export const postsRouter = express.Router();
 
 // Get posts by topic tag, poster, or empathy
-postsRouter.get('/posts', guards.user, handle(async ({ req, res }) => {
+postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 	// the idea is that any combination of these can be left undefined
 	const query = z.object({
 		topic_tag: z.string().optional(),
@@ -25,6 +25,10 @@ postsRouter.get('/posts', guards.user, handle(async ({ req, res }) => {
 
 	if (query.parent_id && !query.include_replies) {
 		throw new errors.badRequest('Please set include_replies=true to get replies to a parent');
+	}
+	// guests may view replies only
+	if (res.locals.account === null && !query.parent_id) {
+		throw new errors.unauthorized('Authentication token not provided');
 	}
 
 	const posts = await Post.find(deleteOptional({
