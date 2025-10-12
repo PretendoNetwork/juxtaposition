@@ -265,7 +265,7 @@ export function getReasonMap(): string[] {
 	];
 }
 
-export function processLanguage(paramPack?: ParamPack): typeof translations.EN {
+export function processLanguage(paramPack?: ParamPack | null): typeof translations.EN {
 	if (!paramPack) {
 		return translations.EN;
 	}
