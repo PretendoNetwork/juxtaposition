@@ -14,6 +14,8 @@ declare global {
 			paramPackData: ParamPack | null;
 			tokens: UserTokens;
 			isWrite: boolean;
+			guest_access: boolean;
+			new_users: boolean;
 			// legacy stuff
 			pid: number | null;
 			user: GetUserDataResponse | null;

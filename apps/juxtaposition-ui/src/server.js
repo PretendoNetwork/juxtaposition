@@ -16,6 +16,11 @@ import { jsxRenderer } from '@/middleware/jsx';
 import { distFolder } from '@/util';
 import { initImageProcessing } from '@/images';
 
+// TODO is this used anywhere?
+BigInt.prototype['toJSON'] = function () {
+	return this.toString();
+};
+
 process.title = 'Pretendo - Juxt-Web';
 process.on('SIGTERM', () => {
 	process.exit(0);

@@ -1,10 +1,11 @@
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
+import type { RequestHandler } from 'express';
 
 const cookieDomain = config.http.cookieDomain;
 
-export async function webAuth(request, response, next) {
+export const webAuth: RequestHandler = async (request, response, next) => {
 	// Get pid and fetch user data
 
 	if (request.session && request.session.user && request.session.pid && !request.isWrite && request.cookies.access_token) {
@@ -58,12 +59,8 @@ export async function webAuth(request, response, next) {
 
 	response.locals.pid = request.pid;
 	return next();
-}
+};
 
-function isStartOfPath(path, value) {
+function isStartOfPath(path: string, value: string): boolean {
 	return path.indexOf(value) === 0;
 }
-
-BigInt.prototype['toJSON'] = function () {
-	return this.toString();
-};
