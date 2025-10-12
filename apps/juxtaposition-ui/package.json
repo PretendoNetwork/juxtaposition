@@ -55,6 +55,7 @@
   },
   "devDependencies": {
     "@pretendonetwork/eslint-config": "^0.1.1",
+    "@types/cookie-parser": "^1.4.9",
     "@types/express-session": "^1.18.2",
     "@types/hashmap": "^2.3.4",
     "@types/node": "^22.13.8",
