@@ -485,6 +485,20 @@ export function deleteOptional<T extends {}>(obj: T): Partial<T> { // Partial<T>
 	return obj;
 }
 
+export function accountIsModerator(pnid: AccountGetUserDataResponse): boolean {
+	// AL2 can always moderate...
+	if (pnid.accessLevel >= 2) {
+		return true;
+	}
+
+	// Lower-level accounts can also have permission granted
+	if (pnid.permissions?.moderateMiiverse === true) {
+		return true;
+	}
+
+	return false;
+}
+
 const filename = fileURLToPath(import.meta.url);
 // The root of the dist/ folder.
 export const distFolder = path.dirname(filename);

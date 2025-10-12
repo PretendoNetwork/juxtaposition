@@ -1,7 +1,7 @@
 import { getUserSettings } from '@/api/settings';
 import { config } from '@/config';
 import { logger } from '@/logger';
-import { decodeParamPack, getPIDFromServiceToken, getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
+import { accountIsModerator, decodeParamPack, getPIDFromServiceToken, getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { RequestHandler } from 'express';
 
@@ -83,17 +83,3 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 	response.locals.pid = request.pid;
 	return next();
 };
-
-function accountIsModerator(pnid: GetUserDataResponse): boolean {
-	// AL2 can always moderate...
-	if (pnid.accessLevel >= 2) {
-		return true;
-	}
-
-	// Lower-level accounts can also have permission granted
-	if (pnid.permissions?.moderateMiiverse === true) {
-		return true;
-	}
-
-	return false;
-}
