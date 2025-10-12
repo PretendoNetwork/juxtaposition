@@ -1,6 +1,11 @@
 import { errors } from '@/services/internal/errors';
 import type express from 'express';
 
+const ALLOW_WHEN_BANNED = [
+	// Needed for ban check / reason / expiry date etc.
+	'/api/v1/users/@me/profile/settings'
+];
+
 /**
  * Checks the user account is valid for this request (not banned, setup complete, etc.)
  */
@@ -18,7 +23,9 @@ export async function authAccessCheck(request: express.Request, response: expres
 	if (account.pnid.accessLevel < 0 ||
 		account.pnid.permissions?.bannedAllPermanently === true ||
 		account.pnid.permissions?.bannedAllTemporarily === true) {
-		throw new errors.forbidden('Account has been banned');
+		if (!ALLOW_WHEN_BANNED.includes(request.path)) {
+			throw new errors.forbidden('Account has been banned');
+		}
 	}
 
 	// TODO console linking check (needs account server support)
@@ -32,7 +39,9 @@ export async function authAccessCheck(request: express.Request, response: expres
 
 	// 0 = normal, 1 = limited from posting, 2 = temp ban, 3 = perma ban
 	if (account.settings.account_status !== 0 && account.settings.account_status !== 1) {
-		throw new errors.forbidden('Account has been banned from Juxtaposition');
+		if (!ALLOW_WHEN_BANNED.includes(request.path)) {
+			throw new errors.forbidden('Account has been banned from Juxtaposition');
+		}
 	}
 
 	// TODO lift expired temporary bans and post limits (frontend's responsibility for now)

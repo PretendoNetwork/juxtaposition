@@ -1,6 +1,6 @@
 import moment from 'moment';
-import { database as db } from '@/database';
 import { config } from '@/config';
+import { SETTINGS } from '@/models/settings';
 import type { RequestHandler } from 'express';
 
 export const checkBan: RequestHandler = async (request, response, next) => {
@@ -9,7 +9,8 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 	response.locals.moderator = false;
 	response.locals.developer = false;
 
-	if (!request.user) {
+	const account = response.locals.account;
+	if (!account) {
 		if (request.guest_access || request.path === '/login') {
 			return next();
 		} else {
@@ -18,9 +19,9 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 	}
 
 	// Set access levels
-	response.locals.tester = request.user.accessLevel >= 1 && request.user.accessLevel <= 3;
-	response.locals.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
-	response.locals.developer = request.user.accessLevel == 3;
+	response.locals.tester = account.pnid.accessLevel >= 1 && account.pnid.accessLevel <= 3;
+	response.locals.moderator = account.pnid.accessLevel == 2 || account.pnid.accessLevel == 3;
+	response.locals.developer = account.pnid.accessLevel == 3;
 
 	// Check if user has access to the environment
 	let accessAllowed = false;
@@ -49,40 +50,46 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 			});
 		}
 	}
-	const userSettings = await db.getUserSettings(request.pid);
-	if (userSettings && moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
-		userSettings.account_status = 0;
-		await userSettings.save();
+	if (account.settings && moment(account.settings.ban_lift_date) <= moment() && account.settings.account_status !== 3) {
+		await SETTINGS.findOneAndUpdate({
+			pid: account.settings.pid
+		}, {
+			account_status: 0
+		});
+		account.settings.account_status = 0;
 	}
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
-	if (userSettings && (userSettings.account_status < 0 || userSettings.account_status > 1 || request.user.accessLevel < 0)) {
+	if (account.settings && (account.settings.account_status < 0 || account.settings.account_status > 1 || account.pnid.accessLevel < 0)) {
 		if (request.directory === 'web') {
 			let banMessage = '';
-			switch (userSettings.account_status) {
+			switch (account.settings.account_status) {
 				case 2:
-					banMessage = `${request.user.username} has been banned for ${moment(userSettings.ban_lift_date).fromNow(true)}. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
+					banMessage = `${account.pnid.username} has been banned for ${moment(account.settings.ban_lift_date).fromNow(true)}. \n\nReason: ${account.settings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 					break;
 				case 3:
-					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
+					banMessage = `${account.pnid.username} has been banned forever. \n\nReason: ${account.settings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 					break;
 				default:
-					banMessage = `${request.user.username} has been banned. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
+					banMessage = `${account.pnid.username} has been banned. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 			}
 			return response.render('web/login.ejs', { toast: banMessage, redirect: request.originalUrl });
 		} else {
 			return response.render(request.directory + '/partials/ban_notification.ejs', {
-				user: userSettings,
+				user: account.settings,
 				moment: moment,
-				PNID: request.user.username,
-				networkBan: request.user.accessLevel < 0
+				PNID: account.pnid.username,
+				networkBan: account.pnid.accessLevel < 0
 			});
 		}
 	}
 
-	if (userSettings) {
-		userSettings.last_active = new Date();
-		await userSettings.save();
+	if (account.settings) {
+		await SETTINGS.findOneAndUpdate({
+			pid: account.settings.pid
+		}, {
+			last_active: new Date()
+		});
 	}
 
 	next();

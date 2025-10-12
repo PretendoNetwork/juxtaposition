@@ -122,7 +122,7 @@ postsRouter.post('/new', postLimit, upload.none(), async function (req, res) {
 });
 
 postsRouter.get('/:post_id', async function (req, res) {
-	const userSettings = await database.getUserSettings(req.pid);
+	const userSettings = res.locals.account?.settings ?? null;
 	const userContent = await database.getUserContent(req.pid);
 
 	const post = await getPostById(req.tokens, req.params.post_id);
