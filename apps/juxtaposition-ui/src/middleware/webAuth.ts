@@ -2,7 +2,7 @@ import { getUserSettings } from '@/api/settings';
 import { config } from '@/config';
 import { accountIsModerator, getUserAccountData, getUserDataFromToken } from '@/util';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { RequestHandler, Request } from 'express';
+import type { RequestHandler, Request, Response } from 'express';
 
 const cookieDomain = config.http.cookieDomain;
 
@@ -54,7 +54,7 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 
 	// Guest access check
 	if (!pnid && !requestOkForGuest(request)) {
-		return response.redirect('/login');
+		return loginWall(request, response);
 	}
 
 	// Already logged in?
@@ -81,4 +81,17 @@ function requestOkForGuest(req: Request): boolean {
 	// login page is always ok
 	// guest access pages must not be writes and the instance must have guest enabled
 	return loginPage || (guestAccessPage && !req.isWrite && req.guest_access);
+}
+
+export function loginWall(req: Request, res: Response): void {
+	let path = req.originalUrl;
+
+	// bit rude to log someone in and 404 them right after
+	if (path === '/404') {
+		req.log.error('Likely bad guest route handler, will bail to homepage');
+		path = '/';
+	}
+
+	req.session.pnid = null;
+	return res.redirect(`/login?redirect=${path}`);
 }
