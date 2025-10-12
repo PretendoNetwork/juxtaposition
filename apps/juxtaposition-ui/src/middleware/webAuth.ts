@@ -1,7 +1,7 @@
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
-import type { RequestHandler } from 'express';
+import type { RequestHandler, Request, Response } from 'express';
 
 const cookieDomain = config.http.cookieDomain;
 
@@ -34,27 +34,15 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 
 	request.tokens = { oauthToken: request.cookies.access_token };
 
-	// Open access pages
-	if (isStartOfPath(request.path, '/users/') ||
-		(isStartOfPath(request.path, '/titles/') && request.path !== '/titles/show') ||
-		(isStartOfPath(request.path, '/posts/') && !request.path.includes('/empathy'))) {
-		if (!request.pid && request.guest_access && !request.isWrite) {
-			request.pid = 1000000000;
-			response.locals.pid = request.pid;
-			return next();
-		} else if (!request.pid) {
-			return response.redirect('/login');
-		}
-	}
-	// Login endpoint
-	if (request.path === '/login') {
-		if (request.pid) {
-			return response.redirect('/titles/show?src=login');
-		}
-		return next();
-	}
+	// Handle guest access pages
 	if (!request.pid) {
-		return response.redirect('/login');
+		if (!requestOkForGuest(request)) {
+			return loginWall(request, response);
+		}
+
+		request.pid = 1000000000;
+		response.locals.pid = request.pid;
+		return next();
 	}
 
 	response.locals.pid = request.pid;
@@ -63,4 +51,30 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 
 function isStartOfPath(path: string, value: string): boolean {
 	return path.indexOf(value) === 0;
+}
+
+function requestOkForGuest(req: Request): boolean {
+	const guestAccessPage =
+		isStartOfPath(req.path, '/users/') ||
+		(isStartOfPath(req.path, '/titles/') && req.path !== '/titles/show') ||
+		(isStartOfPath(req.path, '/posts/') && !req.path.includes('/empathy'));
+
+	const loginPage = req.path === '/login';
+
+	// login page is always ok
+	// guest access pages must not be writes and the instance must have guest enabled
+	return loginPage || (guestAccessPage && !req.isWrite && req.guest_access);
+}
+
+export function loginWall(req: Request, res: Response): void {
+	let path = req.originalUrl;
+
+	// bit rude to log someone in and 404 them right after
+	if (path === '/404') {
+		req.log.error('Likely bad guest route handler, will bail to homepage');
+		path = '/';
+	}
+
+	req.session.user = null;
+	return res.redirect(`/login?redirect=${path}`);
 }

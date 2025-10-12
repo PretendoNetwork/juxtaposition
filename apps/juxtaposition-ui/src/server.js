@@ -15,6 +15,7 @@ import { config } from '@/config';
 import { jsxRenderer } from '@/middleware/jsx';
 import { distFolder } from '@/util';
 import { initImageProcessing } from '@/images';
+import { loginWall } from '@/middleware/webAuth';
 
 // TODO is this used anywhere?
 BigInt.prototype['toJSON'] = function () {
@@ -102,10 +103,8 @@ app.use((error, req, res, next) => {
 	}
 
 	// small hack because token expiry is weird
-	if (error.status === 401) {
-		req.session.user = undefined;
-		req.session.pid = undefined;
-		return res.redirect(`/login?redirect=${req.originalUrl}`);
+	if (error.status === 401 && req.directory === 'web') {
+		return loginWall(req, res);
 	}
 
 	const status = error.status || 500;
