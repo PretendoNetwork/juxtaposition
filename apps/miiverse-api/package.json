@@ -27,7 +27,7 @@
 		"express-rate-limit": "^8.1.0",
 		"express-subdomain": "^1.0.5",
 		"moment": "^2.24.0",
-		"mongoose": "^8.18.1",
+		"mongoose": "^8.19.1",
 		"multer": "^2.0.2",
 		"nice-grpc": "^2.1.12",
 		"node-snowflake": "0.0.1",
