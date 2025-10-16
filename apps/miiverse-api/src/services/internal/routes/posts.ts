@@ -9,6 +9,7 @@ import { mapPages } from '@/services/internal/contract/page';
 import { pageSchema } from '@/services/internal/pagination';
 import { mapResult } from '@/services/internal/contract/result';
 import { mapEmpathy } from '@/services/internal/contract/empathy';
+import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 
 export const postsRouter = express.Router();
 
@@ -19,7 +20,7 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 		topic_tag: z.string().optional(),
 		posted_by: z.coerce.number().optional(),
 		empathy_by: z.coerce.number().optional(),
-		parent_id: z.string().length(21).optional(),
+		parent_id: postIdSchema.optional(),
 		include_replies: z.stringbool().default(false)
 	}).and(pageSchema()).parse(req.query);
 
@@ -48,9 +49,7 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 
 // Get post by id
 postsRouter.get('/posts/:post_id', guards.guest, handle(async ({ req, res }) => {
-	const params = z.object({
-		post_id: z.string().length(21)
-	}).parse(req.params);
+	const params = postIdObjSchema.parse(req.params);
 
 	const post = await Post.findOne({
 		id: params.post_id,
@@ -66,9 +65,7 @@ postsRouter.get('/posts/:post_id', guards.guest, handle(async ({ req, res }) => 
 
 // Delete post by id
 postsRouter.delete('/posts/:post_id', guards.user, handle(async ({ req, res }) => {
-	const params = z.object({
-		post_id: z.string().length(21)
-	}).parse(req.params);
+	const params = postIdObjSchema.parse(req.params);
 
 	const query = z.object({
 		// Reason is only for moderators
@@ -113,9 +110,7 @@ postsRouter.delete('/posts/:post_id', guards.user, handle(async ({ req, res }) =
 
 // Add or remove empathy
 postsRouter.post('/posts/:post_id/empathies', guards.user, handle(async ({ req, res }) => {
-	const params = z.object({
-		post_id: z.string().length(21)
-	}).parse(req.params);
+	const params = postIdObjSchema.parse(req.params);
 
 	const body = z.object({
 		action: z.literal(['add', 'remove'])

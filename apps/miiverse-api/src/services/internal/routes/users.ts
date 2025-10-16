@@ -5,12 +5,13 @@ import { handle } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
 import { Settings } from '@/models/settings';
 import { mapUserSetttings } from '@/services/internal/contract/settings';
+import { pidOrSelfSchema } from '@/services/internal/schemas';
 
 export const usersRouter = express.Router();
 
 usersRouter.get('/users/:user/profile/settings', guards.user, handle(async ({ req, res }) => {
 	const params = z.object({
-		user: z.union([z.literal('@me'), z.number()])
+		user: pidOrSelfSchema
 	}).parse(req.params);
 
 	// guards.user makes this safe
