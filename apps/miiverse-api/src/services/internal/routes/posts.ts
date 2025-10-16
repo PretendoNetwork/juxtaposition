@@ -53,6 +53,7 @@ postsRouter.get('/posts/:post_id', guards.guest, handle(async ({ req, res }) => 
 
 	const post = await Post.findOne({
 		id: params.post_id,
+		message_to_pid: null, // messages aren't really posts
 		...filterRemovedPosts(res.locals.account)
 	});
 	if (!post) {
@@ -74,6 +75,7 @@ postsRouter.delete('/posts/:post_id', guards.user, handle(async ({ req, res }) =
 
 	const post = await Post.findOne({
 		id: params.post_id,
+		message_to_pid: null, // messages aren't really posts
 		...filterRemovedPosts(res.locals.account)
 	});
 	if (!post) {
@@ -118,6 +120,7 @@ postsRouter.post('/posts/:post_id/empathies', guards.user, handle(async ({ req, 
 
 	let post = await Post.findOne({
 		id: params.post_id,
+		message_to_pid: null, // messages aren't really posts
 		...filterRemovedPosts(res.locals.account)
 	});
 	if (!post) {
