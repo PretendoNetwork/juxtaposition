@@ -27,8 +27,8 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 	if (query.parent_id && !query.include_replies) {
 		throw new errors.badRequest('Please set include_replies=true to get replies to a parent');
 	}
-	// guests may view replies only
-	if (res.locals.account === null && !query.parent_id) {
+	// guests can view userpages, but not feeds (no topic tags etc.)
+	if (res.locals.account === null && !query.posted_by && !query.empathy_by && !query.parent_id) {
 		throw new errors.unauthorized('Authentication token not provided');
 	}
 
