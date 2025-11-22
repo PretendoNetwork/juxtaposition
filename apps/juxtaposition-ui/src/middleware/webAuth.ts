@@ -45,6 +45,10 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 		return next();
 	}
 
+	if (request.pid && request.path === '/login') {
+		return response.redirect('/titles/show?src=login');
+	}
+
 	response.locals.pid = request.pid;
 	return next();
 };
