@@ -3,7 +3,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import moment from 'moment';
 import multer from 'multer';
-import { getPostById } from '@/api/post';
+import { deletePostById, getPostById, getPostsByParentId } from '@/api/post';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
@@ -12,6 +12,7 @@ import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
 import { createLogEntry, getCommunityHash, getInvalidPostRegex, getUserAccountData, newNotification } from '@/util';
+import { addEmpathyById, removeEmpathyById } from '@/api/empathy';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -39,7 +40,10 @@ const yeahLimit = rateLimit({
 	windowMs: 60 * 1000, // 1 minute
 	max: 10, // Limit each IP to 60 requests per `window`
 	standardHeaders: true,
-	legacyHeaders: true
+	legacyHeaders: true,
+	message: (req, _res) => {
+		return { status: 423, id: req.body.postID, count: 0 };
+	}
 });
 
 postsRouter.get('/:post_id/oembed.json', async function (req, res) {
@@ -47,62 +51,69 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	if (!post) {
 		return res.sendStatus(404);
 	}
+
+	const community = await database.getCommunityByID(post.community_id);
+	const postPNID = await getUserAccountData(post.pid);
+
+	let img = {};
+	if (post.painting !== '') {
+		img = {
+			thumbnail_url: `${res.locals.cdnURL}/paintings/${post.pid}/${post.id}.png`,
+			thumbnail_width: 320,
+			thumbnail_height: 120
+		};
+	} else if (post.screenshot_thumb !== '') {
+		img = {
+			thumbnail_url: `${res.locals.cdnURL}${post.screenshot_thumb}`
+		};
+	} else {
+		img = {
+			thumbnail_url: 'https://pretendo.network/assets/images/opengraph/opengraph-image.png',
+			thumbnail_width: 727,
+			thumbnail_height: 298
+		};
+	}
+
 	const doc = {
+		type: 'link',
+		version: '1.0',
+		title: `${post.screen_name} (@${postPNID.username}) - ${community?.name}`,
+		description: post.body,
 		author_name: post.screen_name,
-		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid
+		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid,
+		provider_name: 'Juxtaposition - Pretendo Network',
+		provider_url: `https://juxt.pretendo.network`,
+		...img
 	};
 	res.send(doc);
 });
 
 postsRouter.post('/empathy', yeahLimit, async function (req, res) {
-	const post = await database.getPostByID(req.body.postID);
+	const post = await getPostById(req.tokens, req.body.postID);
 	if (!post) {
 		return res.sendStatus(404);
 	}
-	if (post.yeahs.indexOf(req.pid) === -1) {
-		await POST.updateOne({
-			id: post.id,
-			yeahs: {
-				$ne: req.pid
-			}
-		},
-		{
-			$inc: {
-				empathy_count: 1
-			},
-			$push: {
-				yeahs: req.pid
-			}
-		});
-		res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
-		if (req.pid !== post.pid) {
-			await newNotification({
-				pid: post.pid,
-				type: 'yeah',
-				objectID: post.id,
-				userPID: req.pid,
-				link: `/posts/${post.id}`
-			});
-		}
-	} else if (post.yeahs.indexOf(req.pid) !== -1) {
-		await POST.updateOne({
-			id: post.id,
-			yeahs: {
-				$eq: req.pid
-			}
-		},
-		{
-			$inc: {
-				empathy_count: -1
-			},
-			$pull: {
-				yeahs: req.pid
-			}
-		});
-		res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
-	} else {
+
+	const existingEmpathy = post.yeahs.indexOf(req.pid) !== -1;
+	const result = !existingEmpathy
+		? await addEmpathyById(req.tokens, post.id)
+		: await removeEmpathyById(req.tokens, post.id);
+	if (result === null) {
 		res.send({ status: 423, id: post.id, count: post.empathy_count });
 	}
+
+	res.send({ status: 200, id: result.post_id, count: result.empathy_count });
+
+	if (result.action === 'add' && req.pid !== post.pid) {
+		await newNotification({
+			pid: post.pid,
+			type: 'yeah',
+			objectID: post.id,
+			userPID: req.pid,
+			link: `/posts/${post.id}`
+		});
+	}
+
 	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
@@ -127,7 +138,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(post.community_id);
 	const communityMap = await getCommunityHash();
-	const replies = await database.getPostReplies(req.params.post_id.toString(), 25);
+	const replies = (await getPostsByParentId(req.tokens, post.id, 0))?.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
 	res.render(req.directory + '/post.ejs', {
 		moment: moment,
@@ -143,24 +154,35 @@ postsRouter.get('/:post_id', async function (req, res) {
 });
 
 postsRouter.delete('/:post_id', async function (req, res) {
-	const post = await database.getPostByID(req.params.post_id);
+	const post = await getPostById(req.tokens, req.params.post_id);
 	if (!post) {
 		return res.sendStatus(404);
 	}
-	if (req.pid !== post.pid && !res.locals.moderator) {
-		return res.sendStatus(401);
+
+	const result = await deletePostById(req.tokens, post.id, req.query.reason);
+	if (result === null) {
+		return res.sendStatus(404);
 	}
+
+	// TODO move audit logging to backend
 	if (res.locals.moderator && req.pid !== post.pid) {
+		const postType = post.parent ? 'comment' : 'post';
+
+		await newNotification({
+			pid: post.pid,
+			type: 'notice',
+			text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
+			image: '/images/bandwidthalert.png',
+			link: '/titles/2551084080/new'
+		});
+
 		const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
-		await post.removePost(reason, req.pid);
 		await createLogEntry(
 			req.pid,
 			'REMOVE_POST',
 			post.pid,
 			`Post ${post.id} removed for: "${reason}"`
 		);
-	} else {
-		await post.removePost('User requested removal', req.pid);
 	}
 
 	res.statusCode = 200;
