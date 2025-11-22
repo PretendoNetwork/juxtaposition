@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { z } from 'zod';
+import * as z from 'zod';
 import { getUserAccountData, getValueFromHeaders, decodeParamPack, getPIDFromServiceToken } from '@/util';
 import { getEndpoint, getUserSettings } from '@/database';
 import { badRequest, ApiErrorCode, serverError } from '@/errors';
