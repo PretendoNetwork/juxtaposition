@@ -1,19 +1,28 @@
 import { Schema, model } from 'mongoose';
 
 export const SettingsSchema = new Schema({
-	pid: Number,
-	screen_name: String,
+	pid: { type: Number, required: true },
+	screen_name: { type: String, required: true },
 	account_status: {
 		type: Number,
 		default: 0
 	},
-	ban_lift_date: Date,
 	// TODO: Move bans to their own collection. User settings should be scoped to older the user
-	banned_by: Number,
-	ban_reason: String,
+	ban_lift_date: {
+		type: Date,
+		default: null
+	},
+	banned_by: {
+		type: Number,
+		default: null
+	},
+	ban_reason: {
+		type: String,
+		default: null
+	},
 	profile_comment: {
 		type: String,
-		default: undefined
+		default: null
 	},
 	profile_comment_visibility: {
 		type: Boolean,
@@ -53,7 +62,7 @@ export const SettingsSchema = new Schema({
 	},
 	last_active: {
 		type: Date,
-		default: 0
+		default: Date.now()
 	}
 });
 
