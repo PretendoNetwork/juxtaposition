@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import xmlbuilder from 'xmlbuilder';
-import { z } from 'zod';
+import * as z from 'zod';
 import {
 	getValueFromQueryString,
 	getInvalidPostRegex

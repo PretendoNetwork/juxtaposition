@@ -3,7 +3,7 @@ import multer from 'multer';
 import { Snowflake } from 'node-snowflake';
 import moment from 'moment';
 import xmlbuilder from 'xmlbuilder';
-import { z } from 'zod';
+import * as z from 'zod';
 import {
 	getUserFriendPIDs,
 	getUserAccountData,

@@ -1,5 +1,5 @@
 import express from 'express';
-import * as z from 'zod/v4';
+import * as z from 'zod';
 import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
 import { deleteOptional, filterRemovedPosts, handle } from '@/services/internal/utils';
