@@ -1,136 +1,115 @@
-import { createConfigLoader, zodCoercedBoolean } from '@neato/config';
-import { z } from 'zod';
+import { createConfig, zodV4SchemaToTransformer, loaders } from '@neato/config';
+import * as z from 'zod';
+import type { SchemaTransformer, SchemaTransformerContext } from '@neato/config';
 
 // schema is mapped later to nested object to keep env vars consistent with other projects
 const schema = z.object({
-	logFormat: z.enum(['json', 'pretty']).default('pretty'),
-	logLevel: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
-	/** Enable or disable logging of sensitive HTTP headers (cookies, tokens etc.) in the JSON log */
-	logSensitive: zodCoercedBoolean().default(false),
-	httpPort: z.coerce.number().default(8080),
-	/** Configures proxy trust (X-Forwarded-For etc.). Can be `true` to unconditionally trust, or
-	 *  provide a numeric hop count, or comma-seperated CIDR ranges.
-	 *  See https://expressjs.com/en/guide/behind-proxies.html
-	 */
-	httpTrustProxy: z.union([zodStrictBoolean(), z.coerce.number(), z.string()]).default(false),
+	log: z.object({
+		format: z.enum(['json', 'pretty']).default('pretty'),
+		level: z.enum(['error', 'warn', 'info', 'debug', 'trace']).default('info'),
+		/** Enable or disable logging of sensitive HTTP headers (cookies, tokens etc.) in the JSON log */
+		sensitive: z.stringbool().default(false)
+	}).prefault({}),
+	http: z.object({
+		port: z.coerce.number().default(8080),
+		/** Configures proxy trust (X-Forwarded-For etc.). Can be `true` to unconditionally trust, or
+		 *  provide a numeric hop count, or comma-seperated CIDR ranges.
+		 *  See https://expressjs.com/en/guide/behind-proxies.html
+		 */
+		trustProxy: z.union([z.coerce.number(), z.stringbool(), z.string()]).default(false)
+	}).prefault({}),
 	/** Whether to expose Prometheus metrics on a different port, path /metrics. */
-	metricsEnabled: zodCoercedBoolean().default(false),
-	metricsPort: z.coerce.number().default(9090),
+	metrics: z.object({
+		enabled: z.stringbool().default(false),
+		port: z.coerce.number().default(9090)
+	}).prefault({}),
 	/** The AES key to use for decrypting service tokens. Must match the account server's. */
 	aesKey: z.string(),
 	/** CDN path hosting Mii images. ${cdnUrl}/mii/100000000/normal_face.png */
 	cdnUrl: z.string().url().transform(s => s.replace(/\/$/g, '')),
-	mongooseUri: z.string(),
-	s3Endpoint: z.string(),
-	s3Key: z.string(),
-	s3Secret: z.string(),
-	s3Bucket: z.string(),
-	s3Region: z.string(),
-	grpcFriendsHost: z.string(),
-	grpcFriendsPort: z.string(),
-	grpcFriendsApiKey: z.string(),
-	grpcAccountHost: z.string(),
-	grpcAccountPort: z.string(),
-	grpcAccountApiKey: z.string(),
-	grpcServerPort: z.coerce.number().default(8125),
-	grpcServerApiKey: z.string()
+	mongoose: z.object({
+		uri: z.string()
+	}),
+	s3: z.object({
+		endpoint: z.string(),
+		key: z.string(),
+		secret: z.string(),
+		bucket: z.string(),
+		region: z.string()
+	}),
+	grpc: z.object({
+		friends: z.object({
+			host: z.string(),
+			port: z.string(),
+			apiKey: z.string()
+		}),
+		account: z.object({
+			host: z.string(),
+			port: z.string(),
+			apiKey: z.string()
+		}),
+		server: z.object({
+			port: z.coerce.number().default(8125),
+			apiKey: z.string()
+		})
+	})
 });
 
-export const fragments: Record<string, any> = {
+export const presets: Record<string, any> = {
 	docker: {
-		httpCors: 'http://localhost:3000 http://localhost:5173',
-		httpFrontendBaseUrl: 'http://localhost:5173/',
-		httpBackendBaseUrl: 'http://localhost:8080/',
-		httpTrustProxy: 'loopback',
+		http: {
+			trustProxy: 'loopback'
+		},
 		aesKey: '1234567812345678123456781234567812345678123456781234567812345678',
-		mongooseUri: 'mongodb://localhost:27017/miiverse?directConnection=true',
-		s3Endpoint: 'http://localhost:9000',
-		s3Key: 'minioadmin',
-		s3Secret: 'minioadmin',
-		s3Bucket: 'miiverse',
-		s3Region: 'us-east-1',
 		cdnUrl: 'http://cdn.pretendo.cc/miiverse',
-		grpcAccountHost: 'localhost',
-		grpcAccountPort: 8123,
-		grpcAccountApiKey: '12345678123456781234567812345678',
-		grpcFriendsHost: 'localhost',
-		grpcFriendsPort: 8124,
-		grpcFriendsApiKey: '12345678123456781234567812345678',
-		grpcServerPort: 8125,
-		grpcServerApiKey: '12345678123456781234567812345678'
-	}
-};
-
-const unmappedConfig = createConfigLoader()
-	.addFromEnvironment('PN_MIIVERSE_API_')
-	.addFromFile('.env', { prefix: 'PN_MIIVERSE_API_' })
-	.addFromFile('config.json')
-	.addZodSchema(schema)
-	.addConfigFragments(fragments)
-	.setFragmentKey('USE_PRESETS')
-	.load();
-
-export const config = {
-	log: {
-		format: unmappedConfig.logFormat,
-		level: unmappedConfig.logLevel,
-		sensitive: unmappedConfig.logSensitive
-	},
-	http: {
-		port: unmappedConfig.httpPort,
-		trustProxy: unmappedConfig.httpTrustProxy
-	},
-	metrics: {
-		enabled: unmappedConfig.metricsEnabled,
-		port: unmappedConfig.metricsPort
-	},
-	aesKey: unmappedConfig.aesKey,
-	cdnUrl: unmappedConfig.cdnUrl,
-	mongoose: {
-		uri: unmappedConfig.mongooseUri
-	},
-	s3: {
-		endpoint: unmappedConfig.s3Endpoint,
-		key: unmappedConfig.s3Key,
-		secret: unmappedConfig.s3Secret,
-		bucket: unmappedConfig.s3Bucket,
-		region: unmappedConfig.s3Region
-	},
-	grpc: {
-		friends: {
-			host: unmappedConfig.grpcFriendsHost,
-			port: unmappedConfig.grpcFriendsPort,
-			apiKey: unmappedConfig.grpcFriendsApiKey
+		mongoose: {
+			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'
 		},
-		account: {
-			host: unmappedConfig.grpcAccountHost,
-			port: unmappedConfig.grpcAccountPort,
-			apiKey: unmappedConfig.grpcAccountApiKey
+		s3: {
+			endpoint: 'http://localhost:9000',
+			key: 'minioadmin',
+			secret: 'minioadmin',
+			bucket: 'miiverse',
+			region: 'us-east-1'
 		},
-		server: {
-			port: unmappedConfig.grpcServerPort,
-			apiKey: unmappedConfig.grpcServerApiKey
+		grpc: {
+			friends: {
+				host: 'localhost',
+				port: 8124,
+				apiKey: '12345678123456781234567812345678'
+			},
+			account: {
+				host: 'localhost',
+				port: 8123,
+				apiKey: '12345678123456781234567812345678'
+			},
+			server: {
+				port: 8125,
+				apiKey: '12345678123456781234567812345678'
+			}
 		}
 	}
 };
 
-/**
- * An "even stricter" boolean parser. Instead of coercing non-bools to "false", it fails.
- * Useful with z.union; so strings other than "true", "false", "yes", and "no" can be
- * tried against other parsers.
- */
-function zodStrictBoolean(): z.ZodEffects<z.ZodBoolean, boolean, unknown> {
-	return z.preprocess((val) => {
-		if (typeof val !== 'string') {
-			return val;
-		}
-		const lval = val.toLocaleLowerCase().trim();
-		if (lval === 'true' || lval === 'yes') {
-			return true;
-		}
-		if (lval === 'false' || lval === 'no') {
-			return false;
-		}
-		return val;
-	}, z.boolean());
+function flatZodSchema<T extends z.ZodType>(schema: T): SchemaTransformer<z.infer<T>> {
+	const transformer = zodV4SchemaToTransformer<z.infer<T>>(schema);
+	return {
+		extract: () => transformer.extract().map(v => ({
+			...v,
+			normalizedKey: v.normalizedKey.replace('__', '_')
+		})),
+		validate: (ctx: SchemaTransformerContext) => transformer.validate(ctx)
+	};
 }
+
+export const config = createConfig({
+	envPrefix: 'PN_MIIVERSE_API_',
+	presetKey: 'usePresets',
+	presets,
+	loaders: [
+		loaders.environment(),
+		loaders.file('.env'),
+		loaders.file('config.json')
+	],
+	schema: flatZodSchema(schema)
+});

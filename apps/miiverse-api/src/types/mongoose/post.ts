@@ -76,7 +76,7 @@ type PostDefaultedFields =
 export type IPostInput = Omit<IPost, PostDefaultedFields> & Partial<Pick<IPost, PostDefaultedFields>>;
 
 export interface IPostMethods {
-	del(reason: string): Promise<void>;
+	del(reason: string, pid: number): Promise<void>;
 	generatePostUID(length: number): Promise<void>;
 	cleanedBody(): string;
 	cleanedMiiData(): string;

@@ -3,17 +3,27 @@ import type { SettingsData } from '@/types/miiverse/settings';
 import type { HydratedSettingsDocument, ISettings, ISettingsMethods, SettingsModel } from '@/types/mongoose/settings';
 
 const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMethods>({
-	pid: Number,
-	screen_name: String,
+	pid: { type: Number, required: true },
+	screen_name: { type: String, required: true },
 	account_status: {
 		type: Number,
 		default: 0
 	},
-	ban_lift_date: Date,
-	ban_reason: String,
+	ban_lift_date: {
+		type: Date,
+		default: null
+	},
+	banned_by: {
+		type: Number,
+		default: null
+	},
+	ban_reason: {
+		type: String,
+		default: null
+	},
 	profile_comment: {
 		type: String,
-		default: undefined
+		default: null
 	},
 	profile_comment_visibility: {
 		type: Boolean,
@@ -46,6 +56,14 @@ const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMethods>({
 	receive_notifications: {
 		type: Boolean,
 		default: true
+	},
+	created_at: {
+		type: Date,
+		default: Date.now()
+	},
+	last_active: {
+		type: Date,
+		default: Date.now()
 	}
 });
 

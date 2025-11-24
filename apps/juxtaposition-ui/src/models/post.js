@@ -104,18 +104,4 @@ PostSchema.methods.downReply = async function () {
 	await this.save();
 };
 
-PostSchema.methods.removePost = async function (reason, pid) {
-	this.set('removed', true);
-	this.set('removed_reason', reason);
-	this.set('removed_by', pid);
-	this.set('removed_at', new Date());
-	await this.save();
-};
-
-PostSchema.methods.unRemove = async function (reason) {
-	this.set('removed', false);
-	this.set('removed_reason', reason);
-	await this.save();
-};
-
 export const POST = model('POST', PostSchema);

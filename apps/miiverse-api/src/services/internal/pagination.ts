@@ -1,4 +1,4 @@
-import * as z from 'zod/v4';
+import * as z from 'zod';
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- Zod schema is inferred here
 export function pageSchema(limit = 50) {
