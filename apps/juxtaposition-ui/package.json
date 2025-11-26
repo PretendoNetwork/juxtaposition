@@ -57,7 +57,7 @@
     "@pretendonetwork/eslint-config": "^0.1.3",
     "@types/express-session": "^1.18.2",
     "@types/hashmap": "^2.3.4",
-    "@types/node": "^22.13.8",
+    "@types/node": "^22.19.1",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "browserslist": "^4.24.5",
