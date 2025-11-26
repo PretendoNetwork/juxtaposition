@@ -29,7 +29,7 @@
 		"moment": "^2.24.0",
 		"mongoose": "^8.19.2",
 		"multer": "^2.0.2",
-		"nice-grpc": "^2.1.12",
+		"nice-grpc": "^2.1.14",
 		"node-snowflake": "0.0.1",
 		"pako": "^2.1.0",
 		"pino": "^9.6.0",

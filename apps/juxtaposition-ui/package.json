@@ -39,7 +39,7 @@
     "mongoose": "^8.19.2",
     "mongoose-fuzzy-search-next": "^1.0.13",
     "multer": "^2.0.2",
-    "nice-grpc": "^2.1.10",
+    "nice-grpc": "^2.1.14",
     "node-snowflake": "0.0.1",
     "pako": "^2.1.0",
     "pino": "^9.6.0",
