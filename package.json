@@ -5,6 +5,6 @@
         "apps/*"
     ],
     "devDependencies": {
-        "@bufbuild/buf": "^1.54.0"
+        "@bufbuild/buf": "^1.61.0"
     }
 }
