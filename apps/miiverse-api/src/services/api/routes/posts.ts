@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import xmlbuilder from 'xmlbuilder';
-import { z } from 'zod';
+import * as z from 'zod';
 import {
 	getValueFromQueryString,
 	getInvalidPostRegex
@@ -63,7 +63,7 @@ router.post('/:post_id.delete', async function (request: express.Request, respon
 		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 
-	await post.del('User requested removal');
+	await post.del('User requested removal', request.pid);
 	response.sendStatus(200);
 });
 

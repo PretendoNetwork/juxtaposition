@@ -1,7 +1,8 @@
 import eslintConfig from '@pretendonetwork/eslint-config';
 import globals from 'globals';
+import { defineConfig } from 'eslint/config';
 
-export default [
+export default defineConfig([
 	...eslintConfig,
 	{
 		// Allow browser globals in webfiles
@@ -44,4 +45,4 @@ export default [
 		},
 		ignores: ['src/webfiles/**/*.js']
 	}
-];
+]);

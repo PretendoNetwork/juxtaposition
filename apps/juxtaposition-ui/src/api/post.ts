@@ -1,4 +1,5 @@
 import { apiFetchUser } from '@/fetch';
+import type { ResultDto } from '@/api/result';
 import type { PageDto } from '@/api/page';
 import type { UserTokens } from '@/fetch';
 
@@ -68,20 +69,43 @@ export async function getPostById(tokens: UserTokens, post_id: string): Promise<
 }
 
 export async function getPostsByPoster(tokens: UserTokens, poster_pid: number, offset: number): Promise<PageDto<PostDto> | null> {
-	const params = new URLSearchParams({
-		posted_by: poster_pid.toString(),
-		offset: offset.toString()
+	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts`, {
+		query: {
+			posted_by: poster_pid,
+			offset
+		}
 	});
-	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts?${params}`);
 	return posts;
 }
 
 export async function getPostsByEmpathy(tokens: UserTokens, empathy_by: number, offset: number): Promise<PageDto<PostDto> | null> {
-	const params = new URLSearchParams({
-		empathy_by: empathy_by.toString(),
-		offset: offset.toString(),
-		include_replies: 'true'
+	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts`, {
+		query: {
+			empathy_by,
+			offset,
+			include_replies: true
+		}
 	});
-	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts?${params}`);
 	return posts;
+}
+
+export async function getPostsByParentId(tokens: UserTokens, parent_id: string, offset: number): Promise<PageDto<PostDto> | null> {
+	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts`, {
+		query: {
+			parent_id: parent_id,
+			offset,
+			include_replies: true
+		}
+	});
+	return posts;
+}
+
+export async function deletePostById(tokens: UserTokens, post_id: string, reason?: string): Promise<ResultDto | null> {
+	const result = apiFetchUser<ResultDto>(tokens, `/api/v1/posts/${post_id}`, {
+		method: 'DELETE',
+		query: {
+			reason
+		}
+	});
+	return result;
 }

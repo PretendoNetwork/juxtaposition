@@ -215,6 +215,64 @@ function initTabs() {
 		});
 	}
 }
+function initToolbarConfigs() {
+	var toolbarConfig = document.querySelector('[data-toolbar-config]');
+	if (!toolbarConfig) {
+		return;
+	}
+	var mode = toolbarConfig.getAttribute('data-toolbar-mode');
+	var message = toolbarConfig.getAttribute('data-toolbar-message');
+	var clickHandle = toolbarConfig.getAttribute('data-toolbar-onclick');
+	var backHandle = toolbarConfig.getAttribute('data-toolbar-onback');
+	var activeButton = toolbarConfig.getAttribute('data-toolbar-active-button');
+	var backgroundMusic = toolbarConfig.getAttribute('data-toolbar-bgm');
+	var backgroundMusicExit = toolbarConfig.getAttribute('data-toolbar-exit-bgm');
+	var sound = toolbarConfig.getAttribute('data-toolbar-sound');
+
+	if (mode) {
+		cave.toolbar_setMode(parseInt(mode));
+	}
+
+	if (message) {
+		cave.toolbar_setWideButtonMessage(message);
+	}
+
+	if (clickHandle) {
+		cave.toolbar_setCallback(8, function () {
+			cave.toolbar_setMode(0);
+			cave.toolbar_setButtonType(0);
+			if (backgroundMusicExit) {
+				cave.snd_playBgm(backgroundMusicExit);
+			}
+			eval(window[clickHandle]).call();
+		});
+	}
+
+	if (backHandle) {
+		function goBackHandle() {
+			cave.toolbar_setMode(0);
+			cave.toolbar_setButtonType(0);
+			if (backgroundMusicExit) {
+				cave.snd_playBgm(backgroundMusicExit);
+			}
+			eval(window[backHandle]).call();
+		}
+		cave.toolbar_setCallback(1, goBackHandle);
+		cave.toolbar_setCallback(99, goBackHandle);
+	}
+
+	if (activeButton) {
+		cave.toolbar_setActiveButton(parseInt(activeButton));
+	}
+
+	if (backgroundMusic) {
+		cave.snd_playBgm(backgroundMusic);
+	}
+
+	if (sound) {
+		cave.snd_playSe(sound);
+	}
+}
 
 function deletePost(post) {
 	var id = post.getAttribute('data-post');
@@ -272,7 +330,6 @@ function stopLoading() {
 	}
 	cave.transition_end();
 	cave.lls_setItem('agree_olv', '1');
-	cave.toolbar_setActiveButton(3);
 	cave.snd_playBgm('BGM_CAVE_MAIN');
 	cave.toolbar_setVisible(true);
 }
@@ -284,6 +341,7 @@ function initAll() {
 	initPostModules();
 	initTabs();
 	checkForUpdates();
+	initToolbarConfigs();
 	pjax.refresh();
 }
 
@@ -412,6 +470,16 @@ function follow(el) {
 	});
 }
 window.follow = follow;
+
+function saveUserSettings() {
+	document.getElementById('submit').click();
+}
+window.saveUserSettings = saveUserSettings;
+function exitUserSettings() {
+	pjax.loadUrl('/users/me');
+	cave.toolbar_setButtonType(1);
+}
+window.exitUserSettings = exitUserSettings;
 
 function POST(url, data, callback) {
 	cave.transition_begin();

@@ -265,7 +265,7 @@ export function getReasonMap(): string[] {
 	];
 }
 
-export function processLanguage(paramPack?: ParamPack): typeof translations.EN {
+export function processLanguage(paramPack?: ParamPack | null): typeof translations.EN {
 	if (!paramPack) {
 		return translations.EN;
 	}
@@ -468,6 +468,21 @@ export async function createLogEntry(actor: number, action: string, target: stri
 		changed_fields: fields
 	});
 	await newLog.save();
+}
+
+/**
+ * Deletes undefined, but present, values. Useful for Mongoose queries.
+ * @param obj Your object.
+ * @returns Partial<obj>, with undefined values deleted
+ */
+export function deleteOptional<T extends {}>(obj: T): Partial<T> { // Partial<T> kinda wrong but good enough
+	for (const _key of Object.keys(obj)) {
+		const key = _key as keyof T;
+		if (obj[key] === undefined) {
+			delete obj[key];
+		}
+	}
+	return obj;
 }
 
 const filename = fileURLToPath(import.meta.url);

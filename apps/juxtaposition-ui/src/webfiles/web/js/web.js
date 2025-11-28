@@ -105,9 +105,9 @@ function initPopupMenus() {
 			reportPost(post);
 		});
 		popupItemCb(menu.querySelector('[data-action="delete"]'), (item, _ev) => {
-			const moderator = item.hasAttribute('data-moderator');
+			const moderator = item.getAttribute('data-moderator');
 			let reason = '';
-			if (moderator) {
+			if (moderator === 'true') {
 				reason = prompt('Provide explanation for removing post:');
 			}
 
