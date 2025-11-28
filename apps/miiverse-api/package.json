@@ -55,7 +55,7 @@
 		"ora": "^5.4.1",
 		"postman-collection": "^5.2.0",
 		"table": "^6.8.1",
-		"tsup": "^8.5.0",
+		"tsup": "^8.5.1",
 		"typescript": "^5.9.3",
 		"xmlbuilder2": "^4.0.0"
 	}
