@@ -57,6 +57,6 @@
 		"table": "^6.8.1",
 		"tsup": "^8.5.1",
 		"typescript": "^5.9.3",
-		"xmlbuilder2": "^4.0.0"
+		"xmlbuilder2": "^4.0.1"
 	}
 }
