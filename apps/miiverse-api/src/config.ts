@@ -96,7 +96,7 @@ function flatZodSchema<T extends z.ZodType>(schema: T): SchemaTransformer<z.infe
 	return {
 		extract: () => transformer.extract().map(v => ({
 			...v,
-			normalizedKey: v.normalizedKey.replace('__', '_')
+			normalizedKey: v.normalizedKey.replaceAll('__', '_')
 		})),
 		validate: (ctx: SchemaTransformerContext) => transformer.validate(ctx)
 	};
