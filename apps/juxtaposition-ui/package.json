@@ -51,7 +51,7 @@
     "react-dom": "^19.1.1",
     "redis": "^5.8.3",
     "tsx": "^4.20.6",
-    "zod": "^4.1.12"
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@pretendonetwork/eslint-config": "^0.1.3",
