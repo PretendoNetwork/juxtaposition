@@ -42,7 +42,7 @@
     "nice-grpc": "^2.1.14",
     "node-snowflake": "0.0.1",
     "pako": "^2.1.0",
-    "pino": "^9.6.0",
+    "pino": "^10.1.0",
     "pino-http": "^11.0.0",
     "pino-pretty": "^13.1.2",
     "pjax": "^0.2.8",
