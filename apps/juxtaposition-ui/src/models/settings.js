@@ -62,7 +62,8 @@ export const SettingsSchema = new Schema({
 	},
 	last_active: {
 		type: Date,
-		default: Date.now()
+		default: Date.now(),
+		index: true
 	}
 });
 
