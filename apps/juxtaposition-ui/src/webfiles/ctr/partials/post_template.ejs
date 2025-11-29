@@ -33,7 +33,10 @@
                 <% if(post.body !== '') { %>
                     <p class="post-content-text"><%= post.body %></p>
                 <%}%>
-                <% if(post.screenshot !== '') { %>
+                <%# NOTE to future JSX'ers - please normalise post.screenshot to remove the leading / and move it to cdnURL! %>
+                <% if(post.screenshot_thumb) { %>
+                    <img class="post-screenshot post-screenshot-<%= post.screenshot_aspect %>" src="<%= cdnURL %><%= post.screenshot_thumb %>" onclick="alert('<%= cdnURL %><%= post.screenshot %>')">
+                <% } else if(post.screenshot !== '') { %>
                     <img class="post-screenshot" src="<%= cdnURL %><%= post.screenshot %>" onclick="alert(this.src)">
                 <%}%>
                 <% if(post.painting !== '') { %>

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package miiverse.v2;
+package miiverse_internal.v2;
 
 message Packet {
   string path = 1;

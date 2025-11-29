@@ -1,3 +1,5 @@
+import { Pjax } from './pjax';
+
 var pjax;
 setInterval(checkForUpdates, 30000);
 
@@ -80,8 +82,6 @@ function initPostModules() {
 			cave.toolbar_setCallback(99, back);
 		}
 		cave.transition_end();
-		/* global initNewPost -- Defined in juxt.js */
-		initNewPost();
 	}
 }
 function initMorePosts() {
@@ -215,8 +215,65 @@ function initTabs() {
 		});
 	}
 }
+function initToolbarConfigs() {
+	var toolbarConfig = document.querySelector('[data-toolbar-config]');
+	if (!toolbarConfig) {
+		return;
+	}
+	var mode = toolbarConfig.getAttribute('data-toolbar-mode');
+	var message = toolbarConfig.getAttribute('data-toolbar-message');
+	var clickHandle = toolbarConfig.getAttribute('data-toolbar-onclick');
+	var backHandle = toolbarConfig.getAttribute('data-toolbar-onback');
+	var activeButton = toolbarConfig.getAttribute('data-toolbar-active-button');
+	var backgroundMusic = toolbarConfig.getAttribute('data-toolbar-bgm');
+	var backgroundMusicExit = toolbarConfig.getAttribute('data-toolbar-exit-bgm');
+	var sound = toolbarConfig.getAttribute('data-toolbar-sound');
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/post.ejs
+	if (mode) {
+		cave.toolbar_setMode(parseInt(mode));
+	}
+
+	if (message) {
+		cave.toolbar_setWideButtonMessage(message);
+	}
+
+	if (clickHandle) {
+		cave.toolbar_setCallback(8, function () {
+			cave.toolbar_setMode(0);
+			cave.toolbar_setButtonType(0);
+			if (backgroundMusicExit) {
+				cave.snd_playBgm(backgroundMusicExit);
+			}
+			eval(window[clickHandle]).call();
+		});
+	}
+
+	if (backHandle) {
+		function goBackHandle() {
+			cave.toolbar_setMode(0);
+			cave.toolbar_setButtonType(0);
+			if (backgroundMusicExit) {
+				cave.snd_playBgm(backgroundMusicExit);
+			}
+			eval(window[backHandle]).call();
+		}
+		cave.toolbar_setCallback(1, goBackHandle);
+		cave.toolbar_setCallback(99, goBackHandle);
+	}
+
+	if (activeButton) {
+		cave.toolbar_setActiveButton(parseInt(activeButton));
+	}
+
+	if (backgroundMusic) {
+		cave.snd_playBgm(backgroundMusic);
+	}
+
+	if (sound) {
+		cave.snd_playSe(sound);
+	}
+}
+
 function deletePost(post) {
 	var id = post.getAttribute('data-post');
 	if (!id) {
@@ -242,8 +299,8 @@ function deletePost(post) {
 		});
 	}
 }
+window.deletePost = deletePost;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/post.ejs
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
 	var button = document.getElementById('report-launcher');
@@ -257,6 +314,7 @@ function reportPost(post) {
 	formID.value = id;
 	button.click();
 }
+window.reportPost = reportPost;
 
 function back() {
 	if (!pjax.canGoBack()) {
@@ -272,10 +330,10 @@ function stopLoading() {
 	}
 	cave.transition_end();
 	cave.lls_setItem('agree_olv', '1');
-	cave.toolbar_setActiveButton(3);
 	cave.snd_playBgm('BGM_CAVE_MAIN');
 	cave.toolbar_setVisible(true);
 }
+window.stopLoading = stopLoading;
 
 function initAll() {
 	initPosts();
@@ -283,6 +341,7 @@ function initAll() {
 	initPostModules();
 	initTabs();
 	checkForUpdates();
+	initToolbarConfigs();
 	pjax.refresh();
 }
 
@@ -350,15 +409,6 @@ var classList = {
 	}
 };
 
-// eslint-disable-next-line no-unused-vars -- Used for testing
-function testOffline() {
-	var posts = PostStorage.getAll();
-	var text = JSON.stringify(posts, null, '\t');
-	POST('/test', text, function () {
-		window.alert('sent');
-	});
-}
-
 function checkForUpdates() {
 	GET('/users/notifications.json', function updates(data) {
 		var notificationObj = JSON.parse(data.responseText);
@@ -368,15 +418,14 @@ function checkForUpdates() {
 	});
 }
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/partials/new_post.ejs
 function newText() {
 	classList.remove(document.getElementById('memo-sprite'), 'selected');
 	classList.remove(document.getElementById('post-memo'), 'selected');
 	classList.add(document.getElementById('text-sprite'), 'selected');
 	classList.add(document.getElementById('post-text'), 'selected');
 }
+window.newText = newText;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/partials/new_post.ejs
 function newPainting(reset) {
 	if (reset) {
 		cave.memo_clear();
@@ -394,8 +443,8 @@ function newPainting(reset) {
 		}
 	}, 250);
 }
+window.newPainting = newPainting;
 
-// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/community.ejs and src/webfiles/ctr/user_page.ejs
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
 	var count = document.getElementById('followers');
@@ -420,6 +469,17 @@ function follow(el) {
 		count.innerText = element.count;
 	});
 }
+window.follow = follow;
+
+function saveUserSettings() {
+	document.getElementById('submit').click();
+}
+window.saveUserSettings = saveUserSettings;
+function exitUserSettings() {
+	pjax.loadUrl('/users/me');
+	cave.toolbar_setButtonType(1);
+}
+window.exitUserSettings = exitUserSettings;
 
 function POST(url, data, callback) {
 	cave.transition_begin();
@@ -466,12 +526,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	initAll();
 	stopLoading();
 });
-document.addEventListener('PjaxRequest', function (e) {
-	console.log(e);
+document.addEventListener('PjaxRequest', function (_e) {
+	// console.log(e);
 	cave.transition_begin();
 });
-document.addEventListener('PjaxLoaded', function (e) {
-	console.log(e);
+document.addEventListener('PjaxLoaded', function (_e) {
+	// console.log(e);
 });
 document.addEventListener('PjaxDone', function (_e) {
 	initAll();
@@ -481,5 +541,6 @@ document.addEventListener('PjaxDone', function (_e) {
 	} else {
 		cave.toolbar_setButtonType(0);
 	}
+	cave.requestGc();
 	cave.transition_end();
 });

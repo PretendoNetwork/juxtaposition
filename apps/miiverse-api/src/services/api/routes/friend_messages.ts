@@ -3,12 +3,10 @@ import multer from 'multer';
 import { Snowflake } from 'node-snowflake';
 import moment from 'moment';
 import xmlbuilder from 'xmlbuilder';
-import { z } from 'zod';
+import * as z from 'zod';
 import {
 	getUserFriendPIDs,
 	getUserAccountData,
-	processPainting,
-	uploadCDNAsset,
 	getValueFromQueryString,
 	getInvalidPostRegex
 } from '@/util';
@@ -17,6 +15,7 @@ import { Post } from '@/models/post';
 import { Conversation } from '@/models/conversation';
 import { config } from '@/config';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
+import { uploadPainting, uploadScreenshot } from '@/images';
 import type { FormattedMessage } from '@/types/common/formatted-message';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
@@ -137,7 +136,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
 
-	if (!messageBody?.trim() && !painting?.trim() && !screenshot?.trim()) {
+	if (!messageBody && !painting && !screenshot) {
 		request.log.warn('Message content is empty');
 		badRequest(response, ApiErrorCode.BAD_PARAMS);
 		response.redirect(`/friend_messages/${conversation.id}`);
@@ -150,8 +149,10 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		screen_name: sender.mii.name,
 		body: messageBody,
 		app_data: appData,
-		painting: painting,
+		painting: '',
 		screenshot: '',
+		screenshot_thumb: '',
+		screenshot_aspect: '',
 		screenshot_length: 0,
 		country_id: request.paramPack.country_id,
 		created_at: new Date(),
@@ -174,23 +175,41 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	});
 
 	if (painting) {
-		const paintingBuffer = await processPainting(painting);
-
-		if (paintingBuffer) {
-			await uploadCDNAsset(`paintings/${request.pid}/${post.id}.png`, paintingBuffer, 'public-read');
-		} else {
-			request.log.warn(`PAINTING FOR POST ${post.id} FAILED TO PROCESS`);
+		const paintingBlob = await uploadPainting({
+			blob: painting,
+			autodetectFormat: true,
+			isBmp: false,
+			pid: post.pid,
+			postId: post.id
+		});
+		if (paintingBlob === null) {
+			// The document we already submitted to the db is invalid, so drop it.
+			post.deleteOne();
+			return serverError(response, ApiErrorCode.DATABASE_ERROR);
 		}
+
+		post.painting = paintingBlob;
 	}
 
 	if (screenshot) {
-		const screenshotBuffer = Buffer.from(screenshot, 'base64');
+		const screenshotUrls = await uploadScreenshot({
+			blob: screenshot,
+			pid: post.pid,
+			postId: post.id
+		});
+		if (screenshotUrls === null) {
+			// The document we already submitted to the db is invalid, so drop it.
+			post.deleteOne();
+			return serverError(response, ApiErrorCode.DATABASE_ERROR);
+		}
 
-		await uploadCDNAsset(`screenshots/${request.pid}/${post.id}.jpg`, screenshotBuffer, 'public-read');
+		post.screenshot = screenshotUrls.full;
+		post.screenshot_length = screenshotUrls.fullLength;
+		post.screenshot_thumb = screenshotUrls.thumb;
+		post.screenshot_aspect = screenshotUrls.aspect;
+	}
 
-		post.screenshot = `/screenshots/${request.pid}/${post.id}.jpg`;
-		post.screenshot_length = screenshot.length;
-
+	if (post.isModified()) {
 		await post.save();
 	}
 

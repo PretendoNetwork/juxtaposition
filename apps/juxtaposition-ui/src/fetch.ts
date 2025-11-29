@@ -8,6 +8,7 @@ export type FetchOptions = {
 	method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 	headers?: Record<string, string | undefined>;
 	body?: Record<string, any> | undefined | null;
+	query?: Record<string, any> | undefined | null;
 };
 
 export interface FetchError extends Error {
@@ -31,14 +32,22 @@ export async function apiFetch<T>(path: string, options?: FetchOptions): Promise
 	const defaultedOptions = {
 		method: 'GET',
 		headers: {},
+		query: {},
 		...options
 	};
+
+	const url = new URL(path, 'https://example.com'); // unused base url so it doesn't fail parsing
+	Object.entries(defaultedOptions.query ?? {}).forEach((v) => {
+		if (v[1]) { // in case value is null or undefined
+			url.searchParams.append(v[0], v[1].toString()); // stringified to allow numbers
+		}
+	});
 
 	const metadata = Metadata({
 		'X-API-Key': config.grpc.miiverse.apiKey
 	});
 	const response = await grpcClient.sendPacket({
-		path,
+		path: url.pathname + url.search,
 		method: defaultedOptions.method,
 		headers: JSON.stringify(defaultedOptions.headers),
 		payload: defaultedOptions.body ? JSON.stringify(defaultedOptions.body) : undefined

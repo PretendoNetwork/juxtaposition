@@ -15,14 +15,31 @@ const PermissionsSchema = new Schema({
 	},
 	minimum_new_community_access_level: {
 		type: Number,
-		default: 0
+		default: 3
 	}
 });
 
 export const CommunitySchema = new Schema({
-	platform_id: Number,
-	name: String,
-	description: String,
+	platform_id: {
+		type: Number,
+		required: true
+	},
+	name: {
+		type: String,
+		required: true
+	},
+	description: {
+		type: String,
+		required: true
+	},
+	open: {
+		type: Boolean,
+		default: true
+	},
+	allows_comments: {
+		type: Boolean,
+		default: true
+	},
 	/**
 	 * 0: Main Community
 	 * 1: Sub-Community
@@ -41,6 +58,7 @@ export const CommunitySchema = new Schema({
 		type: [Number],
 		default: undefined
 	},
+	owner: Number,
 	created_at: {
 		type: Date,
 		default: new Date()
@@ -57,23 +75,44 @@ export const CommunitySchema = new Schema({
 		type: Number,
 		default: 0
 	},
-	icon: String,
+	icon: {
+		type: String,
+		required: true
+	},
+	ctr_header: { type: String },
+	wup_header: { type: String },
 	title_ids: {
 		type: [String],
 		default: undefined
 	},
 	title_id: {
 		type: [String],
-		default: undefined
+		default: []
 	},
-	community_id: String,
-	olive_community_id: String,
+	community_id: {
+		type: String,
+		required: true
+	},
+	olive_community_id: {
+		type: String,
+		required: true
+	},
 	is_recommended: {
 		type: Number,
 		default: 0
 	},
-	app_data: String,
-	permissions: PermissionsSchema
+	app_data: {
+		type: String,
+		default: ''
+	},
+	user_favorites: {
+		type: [Number],
+		default: []
+	},
+	permissions: {
+		type: PermissionsSchema,
+		default: {}
+	}
 });
 
 CommunitySchema.methods.upEmpathy = async function () {

@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package miiverse_internal.v2;
+
+import "miiverse_internal/v2/packet.proto";
+
+service MiiverseInternalService {
+  rpc SendPacket(Packet) returns (PacketResponse) {}
+}

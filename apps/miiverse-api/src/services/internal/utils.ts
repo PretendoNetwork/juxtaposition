@@ -29,15 +29,15 @@ export function filterRemovedPosts(account: AccountData | null): { removed?: fal
 
 /**
  * Deletes undefined, but present, values. Useful for Mongoose queries.
- * @param query Your query.
- * @returns Partial<query>, with undefined values deleted
+ * @param obj Your object.
+ * @returns Partial<obj>, with undefined values deleted
  */
-export function deleteOptional<T extends {}>(query: T): Partial<T> { // Partial<T> kinda wrong but good enough
-	for (const _key of Object.keys(query)) {
+export function deleteOptional<T extends {}>(obj: T): Partial<T> { // Partial<T> kinda wrong but good enough
+	for (const _key of Object.keys(obj)) {
 		const key = _key as keyof T;
-		if (query[key] === undefined) {
-			delete query[key];
+		if (obj[key] === undefined) {
+			delete obj[key];
 		}
 	}
-	return query;
+	return obj;
 }

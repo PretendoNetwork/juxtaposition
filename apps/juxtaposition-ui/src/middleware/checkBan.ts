@@ -1,17 +1,20 @@
 import moment from 'moment';
 import { database as db } from '@/database';
 import { config } from '@/config';
+import type { RequestHandler } from 'express';
 
-export async function checkBan(request, response, next) {
+export const checkBan: RequestHandler = async (request, response, next) => {
 	// Initialize access levels so the template engine can always access them
 	response.locals.tester = false;
 	response.locals.moderator = false;
 	response.locals.developer = false;
 
-	if (!request.user && !request.guest_access && request.path !== '/login') {
-		return response.status(401).send('Ban Check Failed: No user or guest access');
-	} else if (!request.user && (request.guest_access || request.path === '/login')) {
-		return next();
+	if (!request.user) {
+		if (request.guest_access || request.path === '/login') {
+			return next();
+		} else {
+			return response.status(401).send('Ban Check Failed: No user or guest access');
+		}
 	}
 
 	// Set access levels
@@ -23,7 +26,7 @@ export async function checkBan(request, response, next) {
 	let accessAllowed = false;
 	switch (config.serverEnvironment) {
 		case 'dev':
-			accessAllowed = request.developer;
+			accessAllowed = response.locals.developer;
 			break;
 		case 'test':
 			accessAllowed = response.locals.tester || response.locals.moderator || response.locals.developer;
@@ -78,9 +81,9 @@ export async function checkBan(request, response, next) {
 	}
 
 	if (userSettings) {
-		userSettings.last_active = Date.now();
+		userSettings.last_active = new Date();
 		await userSettings.save();
 	}
 
 	next();
-}
+};

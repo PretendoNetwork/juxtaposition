@@ -1,9 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-    <script src="/js/debug.js"></script>
-    <script src="/js/pjax.js"></script>
-    <script src="/js/juxt.js"></script>
+    <% if (typeof uaIsConsole !== 'undefined' && !uaIsConsole) { %>
+        <!-- Debug allows non-console browsers to have some amount of the cave API. -->
+        <script src="/js/debug.global.js"></script>
+    <% } %>
+    <script src="/js/juxt.global.js"></script>
     <title><%= title %></title>
 </head>

@@ -27,10 +27,14 @@ export type MessageThreadItemProps = {
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	const msg = props.message;
-	let content = <p className="post-content">{ msg.body }</p>;
+
+	let screenshotContent: ReactNode = null;
 	if (msg.screenshot) {
-		content = <img className="message-viewer-bubble-sent-screenshot" src={utils.cdn(props.ctx, msg.screenshot)} />;
-	} else if (msg.painting) {
+		screenshotContent = <img className="message-viewer-bubble-sent-screenshot" src={utils.cdn(props.ctx, msg.screenshot)} />;
+	}
+
+	let content = <p className="post-content">{ msg.body }</p>;
+	if (msg.painting) {
 		content = <img className="message-viewer-bubble-sent-memo" src={utils.cdn(props.ctx, `/paintings/${msg.pid}/${msg.id}.png`)} />;
 	}
 
@@ -46,6 +50,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 				<img src={utils.cdn(props.ctx, `${msg.mii_face_url?.substring(msg.mii_face_url.lastIndexOf('/mii'))}`)} className="mii-icon" />
 			</a>
 			<div className="post-body">
+				{screenshotContent}
 				{content}
 			</div>
 			<footer>

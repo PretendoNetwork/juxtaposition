@@ -11,7 +11,7 @@
         "yeahs": "Yeahs",
         "more": "Mehr Beiträge laden",
         "no_posts": "Keine Beiträge",
-        "private": "Privat",
+        "private": "privatisieren",
         "close": "Schließen",
         "save": "Speichern",
         "exit": "Verlassen",
@@ -77,7 +77,7 @@
         "swearing": "Beitrag darf keine explizite Sprache enthalten."
     },
     "messages": {
-        "coming_soon": "Nachrichten ist noch nicht bereit. Schau bald wieder vorbei!"
+        "coming_soon": "Keine neuen Nachrichten"
     },
     "setup": {
         "welcome": "Willkommen bei Juxtaposition!",

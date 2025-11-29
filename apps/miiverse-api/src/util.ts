@@ -1,9 +1,5 @@
 import crypto from 'node:crypto';
-import TGA from 'tga';
-import BMP from 'bmp-js';
-import pako from 'pako';
-import { PNG } from 'pngjs';
-import aws from 'aws-sdk';
+import { DeleteObjectsCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
@@ -13,6 +9,7 @@ import { config } from '@/config';
 import { logger } from '@/logger';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
+import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
@@ -31,10 +28,14 @@ const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
 const gRPCApiChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
 const gRPCApiClient = createClient(APIDefinition, gRPCApiChannel);
 
-const s3 = new aws.S3({
-	endpoint: new aws.Endpoint(config.s3.endpoint),
-	accessKeyId: config.s3.key,
-	secretAccessKey: config.s3.secret
+const s3 = new S3Client({
+	endpoint: config.s3.endpoint,
+	forcePathStyle: true,
+	region: config.s3.region,
+	credentials: {
+		accessKeyId: config.s3.key,
+		secretAccessKey: config.s3.secret
+	}
 });
 
 // TODO - This doesn't really belong here
@@ -143,58 +144,41 @@ export function unpackServiceToken(token: Buffer): ServiceToken | null {
 	};
 }
 
-export function processPainting(painting: string): Buffer | null {
-	const paintingBuffer = Buffer.from(painting, 'base64');
-	let output: Uint8Array;
-
-	try {
-		output = pako.inflate(paintingBuffer);
-	} catch (error) {
-		logger.error(error, 'Failed to decompress painting');
-		return null;
-	}
-
-	// 3DS is a BMP, Wii U is a TGA. God isn't real so we need to edit the
-	// alpha layer of the BMP to covert it to a PNG for the web app
-	if (output[0] === 66) {
-		const bitmap = BMP.decode(Buffer.from(output));
-		const png = new PNG({
-			width: bitmap.width,
-			height: bitmap.height
-		});
-
-		const bpmBuffer = bitmap.getData();
-		bpmBuffer.swap32();
-		png.data = bpmBuffer;
-		for (let i = 3; i < bpmBuffer.length; i += 4) {
-			bpmBuffer[i] = 255;
-		}
-		return PNG.sync.write(png);
-	} else {
-		const tga = new TGA(Buffer.from(output));
-		const png = new PNG({
-			width: tga.width,
-			height: tga.height
-		});
-
-		png.data = Buffer.from(tga.pixels);
-		return PNG.sync.write(png);
-	}
-}
-
-export async function uploadCDNAsset(key: string, data: Buffer, acl: string): Promise<boolean> {
-	const awsPutParams = {
+export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCannedACL): Promise<boolean> {
+	const awsPutParams = new PutObjectCommand({
 		Body: data,
 		Key: key,
 		Bucket: config.s3.bucket,
 		ACL: acl
-	};
-
+	});
 	try {
-		await s3.putObject(awsPutParams).promise();
+		await s3.send(awsPutParams);
 		return true;
 	} catch (e) {
 		logger.error(e, 'Could not upload to CDN');
+		return false;
+	}
+}
+
+export async function bulkDeleteCDNAsset(keys: string[]): Promise<boolean> {
+	if (keys.length === 0) {
+		return true;
+	}
+
+	const awsDeleteParams = new DeleteObjectsCommand({
+		Bucket: config.s3.bucket,
+		Delete: {
+			Objects: keys.map(v => ({
+				Key: v
+			})),
+			Quiet: true
+		}
+	});
+	try {
+		await s3.send(awsDeleteParams);
+		return true;
+	} catch (e) {
+		logger.error(e, 'Could not delete from CDN');
 		return false;
 	}
 }

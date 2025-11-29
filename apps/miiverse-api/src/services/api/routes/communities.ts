@@ -1,7 +1,7 @@
 import express from 'express';
 import xmlbuilder from 'xmlbuilder';
 import multer from 'multer';
-import { z } from 'zod';
+import * as z from 'zod';
 import { Post } from '@/models/post';
 import { Community, tryCreateCommunity } from '@/models/community';
 import { getValueFromQueryString } from '@/util';
@@ -174,7 +174,7 @@ router.get('/:communityID/posts', async function (request: express.Request, resp
 
 	// TODO: There probably is a type for text and screenshots too, will have to investigate
 	if (postType === 'memo') {
-		query.painting = { $ne: null };
+		query.painting = { $nin: [null, ''] };
 	}
 
 	if (queryBy === 'followings') {

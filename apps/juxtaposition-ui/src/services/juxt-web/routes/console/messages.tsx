@@ -1,20 +1,21 @@
 import crypto from 'crypto';
 import express from 'express';
 import { Snowflake as snowflake } from 'node-snowflake';
+import { config } from '@/config';
+import { database } from '@/database';
+import { uploadPainting, uploadScreenshot } from '@/images';
+import { CONVERSATION } from '@/models/conversation';
+import { POST } from '@/models/post';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
-import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
-import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
-import { processPainting } from '@/images';
-import { getUserFriendPIDs, getUserAccountData, uploadCDNAsset, getInvalidPostRegex } from '@/util';
-import { database } from '@/database';
-import { POST } from '@/models/post';
-import { CONVERSATION } from '@/models/conversation';
-import { config } from '@/config';
-import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
-import { PortalMessageThreadView } from '@/services/juxt-web/views/portal/messageThread';
 import { CtrMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
+import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
+import { PortalMessageThreadView } from '@/services/juxt-web/views/portal/messageThread';
+import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
+import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
+import { getInvalidPostRegex, getUserAccountData, getUserFriendPIDs } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import type { ScreenshotUrls } from '@/images';
 
 export const messagesRouter = express.Router();
 
@@ -35,7 +36,7 @@ messagesRouter.post('/new', async function (req, res) {
 	const authCtx = auth();
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await getUserAccountData(req.body.message_to_pid);
-	const postID = await generatePostUID(21);
+	const postId = await generatePostUID(21);
 	const friends = await getUserFriendPIDs(user2.pid);
 	if (!authCtx.user.mii) {
 		throw new Error('No mii found on user');
@@ -76,12 +77,16 @@ messagesRouter.post('/new', async function (req, res) {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	let painting = '';
-	let screenshot = null;
+	let paintingBlob: string | null = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		painting = req.body.painting.replace(/\0/g, '').trim();
-		const paintingURI = await processPainting(painting);
-		if (!paintingURI || !await uploadCDNAsset(`paintings/${authCtx.pid}/${postID}.png`, paintingURI, 'public-read')) {
+		paintingBlob = await uploadPainting({
+			blob: req.body.painting,
+			autodetectFormat: false,
+			isBmp: req.body.bmp === 'true',
+			pid: authCtx.pid,
+			postId
+		});
+		if (paintingBlob === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -89,9 +94,14 @@ messagesRouter.post('/new', async function (req, res) {
 			});
 		}
 	}
+	let screenshots: ScreenshotUrls | null = null;
 	if (req.body.screenshot) {
-		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		if (await uploadCDNAsset(`screenshots/${authCtx.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+		screenshots = await uploadScreenshot({
+			blob: req.body.screenshot,
+			pid: authCtx.pid,
+			postId
+		});
+		if (screenshots === null) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
@@ -136,12 +146,15 @@ messagesRouter.post('/new', async function (req, res) {
 		community_id: conversation.id,
 		screen_name: authCtx.user.mii.name,
 		body: body,
-		painting: painting,
-		screenshot: screenshot ? `/screenshots/${authCtx.pid}/${postID}.jpg` : '',
-		country_id: authCtx.paramPackData ? authCtx.paramPackData.country_id : 49,
+		painting: paintingBlob ?? '',
+		screenshot: screenshots?.full ?? '',
+		screenshot_length: screenshots?.fullLength ?? 0,
+		screenshot_thumb: screenshots?.thumb ?? '',
+		screenshot_aspect: screenshots?.aspect ?? '',
+		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
-		id: postID,
+		id: postId,
 		is_autopost: 0,
 		is_spoiler: (req.body.spoiler) ? 1 : 0,
 		is_app_jumpable: req.body.is_app_jumpable,

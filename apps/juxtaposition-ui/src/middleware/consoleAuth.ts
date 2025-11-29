@@ -1,16 +1,17 @@
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { decodeParamPack, getPIDFromServiceToken, getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
+import type { RequestHandler } from 'express';
 
-export async function consoleAuth(request, response, next) {
+export const consoleAuth: RequestHandler = async (request, response, next) => {
 	// Get pid and fetch user data
-	if (request.session && request.session.user && request.session.pid && !request.isWrite) {
+	if (request.session && request.session.user && request.session.pid && request.session.tokens && !request.isWrite) {
 		request.user = request.session.user;
 		request.pid = request.session.pid;
 		request.tokens = request.session.tokens;
 	} else {
-		request.tokens = { serviceToken: request.headers['x-nintendo-servicetoken'] };
-		request.pid = request.headers['x-nintendo-servicetoken'] ? await getPIDFromServiceToken(request.headers['x-nintendo-servicetoken']) : null;
+		request.tokens = { serviceToken: request.get('x-nintendo-servicetoken') };
+		request.pid = request.headers['x-nintendo-servicetoken'] ? getPIDFromServiceToken(request.get('x-nintendo-servicetoken') ?? '') : null;
 		request.user = request.pid ? await getUserAccountData(request.pid) : null;
 
 		request.session.user = request.user;
@@ -19,7 +20,8 @@ export async function consoleAuth(request, response, next) {
 	}
 
 	// Set headers
-	request.paramPackData = request.headers['x-nintendo-parampack'] ? decodeParamPack(request.headers['x-nintendo-parampack']) : null;
+	const ppack = request.get('x-nintendo-parampack');
+	request.paramPackData = ppack ? decodeParamPack(ppack) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
 
 	if (!request.user) {
@@ -67,15 +69,17 @@ export async function consoleAuth(request, response, next) {
 			error: 'Missing auth headers'
 		});
 	}
-	const userAgent = request.headers['user-agent'];
-	if (request.user.accessLevel < 3 && (request.cookies.access_token || (!userAgent.includes('Nintendo WiiU') && !userAgent.includes('Nintendo 3DS')))) {
+	const userAgent = request.get('user-agent') ?? '';
+	const uaIsConsole = userAgent.includes('Nintendo WiiU') || userAgent.includes('Nintendo 3DS');
+	if (request.user.accessLevel < 3 && (request.cookies.access_token || !uaIsConsole)) {
 		return response.render('portal/partials/ban_notification.ejs', {
 			user: null,
 			error: 'Invalid authentication method used.'
 		});
 	}
 
+	response.locals.uaIsConsole = uaIsConsole;
 	response.locals.lang = processLanguage(request.paramPackData);
 	response.locals.pid = request.pid;
 	return next();
-}
+};

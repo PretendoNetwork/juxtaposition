@@ -15,7 +15,9 @@ export interface IPost {
 
 	painting?: string; // base64, can be empty or undefined
 	screenshot?: string; // url fragment (leading /), can be empty or undefined
+	screenshot_thumb?: string; // url fragment (leading /), can be empty or undefined
 	screenshot_length?: number;
+	screenshot_aspect?: string; // '4:3' '5:4' '16:9'
 
 	search_key?: string[]; // can be empty or undefined
 	topic_tag?: string;
@@ -74,7 +76,7 @@ type PostDefaultedFields =
 export type IPostInput = Omit<IPost, PostDefaultedFields> & Partial<Pick<IPost, PostDefaultedFields>>;
 
 export interface IPostMethods {
-	del(reason: string): Promise<void>;
+	del(reason: string, pid: number): Promise<void>;
 	generatePostUID(length: number): Promise<void>;
 	cleanedBody(): string;
 	cleanedMiiData(): string;

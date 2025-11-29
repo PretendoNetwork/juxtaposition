@@ -8,10 +8,14 @@ import type { ReactNode } from 'react';
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	const msg = props.message;
-	let content = <p className="post-content">{ msg.body }</p>;
+
+	let screenshotContent: ReactNode = null;
 	if (msg.screenshot) {
-		content = <img className="message-viewer-bubble-sent-screenshot" src={utils.cdn(props.ctx, msg.screenshot)} />;
-	} else if (msg.painting) {
+		screenshotContent = <img className="message-viewer-bubble-sent-screenshot" src={utils.cdn(props.ctx, msg.screenshot)} />;
+	}
+
+	let content = <p className="post-content">{ msg.body }</p>;
+	if (msg.painting) {
 		content = <img className="message-viewer-bubble-sent-memo" src={utils.cdn(props.ctx, `/paintings/${msg.pid}/${msg.id}.png`)} />;
 	}
 
@@ -30,6 +34,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 				<span className="timestamp">{moment(msg.created_at).fromNow()}</span>
 			</header>
 			<div className="post-body">
+				{screenshotContent}
 				{content}
 			</div>
 		</div>
@@ -46,7 +51,7 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
 
 	return (
-		<CtrRoot title={props.ctx.lang.global.messages}>
+		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.messages}>
 			<CtrPageBody>
 				<header id="header" className="buttons">
 					<h1 id="page-title">{otherUserName}</h1>

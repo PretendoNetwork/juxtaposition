@@ -1,7 +1,8 @@
 import { createServer, ServerError, Status } from 'nice-grpc';
 import superRequest from 'supertest';
 import express from 'express';
-import { MiiverseServiceDefinition } from '@repo/grpc-client/out/miiverse_service';
+import { MiiverseInternalServiceDefinition } from '@repo/grpc-client/out/miiverse_service';
+import { MiiverseServiceDefinition } from '@pretendonetwork/grpc/miiverse/v2/miiverse_service';
 import { config } from '@/config';
 import { internalApiRouter } from '@/services/internal';
 import { logger } from '@/logger';
@@ -9,6 +10,7 @@ import { InternalAPIError } from '@/services/internal/errors';
 import { loggerHttp } from '@/loggerHttp';
 import { authPopulate } from '@/services/internal/middleware/auth-populate';
 import { authAccessCheck } from '@/services/internal/middleware/auth-accesscheck';
+import { miiverseDefinition } from '@/services/grpc/server';
 import type { CallContext, ServerMiddlewareCall } from 'nice-grpc';
 
 // API server
@@ -50,13 +52,14 @@ export async function* apiKeyMiddleware<Request, Response>(
 }
 
 const allowedMethods = ['get', 'post', 'put', 'delete', 'patch'] as const;
-const methodsWithBody = ['post', 'put', 'delete', 'patch'] as const;
+const methodsWithBody = ['post', 'put', 'patch'] as const;
 type AllowedMethods = typeof allowedMethods[number];
 
 export async function setupGrpc(): Promise<void> {
 	const server = createServer();
 
-	server.with(apiKeyMiddleware).add(MiiverseServiceDefinition, {
+	// Internal communication (juxtaposition-ui --> miiverse-api)
+	server.with(apiKeyMiddleware).add(MiiverseInternalServiceDefinition, {
 		sendPacket: async (request) => {
 			if (!allowedMethods.includes(request.method.toLowerCase() as AllowedMethods)) {
 				throw new ServerError(Status.UNIMPLEMENTED, 'Method not implemented');
@@ -75,11 +78,11 @@ export async function setupGrpc(): Promise<void> {
 				status: result.status,
 				payload: JSON.stringify(result.body)
 			};
-		},
-		sMMRequestPostId: async (_request) => {
-			throw new ServerError(Status.UNIMPLEMENTED, 'Not implemented');
 		}
 	});
+
+	// External communication (other pretendo services --> miiverse-api)
+	server.with(apiKeyMiddleware).add(MiiverseServiceDefinition, miiverseDefinition);
 
 	await server.listen(`0.0.0.0:${config.grpc.server.port}`);
 	logger.info(`GRPC started started on port ${config.grpc.server.port}`);
