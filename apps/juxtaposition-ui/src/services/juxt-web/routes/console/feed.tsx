@@ -87,7 +87,7 @@ feedRouter.get('/more', async function (req, res) {
 	});
 	const userContent = await database.getUserContent(auth().pid);
 	if (!userContent) {
-		throw new Error('Usercontent not found on new page');
+		return res.redirect('/404');
 	}
 	const posts = await database.getNewsFeedOffset(userContent, config.postLimit, query.offset);
 
@@ -113,7 +113,7 @@ feedRouter.get('/all/more', async function (req, res) {
 	});
 	const userContent = await database.getUserContent(auth().pid);
 	if (!userContent) {
-		throw new Error('Usercontent not found on new page');
+		return res.redirect('/404');
 	}
 
 	const posts = await POST.find({
