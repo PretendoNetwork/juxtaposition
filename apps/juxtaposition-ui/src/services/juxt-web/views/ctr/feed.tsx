@@ -34,7 +34,7 @@ export function CtrFeedTabs(props: FeedTabsProps): ReactNode {
 
 export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 	return (
-		<CtrRoot title={props.title}>
+		<CtrRoot ctx={props.ctx} title={props.title}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.title}</h1>
@@ -52,7 +52,7 @@ export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 
 export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
 	return (
-		<CtrRoot title={props.title}>
+		<CtrRoot ctx={props.ctx} title={props.title}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.title}</h1>

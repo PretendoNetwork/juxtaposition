@@ -1,10 +1,10 @@
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { Request } from 'express';
-import type { AnyZodObject, z, ZodSchema } from 'zod';
+import type { z } from 'zod';
 import type { UserTokens } from '@/types/juxt/tokens';
 import type { ParamPack } from '@/types/common/param-pack';
 
-type AnySchema = AnyZodObject | undefined | null;
+type AnySchema = z.ZodObject | undefined | null;
 
 export type AuthRequest<TReq extends Request = Request> = TReq & {
 	user: AccountGetUserDataResponse;
@@ -26,8 +26,8 @@ export type ParseRequestOptions<TBody extends AnySchema, TQuery extends AnySchem
 };
 
 export type ParsedRequest<TBody extends AnySchema, TQuery extends AnySchema> = {
-	body: TBody extends ZodSchema ? z.infer<TBody> : undefined;
-	query: TQuery extends ZodSchema ? z.infer<TQuery> : undefined;
+	body: TBody extends z.ZodType ? z.infer<TBody> : undefined;
+	query: TQuery extends z.ZodType ? z.infer<TQuery> : undefined;
 	auth: () => AuthContext;
 };
 

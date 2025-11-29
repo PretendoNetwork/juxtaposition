@@ -18,11 +18,11 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 			})}
 		>
 			<a href={utils.url('/users/show', { pid: post.pid })} className="mii-icon-container" data-pjax="#body">
-				<img src={post.mii_face_url} className="mii-icon" />
+				<img src={post.mii_face_url ?? undefined} className="mii-icon" />
 			</a>
 			<div className="post-body-content">
 				<div
-					id={post.id}
+					id={post.id ?? undefined}
 					className={cx('post-body', {
 						yeah: hasYeahed
 					})}

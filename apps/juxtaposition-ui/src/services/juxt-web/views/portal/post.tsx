@@ -13,7 +13,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 	const content = (
 		<>
 			<a href={utils.url('/users/show', { pid: post.pid })} className="mii-icon-container" data-pjax="#body">
-				<img src={post.mii_face_url} className="mii-icon" />
+				<img src={post.mii_face_url ?? undefined} className="mii-icon" />
 			</a>
 			<div
 				className={cx('post-body-content', {
@@ -24,7 +24,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 					className={cx('post-body', {
 						yeah: hasYeahed
 					})}
-					id={post.id}
+					id={post.id ?? undefined}
 				>
 					<header>
 						<span className="screen-name">

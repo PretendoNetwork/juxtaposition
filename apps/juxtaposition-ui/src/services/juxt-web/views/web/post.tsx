@@ -2,11 +2,11 @@ import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
 import { WebIcon } from '@/services/juxt-web/views/web/icons';
+import type { InferSchemaType } from 'mongoose';
+import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
 import type { RenderContext } from '@/services/juxt-web/views/context';
-import type { InferSchemaType } from 'mongoose';
-import type { ReactNode } from 'react';
 
 export type PostViewProps = {
 	ctx: RenderContext;
@@ -32,12 +32,12 @@ export function WebPostView(props: PostViewProps): ReactNode {
 
 	const contentPart = (
 		<>
-			<div className="post-user-info-wrapper" id={post.id}>
+			<div className="post-user-info-wrapper" id={post.id ?? undefined}>
 				<img
 					className={cx('user-icon', {
 						verified: post.verified
 					})}
-					src={post.mii_face_url}
+					src={post.mii_face_url ?? undefined}
 					data-pjax={utils.url('/users/show', { pid: post.pid })}
 				/>
 
@@ -76,8 +76,8 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				evt-click={`location.href='/posts/${post.id}`}
 			>
 				{post.body !== '' ? <h4>{post.body}</h4> : null}
-				{post.screenshot && post.screenshot !== '' ? <img id={post.id} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
-				{post.painting !== '' ? <img id={post.id} className="painting" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
+				{post.screenshot && post.screenshot !== '' ? <img id={post.id ?? undefined} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
+				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
 			</div>
 
@@ -130,7 +130,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	);
 
 	return (
-		<div className="posts-wrapper" id={post.id}>
+		<div className="posts-wrapper" id={post.id ?? undefined}>
 			{removedPostPart}
 			{canAccessContent ? contentPart : null}
 		</div>
