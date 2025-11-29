@@ -3,7 +3,6 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { RedisStore } from 'connect-redis';
-import expressMetrics from 'express-prom-bundle';
 import 'express-async-errors'; // See package docs
 import { database } from '@/database';
 import { logger } from '@/logger';
@@ -16,6 +15,7 @@ import { jsxRenderer } from '@/middleware/jsx';
 import { distFolder } from '@/util';
 import { initImageProcessing } from '@/images';
 import { loginWall } from '@/middleware/webAuth';
+import { listenMetrics, registerMetrics } from '@/metrics';
 
 // TODO is this used anywhere?
 BigInt.prototype['toJSON'] = function () {
@@ -27,29 +27,11 @@ process.on('SIGTERM', () => {
 	process.exit(0);
 });
 
-const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
-const metrics = express();
+const { http: { port } } = config;
 const app = express();
 
 // Metrics has to happen first so we can measure the other middleware
-if (metricsEnabled) {
-	logger.info('Setting up metrics');
-	app.use(expressMetrics({
-		// Include full express and nodejs metrics
-		includeMethod: true,
-		includePath: true,
-		urlValueParser: {
-			minBase64Length: 15
-		},
-		promClient: {
-			collectDefaultMetrics: {}
-		},
-
-		// Keep metrics on a different app (so they aren't exposed)
-		autoregister: false,
-		metricsApp: metrics
-	}));
-}
+const metricsApp = registerMetrics(app);
 
 app.set('etag', false);
 app.disable('x-powered-by');
@@ -132,11 +114,7 @@ async function main() {
 		logger.success(`Server started on port ${port}`);
 	});
 
-	if (metricsEnabled) {
-		metrics.listen(metricsPort, () => {
-			logger.success(`Metrics server started on port ${metricsPort}`);
-		});
-	}
+	listenMetrics(metricsApp);
 }
 
 process.on('uncaughtException', (err) => {

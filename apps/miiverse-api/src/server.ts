@@ -11,7 +11,7 @@ import { healthzRouter } from '@/services/healthz';
 import { config } from '@/config';
 import { setupGrpc } from '@/services/internal/server';
 import { initImageProcessing } from '@/images';
-import { ApiErrorCode, badRequest, serverError } from './errors';
+import { ApiErrorCode, badRequest, serverError } from '@/errors';
 
 const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
 const metrics = express();

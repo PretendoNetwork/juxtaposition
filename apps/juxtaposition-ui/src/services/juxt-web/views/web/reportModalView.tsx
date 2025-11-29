@@ -1,5 +1,5 @@
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ReactNode } from 'react';
+import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type ReportModalViewProps = {
 	ctx: RenderContext;

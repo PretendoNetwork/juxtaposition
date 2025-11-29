@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports -- These are tests, don't need strict linting */
 import crypto from 'node:crypto';
 import newman from 'newman';
 import qs from 'qs';

@@ -63,7 +63,8 @@ const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMethods>({
 	},
 	last_active: {
 		type: Date,
-		default: Date.now()
+		default: Date.now(),
+		index: true
 	}
 });
 

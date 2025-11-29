@@ -12,6 +12,9 @@ export default defineConfig([
 				Pjax: false // loaded from pjax.min.js
 			}
 		},
+		rules: {
+			'no-restricted-imports': 'off' // It's a special compile step, we can't use path aliases
+		},
 		files: ['src/webfiles/**/*.js']
 	},
 	{

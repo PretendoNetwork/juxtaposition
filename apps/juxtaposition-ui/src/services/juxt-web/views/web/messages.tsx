@@ -2,10 +2,10 @@ import moment from 'moment';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { utils } from '@/services/juxt-web/views/utils';
-import type { ConversationSchema } from '@/models/conversation';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
+import type { ConversationSchema } from '@/models/conversation';
+import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type ConversationModel = InferSchemaType<typeof ConversationSchema>;
 export type ConversationUserModel = ConversationModel['users'][number];

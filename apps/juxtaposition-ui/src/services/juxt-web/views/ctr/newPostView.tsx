@@ -1,6 +1,6 @@
 import { utils } from '@/services/juxt-web/views/utils';
-import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 import type { ReactNode } from 'react';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
 const empathies = [
 	{

@@ -100,6 +100,26 @@ const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 	id: false // * Disables the .id() getter used by Mongoose in TypeScript. Needed to have our own .id field
 });
 
+PostSchema.index({
+	community_id: 1,
+	removed: 1,
+	search_key: 1,
+	is_spoiler: 1,
+	message_to_pid: 1,
+	created_at: -1
+});
+
+PostSchema.index({
+	yeahs: 1,
+	removed: 1,
+	created_at: -1
+});
+
+PostSchema.index({
+	parent: 1,
+	removed: 1
+});
+
 PostSchema.method<HydratedPostDocument>('del', async function del(reason: string, pid: number) {
 	this.removed = true;
 	this.removed_by = pid;

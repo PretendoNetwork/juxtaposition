@@ -3,8 +3,8 @@ import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { utils } from '@/services/juxt-web/views/utils';
-import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 import type { ReactNode } from 'react';
+import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	const msg = props.message;

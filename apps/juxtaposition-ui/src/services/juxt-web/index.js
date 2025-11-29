@@ -6,7 +6,7 @@ import { checkBan } from '@/middleware/checkBan';
 import { detectVersion } from '@/middleware/detectVersion';
 import { checkDiscovery } from '@/middleware/discovery';
 import { logger } from '@/logger';
-import { routes } from './routes';
+import { routes } from '@/services/juxt-web/routes';
 
 export const router = express.Router();
 const consoleRouter = express.Router();
