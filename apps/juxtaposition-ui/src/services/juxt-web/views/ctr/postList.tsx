@@ -1,6 +1,6 @@
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
-import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { ReactNode } from 'react';
+import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
 export function CtrPostListView(props: PostListViewProps): ReactNode {
 	if (props.posts.length === 0) {

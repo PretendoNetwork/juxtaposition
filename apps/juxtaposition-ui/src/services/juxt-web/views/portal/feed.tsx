@@ -2,8 +2,8 @@ import cx from 'classnames';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
-import type { FeedTabsProps, FeedViewProps } from '@/services/juxt-web/views/web/feed';
 import type { ReactNode } from 'react';
+import type { FeedTabsProps, FeedViewProps } from '@/services/juxt-web/views/web/feed';
 
 export function PortalFeedTabs(props: FeedTabsProps): ReactNode {
 	return (

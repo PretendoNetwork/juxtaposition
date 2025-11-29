@@ -5,10 +5,10 @@ import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { WebNewPostView } from '@/services/juxt-web/views/web/newPostView';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { utils } from '@/services/juxt-web/views/utils';
-import type { RenderContext } from '@/services/juxt-web/views/context';
-import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
+import type { RenderContext } from '@/services/juxt-web/views/context';
+import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
 import type { PostSchema } from '@/models/post';
 
 export type ConversationPost = InferSchemaType<typeof PostSchema>;

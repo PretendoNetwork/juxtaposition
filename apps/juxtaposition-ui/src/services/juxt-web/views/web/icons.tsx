@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-imports -- raw import plugin does not support path aliases */
 import heartIcon from '../../../../webfiles/web/partials/assets/heart_icon.svg?raw';
 import replyIcon from '../../../../webfiles/web/partials/assets/reply_icon.svg?raw';
 import menuIcon from '../../../../webfiles/web/partials/assets/menu_icon.svg?raw';

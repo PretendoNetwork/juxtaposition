@@ -1,6 +1,6 @@
 import { PortalPostView } from '@/services/juxt-web/views/portal/post';
-import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { ReactNode } from 'react';
+import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
 export function PortalPostListView(props: PostListViewProps): ReactNode {
 	if (props.posts.length === 0) {
