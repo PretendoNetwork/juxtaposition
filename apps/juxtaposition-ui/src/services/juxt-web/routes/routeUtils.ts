@@ -1,27 +1,22 @@
-import type { ParamPack } from '@/types/common/param-pack';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { Request } from 'express';
 import type { AnyZodObject, z, ZodSchema } from 'zod';
+import type { UserTokens } from '@/types/juxt/tokens';
+import type { ParamPack } from '@/types/common/param-pack';
 
 type AnySchema = AnyZodObject | undefined | null;
 
 export type AuthRequest<TReq extends Request = Request> = TReq & {
 	user: AccountGetUserDataResponse;
 	pid: number;
-	tokens: {
-		serviceToken?: string;
-		oauthToken?: string;
-	};
+	tokens: UserTokens;
 	paramPackData: null | ParamPack;
 };
 
 export type AuthContext = {
 	user: AccountGetUserDataResponse;
 	pid: number;
-	tokens: {
-		serviceToken?: string;
-		oauthToken?: string;
-	};
+	tokens: UserTokens;
 	paramPackData: null | ParamPack;
 };
 
