@@ -23,7 +23,8 @@
         "ann_string": "Hemen klik egin notizia berriak ikusteko!",
         "popular_places": "Toki ospetsuak",
         "new_communities": "Komunitate berriak",
-        "show_all": "Dena erakutsi"
+        "show_all": "Dena erakutsi",
+        "search": "Komunitateak bilatu..."
     },
     "community": {
         "follow": "Komunitatea Jarraitu",
