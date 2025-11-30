@@ -5,10 +5,10 @@ import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { WebNewPostView } from '@/services/juxt-web/views/web/newPostView';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { utils } from '@/services/juxt-web/views/utils';
-import type { RenderContext } from '@/services/juxt-web/views/context';
-import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
+import type { RenderContext } from '@/services/juxt-web/views/context';
+import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
 import type { PostSchema } from '@/models/post';
 
 export type ConversationPost = InferSchemaType<typeof PostSchema>;
@@ -92,24 +92,24 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 							<div>
 								<ul className="buttons pencil">
 									<li>
-										<input evt-click="setPen(0)" type="radio" defaultValue="0" className="pencil small" name="tool" defaultChecked />
+										<input evt-click="setPen(0)" type="radio" value="0" className="pencil small" name="tool" defaultChecked />
 									</li>
 									<li>
-										<input evt-click="setPen(1)" type="radio" defaultValue="1" className="pencil medium" name="tool" />
+										<input evt-click="setPen(1)" type="radio" value="1" className="pencil medium" name="tool" />
 									</li>
 									<li>
-										<input evt-click="setPen(2)" type="radio" defaultValue="2" className="pencil large" name="tool" />
+										<input evt-click="setPen(2)" type="radio" value="2" className="pencil large" name="tool" />
 									</li>
 								</ul>
 								<ul className="buttons eraser">
 									<li>
-										<input evt-click="setEraser(0)" type="radio" defaultValue="0" className="eraser small" name="tool" />
+										<input evt-click="setEraser(0)" type="radio" value="0" className="eraser small" name="tool" />
 									</li>
 									<li>
-										<input evt-click="setEraser(1)" type="radio" defaultValue="1" className="eraser medium" name="tool" />
+										<input evt-click="setEraser(1)" type="radio" value="1" className="eraser medium" name="tool" />
 									</li>
 									<li>
-										<input evt-click="setEraser(2)" type="radio" defaultValue="2" className="eraser large" name="tool" />
+										<input evt-click="setEraser(2)" type="radio" value="2" className="eraser large" name="tool" />
 									</li>
 								</ul>
 							</div>

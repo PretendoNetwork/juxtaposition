@@ -2,6 +2,7 @@ import { Metadata } from 'nice-grpc';
 import { config } from '@/config';
 import { grpcClient } from '@/grpc';
 import type { PacketResponse } from '@repo/grpc-client/out/packet';
+import type { UserTokens } from '@/types/juxt/tokens';
 
 export type FetchOptions = {
 	method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
@@ -62,11 +63,6 @@ export async function apiFetch<T>(path: string, options?: FetchOptions): Promise
 
 	return JSON.parse(response.payload) as T;
 }
-
-export type UserTokens = {
-	serviceToken?: string;
-	oauthToken?: string;
-};
 
 export async function apiFetchUser<T>(tokens: UserTokens, path: string, options?: FetchOptions): Promise<T | null> {
 	options = {

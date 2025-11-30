@@ -3,7 +3,7 @@
  * Make sure to copy over any modifications! */
 
 import { apiFetchUser } from '@/fetch';
-import type { UserTokens } from '@/fetch';
+import type { UserTokens } from '@/types/juxt/tokens';
 
 export type EmpathyAction = 'add' | 'remove';
 

@@ -4,8 +4,8 @@ import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/roo
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { utils } from '@/services/juxt-web/views/utils';
-import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 import type { ReactNode } from 'react';
+import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	const msg = props.message;
