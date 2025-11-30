@@ -17,7 +17,7 @@ export const feedRouter = express.Router();
 feedRouter.get('/', async function (req, res) {
 	const { auth, query } = parseReq(req, {
 		query: z.object({
-			pjax: z.string().optional()
+			pjax: z.stringbool().optional()
 		})
 	});
 	const userContent = await database.getUserContent(auth().pid);
@@ -47,7 +47,7 @@ feedRouter.get('/', async function (req, res) {
 feedRouter.get('/all', async function (req, res) {
 	const { auth, query } = parseReq(req, {
 		query: z.object({
-			pjax: z.string().optional()
+			pjax: z.stringbool().optional()
 		})
 	});
 	const userContent = await database.getUserContent(auth().pid);
@@ -81,7 +81,7 @@ feedRouter.get('/all', async function (req, res) {
 feedRouter.get('/more', async function (req, res) {
 	const { auth, query } = parseReq(req, {
 		query: z.object({
-			pjax: z.string().optional(),
+			pjax: z.stringbool().optional(),
 			offset: z.coerce.number().nonnegative().default(0)
 		})
 	});
@@ -107,7 +107,7 @@ feedRouter.get('/more', async function (req, res) {
 feedRouter.get('/all/more', async function (req, res) {
 	const { auth, query } = parseReq(req, {
 		query: z.object({
-			pjax: z.string().optional(),
+			pjax: z.stringbool().optional(),
 			offset: z.coerce.number().nonnegative().default(0)
 		})
 	});
