@@ -14,7 +14,8 @@
         "private": "Pribatua",
         "close": "Itxi",
         "exit": "Irten",
-        "next": "Hurrengoa"
+        "next": "Hurrengoa",
+        "yeahs": "Yeah-k"
     },
     "all_communities": {
         "text": "Komunitate denak",
@@ -23,5 +24,13 @@
         "popular_places": "Toki ospetsuak",
         "new_communities": "Komunitate berriak",
         "show_all": "Dena erakutsi"
+    },
+    "community": {
+        "follow": "Komunitatea Jarraitu",
+        "following": "Jarraitzen",
+        "followers": "Jarraitzaileak",
+        "posts": "Argitalpenak",
+        "tags": "Etiketak",
+        "recent": "Publikazio berriak"
     }
 }
