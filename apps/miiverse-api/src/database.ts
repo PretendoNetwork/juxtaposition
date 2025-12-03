@@ -15,6 +15,7 @@ import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
 let connection: mongoose.Connection;
+mongoose.set('strictQuery', true);
 
 export async function connect(): Promise<void> {
 	connection = mongoose.connection;

@@ -57,12 +57,12 @@ adminRouter.get('/accounts', async function (req, res) {
 
 	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
 	const userMap = await getUserHash();
-	const userCount = await SETTINGS.count();
-	const activeUsers = await SETTINGS.find({
+	const userCount = await SETTINGS.countDocuments();
+	const activeUsers = await SETTINGS.countDocuments({
 		last_active: {
 			$gte: new Date(Date.now() - 10 * 60 * 1000)
 		}
-	}).count();
+	});
 
 	res.render(req.directory + '/users.ejs', {
 		moment: moment,
