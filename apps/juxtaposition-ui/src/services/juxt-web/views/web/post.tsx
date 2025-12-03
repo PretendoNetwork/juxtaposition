@@ -73,7 +73,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				style={{
 					display: post.is_spoiler ? 'none' : undefined // Will be removed by spoiler-overlay onclick
 				}}
-				evt-click={`location.href='/posts/${post.id}`}
+				evt-click={`location.href='/posts/${post.id}'`}
 			>
 				{post.body !== '' ? <h4>{post.body}</h4> : null}
 				{post.screenshot && post.screenshot !== '' ? <img id={post.id ?? undefined} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
