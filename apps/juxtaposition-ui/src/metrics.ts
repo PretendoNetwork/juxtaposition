@@ -12,8 +12,11 @@ export const onlineNowGauge = new Gauge({
 	async collect(): Promise<void> {
 		const onlineRangeMs = 10 * 60 * 1000; // 10 minutes
 		const cutoff = new Date(Date.now() - onlineRangeMs);
-		const count = await SETTINGS.countDocuments({ last_active: { $gt: cutoff } });
-		this.set(count);
+		const [{ n }] = await SETTINGS.aggregate<{ n: number }>([
+			{ $match: { last_active: { $gt: cutoff } } },
+			{ $count: 'n' }
+		]);
+		this.set(n);
 	}
 });
 
@@ -23,8 +26,11 @@ export const activeMonthlyGauge = new Gauge({
 	async collect(): Promise<void> {
 		const monthlyRangeMs = 30 * 24 * 60 * 60 * 1000;
 		const cutoff = new Date(Date.now() - monthlyRangeMs);
-		const count = await SETTINGS.countDocuments({ last_active: { $gt: cutoff } });
-		this.set(count);
+		const [{ n }] = await SETTINGS.aggregate<{ n: number }>([
+			{ $match: { last_active: { $gt: cutoff } } },
+			{ $count: 'n' }
+		]);
+		this.set(n);
 	}
 });
 
@@ -34,8 +40,11 @@ export const activeYearlyGauge = new Gauge({
 	async collect(): Promise<void> {
 		const yearlyRangeMs = 365 * 24 * 60 * 60 * 1000;
 		const cutoff = new Date(Date.now() - yearlyRangeMs);
-		const count = await SETTINGS.countDocuments({ last_active: { $gt: cutoff } });
-		this.set(count);
+		const [{ n }] = await SETTINGS.aggregate<{ n: number }>([
+			{ $match: { last_active: { $gt: cutoff } } },
+			{ $count: 'n' }
+		]);
+		this.set(n);
 	}
 });
 
