@@ -109,9 +109,9 @@ export function WebPostView(props: PostViewProps): ReactNode {
 							{' '}
 							Report Post
 						</li>
-						{ isModerator
+						{ isModerator || post.pid === props.ctx.pid
 							? (
-									<li role="menuitem" data-action="delete" data-moderator>
+									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebIcon name="bin" />
 										{' '}
 										Delete Post
