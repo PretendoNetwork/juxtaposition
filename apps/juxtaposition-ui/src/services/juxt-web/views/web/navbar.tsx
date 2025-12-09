@@ -1,7 +1,7 @@
 import { InlineStyle } from '@/services/juxt-web/views/common';
 import { utils } from '@/services/juxt-web/views/utils';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ReactNode } from 'react';
+import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type NavBarProps = {
 	ctx: RenderContext;

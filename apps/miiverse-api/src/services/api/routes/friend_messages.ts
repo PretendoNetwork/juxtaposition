@@ -16,8 +16,8 @@ import { Conversation } from '@/models/conversation';
 import { config } from '@/config';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import { uploadPainting, uploadScreenshot } from '@/images';
-import type { FormattedMessage } from '@/types/common/formatted-message';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { FormattedMessage } from '@/types/common/formatted-message';
 
 const sendMessageSchema = z.object({
 	body: z.string().optional(),

@@ -9,12 +9,12 @@ import { config } from '@/config';
 import { logger } from '@/logger';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
+import type { IncomingHttpHeaders } from 'node:http';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
-import type { IncomingHttpHeaders } from 'node:http';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { ServiceToken } from '@/types/common/service-token';
 
