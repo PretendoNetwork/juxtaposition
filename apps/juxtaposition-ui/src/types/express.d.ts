@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports -- other methods of importing type dont work */
 
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { UserTokens } from '@/fetch';
 import type { ParamPack } from '@/types/common/param-pack';
+import type { UserTokens } from '@/types/juxt/tokens';
 
 declare global {
 	namespace Express {

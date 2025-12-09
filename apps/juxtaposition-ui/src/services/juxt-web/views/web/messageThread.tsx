@@ -92,24 +92,24 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 							<div>
 								<ul className="buttons pencil">
 									<li>
-										<input evt-click="setPen(0)" type="radio" defaultValue="0" className="pencil small" name="tool" defaultChecked />
+										<input evt-click="setPen(0)" type="radio" value="0" className="pencil small" name="tool" defaultChecked />
 									</li>
 									<li>
-										<input evt-click="setPen(1)" type="radio" defaultValue="1" className="pencil medium" name="tool" />
+										<input evt-click="setPen(1)" type="radio" value="1" className="pencil medium" name="tool" />
 									</li>
 									<li>
-										<input evt-click="setPen(2)" type="radio" defaultValue="2" className="pencil large" name="tool" />
+										<input evt-click="setPen(2)" type="radio" value="2" className="pencil large" name="tool" />
 									</li>
 								</ul>
 								<ul className="buttons eraser">
 									<li>
-										<input evt-click="setEraser(0)" type="radio" defaultValue="0" className="eraser small" name="tool" />
+										<input evt-click="setEraser(0)" type="radio" value="0" className="eraser small" name="tool" />
 									</li>
 									<li>
-										<input evt-click="setEraser(1)" type="radio" defaultValue="1" className="eraser medium" name="tool" />
+										<input evt-click="setEraser(1)" type="radio" value="1" className="eraser medium" name="tool" />
 									</li>
 									<li>
-										<input evt-click="setEraser(2)" type="radio" defaultValue="2" className="eraser large" name="tool" />
+										<input evt-click="setEraser(2)" type="radio" value="2" className="eraser large" name="tool" />
 									</li>
 								</ul>
 							</div>

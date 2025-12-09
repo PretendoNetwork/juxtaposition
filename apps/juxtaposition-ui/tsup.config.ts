@@ -1,16 +1,15 @@
 import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
+import { raw } from 'esbuild-raw-plugin';
 import { fixImportsPlugin } from 'esbuild-fix-imports-plugin';
 import browserslist from 'browserslist-to-esbuild';
 
 export default defineConfig([
 	/* Main server app (Node) */
 	{
-		entry: ['src/**/*.{js,ts,tsx,jsx}', '!src/webfiles/**/*.js'],
-		splitting: false,
+		entry: ['src/server.js'],
 		sourcemap: true,
 		clean: true,
-		bundle: false,
 
 		platform: 'node',
 		// https://github.com/egoist/tsup/issues/1289#issuecomment-2654012955
@@ -21,6 +20,9 @@ export default defineConfig([
 
 		esbuildPlugins: [
 			fixImportsPlugin(),
+			raw({
+				ext: ['svg']
+			}),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
