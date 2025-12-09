@@ -3,10 +3,10 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ReactNode } from 'react';
-import type { ContentSchema } from '@/models/content';
 import type { InferSchemaType } from 'mongoose';
+import type { RenderContext } from '@/services/juxt-web/views/context';
+import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
 
 export type FeedViewProps = {
