@@ -4,8 +4,8 @@ import { config } from '@/config';
 import { decodeParamPack } from '@/util';
 import { ApiErrorCode } from '@/errors';
 import type { SerializedRequest, SerializedResponse } from 'pino';
-import type { ParamPack } from '@/types/common/param-pack';
 import type { Request } from 'express';
+import type { ParamPack } from '@/types/common/param-pack';
 
 type SerializedNintendoRequest = SerializedRequest & { param_pack?: ParamPack };
 type SerializedMiiverseResponse = SerializedResponse & { errorCode?: ApiErrorCode; errorCodeStr?: string };

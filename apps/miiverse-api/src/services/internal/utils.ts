@@ -1,5 +1,5 @@
-import type { AccountData } from '@/types/common/account-data';
 import type { Request, Response } from 'express';
+import type { AccountData } from '@/types/common/account-data';
 
 export type HandlerContext = {
 	req: Request;

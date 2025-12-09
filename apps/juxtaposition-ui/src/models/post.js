@@ -82,6 +82,26 @@ export const PostSchema = new Schema({
 	yeahs: [Number]
 });
 
+PostSchema.index({
+	community_id: 1,
+	removed: 1,
+	search_key: 1,
+	is_spoiler: 1,
+	message_to_pid: 1,
+	created_at: -1
+});
+
+PostSchema.index({
+	yeahs: 1,
+	removed: 1,
+	created_at: -1
+});
+
+PostSchema.index({
+	parent: 1,
+	removed: 1
+});
+
 PostSchema.methods.upReply = async function () {
 	const replyCount = this.get('reply_count');
 	if (replyCount + 1 < 0) {
