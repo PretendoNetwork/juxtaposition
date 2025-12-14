@@ -94,7 +94,8 @@ export async function getPostsByParentId(tokens: UserTokens, parent_id: string, 
 		query: {
 			parent_id: parent_id,
 			offset,
-			include_replies: true
+			include_replies: true,
+			sort: 'oldest'
 		}
 	});
 	return posts;
