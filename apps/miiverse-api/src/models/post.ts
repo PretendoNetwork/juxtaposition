@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import moment from 'moment';
 import { Schema, model } from 'mongoose';
 import { getInvalidPostRegex } from '@/util';
+import { config } from '@/config';
 import type { HydratedPostDocument, IPost, IPostMethods, PostModel } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { PostToJSONOptions } from '@/types/mongoose/post-to-json-options';
@@ -162,7 +163,7 @@ PostSchema.method<HydratedPostDocument>('formatPainting', function formatPaintin
 			format: 'tga',
 			content: this.cleanedPainting(),
 			size: this.painting.length,
-			url: `https://pretendo-cdn.b-cdn.net/paintings/${this.pid}/${this.id}.png`
+			url: `${config.cdnUrl}/paintings/${this.pid}/${this.id}.png`
 		};
 	}
 });
@@ -171,7 +172,7 @@ PostSchema.method<HydratedPostDocument>('formatScreenshot', function formatScree
 	if (this.screenshot && this.screenshot_length) {
 		return {
 			size: this.screenshot_length,
-			url: `https://pretendo-cdn.b-cdn.net/screenshots/${this.pid}/${this.id}.jpg`
+			url: `${config.cdnUrl}${this.screenshot}`
 		};
 	}
 });
