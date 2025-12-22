@@ -2,6 +2,7 @@ import crypto from 'node:crypto';
 import moment from 'moment';
 import { Schema, model } from 'mongoose';
 import { getInvalidPostRegex } from '@/util';
+import { config } from '@/config';
 import type { HydratedPostDocument, IPost, IPostMethods, PostModel } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { PostToJSONOptions } from '@/types/mongoose/post-to-json-options';
@@ -100,6 +101,26 @@ const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 	id: false // * Disables the .id() getter used by Mongoose in TypeScript. Needed to have our own .id field
 });
 
+PostSchema.index({
+	community_id: 1,
+	removed: 1,
+	search_key: 1,
+	is_spoiler: 1,
+	message_to_pid: 1,
+	created_at: -1
+});
+
+PostSchema.index({
+	yeahs: 1,
+	removed: 1,
+	created_at: -1
+});
+
+PostSchema.index({
+	parent: 1,
+	removed: 1
+});
+
 PostSchema.method<HydratedPostDocument>('del', async function del(reason: string, pid: number) {
 	this.removed = true;
 	this.removed_by = pid;
@@ -142,7 +163,7 @@ PostSchema.method<HydratedPostDocument>('formatPainting', function formatPaintin
 			format: 'tga',
 			content: this.cleanedPainting(),
 			size: this.painting.length,
-			url: `https://pretendo-cdn.b-cdn.net/paintings/${this.pid}/${this.id}.png`
+			url: `${config.cdnUrl}/paintings/${this.pid}/${this.id}.png`
 		};
 	}
 });
@@ -151,7 +172,7 @@ PostSchema.method<HydratedPostDocument>('formatScreenshot', function formatScree
 	if (this.screenshot && this.screenshot_length) {
 		return {
 			size: this.screenshot_length,
-			url: `https://pretendo-cdn.b-cdn.net/screenshots/${this.pid}/${this.id}.jpg`
+			url: `${config.cdnUrl}${this.screenshot}`
 		};
 	}
 });

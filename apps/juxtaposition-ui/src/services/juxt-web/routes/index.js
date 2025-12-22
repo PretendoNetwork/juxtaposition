@@ -1,16 +1,16 @@
-import { communitiesRouter } from './console/communities';
-import { showRouter } from './console/show';
-import { postsRouter } from './console/posts';
-import { userPageRouter } from './console/userpage';
-import { feedRouter } from './console/feed';
-import { notificationRouter } from './console/notifications';
-import { messagesRouter } from './console/messages';
-import { topicsRouter } from './console/topics';
-import { loginRouter } from './web/login';
-import { robotsRouter } from './web/robots';
-import { pwaRouter } from './web/pwa';
-import { adminRouter } from './admin/admin';
-import { webRouter } from './console/web';
+import { communitiesRouter } from '@/services/juxt-web/routes/console/communities';
+import { showRouter } from '@/services/juxt-web/routes/console/show';
+import { postsRouter } from '@/services/juxt-web/routes/console/posts';
+import { userPageRouter } from '@/services/juxt-web/routes/console/userpage';
+import { feedRouter } from '@/services/juxt-web/routes/console/feed';
+import { notificationRouter } from '@/services/juxt-web/routes/console/notifications';
+import { messagesRouter } from '@/services/juxt-web/routes/console/messages';
+import { topicsRouter } from '@/services/juxt-web/routes/console/topics';
+import { loginRouter } from '@/services/juxt-web/routes/web/login';
+import { robotsRouter } from '@/services/juxt-web/routes/web/robots';
+import { pwaRouter } from '@/services/juxt-web/routes/web/pwa';
+import { adminRouter } from '@/services/juxt-web/routes/admin/admin';
+import { webRouter } from '@/services/juxt-web/routes/console/web';
 
 export const routes = {
 	PORTAL_SHOW: showRouter,

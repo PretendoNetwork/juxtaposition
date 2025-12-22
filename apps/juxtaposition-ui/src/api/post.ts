@@ -1,7 +1,7 @@
 import { apiFetchUser } from '@/fetch';
 import type { ResultDto } from '@/api/result';
 import type { PageDto } from '@/api/page';
-import type { UserTokens } from '@/fetch';
+import type { UserTokens } from '@/types/juxt/tokens';
 
 /* !!! HEY
  * This type lives in apps/miiverse-api/src/services/internal/contract/post.ts

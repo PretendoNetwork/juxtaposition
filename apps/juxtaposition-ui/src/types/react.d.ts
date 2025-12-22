@@ -8,5 +8,8 @@ declare namespace React {
 
 		'evt-change'?: string; // alias for the plain attribute onchange
 		'onChange'?: never; // make react version made unusable
+
+		'evt-load'?: string; // alias for the plain attribute onload
+		'onLoad'?: never; // make react version made unusable
 	}
 }

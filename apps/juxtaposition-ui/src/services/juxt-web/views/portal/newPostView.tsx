@@ -1,6 +1,6 @@
 import { utils } from '@/services/juxt-web/views/utils';
-import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 import type { ReactNode } from 'react';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
 const empathies = [
 	{
@@ -53,7 +53,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 				</h1>
 			</header>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
-				<input type="hidden" name="community_id" defaultValue={props.id} />
+				<input type="hidden" name="community_id" value={props.id} />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
 						<img src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)} id="mii-face" className="icon" />
@@ -63,7 +63,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 									<input
 										type="radio"
 										name="feeling_id"
-										defaultValue={v.value}
+										value={v.value}
 										className={v.className}
 										data-mii-face-url={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/${v.miiFaceFile}`)}
 										defaultChecked={v.isDefault}
@@ -80,30 +80,30 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 							<div className="image-selector-window dropdown-menu">
 								<menu className="screenshot-menu">
 									<li className="image-wrapper">
-										<input type="radio" name="_screenshot_value" defaultValue="top" defaultChecked data-sound="" evt-click="chooseScreenShot(0)" />
+										<input type="radio" name="_screenshot_value" value="top" defaultChecked data-sound="" evt-click="chooseScreenShot(0)" />
 										<img id="top-screen" src="" className="capture-image" />
 									</li>
 									<li className="image-wrapper">
-										<input type="radio" name="_screenshot_value" defaultValue="bottom" data-sound="" evt-click="chooseScreenShot(1)" />
+										<input type="radio" name="_screenshot_value" value="bottom" data-sound="" evt-click="chooseScreenShot(1)" />
 										<img id="bottom-screen" src="" className="capture-image" />
 									</li>
 									<li className="button">
-										<input type="radio" name="_screenshot_value" defaultValue="none" data-sound="" evt-click="chooseScreenShot()" />
+										<input type="radio" name="_screenshot_value" value="none" data-sound="" evt-click="chooseScreenShot()" />
 										No Screenshot
 									</li>
 								</menu>
 							</div>
 						</label>
-						<input id="screenshot-value" type="hidden" name="screenshot" defaultValue="" />
+						<input id="screenshot-value" type="hidden" name="screenshot" value="" />
 					</div>
 					<div className="textarea-container textarea-with-menu active-text">
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
-								<input type="radio" name="_post_type" defaultValue="body" defaultChecked data-sound="" />
-								<textarea name="body" className="textarea-text" defaultValue="" maxLength={280} placeholder="Enter text here..." data-alert-text={props.ctx.lang.user_settings.swearing} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
+								<input type="radio" name="_post_type" value="body" defaultChecked data-sound="" />
+								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={props.ctx.lang.user_settings.swearing} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
 							</li>
 							<li className="textarea-menu-memo">
-								<input type="radio" name="_post_type" defaultValue="painting" data-sound="" evt-click="newPainting(false)" />
+								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" />
 								<div className="textarea-memo trigger" data-sound="" evt-click="newPainting(false)">
 									<img id="memo" className="textarea-memo-preview" src="" />
 									<input id="memo-value" type="hidden" name="painting" />
@@ -113,22 +113,22 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 					</div>
 					<label className="checkbox-container spoiler-button">
 						Spoilers
-						<input type="checkbox" id="spoiler" name="spoiler" defaultValue="true" />
+						<input type="checkbox" id="spoiler" name="spoiler" value="true" />
 						<span className="checkmark"></span>
 					</label>
 				</div>
-				<input id="message_to_pid" type="hidden" name="message_to_pid" defaultValue={props.messagePid ?? undefined} />
+				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
 				<input
 					type="button"
 					className="olv-modal-close-button fixed-bottom-button left"
-					defaultValue="Cancel"
+					value="Cancel"
 					data-sound="SE_WAVE_CANCEL"
 					data-module-show={props.show}
 					data-module-hide="add-post-page"
 					data-header="true"
 					data-menu="true"
 				/>
-				<input type="submit" className="post-button fixed-bottom-button" defaultValue="Post" evt-click="wiiuBrowser.lockUserOperation(true);" />
+				<input type="submit" className="post-button fixed-bottom-button" value="Post" evt-click="wiiuBrowser.lockUserOperation(true);" />
 			</form>
 		</div>
 	);

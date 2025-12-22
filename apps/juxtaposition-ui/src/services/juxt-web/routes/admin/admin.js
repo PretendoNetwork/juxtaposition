@@ -10,6 +10,7 @@ import { COMMUNITY } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash } from '@/util';
+import { getUserMetrics } from '@/metrics';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
@@ -57,12 +58,7 @@ adminRouter.get('/accounts', async function (req, res) {
 
 	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
 	const userMap = await getUserHash();
-	const userCount = await SETTINGS.countDocuments();
-	const activeUsers = await SETTINGS.countDocuments({
-		last_active: {
-			$gte: new Date(Date.now() - 10 * 60 * 1000)
-		}
-	});
+	const userMetrics = await getUserMetrics();
 
 	res.render(req.directory + '/users.ejs', {
 		moment: moment,
@@ -70,8 +66,8 @@ adminRouter.get('/accounts', async function (req, res) {
 		users,
 		page,
 		search,
-		userCount,
-		activeUsers
+		userCount: userMetrics.totalUsers,
+		activeUsers: userMetrics.currentOnlineUsers
 	});
 });
 
