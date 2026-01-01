@@ -1,6 +1,5 @@
 import express from 'express';
 import { z } from 'zod';
-import escapeHTML from 'escape-html';
 import { config } from '@/config';
 import { database } from '@/database';
 import { POST } from '@/models/post';
@@ -40,7 +39,7 @@ topicsRouter.get('/', async function (req, res) {
 		});
 	}
 
-	const title = escapeHTML(query.topic_tag);
+	const title = query.topic_tag;
 	return res.jsxForDirectory({
 		web: <WebTopicTagView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
 		portal: <PortalTopicTagView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
