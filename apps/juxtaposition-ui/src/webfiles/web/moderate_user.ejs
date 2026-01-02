@@ -128,8 +128,15 @@
 					</select>
 				</div>
 				<div class="col">
-					<label for="ban_lift_date" class="labels">Banned Until:</label>
-					<input type="datetime-local" id="ban_lift_date" name="ban_lift_date" value="<%= userSettings.ban_lift_date %>">
+					<label for="ban_lift_date_picker" class="labels">Banned Until:</label>
+					<input type="datetime-local" id="ban_lift_date_picker" name="ban_lift_date">
+					<input type="hidden" id="ban_lift_date" value="<%= userSettings.ban_lift_date?.toISOString() %>">
+				</div>
+				<div class="col">
+					UTC: <span id="ban_lift_date_utc"></span>
+				</div>
+				<div class="col">
+					Remaining: <span id="ban_lift_date_duration"></span>
 				</div>
 				<div class="col">
 					<label for="ban_reason" class="labels">Ban Reason</label>
@@ -339,5 +346,6 @@
 				.catch(console.log);
 	}
 </script>
+<script src="/js/admin.global.js"></script>
 </body>
 </html>
