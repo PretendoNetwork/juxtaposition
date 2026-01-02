@@ -1308,10 +1308,8 @@ summary {
   padding-left: 1em;
 }
 details {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
+  width: 600px;
+  max-width: 100%;
 }
 li.reports .posts-wrapper {
   margin-top: 1ch;

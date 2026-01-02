@@ -107,8 +107,8 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	const userMap = getUserHash();
 	const reasonMap = getReasonMap();
 
-	const reports = await database.getReportsByOffender(req.params.pid, 0, 5);
-	const submittedReports = await database.getReportsByReporter(req.params.pid, 0, 5);
+	const reports = await database.getReportsByOffender(req.params.pid, 0, 50);
+	const submittedReports = await database.getReportsByReporter(req.params.pid, 0, 50);
 	const postIDs = reports.concat(submittedReports).map(obj => obj.post_id);
 
 	const postsMap = await POST.aggregate([
@@ -122,9 +122,9 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 		{ $project: { index: 0, _id: 0 } }
 	]);
 
-	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(10);
+	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(50);
 
-	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 20);
+	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 50);
 
 	res.render(req.directory + '/moderate_user.ejs', {
 		moment: moment,
