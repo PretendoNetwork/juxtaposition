@@ -56,7 +56,26 @@ adminRouter.get('/accounts', async function (req, res) {
 	const search = req.query.search;
 	const limit = 20;
 
-	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
+	const users = await (async () => {
+		if (!search) {
+			return database.getUsersContent(limit, page * limit);
+		}
+		const results = [];
+
+		const pid = Number(search);
+		if (!isNaN(pid)) {
+			const user = await database.getUserSettings(pid);
+			if (user !== null) {
+				results.push(user);
+			}
+		}
+
+		const miis = await database.getUserSettingsFuzzySearch(search, limit, page * limit);
+		results.push(...miis);
+
+		return results;
+	})();
+
 	const userMap = await getUserHash();
 	const userMetrics = await getUserMetrics();
 
