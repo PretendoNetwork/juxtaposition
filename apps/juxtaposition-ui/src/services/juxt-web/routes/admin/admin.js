@@ -58,7 +58,7 @@ adminRouter.get('/accounts', async function (req, res) {
 
 	const users = await (async () => {
 		if (!search) {
-			return database.getUsersContent(limit, page * limit);
+			return database.getUsersSettings(limit, page * limit);
 		}
 		const results = [];
 

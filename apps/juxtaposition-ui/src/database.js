@@ -257,16 +257,7 @@ async function getEndPoint(accessLevel) {
 	});
 }
 
-async function getUsersSettings(numberOfUsers) {
-	verifyConnected();
-	if (numberOfUsers === -1) {
-		return SETTINGS.find({});
-	} else {
-		return SETTINGS.find({}).limit(numberOfUsers);
-	}
-}
-
-async function getUsersContent(numberOfUsers, offset) {
+async function getUsersSettings(numberOfUsers, offset) {
 	verifyConnected();
 	if (numberOfUsers === -1) {
 		return SETTINGS.find({}).skip(offset);
@@ -521,7 +512,6 @@ export const database = {
 	getUnreadConversationCount,
 	getLatestMessage,
 	getUsersSettings,
-	getUsersContent,
 	getUserSettings,
 	getUserSettingsFuzzySearch,
 	getUserContent,
