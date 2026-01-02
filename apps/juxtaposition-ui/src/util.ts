@@ -8,6 +8,7 @@ import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import HashMap from 'hashmap';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
+import { DateTime } from 'luxon';
 import { database } from '@/database';
 import { COMMUNITY } from '@/models/communities';
 import { NOTIFICATION } from '@/models/notifications';
@@ -483,6 +484,46 @@ export function deleteOptional<T extends {}>(obj: T): Partial<T> { // Partial<T>
 		}
 	}
 	return obj;
+}
+
+export function fixupUnicodes(input: string): string {
+	// 202F NARROW NON BREAKING SPACE
+	// -> normal NBSP (Cemu doesn't render NNBSP right)
+	input = input.replaceAll('\u202F', '\u00A0');
+
+	return input;
+}
+
+function makeDateObject(date: Date | DateTime | string): DateTime {
+	if (date instanceof Date) {
+		date = DateTime.fromJSDate(date);
+	} else if (typeof date === 'string') {
+		date = DateTime.fromISO(date);
+	}
+
+	return date;
+}
+
+export function humanDate(date?: Date | DateTime | string | null): string {
+	if (!date) {
+		return 'null';
+	}
+	date = makeDateObject(date);
+
+	const dateString = date.toUTC().toLocaleString(DateTime.DATETIME_MED) + ' UTC';
+	return fixupUnicodes(dateString);
+}
+
+export function humanFromNow(date?: Date | DateTime | string | null): string {
+	if (!date) {
+		return 'unknown time';
+	}
+	date = makeDateObject(date);
+
+	const durationString = date.toRelative({
+		rounding: 'expand'
+	});
+	return durationString ?? 'unknown time';
 }
 
 const filename = fileURLToPath(import.meta.url);
