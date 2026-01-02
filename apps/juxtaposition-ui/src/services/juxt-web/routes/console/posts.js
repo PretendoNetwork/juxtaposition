@@ -166,15 +166,15 @@ postsRouter.delete('/:post_id', async function (req, res) {
 
 	// TODO move audit logging to backend
 	if (res.locals.moderator && req.pid !== post.pid) {
-		const postType = post.parent ? 'comment' : 'post';
-
-		await newNotification({
-			pid: post.pid,
-			type: 'notice',
-			text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
-			image: '/images/bandwidthalert.png',
-			link: '/titles/2551084080/new'
-		});
+		// TODO Temporarily disabled, moderators need a way to delete without notification
+		// const postType = post.parent ? 'comment' : 'post';
+		// await newNotification({
+		// 	pid: post.pid,
+		// 	type: 'notice',
+		// 	text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
+		// 	image: '/images/bandwidthalert.png',
+		// 	link: '/titles/2551084080/new'
+		// });
 
 		const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
 		await createLogEntry(
