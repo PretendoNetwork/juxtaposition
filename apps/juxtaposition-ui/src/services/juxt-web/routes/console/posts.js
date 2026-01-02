@@ -166,6 +166,8 @@ postsRouter.delete('/:post_id', async function (req, res) {
 
 	// TODO move audit logging to backend
 	if (res.locals.moderator && req.pid !== post.pid) {
+		const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
+
 		// TODO Temporarily disabled, moderators need a way to delete without notification
 		// const postType = post.parent ? 'comment' : 'post';
 		// await newNotification({
@@ -176,7 +178,6 @@ postsRouter.delete('/:post_id', async function (req, res) {
 		// 	link: '/titles/2551084080/new'
 		// });
 
-		const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
 		await createLogEntry(
 			req.pid,
 			'REMOVE_POST',
