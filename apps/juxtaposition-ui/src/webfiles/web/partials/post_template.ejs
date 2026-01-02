@@ -80,7 +80,7 @@
 				<ul class="post-hamburger" role="menu" data-post="<%= post.id %>">
 					<li role="menuitem" data-action="report"><%- include('assets/flag_icon.svg') %> Report Post</li>
 					<% if (post.pid === pid || moderator) { %>
-					<li role="menuitem" data-action="delete" data-moderator="<%= moderator %>"><%- include('assets/bin_icon.svg') %> Delete Post</li>
+					<li role="menuitem" data-action="delete" data-moderator="<%= moderator %>"><%- include('assets/bin_icon.svg') %> <% if (moderator) { %>Silently delete<% } else { %>Delete Post<% } %></li>
 					<% } %>
 					<li role="menuitem" data-action="copy"><%- include('assets/share_icon.svg') %> Copy link</li>
 				</ul>
