@@ -47,13 +47,34 @@ adminRouter.get('/posts', async function (req, res) {
 	});
 });
 
+async function tryGetSettingsFromPidString(pid_string) {
+	// Check the string is all digits
+	if (!/^\d$/g.test(pid_string)) {
+		return null;
+	}
+
+	// Parse it
+	const pid = parseInt(pid_string, 10);
+	if (isNaN(pid)) {
+		return null;
+	}
+
+	// Get the user doc
+	const user = await database.getUserSettings(pid);
+	if (user === null) {
+		return null;
+	}
+
+	return user;
+}
+
 adminRouter.get('/accounts', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 
 	const page = req.query.page ? parseInt(req.query.page) : 0;
-	const search = req.query.search;
+	const search = req.query.search.trim();
 	const limit = 20;
 
 	const users = await (async () => {
@@ -62,12 +83,9 @@ adminRouter.get('/accounts', async function (req, res) {
 		}
 		const results = [];
 
-		const pid = Number(search);
-		if (!isNaN(pid)) {
-			const user = await database.getUserSettings(pid);
-			if (user !== null) {
-				results.push(user);
-			}
+		const pid_user = await tryGetSettingsFromPidString(search);
+		if (pid_user !== null) {
+			results.push(pid_user);
 		}
 
 		const miis = await database.getUserSettingsFuzzySearch(search, limit, page * limit);
