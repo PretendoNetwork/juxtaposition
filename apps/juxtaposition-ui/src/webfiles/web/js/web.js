@@ -348,11 +348,11 @@ function copyToClipboard(text) {
 	Toast('Copied to clipboard.');
 }
 
-function Toast(text) {
+function Toast(text, ms) {
 	const x = document.getElementById('toast');
 	x.innerText = text;
 	x.className = 'show';
-	startHideToast(3000);
+	startHideToast(ms ? ms : 3000);
 }
 
 function initToast() {
@@ -366,7 +366,7 @@ function initToast() {
 	}
 
 	x.removeAttribute('data-show');
-	setTimeout(() => Toast(x.innerText), 100); // Show after a delay so it shows an animation
+	setTimeout(() => Toast(x.innerText, 20000), 100); // Show after a delay so it shows an animation
 }
 
 function startHideToast(ms) {
