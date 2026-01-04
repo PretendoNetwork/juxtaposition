@@ -1,7 +1,8 @@
 import { database as db } from '@/database';
 import { config } from '@/config';
+import type { RequestHandler } from 'express';
 
-export async function checkDiscovery(request, response, next) {
+export const checkDiscovery: RequestHandler = async (request, response, next) => {
 	const discovery = await db.getEndPoint(config.serverEnvironment);
 
 	if (!discovery || discovery.status !== 0) {
@@ -33,4 +34,4 @@ export async function checkDiscovery(request, response, next) {
 	}
 
 	next();
-}
+};
