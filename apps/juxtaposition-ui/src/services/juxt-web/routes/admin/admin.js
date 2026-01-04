@@ -74,7 +74,7 @@ adminRouter.get('/accounts', async function (req, res) {
 	}
 
 	const page = req.query.page ? parseInt(req.query.page) : 0;
-	const search = req.query.search.trim();
+	const search = req.query.search?.trim();
 	const limit = 20;
 
 	const users = await (async () => {
