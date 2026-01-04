@@ -49,7 +49,7 @@ adminRouter.get('/posts', async function (req, res) {
 
 async function tryGetSettingsFromPidString(pid_string) {
 	// Check the string is all digits
-	if (!/^\d$/g.test(pid_string)) {
+	if (!/^\d+$/g.test(pid_string)) {
 		return null;
 	}
 
