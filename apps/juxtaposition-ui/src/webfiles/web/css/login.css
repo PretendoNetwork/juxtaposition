@@ -155,7 +155,7 @@ form.account.register div:last-child {
 }
 
 #toast {
-    opacity: 0;
+    display: none;
 	min-width: 250px;
 	background-color: #A9375B;
 	color: var(--text);
@@ -173,5 +173,5 @@ form.account.register div:last-child {
 }
 
 #toast.show {
-    opacity: 1;
+    display: block;
 }

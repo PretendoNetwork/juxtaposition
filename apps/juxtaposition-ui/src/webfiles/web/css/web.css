@@ -344,7 +344,7 @@ iframe {
 }
 
 #toast {
-  opacity: 0;
+  display: none;
   min-width: 250px;
   margin-left: -141px;
   background-color: var(--btn);
@@ -359,7 +359,7 @@ iframe {
 }
 
 #toast.show {
-  opacity: 1;
+  display: block;
 }
 
 .community-list-wrapper {
