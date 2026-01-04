@@ -7,10 +7,10 @@ import { Endpoint } from '@/models/endpoint';
 import { Post } from '@/models/post';
 import { Settings } from '@/models/settings';
 import { config } from '@/config';
+import type { HydratedEndpointDocument } from '@/models/endpoint';
 import type { HydratedConversationDocument } from '@/models/conversation';
 import type { HydratedContentDocument } from '@/types/mongoose/content';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
-import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 

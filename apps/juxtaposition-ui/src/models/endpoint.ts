@@ -30,5 +30,5 @@ export const endpointSchema = new Schema<Endpoint>({
 	n3ds_host: String
 });
 
-export const Endpoint = model('ENDPOINT', endpointSchema);
+export const Endpoint = model('Endpoint', endpointSchema);
 export const ENDPOINT = Endpoint;
