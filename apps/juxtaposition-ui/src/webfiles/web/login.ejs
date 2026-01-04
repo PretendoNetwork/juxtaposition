@@ -42,11 +42,15 @@
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/login.css">
+    <script src="/js/login.global.js"></script>
 </head>
 <body>
 <div class="main-body">
-    <link rel="stylesheet" href="/css/login.css">
-    <div id="toast"></div>
+    <div id="toast" class="<%= toast ? 'show' :'' %>">
+        <%= toast %>
+    </div>
     <div class="wrapper">
         <div class="account-form-wrapper">
             <a class="logotype" href="https://pretendo.network">
@@ -88,15 +92,5 @@
         </div>
     </div>
 </div>
-<script>
-    function Toast(text) {
-        let x = document.getElementById("toast");
-        x.innerText = text;
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 10000);
-    }
-    <%if(toast) {%>
-        Toast(`<%=toast%>`);
-    <%}%>
-</script>
-</body></html>
+</body>
+</html>
