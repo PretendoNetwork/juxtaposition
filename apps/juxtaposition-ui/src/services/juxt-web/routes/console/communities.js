@@ -166,7 +166,7 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 		offset = 0;
 	}
 	switch (req.params.type) {
-		case 'popular':
+		case 'hot':
 			posts = await database.getNumberPopularCommunityPostsByID(community, config.postLimit, offset);
 			break;
 		case 'verified':

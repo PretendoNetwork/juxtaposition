@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { database as db } from '@/database';
 import { config } from '@/config';
+import { humanDate, humanFromNow } from '@/util';
 import type { RequestHandler } from 'express';
 
 export const checkBan: RequestHandler = async (request, response, next) => {
@@ -43,9 +44,9 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 		if (request.directory === 'web') {
 			return response.render('web/login.ejs', { toast: 'No access. Must be tester or dev', redirect: request.originalUrl });
 		} else {
-			return response.render('portal/partials/ban_notification.ejs', {
-				user: null,
-				error: 'No access. Must be tester or dev'
+			return response.render('portal/error_fatal.ejs', {
+				code: 5989999,
+				message: 'No access. Must be tester or dev'
 			});
 		}
 	}
@@ -57,25 +58,36 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
 	if (userSettings && (userSettings.account_status < 0 || userSettings.account_status > 1 || request.user.accessLevel < 0)) {
+		let banMessage = '';
+		let banCode = 5980020;
+		switch (userSettings.account_status) {
+			case 2:
+				banMessage = `${request.user.username} has been banned. The ban ends ${humanFromNow(userSettings.ban_lift_date)} (at ${humanDate(userSettings.ban_lift_date)}).`;
+				banCode = 5980010;
+				break;
+			case 3:
+				banMessage = `${request.user.username} has been banned forever.`;
+				banCode = 5980011;
+				break;
+			default:
+				banMessage = `${request.user.username} has been banned.`;
+		}
+		if (request.user.accessLevel < 0) {
+			banMessage += '\n\nThis ban restricts all parts of Pretendo Network.';
+		} else if (userSettings.ban_reason) {
+			banMessage += `\n\nReason: ${userSettings.ban_reason}.`;
+		}
+		banMessage += `\n\nIf you have any questions, please contact the moderators on the Pretendo Network Forum (forum.pretendo.network).`;
+
 		if (request.directory === 'web') {
-			let banMessage = '';
-			switch (userSettings.account_status) {
-				case 2:
-					banMessage = `${request.user.username} has been banned for ${moment(userSettings.ban_lift_date).fromNow(true)}. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
-					break;
-				case 3:
-					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
-					break;
-				default:
-					banMessage = `${request.user.username} has been banned. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
-			}
-			return response.render('web/login.ejs', { toast: banMessage, redirect: request.originalUrl });
+			return response.render('web/login.ejs', {
+				toast: banMessage,
+				redirect: request.originalUrl
+			});
 		} else {
-			return response.render(request.directory + '/partials/ban_notification.ejs', {
-				user: userSettings,
-				moment: moment,
-				PNID: request.user.username,
-				networkBan: request.user.accessLevel < 0
+			return response.render(request.directory + '/error_fatal.ejs', {
+				message: banMessage,
+				code: banCode
 			});
 		}
 	}

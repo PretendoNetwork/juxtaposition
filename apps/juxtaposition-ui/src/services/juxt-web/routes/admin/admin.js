@@ -9,7 +9,7 @@ import { logger } from '@/logger';
 import { COMMUNITY } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash } from '@/util';
+import { humanDate, createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash } from '@/util';
 import { getUserMetrics } from '@/metrics';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -47,16 +47,53 @@ adminRouter.get('/posts', async function (req, res) {
 	});
 });
 
+async function tryGetSettingsFromPidString(pid_string) {
+	// Check the string is all digits
+	if (!/^\d+$/g.test(pid_string)) {
+		return null;
+	}
+
+	// Parse it
+	const pid = parseInt(pid_string, 10);
+	if (isNaN(pid)) {
+		return null;
+	}
+
+	// Get the user doc
+	const user = await database.getUserSettings(pid);
+	if (user === null) {
+		return null;
+	}
+
+	return user;
+}
+
 adminRouter.get('/accounts', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 
 	const page = req.query.page ? parseInt(req.query.page) : 0;
-	const search = req.query.search;
+	const search = req.query.search?.trim();
 	const limit = 20;
 
-	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
+	const users = await (async () => {
+		if (!search) {
+			return database.getUsersSettings(limit, page * limit);
+		}
+		const results = [];
+
+		const pid_user = await tryGetSettingsFromPidString(search);
+		if (pid_user !== null) {
+			results.push(pid_user);
+		}
+
+		const miis = await database.getUserSettingsFuzzySearch(search, limit, page * limit);
+		results.push(...miis);
+
+		return results;
+	})();
+
 	const userMap = await getUserHash();
 	const userMetrics = await getUserMetrics();
 
@@ -88,8 +125,8 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	const userMap = getUserHash();
 	const reasonMap = getReasonMap();
 
-	const reports = await database.getReportsByOffender(req.params.pid, 0, 5);
-	const submittedReports = await database.getReportsByReporter(req.params.pid, 0, 5);
+	const reports = await database.getReportsByOffender(req.params.pid, 0, 50);
+	const submittedReports = await database.getReportsByReporter(req.params.pid, 0, 50);
 	const postIDs = reports.concat(submittedReports).map(obj => obj.post_id);
 
 	const postsMap = await POST.aggregate([
@@ -103,9 +140,9 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 		{ $project: { index: 0, _id: 0 } }
 	]);
 
-	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(10);
+	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(50);
 
-	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 20);
+	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 50);
 
 	res.render(req.directory + '/moderate_user.ejs', {
 		moment: moment,
@@ -143,7 +180,7 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 		return;
 	}
 
-	if (req.body.ban_lift_date == '') {
+	if (req.body.ban_lift_date == '' || req.body.account_status == 0) {
 		req.body.ban_lift_date = null;
 	}
 
@@ -162,17 +199,21 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 		await newNotification({
 			pid: pid,
 			type: 'notice',
-			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: "${req.body.ban_reason}". If you have any questions contact the moderators in the Discord server or forum.`,
+			text: `You have been Limited from Posting until ${humanDate(req.body.ban_lift_date)}. ` +
+				(req.body.ban_reason ? `Reason: "${req.body.ban_reason}".` : '') +
+				`Click this message to view the Juxtaposition Code of Conduct. ` +
+				`If you have any questions, please contact the moderators on the Pretendo Network Forum (forum.pretendo.network).`,
 			image: '/images/bandwidthalert.png',
 			link: '/titles/2551084080/new'
 		});
 	}
 
 	let action = 'UPDATE_USER';
+	const accountStatusChanged = oldUserSettings.account_status !== req.body.account_status;
 	const changes = [];
 	const fields = [];
 
-	if (oldUserSettings.account_status !== req.body.account_status) {
+	if (accountStatusChanged) {
 		const oldStatus = getAccountStatus(oldUserSettings.account_status);
 		const newStatus = getAccountStatus(req.body.account_status);
 
@@ -197,12 +238,12 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 		changes.push(`Account Status changed from "${oldStatus}" to "${newStatus}"`);
 	}
 
-	if (oldUserSettings.ban_lift_date !== req.body.ban_lift_date) {
+	if (accountStatusChanged || oldUserSettings.ban_lift_date !== req.body.ban_lift_date) {
 		fields.push('ban_lift_date');
-		changes.push(`User Ban Lift Date changed from "${oldUserSettings.ban_lift_date}" to "${req.body.ban_lift_date}"`);
+		changes.push(`User Ban Lift Date changed from "${humanDate(oldUserSettings.ban_lift_date)}" to "${humanDate(req.body.ban_lift_date)}"`);
 	}
 
-	if (oldUserSettings.ban_reason !== req.body.ban_reason) {
+	if (accountStatusChanged || oldUserSettings.ban_reason !== req.body.ban_reason) {
 		fields.push('ban_reason');
 		changes.push(`Ban reason changed from "${oldUserSettings.ban_reason}" to "${req.body.ban_reason}"`);
 	}
@@ -240,7 +281,10 @@ adminRouter.delete('/:reportID', async function (req, res) {
 	await newNotification({
 		pid: post.pid,
 		type: 'notice',
-		text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
+		text: `Your ${postType} "${post.id}" has been removed` +
+			(reason ? ` for the following reason: "${reason}"` : '.') +
+			`Click this message to view the Juxtaposition Code of Conduct. ` +
+			`If you have any questions, please contact the moderators on the Pretendo Network Forum (forum.pretendo.network).`,
 		image: '/images/bandwidthalert.png',
 		link: '/titles/2551084080/new'
 	});

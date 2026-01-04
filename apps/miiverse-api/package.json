@@ -14,10 +14,10 @@
 		"test": "ts-node test/test.ts"
 	},
 	"dependencies": {
-		"@aws-sdk/client-s3": "^3.937.0",
-		"@imagemagick/magick-wasm": "^0.0.35",
+		"@aws-sdk/client-s3": "^3.958.0",
+		"@imagemagick/magick-wasm": "^0.0.37",
 		"@neato/config": "^4.1.0",
-		"@pretendonetwork/grpc": "^2.2.3",
+		"@pretendonetwork/grpc": "^2.3.5",
 		"@repo/grpc-client": "^0.0.0",
 		"colors": "^1.4.0",
 		"crc": "^4.3.2",
@@ -57,6 +57,6 @@
 		"table": "^6.8.1",
 		"tsup": "^8.5.1",
 		"typescript": "^5.9.3",
-		"xmlbuilder2": "^4.0.1"
+		"xmlbuilder2": "^4.0.3"
 	}
 }

@@ -8,7 +8,7 @@
         "notifications": "Notificaciones",
         "go_back": "Volver",
         "back": "Atrás",
-        "yeahs": "\"Me Gustas\" concedidos",
+        "yeahs": "\"Mola\" concedidos",
         "more": "Cargar más publicaciones",
         "no_posts": "No hay publicaciones",
         "private": "Privado",
@@ -80,7 +80,7 @@
         "coming_soon": "No hay mensajes"
     },
     "setup": {
-        "welcome": "¡Bienvenido a Juxtaposition!",
+        "welcome": "¡Estás en Juxtaposition!",
         "welcome_text": "Juxt es una comunidad de videojuegos para conectar a personas de todo el mundo usando personajes Mii. Juxt se puede usar para compartir tus experiencias de juego y conocer personas de todo el mundo.",
         "beta": "Información de la beta",
         "beta_text": {
@@ -117,7 +117,7 @@
         "google_text": "Juxtaposition usa Google Analytics para saber cómo se usan nuestros servicios. Los datos recolectados incluyen el tiempo por visita, qué páginas se usan y el tiempo de uso de cada página. La recolección de datos es anónima, y no se utiliza ni por Google ni por nosotros para mostrar publicidad.",
         "ready": "Listo para usar Juxt",
         "ready_text": "Primero, revisa algunas comunidades y mira las publicaciones de personas de todo el mundo. Aprovecha esta oportunidad para familiarizarte con Juxt. ¡Podrías hacer nuevos descubrimientos en el camino!",
-        "done": "¡Que te diviertas en Juxt!",
+        "done": "¡A disfrutar de Juxt!",
         "done_button": "¡Vamos!",
         "guest": "Modo invitado",
         "guest_text": "No podemos verificar tu cuenta en este momento, lo que probablemente significa que estás iniciando sesión con una cuenta de Nintendo Network. Podrás seguir navegando por Juxt, pero no podrás indicar ¡Mola! o crear publicaciones hasta que inicies sesión con una cuenta de Pretendo Network. Para obtener más información, consulta el servidor de Discord.",

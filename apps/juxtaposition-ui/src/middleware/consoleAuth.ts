@@ -52,29 +52,29 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 
 	// This section includes checks if a user is a developer and adds exceptions for these cases
 	if (!request.pid) {
-		return response.render('portal/partials/ban_notification.ejs', {
-			user: null,
-			error: 'Unable to parse service token. Are you using a Nintendo Network ID?'
+		return response.render('portal/error_fatal.ejs', {
+			code: 5989999,
+			message: 'Unable to parse service token. Are you using a Nintendo Network ID?'
 		});
 	}
 	if (!request.user) {
-		return response.render('portal/partials/ban_notification.ejs', {
-			user: null,
-			error: 'Unable to fetch user data. Please try again later.'
+		return response.render('portal/error_fatal.ejs', {
+			code: 5989999,
+			message: 'Unable to fetch user data. Please try again later.'
 		});
 	}
 	if (request.user.accessLevel < 3 && !request.paramPackData) {
-		return response.render('portal/partials/ban_notification.ejs', {
-			user: null,
-			error: 'Missing auth headers'
+		return response.render('portal/error_fatal.ejs', {
+			code: 5989999,
+			message: 'Missing auth headers'
 		});
 	}
 	const userAgent = request.get('user-agent') ?? '';
 	const uaIsConsole = userAgent.includes('Nintendo WiiU') || userAgent.includes('Nintendo 3DS');
 	if (request.user.accessLevel < 3 && (request.cookies.access_token || !uaIsConsole)) {
-		return response.render('portal/partials/ban_notification.ejs', {
-			user: null,
-			error: 'Invalid authentication method used.'
+		return response.render('portal/error_fatal.ejs', {
+			code: 5989999,
+			message: 'Invalid authentication method used.'
 		});
 	}
 

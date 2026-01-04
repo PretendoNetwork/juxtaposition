@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <%- include('partials/head'); %>
+	<%- include('partials/head'); %>
 </head>
 <body>
 <div id="main">
@@ -98,7 +98,8 @@
         const reason = prompt("Provide explanation for removing post:")
         if(!id || !reason) return;
 
-        fetch(`/admin/${id}?reason=${reason}`, {
+		const params = new URLSearchParams({ reason });
+        fetch(`/admin/${id}?${params}`, {
             method: 'DELETE',
         })
             .then(res => res.text())
@@ -109,7 +110,8 @@
         const reason = prompt("Provide explanation for ignoring this report:")
         if(!id || !reason) return;
 
-        fetch(`/admin/${id}?reason=${reason}`, {
+		const params = new URLSearchParams({ reason });
+        fetch(`/admin/${id}?${params}`, {
             method: 'PUT',
         })
             .then(res => res.text())

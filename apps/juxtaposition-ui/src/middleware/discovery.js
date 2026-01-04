@@ -21,9 +21,9 @@ export async function checkDiscovery(request, response, next) {
 		if (request.directory === 'web') {
 			return response.render('web/login.ejs', { toast: message, redirect: request.originalUrl });
 		} else {
-			return response.render('portal/partials/ban_notification.ejs', {
-				user: null,
-				error: message
+			return response.render('portal/error_fatal.ejs', {
+				message,
+				code: 5989999
 			});
 		}
 	} else {

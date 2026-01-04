@@ -128,8 +128,15 @@
 					</select>
 				</div>
 				<div class="col">
-					<label for="ban_lift_date" class="labels">Banned Until:</label>
-					<input type="datetime-local" id="ban_lift_date" name="ban_lift_date" value="<%= userSettings.ban_lift_date %>">
+					<label for="ban_lift_date_picker" class="labels">Banned Until:</label>
+					<input type="datetime-local" id="ban_lift_date_picker" name="ban_lift_date">
+					<input type="hidden" id="ban_lift_date" value="<%= userSettings.ban_lift_date?.toISOString() %>">
+				</div>
+				<div class="col">
+					UTC: <span id="ban_lift_date_utc"></span>
+				</div>
+				<div class="col">
+					Remaining: <span id="ban_lift_date_duration"></span>
 				</div>
 				<div class="col">
 					<label for="ban_reason" class="labels">Ban Reason</label>
@@ -140,147 +147,177 @@
 				<button class="btn btn-primary profile-button" type="button" onclick="savePNID()">Save User</button>
 			</div>
 		</div>
-		<div class="mt-5 text-center">
-			<h4 class="text-right">Recent Profile Actions (limit 20)</h4>
-		</div>
-		<ul class="list-content-with-icon-and-text arrow-list">
-			<% auditLog.forEach(function(log) { %>
-				<li class="reports">
-					<details>
-						<summary>
-							<div class="hover">
-								<a href="/users/<%= log.actor %>" data-pjax="#body" class="icon-container notify">
-									<img src="<%= cdnURL %>/mii/<%= log.actor %>/normal_face.png" class="icon" style="width: 32px; height: 32px;">
-								</a>
-								<span class="body messages report" href="#">
-									<span class="text">
-										<a href="/users/<%= log.actor %>" class="nick-name"><%= userMap.get(log.actor) %></a>
-										<span title="<%= moment(log.timestamp) %>" class="timestamp">: <%= log.action %> <%= moment(log.timestamp).fromNow() %></span>
-									</span>
-								</span>
-							</div>
-						</summary>
-						<span class="text">
-							<p style="white-space: pre-line; padding: 0 30px"><%= log.context.trim() %></p>
-						</span>
-					</details>
-				</li>
-			<% }); %>
-		</ul>
-		<div class="mt-5 text-center">
-			<h4 class="text-right">Recently Reported Posts (limit 5)</h4>
-		</div>
-		<ul class="list-content-with-icon-and-text arrow-list">
-			<% reports.forEach(function(report) { %>
-				<% let post = postsMap.find((post) => post.id === report.post_id) %>
-				<% if (!post) return; %>
-				<li class="reports">
-					<details>
-						<summary>
-							<div class="hover">
-								<a href="/users/<%= report.reported_by %>" data-pjax="#body" class="icon-container notify">
-									<img src="<%= cdnURL %>/mii/<%= report.reported_by %>/normal_face.png" class="icon">
-								</a>
-								<span class="body messages report" href="#">
-									<span class="text">
-										<a href="/users/<%= report.reported_by %>" class="nick-name">Reported By: <%= userMap.get(report.reported_by) %></a>
-										<span title="<%= moment(report.created_at) %>" class="timestamp"><%= moment(report.created_at).fromNow() %></span>
-									</span>
-									<span class="text">
-										<h4>
-											<%= reasonMap[report.reason] ?? "Unknown" %>
-										</h4>
-										<p>
-											<%= report.message %>
-										</p>
-									</span>
-									<% if (report.resolved) { %>
+		<details open>
+			<summary>
+				<div class="mt-5">
+					<h4>Recent Profile Actions (<%=auditLog.length%>, limit 50 most recent)</h4>
+				</div>
+			</summary>
+			<ul class="list-content-with-icon-and-text arrow-list">
+				<% if (auditLog.length === 0) { %>
+					<h4>There's nothing here...</h4>
+				<% } %>
+				<% auditLog.forEach(function(log) { %>
+					<li class="reports">
+						<details>
+							<summary>
+								<div class="hover">
+									<a href="/users/<%= log.actor %>" data-pjax="#body" class="icon-container notify">
+										<img src="<%= cdnURL %>/mii/<%= log.actor %>/normal_face.png" class="icon" style="width: 32px; height: 32px;">
+									</a>
+									<span class="body messages report" href="#">
 										<span class="text">
-											<span class="nick-name">Resolved By: <%= userMap.get(report.resolved_by) %></span>
-											<span title="<%= moment(report.resolved_at) %>" class="timestamp"><%= moment(report.resolved_at).fromNow() %></span>
+											<a href="/users/<%= log.actor %>" class="nick-name"><%= userMap.get(log.actor) %></a>
+											<span title="<%= moment(log.timestamp) %>" class="timestamp">: <%= log.action %> <%= moment(log.timestamp).fromNow() %></span>
 										</span>
-										<span class="text"><p><%= report.note %></p></span>
-									<% } %>
-								</span>
-							</div>
-						</summary>
-						<%- include('partials/post_template', { post: post, reply: false }); %>
-					</details>
-				</li>
-			<% }); %>
-		</ul>
-		<div class="mt-5 text-center">
-			<h4 class="text-right">Recently Submitted Reports (limit 5)</h4>
-		</div>
-		<ul class="list-content-with-icon-and-text arrow-list">
-			<% submittedReports.forEach(function(report) { %>
-				<% let post = postsMap.find((post) => post.id === report.post_id) %>
-				<% if (!post) return; %>
-				<li class="reports">
-					<details>
-						<summary>
-							<div class="hover">
-								<a href="/users/<%= report.reported_by %>" data-pjax="#body" class="icon-container notify">
-									<img src="<%= cdnURL %>/mii/<%= report.reported_by %>/normal_face.png" class="icon">
-								</a>
-								<span class="body messages report" href="#">
-									<span class="text">
-										<a href="/users/<%= report.reported_by %>" class="nick-name">Reported By: <%= userMap.get(report.reported_by) %></a>
-										<span title="<%= moment(report.created_at) %>" class="timestamp"><%= moment(report.created_at).fromNow() %></span>
 									</span>
-									<span class="text">
-										<h4>
-											<%= reasonMap[report.reason] ?? "Unknown" %>
-										</h4>
-										<p>
-											<%= report.message %>
-										</p>
-									</span>
-									<% if (report.resolved) { %>
+								</div>
+							</summary>
+							<span class="text">
+								<p style="white-space: pre-line; padding: 0 30px"><%= log.context.trim() %></p>
+							</span>
+						</details>
+					</li>
+				<% }); %>
+			</ul>
+		</details>
+		<details>
+			<summary>
+				<div class="mt-5">
+					<h4>Recently Reported Posts (<%=reports.length%>, limit 50 most recent)</h4>
+				</div>
+			</summary>
+			<ul class="list-content-with-icon-and-text arrow-list">
+				<% if (reports.length === 0) { %>
+					<h4>There's nothing here...</h4>
+				<% } %>
+				<% reports.forEach(function(report) { %>
+					<% let post = postsMap.find((post) => post.id === report.post_id) %>
+					<% if (!post) return; %>
+					<li class="reports">
+						<details>
+							<summary>
+								<div class="hover">
+									<a href="/users/<%= report.reported_by %>" data-pjax="#body" class="icon-container notify">
+										<img src="<%= cdnURL %>/mii/<%= report.reported_by %>/normal_face.png" class="icon">
+									</a>
+									<span class="body messages report" href="#">
 										<span class="text">
-											<span class="nick-name">Resolved By: <%= userMap.get(report.resolved_by) %></span>
-											<span title="<%= moment(report.resolved_at) %>" class="timestamp"><%= moment(report.resolved_at).fromNow() %></span>
+											<a href="/users/<%= report.reported_by %>" class="nick-name">Reported By: <%= userMap.get(report.reported_by) %></a>
+											<span title="<%= moment(report.created_at) %>" class="timestamp"><%= moment(report.created_at).fromNow() %></span>
 										</span>
-										<span class="text"><p><%= report.note %></p></span>
-									<% } %>
-								</span>
-							</div>
-						</summary>
-						<%- include('partials/post_template', { post: post, reply: false }); %>
-					</details>
-				</li>
-			<% }); %>
-		</ul>
-		<div class="mt-5 text-center">
-			<h4 class="text-right">Recently Removed Posts (limit 10)</h4>
-		</div>
-		<ul class="list-content-with-icon-and-text arrow-list">
-			<% removedPosts.forEach(function(post) { %>
-				<li class="reports">
-					<details>
-						<summary>
-							<div class="hover">
-								<a href="/users/<%= post.removed_by %>" data-pjax="#body" class="icon-container notify">
-									<img src="<%= cdnURL %>/mii/<%= post.removed_by %>/normal_face.png" class="icon">
-								</a>
-								<span class="body messages report" href="#">
-									<span class="text">
-										<a href="/users/<%= post.removed_by %>" class="nick-name">Removed By: <%= userMap.get(post.removed_by) %></a>
-										<span title="<%= moment(post.removed_at) %>" class="timestamp"><%= moment(post.removed_at).fromNow() %></span>
+										<span class="text">
+											<h4>
+												<%= reasonMap[report.reason] ?? "Unknown" %>
+											</h4>
+											<p>
+												<%= report.message %>
+											</p>
+										</span>
+										<% if (report.resolved) { %>
+											<span class="text">
+												<span class="nick-name">Resolved By: <%= userMap.get(report.resolved_by) %></span>
+												<span title="<%= moment(report.resolved_at) %>" class="timestamp"><%= moment(report.resolved_at).fromNow() %></span>
+											</span>
+											<span class="text"><p><%= report.note %></p></span>
+										<% } %>
 									</span>
-									<span class="text">
-										<p>
-											<%= post.removed_reason %>
-										</p>
+								</div>
+							</summary>
+							<%- include('partials/post_template', { post: post, reply: false }); %>
+						</details>
+					</li>
+				<% }); %>
+			</ul>
+		</details>
+		
+		
+		<details>
+			<summary>
+				<div class="mt-5">
+					<h4>Recently Submitted Reports (<%=submittedReports.length%>, limit 50 most recent)</h4>
+				</div>
+			</summary>
+			<ul class="list-content-with-icon-and-text arrow-list">
+				<% if (submittedReports.length === 0) { %>
+					<h4>There's nothing here...</h4>
+				<% } %>
+				<% submittedReports.forEach(function(report) { %>
+					<% let post = postsMap.find((post) => post.id === report.post_id) %>
+					<% if (!post) return; %>
+					<li class="reports">
+						<details>
+							<summary>
+								<div class="hover">
+									<a href="/users/<%= report.reported_by %>" data-pjax="#body" class="icon-container notify">
+										<img src="<%= cdnURL %>/mii/<%= report.reported_by %>/normal_face.png" class="icon">
+									</a>
+									<span class="body messages report" href="#">
+										<span class="text">
+											<a href="/users/<%= report.reported_by %>" class="nick-name">Reported By: <%= userMap.get(report.reported_by) %></a>
+											<span title="<%= moment(report.created_at) %>" class="timestamp"><%= moment(report.created_at).fromNow() %></span>
+										</span>
+										<span class="text">
+											<h4>
+												<%= reasonMap[report.reason] ?? "Unknown" %>
+											</h4>
+											<p>
+												<%= report.message %>
+											</p>
+										</span>
+										<% if (report.resolved) { %>
+											<span class="text">
+												<span class="nick-name">Resolved By: <%= userMap.get(report.resolved_by) %></span>
+												<span title="<%= moment(report.resolved_at) %>" class="timestamp"><%= moment(report.resolved_at).fromNow() %></span>
+											</span>
+											<span class="text"><p><%= report.note %></p></span>
+										<% } %>
 									</span>
-								</span>
-							</div>
-						</summary>
-						<%- include('partials/post_template', { post: post, reply: false }); %>
-					</details>
-				</li>
-			<% }); %>
-		</ul>
+								</div>
+							</summary>
+							<%- include('partials/post_template', { post: post, reply: false }); %>
+						</details>
+					</li>
+				<% }); %>
+			</ul>
+		</details>
+		<details>
+			<summary>
+				<div class="mt-5">
+					<h4>Recently Removed Posts (<%=removedPosts.length%>, limit 50 most recent)</h4>
+				</div>
+			</summary>
+			<ul class="list-content-with-icon-and-text arrow-list">
+				<% if (removedPosts.length === 0) { %>
+					<h4>There's nothing here...</h4>
+				<% } %>
+				<% removedPosts.forEach(function(post) { %>
+					<li class="reports">
+						<details>
+							<summary>
+								<div class="hover">
+									<a href="/users/<%= post.removed_by %>" data-pjax="#body" class="icon-container notify">
+										<img src="<%= cdnURL %>/mii/<%= post.removed_by %>/normal_face.png" class="icon">
+									</a>
+									<span class="body messages report" href="#">
+										<span class="text">
+											<a href="/users/<%= post.removed_by %>" class="nick-name">Removed By: <%= userMap.get(post.removed_by) %></a>
+											<span title="<%= moment(post.removed_at) %>" class="timestamp"><%= moment(post.removed_at).fromNow() %></span>
+										</span>
+										<span class="text">
+											<p>
+												<%= post.removed_reason %>
+											</p>
+										</span>
+									</span>
+								</div>
+							</summary>
+							<%- include('partials/post_template', { post: post, reply: false }); %>
+						</details>
+					</li>
+				<% }); %>
+			</ul>
+		</details>
 	</div>
 </div>
 <script>
@@ -309,5 +346,6 @@
 				.catch(console.log);
 	}
 </script>
+<script src="/js/admin.global.js"></script>
 </body>
 </html>

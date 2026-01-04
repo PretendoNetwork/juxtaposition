@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <meta id="error" data-code="<%=code%>" data-message="<%=message%>">
+    </head>
+    <body>
+        <h1>You are not authorized to access this application (<%=code%>)</h1>
+        <p style="white-space: pre-line"><%=message%></p>
+    </body>
+    <script>
+        var e = document.getElementById('error');
+        var code = parseInt(e.getAttribute('data-code'));
+        var message = e.getAttribute('data-message');
+        
+        wiiuErrorViewer.openByCodeAndMessage(code, message);
+        wiiuBrowser.closeApplication();
+    </script>
+</html>
