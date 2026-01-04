@@ -344,7 +344,6 @@ iframe {
 }
 
 #toast {
-  display: none;
   min-width: 250px;
   margin-left: -141px;
   background-color: var(--btn);
@@ -353,13 +352,15 @@ iframe {
   position: fixed;
   z-index: 10;
   left: 50%;
-  bottom: 5em;
+  top: 100vh;
+  opacity: 0;
   padding: 1ch;
   transition: all 0.5s ease;
 }
 
 #toast.show {
-  display: block;
+  opacity: 1;
+  transform: translateY(-130%);
 }
 
 .community-list-wrapper {
