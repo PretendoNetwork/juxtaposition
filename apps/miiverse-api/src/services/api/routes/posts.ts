@@ -279,21 +279,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	}
 
 	let parentPost: HydratedPostDocument | null = null;
-	async function getTopLevelParent(post: HydratedPostDocument): Promise<HydratedPostDocument | null> {
-		if (!post.parent) {
-			return post;
-		}
-		const parent = await getPostByID(post.parent);
-		if (!parent) {
-			return null;
-		}
-		return await getTopLevelParent(parent);
-	}
 	if (request.params.post_id) {
 		parentPost = await getPostByID(request.params.post_id.toString());
-		if (parentPost) {
-			parentPost = await getTopLevelParent(parentPost);
-		}
 		if (!parentPost) {
 			request.log.warn('Request missing parent post');
 			return badRequest(response, ApiErrorCode.BAD_PARAMS);

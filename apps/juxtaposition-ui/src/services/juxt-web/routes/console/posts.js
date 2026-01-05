@@ -256,21 +256,8 @@ async function newPost(req, res) {
 	let parentPost = null;
 	const postId = await generatePostUID(21);
 	let community = await database.getCommunityByID(req.body.community_id);
-	async function getTopLevelParent(post) {
-		if (!post.parent) {
-			return post;
-		}
-		const parent = await database.getPostByID(post.parent);
-		if (!parent) {
-			return null;
-		}
-		return await getTopLevelParent(parent);
-	}
 	if (req.params.post_id) {
 		parentPost = await database.getPostByID(req.params.post_id.toString());
-		if (parentPost) {
-			parentPost = await getTopLevelParent(parentPost);
-		}
 		if (!parentPost) {
 			return res.sendStatus(403);
 		} else {
