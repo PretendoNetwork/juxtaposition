@@ -256,21 +256,23 @@ async function newPost(req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
 	let parentPost = null;
 	const postId = await generatePostUID(21);
-	const community = await database.getCommunityByID(req.body.community_id);
-	if (!community || !userSettings || !req.user) {
-		res.status(403);
-		logger.error('Incoming post is missing data - rejecting');
-		return res.redirect('/titles/show');
+	let community = await database.getCommunityByID(req.body.community_id);
+	if (req.params.post_id) {
+		parentPost = await database.getPostByID(req.params.post_id.toString());
+		if (!parentPost) {
+			return res.sendStatus(403);
+		} else {
+			community = await database.getCommunityByID(parentPost.community_id);
+		}
 	}
 	if (req.params.post_id && (req.body.body === '' && req.body.painting === '' && req.body.screenshot === '')) {
 		res.status(422);
 		return res.redirect('/posts/' + req.params.post_id.toString());
 	}
-	if (req.params.post_id) {
-		parentPost = await database.getPostByID(req.params.post_id.toString());
-		if (!parentPost) {
-			return res.sendStatus(403);
-		}
+	if (!community || !userSettings || !req.user) {
+		res.status(403);
+		logger.error('Incoming post is missing data - rejecting');
+		return res.redirect('/titles/show');
 	}
 
 	if (!canPost(community, userSettings, parentPost, req.user)) {
