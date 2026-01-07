@@ -282,7 +282,7 @@ adminRouter.delete('/:reportID', async function (req, res) {
 		pid: post.pid,
 		type: 'notice',
 		text: `Your ${postType} "${post.id}" has been removed` +
-			(reason ? ` for the following reason: "${reason}". ` : '.') +
+			(reason ? ` for the following reason: "${reason}". ` : '. ') +
 			`Click this message to view the Juxtaposition Code of Conduct. ` +
 			`If you have any questions, please contact the moderators on the Pretendo Network Forum (forum.pretendo.network).`,
 		image: '/images/bandwidthalert.png',
