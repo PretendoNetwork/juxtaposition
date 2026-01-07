@@ -36,14 +36,11 @@ loginRouter.post('/', async (req, res) => {
 		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', redirect });
 	}
 
-	let discovery = await database.getEndPoint(config.serverEnvironment);
-	if (!discovery) {
-		discovery = {
-			status: 5
-		};
-	}
+	const discovery = await database.getEndPoint(config.serverEnvironment);
+	const discoveryStatus = discovery?.status ?? 5;
+
 	let message = '';
-	switch (discovery.status) {
+	switch (discoveryStatus) {
 		case 3:
 			message = 'Juxt is currently undergoing maintenance. Please try again later.';
 			break;
@@ -54,7 +51,7 @@ loginRouter.post('/', async (req, res) => {
 			message = 'Juxt is currently unavailable. Please try again later.';
 			break;
 	}
-	if (discovery.status !== 0) {
+	if (discoveryStatus !== 0) {
 		return res.render(req.directory + '/error.ejs', {
 			code: 504,
 			message: message
