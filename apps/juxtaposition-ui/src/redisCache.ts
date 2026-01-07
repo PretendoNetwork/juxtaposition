@@ -15,27 +15,32 @@ redisClient.on('connect', () => {
 	logger.success('Redis connected');
 });
 
-export async function redisSet(key, value, expireTime) {
+export async function redisSet(key: string, value: string, expireTime?: number): Promise<boolean> {
 	if (!redisClient.isOpen) {
 		return false;
 	}
 
-	await redisClient.set(key, value, 'EX', expireTime);
-	// Seems to be a library bug, so we have to manually set the expire time
-	await redisClient.expire(key, expireTime);
+	await redisClient.set(key, value, {
+		expiration: expireTime
+			? {
+					type: 'EX',
+					value: expireTime
+				}
+			: undefined
+	});
 	return true;
 }
 
-export async function redisGet(key) {
+export async function redisGet(key: string): Promise<string | null> {
 	if (!redisClient.isOpen) {
-		return false;
+		return null;
 	}
 
 	const result = await redisClient.get(key);
 	return result;
 }
 
-export async function redisRemove(key) {
+export async function redisRemove(key: string): Promise<boolean> {
 	if (!redisClient.isOpen) {
 		return false;
 	}

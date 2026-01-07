@@ -1,7 +1,7 @@
 import { processLanguage } from '@/util';
+import type { Request, RequestHandler } from 'express';
 
-export async function detectVersion(request, response, next) {
-	request.timerDate = Date.now();
+export const detectVersion: RequestHandler = async (request, response, next) => {
 	// Check the domain and set the directory
 	if (includes(request, 'juxt')) {
 		request.directory = 'web';
@@ -13,8 +13,8 @@ export async function detectVersion(request, response, next) {
 	request.isWrite = request.method === 'POST' || request.method === 'PUT' || request.method === 'DELETE';
 
 	next();
-}
+};
 
-function includes(request, domain) {
+function includes(request: Request, domain: string): boolean {
 	return request.subdomains.findIndex(element => element.includes(domain)) !== -1;
 }

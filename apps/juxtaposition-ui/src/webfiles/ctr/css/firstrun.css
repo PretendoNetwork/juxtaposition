@@ -1,0 +1,72 @@
+.background {
+	background: #fff;
+	border-radius: 5px;
+	border: 1px solid #666;
+	margin: 0 auto;
+	padding: 5px;
+	display: none;
+}
+.about-body {
+	font-size: 12px;
+	text-align: center;
+}
+.post-button {
+	display: block;
+}
+#body {
+	position: relative;;
+}
+
+.fixed-bottom-button.left {
+	left: 38px;
+}
+.post-button.fixed-bottom-button {
+	right: 38px;
+}
+.fixed-bottom-button {
+	padding: 0 !important;
+	width: 162px !important;
+	position: absolute;
+	bottom: 0;
+	height: 25px;
+}
+.about-wrapper.background {
+	min-height: 188px;
+}
+.about-button {
+	height: 25px;
+	margin: 0 auto;
+	display: block;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	left: 0;
+}
+.about-header {
+	font-weight: bold;
+	text-align: center;
+	color: #866dbe;
+	font-size: 15px;
+	margin: 5px 0;
+}
+h3 {
+	font-weight: bold;
+	text-align: center;
+	color: #44cca1;
+	font-size: 25px;
+	margin: 15px 0;
+}
+
+.headline {
+	width: 290px;
+	height: 36px;
+}
+
+.headline > h2 {
+	font-size: 12px;
+	line-height: 36px;
+	overflow: clip;
+}
+.tab-header span {
+	font-size: 12px;
+}

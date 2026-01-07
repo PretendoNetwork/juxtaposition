@@ -1,14 +1,39 @@
 import { Schema, model } from 'mongoose';
 import type { IReport, ReportModel } from '@/types/mongoose/report';
 
-const ReportSchema = new Schema<IReport, ReportModel>({
-	pid: String,
-	post_id: String,
-	reason: Number,
+export const ReportSchema = new Schema<IReport, ReportModel>({
+	pid: {
+		type: Number,
+		required: true
+	},
+	reported_by: {
+		type: Number,
+		required: true
+	},
+	post_id: {
+		type: String,
+		required: true
+	},
+	reason: {
+		type: Number,
+		required: true
+	},
+	message: {
+		type: String,
+		required: true
+	},
 	created_at: {
 		type: Date,
+		required: true,
 		default: new Date()
-	}
+	},
+	resolved: {
+		type: Boolean,
+		default: false
+	},
+	note: String,
+	resolved_by: Number,
+	resolved_at: Date
 });
 
 export const Report = model<IReport, ReportModel>('Report', ReportSchema);

@@ -2,7 +2,7 @@ import express from 'express';
 import xmlbuilder from 'xmlbuilder';
 import { getEndpoint } from '@/database';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
-import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
+import type { HydratedEndpointDocument } from '@/models/endpoint';
 
 const router = express.Router();
 

@@ -22,6 +22,7 @@ export type HtmlProps = {
 	children?: ReactNode;
 	head?: ReactNode;
 	title: string;
+	onLoad?: string;
 };
 
 export function CtrRoot(props: HtmlProps): ReactNode {
@@ -32,7 +33,7 @@ export function CtrRoot(props: HtmlProps): ReactNode {
 				<title>{props.title}</title>
 				{props.head}
 			</head>
-			<body>{props.children}</body>
+			<body evt-load={props.onLoad ?? ''}>{props.children}</body>
 		</html>
 	);
 }
