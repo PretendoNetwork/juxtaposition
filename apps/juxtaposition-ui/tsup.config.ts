@@ -7,7 +7,7 @@ import browserslist from 'browserslist-to-esbuild';
 export default defineConfig([
 	/* Main server app (Node) */
 	{
-		entry: ['src/server.js'],
+		entry: ['src/server.ts'],
 		sourcemap: true,
 		clean: true,
 
