@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import type { IReport, ReportModel } from '@/types/mongoose/report';
 
-export const ReportSchema = new Schema<IReport, ReportModel, IReportMethods>({
+export const ReportSchema = new Schema<IReport, ReportModel>({
 	pid: {
 		type: Number,
 		required: true
