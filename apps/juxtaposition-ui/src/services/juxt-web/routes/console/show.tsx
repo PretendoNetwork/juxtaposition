@@ -1,5 +1,5 @@
 import express from 'express';
-import z from 'zod';
+import { z } from 'zod';
 import { database } from '@/database';
 import { createUser, setName } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';

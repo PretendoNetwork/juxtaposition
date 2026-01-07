@@ -1,5 +1,5 @@
 import express from 'express';
-import z from 'zod';
+import { z } from 'zod';
 import { database } from '@/database';
 import { passwordLogin, getUserDataFromToken } from '@/util';
 import { config } from '@/config';
