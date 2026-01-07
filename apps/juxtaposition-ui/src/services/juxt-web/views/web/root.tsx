@@ -1,13 +1,15 @@
 import { InlineScript } from '@/services/juxt-web/views/common';
 import type { ReactNode } from 'react';
 
-function DefaultHead(): ReactNode {
+export function DefaultHead(): ReactNode {
 	return (
 		<>
+			<meta charSet="UTF-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<link rel="stylesheet" type="text/css" href="/css/web.css" />
 			<script src="/js/web.global.js" />
 			<link rel="manifest" href="/web/manifest.json" />
+			<link rel="preconnect" href="https://fonts.gstatic.com" />
 			<link
 				href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap"
 				rel="stylesheet"
