@@ -1,5 +1,7 @@
 import { database as db } from '@/database';
 import { config } from '@/config';
+import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
+import { buildContext } from '@/services/juxt-web/views/context';
 import type { RequestHandler } from 'express';
 
 export const checkDiscovery: RequestHandler = async (request, response, next) => {
@@ -20,7 +22,7 @@ export const checkDiscovery: RequestHandler = async (request, response, next) =>
 				break;
 		}
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', { toast: message, redirect: request.originalUrl });
+			return response.jsx(<WebLoginView ctx={buildContext(response)} toast={message} redirect={request.originalUrl} />);
 		} else {
 			return response.render('portal/error_fatal.ejs', {
 				message,
