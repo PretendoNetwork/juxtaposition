@@ -7,7 +7,13 @@ export type FirstRunViewProps = {
 };
 
 export function WebFirstRunView(_props: FirstRunViewProps): ReactNode {
-	const extraHead = <title>Juxtaposition Log In</title>;
+	const extraHead = (
+		<>
+			<title>Juxtaposition Log In</title>
+			<link rel="stylesheet" href="/css/first_run.css" />
+		</>
+	);
+
 	return (
 		<WebLoginRoot head={extraHead}>
 			<div className="wrapper">

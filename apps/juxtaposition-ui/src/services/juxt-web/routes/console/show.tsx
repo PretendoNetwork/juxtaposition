@@ -3,6 +3,10 @@ import z from 'zod';
 import { database } from '@/database';
 import { createUser, setName } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { buildContext } from '@/services/juxt-web/views/context';
+import { WebFirstRunView } from '@/services/juxt-web/views/web/firstRunView';
+import { PortalFirstRunView } from '@/services/juxt-web/views/portal/firstRunView';
+import { CtrFirstRunView } from '@/services/juxt-web/views/ctr/firstRunView';
 
 export const showRouter = express.Router();
 
@@ -21,7 +25,12 @@ showRouter.get('/', async function (req, res) {
 	const user = await database.getUserSettings(req.pid);
 	const content = await database.getUserContent(req.pid);
 	if (!user || !content) {
-		return res.render(req.directory + '/first_run.ejs');
+		return res.jsxForDirectory({
+
+			web: <WebFirstRunView ctx={buildContext(res)} />,
+			portal: <PortalFirstRunView ctx={buildContext(res)} />,
+			ctr: <CtrFirstRunView ctx={buildContext(res)} />
+		});
 	}
 
 	if (query.topic_tag) {
@@ -47,7 +56,11 @@ showRouter.get('/', async function (req, res) {
 });
 
 showRouter.get('/first', async function (req, res) {
-	res.render(req.directory + '/first_run.ejs');
+	return res.jsxForDirectory({
+		web: <WebFirstRunView ctx={buildContext(res)} />,
+		portal: <PortalFirstRunView ctx={buildContext(res)} />,
+		ctr: <CtrFirstRunView ctx={buildContext(res)} />
+	});
 });
 
 showRouter.post('/newUser', async function (req, res) {
