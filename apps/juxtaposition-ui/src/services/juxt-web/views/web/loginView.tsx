@@ -13,7 +13,7 @@ export function WebLoginView(props: LoginViewProps): ReactNode {
 
 	return (
 		<WebLoginRoot head={extraHead}>
-			<div id="toast" className={props.toast ? 'show' : undefined}>
+			<div id="toast" data-show={props.toast ? 'true' : undefined}>
 				{props.toast}
 			</div>
 			<div className="wrapper">
