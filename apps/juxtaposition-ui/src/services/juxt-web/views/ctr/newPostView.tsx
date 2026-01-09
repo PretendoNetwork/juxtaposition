@@ -7,38 +7,38 @@ const empathies = [
 		value: 0,
 		miiFaceFile: 'normal_face.png',
 		sound: 'SE_WAVE_MII_FACE_00',
-		className: 'feeling-button-normal',
+		className: 'sprite-feeling-normal',
 		isDefault: true
 	},
 	{
 		value: 1,
 		miiFaceFile: 'smile_open_mouth.png',
 		sound: 'SE_WAVE_MII_FACE_01',
-		className: 'feeling-button-happy'
+		className: 'sprite-feeling-happy'
 	},
 	{
 		value: 2,
 		miiFaceFile: 'wink_left.png',
 		sound: 'SE_WAVE_MII_FACE_02',
-		className: 'feeling-button-like'
+		className: 'sprite-feeling-like'
 	},
 	{
 		value: 3,
 		miiFaceFile: 'surprise_open_mouth.png',
 		sound: 'SE_WAVE_MII_FACE_03',
-		className: 'feeling-button-surprised'
+		className: 'sprite-feeling-surprise'
 	},
 	{
 		value: 4,
 		miiFaceFile: 'frustrated.png',
 		sound: 'SE_WAVE_MII_FACE_04',
-		className: 'feeling-button-frustrated'
+		className: 'sprite-feeling-frustrated'
 	},
 	{
 		value: 5,
 		miiFaceFile: 'sorrow.png',
 		sound: 'SE_WAVE_MII_FACE_05',
-		className: 'feeling-button-puzzled'
+		className: 'sprite-feeling-puzzled'
 	}
 ];
 
