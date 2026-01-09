@@ -16,39 +16,105 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
 // HTML
 <i class="icon icon-home"></i>
 */
-.sprite-feeling-frustrated-unselected {
+.sprite-feeling-frustrated {
   background-image: url(/images/sprites.png);
   background-position: 0px 0px;
-  width: 42px;
-  height: 42px;
+  width: 28px;
+  height: 28px;
 }
-.sprite-feeling-happy-unselected {
+.sprite-feeling-frustrated:checked {
   background-image: url(/images/sprites.png);
-  background-position: -42px 0px;
-  width: 42px;
-  height: 42px;
+  background-position: -28px 0px;
+  width: 28px;
+  height: 28px;
 }
-.sprite-feeling-like-unselected {
+.sprite-feeling-happy {
   background-image: url(/images/sprites.png);
-  background-position: 0px -42px;
-  width: 42px;
-  height: 42px;
+  background-position: 0px -28px;
+  width: 28px;
+  height: 28px;
 }
-.sprite-feeling-normal-unselected {
+.sprite-feeling-happy:checked {
   background-image: url(/images/sprites.png);
-  background-position: -42px -42px;
-  width: 42px;
-  height: 42px;
+  background-position: -28px -28px;
+  width: 28px;
+  height: 28px;
 }
-.sprite-feeling-puzzled-unselected {
+.sprite-feeling-like {
+  background-image: url(/images/sprites.png);
+  background-position: -56px 0px;
+  width: 28px;
+  height: 28px;
+}
+.sprite-feeling-like:checked {
+  background-image: url(/images/sprites.png);
+  background-position: -56px -28px;
+  width: 28px;
+  height: 28px;
+}
+.sprite-feeling-normal {
+  background-image: url(/images/sprites.png);
+  background-position: 0px -56px;
+  width: 28px;
+  height: 28px;
+}
+.sprite-feeling-normal:checked {
+  background-image: url(/images/sprites.png);
+  background-position: -28px -56px;
+  width: 28px;
+  height: 28px;
+}
+.sprite-feeling-puzzled {
+  background-image: url(/images/sprites.png);
+  background-position: -56px -56px;
+  width: 28px;
+  height: 28px;
+}
+.sprite-feeling-puzzled:checked {
   background-image: url(/images/sprites.png);
   background-position: -84px 0px;
-  width: 42px;
-  height: 42px;
+  width: 28px;
+  height: 28px;
 }
-.sprite-feeling-suprise-unselected {
+.sprite-feeling-surprise {
   background-image: url(/images/sprites.png);
-  background-position: -84px -42px;
-  width: 42px;
-  height: 42px;
+  background-position: -84px -28px;
+  width: 28px;
+  height: 28px;
+}
+.sprite-feeling-surprise:checked {
+  background-image: url(/images/sprites.png);
+  background-position: -84px -56px;
+  width: 28px;
+  height: 28px;
+}
+.sprite-reply {
+  background-image: url(/images/sprites.png);
+  background-position: -40px -84px;
+  width: 16px;
+  height: 16px;
+}
+.sprite-tag {
+  background-image: url(/images/sprites.png);
+  background-position: -72px -84px;
+  width: 12px;
+  height: 12px;
+}
+.sprite-yeah-selected {
+  background-image: url(/images/sprites.png);
+  background-position: 0px -84px;
+  width: 20px;
+  height: 19px;
+}
+.sprite-yeah-small {
+  background-image: url(/images/sprites.png);
+  background-position: -56px -84px;
+  width: 16px;
+  height: 16px;
+}
+.sprite-yeah-unselected {
+  background-image: url(/images/sprites.png);
+  background-position: -20px -84px;
+  width: 20px;
+  height: 19px;
 }

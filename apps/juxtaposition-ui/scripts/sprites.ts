@@ -37,7 +37,10 @@ Spritesmith.run({
 	}, {
 		format: 'css',
 		formatOpts: {
-			cssSelector: ({ name }: { name: string }) => '.sprite-' + name
+			cssSelector: ({ name }: { name: string }) => {
+				/* Use underscore for :checked, :hover etc. */
+				return '.sprite-' + name.replaceAll('_', ':');
+			}
 		}
 	});
 
