@@ -88,33 +88,75 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 28px;
   height: 28px;
 }
-.sprite-reply {
+.sprite-followers {
   background-image: url(/images/sprites.png);
-  background-position: -40px -84px;
+  background-position: -112px -72px;
+  width: 19px;
+  height: 14px;
+}
+.sprite-memo-input-dark {
+  background-image: url(/images/sprites.png);
+  background-position: -112px -38px;
+  width: 17px;
+  height: 17px;
+}
+.sprite-memo-input-light {
+  background-image: url(/images/sprites.png);
+  background-position: -112px -55px;
+  width: 17px;
+  height: 17px;
+}
+.sprite-post-count {
+  background-image: url(/images/sprites.png);
+  background-position: -112px -86px;
   width: 16px;
   height: 16px;
 }
+.sprite-reply {
+  background-image: url(/images/sprites.png);
+  background-position: -78px -84px;
+  width: 16px;
+  height: 16px;
+}
+.sprite-screenshot {
+  background-image: url(/images/sprites.png);
+  background-position: 0px -84px;
+  width: 26px;
+  height: 22px;
+}
 .sprite-tag {
   background-image: url(/images/sprites.png);
-  background-position: -72px -84px;
+  background-position: 0px -106px;
   width: 12px;
   height: 12px;
 }
+.sprite-text-input-dark {
+  background-image: url(/images/sprites.png);
+  background-position: -26px -84px;
+  width: 26px;
+  height: 17px;
+}
+.sprite-text-input-light {
+  background-image: url(/images/sprites.png);
+  background-position: -52px -84px;
+  width: 26px;
+  height: 17px;
+}
 .sprite-yeah-selected {
   background-image: url(/images/sprites.png);
-  background-position: 0px -84px;
+  background-position: -112px 0px;
   width: 20px;
   height: 19px;
 }
 .sprite-yeah-small {
   background-image: url(/images/sprites.png);
-  background-position: -56px -84px;
+  background-position: -94px -84px;
   width: 16px;
   height: 16px;
 }
 .sprite-yeah-unselected {
   background-image: url(/images/sprites.png);
-  background-position: -20px -84px;
+  background-position: -112px -19px;
   width: 20px;
   height: 19px;
 }
