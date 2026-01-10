@@ -142,19 +142,19 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 26px;
   height: 17px;
 }
-.sprite-yeah-selected {
-  background-image: url(/images/sprites.png);
-  background-position: -112px 0px;
-  width: 20px;
-  height: 19px;
-}
 .sprite-yeah-small {
   background-image: url(/images/sprites.png);
   background-position: -94px -84px;
   width: 16px;
   height: 16px;
 }
-.sprite-yeah-unselected {
+.sprite-yeah {
+  background-image: url(/images/sprites.png);
+  background-position: -112px 0px;
+  width: 20px;
+  height: 19px;
+}
+.sprite-yeah.selected {
   background-image: url(/images/sprites.png);
   background-position: -112px -19px;
   width: 20px;
