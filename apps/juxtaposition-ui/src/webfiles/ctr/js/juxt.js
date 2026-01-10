@@ -129,6 +129,7 @@ function initYeah() {
 	}
 	function yeah(e) {
 		var el = e.currentTarget;
+		var sprite = el.querySelector('.sprite-yeah');
 		var id = el.getAttribute('data-post');
 		var parent = document.getElementById(id);
 		var count = document.getElementById('count-' + id);
@@ -136,6 +137,7 @@ function initYeah() {
 		var params = 'postID=' + id;
 		if (classList.contains(el, 'selected')) {
 			classList.remove(el, 'selected');
+			classList.remove(sprite, 'selected');
 			classList.remove(parent, 'yeah');
 			if (count) {
 				count.innerText -= 1;
@@ -143,6 +145,7 @@ function initYeah() {
 			cave.snd_playSe('SE_OLV_CANCEL');
 		} else {
 			classList.add(el, 'selected');
+			classList.add(sprite, 'selected');
 			classList.add(parent, 'yeah');
 			if (count) {
 				count.innerText = ++count.innerText;

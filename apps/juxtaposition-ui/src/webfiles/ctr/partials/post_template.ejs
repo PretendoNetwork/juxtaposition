@@ -10,7 +10,7 @@
                 <%if(post.topic_tag) {%>
                 <a href="/topics?topic_tag=<%=post.topic_tag%>" data-pjax="#body">
                     <span>
-                        <span class="sprite tag"></span>
+                        <span class="sprite-tag inline-sprite"></span>
                         <span class="tags"><%=post.topic_tag%></span>
                     </span>
                 </a>
@@ -48,13 +48,15 @@
             </div>
             <div class="post-buttons">
                 <button type="button" class="submit yeah-button <%if(post.yeahs && post.yeahs.indexOf(userContent.pid) !== -1){ %> selected <%}%>" data-post="<%= post.id %>">
-                    <span class="sprite yeah"></span>
+                    <span class="sprite-yeah inline-sprite"></span>
                 </button>
                 <a <%if(!locals.yeah) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
                     <%if(!locals.yeah) {%>
-                        <span class="sprite feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
+                        <span class="sprite-yeah-small inline-sprite" ></span>
+                        <span class="yeah-count" id="count-<%= post.id %>"><%=post.empathy_count %></span>
                         <%if(!reply) {%>
-                        <span class="sprite reply"><%=post.reply_count %></span>
+                        <span class="sprite-reply inline-sprite"></span>
+                        <span class="reply-count"><%=post.reply_count %></span>
                         <%}%>
                     <%}%>
                 </a>
