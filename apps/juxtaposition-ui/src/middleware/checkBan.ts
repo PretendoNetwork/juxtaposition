@@ -66,7 +66,7 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 				banCode = 5980010;
 				break;
 			case 3:
-				banMessage = `${request.user.username} has been banned forever.`;
+				banMessage = `${request.user.username} has been permanently banned.`;
 				banCode = 5980011;
 				break;
 			default:
@@ -77,7 +77,7 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 		} else if (userSettings.ban_reason) {
 			banMessage += `\n\nReason: ${userSettings.ban_reason}.`;
 		}
-		banMessage += `\n\nIf you have any questions, please contact the moderators on the Pretendo Network Forum (forum.pretendo.network).`;
+		banMessage += `\n\nIf you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`;
 
 		if (request.directory === 'web') {
 			return response.render('web/login.ejs', {

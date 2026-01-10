@@ -149,13 +149,8 @@ form.account.register div:last-child {
     margin-top: 42px;
 }
 
-@keyframes fadein {
-    from { opacity: 0 }
-    to { opacity: 1 }
-}
-
+/* This toast is styled differently specifically for login pages */
 #toast {
-    opacity: 0;
 	min-width: 250px;
 	background-color: #A9375B;
 	color: var(--text);
@@ -163,15 +158,17 @@ form.account.register div:last-child {
 	position: fixed;
 	z-index: 10;
 	left: 50%;
-	bottom: 5em;
+    top: 100vh;
+    opacity: 0;
 	border-radius: 1em;
-	padding: 1ch;
+    padding: 1em;
 	transition: all 0.5s ease;
-	transform: translate(-50%);
+	transform: translateX(-50%);
 	max-width: 80%;
-	white-space: break-spaces;
+	white-space: pre-line;
 }
 
 #toast.show {
-    opacity: 1;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-130%);
 }

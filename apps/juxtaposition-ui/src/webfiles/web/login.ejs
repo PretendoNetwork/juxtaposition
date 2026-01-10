@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- general -->
     <title>Juxtaposition Log In</title>
@@ -46,11 +47,10 @@
     <link rel="stylesheet" href="/css/login.css">
     <script src="/js/login.global.js"></script>
 </head>
+
 <body>
-<div class="main-body">
-    <div id="toast" class="<%= toast ? 'show' :'' %>">
-        <%= toast %>
-    </div>
+    <div class="main-body">
+        <div id="toast" <% if (toast) {%> data-show="true" <% } %>><%= toast %></div>
     <div class="wrapper">
         <div class="account-form-wrapper">
             <a class="logotype" href="https://pretendo.network">
