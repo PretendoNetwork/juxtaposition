@@ -88,7 +88,7 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 28px;
   height: 28px;
 }
-.sprite-followers {
+.sprite-follower-count {
   background-image: url(/images/sprites.png);
   background-position: -112px -72px;
   width: 19px;

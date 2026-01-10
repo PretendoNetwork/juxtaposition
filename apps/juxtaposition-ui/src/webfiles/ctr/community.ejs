@@ -20,11 +20,11 @@
                 </span>
                 <span class="text">
                     <span>
-                        <span class="sprite posts"></span>
-                        <%= bundle.numPosts %>
+                        <span class="sprite-post-count inline-sprite"></span>
+                        <span id="post-count"><%= bundle.numPosts %></span>
                     </span>
                     <span>|
-                        <span class="sprite followers"></span>
+                        <span class="sprite-follower-count inline-sprite"></span>
                         <span id="followers"><%= community.followers %></span>
                     </span>
                 </span>
@@ -45,7 +45,7 @@
         <%}%>
         <%if(community.permissions.open){%>
         <button type="button" class="submit follow yeah-button <%if(children) {%>suggested<%}%> <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>">
-            <span class="sprite yeah"></span>
+            <span class="sprite-yeah inline-sprite"></span>
         </button>
         <%}%>
     </header>
