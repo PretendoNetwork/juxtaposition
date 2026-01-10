@@ -94,13 +94,13 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 19px;
   height: 14px;
 }
-.sprite-memo-input-dark {
+.sprite-memo-input {
   background-image: url(/images/sprites.png);
   background-position: -112px -38px;
   width: 17px;
   height: 17px;
 }
-.sprite-memo-input-light {
+.sprite-memo-input.selected {
   background-image: url(/images/sprites.png);
   background-position: -112px -55px;
   width: 17px;
@@ -130,13 +130,13 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   width: 12px;
   height: 12px;
 }
-.sprite-text-input-dark {
+.sprite-text-input {
   background-image: url(/images/sprites.png);
   background-position: -26px -84px;
   width: 26px;
   height: 17px;
 }
-.sprite-text-input-light {
+.sprite-text-input.selected {
   background-image: url(/images/sprites.png);
   background-position: -52px -84px;
   width: 26px;

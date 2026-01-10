@@ -583,24 +583,24 @@ button.load-more {
 
 #body .image-selector .dropdown-toggle {
     display: inline-block;
-    height: 34px;
+    width: 65px;
+    height: 36px;
     margin: 5px 0;
     font-size: 24px;
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), color-stop(.8, #f6f6f6), color-stop(.96, #f5f5f5), to(#bbb)) 0 0;
     border-radius: 4px;
     padding: 0 2px;
     user-select: none;
-    border: 1px solid #323232
+    border: 1px solid #323232;
+    position: relative;
 }
 
-#body .image-selector .preview-image {
-    vertical-align: bottom;
-    width: 35px;
-    height: 25px;
+#body .image-selector .sprite-screenshot {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
     border: 0;
-    background-position-x: 1px;
-    background-position-y: -125px;
-    background-size: 150px
 }
 
 .dropdown-toggle > input {
@@ -682,7 +682,7 @@ menu.tab-header.no-margin {
 
 .textarea-menu {
     height: 123px;
-    margin-top: 10px;
+    margin-top: 8px;
     position: relative;
     margin-left: 2px;
 }
@@ -766,33 +766,18 @@ menu.tab-header.no-margin {
     display: inline-block
 }
 
-.textarea-menu .sprite {
+.textarea-menu .sprite-text-input {
     position: absolute;
-    left: 9px;
-    width: 26px;
-    height: 17px;
-    background-size: 170px;
-    pointer-events: none
-}
-
-.sprite.text-input {
+    pointer-events: none;
     top: 24px;
-    background-position: -61px -86px
+    left: 9px;
 }
 
-.sprite.text-input.selected {
-    background-position: -86px -86px
-}
-
-.sprite.memo {
+.textarea-menu .sprite-memo-input {
+    position: absolute;
+    pointer-events: none;
     top: 85px;
-    background-position: -65px -105px;
-    width: 17px;
-    left: 14px
-}
-
-.sprite.memo.selected {
-    background-position: -85px -105px;
+    left: 13px
 }
 
 .checkbox-container span {

@@ -83,14 +83,14 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 							data-sound="SE_WAVE_BALLOON_OPEN"
 							evt-click="window.alert('Screenshots are not ready yet. Check back soon!')"
 						>
-							<img className="preview-image sprite" src="" />
+							<img className="sprite-screenshot" src="" />
 						</button>
 						<input id="screenshot-value" type="hidden" name="screenshot" value="" />
 					</div>
 					<div className="textarea-container textarea-with-menu active-text">
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
-								<span className="sprite text-input selected" id="text-sprite"></span>
+								<span className="sprite-text-input selected" id="text-sprite"></span>
 								<input
 									type="radio"
 									name="_post_type"
@@ -110,7 +110,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								</textarea>
 							</li>
 							<li className="textarea-menu-memo">
-								<span className="sprite memo" id="memo-sprite"></span>
+								<span className="sprite-memo-input" id="memo-sprite"></span>
 								<input
 									type="radio"
 									name="_post_type"
