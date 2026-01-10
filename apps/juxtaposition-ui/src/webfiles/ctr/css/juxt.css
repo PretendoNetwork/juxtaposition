@@ -494,7 +494,8 @@ header svg {
     background-color: #846abd;
     margin-top: 5px;
     margin-right: 5px;
-    padding: 0 3px
+    padding: 0 3px;
+    font-size: 0; /* Collapse out whitespace */
 }
 
 .feeling-selector .buttons li {
