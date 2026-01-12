@@ -486,14 +486,8 @@ header svg {
     height: 28px;
     border: 0;
     text-indent: -3000px;
-    /* background-size: 172px;
-    background-position: 0 -29px; */
     margin: -1px -2px -2px
 }
-
-/* .feeling-selector .buttons input:checked {
-    background-position-y: -58px !important
-} */
 
 .feeling-selector .icon {
     float: left;
