@@ -129,7 +129,7 @@ function initYeah() {
 	}
 	function yeah(e) {
 		var el = e.currentTarget;
-		var sprite = el.querySelector('.sprite-yeah');
+		var sprite = el.querySelector('.sprite.sp-yeah');
 		var id = el.getAttribute('data-post');
 		var parent = document.getElementById(id);
 		var count = document.getElementById('count-' + id);

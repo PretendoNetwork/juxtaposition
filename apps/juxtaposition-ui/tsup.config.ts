@@ -52,7 +52,10 @@ export default defineConfig([
 		format: 'iife',
 
 		esbuildOptions(options): void {
-			options.external = ['/images/*', '/fonts/*'];
+			options.external = ['/fonts/*'];
+			options.loader = {
+				'.png': 'dataurl'
+			};
 		},
 		esbuildPlugins: [
 			copy({

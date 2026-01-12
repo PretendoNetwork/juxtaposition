@@ -38,7 +38,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 							? (
 									<a href={utils.url('/topics', { topic_tag: post.topic_tag })} data-pjax="#body">
 										<span>
-											<span className="sprite-tag inline-sprite"></span>
+											<span className="sprite sp-tag inline-sprite"></span>
 											<span className="tags">{post.topic_tag}</span>
 										</span>
 									</a>
@@ -92,16 +92,16 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 							})}
 							data-post={post.id}
 						>
-							<span className="sprite-yeah inline-sprite"></span>
+							<span className="sprite sp-yeah inline-sprite"></span>
 						</button>
 						<a href={`/posts/${post.id}`} className="to-permalink-button" data-pjax="#body">
-							<span className="sprite-yeah-small inline-sprite"></span>
+							<span className="sprite sp-yeah-small inline-sprite"></span>
 							<span className="yeah-count" id={`count-${post.id}`}>{post.empathy_count}</span>
 							{' '}
 							{!props.isReply
 								? (
 										<>
-											<span className="sprite-reply inline-sprite"></span>
+											<span className="sprite sp-reply inline-sprite"></span>
 											<span className="reply-count">{post.reply_count}</span>
 										</>
 									)

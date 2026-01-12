@@ -9,32 +9,32 @@
             <div class="feeling-selector expression">
                 <img src="<%= cdnURL %>/mii/<%= pid %>/normal_face.png" id="mii-face" class="icon">
                 <ul class="buttons">
-                    <li><input type="radio" name="feeling_id" value="0" class="sprite-feeling-normal"
+                    <li><input type="radio" name="feeling_id" value="0" class="sprite sp-feeling-normal"
                                data-mii-face-url="<%= cdnURL %>/mii/<%= pid %>/normal_face.png" checked
                                data-sound="SE_WAVE_MII_FACE_00"/>
                     </li>
                     <li>
-                        <input type="radio" name="feeling_id" value="1" class="sprite-feeling-happy"
+                        <input type="radio" name="feeling_id" value="1" class="sprite sp-feeling-happy"
                                data-mii-face-url="<%= cdnURL %>/mii/<%= pid %>/smile_open_mouth.png"
                                data-sound="SE_WAVE_MII_FACE_01"/>
                     </li>
                     <li>
-                        <input type="radio" name="feeling_id" value="2" class="sprite-feeling-like"
+                        <input type="radio" name="feeling_id" value="2" class="sprite sp-feeling-like"
                                data-mii-face-url="<%= cdnURL %>/mii/<%= pid %>/wink_left.png"
                                data-sound="SE_WAVE_MII_FACE_02"/>
                     </li>
                     <li>
-                        <input type="radio" name="feeling_id" value="3" class="sprite-feeling-surprise"
+                        <input type="radio" name="feeling_id" value="3" class="sprite sp-feeling-surprise"
                                data-mii-face-url="<%= cdnURL %>/mii/<%= pid %>/surprise_open_mouth.png"
                                data-sound="SE_WAVE_MII_FACE_03"/>
                     </li>
                     <li>
-                        <input type="radio" name="feeling_id" value="4" class="sprite-feeling-frustrated"
+                        <input type="radio" name="feeling_id" value="4" class="sprite sp-feeling-frustrated"
                                data-mii-face-url="<%= cdnURL %>/mii/<%= pid %>/frustrated.png"
                                data-sound="SE_WAVE_MII_FACE_04"/>
                     </li>
                     <li>
-                        <input type="radio" name="feeling_id" value="5" class="sprite-feeling-puzzled"
+                        <input type="radio" name="feeling_id" value="5" class="sprite sp-feeling-puzzled"
                                data-mii-face-url="<%= cdnURL %>/mii/<%= pid %>/sorrow.png"
                                data-sound="SE_WAVE_MII_FACE_05"/>
                     </li>
@@ -43,21 +43,21 @@
             <div class="image-selector dropdown">
                 <button id="screenshot-button" type="button" data-toggle="dropdown" class="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN"
                         onclick="window.alert('Screenshots are not ready yet. Check back soon!')">
-                    <img class="sprite-screenshot">
+                    <img class="sprite sp-screenshot">
                 </button>
                 <input id="screenshot-value" type="hidden" name="screenshot" value="">
             </div>
             <div class="textarea-container textarea-with-menu active-text">
                 <menu class="textarea-menu">
                     <li class="textarea-menu-text">
-                        <span class="sprite-text-input selected" id="text-sprite"></span>
+                        <span class="sprite sp-text-input selected" id="text-sprite"></span>
                         <input type="radio" name="_post_type" value="body" checked data-sound=""
                                 onclick="newText()">
                         <textarea name="body" id="post-text" class="textarea-text selected" value="" maxlength="280"
                                   placeholder="Share your thoughts in a post to a community or to your followers."></textarea>
                     </li>
                     <li class="textarea-menu-memo">
-                        <span class="sprite-memo-input" id="memo-sprite"></span>
+                        <span class="sprite sp-memo-input" id="memo-sprite"></span>
                         <input type="radio" name="_post_type" value="painting" data-sound=""
                                onclick="newPainting(false)">
                         <div class="textarea-memo" id="post-memo" data-sound="" onclick="newPainting(false)">

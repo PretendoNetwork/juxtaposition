@@ -21,11 +21,11 @@
 				<%if(!pnid.deleted && !banned) {%>
                 <span class="text">
                     <span>
-                        <span class="sprite-post-count inline-sprite"></span>
+                        <span class="sprite sp-post-count inline-sprite"></span>
                         <span id="post-count"><%=numPosts%></span>
                     </span>
                     <span>|
-                        <span class="sprite-follower-count inline-sprite"></span>
+                        <span class="sprite sp-follower-count inline-sprite"></span>
                         <span id="followers"><%= userContent.following_users.length - 1 %></span>
                     </span>
                 </span>
@@ -38,7 +38,7 @@
         <%}%>
         <%if(pnid.pid !== pid && !pnid.deleted && !banned) {%>
         <button type="button" class="submit follow yeah-button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>">
-            <span class="sprite-yeah inline-sprite"></span>
+            <span class="sprite sp-yeah inline-sprite"></span>
         </button>
         <%}%>
     </header>

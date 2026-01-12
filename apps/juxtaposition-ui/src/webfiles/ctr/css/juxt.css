@@ -532,7 +532,7 @@ button.load-more {
     position: relative;
 }
 
-#body .image-selector .sprite-screenshot {
+#body .image-selector .sprite.sp-screenshot {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -694,14 +694,14 @@ menu.tab-header.no-margin {
     display: inline-block
 }
 
-.textarea-menu .sprite-text-input {
+.textarea-menu .sprite.sp-text-input {
     position: absolute;
     pointer-events: none;
     top: 24px;
     left: 9px;
 }
 
-.textarea-menu .sprite-memo-input {
+.textarea-menu .sprite.sp-memo-input {
     position: absolute;
     pointer-events: none;
     top: 85px;
