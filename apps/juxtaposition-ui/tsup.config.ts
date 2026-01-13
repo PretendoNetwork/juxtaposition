@@ -2,6 +2,7 @@ import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
 import { raw } from 'esbuild-raw-plugin';
 import { fixImportsPlugin } from 'esbuild-fix-imports-plugin';
+import { oxipng } from '@repo/esbuild-plugin-oxipng';
 import browserslist from 'browserslist-to-esbuild';
 
 export default defineConfig([
@@ -53,11 +54,9 @@ export default defineConfig([
 
 		esbuildOptions(options): void {
 			options.external = ['/fonts/*'];
-			options.loader = {
-				'.png': 'dataurl'
-			};
 		},
 		esbuildPlugins: [
+			oxipng({loader: 'dataurl'}),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
