@@ -57,7 +57,7 @@ export default defineConfig([
 			options.external = ['/fonts/*'];
 		},
 		esbuildPlugins: [
-			oxipng({loader: 'dataurl'}),
+			oxipng({ loader: 'dataurl' }),
 			spritesmith({
 				input_folder: './src/webfiles/ctr/images/sprites/',
 				output_css: './src/webfiles/ctr/css/sprites.css',
