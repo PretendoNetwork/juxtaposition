@@ -7,3 +7,4 @@ config.json
 uploads/
 
 .docker/mitmproxy-data
+.DS_Store
