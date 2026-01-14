@@ -38,14 +38,13 @@ showRouter.get('/', async function (req, res) {
 
 	if (hasAuth()) {
 		const currentMii = auth().user.mii;
-		const usrMii = await database.getUserSettings(req.pid);
-		if (!currentMii || !usrMii) {
+		if (!currentMii || !user) {
 			return;
 		}
-		if (currentMii.name !== usrMii.screen_name) {
+		if (currentMii.name !== user.screen_name) {
 			setName(auth().pid, currentMii.name);
-			usrMii.screen_name = currentMii.name;
-			await usrMii.save();
+			user.screen_name = currentMii.name;
+			await user.save();
 		}
 	}
 });
