@@ -1,3 +1,4 @@
+import './polyfills';
 import { Pjax } from './pjax';
 import { GET, POST } from './xhr';
 import { initPostPageView } from './post';
