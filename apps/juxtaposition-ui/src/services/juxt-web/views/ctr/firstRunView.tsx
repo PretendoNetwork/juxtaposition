@@ -3,9 +3,9 @@ import type { ReactNode } from 'react';
 import type { FirstRunViewProps } from '@/services/juxt-web/views/web/firstRunView';
 
 const AboutSection = {
-	Root(props: { children?: ReactNode; id?: string }): ReactNode {
+	Root(props: { children?: ReactNode; id?: string; visible?: boolean }): ReactNode {
 		return (
-			<div id={props.id} className="about-wrapper background" style={{ display: 'block' }}>
+			<div id={props.id} className="about-wrapper background" style={{ display: props.visible ? 'block' : undefined }}>
 				{props.children}
 			</div>
 		);
