@@ -82,7 +82,7 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 				<div className="body-content">
 					<div className="communities-list">
 
-						<AboutSection.Root id={sections.welcome}>
+						<AboutSection.Root id={sections.welcome} visible>
 							<AboutSection.Title>{props.ctx.lang.setup.welcome}</AboutSection.Title>
 							<AboutSection.Body>
 								<p>
