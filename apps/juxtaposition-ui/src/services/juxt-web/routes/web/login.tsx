@@ -17,7 +17,7 @@ loginRouter.get('/', async function (req, res) {
 			redirect: z.string().optional()
 		})
 	});
-	return res.jsx(<WebLoginView ctx={buildContext(res)} toast="Invalid username or password." redirect={query.redirect} />);
+	return res.jsx(<WebLoginView ctx={buildContext(res)} redirect={query.redirect} />);
 });
 
 loginRouter.post('/', async (req, res) => {

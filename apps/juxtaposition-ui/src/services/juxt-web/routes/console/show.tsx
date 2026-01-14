@@ -26,7 +26,6 @@ showRouter.get('/', async function (req, res) {
 	const content = await database.getUserContent(req.pid);
 	if (!user || !content) {
 		return res.jsxForDirectory({
-
 			web: <WebFirstRunView ctx={buildContext(res)} />,
 			portal: <PortalFirstRunView ctx={buildContext(res)} />,
 			ctr: <CtrFirstRunView ctx={buildContext(res)} />
