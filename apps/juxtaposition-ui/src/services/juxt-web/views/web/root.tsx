@@ -6,8 +6,6 @@ export function DefaultHead(): ReactNode {
 		<>
 			<meta charSet="UTF-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-			<link rel="stylesheet" type="text/css" href="/css/web.css" />
-			<script src="/js/web.global.js" />
 			<link rel="manifest" href="/web/manifest.json" />
 			<link rel="preconnect" href="https://fonts.gstatic.com" />
 			<link
@@ -31,9 +29,19 @@ export function DefaultHead(): ReactNode {
 	);
 }
 
+export function DefaultStyling(): ReactNode {
+	return (
+		<>
+			<link rel="stylesheet" type="text/css" href="/css/web.css" />
+			<script src="/js/web.global.js" />
+		</>
+	);
+}
+
 export type HtmlProps = {
 	children?: ReactNode;
 	head?: ReactNode;
+	replaceDefaultAssets?: boolean;
 };
 
 export function WebRoot(props: HtmlProps): ReactNode {
@@ -41,6 +49,7 @@ export function WebRoot(props: HtmlProps): ReactNode {
 		<html lang="en">
 			<head>
 				<DefaultHead />
+				{!props.replaceDefaultAssets ? <DefaultStyling /> : null}
 				{props.head}
 			</head>
 			<body>
