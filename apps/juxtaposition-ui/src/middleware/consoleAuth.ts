@@ -24,7 +24,7 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 	request.paramPackData = ppack ? decodeParamPack(ppack) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
 
-	if (!request.user) {
+	if (!request.user && request.cookies.access_token) {
 		try {
 			// Developer accounts may also use an OAuth token for console frontends
 			const user = await getUserDataFromToken(request.cookies.access_token);
