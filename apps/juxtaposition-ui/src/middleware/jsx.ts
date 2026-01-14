@@ -15,7 +15,7 @@ export function renderJsx(el: ReactElement): string {
  */
 export const jsxRenderer: RequestHandler = (request, response, next) => {
 	response.jsx = (el, addDoctype): typeof response => {
-		const prefix = addDoctype ? htmlDoctype + '\n' : '';
+		const prefix = (addDoctype ?? true) ? htmlDoctype + '\n' : '';
 		response.send(prefix + renderJsx(el));
 		return response;
 	};
