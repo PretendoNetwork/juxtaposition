@@ -74,7 +74,7 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 	);
 
 	return (
-		<CtrRoot ctx={props.ctx} title="First Run" onLoad="cave.snd_playBgm('BGM_CAVE_SYOKAI');cave.toolbar_setVisible(false);" head={head}>
+		<CtrRoot ctx={props.ctx} preventJsLoad title="First Run" onLoad="cave.snd_playBgm('BGM_CAVE_SYOKAI');cave.toolbar_setVisible(false);" head={head}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">Juxtaposition Setup</h1>
@@ -226,7 +226,7 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 							</AboutSection.Body>
 
 							<AboutSection.BackButton currentId={sections.ready} previousId={sections.experience} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.ready} onClick="cave.snd_playBgm('BGM_CAVE_SYOKAI2');submitFirstRun()" sound="GL_OLV_INIT_END" nextId={sections.end} text={props.ctx.lang.global.next} />
+							<AboutSection.NextButton currentId={sections.ready} onClick="console.log(42);cave.snd_playBgm('BGM_CAVE_SYOKAI2');console.log(43);submitFirstRun()" sound="GL_OLV_INIT_END" nextId={sections.end} text={props.ctx.lang.global.next} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.end}>
