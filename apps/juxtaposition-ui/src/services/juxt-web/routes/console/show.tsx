@@ -18,10 +18,6 @@ showRouter.get('/', async function (req, res) {
 		})
 	});
 
-	if (req.pid === 1000000000) {
-		return res.render(req.directory + '/guest_notice.ejs');
-	}
-
 	const user = await database.getUserSettings(req.pid);
 	const content = await database.getUserContent(req.pid);
 	if (!user || !content) {
