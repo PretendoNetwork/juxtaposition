@@ -36,7 +36,12 @@ export default defineConfig([
 	},
 	/* CTR/3DS webfiles (Chrome 4) */
 	{
-		entry: ['src/webfiles/ctr/js/*.js', 'src/webfiles/ctr/css/*.css'],
+		entry: [
+			'src/webfiles/ctr/js/juxt.js',
+			'src/webfiles/ctr/js/debug.js',
+			'src/webfiles/ctr/js/firstrun.js',
+			'src/webfiles/ctr/css/juxt.css'
+		],
 		bundle: true,
 		sourcemap: true,
 		minify: true,
