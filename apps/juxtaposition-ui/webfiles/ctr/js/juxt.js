@@ -1,4 +1,5 @@
 import './polyfills';
+import { initClientTabs } from './ctabs';
 import { Pjax } from './pjax';
 import { GET, POST } from './xhr';
 import { initPostPageView } from './post';
@@ -319,6 +320,7 @@ function initAll() {
 	initPostModules();
 	initTabs();
 	initPostPageView();
+	initClientTabs();
 	checkForUpdates();
 	initToolbarConfigs();
 	pjax.refresh();
