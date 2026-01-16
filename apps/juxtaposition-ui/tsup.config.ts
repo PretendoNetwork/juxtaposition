@@ -7,7 +7,7 @@ import browserslist from 'browserslist-to-esbuild';
 export default defineConfig([
 	/* Main server app (Node) */
 	{
-		entry: ['src/server.js'],
+		entry: ['src/server.ts'],
 		sourcemap: true,
 		clean: true,
 
@@ -39,6 +39,7 @@ export default defineConfig([
 		entry: [
 			'src/webfiles/ctr/js/juxt.js',
 			'src/webfiles/ctr/js/debug.js',
+			'src/webfiles/ctr/js/firstrun.js',
 			'src/webfiles/ctr/css/juxt.css'
 		],
 		bundle: true,

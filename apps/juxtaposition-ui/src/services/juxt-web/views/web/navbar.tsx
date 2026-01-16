@@ -1,5 +1,5 @@
-import { InlineStyle } from '@/services/juxt-web/views/common';
 import { utils } from '@/services/juxt-web/views/utils';
+import { JuxtLogo } from '@/services/juxt-web/views/web/icons';
 import type { ReactNode } from 'react';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 
@@ -16,44 +16,7 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 	return (
 		<header id="nav-menu">
 			<a href="/" className="logo-link">
-				<svg
-					id="Layer_1"
-					data-name="Layer 1"
-					xmlns="http://www.w3.org/2000/svg"
-					viewBox="0 0 232.63 100.33"
-				>
-					<defs>
-						<InlineStyle
-							src={`
-            .cls-1{fill:#fff;}.cls-2{fill:#9d6ff3;}.cls-3{font-size:30.54px;fill:#59c9a5;font-family:Poppins-Bold, Poppins;font-weight:700;}
-          `}
-						/>
-					</defs>
-					<path
-						className="cls-1"
-						d="M25.62,0H40V40.2c0,12.69-7.73,19.41-19.41,19.41C8.49,59.61,0,52.55,0,39.28H14.28c0,5,2.19,7.47,5.88,7.47,3.45,0,5.46-2.18,5.46-6.55Z"
-					/>
-					<path
-						className="cls-1"
-						d="M51.33,0H65.69V35.33c0,7,3.45,11,10.25,11s10.42-4,10.42-11V0h14.37v35.2c0,16.3-11.43,24.37-25,24.37S51.33,51.54,51.33,35.24Z"
-					/>
-					<path
-						className="cls-1"
-						d="M134.92,41,124.33,59H108l18.91-30L107.61,0h16.72l11.85,17.81L146.6,0h16.29L144.16,29.78,163.65,59H146.93Z"
-					/>
-					<path
-						className="cls-2"
-						d="M119.86,18.41,126.94,29,108,59h16.3L134.92,41l12,18.06h16.72L144.16,29.78,162.89,0H146.6L136.18,17.85l-7-10.54A70.15,70.15,0,0,0,119.86,18.41Z"
-					/>
-					<path
-						className="cls-2"
-						d="M167.68,0H213.3V11.51H197.67V59H183.31V11.51H167.68Z"
-					/>
-					<circle className="cls-2" cx="225.67" cy="52.02" r="6.96" />
-					<text className="cls-3" transform="translate(77.71 100.33)">
-						BETA
-					</text>
-				</svg>
+				<JuxtLogo />
 			</a>
 			{props.ctx.pid !== 1000000000
 				? (
