@@ -460,13 +460,13 @@ export async function passwordLogin(username: string, password: string): Promise
 // 	});
 // }
 
-export async function createLogEntry(actor: number, action: string, target: string, context: string, fields: string[]): Promise<void> {
+export async function createLogEntry(actor: number, action: string, target: string, context: string, fields?: string[]): Promise<void> {
 	const newLog = new LOGS({
 		actor: actor,
 		action: action,
 		target: target,
 		context: context,
-		changed_fields: fields
+		changed_fields: fields ?? []
 	});
 	await newLog.save();
 }

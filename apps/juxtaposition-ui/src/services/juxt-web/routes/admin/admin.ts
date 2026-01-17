@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import express from 'express';
 import moment from 'moment';
 import multer from 'multer';
-import z from 'zod';
+import { z } from 'zod';
 import { deletePostById, getPostById, getPostsByPoster } from '@/api/post';
 import { database } from '@/database';
 import { uploadHeaders, uploadIcons } from '@/images';
