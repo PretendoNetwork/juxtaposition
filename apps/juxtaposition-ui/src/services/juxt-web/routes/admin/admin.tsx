@@ -18,6 +18,7 @@ import { buildContext } from '@/services/juxt-web/views/context';
 import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportListView';
 import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/manageCommunityView';
 import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newCommunityView';
+import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
@@ -530,9 +531,8 @@ adminRouter.get('/communities/:community_id', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 
-	res.render(req.directory + '/edit_community.ejs', {
-		moment: moment,
-		community
+	res.jsxForDirectory({
+		web: <WebEditCommunityView ctx={buildContext(res)} community={community} />
 	});
 });
 
