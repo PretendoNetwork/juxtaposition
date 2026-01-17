@@ -29,6 +29,7 @@ export type ParsedRequest<TBody extends AnySchema, TQuery extends AnySchema> = {
 	body: TBody extends z.ZodType ? z.infer<TBody> : undefined;
 	query: TQuery extends z.ZodType ? z.infer<TQuery> : undefined;
 	auth: () => AuthContext;
+	hasAuth: () => boolean;
 };
 
 export function getAuthedRequest<TReq extends Request = Request>(req: TReq): AuthRequest<TReq> {
@@ -69,9 +70,17 @@ export function parseReq<TBody extends AnySchema = undefined, TQuery extends Any
 		return result;
 	}
 
+	function hasAuth(): boolean {
+		if (!(req as any).user) {
+			return false;
+		}
+		return true;
+	}
+
 	return {
 		body,
 		query,
-		auth: getAuthContext
+		auth: getAuthContext,
+		hasAuth
 	} as ParsedRequest<TBody, TQuery>;
 }

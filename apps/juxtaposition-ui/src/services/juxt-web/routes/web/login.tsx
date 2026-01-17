@@ -1,29 +1,45 @@
 import express from 'express';
+import { z } from 'zod';
 import { database } from '@/database';
 import { passwordLogin, getUserDataFromToken } from '@/util';
 import { config } from '@/config';
 import { logger } from '@/logger';
+import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
+import { buildContext } from '@/services/juxt-web/views/context';
+import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 
 export const loginRouter = express.Router();
 const cookieDomain = config.http.cookieDomain;
 
 loginRouter.get('/', async function (req, res) {
-	res.render(req.directory + '/login.ejs', { toast: null, redirect: req.query.redirect ?? '/' });
+	const { query } = parseReq(req, {
+		query: z.object({
+			redirect: z.string().optional()
+		})
+	});
+	return res.jsx(<WebLoginView ctx={buildContext(res)} redirect={query.redirect} />);
 });
 
 loginRouter.post('/', async (req, res) => {
-	const { username, password, redirect } = req.body;
+	const { body } = parseReq(req, {
+		body: z.object({
+			username: z.string(),
+			password: z.string(),
+			redirect: z.string().default('/')
+		})
+	});
+	const { username, password, redirect } = body;
 	const login = await passwordLogin(username, password).catch((e) => {
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
-				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.', redirect });
+				res.jsx(<WebLoginView ctx={buildContext(res)} toast="Username was invalid." redirect={redirect} />);
 				break;
 			case 'INVALID_ARGUMENT: Password is incorrect':
-				res.render(req.directory + '/login.ejs', { toast: 'Password was incorrect.', redirect });
+				res.jsx(<WebLoginView ctx={buildContext(res)} toast="Password was incorrect." redirect={redirect} />);
 				break;
 			default:
 				logger.error(e, `Login error for ${username}`);
-				res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', redirect });
+				res.jsx(<WebLoginView ctx={buildContext(res)} toast="Invalid username or password." redirect={redirect} />);
 				break;
 		}
 	});
@@ -33,17 +49,14 @@ loginRouter.post('/', async (req, res) => {
 
 	const PNID = await getUserDataFromToken(login.accessToken);
 	if (!PNID) {
-		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', redirect });
+		return res.jsx(<WebLoginView ctx={buildContext(res)} toast="Invalid username or password." redirect={redirect} />);
 	}
 
-	let discovery = await database.getEndPoint(config.serverEnvironment);
-	if (!discovery) {
-		discovery = {
-			status: 5
-		};
-	}
+	const discovery = await database.getEndPoint(config.serverEnvironment);
+	const discoveryStatus = discovery?.status ?? 5;
+
 	let message = '';
-	switch (discovery.status) {
+	switch (discoveryStatus) {
 		case 3:
 			message = 'Juxt is currently undergoing maintenance. Please try again later.';
 			break;
@@ -54,7 +67,7 @@ loginRouter.post('/', async (req, res) => {
 			message = 'Juxt is currently unavailable. Please try again later.';
 			break;
 	}
-	if (discovery.status !== 0) {
+	if (discoveryStatus !== 0) {
 		return res.render(req.directory + '/error.ejs', {
 			code: 504,
 			message: message

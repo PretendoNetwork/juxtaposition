@@ -2,6 +2,8 @@ import moment from 'moment';
 import { database as db } from '@/database';
 import { config } from '@/config';
 import { humanDate, humanFromNow } from '@/util';
+import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
+import { buildContext } from '@/services/juxt-web/views/context';
 import type { RequestHandler } from 'express';
 
 export const checkBan: RequestHandler = async (request, response, next) => {
@@ -42,7 +44,7 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 	if (!accessAllowed) {
 		response.status(500);
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', { toast: 'No access. Must be tester or dev', redirect: request.originalUrl });
+			return response.jsx(<WebLoginView ctx={buildContext(response)} toast="No access. Must be tester or dev" redirect={request.originalUrl} />);
 		} else {
 			return response.render('portal/error_fatal.ejs', {
 				code: 5989999,
@@ -80,10 +82,7 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 		banMessage += `\n\nIf you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`;
 
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', {
-				toast: banMessage,
-				redirect: request.originalUrl
-			});
+			return response.jsx(<WebLoginView ctx={buildContext(response)} toast={banMessage} redirect={request.originalUrl} />);
 		} else {
 			return response.render(request.directory + '/error_fatal.ejs', {
 				message: banMessage,

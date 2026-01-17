@@ -16,9 +16,11 @@ import { distFolder } from '@/util';
 import { initImageProcessing } from '@/images';
 import { loginWall } from '@/middleware/webAuth';
 import { listenMetrics, registerMetrics } from '@/metrics';
+import type { NextFunction, Request, Response } from 'express';
+import type { FetchError } from '@/fetch';
 
 // TODO is this used anywhere?
-BigInt.prototype['toJSON'] = function () {
+(BigInt as any).prototype['toJSON'] = function (): string {
 	return this.toString();
 };
 
@@ -38,7 +40,6 @@ app.disable('x-powered-by');
 app.set('view engine', 'ejs');
 app.set('views', path.join(distFolder, '/webfiles'));
 app.set('trust proxy', config.http.trustProxy);
-app.get('/ip', (request, response) => response.send(request.ip));
 
 // Create router
 logger.info('Setting up Middleware');
@@ -58,8 +59,7 @@ app.use(session({
 	store: new RedisStore({ client: redisClient }),
 	secret: config.aesKey,
 	resave: false,
-	saveUninitialized: false,
-	ttl: 60
+	saveUninitialized: false
 }));
 
 // import the servers into one
@@ -79,17 +79,17 @@ app.use((req, res) => {
 
 // non-404 error handler
 logger.info('Creating non-404 status handler');
-app.use((error, req, res, next) => {
+app.use((error: Error | FetchError, req: Request, res: Response, next: NextFunction) => {
 	if (res.headersSent) {
 		return next(error);
 	}
 
 	// small hack because token expiry is weird
-	if (error.status === 401 && req.directory === 'web') {
+	if ('status' in error && error.status === 401 && req.directory === 'web') {
 		return loginWall(req, res);
 	}
 
-	const status = error.status || 500;
+	const status = 'status' in error ? error.status ?? 500 : 500;
 	res.status(status);
 
 	req.log.error(error, 'Request failed!');
@@ -101,7 +101,7 @@ app.use((error, req, res, next) => {
 });
 
 // Starts the server
-async function main() {
+async function main(): Promise<void> {
 	// Starts the server
 	logger.info('Starting server');
 
