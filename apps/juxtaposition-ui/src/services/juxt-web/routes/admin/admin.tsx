@@ -1,16 +1,15 @@
 import crypto from 'crypto';
 import express from 'express';
-import moment from 'moment';
 import multer from 'multer';
 import { z } from 'zod';
-import { deletePostById, getPostById, getPostsByPoster } from '@/api/post';
+import { deletePostById, getPostById } from '@/api/post';
 import { database } from '@/database';
 import { uploadHeaders, uploadIcons } from '@/images';
 import { logger } from '@/logger';
 import { COMMUNITY } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { humanDate, createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash } from '@/util';
+import { humanDate, createLogEntry, getReasonMap, getUserAccountData, newNotification, updateCommunityHash } from '@/util';
 import { getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
@@ -19,6 +18,7 @@ import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportLis
 import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/manageCommunityView';
 import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newCommunityView';
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
+import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
@@ -34,7 +34,7 @@ adminRouter.get('/posts', async function (req, res) {
 	}
 	const { auth } = parseReq(req);
 
-	// `any` is used as database.js is not yet typescript
+	// `any` is needed because database.js is not typed yet
 	const reports: HydratedReportDocument[] = await database.getAllOpenReports() as any;
 	const userContent = await database.getUserContent(auth().pid);
 	const postIDs = reports.map(obj => obj.post_id);
@@ -125,7 +125,7 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 
-	const { params, auth } = parseReq(req, {
+	const { params } = parseReq(req, {
 		params: z.object({
 			pid: z.coerce.number()
 		})
@@ -137,17 +137,14 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 		logger.error(e, `Could not fetch userdata for ${reqPid}`);
 	});
 	const userContent = await database.getUserContent(reqPid);
-	if (isNaN(reqPid) || !pnid || !userContent) {
+	const userSettings = await database.getUserSettings(reqPid);
+	if (isNaN(reqPid) || !pnid || !userContent || !userSettings) {
 		return res.redirect('/404');
 	}
-	const userSettings = await database.getUserSettings(reqPid);
-	const posts = (await getPostsByPoster(auth().tokens, reqPid, 0))?.items ?? [];
-	const communityMap = getCommunityHash();
-	const userMap = getUserHash();
-	const reasonMap = getReasonMap();
 
-	const reports = await database.getReportsByOffender(reqPid, 0, 50);
-	const submittedReports = await database.getReportsByReporter(reqPid, 0, 50);
+	// `any` is needed because database.js is not typed yet
+	const reports: HydratedReportDocument[] = await database.getReportsByOffender(reqPid, 0, 50) as any;
+	const submittedReports: HydratedReportDocument[] = await database.getReportsByReporter(reqPid, 0, 50) as any;
 	const postIDs = reports.concat(submittedReports).map(obj => obj.post_id);
 
 	const postsMap = await POST.aggregate([
@@ -165,24 +162,23 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 
 	const auditLog = await database.getLogsForTarget(reqPid, 0, 50);
 
-	res.render(req.directory + '/moderate_user.ejs', {
-		moment: moment,
-		userSettings,
-		userContent,
-		pnid,
+	res.jsxForDirectory({
+		web: (
+			<WebModerateUserView
+				ctx={buildContext(ctx)}
+				userSettings={userSettings}
+				userContent={userContent}
+				pnid={pnid}
+				removedPosts={removedPosts}
 
-		posts,
-		removedPosts,
+				reports={reports}
+				submittedReports={submittedReports}
+				auditLog={auditLog}
 
-		reports,
-		submittedReports,
-
-		userMap,
-		communityMap,
-		postsMap,
-		reasonMap,
-
-		auditLog
+				postsMap={postsMap}
+				reasonMap={getReasonMap()}
+			/>
+		)
 	});
 });
 
