@@ -384,7 +384,7 @@ adminRouter.get('/communities', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 
-	const { query, auth } = parseReq(req, {
+	const { query } = parseReq(req, {
 		query: z.object({
 			page: z.coerce.number().default(0),
 			search: z.string().trim().optional()
@@ -420,7 +420,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		return res.redirect('/titles/show');
 	}
 
-	const { body, auth } = parseReq(req, {
+	const { body, files, auth } = parseReq(req, {
 		body: z.object({
 			has_shop_page: onOffSchema(),
 			is_recommended: onOffSchema(),
@@ -438,17 +438,17 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 	});
 
 	const communityId = await generateCommunityUID();
-	if (!req.files || !req.files.browserIcon || !req.files.CTRbrowserHeader || !req.files.WiiUbrowserHeader) {
+	if (files.browserIcon.length === 0 || files.CTRbrowserHeader.length === 0 || files.WiiUbrowserHeader.length === 0) {
 		return res.sendStatus(422);
 	}
 
 	const icons = await uploadIcons({
-		icon: req.files.browserIcon[0].buffer,
+		icon: files.browserIcon[0].buffer,
 		communityId
 	});
 	const headers = await uploadHeaders({
-		ctr_header: req.files.CTRbrowserHeader[0].buffer,
-		wup_header: req.files.WiiUbrowserHeader[0].buffer,
+		ctr_header: files.CTRbrowserHeader[0].buffer,
+		wup_header: files.WiiUbrowserHeader[0].buffer,
 		communityId
 	});
 	if (icons === null || headers === null) {
@@ -551,7 +551,7 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		return res.redirect('/titles/show');
 	}
 
-	const { body, params, auth } = parseReq(req, {
+	const { body, params, files, auth } = parseReq(req, {
 		params: z.object({
 			id: z.string()
 		}),
@@ -571,7 +571,7 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
 
-	JSON.parse(JSON.stringify(req.files)); // wtf does this do?
+	JSON.parse(JSON.stringify(files)); // wtf does this do?
 	const communityId = params.id;
 
 	const oldCommunity = await COMMUNITY.findOne({ olive_community_id: communityId }).exec();
@@ -582,9 +582,9 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 
 	// browser icon
 	let icons = null;
-	if (req.files.browserIcon) {
+	if (files.browserIcon.length > 0) {
 		icons = await uploadIcons({
-			icon: req.files.browserIcon[0].buffer,
+			icon: files.browserIcon[0].buffer,
 			communityId
 		});
 		if (icons === null) {
@@ -593,10 +593,10 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	}
 	// 3DS / Wii U Header
 	let headers = null;
-	if (req.files.CTRbrowserHeader && req.files.WiiUbrowserHeader) {
+	if (files.CTRbrowserHeader.length > 0 && files.WiiUbrowserHeader.length > 0) {
 		headers = await uploadHeaders({
-			ctr_header: req.files.CTRbrowserHeader[0].buffer,
-			wup_header: req.files.WiiUbrowserHeader[0].buffer,
+			ctr_header: files.CTRbrowserHeader[0].buffer,
+			wup_header: files.WiiUbrowserHeader[0].buffer,
 			communityId
 		});
 		if (headers === null) {
@@ -655,15 +655,15 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		fields.push('title_id');
 		changes.push(`Title IDs changed from "${oldCommunity.title_id.join(', ')}" to "${comm.title_id.join(', ')}"`);
 	}
-	if (req.files.browserIcon) {
+	if (files.browserIcon.length > 0) {
 		fields.push('browserIcon');
 		changes.push('Icon changed');
 	}
-	if (req.files.CTRbrowserHeader) {
+	if (files.CTRbrowserHeader.length > 0) {
 		fields.push('CTRbrowserHeader');
 		changes.push('3DS Banner changed');
 	}
-	if (req.files.WiiUbrowserHeader) {
+	if (files.WiiUbrowserHeader.length > 0) {
 		fields.push('WiiUbrowserHeader');
 		changes.push('Wii U Banner changed');
 	}

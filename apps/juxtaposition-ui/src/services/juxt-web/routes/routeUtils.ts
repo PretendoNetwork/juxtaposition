@@ -20,16 +20,18 @@ export type AuthContext = {
 	paramPackData: null | ParamPack;
 };
 
-export type ParseRequestOptions<TBody extends AnySchema, TQuery extends AnySchema, TParams extends AnySchema> = {
+export type ParseRequestOptions<TBody extends AnySchema, TQuery extends AnySchema, TParams extends AnySchema, TFiles extends string[]> = {
 	body?: TBody;
 	query?: TQuery;
 	params?: TParams;
+	files?: TFiles;
 };
 
-export type ParsedRequest<TBody extends AnySchema, TQuery extends AnySchema, TParams extends AnySchema> = {
+export type ParsedRequest<TBody extends AnySchema, TQuery extends AnySchema, TParams extends AnySchema, TFiles extends string[]> = {
 	body: TBody extends z.ZodType ? z.infer<TBody> : undefined;
 	query: TQuery extends z.ZodType ? z.infer<TQuery> : undefined;
 	params: TParams extends z.ZodType ? z.infer<TParams> : undefined;
+	files: Record<TFiles[number], Express.Multer.File[]>;
 	auth: () => AuthContext;
 	hasAuth: () => boolean;
 };
@@ -41,10 +43,11 @@ export function getAuthedRequest<TReq extends Request = Request>(req: TReq): Aut
 	return req as AuthRequest<TReq>;
 }
 
-export function parseReq<TBody extends AnySchema = undefined, TQuery extends AnySchema = undefined, TParams extends AnySchema = undefined>(req: Request, ops?: ParseRequestOptions<TBody, TQuery, TParams>): ParsedRequest<TBody, TQuery, TParams> {
+export function parseReq<TBody extends AnySchema = undefined, TQuery extends AnySchema = undefined, TParams extends AnySchema = undefined, TFiles extends string[] = []>(req: Request, ops?: ParseRequestOptions<TBody, TQuery, TParams, TFiles>): ParsedRequest<TBody, TQuery, TParams, TFiles> {
 	let body: any = undefined;
 	let query: any = undefined;
 	let params: any = undefined;
+	const files = {} as Record<TFiles[number], Express.Multer.File[]>;
 
 	if (ops?.body) {
 		const res = ops.body.safeParse(req.body);
@@ -68,6 +71,13 @@ export function parseReq<TBody extends AnySchema = undefined, TQuery extends Any
 			throw res.error;
 		}
 		params = res.data;
+	}
+
+	if (ops?.files) {
+		const reqFiles = req.files && !Array.isArray(req.files) ? req.files : {};
+		ops.files.forEach((v) => {
+			files[v as TFiles[number]] = reqFiles[v] ? (reqFiles[v] ?? []) : [];
+		});
 	}
 
 	function getAuthContext(): AuthContext {
@@ -94,5 +104,5 @@ export function parseReq<TBody extends AnySchema = undefined, TQuery extends Any
 		params,
 		auth: getAuthContext,
 		hasAuth
-	} as ParsedRequest<TBody, TQuery, TParams>;
+	} as ParsedRequest<TBody, TQuery, TParams, TFiles>;
 }
