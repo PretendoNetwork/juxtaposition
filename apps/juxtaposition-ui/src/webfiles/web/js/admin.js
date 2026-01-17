@@ -49,6 +49,38 @@ function initSearchBar() {
 	});
 }
 
+function removeReport(element) {
+	const id = element.getAttribute('data-id');
+	const reason = prompt('Provide explanation for removing post:');
+	if (!id || !reason) {
+		return;
+	}
+
+	const params = new URLSearchParams({ reason });
+	fetch(`/admin/${id}?${params}`, {
+		method: 'DELETE'
+	})
+		.then(res => res.text())
+		.then(res => location.reload());
+}
+window.removeReport = removeReport;
+
+function ignoreReport(element) {
+	const id = element.getAttribute('data-id');
+	const reason = prompt('Provide explanation for ignoring this report:');
+	if (!id || !reason) {
+		return;
+	}
+
+	const params = new URLSearchParams({ reason });
+	fetch(`/admin/${id}?${params}`, {
+		method: 'PUT'
+	})
+		.then(res => res.text())
+		.then(res => location.reload());
+}
+window.ignoreReport = ignoreReport;
+
 document.addEventListener('DOMContentLoaded', function () {
 	initSearchBar();
 	initBanLiftDate();

@@ -15,6 +15,7 @@ import { getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
 import { buildContext } from '@/services/juxt-web/views/context';
+import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportListView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
@@ -30,11 +31,14 @@ adminRouter.get('/posts', async function (req, res) {
 	}
 	const { auth } = parseReq(req);
 
-	const reports = await database.getAllOpenReports();
-	const communityMap = getCommunityHash();
+	// `any` is used as database.js is not yet typescript
+	const reports: HydratedReportDocument[] = await database.getAllOpenReports() as any;
 	const userContent = await database.getUserContent(auth().pid);
-	const userMap = getUserHash();
 	const postIDs = reports.map(obj => obj.post_id);
+
+	if (!userContent) {
+		throw new Error('User content is null');
+	}
 
 	const posts = await POST.aggregate([
 		{ $match: { id: { $in: postIDs } } },
@@ -47,13 +51,8 @@ adminRouter.get('/posts', async function (req, res) {
 		{ $project: { index: 0, _id: 0 } }
 	]);
 
-	res.render(req.directory + '/reports.ejs', {
-		moment: moment,
-		userMap,
-		communityMap,
-		userContent,
-		reports,
-		posts
+	res.jsxForDirectory({
+		web: <WebReportListView ctx={buildContext(res)} reasonMap={getReasonMap()} posts={posts} userContent={userContent} reports={reports} />
 	});
 });
 
