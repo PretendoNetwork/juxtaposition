@@ -71,7 +71,7 @@ function removeReport(element) {
 		method: 'DELETE'
 	})
 		.then(res => res.text())
-		.then(res => location.reload());
+		.then(_res => location.reload());
 }
 window.removeReport = removeReport;
 
@@ -87,11 +87,28 @@ function ignoreReport(element) {
 		method: 'PUT'
 	})
 		.then(res => res.text())
-		.then(res => location.reload());
+		.then(_res => location.reload());
 }
 window.ignoreReport = ignoreReport;
+
+function initUploadPreview() {
+	const els = document.querySelectorAll('*[data-image-preview]');
+	els.forEach((el) => {
+		el.addEventListener('change', () => {
+			const [file] = el.files;
+			const id = el.id;
+			const previews = document.querySelectorAll(`*[data-image-preview-for="${id}"]`);
+			previews.forEach((previewEl) => {
+				if (file) {
+					previewEl.src = URL.createObjectURL(file);
+				}
+			});
+		});
+	});
+}
 
 document.addEventListener('DOMContentLoaded', function () {
 	initSearchBar();
 	initBanLiftDate();
+	initUploadPreview();
 });
