@@ -107,6 +107,31 @@ function initUploadPreview() {
 	});
 }
 
+function savePNID(pid) {
+	const account_status = document.getElementById('account_status');
+	const ban_lift_date = document.getElementById('ban_lift_date');
+	const ban_reason = document.getElementById('ban_reason');
+	fetch(`/admin/accounts/${pid}`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			account_status: Number(account_status.value),
+			ban_lift_date: ban_lift_date.value,
+			ban_reason: ban_reason.value
+		})
+	})
+		.then(response => response.json())
+		.then(({ error }) => {
+			if (!error) {
+				alert('Juxt user data saved');
+			}
+		})
+		.catch(console.log);
+}
+window.savePNID = savePNID;
+
 document.addEventListener('DOMContentLoaded', function () {
 	initSearchBar();
 	initBanLiftDate();

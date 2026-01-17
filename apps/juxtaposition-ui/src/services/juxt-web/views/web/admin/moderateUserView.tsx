@@ -218,7 +218,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 					</div>
 					<div className="mt-5 text-center">
-						<button className="btn btn-primary profile-button" type="button" evt-click="savePNID()">Save User</button>
+						<button className="btn btn-primary profile-button" type="button" evt-click={`savePNID(${props.userSettings.pid})`}>Save User</button>
 					</div>
 				</div>
 				<details open>
