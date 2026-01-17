@@ -1,9 +1,16 @@
-export type Notification = {
+export type NotificationCreateArgs = FollowNotificationCreateArgs | NoticeNotificationCreateArgs;
+
+export type FollowNotificationCreateArgs = {
 	pid: number;
-	type: 'notice' | 'yeah' | 'reply' | 'follow';
+	type: 'follow';
+	link: string;
+	objectID: string;
+};
+
+export type NoticeNotificationCreateArgs = {
+	pid: number;
+	type: 'notice';
 	text: string;
 	image: string;
 	link: string;
-	objectID: string;
-	userPID: number;
 };

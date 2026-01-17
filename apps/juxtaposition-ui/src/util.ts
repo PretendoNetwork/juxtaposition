@@ -27,7 +27,7 @@ import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonet
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
 import type { GetUserFriendPIDsResponse } from '@pretendonetwork/grpc/friends/get_user_friend_pids_rpc';
-import type { Notification } from '@/types/juxt/notification';
+import type { NotificationCreateArgs } from '@/types/juxt/notification';
 import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { CommunitySchema } from '@/models/communities';
@@ -305,7 +305,7 @@ export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCanne
 	}
 }
 
-export async function newNotification(notification: Notification): Promise<InferSchemaType<typeof NotificationSchema> | null> {
+export async function newNotification(notification: NotificationCreateArgs): Promise<InferSchemaType<typeof NotificationSchema> | null> {
 	const now = new Date();
 	if (notification.type === 'follow') {
 		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
