@@ -3,6 +3,10 @@ import { DateTime } from 'luxon';
 function initBanLiftDate() {
 	// input type datetime-local
 	const picker = document.getElementById('ban_lift_date_picker');
+	if (!picker) {
+		return; // No date picker to init
+	}
+
 	// input type hidden
 	const submission = document.getElementById('ban_lift_date');
 	// span
@@ -31,6 +35,21 @@ function initBanLiftDate() {
 	});
 }
 
+function initSearchBar() {
+	const node = document.getElementById('search');
+	if (!node) {
+		return; // No searchbar to init
+	}
+
+	node.addEventListener('keyup', ({ key }) => {
+		if (key === 'Enter') {
+			const search = node.value;
+			window.location.href = `/admin/accounts?search=${search}`;
+		}
+	});
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+	initSearchBar();
 	initBanLiftDate();
 });

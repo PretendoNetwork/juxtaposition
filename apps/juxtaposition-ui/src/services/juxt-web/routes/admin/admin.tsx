@@ -13,6 +13,8 @@ import { SETTINGS } from '@/models/settings';
 import { humanDate, createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash } from '@/util';
 import { getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
+import { buildContext } from '@/services/juxt-web/views/context';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
@@ -109,17 +111,10 @@ adminRouter.get('/accounts', async function (req, res) {
 		return results;
 	})();
 
-	const userMap = getUserHash();
 	const userMetrics = await getUserMetrics();
 
-	res.render(req.directory + '/users.ejs', {
-		moment: moment,
-		userMap,
-		users,
-		page,
-		search,
-		userCount: userMetrics.totalUsers,
-		activeUsers: userMetrics.currentOnlineUsers
+	res.jsxForDirectory({
+		web: <WebUserListView ctx={buildContext(res)} users={users} page={page} search={search} userCount={userMetrics.totalUsers} activeCount={userMetrics.currentOnlineUsers} />
 	});
 });
 
