@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import express from 'express';
 import moment from 'moment';
 import multer from 'multer';
+import z from 'zod';
 import { deletePostById, getPostById, getPostsByPoster } from '@/api/post';
 import { database } from '@/database';
 import { uploadHeaders, uploadIcons } from '@/images';
@@ -11,18 +12,24 @@ import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { humanDate, createLogEntry, getCommunityHash, getReasonMap, getUserAccountData, getUserHash, newNotification, updateCommunityHash } from '@/util';
 import { getUserMetrics } from '@/metrics';
+import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import type { HydratedSettingsDocument } from '@/models/settings';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
+
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- Too difficult to type
+const onOffSchema = () => z.enum(['on', 'off']).transform(v => v === 'on' ? 1 : 0);
 
 adminRouter.get('/posts', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
+	const { auth } = parseReq(req);
 
 	const reports = await database.getAllOpenReports();
-	const communityMap = await getCommunityHash();
-	const userContent = await database.getUserContent(req.pid);
+	const communityMap = getCommunityHash();
+	const userContent = await database.getUserContent(auth().pid);
 	const userMap = getUserHash();
 	const postIDs = reports.map(obj => obj.post_id);
 
@@ -47,7 +54,7 @@ adminRouter.get('/posts', async function (req, res) {
 	});
 });
 
-async function tryGetSettingsFromPidString(pid_string) {
+async function tryGetSettingsFromPidString(pid_string: string): Promise<HydratedSettingsDocument | null> {
 	// Check the string is all digits
 	if (!/^\d+$/g.test(pid_string)) {
 		return null;
@@ -73,11 +80,18 @@ adminRouter.get('/accounts', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 
-	const page = req.query.page ? parseInt(req.query.page) : 0;
-	const search = req.query.search?.trim();
+	const { query } = parseReq(req, {
+		query: z.object({
+			page: z.coerce.number().default(0),
+			search: z.string().trim().optional()
+		})
+	});
+
+	const page = query.page;
+	const search = query.search;
 	const limit = 20;
 
-	const users = await (async () => {
+	const users = await (async (): Promise<HydratedSettingsDocument[]> => {
 		if (!search) {
 			return database.getUsersSettings(limit, page * limit);
 		}
@@ -94,7 +108,7 @@ adminRouter.get('/accounts', async function (req, res) {
 		return results;
 	})();
 
-	const userMap = await getUserHash();
+	const userMap = getUserHash();
 	const userMetrics = await getUserMetrics();
 
 	res.render(req.directory + '/users.ejs', {
@@ -112,21 +126,30 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
-	const pnid = await getUserAccountData(req.params.pid).catch((e) => {
-		logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
+
+	const { params, auth } = parseReq(req, {
+		params: z.object({
+			pid: z.coerce.number()
+		})
 	});
-	const userContent = await database.getUserContent(req.params.pid);
-	if (isNaN(req.params.pid) || !pnid || !userContent) {
+
+	const reqPid = params.pid;
+
+	const pnid = await getUserAccountData(reqPid).catch((e) => {
+		logger.error(e, `Could not fetch userdata for ${reqPid}`);
+	});
+	const userContent = await database.getUserContent(reqPid);
+	if (isNaN(reqPid) || !pnid || !userContent) {
 		return res.redirect('/404');
 	}
-	const userSettings = await database.getUserSettings(req.params.pid);
-	const posts = (await getPostsByPoster(req.tokens, req.params.pid, 0)).items;
-	const communityMap = await getCommunityHash();
+	const userSettings = await database.getUserSettings(reqPid);
+	const posts = (await getPostsByPoster(auth().tokens, reqPid, 0))?.items ?? [];
+	const communityMap = getCommunityHash();
 	const userMap = getUserHash();
 	const reasonMap = getReasonMap();
 
-	const reports = await database.getReportsByOffender(req.params.pid, 0, 50);
-	const submittedReports = await database.getReportsByReporter(req.params.pid, 0, 50);
+	const reports = await database.getReportsByOffender(reqPid, 0, 50);
+	const submittedReports = await database.getReportsByReporter(reqPid, 0, 50);
 	const postIDs = reports.concat(submittedReports).map(obj => obj.post_id);
 
 	const postsMap = await POST.aggregate([
@@ -140,9 +163,9 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 		{ $project: { index: 0, _id: 0 } }
 	]);
 
-	const removedPosts = await POST.find({ pid: req.params.pid, removed: true }).sort({ removed_at: -1 }).limit(50);
+	const removedPosts = await POST.find({ pid: reqPid, removed: true }).sort({ removed_at: -1 }).limit(50);
 
-	const auditLog = await database.getLogsForTarget(req.params.pid, 0, 50);
+	const auditLog = await database.getLogsForTarget(reqPid, 0, 50);
 
 	res.render(req.directory + '/moderate_user.ejs', {
 		moment: moment,
@@ -170,7 +193,25 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 		return res.redirect('/titles/show');
 	}
 
-	const { pid } = req.params;
+	const { params, body, auth } = parseReq(req, {
+		params: z.object({
+			pid: z.coerce.number()
+		}),
+		body: z.object({
+			// Empty string counts as null
+			ban_lift_date: z.string().trim().nullable().transform(v => v === '' ? null : v)
+				.pipe(z.iso.datetime().nullable()),
+			account_status: z.number(),
+			ban_reason: z.string().trim().nullable().transform(v => v === '' ? null : v)
+		}).transform((v) => {
+			if (v.account_status == 0) {
+				v.ban_lift_date = null; // If account status is normal, remove ban date
+			}
+			return v;
+		})
+	});
+
+	const pid = params.pid;
 	const oldUserSettings = await database.getUserSettings(pid);
 
 	if (!oldUserSettings) {
@@ -180,27 +221,23 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 		return;
 	}
 
-	if (req.body.ban_lift_date == '' || req.body.account_status == 0) {
-		req.body.ban_lift_date = null;
-	}
-
 	await SETTINGS.findOneAndUpdate({ pid: pid }, {
-		account_status: req.body.account_status,
-		ban_lift_date: req.body.ban_lift_date,
+		account_status: body.account_status,
+		ban_lift_date: body.ban_lift_date,
 		banned_by: req.pid,
-		ban_reason: req.body.ban_reason
+		ban_reason: body.ban_reason
 	});
 
 	res.json({
 		error: false
 	});
 
-	if (req.body.account_status === 1) {
+	if (body.account_status === 1) {
 		await newNotification({
 			pid: pid,
 			type: 'notice',
-			text: `You have been Limited from Posting until ${humanDate(req.body.ban_lift_date)}. ` +
-				(req.body.ban_reason ? `Reason: "${req.body.ban_reason}". ` : '') +
+			text: `You have been Limited from Posting until ${humanDate(body.ban_lift_date)}. ` +
+				(body.ban_reason ? `Reason: "${body.ban_reason}". ` : '') +
 				`Click this message to view the Juxtaposition Code of Conduct. ` +
 				`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`,
 			image: '/images/bandwidthalert.png',
@@ -209,15 +246,15 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 	}
 
 	let action = 'UPDATE_USER';
-	const accountStatusChanged = oldUserSettings.account_status !== req.body.account_status;
+	const accountStatusChanged = oldUserSettings.account_status !== body.account_status;
 	const changes = [];
 	const fields = [];
 
 	if (accountStatusChanged) {
 		const oldStatus = getAccountStatus(oldUserSettings.account_status);
-		const newStatus = getAccountStatus(req.body.account_status);
+		const newStatus = getAccountStatus(body.account_status);
 
-		switch (req.body.account_status) {
+		switch (body.account_status) {
 			case 0:
 				action = 'UNBAN';
 				break;
@@ -238,21 +275,21 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 		changes.push(`Account Status changed from "${oldStatus}" to "${newStatus}"`);
 	}
 
-	if (accountStatusChanged || oldUserSettings.ban_lift_date !== req.body.ban_lift_date) {
+	if (accountStatusChanged || oldUserSettings.ban_lift_date !== body.ban_lift_date) {
 		fields.push('ban_lift_date');
-		changes.push(`User Ban Lift Date changed from "${humanDate(oldUserSettings.ban_lift_date)}" to "${humanDate(req.body.ban_lift_date)}"`);
+		changes.push(`User Ban Lift Date changed from "${humanDate(oldUserSettings.ban_lift_date)}" to "${humanDate(body.ban_lift_date)}"`);
 	}
 
-	if (accountStatusChanged || oldUserSettings.ban_reason !== req.body.ban_reason) {
+	if (accountStatusChanged || oldUserSettings.ban_reason !== body.ban_reason) {
 		fields.push('ban_reason');
-		changes.push(`Ban reason changed from "${oldUserSettings.ban_reason}" to "${req.body.ban_reason}"`);
+		changes.push(`Ban reason changed from "${oldUserSettings.ban_reason}" to "${body.ban_reason}"`);
 	}
 
 	if (changes.length > 0) {
 		await createLogEntry(
-			req.pid,
+			auth().pid,
 			action,
-			pid,
+			pid.toString(),
 			changes.join('\n'),
 			fields
 		);
@@ -264,17 +301,26 @@ adminRouter.delete('/:reportID', async function (req, res) {
 		return res.sendStatus(401);
 	}
 
-	const report = await database.getReportById(req.params.reportID);
+	const { params, query, auth } = parseReq(req, {
+		params: z.object({
+			reportID: z.string()
+		}),
+		query: z.object({
+			reason: z.string().trim().optional()
+		})
+	});
+
+	const report = await database.getReportById(params.reportID);
 	if (!report) {
 		return res.sendStatus(402);
 	}
-	const post = await getPostById(req.tokens, report.post_id);
+	const post = await getPostById(auth().tokens, report.post_id);
 	if (post === null) {
 		return res.sendStatus(404);
 	}
-	const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
-	await deletePostById(req.tokens, post.id, reason);
-	await report.resolve(req.pid, reason);
+	const reason = query.reason ?? 'Removed by moderator';
+	await deletePostById(auth().tokens, post.id, reason);
+	await report.resolve(auth().pid, reason);
 
 	const postType = post.parent ? 'comment' : 'post';
 
@@ -290,7 +336,7 @@ adminRouter.delete('/:reportID', async function (req, res) {
 	});
 
 	await createLogEntry(
-		req.pid,
+		auth().pid,
 		'REMOVE_POST',
 		post.id,
 		`Post ${post.id} removed for: "${reason}"`
@@ -304,18 +350,27 @@ adminRouter.put('/:reportID', async function (req, res) {
 		return res.sendStatus(401);
 	}
 
-	const report = await database.getReportById(req.params.reportID);
+	const { params, query, auth } = parseReq(req, {
+		params: z.object({
+			reportID: z.string()
+		}),
+		query: z.object({
+			reason: z.string().trim().optional()
+		})
+	});
+
+	const report = await database.getReportById(params.reportID);
 	if (!report) {
 		return res.sendStatus(402);
 	}
 
-	await report.resolve(req.pid, req.query.reason);
+	await report.resolve(auth().pid, query.reason);
 
 	await createLogEntry(
-		req.pid,
+		auth().pid,
 		'IGNORE_REPORT',
 		report.id,
-		`Report ${report.id} ignored for: "${req.query.reason}"`
+		`Report ${report.id} ignored for: "${query.reason}"`
 	);
 
 	return res.sendStatus(200);
@@ -326,8 +381,15 @@ adminRouter.get('/communities', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 
-	const page = req.query.page ? parseInt(req.query.page) : 0;
-	const search = req.query.search;
+	const { query, auth } = parseReq(req, {
+		query: z.object({
+			page: z.coerce.number().default(0),
+			search: z.string().trim().optional()
+		})
+	});
+
+	const page = query.page;
+	const search = query.search;
 	const limit = 20;
 
 	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
@@ -354,6 +416,24 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
+
+	const { body, auth } = parseReq(req, {
+		body: z.object({
+			has_shop_page: onOffSchema(),
+			is_recommended: onOffSchema(),
+			platform: z.string().trim(),
+			name: z.string().trim(),
+			description: z.string().trim(),
+			type: z.number().min(0).max(3),
+			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
+			title_ids: z.string().trim()
+				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
+				.pipe(z.array(z.string().min(1))),
+			app_data: z.string().trim()
+		}),
+		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
+	});
+
 	const communityId = await generateCommunityUID();
 	if (!req.files || !req.files.browserIcon || !req.files.CTRbrowserHeader || !req.files.WiiUbrowserHeader) {
 		return res.sendStatus(422);
@@ -372,36 +452,33 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		return res.sendStatus(422);
 	}
 
-	req.body.has_shop_page = req.body.has_shop_page === 'on' ? 1 : 0;
-	req.body.is_recommended = req.body.is_recommended === 'on' ? 1 : 0;
-
 	const document = {
-		platform_id: req.body.platform,
-		name: req.body.name,
-		description: req.body.description,
+		platform_id: body.platform,
+		name: body.name,
+		description: body.description,
 		open: true,
 		allows_comments: true,
-		type: req.body.type,
-		parent: req.body.parent === 'null' || req.body.parent.trim() === '' ? null : req.body.parent,
-		owner: req.pid,
-		created_at: moment(new Date()),
+		type: body.type,
+		parent: body.parent,
+		owner: auth().pid,
+		created_at: new Date(),
 		empathy_count: 0,
 		followers: 0,
-		has_shop_page: req.body.has_shop_page,
+		has_shop_page: body.has_shop_page,
 		icon: icons.tgaBlob,
 		ctr_header: headers.ctr,
 		wup_header: headers.wup,
-		title_id: req.body.title_ids.replace(/ /g, '').split(','),
+		title_id: body.title_ids,
 		community_id: communityId,
 		olive_community_id: communityId,
-		is_recommended: req.body.is_recommended,
-		app_data: req.body.app_data
+		is_recommended: body.is_recommended,
+		app_data: body.app_data
 	};
 	const newCommunity = new COMMUNITY(document);
 	await newCommunity.save();
 	res.redirect(`/admin/communities/${communityId}`);
 
-	updateCommunityHash(document);
+	updateCommunityHash(newCommunity);
 
 	const communityType = getCommunityType(document.type);
 	const communityPlatform = getCommunityPlatform(document.platform_id);
@@ -432,7 +509,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		'has_shop_page'
 	];
 	await createLogEntry(
-		req.pid,
+		auth().pid,
 		'MAKE_COMMUNITY',
 		communityId,
 		changes.join('\n'),
@@ -445,7 +522,13 @@ adminRouter.get('/communities/:community_id', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 
-	const community = await COMMUNITY.findOne({ olive_community_id: req.params.community_id }).exec();
+	const { params } = parseReq(req, {
+		params: z.object({
+			community_id: z.string()
+		})
+	});
+
+	const community = await COMMUNITY.findOne({ olive_community_id: params.community_id }).exec();
 
 	if (!community) {
 		return res.redirect('/titles/show');
@@ -465,8 +548,28 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		return res.redirect('/titles/show');
 	}
 
-	JSON.parse(JSON.stringify(req.files));
-	const communityId = req.params.id;
+	const { body, params, auth } = parseReq(req, {
+		params: z.object({
+			id: z.string()
+		}),
+		body: z.object({
+			has_shop_page: onOffSchema(),
+			is_recommended: onOffSchema(),
+			platform: z.string().trim(),
+			name: z.string().trim(),
+			description: z.string().trim(),
+			type: z.number().min(0).max(3),
+			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
+			title_ids: z.string().trim()
+				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
+				.pipe(z.array(z.string().min(1))),
+			app_data: z.string().trim()
+		}),
+		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
+	});
+
+	JSON.parse(JSON.stringify(req.files)); // wtf does this do?
+	const communityId = params.id;
 
 	const oldCommunity = await COMMUNITY.findOne({ olive_community_id: communityId }).exec();
 
@@ -498,56 +601,56 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		}
 	}
 
-	req.body.has_shop_page = req.body.has_shop_page === 'on' ? 1 : 0;
-	req.body.is_recommended = req.body.is_recommended === 'on' ? 1 : 0;
-
 	const document = {
-		type: req.body.type,
-		has_shop_page: req.body.has_shop_page,
-		platform_id: req.body.platform,
+		type: body.type,
+		has_shop_page: body.has_shop_page,
+		platform_id: body.platform,
 		icon: icons?.tgaBlob ?? oldCommunity.icon,
 		ctr_header: headers?.ctr ?? oldCommunity.ctr_header,
 		wup_header: headers?.wup ?? oldCommunity.wup_header,
-		title_id: req.body.title_ids.replace(/ /g, '').split(','),
-		parent: req.body.parent === 'null' || req.body.parent.trim() === '' ? null : req.body.parent,
-		app_data: req.body.app_data,
-		is_recommended: req.body.is_recommended,
-		name: req.body.name,
-		description: req.body.description
+		title_id: body.title_ids,
+		parent: body.parent,
+		app_data: body.app_data,
+		is_recommended: body.is_recommended,
+		name: body.name,
+		description: body.description
 	};
-	await COMMUNITY.findOneAndUpdate({ olive_community_id: communityId }, { $set: document }, { upsert: true }).exec();
+	const comm = await COMMUNITY.findOneAndUpdate({ olive_community_id: communityId }, { $set: document }, { upsert: true }).exec();
+	if (!comm) {
+		throw new Error('Can not find community after update');
+	}
 
 	res.redirect(`/admin/communities/${communityId}`);
 
-	updateCommunityHash(document);
+	updateCommunityHash(comm);
 
 	// determine the changes made to the community
 	const changes = [];
 	const fields = [];
 
-	if (oldCommunity.name !== document.name) {
+	if (oldCommunity.name !== comm.name) {
 		fields.push('name');
-		changes.push(`Name changed from "${oldCommunity.name}" to "${document.name}"`);
+		changes.push(`Name changed from "${oldCommunity.name}" to "${comm.name}"`);
 	}
-	if (oldCommunity.description !== document.description) {
+	if (oldCommunity.description !== comm.description) {
 		fields.push('description');
-		changes.push(`Description changed from "${oldCommunity.description}" to "${document.description}"`);
+		changes.push(`Description changed from "${oldCommunity.description}" to "${comm.description}"`);
 	}
-	if (oldCommunity.platform_id !== parseInt(document.platform_id)) {
+	if (oldCommunity.platform_id !== comm.platform_id) {
 		const oldCommunityPlatform = getCommunityPlatform(oldCommunity.platform_id);
-		const newCommunityPlatform = getCommunityPlatform(document.platform_id);
+		const newCommunityPlatform = getCommunityPlatform(comm.platform_id);
 		fields.push('platform_id');
 		changes.push(`Platform ID changed from "${oldCommunityPlatform}" to "${newCommunityPlatform}"`);
 	}
-	if (oldCommunity.type !== parseInt(document.type)) {
+	if (oldCommunity.type !== comm.type) {
 		const oldCommunityType = getCommunityType(oldCommunity.type);
-		const newCommunityType = getCommunityType(document.type);
+		const newCommunityType = getCommunityType(comm.type);
 		fields.push('type');
 		changes.push(`Type changed from "${oldCommunityType}" to "${newCommunityType}"`);
 	}
-	if (oldCommunity.title_id.toString() !== document.title_id.toString()) {
+	if (oldCommunity.title_id.toString() !== comm.title_id.toString()) {
 		fields.push('title_id');
-		changes.push(`Title IDs changed from "${oldCommunity.title_id.join(', ')}" to "${document.title_id.join(', ')}"`);
+		changes.push(`Title IDs changed from "${oldCommunity.title_id.join(', ')}" to "${comm.title_id.join(', ')}"`);
 	}
 	if (req.files.browserIcon) {
 		fields.push('browserIcon');
@@ -561,26 +664,26 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		fields.push('WiiUbrowserHeader');
 		changes.push('Wii U Banner changed');
 	}
-	if (oldCommunity.parent !== document.parent) {
+	if (oldCommunity.parent !== comm.parent) {
 		fields.push('parent');
-		changes.push(`Parent changed from "${oldCommunity.parent}" to "${document.parent}"`);
+		changes.push(`Parent changed from "${oldCommunity.parent}" to "${comm.parent}"`);
 	}
-	if (oldCommunity.app_data !== document.app_data) {
+	if (oldCommunity.app_data !== comm.app_data) {
 		fields.push('app_data');
-		changes.push(`App data changed from "${oldCommunity.app_data}" to "${document.app_data}"`);
+		changes.push(`App data changed from "${oldCommunity.app_data}" to "${comm.app_data}"`);
 	}
-	if (oldCommunity.is_recommended !== document.is_recommended) {
+	if (oldCommunity.is_recommended !== comm.is_recommended) {
 		fields.push('is_recommended');
-		changes.push(`Is Recommended changed from "${oldCommunity.is_recommended}" to "${document.is_recommended}"`);
+		changes.push(`Is Recommended changed from "${oldCommunity.is_recommended}" to "${comm.is_recommended}"`);
 	}
-	if (oldCommunity.has_shop_page !== document.has_shop_page) {
+	if (oldCommunity.has_shop_page !== comm.has_shop_page) {
 		fields.push('has_shop_page');
-		changes.push(`Has Shop Page changed from "${oldCommunity.has_shop_page}" to "${document.has_shop_page}"`);
+		changes.push(`Has Shop Page changed from "${oldCommunity.has_shop_page}" to "${comm.has_shop_page}"`);
 	}
 
 	if (changes.length > 0) {
 		await createLogEntry(
-			req.pid,
+			auth().pid,
 			'UPDATE_COMMUNITY',
 			oldCommunity.olive_community_id,
 			changes.join('\n'),
@@ -594,30 +697,34 @@ adminRouter.delete('/communities/:id', async (req, res) => {
 		return res.redirect('/titles/show');
 	}
 
-	const { id } = req.params;
+	const { params, auth } = parseReq(req, {
+		params: z.object({
+			id: z.string()
+		})
+	});
 
-	await COMMUNITY.findByIdAndRemove(id).exec();
+	await COMMUNITY.findByIdAndDelete(params.id).exec();
 
 	res.json({
 		error: false
 	});
 
 	await createLogEntry(
-		req.pid,
+		auth().pid,
 		'DELETE_COMMUNITY',
-		id,
-		`Community ${id} deleted`
+		params.id,
+		`Community ${params.id} deleted`
 	);
 });
 
-async function generateCommunityUID(length) {
+async function generateCommunityUID(length?: number | undefined): Promise<string> {
 	let id = crypto.getRandomValues(new Uint32Array(1)).toString().substring(0, length);
 	const inuse = await COMMUNITY.findOne({ community_id: id });
 	id = (inuse ? await generateCommunityUID(length) : id);
 	return id;
 }
 
-function getAccountStatus(status) {
+function getAccountStatus(status: number): string {
 	switch (status) {
 		case 0:
 			return 'Normal';
@@ -632,9 +739,9 @@ function getAccountStatus(status) {
 	}
 }
 
-function getCommunityType(type) {
-	type = Number(type);
-	switch (type) {
+function getCommunityType(type: number | string): string {
+	const parsedType = Number(type);
+	switch (parsedType) {
 		case 0:
 			return 'Main';
 		case 1:
@@ -644,13 +751,13 @@ function getCommunityType(type) {
 		case 3:
 			return 'Private';
 		default:
-			return `Unknown (${type})`;
+			return `Unknown (${parsedType})`;
 	}
 }
 
-function getCommunityPlatform(platform_id) {
-	platform_id = Number(platform_id);
-	switch (platform_id) {
+function getCommunityPlatform(platform_id: number | string): string {
+	const parsedPlatformId = Number(platform_id);
+	switch (parsedPlatformId) {
 		case 0:
 			return 'Wii U';
 		case 1:
@@ -658,6 +765,6 @@ function getCommunityPlatform(platform_id) {
 		case 2:
 			return 'Both';
 		default:
-			return `Unknown (${platform_id})`;
+			return `Unknown (${parsedPlatformId})`;
 	}
 }
