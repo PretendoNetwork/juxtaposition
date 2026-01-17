@@ -29,7 +29,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs ctx={props.ctx} selected="users" />
-				<input type="string" id="search" placeholder="Search..." value={props.search} />
+				<input type="string" id="user-search" placeholder="Search..." value={props.search} />
 				<span style={{ marginTop: '16px' }}>
 					{ props.userCount }
 					{' '}

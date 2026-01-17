@@ -36,17 +36,27 @@ function initBanLiftDate() {
 }
 
 function initSearchBar() {
-	const node = document.getElementById('search');
-	if (!node) {
-		return; // No searchbar to init
+	const userSearchNode = document.getElementById('search');
+	if (userSearchNode) {
+		userSearchNode.addEventListener('keyup', ({ key }) => {
+			if (key === 'Enter') {
+				const search = userSearchNode.value;
+				const params = new URLSearchParams({ search });
+				window.location.href = `/admin/accounts?${params}`;
+			}
+		});
 	}
 
-	node.addEventListener('keyup', ({ key }) => {
-		if (key === 'Enter') {
-			const search = node.value;
-			window.location.href = `/admin/accounts?search=${search}`;
-		}
-	});
+	const communitySearchNode = document.getElementById('search');
+	if (communitySearchNode) {
+		communitySearchNode.addEventListener('keyup', ({ key }) => {
+			if (key === 'Enter') {
+				const search = communitySearchNode.value;
+				const params = new URLSearchParams({ search });
+				window.location.href = `/admin/communities?${params}`;
+			}
+		});
+	}
 }
 
 function removeReport(element) {

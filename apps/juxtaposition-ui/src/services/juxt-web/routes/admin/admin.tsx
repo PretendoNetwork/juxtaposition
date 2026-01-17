@@ -16,6 +16,7 @@ import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportListView';
+import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/manageCommunityView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
@@ -391,11 +392,8 @@ adminRouter.get('/communities', async function (req, res) {
 
 	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
 
-	res.render(req.directory + '/manage_communities.ejs', {
-		moment: moment,
-		communities,
-		page,
-		search
+	res.jsxForDirectory({
+		web: <WebManageCommunityView ctx={buildContext(res)} communities={communities} page={page} search={search} />
 	});
 });
 
