@@ -14,6 +14,7 @@ import { humanDate, createLogEntry, getCommunityHash, getReasonMap, getUserAccou
 import { getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import type { HydratedSettingsDocument } from '@/models/settings';
+import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
@@ -310,7 +311,8 @@ adminRouter.delete('/:reportID', async function (req, res) {
 		})
 	});
 
-	const report = await database.getReportById(params.reportID);
+	// `any` is needed because database.js is not typed yet
+	const report: HydratedReportDocument | null = await database.getReportById(params.reportID) as any;
 	if (!report) {
 		return res.sendStatus(402);
 	}
@@ -359,18 +361,19 @@ adminRouter.put('/:reportID', async function (req, res) {
 		})
 	});
 
-	const report = await database.getReportById(params.reportID);
+	// `any` is needed because database.js is not typed yet
+	const report: HydratedReportDocument | null = await database.getReportById(params.reportID) as any;
 	if (!report) {
 		return res.sendStatus(402);
 	}
 
-	await report.resolve(auth().pid, query.reason);
+	await report.resolve(auth().pid, query.reason ?? null);
 
 	await createLogEntry(
 		auth().pid,
 		'IGNORE_REPORT',
 		report.id,
-		`Report ${report.id} ignored for: "${query.reason}"`
+		`Report ${report.id} ignored for: "${query.reason ?? 'No reason provided'}"`
 	);
 
 	return res.sendStatus(200);
