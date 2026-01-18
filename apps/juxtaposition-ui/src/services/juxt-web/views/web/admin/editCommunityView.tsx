@@ -70,7 +70,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 						<input type="file" id="browserIcon" data-image-preview accept="image/jpg" name="browserIcon" />
 					</div>
 					<div className="col-md-3">
-						<img src={utils.cdn(props.ctx, `/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" />
+						<img src={utils.cdn(props.ctx, `/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" id="browserIconPreview" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="CTRbrowserHeader">3DS Browser Banner (400px x 220px)</label>
@@ -79,7 +79,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					<div className="col-md-3">
 						{community.ctr_header
 							? (
-									<img src={utils.cdn(props.ctx, community.ctr_header)} data-image-preview-for="CTRbrowserHeader" />
+									<img src={utils.cdn(props.ctx, community.ctr_header)} data-image-preview-for="CTRbrowserHeader" id="CTRbrowserHeaderPreview" />
 								)
 							: (
 									<img src={utils.cdn(props.ctx, `/headers/${imageId}/3DS.png`)} data-image-preview-for="CTRbrowserHeader" />
@@ -92,10 +92,10 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					<div className="col-md-3">
 						{community.wup_header
 							? (
-									<img src={utils.cdn(props.ctx, community.wup_header)} data-image-preview-for="WiiUbrowserHeader" />
+									<img src={utils.cdn(props.ctx, community.wup_header)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
 								)
 							: (
-									<img src={utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`)} data-image-preview-for="WiiUbrowserHeader" />
+									<img src={utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
 								)}
 					</div>
 					<div className="col-md-4">

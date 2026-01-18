@@ -61,21 +61,21 @@ export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {
 						<input type="file" id="browserIcon" data-image-preview accept="image/jpg" name="browserIcon" />
 					</div>
 					<div className="col-md-3">
-						<img src="" data-image-preview-for="browserIcon" />
+						<img src="" data-image-preview-for="browserIcon" id="browserIconPreview" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="CTRbrowserHeader">3DS Browser Banner (400px x 220px)</label>
 						<input type="file" id="CTRbrowserHeader" data-image-preview accept="image/jpg" name="CTRbrowserHeader" />
 					</div>
 					<div className="col-md-3">
-						<img src="" data-image-preview-for="CTRbrowserHeader" />
+						<img src="" data-image-preview-for="CTRbrowserHeader" id="CTRbrowserHeaderPreview" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="WiiUbrowserHeader">Wii U Browser Banner (1280px x 180px)</label>
 						<input type="file" id="WiiUbrowserHeader" data-image-preview accept="image/jpg" name="WiiUbrowserHeader" />
 					</div>
 					<div className="col-md-3">
-						<img src="" data-image-preview-for="WiiUbrowserHeader" />
+						<img src="" data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
 					</div>
 					<div className="col-md-4">
 						<label className="labels" htmlFor="parent">Parent Community ID:</label>
