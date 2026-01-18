@@ -102,6 +102,7 @@ export function parseReq<TBody extends AnySchema = undefined, TQuery extends Any
 		body,
 		query,
 		params,
+		files,
 		auth: getAuthContext,
 		hasAuth
 	} as ParsedRequest<TBody, TQuery, TParams, TFiles>;

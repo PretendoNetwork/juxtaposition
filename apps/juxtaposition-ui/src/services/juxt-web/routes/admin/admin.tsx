@@ -26,7 +26,7 @@ const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- Too difficult to type
-const onOffSchema = () => z.enum(['on', 'off']).transform(v => v === 'on' ? 1 : 0);
+const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v === 'on' ? 1 : 0);
 
 adminRouter.get('/posts', async function (req, res) {
 	if (!res.locals.moderator) {
@@ -417,7 +417,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 			platform: z.string().trim(),
 			name: z.string().trim(),
 			description: z.string().trim(),
-			type: z.number().min(0).max(3),
+			type: z.coerce.number().min(0).max(3),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
 			title_ids: z.string().trim()
 				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
@@ -550,7 +550,7 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 			platform: z.string().trim(),
 			name: z.string().trim(),
 			description: z.string().trim(),
-			type: z.number().min(0).max(3),
+			type: z.coerce.number().min(0).max(3),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
 			title_ids: z.string().trim()
 				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))

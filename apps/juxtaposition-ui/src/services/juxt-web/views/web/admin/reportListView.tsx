@@ -82,7 +82,7 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 								{props.reports.map((report) => {
 									const post = props.posts.find(post => post.id === report.post_id);
 									if (!post) {
-										return <React.Fragment key={report.id} />;
+										return null;
 									}
 									return <Report ctx={props.ctx} key={report.id} userContent={props.userContent} reasonMap={props.reasonMap} post={post} report={report} />;
 								})}
