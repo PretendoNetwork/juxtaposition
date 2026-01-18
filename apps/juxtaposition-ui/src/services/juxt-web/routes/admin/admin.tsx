@@ -165,7 +165,7 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	res.jsxForDirectory({
 		web: (
 			<WebModerateUserView
-				ctx={buildContext(ctx)}
+				ctx={buildContext(res)}
 				userSettings={userSettings}
 				userContent={userContent}
 				pnid={pnid}
