@@ -276,9 +276,6 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						{props.reports.length === 0 ? <h4>There's nothing here...</h4> : null}
 						{props.reports.map((report) => {
 							const post = props.postsMap.find(post => post.id === report.post_id);
-							if (!post) {
-								return <React.Fragment key={report.id} />;
-							}
 							return (
 								<li key={report.id} className="reports">
 									<details>
@@ -320,7 +317,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 												</span>
 											</div>
 										</summary>
-										<WebPostView ctx={props.ctx} post={post} isReply={false} />
+										{ post ? <WebPostView ctx={props.ctx} post={post} isReply={false} /> : <p>Post could not be found</p> }
 									</details>
 								</li>
 							);
@@ -341,9 +338,6 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						{props.submittedReports.length === 0 ? <h4>There's nothing here...</h4> : null}
 						{props.submittedReports.map((report) => {
 							const post = props.postsMap.find(post => post.id === report.post_id);
-							if (!post) {
-								return <React.Fragment key={report.id} />;
-							}
 							return (
 								<li key={report.id} className="reports">
 									<details>
@@ -385,7 +379,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 												</span>
 											</div>
 										</summary>
-										<WebPostView ctx={props.ctx} post={post} isReply={false} />
+										{ post ? <WebPostView ctx={props.ctx} post={post} isReply={false} /> : <p>Post could not be found</p> }
 									</details>
 								</li>
 							);
