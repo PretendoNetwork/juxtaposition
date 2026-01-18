@@ -11,6 +11,7 @@ export type ManageCommunityViewProps = {
 	ctx: RenderContext;
 	search?: string;
 	communities: InferSchemaType<typeof CommunitySchema>[];
+	hasNextPage: boolean;
 	page: number;
 };
 
@@ -53,7 +54,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 								</ul>
 								<div className="buttons tabs">
 									{ props.page > 0 ? <a href={prevUrl} className="button">Previous Page</a> : null }
-									<a href={nextUrl} className="button">Next Page</a>
+									{ props.hasNextPage ? <a href={nextUrl} className="button">Next Page</a> : null }
 								</div>
 							</>
 						)
