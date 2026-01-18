@@ -29,7 +29,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs ctx={props.ctx} selected="communities" />
-				<input type="string" id="community-search" placeholder="Search..." value={props.search} />
+				<input type="string" id="community-search" className="searchbar" placeholder="Search..." value={props.search} />
 				<button style={{ marginTop: '1em' }}>
 					<a href="/admin/communities/new" className="button">Create Community</a>
 				</button>
