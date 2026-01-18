@@ -55,8 +55,8 @@ function Report(props: ReportProps): ReactNode {
 				</summary>
 				<WebPostView ctx={props.ctx} post={props.post} userContent={props.userContent} isReply={false} />
 				<div className="button-spacer">
-					<button evt-click="removeReport(this)" data-id="<%=report._id%>">Remove Post</button>
-					<button evt-click="ignoreReport(this)" data-id="<%=report._id%>">Ignore Report</button>
+					<button evt-click="removeReport(this)" data-id={props.report._id}>Remove Post</button>
+					<button evt-click="ignoreReport(this)" data-id={props.report._id}>Ignore Report</button>
 				</div>
 			</details>
 		</li>
