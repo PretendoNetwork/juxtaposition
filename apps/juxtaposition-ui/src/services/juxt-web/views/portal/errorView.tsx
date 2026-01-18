@@ -1,7 +1,8 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { InlineScript } from '@/services/juxt-web/views/common';
 import type { ReactNode } from 'react';
-import type { ErrorViewProps } from '@/services/juxt-web/views/web/errorView';
+import type { ErrorViewProps, FatalErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
 export function PortalErrorView(props: ErrorViewProps): ReactNode {
 	const title = `Error: ${props.code}`;
@@ -32,5 +33,33 @@ export function PortalErrorView(props: ErrorViewProps): ReactNode {
 				</div>
 			</PortalPageBody>
 		</PortalRoot>
+	);
+}
+
+const errorJs = `
+var e = document.getElementById('error');
+var code = parseInt(e.getAttribute('data-code'));
+var message = e.getAttribute('data-message');
+
+wiiuErrorViewer.openByCodeAndMessage(code, message);
+wiiuBrowser.closeApplication();
+`;
+
+export function PortalFatalErrorView(props: FatalErrorViewProps): ReactNode {
+	return (
+		<html>
+			<head>
+				<meta id="error" data-code={props.code} data-message={props.message} />
+			</head>
+			<body>
+				<h1>
+					You are not authorized to access this application (
+					{props.code}
+					)
+				</h1>
+				<p style={{ whiteSpace: 'pre-line' }}>{props.message}</p>
+			</body>
+			<InlineScript src={errorJs} />
+		</html>
 	);
 }

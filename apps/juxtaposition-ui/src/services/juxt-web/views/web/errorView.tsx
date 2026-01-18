@@ -12,6 +12,11 @@ export type ErrorViewProps = {
 	message: string;
 };
 
+export type FatalErrorViewProps = {
+	code: string | number;
+	message: string;
+};
+
 export function WebErrorView(props: ErrorViewProps): ReactNode {
 	const extraHead = <title>Juxt - Error</title>;
 

@@ -2,6 +2,7 @@ import { database as db } from '@/database';
 import { config } from '@/config';
 import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
 import { buildContext } from '@/services/juxt-web/views/context';
+import { PortalFatalErrorView } from '@/services/juxt-web/views/portal/errorView';
 import type { RequestHandler } from 'express';
 
 export const checkDiscovery: RequestHandler = async (request, response, next) => {
@@ -24,10 +25,7 @@ export const checkDiscovery: RequestHandler = async (request, response, next) =>
 		if (request.directory === 'web') {
 			return response.jsx(<WebLoginView ctx={buildContext(response)} toast={message} redirect={request.originalUrl} />);
 		} else {
-			return response.render('portal/error_fatal.ejs', {
-				message,
-				code: 5989999
-			});
+			return response.jsx(<PortalFatalErrorView code={5989999} message={message} />);
 		}
 	} else {
 		request.guest_access = discovery ? discovery.guest_access : false;

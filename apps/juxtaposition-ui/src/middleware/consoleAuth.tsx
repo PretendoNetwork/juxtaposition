@@ -1,5 +1,6 @@
 import { config } from '@/config';
 import { logger } from '@/logger';
+import { PortalFatalErrorView } from '@/services/juxt-web/views/portal/errorView';
 import { decodeParamPack, getPIDFromServiceToken, getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
 import type { RequestHandler } from 'express';
 
@@ -54,31 +55,19 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 
 	// This section includes checks if a user is a developer and adds exceptions for these cases
 	if (!request.pid) {
-		return response.render('portal/error_fatal.ejs', {
-			code: 5989999,
-			message: 'Unable to parse service token. Are you using a Nintendo Network ID?'
-		});
+		return response.jsx(<PortalFatalErrorView code={5989999} message="Unable to parse service token. Are you using a Nintendo Network ID?" />);
 	}
 	if (!request.user) {
-		return response.render('portal/error_fatal.ejs', {
-			code: 5989999,
-			message: 'Unable to fetch user data. Please try again later.'
-		});
+		return response.jsx(<PortalFatalErrorView code={5989999} message="Unable to fetch user data. Please try again later." />);
 	}
 
 	if (!mayBypassAuthChecks && !request.paramPackData) {
-		return response.render('portal/error_fatal.ejs', {
-			code: 5989999,
-			message: 'Missing auth headers'
-		});
+		return response.jsx(<PortalFatalErrorView code={5989999} message="Missing auth headers" />);
 	}
 	const userAgent = request.get('user-agent') ?? '';
 	const uaIsConsole = userAgent.includes('Nintendo WiiU') || userAgent.includes('Nintendo 3DS');
 	if (!mayBypassAuthChecks && !uaIsConsole) {
-		return response.render('portal/error_fatal.ejs', {
-			code: 5989999,
-			message: 'Invalid authentication method used.'
-		});
+		return response.jsx(<PortalFatalErrorView code={5989999} message="Invalid authentication method used." />);
 	}
 
 	response.locals.uaIsConsole = uaIsConsole;
