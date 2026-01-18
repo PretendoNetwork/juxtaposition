@@ -36,7 +36,7 @@ const postLimit = rateLimit({
 		} else if (req.body.community_id) {
 			res.redirect('/titles/' + req.body.community_id);
 		} else {
-			res.render(req.directory + '/error.ejs', {
+			return res.renderError({
 				code: 429,
 				message: 'Too many new posts have been created.'
 			});
@@ -344,10 +344,11 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		});
 		if (paintingBlob === null) {
 			res.status(422);
-			return res.render(req.directory + '/error.ejs', {
+			res.renderError({
 				code: 422,
 				message: 'Upload failed. Please try again later.'
 			});
+			return;
 		}
 	}
 	let screenshots = null;
@@ -359,10 +360,11 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		});
 		if (screenshots === null) {
 			res.status(422);
-			return res.render(req.directory + '/error.ejs', {
+			res.renderError({
 				code: 422,
 				message: 'Upload failed. Please try again later.'
 			});
+			return;
 		}
 	}
 

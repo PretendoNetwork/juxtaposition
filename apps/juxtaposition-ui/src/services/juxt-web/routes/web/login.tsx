@@ -68,9 +68,9 @@ loginRouter.post('/', async (req, res) => {
 			break;
 	}
 	if (discoveryStatus !== 0) {
-		return res.render(req.directory + '/error.ejs', {
+		return res.renderError({
 			code: 504,
-			message: message
+			message
 		});
 	}
 	const expiration = login.expiresIn * 60 * 60;

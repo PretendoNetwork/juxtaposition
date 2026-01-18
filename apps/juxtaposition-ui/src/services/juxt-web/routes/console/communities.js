@@ -64,7 +64,10 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found' });
+		return res.renderError({
+			code: 404,
+			message: 'Community not Found'
+		});
 	}
 	const communityMap = await getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
@@ -88,7 +91,10 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found' });
+		return res.renderError({
+			code: 404,
+			message: 'Community not Found'
+		});
 	}
 
 	if (!community.permissions) {

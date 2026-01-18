@@ -1,6 +1,11 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import type { RequestHandler } from 'express';
+import { buildContext } from '@/services/juxt-web/views/context';
+import { WebErrorView } from '@/services/juxt-web/views/web/errorView';
+import { CtrErrorView } from '@/services/juxt-web/views/ctr/errorView';
+import { PortalErrorView } from '@/services/juxt-web/views/portal/errorView';
 import type { ReactElement } from 'react';
+import type { RequestHandler } from 'express';
+import type { ErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
 const htmlDoctype = '<!DOCTYPE html>';
 
@@ -39,6 +44,21 @@ export const jsxRenderer: RequestHandler = (request, response, next) => {
 		}
 
 		throw new Error('Invalid directory to render JSX for');
+	};
+
+	response.renderError = (opt): typeof response => {
+		const props: ErrorViewProps = {
+			ctx: buildContext(response),
+			requestId: request.id,
+			code: opt.code,
+			message: opt.message
+		};
+		response.jsxForDirectory({
+			web: <WebErrorView {...props} />,
+			ctr: <CtrErrorView {...props} />,
+			portal: <PortalErrorView {...props} />
+		});
+		return response;
 	};
 	next();
 };
