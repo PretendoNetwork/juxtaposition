@@ -3,6 +3,9 @@
     "src/"
   ],
   "ext": "js,ts,ejs,tsx,jsx,json,css",
+  "ignore": [
+    "src/webfiles/ctr/css/sprites.css"
+  ],
   "env": {
     "NODE_ENV": "development"
   }
