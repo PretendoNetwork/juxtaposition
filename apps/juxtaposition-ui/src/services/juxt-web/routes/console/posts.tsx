@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 import express from 'express';
 import { rateLimit } from 'express-rate-limit';
-import moment from 'moment';
 import multer from 'multer';
 import { z } from 'zod';
 import { deletePostById, getPostById, getPostsByParentId } from '@/api/post';
@@ -12,12 +11,17 @@ import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, getCommunityHash, getInvalidPostRegex, getUserAccountData } from '@/util';
+import { createLogEntry, getInvalidPostRegex, getUserAccountData } from '@/util';
 import { addEmpathyById, removeEmpathyById } from '@/api/empathy';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { buildContext } from '@/services/juxt-web/views/context';
+import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
+import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
+import { PortalPostPageView } from '@/services/juxt-web/views/portal/postPageView';
 import type { Request, Response } from 'express';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 import type { PostSchema } from '@/models/post';
 import type { CommunitySchema } from '@/models/communities';
 import type { HydratedSettingsDocument } from '@/models/settings';
@@ -154,19 +158,31 @@ postsRouter.get('/:post_id', async function (req, res) {
 		return res.redirect(`/posts/${parent.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);
-	const communityMap = getCommunityHash();
+	if (!community || !userSettings || !userContent) {
+		return res.redirect('/404');
+	}
+
 	const replies = (await getPostsByParentId(auth().tokens, post.id, 0))?.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
-	res.render(req.directory + '/post.ejs', {
-		moment: moment,
-		userSettings: userSettings,
-		userContent: userContent,
-		post: post,
-		replies: replies,
-		community: community,
-		communityMap: communityMap,
+	const canPost = (
+		(community.permissions.open && community.type < 2) ||
+		(community.admins && community.admins.indexOf(auth().pid) !== -1) ||
+		(auth().user.accessLevel >= community.permissions.minimum_new_comment_access_level)
+	) && userSettings.account_status === 0;
+
+	const props: PostPageViewProps = {
+		ctx: buildContext(res),
+		community,
+		post,
 		postPNID,
-		pnid: req.user
+		replies,
+		userContent,
+		canPost
+	};
+	res.jsxForDirectory({
+		web: <WebPostPageView {...props} />,
+		ctr: <CtrPostPageView {...props} />,
+		portal: <PortalPostPageView {...props} />
 	});
 });
 
