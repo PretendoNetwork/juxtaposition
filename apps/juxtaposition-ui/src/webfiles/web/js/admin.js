@@ -36,7 +36,7 @@ function initBanLiftDate() {
 }
 
 function initSearchBar() {
-	const userSearchNode = document.getElementById('search');
+	const userSearchNode = document.getElementById('user-search');
 	if (userSearchNode) {
 		userSearchNode.addEventListener('keyup', ({ key }) => {
 			if (key === 'Enter') {
@@ -47,7 +47,7 @@ function initSearchBar() {
 		});
 	}
 
-	const communitySearchNode = document.getElementById('search');
+	const communitySearchNode = document.getElementById('community-search');
 	if (communitySearchNode) {
 		communitySearchNode.addEventListener('keyup', ({ key }) => {
 			if (key === 'Enter') {
