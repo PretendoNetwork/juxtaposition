@@ -34,6 +34,8 @@ const schema = z.object({
 	whitelist: z.string(),
 	/** Environment (prod/test/dev) to use for Discovery and access_level control. */
 	serverEnvironment: z.string(),
+	/** By default, only consoles can reach the console domains. This setting disable that constraint */
+	disableConsoleChecks: z.stringbool().default(false),
 	/** The AES key to use for decrypting service tokens. Must match the account server's. */
 	aesKey: z.string(),
 	mongoose: z.object({
@@ -78,6 +80,7 @@ export const presets = {
 		cdnDomain: 'https://cdn.pretendo.cc/miiverse',
 		whitelist: '',
 		serverEnvironment: 'prod',
+		disableConsoleChecks: true,
 		aesKey: '1234567812345678123456781234567812345678123456781234567812345678',
 		mongoose: {
 			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'

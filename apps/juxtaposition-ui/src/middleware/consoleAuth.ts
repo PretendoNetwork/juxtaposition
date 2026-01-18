@@ -26,9 +26,9 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 
 	if (!request.user && request.cookies.access_token) {
 		try {
-			// Developer accounts may also use an OAuth token for console frontends
+			// Developer accounts may bypass console checks
 			const user = await getUserDataFromToken(request.cookies.access_token);
-			if (user.accessLevel === 3) {
+			if (user.accessLevel === 3 || config.disableConsoleChecks) {
 				request.user = await getUserAccountData(user.pid);
 				request.pid = user.pid;
 
@@ -50,6 +50,8 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 		}
 	}
 
+	const mayBypassAuthChecks = request.user.accessLevel === 3 || config.disableConsoleChecks;
+
 	// This section includes checks if a user is a developer and adds exceptions for these cases
 	if (!request.pid) {
 		return response.render('portal/error_fatal.ejs', {
@@ -63,7 +65,8 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 			message: 'Unable to fetch user data. Please try again later.'
 		});
 	}
-	if (request.user.accessLevel < 3 && !request.paramPackData) {
+
+	if (!mayBypassAuthChecks && !request.paramPackData) {
 		return response.render('portal/error_fatal.ejs', {
 			code: 5989999,
 			message: 'Missing auth headers'
@@ -71,7 +74,7 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 	}
 	const userAgent = request.get('user-agent') ?? '';
 	const uaIsConsole = userAgent.includes('Nintendo WiiU') || userAgent.includes('Nintendo 3DS');
-	if (request.user.accessLevel < 3 && (request.cookies.access_token || !uaIsConsole)) {
+	if (!mayBypassAuthChecks && !uaIsConsole) {
 		return response.render('portal/error_fatal.ejs', {
 			code: 5989999,
 			message: 'Invalid authentication method used.'
