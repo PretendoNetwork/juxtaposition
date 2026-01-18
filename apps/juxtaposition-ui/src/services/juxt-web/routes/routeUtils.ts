@@ -43,7 +43,7 @@ export function getAuthedRequest<TReq extends Request = Request>(req: TReq): Aut
 	return req as AuthRequest<TReq>;
 }
 
-export function parseReq<TBody extends AnySchema = undefined, TQuery extends AnySchema = undefined, TParams extends AnySchema = undefined, TFiles extends string[] = []>(req: Request, ops?: ParseRequestOptions<TBody, TQuery, TParams, TFiles>): ParsedRequest<TBody, TQuery, TParams, TFiles> {
+export function parseReq<TBody extends AnySchema = undefined, TQuery extends AnySchema = undefined, TParams extends AnySchema = undefined, const TFiles extends string[] = []>(req: Request, ops?: ParseRequestOptions<TBody, TQuery, TParams, TFiles>): ParsedRequest<TBody, TQuery, TParams, TFiles> {
 	let body: any = undefined;
 	let query: any = undefined;
 	let params: any = undefined;
