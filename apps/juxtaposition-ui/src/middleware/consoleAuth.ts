@@ -50,7 +50,7 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 		}
 	}
 
-	const mayBypassAuthChecks = request.user.accessLevel === 3 || config.disableConsoleChecks;
+	const mayBypassAuthChecks = request.user?.accessLevel === 3 || config.disableConsoleChecks;
 
 	// This section includes checks if a user is a developer and adds exceptions for these cases
 	if (!request.pid) {
