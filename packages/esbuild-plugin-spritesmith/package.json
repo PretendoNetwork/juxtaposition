@@ -1,0 +1,24 @@
+{
+    "name": "@repo/esbuild-plugin-spritesmith",
+    "private": true,
+    "version": "0.0.0",
+    "description": "ESBuild plugin to create spritesheets",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "preinstall": "npm run build"
+    },
+    "dependencies": {
+        "esbuild": "^0.25.4",
+        "handlebars": "^4.7.8",
+        "pixelsmith": "^2.6.0",
+        "spritesmith": "^3.5.1"
+    },
+    "devDependencies": {
+        "@types/node": "^22.19.1",
+        "@types/spritesmith": "^3.4.5",
+        "typescript": "^5.9.3"
+    }
+}

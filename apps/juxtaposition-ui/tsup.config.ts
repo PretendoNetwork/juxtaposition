@@ -2,6 +2,8 @@ import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
 import { raw } from 'esbuild-raw-plugin';
 import { fixImportsPlugin } from 'esbuild-fix-imports-plugin';
+import { oxipng } from '@repo/esbuild-plugin-oxipng';
+import { spritesmith } from '@repo/esbuild-plugin-spritesmith';
 import browserslist from 'browserslist-to-esbuild';
 
 export default defineConfig([
@@ -53,9 +55,16 @@ export default defineConfig([
 		format: 'iife',
 
 		esbuildOptions(options): void {
-			options.external = ['/images/*', '/fonts/*'];
+			options.external = ['/fonts/*'];
 		},
 		esbuildPlugins: [
+			oxipng({ loader: 'dataurl' }),
+			spritesmith({
+				input_folder: './src/webfiles/ctr/images/sprites/',
+				output_css: './src/webfiles/ctr/css/sprites.css',
+				output_image: './src/webfiles/ctr/images/sprites.png',
+				output_image_url: '@/webfiles/ctr/images/sprites.png'
+			}),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
