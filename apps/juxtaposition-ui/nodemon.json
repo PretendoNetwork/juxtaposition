@@ -1,11 +1,12 @@
 {
   "watch": [
-    "src/"
+    "src/",
+    "webfiles/"
   ],
   "ext": "js,ts,ejs,tsx,jsx,json,css",
   "ignore": [
-    "src/webfiles/ctr/css/sprites.css",
-    "src/webfiles/ctr/images/sprites.png"
+    "webfiles/ctr/css/sprites.css",
+    "webfiles/ctr/images/sprites.png"
   ],
   "env": {
     "NODE_ENV": "development"

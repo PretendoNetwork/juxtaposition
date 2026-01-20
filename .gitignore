@@ -10,5 +10,5 @@ uploads/
 .DS_Store
 
 # auto generated files
-apps/juxtaposition-ui/src/webfiles/ctr/css/sprites.css
-apps/juxtaposition-ui/src/webfiles/ctr/images/sprites.png
+apps/juxtaposition-ui/webfiles/ctr/css/sprites.css
+apps/juxtaposition-ui/webfiles/ctr/images/sprites.png
