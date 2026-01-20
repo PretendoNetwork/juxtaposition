@@ -10,7 +10,7 @@ import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type PostViewProps = {
 	ctx: RenderContext;
-	userContent: InferSchemaType<typeof ContentSchema>;
+	userContent?: InferSchemaType<typeof ContentSchema>;
 	post: InferSchemaType<typeof PostSchema>;
 	isReply?: boolean;
 	isMainPost?: boolean;

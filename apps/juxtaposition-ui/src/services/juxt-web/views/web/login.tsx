@@ -6,7 +6,7 @@ export function LoginHead(): ReactNode {
 	return (
 		<>
 			{/* windows/ios/chrome */}
-			<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+			<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
 			<meta name="apple-mobile-web-app-title" content="Juxtaposition" />
 			<meta name="application-name" content="Juxtaposition" />
 			<meta name="msapplication-TileColor" content="#1b1f3b" />

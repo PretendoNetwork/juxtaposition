@@ -11,7 +11,7 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 	if (request.session && request.session.user && request.session.pid && !request.isWrite && request.cookies.access_token) {
 		request.user = request.session.user;
 		request.pid = request.session.pid;
-	} else {
+	} else if (request.cookies.access_token) {
 		try {
 			request.pid = (await getUserDataFromToken(request.cookies.access_token)).pid;
 			request.user = await getUserAccountData(request.pid);

@@ -6,6 +6,7 @@ export type RenderContext = {
 	lang: Record<string, any>;
 	cdnUrl: string;
 	moderator: boolean;
+	developer: boolean;
 	pid: number;
 	uaIsConsole?: boolean; // user agent looks like a Nintendo console
 	usersMap: HashMap<number, string>; // map of PID -> screen name
@@ -25,6 +26,7 @@ export function buildContext(res: Response): RenderContext {
 		lang: locals.lang,
 		cdnUrl: locals.cdnURL,
 		moderator: locals.moderator,
+		developer: locals.developer,
 		uaIsConsole: locals.uaIsConsole,
 		pid: locals.pid
 	};

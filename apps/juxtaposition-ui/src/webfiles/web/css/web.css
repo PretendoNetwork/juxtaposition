@@ -1336,16 +1336,15 @@ li.reports .button-spacer {
   text-wrap: nowrap;
 }
 
-#search {
+.searchbar {
   margin-top: 16px;
   width: 20em;
   height: 2em;
   border-radius: 1em;
-  padding: 2ch;
   border: 1px solid var(--background-alt-alt);
   font-size: 1rem;
   background-color: var(--background-alt);
-  padding: 12px;
+  padding: 2px 12px;
   color: var(--text);
 }
 

@@ -15,7 +15,7 @@ export interface IReport {
 }
 
 export type ReportModel = Model<IReport>;
-export type HydratedReportDocument = HydratedDocument<IReport>;
+export type HydratedReportDocument = HydratedDocument<IReport, IReportMethods>;
 
 export interface IReportMethods {
 	resolve(pid: number, note: string | null): Promise<void>;

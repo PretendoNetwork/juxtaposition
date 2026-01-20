@@ -61,11 +61,12 @@ export function WebRoot(props: HtmlProps): ReactNode {
 
 export type WrapperProps = {
 	children?: ReactNode;
+	className?: string;
 };
 
 export function WebWrapper(props: WrapperProps): ReactNode {
 	return (
-		<div id="wrapper">
+		<div id="wrapper" className={props.className}>
 			{props.children}
 		</div>
 	);
