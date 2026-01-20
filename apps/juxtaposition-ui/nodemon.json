@@ -1,7 +1,7 @@
 {
   "watch": [
     "src/",
-    "webfiles"
+    "webfiles/"
   ],
   "ext": "js,ts,ejs,tsx,jsx,json,css",
   "ignore": [

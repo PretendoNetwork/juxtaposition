@@ -14,7 +14,7 @@ body {
 }
 
 #body {
-    background-image: url(@/webfiles/ctr/images/background.png);
+    background-image: url(@/images/background.png);
     background-size: 100px;
     background-repeat: repeat;
     padding-bottom: 30px
@@ -56,7 +56,7 @@ ul {
     display: block;
     width: 400px;
     height: 220px;
-    background: url(@/webfiles/ctr/images/header.png);
+    background: url(@/images/header.png);
     background-size: 400px;
     position: relative;
     margin-bottom: 10px
@@ -129,13 +129,13 @@ menu.tab-header {
 .headline {
     line-height: 2;
     color: #fff;
-    background: url(@/webfiles/ctr/images/headline.png) 0 0 no-repeat;
+    background: url(@/images/headline.png) 0 0 no-repeat;
     margin: 6px 10px;
     background-size: 100% !important
 }
 
 .headline.headline-green {
-    background: url(@/webfiles/ctr/images/headline-green.png) 0 0 no-repeat;
+    background: url(@/images/headline-green.png) 0 0 no-repeat;
     border-color: #59c9a5
 }
 
@@ -234,7 +234,7 @@ menu.tab-header {
 menu.tab-header li {
     display: inline-block;
     width: 144px;
-    background: url(@/webfiles/ctr/images/tab.png);
+    background: url(@/images/tab.png);
 }
 
 menu.tab-header li:first-child {

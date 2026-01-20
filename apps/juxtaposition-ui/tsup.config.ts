@@ -56,6 +56,7 @@ export default defineConfig([
 
 		esbuildOptions(options): void {
 			options.external = ['/fonts/*'];
+			options.tsconfig = './webfiles/ctr/tsconfig.json';
 		},
 		esbuildPlugins: [
 			oxipng({ loader: 'dataurl' }),
@@ -63,7 +64,7 @@ export default defineConfig([
 				input_folder: './webfiles/ctr/images/sprites/',
 				output_css: './webfiles/ctr/css/sprites.css',
 				output_image: './webfiles/ctr/images/sprites.png',
-				output_image_url: '@/webfiles/ctr/images/sprites.png'
+				output_image_url: '@/images/sprites.png'
 			}),
 			copy({
 				resolveFrom: 'cwd',
@@ -99,6 +100,7 @@ export default defineConfig([
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*', '/fonts/*'];
+			options.tsconfig = './webfiles/portal/tsconfig.json';
 		},
 		esbuildPlugins: [
 			copy({
@@ -135,6 +137,7 @@ export default defineConfig([
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*'];
+			options.tsconfig = './webfiles/web/tsconfig.json';
 		},
 		esbuildPlugins: [
 			copy({
