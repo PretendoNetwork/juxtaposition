@@ -1,4 +1,6 @@
 import './polyfills';
+import { initNewPostView } from './new-post-view';
+import { initCheckboxes } from './checkbox';
 import { initClientTabs } from './ctabs';
 import { Pjax } from './pjax';
 import { GET, POST } from './xhr';
@@ -44,7 +46,6 @@ function initPostModules() {
 		var header = el.getAttribute('data-header');
 		var sound = el.getAttribute('data-sound');
 		var message = el.getAttribute('data-message');
-		var screenshot = el.getAttribute('data-screenshot');
 
 		if (sound) {
 			cave.snd_playSe(sound);
@@ -58,13 +59,6 @@ function initPostModules() {
 			document.getElementById('header').style.display = 'block';
 		} else {
 			document.getElementById('header').style.display = 'none';
-		}
-		if (screenshot) {
-			var screenshotButton = document.getElementById('screenshot-button');
-			if (!cave.capture_isEnabled()) {
-				classList.add(screenshotButton, 'none');
-				screenshotButton.onclick = null;
-			}
 		}
 		function tempBk() {
 			document.getElementById('close-modal-button').click();
@@ -318,9 +312,11 @@ function initAll() {
 	initPosts();
 	initMorePosts();
 	initPostModules();
+	initNewPostView();
 	initTabs();
 	initPostPageView();
 	initClientTabs();
+	initCheckboxes();
 	checkForUpdates();
 	initToolbarConfigs();
 	pjax.refresh();
