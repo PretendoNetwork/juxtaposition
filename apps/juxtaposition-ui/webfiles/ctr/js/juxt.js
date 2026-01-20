@@ -322,58 +322,6 @@ function initAll() {
 	pjax.refresh();
 }
 
-var PostStorage = {
-	maxLocalStorageNum: 3,
-	getPosts: function () {
-		return PostStorage.getAll()[0];
-	},
-	getAll: function () {
-		for (
-			var e = {},
-				t = cave.lls_getCount(),
-				i = new RegExp('^[0-9]+$'),
-				o = 0,
-				n = 0;
-			n < t;
-			n++
-		) {
-			var a = cave.lls_getKeyAt(n);
-			i.test(a) && ((e[a] = cave.lls_getItem(a)), (o += 1));
-		}
-		return [e, o];
-	},
-	getCount: function () {
-		return PostStorage.getAll()[1];
-	},
-	setItem: function (e) {
-		var t = new Date().getTime();
-		cave.lls_setItem(String(t), e);
-	},
-	removeItem: function (e) {
-		var t = JSON.parse(cave.lls_getItem(e));
-		t && t.screenShotKey && cave.lls_removeItem(t.screenShotKey),
-		cave.lls_removeItem(e);
-	},
-	hasKey: function (e) {
-		for (var t = cave.lls_getCount(), i = 0; i < t; i++) {
-			if (e === cave.lls_getKeyAt(i)) {
-				return !0;
-			}
-		}
-		return !1;
-	},
-	sweep: function () {
-		var t = PostStorage.getAll();
-		var i = t[0];
-		if (t[1] > 0) {
-			for (var o in i) {
-				var n = JSON.parse(cave.lls_getItem(o)).screenShotKey;
-				n && !PostStorage.hasKey(n) && cave.lls_removeItem(o);
-			}
-		}
-	}
-};
-
 var classList = {
 	contains: function (el, string) {
 		return el.className.indexOf(string) !== -1;
@@ -394,33 +342,6 @@ function checkForUpdates() {
 		cave.toolbar_setNotificationCount(count);
 	});
 }
-
-function newText() {
-	classList.remove(document.getElementById('memo-sprite'), 'selected');
-	classList.remove(document.getElementById('post-memo'), 'selected');
-	classList.add(document.getElementById('text-sprite'), 'selected');
-	classList.add(document.getElementById('post-text'), 'selected');
-}
-window.newText = newText;
-
-function newPainting(reset) {
-	if (reset) {
-		cave.memo_clear();
-	}
-	classList.remove(document.getElementById('text-sprite'), 'selected');
-	classList.remove(document.getElementById('post-text'), 'selected');
-	classList.add(document.getElementById('memo-sprite'), 'selected');
-	classList.add(document.getElementById('post-memo'), 'selected');
-	cave.memo_open();
-	setTimeout(function () {
-		if (cave.memo_hasValidImage()) {
-			document.getElementById('memo').src =
-				'data:image/png;base64,' + cave.memo_getImageBmp();
-			document.getElementById('memo-value').value = cave.memo_getImageBmp();
-		}
-	}, 250);
-}
-window.newPainting = newPainting;
 
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
@@ -467,14 +388,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	initAll();
 	stopLoading();
 });
-document.addEventListener('PjaxRequest', function (_e) {
-	// console.log(e);
+document.addEventListener('PjaxRequest', function () {
 	cave.transition_begin();
 });
-document.addEventListener('PjaxLoaded', function (_e) {
-	// console.log(e);
-});
-document.addEventListener('PjaxDone', function (_e) {
+document.addEventListener('PjaxDone', function () {
 	initAll();
 	cave.brw_scrollImmediately(0, 0);
 	if (pjax.canGoBack()) {
