@@ -35,21 +35,21 @@ userPageRouter.get('/notifications.json', async function (req, res) {
 userPageRouter.get('/downloadUserData.json', async function (req, res) {
 	res.set('Content-Type', 'text/json');
 	res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
-	let posts = await POST.find({ pid: req.pid });
-	const userContent = await database.getUserSettings(req.pid);
-	const userSettings = await database.getUserContent(req.pid);
+	const rawPosts = await POST.find({ pid: req.pid });
+	const userSettings = await database.getUserSettings(req.pid);
+	const userContent = await database.getUserContent(req.pid);
 
 	// Clean non-user data
 	userSettings.banned_by = null;
-	posts = posts.map(post => ({
-		...post,
+	const postsJson = rawPosts.map(post => ({
+		...post.toJSON(),
 		removed_by: null
 	}));
 
 	const doc = {
 		user_content: userContent,
 		user_settings: userSettings,
-		posts: posts
+		posts: postsJson
 	};
 	res.send(doc);
 });
