@@ -58,7 +58,6 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 	const bannerUrl = community.wup_header
 		? utils.cdn(props.ctx, community.wup_header)
 		: utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`);
-	const isUserFollowing = props.userContent.followed_communities.includes(community.olive_community_id);
 
 	return (
 		<WebRoot head={<WebCommunityHead {...props} />}>
@@ -78,15 +77,15 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 									<a
 										href="#"
 										className={cx('favorite-button', {
-											checked: isUserFollowing
+											checked: props.isUserFollowing
 										})}
 										evt-click="follow(this)"
 										data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 										data-url="/titles/follow"
 										data-community-id={community.olive_community_id}
-										data-text={isUserFollowing ? props.ctx.lang.user_page.follow_user : props.ctx.lang.user_page.following_user}
+										data-text={props.isUserFollowing ? props.ctx.lang.user_page.follow_user : props.ctx.lang.user_page.following_user}
 									>
-										{isUserFollowing ? props.ctx.lang.user_page.following_user : props.ctx.lang.user_page.follow_user}
+										{props.isUserFollowing ? props.ctx.lang.user_page.following_user : props.ctx.lang.user_page.follow_user}
 									</a>
 								)
 							: null}
