@@ -3,6 +3,7 @@ import { utils } from '@/services/juxt-web/views/utils';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
+import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -201,6 +202,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						<div id="new-post"></div>
 					</div>
 					<div className="tab-body post-list">
+						{!community.permissions.open ? <PortalPostListClosedView /> : null}
 						{props.children}
 					</div>
 				</div>

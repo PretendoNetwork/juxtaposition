@@ -3,6 +3,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { utils } from '@/services/juxt-web/views/utils';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
+import { WebPostListClosedView } from '@/services/juxt-web/views/web/postList';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -127,6 +128,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 						{props.ctx.lang.community.popular}
 					</a>
 				</div>
+				{!community.permissions.open ? <WebPostListClosedView /> : null}
 				{props.children}
 			</WebWrapper>
 			<WebReportModalView ctx={props.ctx} />

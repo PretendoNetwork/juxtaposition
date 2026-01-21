@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { utils } from '@/services/juxt-web/views/utils';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
+import { CtrPostListClosedView } from '@/services/juxt-web/views/ctr/postList';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -100,6 +101,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						</li>
 					</menu>
 					<div className="tab-body post-list">
+						{!community.permissions.open ? <CtrPostListClosedView /> : null}
 						{props.children}
 					</div>
 				</div>
