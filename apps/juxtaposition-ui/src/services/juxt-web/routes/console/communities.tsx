@@ -1,5 +1,4 @@
 import express from 'express';
-import moment from 'moment';
 import multer from 'multer';
 import { z } from 'zod';
 import { config } from '@/config';
@@ -7,7 +6,6 @@ import { database } from '@/database';
 import { COMMUNITY } from '@/models/communities';
 import { POST } from '@/models/post';
 import { redisGet, redisRemove, redisSet } from '@/redisCache';
-import { getCommunityHash } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebCommunityListView, WebCommunityOverviewView } from '@/services/juxt-web/views/web/communityListView';
 import { buildContext } from '@/services/juxt-web/views/context';
@@ -15,7 +13,15 @@ import { PortalCommunityListView, PortalCommunityOverviewView } from '@/services
 import { CtrCommunityListView, CtrCommunityOverviewView } from '@/services/juxt-web/views/ctr/communityListView';
 import { PortalSubCommunityView } from '@/services/juxt-web/views/portal/subCommunityView';
 import { CtrSubCommunityView } from '@/services/juxt-web/views/ctr/subCommunityView';
+import { WebCommunityView } from '@/services/juxt-web/views/web/communityView';
+import { PortalCommunityView } from '@/services/juxt-web/views/portal/communityView';
+import { CtrCommunityView } from '@/services/juxt-web/views/ctr/communityView';
+import { WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
+import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import type { InferSchemaType } from 'mongoose';
+import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
+import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 import type { CommunitySchema } from '@/models/communities';
@@ -139,11 +145,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		};
 		await community.save();
 	}
-	const communityMap = getCommunityHash();
-	let children: InferSchemaType<typeof CommunitySchema>[] | null = await database.getSubCommunities(community.olive_community_id);
-	if (children !== null && children.length === 0) {
-		children = null;
-	}
+	const subCommunities = await database.getSubCommunities(community.olive_community_id);
 	let posts;
 	let type;
 
@@ -159,36 +161,47 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	}
 	const numPosts = await database.getTotalPostsByCommunity(community);
 
-	const bundle = {
+	const postListProps: PostListViewProps = {
+		ctx: buildContext(res),
+		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${posts.length}&pjax=true`,
 		posts,
-		open: community.permissions.open,
-		numPosts,
-		communityMap,
-		userContent,
-		link: `/titles/${params.communityID}/${params.type}/more?offset=${posts.length}&pjax=true`
+		userContent
 	};
 
 	if (query.pjax) {
-		return res.render(req.directory + '/partials/posts_list.ejs', {
-			bundle,
-			moment
+		return res.jsxForDirectory({
+			web: <WebPostListView {...postListProps} />,
+			portal: <PortalPostListView {...postListProps} />,
+			ctr: <CtrPostListView {...postListProps} />
 		});
 	}
 
-	res.render(req.directory + '/community.ejs', {
-		// EJS variable and server-side variable
-		moment: moment,
-		community: community,
-		communityMap: communityMap,
-		posts: posts,
-		totalNumPosts: numPosts,
-		userSettings: userSettings,
-		userContent: userContent,
+	const props: CommunityViewProps = {
+		ctx: buildContext(res),
+		feedType: type,
 		pnid: auth().user,
-		children,
-		type,
-		bundle,
-		template: 'posts_list'
+		community,
+		hasSubCommunities: subCommunities.length > 0,
+		totalPosts: numPosts,
+		userContent,
+		userSettings
+	};
+	res.jsxForDirectory({
+		web: (
+			<WebCommunityView {...props}>
+				<WebPostListView {...postListProps} />
+			</WebCommunityView>
+		),
+		portal: (
+			<PortalCommunityView {...props}>
+				<PortalPostListView {...postListProps} />
+			</PortalCommunityView>
+		),
+		ctr: (
+			<CtrCommunityView {...props}>
+				<CtrPostListView {...postListProps} />
+			</CtrCommunityView>
+		)
 	});
 });
 
@@ -205,10 +218,9 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 
 	const offset = query.offset;
 	const userContent = await database.getUserContent(auth().pid);
-	const communityMap = getCommunityHash();
 	let posts;
 	const community = await database.getCommunityByID(params.communityID);
-	if (!community) {
+	if (!community || !userContent) {
 		return res.redirect('/404');
 	}
 	switch (params.type) {
@@ -223,25 +235,22 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 			break;
 	}
 
-	const bundle = {
+	const postListProps: PostListViewProps = {
+		ctx: buildContext(res),
+		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${offset + posts.length}&pjax=true`,
 		posts,
-		open: true,
-		numPosts: posts.length,
-		communityMap,
-		userContent,
-		link: `/titles/${params.communityID}/${params.type}/more?offset=${offset + posts.length}&pjax=true`
+		userContent
 	};
 
-	if (posts.length > 0) {
-		res.render(req.directory + '/partials/posts_list.ejs', {
-			communityMap: communityMap,
-			moment: moment,
-			database: database,
-			bundle
-		});
-	} else {
-		res.sendStatus(204);
+	if (posts.length === 0) {
+		return res.sendStatus(204);
 	}
+
+	return res.jsxForDirectory({
+		web: <WebPostListView {...postListProps} />,
+		portal: <PortalPostListView {...postListProps} />,
+		ctr: <CtrPostListView {...postListProps} />
+	});
 });
 
 communitiesRouter.post('/follow', upload.none(), async function (req, res) {
