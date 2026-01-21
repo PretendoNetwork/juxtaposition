@@ -2,6 +2,8 @@ import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
 import { raw } from 'esbuild-raw-plugin';
 import { fixImportsPlugin } from 'esbuild-fix-imports-plugin';
+import { oxipng } from '@repo/esbuild-plugin-oxipng';
+import { spritesmith } from '@repo/esbuild-plugin-spritesmith';
 import browserslist from 'browserslist-to-esbuild';
 
 export default defineConfig([
@@ -37,10 +39,10 @@ export default defineConfig([
 	/* CTR/3DS webfiles (Chrome 4) */
 	{
 		entry: [
-			'src/webfiles/ctr/js/juxt.js',
-			'src/webfiles/ctr/js/debug.js',
-			'src/webfiles/ctr/js/firstrun.js',
-			'src/webfiles/ctr/css/juxt.css'
+			'webfiles/ctr/js/juxt.js',
+			'webfiles/ctr/js/debug.js',
+			'webfiles/ctr/js/firstrun.js',
+			'webfiles/ctr/css/juxt.css'
 		],
 		bundle: true,
 		sourcemap: true,
@@ -53,22 +55,30 @@ export default defineConfig([
 		format: 'iife',
 
 		esbuildOptions(options): void {
-			options.external = ['/images/*', '/fonts/*'];
+			options.external = ['/fonts/*'];
+			options.tsconfig = './webfiles/ctr/tsconfig.json';
 		},
 		esbuildPlugins: [
+			oxipng({ loader: 'dataurl' }),
+			spritesmith({
+				input_folder: './webfiles/ctr/images/sprites/',
+				output_css: './webfiles/ctr/css/sprites.css',
+				output_image: './webfiles/ctr/images/sprites.png',
+				output_image_url: '@/images/sprites.png'
+			}),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
 					{
-						from: ['./src/webfiles/ctr/**/*.ejs'],
+						from: ['./webfiles/ctr/**/*.ejs'],
 						to: ['./dist/webfiles/ctr']
 					},
 					{
-						from: ['./src/webfiles/ctr/images/**'],
+						from: ['./webfiles/ctr/images/**'],
 						to: ['./dist/webfiles/ctr/images']
 					},
 					{
-						from: ['./src/webfiles/ctr/fonts/**'],
+						from: ['./webfiles/ctr/fonts/**'],
 						to: ['./dist/webfiles/ctr/fonts']
 					}
 				]
@@ -77,7 +87,7 @@ export default defineConfig([
 	},
 	/* Portal/Wii U webfiles (~Chrome 20) */
 	{
-		entry: ['src/webfiles/portal/**/*.js', 'src/webfiles/portal/**/*.css'],
+		entry: ['webfiles/portal/**/*.js', 'webfiles/portal/**/*.css'],
 		bundle: true,
 		sourcemap: true,
 		minify: true,
@@ -90,21 +100,22 @@ export default defineConfig([
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*', '/fonts/*'];
+			options.tsconfig = './webfiles/portal/tsconfig.json';
 		},
 		esbuildPlugins: [
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
 					{
-						from: ['./src/webfiles/portal/**/*.ejs'],
+						from: ['./webfiles/portal/**/*.ejs'],
 						to: ['./dist/webfiles/portal']
 					},
 					{
-						from: ['./src/webfiles/portal/images/**'],
+						from: ['./webfiles/portal/images/**'],
 						to: ['./dist/webfiles/portal/images']
 					},
 					{
-						from: ['./src/webfiles/portal/fonts/**'],
+						from: ['./webfiles/portal/fonts/**'],
 						to: ['./dist/webfiles/portal/fonts']
 					}
 				]
@@ -113,7 +124,7 @@ export default defineConfig([
 	},
 	/* Main web frontend (Modern browsers) */
 	{
-		entry: ['src/webfiles/web/**/*.js', 'src/webfiles/web/**/*.css'],
+		entry: ['webfiles/web/**/*.js', 'webfiles/web/**/*.css'],
 		bundle: true,
 		sourcemap: true,
 		minify: true,
@@ -126,29 +137,30 @@ export default defineConfig([
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*'];
+			options.tsconfig = './webfiles/web/tsconfig.json';
 		},
 		esbuildPlugins: [
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
 					{
-						from: ['./src/webfiles/web/**/*.ejs'],
+						from: ['./webfiles/web/**/*.ejs'],
 						to: ['./dist/webfiles/web']
 					},
 					{
-						from: ['./src/webfiles/web/partials/assets/**'],
+						from: ['./webfiles/web/partials/assets/**'],
 						to: ['./dist/webfiles/web/partials/assets']
 					},
 					{
-						from: ['./src/webfiles/web/images/**'],
+						from: ['./webfiles/web/images/**'],
 						to: ['./dist/webfiles/web/images']
 					},
 					{
-						from: ['./src/webfiles/web/robots.txt'],
+						from: ['./webfiles/web/robots.txt'],
 						to: ['./dist/webfiles/web/robots.txt']
 					},
 					{
-						from: ['./src/webfiles/web/manifest.json'],
+						from: ['./webfiles/web/manifest.json'],
 						to: ['./dist/webfiles/web/manifest.json']
 					}
 				]

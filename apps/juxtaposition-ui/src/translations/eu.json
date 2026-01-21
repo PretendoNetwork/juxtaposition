@@ -15,7 +15,7 @@
         "close": "Itxi",
         "exit": "Irten",
         "next": "Hurrengoa",
-        "yeahs": "Yeah-k"
+        "yeahs": "Datseginak"
     },
     "all_communities": {
         "text": "Komunitate denak",
@@ -32,6 +32,17 @@
         "followers": "Jarraitzaileak",
         "posts": "Argitalpenak",
         "tags": "Etiketak",
-        "recent": "Publikazio berriak"
+        "recent": "Publikazio berriak",
+        "popular": "Argitaralpen ospetsuak",
+        "verified": "Egiaztatutako argitaralpenak",
+        "new": "Argitalpen berriak"
+    },
+    "user_page": {
+        "country": "Herrialdea",
+        "birthday": "Urtebetetzea",
+        "game_experience": "Joko mailak",
+        "friends": "Lagunak",
+        "following": "Jarraitzen",
+        "followers": "Jarraitzaileak"
     }
 }

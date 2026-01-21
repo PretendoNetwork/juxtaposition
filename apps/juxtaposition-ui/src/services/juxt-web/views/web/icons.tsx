@@ -1,11 +1,11 @@
 /* eslint-disable no-restricted-imports -- raw import plugin does not support path aliases */
 import { InlineStyle } from '@/services/juxt-web/views/common';
-import heartIcon from '../../../../webfiles/web/partials/assets/heart_icon.svg?raw';
-import replyIcon from '../../../../webfiles/web/partials/assets/reply_icon.svg?raw';
-import menuIcon from '../../../../webfiles/web/partials/assets/menu_icon.svg?raw';
-import flagIcon from '../../../../webfiles/web/partials/assets/flag_icon.svg?raw';
-import binIcon from '../../../../webfiles/web/partials/assets/bin_icon.svg?raw';
-import shareIcon from '../../../../webfiles/web/partials/assets/share_icon.svg?raw';
+import heartIcon from './assets/heart_icon.svg?raw';
+import replyIcon from './assets/reply_icon.svg?raw';
+import menuIcon from './assets/menu_icon.svg?raw';
+import flagIcon from './assets/flag_icon.svg?raw';
+import binIcon from './assets/bin_icon.svg?raw';
+import shareIcon from './assets/share_icon.svg?raw';
 import type { ReactNode } from 'react';
 
 const icons = {

@@ -1,0 +1,21 @@
+{
+    "name": "@repo/esbuild-plugin-oxipng",
+    "private": true,
+    "version": "0.0.0",
+    "description": "ESBuild plugin to optimise PNG images",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "preinstall": "npm run build"
+    },
+    "dependencies": {
+        "@jsquash/oxipng": "^2.3.0",
+        "esbuild": "^0.25.4"
+    },
+    "devDependencies": {
+        "@types/node": "^22.19.1",        
+        "typescript": "^5.9.3"
+    }
+}
