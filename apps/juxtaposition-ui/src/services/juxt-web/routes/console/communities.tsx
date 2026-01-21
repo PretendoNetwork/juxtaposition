@@ -145,6 +145,13 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		};
 		await community.save();
 	}
+	const canPost = (
+		(community.permissions.open && community.type < 2) ||
+		(community.admins && community.admins.indexOf(auth().pid) !== -1) ||
+		(auth().user.accessLevel >= community.permissions.minimum_new_post_access_level)
+	) && userSettings.account_status === 0;
+	const isUserFollowing = userContent.followed_communities.includes(community.olive_community_id);
+
 	const subCommunities = await database.getSubCommunities(community.olive_community_id);
 	let posts;
 	let type;
@@ -179,12 +186,11 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	const props: CommunityViewProps = {
 		ctx: buildContext(res),
 		feedType: type,
-		pnid: auth().user,
 		community,
 		hasSubCommunities: subCommunities.length > 0,
 		totalPosts: numPosts,
-		userContent,
-		userSettings
+		canPost,
+		isUserFollowing
 	};
 	res.jsxForDirectory({
 		web: (

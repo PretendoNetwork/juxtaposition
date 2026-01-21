@@ -12,18 +12,13 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 	const bannerUrl = community.wup_header
 		? utils.cdn(props.ctx, community.wup_header)
 		: utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`);
-	const isUserFollowing = props.userContent.followed_communities.includes(community.olive_community_id);
-	const canPost = ((
-		(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(props.ctx.pid) !== -1) ||
-		(props.pnid.accessLevel >= community.permissions.minimum_new_post_access_level)
-	) && props.userSettings.account_status === 0);
 
 	return (
 		<PortalRoot title={community.name}>
 			<PortalNavBar ctx={props.ctx} selection={2} />
 			<PortalPageBody>
 				<header id="header">
-					{canPost
+					{props.canPost
 						? (
 								<a
 									id="header-post-button"
@@ -62,7 +57,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 									<a
 										href="#"
 										className={cx('favorite-button button', {
-											checked: isUserFollowing
+											checked: props.isUserFollowing
 										})}
 										evt-click="follow(this)"
 										data-sound="SE_WAVE_CHECKBOX_UNCHECK"

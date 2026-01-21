@@ -11,11 +11,6 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 	const bannerUrl = community.ctr_header
 		? utils.cdn(props.ctx, community.ctr_header)
 		: utils.cdn(props.ctx, `/headers/${imageId}/3DS.png`);
-	const isUserFollowing = props.userContent.followed_communities.includes(community.olive_community_id);
-	const canPost = ((
-		(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(props.ctx.pid) !== -1) ||
-		(props.pnid.accessLevel >= community.permissions.minimum_new_post_access_level)
-	) && props.userSettings.account_status === 0);
 
 	return (
 		<CtrRoot ctx={props.ctx} title={community.name}>
@@ -53,7 +48,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 							</span>
 						</span>
 					</h1>
-					{canPost
+					{props.canPost
 						? (
 								<a
 									id="header-post-button"
@@ -81,7 +76,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 									type="button"
 									className={cx('submit follow yeah-button', {
 										suggested: props.hasSubCommunities,
-										selected: isUserFollowing
+										selected: props.isUserFollowing
 									})}
 									evt-click="follow(this)"
 									data-sound="SE_WAVE_CHECKBOX_UNCHECK"

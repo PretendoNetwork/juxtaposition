@@ -5,19 +5,15 @@ import { utils } from '@/services/juxt-web/views/utils';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { CommunitySchema } from '@/models/communities';
-import type { HydratedSettingsDocument } from '@/models/settings';
-import type { ContentSchema } from '@/models/content';
 
 export type CommunityViewProps = {
 	ctx: RenderContext;
 	community: InferSchemaType<typeof CommunitySchema>;
 	totalPosts: number;
-	userSettings: HydratedSettingsDocument;
-	userContent: InferSchemaType<typeof ContentSchema>;
-	pnid: GetUserDataResponse;
+	canPost: boolean;
+	isUserFollowing: boolean;
 	hasSubCommunities: boolean;
 	feedType: number;
 	children?: ReactNode;
