@@ -9,7 +9,12 @@ import { POST } from '@/models/post';
 import { redisGet, redisRemove, redisSet } from '@/redisCache';
 import { getCommunityHash } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { WebCommunityListView, WebCommunityOverviewView } from '@/services/juxt-web/views/web/communityListView';
+import { buildContext } from '@/services/juxt-web/views/context';
+import { PortalCommunityListView, PortalCommunityOverviewView } from '@/services/juxt-web/views/portal/communityListView';
+import { CtrCommunityListView, CtrCommunityOverviewView } from '@/services/juxt-web/views/ctr/communityListView';
 import type { InferSchemaType } from 'mongoose';
+import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 import type { CommunitySchema } from '@/models/communities';
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
@@ -17,17 +22,29 @@ export const communitiesRouter = express.Router();
 communitiesRouter.get('/', async function (req, res) {
 	const communityStats = await getCommunityStats();
 
-	res.render(req.directory + '/communities.ejs', {
-		cache: true,
-		popularCommunities: communityStats.popular,
-		newCommunities: communityStats.new
+	const props: CommunityOverviewViewProps = {
+		ctx: buildContext(res),
+		newCommunities: communityStats.new,
+		popularCommunities: communityStats.popular
+	};
+	res.jsxForDirectory({
+		web: <WebCommunityOverviewView {...props} />,
+		portal: <PortalCommunityOverviewView {...props} />,
+		ctr: <CtrCommunityOverviewView {...props} />
 	});
 });
 
 communitiesRouter.get('/all', async function (req, res) {
 	const communities = await database.getCommunities(90);
-	res.render(req.directory + '/all_communities.ejs', {
-		communities: communities
+
+	const props: CommunityListViewProps = {
+		ctx: buildContext(res),
+		communities
+	};
+	res.jsxForDirectory({
+		web: <WebCommunityListView {...props} />,
+		portal: <PortalCommunityListView {...props} />,
+		ctr: <CtrCommunityListView {...props} />
 	});
 });
 
