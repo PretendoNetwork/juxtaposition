@@ -13,7 +13,10 @@ import { WebCommunityListView, WebCommunityOverviewView } from '@/services/juxt-
 import { buildContext } from '@/services/juxt-web/views/context';
 import { PortalCommunityListView, PortalCommunityOverviewView } from '@/services/juxt-web/views/portal/communityListView';
 import { CtrCommunityListView, CtrCommunityOverviewView } from '@/services/juxt-web/views/ctr/communityListView';
+import { PortalSubCommunityView } from '@/services/juxt-web/views/portal/subCommunityView';
+import { CtrSubCommunityView } from '@/services/juxt-web/views/ctr/subCommunityView';
 import type { InferSchemaType } from 'mongoose';
+import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 import type { CommunitySchema } from '@/models/communities';
 const upload = multer({ dest: 'uploads/' });
@@ -87,17 +90,19 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 			message: 'Community not Found'
 		});
 	}
-	const communityMap = getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
 	if (!children) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	res.render(req.directory + '/sub_communities.ejs', {
-		selection: 2,
-		communityMap,
+	const props: SubCommunityViewProps = {
+		ctx: buildContext(res),
 		community,
-		children
+		subcommunities: children
+	};
+	res.jsxForDirectory({
+		portal: <PortalSubCommunityView {...props} />,
+		ctr: <CtrSubCommunityView {...props} />
 	});
 });
 

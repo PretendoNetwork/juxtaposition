@@ -4,11 +4,12 @@ import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
-function PortalCommunityItem(props: CommunityItemProps): ReactNode {
+export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
+	const imageCommunityId = props.community.parent ? props.community.parent : id;
 	return (
 		<li id={id}>
-			<span className="icon-container"><img src={utils.cdn(props.ctx, `/icons/${id}/128.png`)} className="icon" alt="" /></span>
+			<span className="icon-container"><img src={utils.cdn(props.ctx, `/icons/${imageCommunityId}/128.png`)} className="icon" alt="" /></span>
 			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button"></a>
 			<div className="body">
 				<div className="body-content">

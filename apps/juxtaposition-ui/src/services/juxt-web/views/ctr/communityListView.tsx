@@ -3,7 +3,7 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
-function CtrCommunityItem(props: CommunityItemProps): ReactNode {
+export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
 	return (
 		<li id={id}>
