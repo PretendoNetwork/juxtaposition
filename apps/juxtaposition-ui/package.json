@@ -59,6 +59,9 @@
   "devDependencies": {
     "@pretendonetwork/cave-types": "^1.0.2",
     "@pretendonetwork/eslint-config": "^0.1.3",
+    "@pretendonetwork/wiiu-browser-types": "^1.0.0",
+    "@pretendonetwork/wiiu-dialog-types": "^1.0.0",
+    "@pretendonetwork/wiiu-error-viewer-types": "^1.0.0",
     "@repo/esbuild-plugin-oxipng": "^0.0.0",
     "@repo/esbuild-plugin-spritesmith": "^0.0.0",
     "@types/cookie-parser": "^1.4.10",

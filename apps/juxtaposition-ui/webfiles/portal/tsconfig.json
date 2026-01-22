@@ -15,6 +15,11 @@
 		"noImplicitAny": true,
 		"strictPropertyInitialization": true,
 		"verbatimModuleSyntax": true,
+		"types": [
+			"@pretendonetwork/wiiu-browser-types",
+			"@pretendonetwork/wiiu-dialog-types",
+			"@pretendonetwork/wiiu-error-viewer-types"
+		],
 		"paths": {
 			"@/*": [
 				"./*"
