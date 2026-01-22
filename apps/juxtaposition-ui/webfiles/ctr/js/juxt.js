@@ -1,6 +1,7 @@
 import { Pjax } from './pjax';
 import { GET, POST } from './xhr';
 import { initPostPageView } from './post';
+import { empathyPostById } from './api';
 
 var pjax;
 setInterval(checkForUpdates, 30000);
@@ -136,7 +137,6 @@ function initYeah() {
 		var parent = document.getElementById(id);
 		var count = document.getElementById('count-' + id);
 		el.disabled = true;
-		var params = 'postID=' + id;
 		if (classList.contains(el, 'selected')) {
 			classList.remove(el, 'selected');
 			classList.remove(sprite, 'selected');
@@ -154,9 +154,8 @@ function initYeah() {
 			}
 			cave.snd_playSe('SE_OLV_MII_ADD');
 		}
-		POST('/posts/empathy', params, function a(data) {
-			var post = JSON.parse(data.responseText);
-			if (!post || post.status !== 200) {
+		empathyPostById(id, function (post) {
+			if (post.status !== 200) {
 				// Apparently there was an actual error code for not being able to yeah a post, who knew!
 				// TODO: Find more of these
 				return cave.error_callErrorViewer(155927);
