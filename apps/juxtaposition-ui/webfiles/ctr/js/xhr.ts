@@ -37,6 +37,7 @@ export function DELETE(url: string, callback: XHRCallback): void {
 			callback(this);
 		}
 	};
-	xhttp.open('DELETE', url, true);
+	xhttp.open('POST', url, true);
+	xhttp.setRequestHeader('X-HTTP-Method-Override', 'DELETE');
 	xhttp.send();
 }
