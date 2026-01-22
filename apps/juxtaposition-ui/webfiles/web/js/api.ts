@@ -7,13 +7,13 @@ export type EmpathyPostResponse = {
 };
 
 export function empathyPostById(id: string, cb: (post: EmpathyPostResponse) => void): void {
-	var params = 'postID=' + id;
+	const params = 'postID=' + id;
 
 	POST('/posts/empathy', params, (xhr) => {
 		if (xhr.status !== 200) {
 			return cb({ status: xhr.status, id, count: 0 });
 		}
-		var post: EmpathyPostResponse;
+		let post: EmpathyPostResponse;
 
 		try {
 			post = JSON.parse(xhr.responseText);
@@ -32,8 +32,8 @@ export type DeletePostResponse = {
 };
 
 export function deletePostById(id: string, reason: string | null, cb: (result: DeletePostResponse) => void): void {
-	var postUrl = `/posts/${id}`;
-	var query = reason !== null ? `?reason=${encodeURIComponent(reason)}` : '';
+	const postUrl = `/posts/${id}`;
+	const query = reason !== null ? `?reason=${encodeURIComponent(reason)}` : '';
 
 	DELETE(postUrl + query, function (xhr) {
 		if (xhr.status !== 200) {
@@ -43,7 +43,7 @@ export function deletePostById(id: string, reason: string | null, cb: (result: D
 		// HACK: we haven't actually formalised this API serverside yet
 		// for now, synthesise the response object ourselves
 		// make sure it looks like a URL...
-		var nextUrl = xhr.responseText;
+		const nextUrl = xhr.responseText;
 		if (!/^\/[\w/]+$/.test(nextUrl)) {
 			return cb({ status: 400, nextUrl: postUrl });
 		}

@@ -1,11 +1,9 @@
 export type XHRCallback = (request: XMLHttpRequest) => void;
 
 export function POST(url: string, data: string, callback: XHRCallback): void {
-	wiiuBrowser.showLoadingIcon(true);
-	var xhttp = new XMLHttpRequest();
+	const xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function (): void {
 		if (this.readyState === 4) {
-			wiiuBrowser.showLoadingIcon(false);
 			callback(this);
 		}
 	};
@@ -15,7 +13,7 @@ export function POST(url: string, data: string, callback: XHRCallback): void {
 }
 
 export function GET(url: string, callback: XHRCallback): void {
-	var xhttp = new XMLHttpRequest();
+	const xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function (): void {
 		if (this.readyState === 4) {
 			callback(this);
@@ -26,11 +24,9 @@ export function GET(url: string, callback: XHRCallback): void {
 }
 
 export function DELETE(url: string, callback: XHRCallback): void {
-	wiiuBrowser.showLoadingIcon(true);
-	var xhttp = new XMLHttpRequest();
+	const xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function (): void {
 		if (this.readyState === 4) {
-			wiiuBrowser.showLoadingIcon(false);
 			callback(this);
 		}
 	};

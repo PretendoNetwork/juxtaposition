@@ -31,10 +31,11 @@ export type DeletePostResponse = {
 	nextUrl: string;
 };
 
-export function deletePostById(id: string, cb: (result: DeletePostResponse) => void): void {
+export function deletePostById(id: string, reason: string | null, cb: (result: DeletePostResponse) => void): void {
 	var postUrl = `/posts/${id}`;
+	var query = reason !== null ? `?reason=${encodeURIComponent(reason)}` : '';
 
-	DELETE(postUrl, function (xhr) {
+	DELETE(postUrl + query, function (xhr) {
 		if (xhr.status !== 200) {
 			return cb({ status: xhr.status, nextUrl: postUrl });
 		}

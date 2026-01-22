@@ -16,7 +16,7 @@ function deletePost(this: HTMLElement, _e: Event): void {
 		return;
 	}
 
-	deletePostById(id, function (response) {
+	deletePostById(id, null, function (response) {
 		if (response.status !== 200) {
 			return wiiuErrorViewer.openByCodeAndMessage(
 				5980030,
