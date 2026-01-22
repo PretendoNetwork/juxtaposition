@@ -1,4 +1,6 @@
 import { Pjax } from './pjax';
+import { GET, POST } from './xhr';
+import './post';
 
 var pjax;
 setInterval(checkForUpdates, 30000);
@@ -277,33 +279,6 @@ function initToolbarConfigs() {
 	}
 }
 
-function deletePost(post) {
-	var id = post.getAttribute('data-post');
-	if (!id) {
-		return;
-	}
-	var confirm = cave.dialog_twoButton(
-		'Delete Post',
-		'Are you sure you want to delete your post? This cannot be undone.',
-		'No',
-		'Yes'
-	);
-	if (confirm) {
-		DELETE('/posts/' + id, function a(data) {
-			if (!data || data.status !== 200) {
-				return cave.error_callFreeErrorViewer(
-					'5980030',
-					'Post was not able to be deleted. Please try again later.'
-				);
-			}
-			console.log(data);
-			alert('Post has been deleted.');
-			return (window.location.href = data.responseText);
-		});
-	}
-}
-window.deletePost = deletePost;
-
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
 	var button = document.getElementById('report-launcher');
@@ -483,42 +458,6 @@ function exitUserSettings() {
 	cave.toolbar_setButtonType(1);
 }
 window.exitUserSettings = exitUserSettings;
-
-function POST(url, data, callback) {
-	cave.transition_begin();
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			cave.transition_end();
-			return callback(this);
-		}
-	};
-	xhttp.open('POST', url, true);
-	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xhttp.send(data);
-}
-function GET(url, callback) {
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			return callback(this);
-		}
-	};
-	xhttp.open('GET', url, true);
-	xhttp.send();
-}
-function DELETE(url, callback) {
-	cave.transition_begin();
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			cave.transition_end();
-			return callback(this);
-		}
-	};
-	xhttp.open('DELETE', url, true);
-	xhttp.send();
-}
 
 document.addEventListener('DOMContentLoaded', function () {
 	pjax = Pjax.init({
