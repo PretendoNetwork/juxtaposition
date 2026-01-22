@@ -1,6 +1,6 @@
 import { Pjax } from './pjax';
 import { GET, POST } from './xhr';
-import './post';
+import { initPostPageView } from './post';
 
 var pjax;
 setInterval(checkForUpdates, 30000);
@@ -318,6 +318,7 @@ function initAll() {
 	initMorePosts();
 	initPostModules();
 	initTabs();
+	initPostPageView();
 	checkForUpdates();
 	initToolbarConfigs();
 	pjax.refresh();
