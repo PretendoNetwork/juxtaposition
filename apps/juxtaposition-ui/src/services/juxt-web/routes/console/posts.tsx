@@ -25,6 +25,7 @@ import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageVi
 import type { PostSchema } from '@/models/post';
 import type { CommunitySchema } from '@/models/communities';
 import type { HydratedSettingsDocument } from '@/models/settings';
+import type { ContentSchema } from '@/models/content';
 const upload = multer({ dest: 'uploads/' });
 export const postsRouter = express.Router();
 
@@ -59,13 +60,14 @@ const yeahLimit = rateLimit({
 });
 
 postsRouter.get('/:post_id/oembed.json', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params, auth, hasAuth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
 		})
 	});
+	const maybeTokens = hasAuth() ? auth().tokens : {};
 
-	const post = await getPostById(auth().tokens, params.post_id);
+	const post = await getPostById(maybeTokens, params.post_id);
 	if (!post) {
 		return res.sendStatus(404);
 	}
@@ -137,38 +139,43 @@ postsRouter.post('/new', postLimit, upload.none(), async function (req, res) {
 });
 
 postsRouter.get('/:post_id', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params, hasAuth, auth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
 		})
 	});
+	const maybeTokens = hasAuth() ? auth().tokens : {};
 
-	const userSettings = await database.getUserSettings(auth().pid);
-	const userContent = await database.getUserContent(auth().pid);
+	let userSettings: HydratedSettingsDocument | null = null;
+	let userContent: InferSchemaType<typeof ContentSchema> | null = null;
+	if (hasAuth()) {
+		userSettings = await database.getUserSettings(auth().pid);
+		userContent = await database.getUserContent(auth().pid);
+	}
 
-	const post = await getPostById(auth().tokens, params.post_id);
+	const post = await getPostById(maybeTokens, params.post_id);
 	if (!post) {
 		return res.redirect('/404');
 	}
 	if (post.parent) {
-		const parent = await getPostById(auth().tokens, post.parent);
+		const parent = await getPostById(maybeTokens, post.parent);
 		if (!parent) {
 			return res.redirect('/404');
 		}
 		return res.redirect(`/posts/${parent.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);
-	if (!community || !userSettings || !userContent) {
+	if (!community) {
 		return res.redirect('/404');
 	}
 
-	const replies = (await getPostsByParentId(auth().tokens, post.id, 0))?.items ?? [];
+	const replies = (await getPostsByParentId(maybeTokens, post.id, 0))?.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
-	const canPost = (
+	const canPost = hasAuth() && (
 		(community.permissions.open && community.type < 2) ||
 		(community.admins && community.admins.indexOf(auth().pid) !== -1) ||
 		(auth().user.accessLevel >= community.permissions.minimum_new_comment_access_level)
-	) && userSettings.account_status === 0;
+	) && userSettings?.account_status === 0;
 
 	const props: PostPageViewProps = {
 		ctx: buildContext(res),
@@ -176,8 +183,8 @@ postsRouter.get('/:post_id', async function (req, res) {
 		post,
 		postPNID,
 		replies,
-		userContent,
-		canPost
+		canPost,
+		userContent
 	};
 	res.jsxForDirectory({
 		web: <WebPostPageView {...props} />,

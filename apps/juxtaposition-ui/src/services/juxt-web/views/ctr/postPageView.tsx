@@ -43,10 +43,10 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 
 				<div className="body-content tab2-content" id="post">
 					<div className="post-wrapper parent">
-						<CtrPostView ctx={props.ctx} post={post} isMainPost />
+						<CtrPostView ctx={props.ctx} post={post} userContent={props.userContent} isMainPost />
 					</div>
 					{props.replies.map(replyPost => (
-						<CtrPostView key={post.id} ctx={props.ctx} post={replyPost} isReply />
+						<CtrPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
 				{props.canPost ? <CtrNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" /> : null}

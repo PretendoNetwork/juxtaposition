@@ -37,10 +37,10 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 				</header>
 				<div className="body-content post-list" id="post">
 					<div className="post-wrapper parent">
-						<PortalPostView ctx={props.ctx} post={post} isMainPost />
+						<PortalPostView ctx={props.ctx} post={post} userContent={props.userContent} isMainPost />
 					</div>
 					{props.replies.map(replyPost => (
-						<PortalPostView key={post.id} ctx={props.ctx} post={replyPost} isReply />
+						<PortalPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
 				{props.canPost ? <PortalNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" /> : null}

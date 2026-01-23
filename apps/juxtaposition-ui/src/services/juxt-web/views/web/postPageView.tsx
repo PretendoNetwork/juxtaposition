@@ -14,7 +14,7 @@ import type { PostDto } from '@/api/post';
 export type PostPageViewProps = {
 	ctx: RenderContext;
 	post: PostDto;
-	userContent: InferSchemaType<typeof ContentSchema>;
+	userContent: InferSchemaType<typeof ContentSchema> | null;
 	postPNID: GetUserDataResponse;
 	community: InferSchemaType<typeof CommunitySchema>;
 	replies: PostDto[];
@@ -77,11 +77,11 @@ export function WebPostPageView(props: PostPageViewProps): ReactNode {
 			<div id="toast"></div>
 			<div className="community-page-post-box" id="post">
 				<WebWrapper>
-					<WebPostView ctx={props.ctx} post={props.post} isMainPost />
+					<WebPostView ctx={props.ctx} post={props.post} userContent={props.userContent} isMainPost />
 					<span className="replies-line" />
 					{props.replies.map(replyPost => (
 						<div key={replyPost.id}>
-							<WebPostView ctx={props.ctx} post={replyPost} isReply />
+							<WebPostView ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
 							<span className="replies-line" />
 						</div>
 					))}

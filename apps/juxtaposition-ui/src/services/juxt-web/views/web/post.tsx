@@ -11,7 +11,7 @@ import type { PostDto } from '@/api/post';
 
 export type PostViewProps = {
 	ctx: RenderContext;
-	userContent?: InferSchemaType<typeof ContentSchema>;
+	userContent?: InferSchemaType<typeof ContentSchema> | null;
 	post: InferSchemaType<typeof PostSchema> | PostDto;
 	isReply?: boolean;
 	isMainPost?: boolean;
