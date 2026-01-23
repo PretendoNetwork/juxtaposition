@@ -308,16 +308,16 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			post_id: z.string().optional()
 		}),
 		body: z.object({
-			body: z.string(),
-			painting: z.string(),
-			screenshot: z.string(),
+			body: z.string().default(''),
+			painting: z.string().default(''),
+			screenshot: z.string().default(''),
 			community_id: z.string(),
 			_post_type: z.string(),
-			bmp: z.stringbool(),
+			bmp: z.stringbool().default(false),
 			feeling_id: z.coerce.number(),
-			spoiler: z.boolean(),
-			is_app_jumpable: z.boolean(),
-			language_id: z.coerce.number()
+			spoiler: z.stringbool().default(false),
+			is_app_jumpable: z.stringbool().default(false),
+			language_id: z.coerce.number().optional()
 		})
 	});
 
