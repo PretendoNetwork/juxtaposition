@@ -1,5 +1,4 @@
 import { WebLoginRoot } from '@/services/juxt-web/views/web/login';
-import { WebWrapper } from '@/services/juxt-web/views/web/root';
 import { PretendoLogo } from '@/services/juxt-web/views/web/icons';
 import type { ReactNode } from 'react';
 import type { ReqId } from 'pino-http';
@@ -22,7 +21,7 @@ export function WebErrorView(props: ErrorViewProps): ReactNode {
 
 	return (
 		<WebLoginRoot head={extraHead}>
-			<WebWrapper>
+			<div className="wrapper">
 				<div className="account-form-wrapper">
 					<a className="logotype" href="/">
 						<PretendoLogo />
@@ -51,7 +50,7 @@ export function WebErrorView(props: ErrorViewProps): ReactNode {
 						{props.requestId.toString()}
 					</p>
 				</div>
-			</WebWrapper>
+			</div>
 		</WebLoginRoot>
 	);
 }
