@@ -2,7 +2,7 @@
 import { deletePostById } from './api';
 
 function deletePost(this: HTMLElement, _e: Event): void {
-	var id = this.getAttribute('data-post');
+	var id = this.getAttribute('data-button-delete-post');
 	if (!id) {
 		return;
 	}
@@ -31,7 +31,7 @@ function deletePost(this: HTMLElement, _e: Event): void {
 }
 
 function initDeleteButton(): void {
-	var del = document.querySelector('.header-button.delete');
+	var del = document.querySelector('[data-button-delete-post]');
 	if (!del) {
 		return;
 	}

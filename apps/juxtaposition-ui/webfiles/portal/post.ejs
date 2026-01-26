@@ -20,7 +20,7 @@
         <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
         <%}%>
         <% if(post.pid === pid) {%>
-            <a id="header-communities-button" class="button delete" href="#" data-post="<%=post.id%>">Delete Post</a>
+            <a id="header-communities-button" class="button delete" href="#" data-button-delete-post="<%=post.id%>">Delete Post</a>
         <%} else {%>
             <a id="report-launcher" style="display: none" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false"></a>
             <a id="header-communities-button" class="report" href="#" data-post="<%= post.id %>" onclick="reportPost(this)">Report Post</a>

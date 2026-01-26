@@ -63,7 +63,7 @@
                     <%}%>
                     <% if(reply && post.pid === pid || reply && moderator) {%>
                         <div>
-                            <button type="button" class="submit remove" data-post="<%= post.id %>"></button>
+                            <button type="button" class="submit remove" data-button-delete-post="<%= post.id %>"></button>
                         </div>
                     <%}%>
                     <%if(!mainPost) {%>

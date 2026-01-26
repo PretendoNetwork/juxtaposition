@@ -2,7 +2,7 @@
 import { deletePostById } from './api';
 
 function deletePost(this: HTMLElement, _e: Event): void {
-	var id = this.getAttribute('data-post');
+	var id = this.getAttribute('data-button-delete-post');
 	if (!id) {
 		return;
 	}
@@ -30,18 +30,10 @@ function deletePost(this: HTMLElement, _e: Event): void {
 }
 
 function initDeleteButton(): void {
-	var del = document.querySelector('.button.delete');
-	if (!del) {
-		return;
+	var buttons = document.querySelectorAll('[data-button-delete-post]');
+	for (var i = 0; i < buttons.length; i++) {
+		(buttons[i] as HTMLElement).addEventListener('click', deletePost);
 	}
-
-	(del as HTMLElement).addEventListener('click', deletePost);
-
-	// delete buttons from post template
-	// TODO this is kinda out of place here
-	document.querySelectorAll('button.remove').forEach((button) => {
-		(button as HTMLElement).addEventListener('click', deletePost);
-	});
 }
 
 export function initPostPageView(): void {
