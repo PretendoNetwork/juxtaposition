@@ -122,7 +122,9 @@ function initPopupMenus() {
 				}
 
 				alert('Post has been deleted');
-				window.location.href = result.nextUrl;
+				if (moderator === true) {
+					window.location.href = result.nextUrl;
+				}
 			});
 		});
 		popupItemCb(menu.querySelector('[data-action="copy"]'), (_item, _ev) => {
