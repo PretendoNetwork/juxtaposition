@@ -19,6 +19,7 @@ import { CtrCommunityView } from '@/services/juxt-web/views/ctr/communityView';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
+import { zodFallback } from '@/util';
 import type { InferSchemaType } from 'mongoose';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -63,7 +64,7 @@ communitiesRouter.get('/:communityID', async function (req, res) {
 			title_id: z.string().optional()
 		}),
 		params: z.object({
-			communityID: z.string()
+			communityID: z.string().regex(/^[0-9]+$/).or(zodFallback(null))
 		})
 	});
 
@@ -74,7 +75,11 @@ communitiesRouter.get('/:communityID', async function (req, res) {
 		}
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
-	res.redirect(`/titles/${params.communityID}/new`);
+
+	if (!params.communityID) {
+		return res.redirect('/404');
+	}
+	return res.redirect(`/titles/${params.communityID}/new`);
 });
 
 communitiesRouter.get('/:communityID/related', async function (req, res) {
