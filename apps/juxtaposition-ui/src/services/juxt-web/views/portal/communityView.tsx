@@ -109,7 +109,6 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 									>
 									</path>
 								</svg>
-								{/* TODO is this correct? used to be bundle.numPosts */}
 								{props.totalPosts}
 							</span>
 							<span>

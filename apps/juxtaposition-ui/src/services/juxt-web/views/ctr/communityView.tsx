@@ -38,7 +38,6 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 									<span className="sprite sp-post-count inline-sprite"></span>
 									<span id="post-count">
 										{props.totalPosts}
-										{/* TODO is this correct? used to be bundle.numPosts */}
 									</span>
 								</span>
 								<span>
