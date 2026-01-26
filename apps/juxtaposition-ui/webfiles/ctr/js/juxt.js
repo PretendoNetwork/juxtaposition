@@ -486,3 +486,16 @@ document.addEventListener('PjaxDone', function (_e) {
 	cave.requestGc();
 	cave.transition_end();
 });
+
+/* CTR WebKit has an odd bug where images that fail to load throw off the
+ * entire page render, spritesheets, layout.
+ * Ensuring we have *something* loaded seems to fix it.
+ * Ideally we never trigger this since we don't have page errors, but it happens,
+ * especially when selfhosting. */
+document.addEventListener('error', (e) => {
+	var placeholder = '/images/placeholder.gif';
+	var target = e.target;
+	if (target.tagName === 'IMG' && target.getAttribute('src') !== placeholder) {
+		target.setAttribute('src', placeholder);
+	}
+}, true);
