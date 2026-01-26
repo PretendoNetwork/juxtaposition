@@ -51,7 +51,7 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
 
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.messages}>
+		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.messages} onLoad="cave.toolbar_setActiveButton(4);window.scrollTo(0, 500000);">
 			<CtrPageBody>
 				<header id="header" className="buttons">
 					<h1 id="page-title">{otherUserName}</h1>
@@ -73,7 +73,6 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
 				</div>
 				<CtrNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
-				<img src="" evt-error="cave.toolbar_setActiveButton(4);setTimeout(function() { window.scrollTo(0, 500000); }, 1000)" />
 			</CtrPageBody>
 		</CtrRoot>
 	);
