@@ -3,6 +3,7 @@ import { config } from '@/config';
 import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { PortalFatalErrorView } from '@/services/juxt-web/views/portal/errorView';
+import { CtrFatalErrorView } from '@/services/juxt-web/views/ctr/errorView';
 import type { RequestHandler } from 'express';
 
 export const checkDiscovery: RequestHandler = async (request, response, next) => {
@@ -22,11 +23,11 @@ export const checkDiscovery: RequestHandler = async (request, response, next) =>
 				message = 'Juxtaposition is currently unavailable. Please try again later.';
 				break;
 		}
-		if (request.directory === 'web') {
-			return response.jsx(<WebLoginView ctx={buildContext(response)} toast={message} redirect={request.originalUrl} />);
-		} else {
-			return response.jsx(<PortalFatalErrorView code={5989999} message={message} />);
-		}
+		return response.jsxForDirectory({
+			web: <WebLoginView ctx={buildContext(response)} toast={message} redirect={request.originalUrl} />,
+			portal: <PortalFatalErrorView code={5989999} message={message} />,
+			ctr: <CtrFatalErrorView code={5989999} message={message} />
+		});
 	} else {
 		request.guest_access = discovery ? discovery.guest_access : false;
 		request.new_users = discovery ? discovery.new_users : false;

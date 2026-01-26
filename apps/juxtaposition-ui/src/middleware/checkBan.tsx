@@ -80,14 +80,11 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 		}
 		banMessage += `\n\nIf you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`;
 
-		if (request.directory === 'web') {
-			return response.jsx(<WebLoginView ctx={buildContext(response)} toast={banMessage} redirect={request.originalUrl} />);
-		} else {
-			return response.jsxForDirectory({
-				portal: <PortalFatalErrorView code={banCode} message={banMessage} />,
-				ctr: <CtrFatalErrorView code={banCode} message={banMessage} />
-			});
-		}
+		return response.jsxForDirectory({
+			web: <WebLoginView ctx={buildContext(response)} toast={banMessage} redirect={request.originalUrl} />,
+			portal: <PortalFatalErrorView code={banCode} message={banMessage} />,
+			ctr: <CtrFatalErrorView code={banCode} message={banMessage} />
+		});
 	}
 
 	if (userSettings) {
