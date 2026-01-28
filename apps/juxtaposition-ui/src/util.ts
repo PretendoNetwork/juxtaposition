@@ -9,6 +9,7 @@ import HashMap from 'hashmap';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
 import { DateTime } from 'luxon';
+import { z } from 'zod';
 import { database } from '@/database';
 import { COMMUNITY } from '@/models/communities';
 import { NOTIFICATION } from '@/models/notifications';
@@ -20,6 +21,7 @@ import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
 import { translations } from '@/translations';
+import type { ZodType } from 'zod';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -529,3 +531,7 @@ export function humanFromNow(date?: Date | DateTime | string | null): string {
 const filename = fileURLToPath(import.meta.url);
 // The root of the dist/ folder.
 export const distFolder = path.dirname(filename);
+
+export function zodFallback<T>(value: T): ZodType<T> {
+	return z.any().transform(() => value);
+}
