@@ -31,7 +31,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 						: null}
 					{post.pid === props.ctx.pid
 						? (
-								<a id="header-communities-button" className="delete header-button right" href="#" data-post={post.id} evt-click="deletePost(this)">Delete Post</a>
+								<a id="header-communities-button" className="delete header-button right" href="#" data-button-delete-post={post.id}>Delete Post</a>
 							)
 						: (
 								<>
