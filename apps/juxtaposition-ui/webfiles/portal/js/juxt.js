@@ -1,4 +1,7 @@
 import Pjax from 'pjax';
+import { GET, POST } from './xhr';
+import { empathyPostById } from './api';
+import { initPostPageView } from './post';
 
 var pjax;
 setInterval(checkForUpdates, 30000);
@@ -36,7 +39,6 @@ function initYeah() {
 		var parent = document.getElementById(id);
 		var count = document.getElementById('count-' + id);
 		el.disabled = true;
-		var params = 'postID=' + id;
 		if (el.classList.contains('selected')) {
 			el.classList.remove('selected');
 			parent.classList.remove('yeah');
@@ -53,9 +55,8 @@ function initYeah() {
 			wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
 		}
 
-		POST('/posts/empathy', params, function a(data) {
-			var post = JSON.parse(data.response);
-			if (!post || post.status !== 200) {
+		empathyPostById(id, function (post) {
+			if (post.status !== 200) {
 				// Apparently there was an actual error code for not being able to yeah a post, who knew!
 				// TODO: Find more of these
 				return wiiuErrorViewer.openByCode(1155927);
@@ -225,6 +226,7 @@ function initAll() {
 	initPosts();
 	initMorePosts();
 	initPostModules();
+	initPostPageView();
 	initSounds();
 	checkForUpdates();
 	pjax.refresh();
@@ -358,25 +360,6 @@ function exit() {
 }
 window.exit = exit;
 
-function deletePost(post) {
-	var id = post.getAttribute('data-post');
-	if (!id) {
-		return;
-	}
-	var confirm = wiiuDialog.confirm('Are you sure you want to delete your post? This cannot be undone.', 'No', 'Yes');
-	if (confirm) {
-		DELETE('/posts/' + id, function a(data) {
-			if (!data || data.status !== 200) {
-				return wiiuErrorViewer.openByCodeAndMessage('5980030', 'Post was not able to be deleted. Please try again later.');
-			}
-			console.log(data);
-			alert('Post has been deleted.');
-			return window.location.href = data.responseText;
-		});
-	}
-}
-window.deletePost = deletePost;
-
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
 	var button = document.getElementById('report-launcher');
@@ -421,44 +404,6 @@ function checkForUpdates() {
 			news.style.display = 'none';
 		}
 	});
-}
-function POST(url, data, callback) {
-	wiiuBrowser.showLoadingIcon(true);
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			wiiuBrowser.showLoadingIcon(false);
-			return callback(this);
-		}
-	};
-	xhttp.open('POST', url, true);
-	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xhttp.send(data);
-}
-function GET(url, callback) {
-	wiiuBrowser.showLoadingIcon(true);
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			wiiuBrowser.showLoadingIcon(false);
-			return callback(this);
-		}
-	};
-	xhttp.open('GET', url, true);
-	xhttp.send();
-}
-
-function DELETE(url, callback) {
-	wiiuBrowser.showLoadingIcon(true);
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			wiiuBrowser.showLoadingIcon(false);
-			return callback(this);
-		}
-	};
-	xhttp.open('DELETE', url, true);
-	xhttp.send();
 }
 
 function back() {

@@ -1,7 +1,8 @@
 import Pjax from 'pjax';
 import { popupItemCb, setupPopup } from './menus';
 import { initReportForm, reportPost } from './reports';
-import { deletePost } from './post';
+import { POST, GET } from './xhr';
+import { deletePostById, empathyPostById } from './api';
 
 let pjax;
 setInterval(checkForUpdates, 30000);
@@ -38,7 +39,6 @@ function initYeah() {
 		const parent = document.getElementById(id);
 		const count = document.getElementById('count-' + id);
 		el.disabled = true;
-		const params = 'postID=' + id;
 		if (el.classList.contains('selected')) {
 			el.classList.remove('selected');
 			parent.classList.remove('yeah');
@@ -49,12 +49,9 @@ function initYeah() {
 			count.innerText = ++count.innerText;
 		}
 
-		POST('/posts/empathy', params, function a(data) {
-			const post = JSON.parse(data.response);
-			if (!post || post.status !== 200) {
-				// Apparently there was an actual error code for not being able to yeah a post, who knew!
-				// TODO: Find more of these
-				Toast(1155927);
+		empathyPostById(id, function (post) {
+			if (post.status !== 200) {
+				return Toast('You cannot give this post a Yeah!');
 			}
 			el.disabled = false;
 			count.innerText = post.count;
@@ -104,17 +101,31 @@ function initPopupMenus() {
 		popupItemCb(menu.querySelector('[data-action="report"]'), (_item, _ev) => {
 			reportPost(post);
 		});
-		popupItemCb(menu.querySelector('[data-action="delete"]'), (item, _ev) => {
+		popupItemCb(menu.querySelector('[data-action="delete"]'), async (item, _ev) => {
 			const moderator = item.getAttribute('data-moderator');
 			let reason = '';
 			if (moderator === 'true') {
 				reason = prompt('Provide explanation for removing post:');
+			} else {
+				reason =
+					confirm('Are you sure you want to delete your post? This cannot be undone.')
+						? ''
+						: null;
 			}
 
 			if (reason == null) {
 				return; // User canceled
 			}
-			deletePost(post, reason);
+			deletePostById(post, reason, (result) => {
+				if (result.status !== 200) {
+					return alert(`Post was not able to be deleted. Please try again later. (${result.status})`);
+				}
+
+				alert('Post has been deleted');
+				if (moderator === true) {
+					window.location.href = result.nextUrl;
+				}
+			});
 		});
 		popupItemCb(menu.querySelector('[data-action="copy"]'), (_item, _ev) => {
 			copyToClipboard(`${window.location.origin}/posts/${post}`);
@@ -308,27 +319,6 @@ function checkForUpdates() {
 		}
 	};
 	xhttp.open('GET', '/users/notifications.json', true);
-	xhttp.send();
-}
-function POST(url, data, callback) {
-	const xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			return callback(this);
-		}
-	};
-	xhttp.open('POST', url, true);
-	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xhttp.send(data);
-}
-function GET(url, callback) {
-	const xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			return callback(this);
-		}
-	};
-	xhttp.open('GET', url, true);
 	xhttp.send();
 }
 

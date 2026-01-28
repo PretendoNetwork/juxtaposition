@@ -123,7 +123,6 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					<script src="/js/painting.global.js" />
 				</div>
 			</div>
-			<img src="" evt-error="setTimeout(function() { window.scrollTo(0, 50000); }, 500)" />
 			<WebReportModalView ctx={props.ctx} />
 		</WebRoot>
 	);

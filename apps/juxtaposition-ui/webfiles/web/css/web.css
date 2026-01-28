@@ -350,7 +350,7 @@ iframe {
   color: var(--text);
   text-align: center;
   position: fixed;
-  z-index: 10;
+  z-index: 1000;
   left: 50%;
   top: 100vh;
   opacity: 0;

@@ -1,4 +1,7 @@
 import { Pjax } from './pjax';
+import { GET, POST } from './xhr';
+import { initPostPageView } from './post';
+import { empathyPostById } from './api';
 
 var pjax;
 setInterval(checkForUpdates, 30000);
@@ -134,7 +137,6 @@ function initYeah() {
 		var parent = document.getElementById(id);
 		var count = document.getElementById('count-' + id);
 		el.disabled = true;
-		var params = 'postID=' + id;
 		if (classList.contains(el, 'selected')) {
 			classList.remove(el, 'selected');
 			classList.remove(sprite, 'selected');
@@ -152,9 +154,8 @@ function initYeah() {
 			}
 			cave.snd_playSe('SE_OLV_MII_ADD');
 		}
-		POST('/posts/empathy', params, function a(data) {
-			var post = JSON.parse(data.responseText);
-			if (!post || post.status !== 200) {
+		empathyPostById(id, function (post) {
+			if (post.status !== 200) {
 				// Apparently there was an actual error code for not being able to yeah a post, who knew!
 				// TODO: Find more of these
 				return cave.error_callErrorViewer(155927);
@@ -277,33 +278,6 @@ function initToolbarConfigs() {
 	}
 }
 
-function deletePost(post) {
-	var id = post.getAttribute('data-post');
-	if (!id) {
-		return;
-	}
-	var confirm = cave.dialog_twoButton(
-		'Delete Post',
-		'Are you sure you want to delete your post? This cannot be undone.',
-		'No',
-		'Yes'
-	);
-	if (confirm) {
-		DELETE('/posts/' + id, function a(data) {
-			if (!data || data.status !== 200) {
-				return cave.error_callFreeErrorViewer(
-					'5980030',
-					'Post was not able to be deleted. Please try again later.'
-				);
-			}
-			console.log(data);
-			alert('Post has been deleted.');
-			return (window.location.href = data.responseText);
-		});
-	}
-}
-window.deletePost = deletePost;
-
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
 	var button = document.getElementById('report-launcher');
@@ -343,6 +317,7 @@ function initAll() {
 	initMorePosts();
 	initPostModules();
 	initTabs();
+	initPostPageView();
 	checkForUpdates();
 	initToolbarConfigs();
 	pjax.refresh();
@@ -484,42 +459,6 @@ function exitUserSettings() {
 }
 window.exitUserSettings = exitUserSettings;
 
-function POST(url, data, callback) {
-	cave.transition_begin();
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			cave.transition_end();
-			return callback(this);
-		}
-	};
-	xhttp.open('POST', url, true);
-	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	xhttp.send(data);
-}
-function GET(url, callback) {
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			return callback(this);
-		}
-	};
-	xhttp.open('GET', url, true);
-	xhttp.send();
-}
-function DELETE(url, callback) {
-	cave.transition_begin();
-	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			cave.transition_end();
-			return callback(this);
-		}
-	};
-	xhttp.open('DELETE', url, true);
-	xhttp.send();
-}
-
 document.addEventListener('DOMContentLoaded', function () {
 	pjax = Pjax.init({
 		elements: 'a[data-pjax]',
@@ -547,3 +486,16 @@ document.addEventListener('PjaxDone', function (_e) {
 	cave.requestGc();
 	cave.transition_end();
 });
+
+/* CTR WebKit has an odd bug where images that fail to load throw off the
+ * entire page render, spritesheets, layout.
+ * Ensuring we have *something* loaded seems to fix it.
+ * Ideally we never trigger this since we don't have page errors, but it happens,
+ * especially when selfhosting. */
+document.addEventListener('error', (e) => {
+	var placeholder = '/images/placeholder.gif';
+	var target = e.target;
+	if (target.tagName === 'IMG' && target.getAttribute('src') !== placeholder) {
+		target.setAttribute('src', placeholder);
+	}
+}, true);
