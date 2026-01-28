@@ -4,7 +4,7 @@ import express from 'express';
 import { logger } from '@/logger';
 import { config } from '@/config';
 import { SETTINGS } from '@/models/settings';
-import type { Express } from 'express';
+import type { Express, NextFunction, Request, Response } from 'express';
 
 export const onlineNowGauge = new Gauge({
 	name: 'juxtaposition_online_users_now',
@@ -12,11 +12,11 @@ export const onlineNowGauge = new Gauge({
 	async collect(): Promise<void> {
 		const onlineRangeMs = 10 * 60 * 1000; // 10 minutes
 		const cutoff = new Date(Date.now() - onlineRangeMs);
-		const [{ n }] = await SETTINGS.aggregate<{ n: number }>([
+		const [result] = await SETTINGS.aggregate<{ n: number } | undefined>([
 			{ $match: { last_active: { $gt: cutoff } } },
 			{ $count: 'n' }
 		]);
-		this.set(n);
+		this.set(result?.n ?? 0);
 	}
 });
 
@@ -26,11 +26,11 @@ export const activeMonthlyGauge = new Gauge({
 	async collect(): Promise<void> {
 		const monthlyRangeMs = 30 * 24 * 60 * 60 * 1000;
 		const cutoff = new Date(Date.now() - monthlyRangeMs);
-		const [{ n }] = await SETTINGS.aggregate<{ n: number }>([
+		const [result] = await SETTINGS.aggregate<{ n: number } | undefined>([
 			{ $match: { last_active: { $gt: cutoff } } },
 			{ $count: 'n' }
 		]);
-		this.set(n);
+		this.set(result?.n ?? 0);
 	}
 });
 
@@ -40,11 +40,11 @@ export const activeYearlyGauge = new Gauge({
 	async collect(): Promise<void> {
 		const yearlyRangeMs = 365 * 24 * 60 * 60 * 1000;
 		const cutoff = new Date(Date.now() - yearlyRangeMs);
-		const [{ n }] = await SETTINGS.aggregate<{ n: number }>([
+		const [result] = await SETTINGS.aggregate<{ n: number } | undefined>([
 			{ $match: { last_active: { $gt: cutoff } } },
 			{ $count: 'n' }
 		]);
-		this.set(n);
+		this.set(result?.n ?? 0);
 	}
 });
 
@@ -86,6 +86,11 @@ export function registerMetrics(app: Express): Express {
 			metricsApp: metrics
 		}));
 	}
+
+	metrics.use((error: Error, req: Request, res: Response, _next: NextFunction) => {
+		logger.error(error, 'Request failed!');
+		res.sendStatus(500);
+	});
 
 	return metrics;
 }

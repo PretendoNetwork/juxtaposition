@@ -72,10 +72,9 @@ logger.info('Creating 404 status handler');
 app.use((req, res) => {
 	req.log.warn('Page not found');
 	res.status(404);
-	res.render(req.directory + '/error.ejs', {
+	return res.renderError({
 		code: 404,
-		message: 'Page not found',
-		id: req.id
+		message: 'Page not found'
 	});
 });
 
@@ -95,10 +94,9 @@ app.use((error: Error | FetchError, req: Request, res: Response, next: NextFunct
 	res.status(status);
 
 	req.log.error(error, 'Request failed!');
-	res.render(req.directory + '/error.ejs', {
+	return res.renderError({
 		code: status,
-		message: 'Error',
-		id: req.id
+		message: 'Error'
 	});
 });
 

@@ -4,6 +4,8 @@ import { config } from '@/config';
 import { humanDate, humanFromNow } from '@/util';
 import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
 import { buildContext } from '@/services/juxt-web/views/context';
+import { CtrFatalErrorView } from '@/services/juxt-web/views/ctr/errorView';
+import { PortalFatalErrorView } from '@/services/juxt-web/views/portal/errorView';
 import type { RequestHandler } from 'express';
 
 export const checkBan: RequestHandler = async (request, response, next) => {
@@ -43,14 +45,13 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 
 	if (!accessAllowed) {
 		response.status(500);
-		if (request.directory === 'web') {
-			return response.jsx(<WebLoginView ctx={buildContext(response)} toast="No access. Must be tester or dev" redirect={request.originalUrl} />);
-		} else {
-			return response.render('portal/error_fatal.ejs', {
-				code: 5989999,
-				message: 'No access. Must be tester or dev'
-			});
-		}
+		const banMessage = 'No access. Must be tester or dev';
+		const banCode = 5989999;
+		return response.jsxForDirectory({
+			web: <WebLoginView ctx={buildContext(response)} toast={banMessage} redirect={request.originalUrl} />,
+			portal: <PortalFatalErrorView code={banCode} message={banMessage} />,
+			ctr: <CtrFatalErrorView code={banCode} message={banMessage} />
+		});
 	}
 	const userSettings = await db.getUserSettings(request.pid);
 	if (userSettings && moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
@@ -81,14 +82,11 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 		}
 		banMessage += `\n\nIf you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`;
 
-		if (request.directory === 'web') {
-			return response.jsx(<WebLoginView ctx={buildContext(response)} toast={banMessage} redirect={request.originalUrl} />);
-		} else {
-			return response.render(request.directory + '/error_fatal.ejs', {
-				message: banMessage,
-				code: banCode
-			});
-		}
+		return response.jsxForDirectory({
+			web: <WebLoginView ctx={buildContext(response)} toast={banMessage} redirect={request.originalUrl} />,
+			portal: <PortalFatalErrorView code={banCode} message={banMessage} />,
+			ctr: <CtrFatalErrorView code={banCode} message={banMessage} />
+		});
 	}
 
 	if (userSettings) {

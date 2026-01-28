@@ -88,7 +88,7 @@ messagesRouter.post('/new', async function (req, res) {
 		});
 		if (paintingBlob === null) {
 			res.status(422);
-			return res.render(req.directory + '/error.ejs', {
+			return res.renderError({
 				code: 422,
 				message: 'Upload failed. Please try again later.'
 			});
@@ -103,7 +103,7 @@ messagesRouter.post('/new', async function (req, res) {
 		});
 		if (screenshots === null) {
 			res.status(422);
-			return res.render(req.directory + '/error.ejs', {
+			return res.renderError({
 				code: 422,
 				message: 'Upload failed. Please try again later.'
 			});
