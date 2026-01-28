@@ -45,11 +45,13 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 
 	if (!accessAllowed) {
 		response.status(500);
-		if (request.directory === 'web') {
-			return response.jsx(<WebLoginView ctx={buildContext(response)} toast="No access. Must be tester or dev" redirect={request.originalUrl} />);
-		} else {
-			return response.jsx(<PortalFatalErrorView code={5989999} message="No access. Must be tester or dev" />);
-		}
+		const banMessage = 'No access. Must be tester or dev';
+		const banCode = 5989999;
+		return response.jsxForDirectory({
+			web: <WebLoginView ctx={buildContext(response)} toast={banMessage} redirect={request.originalUrl} />,
+			portal: <PortalFatalErrorView code={banCode} message={banMessage} />,
+			ctr: <CtrFatalErrorView code={banCode} message={banMessage} />
+		});
 	}
 	const userSettings = await db.getUserSettings(request.pid);
 	if (userSettings && moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
