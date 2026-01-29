@@ -20,7 +20,7 @@ body {
     background-image: url(@/images/background.png);
     background-size: 100px;
     background-repeat: repeat;
-    padding-bottom: 30px
+    padding-bottom: 28px; /* Toolbar location */
 }
 
 a {
@@ -116,8 +116,7 @@ ul {
     padding: 0 10px
 }
 
-#body > .body-content,
-#posts-form {
+#body > .body-content {
     width: 322px;
     margin-left: 39px;
     min-height: 175px
@@ -470,12 +469,6 @@ header svg {
 .olv-modal-close-button,
 .post-button {
     display: none
-}
-
-#posts-form {
-    margin-bottom: -1px;
-    margin-top: 1px;
-    height: 208px
 }
 
 #body .image-selector .dropdown-toggle,

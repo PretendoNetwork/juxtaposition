@@ -60,7 +60,6 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								/>
 							))}
 						</menu>
-						<CtrCheckbox name="spoiler" className="spoiler" value="true" sprite="sp-spoiler" />
 					</div>
 					<CtrTabsView>
 						<CtrTabView name="_post_type" value="body" sprite="sp-text-input" default>
@@ -79,6 +78,10 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 							<img id="memo-img-input" src="" />
 							<input type="hidden" name="painting" />
 						</CtrTabView>
+						<div className="spoiler-checkbox">
+							<label htmlFor="cb-spoiler">Spoiler</label>
+							<CtrCheckbox id="cb-spoiler" name="spoiler" value="true" sprite="sp-spoiler" />
+						</div>
 					</CtrTabsView>
 				</div>
 				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />

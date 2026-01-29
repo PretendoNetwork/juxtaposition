@@ -6,6 +6,8 @@ export type CtrCheckboxProps = {
 	name: string;
 	// Form value
 	value: string;
+	// id for the input element
+	id?: string;
 	// Is this the default?
 	default?: boolean;
 	// Which sprite to show on the button?
@@ -23,6 +25,7 @@ export function CtrCheckbox(props: CtrCheckboxProps): ReactNode {
 		<div className={cx('checkbox', props.className, selected)}>
 			<div className={cx('sprite', 'centred', props.sprite, selected)}></div>
 			<input
+				id={props.id}
 				type="checkbox"
 				name={props.name}
 				value={props.value}
