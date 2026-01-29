@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import { utils } from '@/services/juxt-web/views/utils';
 import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/ctabs';
 import { CtrCheckbox } from '@/services/juxt-web/views/ctr/checkbox';
@@ -33,9 +34,18 @@ const empathies = [
 ];
 
 export function CtrNewPostView(props: NewPostViewProps): ReactNode {
+	const { ctrBanner, ctrLegacy } = props;
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
-			<header id="header">
+			<header
+				id="header"
+				style={{
+					background: ctrBanner ? `url('${ctrBanner}')` : ''
+				}}
+				className={cx(
+					{ 'header-legacy': ctrLegacy }
+				)}
+			>
 				<h1 id="page-title">
 					{props.ctx.lang.new_post.post_to}
 					{' '}
