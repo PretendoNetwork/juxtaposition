@@ -21,11 +21,6 @@
 }
 
 .ctab .sprite {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-
     /* don't eat clicks from the input */
     pointer-events: none;
 }

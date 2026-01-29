@@ -20,7 +20,7 @@ export function CtrTabView(props: CtrTabViewProps): ReactNode {
 	return (
 		<>
 			<li className={cx('ctab', selected)}>
-				<div className={cx('sprite', props.sprite, selected)}></div>
+				<div className={cx('sprite', 'centred', props.sprite, selected)}></div>
 				<input
 					type="radio"
 					name={props.name}

@@ -33,6 +33,8 @@ export function spritesmith(options: Options): Plugin {
 				const sprites = Object.entries(coordinates).map(([name, coords]) => {
 					return {
 						name: basename(name, '.png').replaceAll('_', ':'),
+						halfWidth: coords.width / 2,
+						halfHeight: coords.height / 2,
 						...coords
 					};
 				});
@@ -43,11 +45,22 @@ export function spritesmith(options: Options): Plugin {
 					.sprite {
 						background-image: url(${output_image_url});
 					}
+					.sprite.centred {
+						position: absolute;
+						top: 50%;
+						left: 50%;
+					}
 					{{#each sprites}}
 					.sprite.sp-{{name}} {
 						background-position: -{{x}}px -{{y}}px;
 						width: {{width}}px;
 						height: {{height}}px;
+					}
+					/* CTR has a WebKit bug where translate doesn't round right in
+				     * odd-numbered containers. Doing it manually fixes this. */
+					.sprite.sp-{{name}}.centred {
+						margin-top: -{{halfHeight}}px;
+						margin-left: -{{halfWidth}}px;
 					}
 					{{/each}}
 					`)({ sprites });

@@ -21,7 +21,7 @@ export function CtrCheckbox(props: CtrCheckboxProps): ReactNode {
 	const selected = { selected: props.default };
 	return (
 		<div className={cx('checkbox', props.className, selected)}>
-			<div className={cx('sprite', props.sprite, selected)}></div>
+			<div className={cx('sprite', 'centred', props.sprite, selected)}></div>
 			<input
 				type="checkbox"
 				name={props.name}
