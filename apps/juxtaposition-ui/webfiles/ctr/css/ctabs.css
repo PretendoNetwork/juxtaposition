@@ -20,11 +20,6 @@
     height: 100%;
 }
 
-.ctab .sprite {
-    /* don't eat clicks from the input */
-    pointer-events: none;
-}
-
 .ctabs * {
     /* transitional: new code will use border-box as God intended */
     -webkit-box-sizing: border-box;

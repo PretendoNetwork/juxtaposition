@@ -46,6 +46,7 @@ export function spritesmith(options: Options): Plugin {
 						background-image: url(${output_image_url});
 					}
 					.sprite.centred {
+						pointer-events: none;
 						position: absolute;
 						top: 50%;
 						left: 50%;
