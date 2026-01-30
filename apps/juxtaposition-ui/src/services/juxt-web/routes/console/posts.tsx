@@ -26,7 +26,8 @@ import type { PostSchema } from '@/models/post';
 import type { CommunitySchema } from '@/models/communities';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
-const upload = multer({ dest: 'uploads/' });
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 export const postsRouter = express.Router();
 
 const postLimit = rateLimit({
@@ -134,7 +135,7 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
-postsRouter.post('/new', postLimit, upload.none(), async function (req, res) {
+postsRouter.post('/new', postLimit, upload.single('shot'), async function (req, res) {
 	await newPost(req, res);
 });
 
@@ -244,7 +245,7 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
-postsRouter.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
+postsRouter.post('/:post_id/new', postLimit, upload.single('shot'), async function (req, res) {
 	await newPost(req, res);
 });
 
@@ -375,8 +376,9 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}
 	}
 	let screenshots = null;
-	if (body.screenshot) {
+	if (body.screenshot || (req.file && req.file.fieldname == 'shot')) {
 		screenshots = await uploadScreenshot({
+			buffer: req.file?.buffer,
 			blob: body.screenshot,
 			pid: auth().pid,
 			postId

@@ -52,7 +52,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 					{props.name}
 				</h1>
 			</header>
-			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
+			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1" encType="multipart/form-data">
 				<input type="hidden" name="community_id" value={props.id} />
 				<input type="hidden" name="bmp" value="true" />
 				<div className="add-post-page-content">
@@ -82,7 +82,18 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 							/>
 						</CtrTabView>
 						<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input">
-							<div id="shot-msg">Screenshots are not ready yet. Check back soon!</div>
+							<div id="shot-preview" data-shot-preview="1"></div>
+
+							<div className="shot-picker">
+								<input type="radio" name="shot-type" className="shot top" data-shot="1" data-lls="shot-top"></input>
+								<input type="radio" name="shot-type" className="shot btm" data-shot="0" data-lls="shot-btm"></input>
+								<div id="shot-clear">
+									<div className="sprite sp-clear centred"></div>
+									<input type="radio" name="shot-type" data-shot-clear="1"></input>
+								</div>
+							</div>
+
+							<input type="file" name="shot" data-shot-upload="1"></input>
 						</CtrTabView>
 						<CtrTabView name="_post_type" value="painting" sprite="sp-memo-input">
 							<img id="memo-img-input" src="" />

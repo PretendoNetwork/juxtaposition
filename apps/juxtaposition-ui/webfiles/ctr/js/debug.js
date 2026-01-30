@@ -557,9 +557,9 @@ if (typeof cave === 'undefined') {
 			console.log('cave.getPath(' + key + ')');
 			var value = localStorage.getItem(key);
 			if (value == 0) {
-				return '/img/dummy-image/screenshot-dummy-3ds-low.jpeg';
+				return '/images/dummy-shot-bottom.jpg';
 			} else {
-				return '/img/dummy-image/screenshot-dummy-3ds-upper.jpeg';
+				return '/images/dummy-shot-top.jpg';
 			}
 		},
 		/**

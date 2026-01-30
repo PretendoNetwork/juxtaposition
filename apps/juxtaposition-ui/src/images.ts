@@ -172,12 +172,14 @@ export type ScreenshotUrls = {
 };
 
 export type UploadScreenshotOptions = {
+	buffer?: Buffer;
 	blob: string;
 	pid: number;
 	postId: string;
 };
 export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<ScreenshotUrls | null> {
-	const screenshotBuf = Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
+	// try buffer, otherwise blob
+	const screenshotBuf = opts.buffer ?? Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
 	const screenshots = processJpgScreenshot(screenshotBuf);
 	if (screenshots === null) {
 		return null;
