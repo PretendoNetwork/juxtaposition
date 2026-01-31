@@ -6,5 +6,8 @@
     ],
     "devDependencies": {
         "@bufbuild/buf": "^1.61.0"
+    },
+    "overrides": {
+        "get-pixels": "github:scijs/get-pixels#5283976"
     }
 }
