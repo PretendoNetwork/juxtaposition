@@ -41,12 +41,17 @@ export function initNewPostView(): void {
 
 		shotPreview.style.backgroundImage = `url(${cave.lls_getPath(lls)})`;
 		shotUpload.setAttribute('lls', lls);
-
-		shotUpload.focus();
-		shotUpload.click();
-		me.focus();
 	}
 	shots.forEach(s => s.addEventListener('change', pickShot));
+
+	// has to be enabled at submission
+	page.addEventListener('submit', () => {
+		// Fidget with disabled to keep it out of the D-pad navigation
+		shotUpload.disabled = false;
+		shotUpload.focus();
+		shotUpload.click();
+		shotUpload.blur();
+	});
 
 	// reset/clear button
 	shotClear.addEventListener('change', () => {

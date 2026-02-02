@@ -165,8 +165,15 @@
         }
     }
 
+    /* Display: none makes it stop taking focus.. so instead just kinda hide it */
     input[type="file"] {
-        display: none;
+        position: absolute;
+        top: 0px;
+        opacity: 0;
+        /* Small enough to fit */
+        width: 10px;
+        height: 10px;
+        pointer-events: none;
     }
 
     #memo-img-input {

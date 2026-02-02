@@ -93,7 +93,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								</div>
 							</div>
 
-							<input type="file" name="shot" data-shot-upload="1"></input>
+							<input type="file" name="shot" data-shot-upload="1" disabled></input>
 						</CtrTabView>
 						<CtrTabView name="_post_type" value="painting" sprite="sp-memo-input">
 							<img id="memo-img-input" src="" />
