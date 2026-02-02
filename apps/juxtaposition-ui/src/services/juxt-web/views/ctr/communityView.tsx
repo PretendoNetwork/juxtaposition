@@ -101,7 +101,17 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						{props.children}
 					</div>
 				</div>
-				<CtrNewPostView ctx={props.ctx} id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" ctrBanner={bannerUrl} ctrLegacy={legacy} />
+				<CtrNewPostView
+					ctx={props.ctx}
+					id={community.olive_community_id}
+					name={community.name}
+					url="/posts/new"
+					show="community-post-list"
+					ctrBanner={bannerUrl}
+					ctrLegacy={legacy}
+					shotMode={community.shot_mode}
+					shotTids={community.title_id.concat(community.shot_extra_title_id)}
+				/>
 			</CtrPageBody>
 		</CtrRoot>
 	);

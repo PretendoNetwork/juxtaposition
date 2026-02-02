@@ -26,6 +26,7 @@ export function initNewPostView(): void {
 	memo_image.addEventListener('click', delayedMemo);
 
 	// screenshots
+	var shotTab = page.querySelector('[data-ctab-value="shot"]') as HTMLElement;
 	// input type file
 	var shotUpload = page.querySelector('[data-shot-upload]') as HTMLInputElement;
 	// radios
@@ -33,6 +34,15 @@ export function initNewPostView(): void {
 	var shotClear = page.querySelector('[data-shot-clear]') as HTMLInputElement;
 	// preview
 	var shotPreview = page.querySelector('[data-shot-preview]') as HTMLImageElement;
+
+	// shot settings
+	var shotMode = shotUpload.getAttribute('data-shot-mode')!;
+	var shotTids = shotUpload.getAttribute('data-shot-tids')!;
+
+	if (!shotAllowed(shotMode, shotTids)) {
+		// very convenient how this is the middle tab eh
+		shotTab.style.display = 'none';
+	}
 
 	// top/bottom screen picker
 	function pickShot(e: Event): void {
@@ -78,4 +88,29 @@ export function initNewPostView(): void {
 	var ctab = page.querySelector('.ctabs')!;
 	ctabOnShown(ctab, 'painting', delayedMemo);
 	ctabOnShown(ctab, 'shot', shot);
+}
+
+function shotAllowed(shotMode: string, shotTids: string): boolean {
+	// Always block
+	if (shotMode === 'block') {
+		return false;
+	}
+
+	// Block if game says no (capture_isEnabled)
+	if ((!shotMode || shotMode === 'allow') && !cave.capture_isEnabled()) {
+		return false;
+	}
+
+	if (shotTids !== 'all') {
+		var gameTid = parseInt(cave.sap_programId(), 16);
+		// yes, server sends title ids in decimal
+		var tids = shotTids.split(',').map(x => parseInt(x));
+
+		// Block if this is the wrong community
+		if (!tids.includes(gameTid)) {
+			return false;
+		}
+	}
+
+	return true;
 }

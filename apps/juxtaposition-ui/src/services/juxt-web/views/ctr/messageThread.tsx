@@ -72,7 +72,16 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 				<div className="body-content message-post-list" id="message-page">
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
 				</div>
-				<CtrNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
+				<CtrNewPostView
+					ctx={props.ctx}
+					id={props.conversation.id}
+					name={otherUserName}
+					url="/friend_messages/new"
+					show="message-page"
+					messagePid={props.otherUser.pid}
+					shotMode="allow"
+					shotTids="all"
+				/>
 			</CtrPageBody>
 		</CtrRoot>
 	);

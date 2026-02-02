@@ -52,6 +52,8 @@ export type NewPostViewProps = {
 	// ctr only
 	ctrBanner?: string;
 	ctrLegacy?: boolean;
+	shotMode: string;
+	shotTids: string[] | 'all';
 };
 
 export function WebNewPostView(props: NewPostViewProps): ReactNode {

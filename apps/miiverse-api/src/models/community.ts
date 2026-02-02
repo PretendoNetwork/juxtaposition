@@ -121,6 +121,14 @@ const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods
 	permissions: {
 		type: PermissionsSchema,
 		default: {}
+	},
+	shot_mode: {
+		type: String,
+		default: 'allow'
+	},
+	shot_extra_title_id: {
+		type: [String],
+		default: []
 	}
 });
 

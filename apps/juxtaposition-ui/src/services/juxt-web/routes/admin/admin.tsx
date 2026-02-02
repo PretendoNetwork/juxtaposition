@@ -422,7 +422,11 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 			title_ids: z.string().trim()
 				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
 				.pipe(z.array(z.string().min(1))),
-			app_data: z.string().trim()
+			app_data: z.string().trim(),
+			shot_mode: z.enum(['allow', 'block', 'force']),
+			shot_extra_title_id: z.string().trim()
+				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
+				.pipe(z.array(z.string().min(1)))
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
@@ -465,7 +469,9 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		community_id: communityId,
 		olive_community_id: communityId,
 		is_recommended: body.is_recommended,
-		app_data: body.app_data
+		app_data: body.app_data,
+		shot_mode: body.shot_mode,
+		shot_extra_title_id: body.shot_extra_title_id
 	};
 	const newCommunity = new COMMUNITY(document);
 	await newCommunity.save();
@@ -555,7 +561,11 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 			title_ids: z.string().trim()
 				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
 				.pipe(z.array(z.string().min(1))),
-			app_data: z.string().trim()
+			app_data: z.string().trim(),
+			shot_mode: z.enum(['allow', 'block', 'force']),
+			shot_extra_title_id: z.string().trim()
+				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
+				.pipe(z.array(z.string().min(1)))
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
@@ -605,7 +615,9 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		app_data: body.app_data,
 		is_recommended: body.is_recommended,
 		name: body.name,
-		description: body.description
+		description: body.description,
+		shot_mode: body.shot_mode,
+		shot_extra_title_id: body.shot_extra_title_id
 	};
 	const comm = await COMMUNITY.findOneAndUpdate({ olive_community_id: communityId }, { $set: document }, { upsert: true }).exec();
 	if (!comm) {

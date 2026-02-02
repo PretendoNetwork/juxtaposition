@@ -43,6 +43,8 @@ export interface ICommunity {
 	app_data: string;
 	user_favorites?: number[];
 	permissions: ICommunityPermissions;
+	shot_mode?: string;
+	shot_extra_title_id?: string[];
 }
 // Fields that have "default: " in the Mongoose schema should also be listed here to make them optional
 // on input but not output
@@ -62,7 +64,9 @@ type CommunityDefaultedFields =
 	'is_recommended' |
 	'app_data' |
 	'user_favorites' |
-	'permissions';
+	'permissions' |
+	'shot_mode' |
+	'shot_extra_title_id';
 export type ICommunityInput = Omit<ICommunity, CommunityDefaultedFields> & Partial<Pick<ICommunity, CommunityDefaultedFields>>;
 
 export interface ICommunityMethods {

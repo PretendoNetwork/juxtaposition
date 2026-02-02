@@ -110,6 +110,18 @@ export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {
 						</div>
 					</div>
 					<div className="col-md-3">
+						<label className="labels" htmlFor="shot_mode">Screenshot mode</label>
+						<select className="form-select" name="shot_mode" id="shot_mode">
+							<option value="allow" selected>Allow this game only (Default)</option>
+							<option value="block">Block all</option>
+							<option value="force">Allow, even if game disallows</option>
+						</select>
+					</div>
+					<div className="col-md-9">
+						<label className="labels" htmlFor="shot_extra_title_id">Extra screenshot titles (comma separated list)</label>
+						<input id="shot_extra_title_id" name="shot_extra_title_id" type="text" className="form-control" placeholder="1407375153678336, 1407375153685760, 1407375153686016" />
+					</div>
+					<div className="col-md-3">
 						<button className="btn btn-primary profile-button" type="submit">Save Community</button>
 					</div>
 				</form>

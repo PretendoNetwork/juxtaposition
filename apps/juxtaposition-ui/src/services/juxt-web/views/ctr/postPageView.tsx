@@ -61,7 +61,21 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 						<CtrPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
-				{props.canPost ? <CtrNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" ctrBanner={bannerUrl} ctrLegacy={legacy} /> : null}
+				{props.canPost
+					? (
+							<CtrNewPostView
+								ctx={props.ctx}
+								id={post.community_id ?? ''}
+								name={post.screen_name ?? ''}
+								url={`/posts/${post.id}/new`}
+								show="post"
+								ctrBanner={bannerUrl}
+								ctrLegacy={legacy}
+								shotMode={props.community.shot_mode}
+								shotTids={props.community.title_id.concat(props.community.shot_extra_title_id)}
+							/>
+						)
+					: null}
 
 				<div id="report-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 					<header className="add-post-page-header" id="header">

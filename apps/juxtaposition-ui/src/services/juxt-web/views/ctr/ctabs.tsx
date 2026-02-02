@@ -19,7 +19,7 @@ export function CtrTabView(props: CtrTabViewProps): ReactNode {
 	const selected = { selected: props.default };
 	return (
 		<>
-			<li className={cx('ctab', selected)}>
+			<li className={cx('ctab', selected)} data-ctab-value={props.value}>
 				<div className={cx('sprite', 'centred', props.sprite, selected)}></div>
 				<input
 					type="radio"
