@@ -19,6 +19,7 @@ import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/mana
 import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newCommunityView';
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
+import type { ReportWithPost } from '@/services/juxt-web/views/web/admin/reportListView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
@@ -35,27 +36,33 @@ adminRouter.get('/posts', async function (req, res) {
 	const { auth } = parseReq(req);
 
 	// `any` is needed because database.js is not typed yet
-	const reports: HydratedReportDocument[] = await database.getAllOpenReports() as any;
+	const rawReports: HydratedReportDocument[] = await database.getAllOpenReports() as any;
 	const userContent = await database.getUserContent(auth().pid);
-	const postIDs = reports.map(obj => obj.post_id);
-
 	if (!userContent) {
 		throw new Error('User content is null');
 	}
 
-	const posts = await POST.aggregate([
-		{ $match: { id: { $in: postIDs } } },
-		{
-			$addFields: {
-				__order: { $indexOfArray: [postIDs, '$id'] }
-			}
-		},
-		{ $sort: { __order: 1 } },
-		{ $project: { index: 0, _id: 0 } }
-	]);
+	const postIds = rawReports.map(obj => obj.post_id);
+	const nonRemovedPosts = await POST.find(
+		{ id: { $in: postIds }, removed: false }
+	);
+	const postMap = new Map(nonRemovedPosts.map(p => [p.id, p]));
+	const reportsWithPost = rawReports.map(v => ({
+		report: v,
+		post: postMap.get(v.post_id)
+	}));
+	const reports: ReportWithPost[] = [];
+	reportsWithPost.forEach((v) => {
+		if (v.post) {
+			reports.push({
+				post: v.post,
+				report: v.report
+			});
+		}
+	});
 
 	res.jsxForDirectory({
-		web: <WebReportListView ctx={buildContext(res)} reasonMap={getReasonMap()} posts={posts} userContent={userContent} reports={reports} />
+		web: <WebReportListView ctx={buildContext(res)} reasonMap={getReasonMap()} userContent={userContent} reports={reports} />
 	});
 });
 
