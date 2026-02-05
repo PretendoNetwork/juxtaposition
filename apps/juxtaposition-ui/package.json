@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.980.0",
-    "@imagemagick/magick-wasm": "^0.0.37",
+    "@imagemagick/magick-wasm": "^0.0.38",
     "@neato/config": "^4.1.0",
     "@pretendonetwork/grpc": "^2.4.1",
     "@repo/grpc-client": "^0.0.0",
