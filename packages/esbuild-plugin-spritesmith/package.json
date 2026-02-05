@@ -17,7 +17,7 @@
         "spritesmith": "^3.5.1"
     },
     "devDependencies": {
-        "@types/node": "^22.19.1",
+        "@types/node": "^22.19.9",
         "@types/spritesmith": "^3.4.5",
         "typescript": "^5.9.3"
     }

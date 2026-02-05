@@ -67,7 +67,7 @@
     "@types/hashmap": "^2.3.4",
     "@types/luxon": "^3.7.1",
     "@types/method-override": "^3.0.0",
-    "@types/node": "^22.19.1",
+    "@types/node": "^22.19.9",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.2.3",
     "browserslist": "^4.28.0",
