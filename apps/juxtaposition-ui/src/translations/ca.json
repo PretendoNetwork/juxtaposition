@@ -1,7 +1,7 @@
 {
     "global": {
         "communities": "Comunitats",
-        "more": "Carregar més publicacions",
+        "more": "Carrega més publicacions",
         "next": "Següent",
         "messages": "Missatges",
         "activity_feed": "Taxes d'activitat",
@@ -11,7 +11,7 @@
         "save": "Desa",
         "no_posts": "No hi ha publicacions",
         "private": "Privat",
-        "close": "Tancar",
+        "close": "Tanca",
         "user_page": "Pàgina d'usuari",
         "go_back": "Torna",
         "yeahs": "Mola"
