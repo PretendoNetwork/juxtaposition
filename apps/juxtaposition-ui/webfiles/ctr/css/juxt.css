@@ -1,6 +1,6 @@
 @import 'sprites.css';
-@import 'ctabs.css';
-@import 'checkbox.css';
+@import './controls/ctabs.css';
+@import './controls/checkbox.css';
 @import 'new-post-view.css';
 
 body {

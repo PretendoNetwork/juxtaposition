@@ -1,7 +1,7 @@
 import './polyfills';
 import { initNewPostView } from './new-post-view';
-import { initCheckboxes } from './checkbox';
-import { initClientTabs } from './ctabs';
+import { initCheckboxes } from './controls/checkbox';
+import { initClientTabs } from './controls/ctabs';
 import { Pjax } from './pjax';
 import { GET, POST } from './xhr';
 import { initPostPageView } from './post';

@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import { utils } from '@/services/juxt-web/views/utils';
-import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/ctabs';
-import { CtrCheckbox } from '@/services/juxt-web/views/ctr/checkbox';
+import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/controls/ctabs';
+import { CtrCheckbox } from '@/services/juxt-web/views/ctr/controls/checkbox';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
