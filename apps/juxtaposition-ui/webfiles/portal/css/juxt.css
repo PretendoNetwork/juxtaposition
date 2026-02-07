@@ -478,7 +478,7 @@ body {
  float:left;
  position:relative;
  min-width:400px;
- max-width:740px;
+ max-width:800px;
  padding:20px 25px 5px;
  z-index:2;
  background:#fff;
@@ -591,23 +591,27 @@ header svg {
  border-radius:10px
 }
 .post-list .post .post-screenshot {
- /* fallback for screenshots without aspect info */
- width:740px;
- height:416px;
- border-radius:10px
+    border-radius: 10px;
+
+    /* fallback for screenshots without aspect info */
+    width: 800px;
+    height: 450px;
+
+    /* &.post-screenshot-16\:9 {
+        width: 800px;
+        height: 450px;
+    } */ /* Identical to fallback */
+
+    &.post-screenshot-5\:3 {
+        /* width: 800px; */
+        height: 480px;
+    }
+    &.post-screenshot-4\:3 {
+        width: 640px;
+        height: 480px;
+    }
 }
-.post-list .post .post-screenshot-16\3A 9 {
- width:740px;
- height:416px;
-}
-.post-list .post .post-screenshot-5\3A 3 {
- width:693px;
- height:416px;
-}
-.post-list .post .post-screenshot-4\3A 3 {
- width:555px;
- height:416px;
-}
+
 .post-list .post .post-buttons {
  clear:both;
  margin:0 0 20px;

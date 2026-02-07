@@ -8,6 +8,7 @@ import type { IMagickImage } from '@imagemagick/magick-wasm';
 
 export type Painting = {
 	png: Buffer;
+	big: Buffer;
 	tgaz: Buffer;
 };
 
@@ -27,6 +28,12 @@ function processPainting(image: IMagickImage): Painting {
 
 	return {
 		png: image.write('PNG', Buffer.from),
+		big: image.clone((image) => {
+			image.filterType = FilterType.Point;
+			image.resize(640, 240);
+
+			return image.write('PNG', Buffer.from);
+		}),
 		tgaz: image.clone((image) => {
 			// Ingame TGA decoders don't support all the fun stuff.
 			image.colorType = ColorType.TrueColorAlpha;
@@ -82,6 +89,11 @@ export type ProcessPaintingOptions = {
 	pid: number;
 	postId: string;
 };
+export type PaintingUrls = {
+	blob: string;
+	img: string;
+	big: string;
+};
 /**
  * Processes and uploads a new painting to the CDN - to paintings/${pid}/${postID}.png.
  * @param paintingBlob base64 TGAZ or BMP blob from the client request body.
@@ -90,7 +102,7 @@ export type ProcessPaintingOptions = {
  * @param postID Post ID.
  * @returns base64 TGAZ blob, sanitised.
  */
-export async function uploadPainting(opts: ProcessPaintingOptions): Promise<string | null> {
+export async function uploadPainting(opts: ProcessPaintingOptions): Promise<PaintingUrls | null> {
 	const paintingBuf = Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
 	const paintings = ((): Painting => {
 		if (opts.autodetectFormat) {
@@ -102,44 +114,66 @@ export async function uploadPainting(opts: ProcessPaintingOptions): Promise<stri
 		}
 	})();
 
-	if (!await uploadCDNAsset(`paintings/${opts.pid}/${opts.postId}.png`, paintings.png, 'public-read')) {
+	const imgKey = `paintings/${opts.pid}/${opts.postId}.png`;
+	const bigKey = `paintings/${opts.pid}/${opts.postId}-big.png`;
+
+	if (!await uploadCDNAsset(imgKey, paintings.png, 'public-read')) {
 		return null;
 	}
 
-	return paintings.tgaz.toString('base64');
+	if (!await uploadCDNAsset(bigKey, paintings.big, 'public-read')) {
+		return null;
+	}
+
+	return {
+		blob: paintings.tgaz.toString('base64'),
+		img: `/${imgKey}`,
+		big: `/${bigKey}`
+	};
 }
 
 export type Aspect = '16:9' | '5:3' | '4:3';
 
 export type Screenshot = {
+	// Normal image
 	jpg: Buffer;
+	// Tiny image (for ctr)
 	thumb: Buffer;
+	// 2x image (for wiiu)
+	big: Buffer | null;
+
 	aspect: Aspect;
 };
 
-type ScreenshotRes = {
-	// full res
+type Res = {
 	w: number;
 	h: number;
-	// thumbnail res
-	tw: number;
-	th: number;
-	// other
+};
+function res(w: number, h: number): Res {
+	return { w, h };
+}
+
+type ScreenshotRes = {
+	full: Res;
+	thumb: Res;
+	big: Res | null;
+
 	aspect: Aspect;
 };
 
 const validResolutions: ScreenshotRes[] = [
-	{ w: 800, h: 450, tw: 320, th: 180, aspect: '16:9' },
-	{ w: 400, h: 240, tw: 320, th: 192, aspect: '5:3' },
-	{ w: 320, h: 240, tw: 320, th: 240, aspect: '4:3' },
-	{ w: 640, h: 480, tw: 320, th: 240, aspect: '4:3' }
+	{ full: res(800, 450), thumb: res(320, 180), big: null, aspect: '16:9' },
+	{ full: res(400, 240), thumb: res(320, 192), big: res(800, 480), aspect: '5:3' },
+	{ full: res(320, 240), thumb: res(320, 240), big: res(640, 480), aspect: '4:3' },
+	{ full: res(640, 480), thumb: res(320, 240), big: null, aspect: '4:3' }
 ];
 
 function processScreenshot(image: IMagickImage): Screenshot | null {
-	const res = validResolutions.find(({ w, h }) => w === image.width && h === image.height);
+	const res = validResolutions.find(({ full }) => full.w === image.width && full.h === image.height);
 	if (res === undefined) {
 		return null;
 	}
+	const { thumb, big, aspect } = res;
 	// Remove EXIF whatever
 	image.strip();
 
@@ -151,12 +185,25 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 		jpg: image.write('JPEG', Buffer.from),
 		thumb: image.clone((image) => {
 			image.filterType = FilterType.Lanczos2;
-			image.resize(res.tw, res.th);
-			image.extent(res.tw, res.th, Gravity.Center);
+			image.resize(thumb.w, thumb.h);
+			image.extent(thumb.w, thumb.h, Gravity.Center);
+
 			image.quality = 80; // smash 'em
 			return image.write('JPEG', Buffer.from);
 		}),
-		aspect: res.aspect
+		big: image.clone((image) => {
+			if (!big) {
+				return null;
+			}
+
+			// the entire purpose of doing this is to get sharp pixels
+			image.filterType = FilterType.Point;
+			image.resize(big.w, big.h);
+			image.extent(big.w, big.h, Gravity.Center);
+
+			return image.write('JPEG', Buffer.from);
+		}),
+		aspect
 	};
 }
 
@@ -168,6 +215,7 @@ export type ScreenshotUrls = {
 	full: string;
 	fullLength: number;
 	thumb: string;
+	big: string | null;
 	aspect: Aspect;
 };
 
@@ -185,6 +233,7 @@ export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<S
 
 	const fullKey = `screenshots/${opts.pid}/${opts.postId}.jpg`;
 	const thumbKey = `screenshots/${opts.pid}/${opts.postId}-thumb.jpg`;
+	const bigKey = `screenshots/${opts.pid}/${opts.postId}-big.jpg`;
 
 	const fullLength = screenshots.jpg.byteLength;
 
@@ -196,10 +245,15 @@ export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<S
 		return null;
 	}
 
+	if (screenshots.big && !await uploadCDNAsset(bigKey, screenshots.big, 'public-read')) {
+		return null;
+	}
+
 	const full = `/${fullKey}`;
 	const thumb = `/${thumbKey}`;
+	const big = screenshots.big ? `/${bigKey}` : null;
 
-	return { full, fullLength, thumb, aspect: screenshots.aspect };
+	return { full, fullLength, thumb, big, aspect: screenshots.aspect };
 }
 
 type Icon = {

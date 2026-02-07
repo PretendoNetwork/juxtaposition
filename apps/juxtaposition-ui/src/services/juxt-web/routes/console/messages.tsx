@@ -15,7 +15,7 @@ import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
 import { getInvalidPostRegex, getUserAccountData, getUserFriendPIDs } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import type { ScreenshotUrls } from '@/images';
+import type { PaintingUrls, ScreenshotUrls } from '@/images';
 
 export const messagesRouter = express.Router();
 
@@ -77,16 +77,16 @@ messagesRouter.post('/new', async function (req, res) {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	let paintingBlob: string | null = null;
+	let paintings: PaintingUrls | null = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		paintingBlob = await uploadPainting({
+		paintings = await uploadPainting({
 			blob: req.body.painting,
 			autodetectFormat: false,
 			isBmp: req.body.bmp === 'true',
 			pid: authCtx.pid,
 			postId
 		});
-		if (paintingBlob === null) {
+		if (paintings === null) {
 			res.status(422);
 			return res.renderError({
 				code: 422,
@@ -146,8 +146,11 @@ messagesRouter.post('/new', async function (req, res) {
 		community_id: conversation.id,
 		screen_name: authCtx.user.mii.name,
 		body: body,
-		painting: paintingBlob ?? '',
+		painting: paintings?.blob ?? '',
+		painting_img: paintings?.img ?? '',
+		painting_big: paintings?.big ?? '',
 		screenshot: screenshots?.full ?? '',
+		screenshot_big: screenshots?.big ?? '',
 		screenshot_length: screenshots?.fullLength ?? 0,
 		screenshot_thumb: screenshots?.thumb ?? '',
 		screenshot_aspect: screenshots?.aspect ?? '',

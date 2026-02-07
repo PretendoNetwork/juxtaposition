@@ -21,6 +21,7 @@ import { PortalPostPageView } from '@/services/juxt-web/views/portal/postPageVie
 import type { Request, Response } from 'express';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 import type { PostSchema } from '@/models/post';
 import type { CommunitySchema } from '@/models/communities';
@@ -357,16 +358,16 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	let paintingBlob = null;
+	let paintings: PaintingUrls | null = null;
 	if (body._post_type === 'painting' && body.painting) {
-		paintingBlob = await uploadPainting({
+		paintings = await uploadPainting({
 			blob: body.painting,
 			autodetectFormat: false,
 			isBmp: body.bmp,
 			pid: auth().pid,
 			postId
 		});
-		if (paintingBlob === null) {
+		if (paintings === null) {
 			res.status(422);
 			res.renderError({
 				code: 422,
@@ -430,8 +431,11 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		community_id: community.olive_community_id,
 		screen_name: userSettings.screen_name,
 		body: postBody,
-		painting: paintingBlob ?? '',
+		painting: paintings?.blob ?? '',
+		painting_img: paintings?.img ?? '',
+		painting_big: paintings?.big ?? '',
 		screenshot: screenshots?.full ?? '',
+		screenshot_big: screenshots?.big ?? '',
 		screenshot_length: screenshots?.fullLength ?? 0,
 		screenshot_thumb: screenshots?.thumb ?? '',
 		screenshot_aspect: screenshots?.aspect ?? '',

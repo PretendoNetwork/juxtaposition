@@ -14,7 +14,10 @@ export interface IPost {
 	app_data?: string; // nintendo base64
 
 	painting?: string; // base64, can be empty or undefined
+	painting_img?: string; // url fragment (leading /), can be empty or undefined
+	painting_big?: string; // url fragment (leading /), can be empty or undefined
 	screenshot?: string; // url fragment (leading /), can be empty or undefined
+	screenshot_big?: string; // url fragment (leading /), can be empty or undefined
 	screenshot_thumb?: string; // url fragment (leading /), can be empty or undefined
 	screenshot_length?: number;
 	screenshot_aspect?: string; // '4:3' '5:3' '16:9'
