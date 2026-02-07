@@ -17,7 +17,7 @@ export interface IPost {
 	screenshot?: string; // url fragment (leading /), can be empty or undefined
 	screenshot_thumb?: string; // url fragment (leading /), can be empty or undefined
 	screenshot_length?: number;
-	screenshot_aspect?: string; // '4:3' '5:4' '16:9'
+	screenshot_aspect?: string; // '4:3' '5:3' '16:9'
 
 	search_key?: string[]; // can be empty or undefined
 	topic_tag?: string;

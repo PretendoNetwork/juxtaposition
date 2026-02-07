@@ -16,7 +16,7 @@ export type PostDto = {
 	screenshot?: string; // URL frag (leading /) or '', undef for PMs
 	screenshot_thumb?: string; // URL frag (leading /) or '', undef for PMs/old posts
 	screenshot_length?: number;
-	screenshot_aspect?: string; // '4:3' '5:4' '16:9'
+	screenshot_aspect?: string; // '4:3' '5:3' '16:9'
 
 	search_key?: string[]; // can be []
 	topic_tag?: string; // can be ''

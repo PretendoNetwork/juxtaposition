@@ -109,7 +109,7 @@ export async function uploadPainting(opts: ProcessPaintingOptions): Promise<stri
 	return paintings.tgaz.toString('base64');
 }
 
-export type Aspect = '16:9' | '5:4' | '4:3';
+export type Aspect = '16:9' | '5:3' | '4:3';
 
 export type Screenshot = {
 	jpg: Buffer;
@@ -130,7 +130,7 @@ type ScreenshotRes = {
 
 const validResolutions: ScreenshotRes[] = [
 	{ w: 800, h: 450, tw: 320, th: 180, aspect: '16:9' },
-	{ w: 400, h: 240, tw: 320, th: 192, aspect: '5:4' },
+	{ w: 400, h: 240, tw: 320, th: 192, aspect: '5:3' },
 	{ w: 320, h: 240, tw: 320, th: 240, aspect: '4:3' },
 	{ w: 640, h: 480, tw: 320, th: 240, aspect: '4:3' }
 ];
