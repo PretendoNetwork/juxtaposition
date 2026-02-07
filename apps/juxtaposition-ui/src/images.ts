@@ -188,7 +188,7 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 			image.resize(thumb.w, thumb.h);
 			image.extent(thumb.w, thumb.h, Gravity.Center);
 
-			image.quality = 80; // smash 'em
+			image.quality = 85; // smash 'em
 			return image.write('JPEG', Buffer.from);
 		}),
 		big: image.clone((image) => {
