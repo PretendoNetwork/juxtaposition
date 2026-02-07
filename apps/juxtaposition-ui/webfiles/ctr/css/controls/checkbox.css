@@ -1,0 +1,19 @@
+/* Checkbox control from checkbox.tsx */
+
+.checkbox {
+    position: relative;
+
+    input[type="checkbox"] {
+        appearance: none;
+        display: inline-block;
+
+        border: 0;
+        margin: 0;
+        padding: 0;
+
+        /* Not so div... */
+        cursor: pointer;
+        width: 100%;
+        height: 100%;
+    }
+}

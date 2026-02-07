@@ -10,6 +10,33 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 	const isModerator = props.ctx.moderator;
 	// TODO implement moderator removed post logic
 
+	const screenshot = ((): ReactNode => {
+		if (!post.screenshot) {
+			return <></>;
+		}
+
+		if (post.screenshot_aspect) {
+			// modern type
+			return (
+				<img
+					className={cx(
+						'post-screenshot',
+						`post-screenshot-${post.screenshot_aspect}`
+					)}
+					src={utils.cdn(props.ctx, post.screenshot)}
+				/>
+			);
+		} else {
+			// legacy type
+			return (
+				<img
+					className="post-screenshot"
+					src={utils.cdn(props.ctx, post.screenshot)}
+				/>
+			);
+		}
+	})();
+
 	const content = (
 		<>
 			<a href={utils.url('/users/show', { pid: post.pid })} className="mii-icon-container" data-pjax="#body">
@@ -73,7 +100,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
 					>
 						{post.body !== '' ? <p className="post-content-text">{post.body}</p> : null}
-						{post.screenshot && post.screenshot !== '' ? <img className="post-screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
+						{screenshot}
 						{post.painting !== '' ? <img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
 					</div>

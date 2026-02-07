@@ -8,10 +8,7 @@ import type { CommunityViewProps } from '@/services/juxt-web/views/web/community
 
 export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 	const community = props.community;
-	const imageId = community.parent ? community.parent : community.olive_community_id;
-	const bannerUrl = community.ctr_header
-		? utils.cdn(props.ctx, community.ctr_header)
-		: utils.cdn(props.ctx, `/headers/${imageId}/3DS.png`);
+	const { bannerUrl, imageId, legacy } = utils.ctrHeader(props.ctx, community);
 
 	return (
 		<CtrRoot ctx={props.ctx} title={community.name}>
@@ -22,7 +19,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						background: `url('${bannerUrl}')`
 					}}
 					className={cx({
-						'header-legacy': !community.ctr_header
+						'header-legacy': legacy
 					})}
 				>
 					<h1 id="page-title" className="community">
@@ -104,7 +101,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						{props.children}
 					</div>
 				</div>
-				<CtrNewPostView ctx={props.ctx} id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" />
+				<CtrNewPostView ctx={props.ctx} id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" ctrBanner={bannerUrl} ctrLegacy={legacy} />
 			</CtrPageBody>
 		</CtrRoot>
 	);

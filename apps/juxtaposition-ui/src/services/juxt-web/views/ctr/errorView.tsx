@@ -43,7 +43,8 @@ export function CtrFatalErrorView(props: FatalErrorViewProps): ReactNode {
 			<head>
 				<meta id="error" data-code={props.code} data-message={props.message} />
 			</head>
-			<body>
+			{/* Intentionally give some scroll area on 3DS */}
+			<body style={{ width: '300px', minHeight: '800px', margin: 'auto' }}>
 				<h1>
 					You are not authorized to access this application (
 					{props.code}

@@ -1,4 +1,7 @@
 @import 'sprites.css';
+@import './controls/ctabs.css';
+@import './controls/checkbox.css';
+@import 'new-post-view.css';
 
 body {
     margin: 0;
@@ -17,7 +20,7 @@ body {
     background-image: url(@/images/background.png);
     background-size: 100px;
     background-repeat: repeat;
-    padding-bottom: 30px
+    padding-bottom: 28px; /* Toolbar location */
 }
 
 a {
@@ -113,8 +116,7 @@ ul {
     padding: 0 10px
 }
 
-#body > .body-content,
-#posts-form {
+#body > .body-content {
     width: 322px;
     margin-left: 39px;
     min-height: 175px
@@ -460,41 +462,6 @@ header svg {
     border: 0;
 }
 
-.feeling-selector .buttons {
-    position: relative;
-    float: left;
-    height: 36px;
-    border-radius: 2px;
-    background-color: #846abd;
-    margin-top: 5px;
-    margin-right: 5px;
-    padding: 0 3px;
-    font-size: 0; /* Collapse out whitespace */
-}
-
-.feeling-selector .buttons li {
-    display: inline-block;
-    height: 26px;
-    margin: 5px 3.5px
-}
-
-.feeling-selector .buttons input {
-    -webkit-appearance: none;
-    appearance: none;
-    display: inline-block;
-    width: 28px;
-    height: 28px;
-    border: 0;
-    text-indent: -3000px;
-    margin: -1px -2px -2px
-}
-
-.feeling-selector .icon {
-    float: left;
-    border: 1px solid gray;
-    margin: 5px 5px 0
-}
-
 #add-post-page > header {
     margin-bottom: 0
 }
@@ -502,12 +469,6 @@ header svg {
 .olv-modal-close-button,
 .post-button {
     display: none
-}
-
-#posts-form {
-    margin-bottom: -1px;
-    margin-top: 1px;
-    height: 208px
 }
 
 #body .image-selector .dropdown-toggle,

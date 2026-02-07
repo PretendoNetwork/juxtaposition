@@ -9,6 +9,33 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 	const hasYeahed = post.yeahs && post.yeahs.indexOf(props.ctx.pid) !== -1;
 	// TODO implement moderator removed post logic
 
+	const screenshot = ((): ReactNode => {
+		if (!post.screenshot) {
+			return <></>;
+		}
+
+		if (post.screenshot_aspect && post.screenshot_thumb) {
+			// modern type
+			return (
+				<img
+					className={cx(
+						'post-screenshot',
+						`post-screenshot-${post.screenshot_aspect}`
+					)}
+					src={utils.cdn(props.ctx, post.screenshot_thumb)}
+				/>
+			);
+		} else {
+			// legacy type
+			return (
+				<img
+					className="post-screenshot"
+					src={utils.cdn(props.ctx, post.screenshot)}
+				/>
+			);
+		}
+	})();
+
 	return (
 		<div
 			id={`post-${post.id}`}
@@ -71,11 +98,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 									<p className="post-content-text">{post.body}</p>
 								)
 							: null}
-						{post.screenshot && post.screenshot !== ''
-							? (
-									<img className="post-screenshot" src={utils.cdn(props.ctx, post.screenshot)} evt-click="alert(this.src)" />
-								)
-							: null}
+						{screenshot}
 						{post.painting !== ''
 							? (
 									<img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} />
