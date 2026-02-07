@@ -40,7 +40,7 @@ export const ReportSchema = new Schema<IReport, ReportModel, IReportMethods>({
 	},
 	message: {
 		type: String,
-		required: true
+		default: ''
 	},
 	created_at: {
 		type: Date,
