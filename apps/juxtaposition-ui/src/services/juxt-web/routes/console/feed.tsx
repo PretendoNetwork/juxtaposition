@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { database } from '@/database';
 import { POST } from '@/models/post';
 import { config } from '@/config';
-import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { ifNotMod, parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebGlobalFeedView, WebPersonalFeedView } from '@/services/juxt-web/views/web/feed';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
@@ -54,10 +54,13 @@ feedRouter.get('/all', async function (req, res) {
 	if (!userContent) {
 		return res.redirect('/404');
 	}
+
 	const posts = await POST.find({
-		parent: null,
-		message_to_pid: null,
-		removed: false
+		...ifNotMod(res, {
+			parent: null,
+			removed: false
+		}),
+		message_to_pid: null
 	}).limit(config.postLimit).sort({ created_at: -1 });
 
 	const nextLink = `/feed/all/more?offset=${posts.length}&pjax=true`;
@@ -117,9 +120,11 @@ feedRouter.get('/all/more', async function (req, res) {
 	}
 
 	const posts = await POST.find({
-		parent: null,
-		message_to_pid: null,
-		removed: false
+		...ifNotMod(res, {
+			parent: null,
+			removed: false
+		}),
+		message_to_pid: null
 	}).skip(query.offset).limit(config.postLimit).sort({ created_at: -1 });
 
 	const nextLink = `/feed/all/more?offset=${query.offset + posts.length}&pjax=true`;

@@ -54,7 +54,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 						: null}
 
 					<h4>
-						{moment(post.created_at).fromNow()}
+						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
 						{' - '}
 						<a href={`/titles/${post.community_id}`}>{props.ctx.communityMap.get(post.community_id ?? '')}</a>
 					</h4>
