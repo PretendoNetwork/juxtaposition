@@ -6,6 +6,7 @@ import type { ICommunity } from '@/types/mongoose/community';
 
 /* This type is the contract for the frontend. If we make changes to the db, this shape should be kept. */
 export type CommunityDto = {
+	community_id: string;
 	olive_community_id: string;
 	parent: string | null;
 	name: string;
@@ -26,6 +27,7 @@ export type CommunityDto = {
  */
 export function mapCommunity(com: ICommunity): CommunityDto {
 	return {
+		community_id: com.community_id,
 		olive_community_id: com.olive_community_id,
 		parent: com.parent ?? null,
 		name: com.name,

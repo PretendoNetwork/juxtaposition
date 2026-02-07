@@ -9,6 +9,7 @@ import type { UserTokens } from '@/types/juxt/tokens';
 
 /* This type is the contract for the frontend. If we make changes to the db, this shape should be kept. */
 export type CommunityDto = {
+	community_id: string;
 	olive_community_id: string;
 	parent: string | null;
 	name: string;
