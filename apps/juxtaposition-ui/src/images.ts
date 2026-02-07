@@ -258,7 +258,9 @@ export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<S
 
 type Icon = {
 	icon32: Buffer;
+	icon48: Buffer;
 	icon64: Buffer;
+	icon96: Buffer;
 	icon128: Buffer;
 	tga: Buffer;
 };
@@ -279,8 +281,16 @@ function processIcon(image: IMagickImage): Icon | null {
 			image.resize(32, 32);
 			return image.write('PNG', Buffer.from);
 		}),
+		icon48: image.clone((image) => {
+			image.resize(48, 48);
+			return image.write('PNG', Buffer.from);
+		}),
 		icon64: image.clone((image) => {
 			image.resize(64, 64);
+			return image.write('PNG', Buffer.from);
+		}),
+		icon96: image.clone((image) => {
+			image.resize(96, 96);
 			return image.write('PNG', Buffer.from);
 		}),
 		icon128: image.clone((image) => {
@@ -305,7 +315,9 @@ function processIcon(image: IMagickImage): Icon | null {
 
 export type IconUrls = {
 	icon32: string;
+	icon48: string;
 	icon64: string;
+	icon96: string;
 	icon128: string;
 	tgaBlob: string;
 };
@@ -321,22 +333,30 @@ export async function uploadIcons(opts: UploadIconsOptions): Promise<IconUrls | 
 	}
 
 	const icon32Key = `icons/${opts.communityId}/32.png`;
+	const icon48Key = `icons/${opts.communityId}/48.png`;
 	const icon64Key = `icons/${opts.communityId}/64.png`;
+	const icon96Key = `icons/${opts.communityId}/96.png`;
 	const icon128Key = `icons/${opts.communityId}/128.png`;
 
 	if (!await uploadCDNAsset(icon32Key, icons.icon32, 'public-read') ||
+		!await uploadCDNAsset(icon48Key, icons.icon48, 'public-read') ||
 		!await uploadCDNAsset(icon64Key, icons.icon64, 'public-read') ||
+		!await uploadCDNAsset(icon96Key, icons.icon96, 'public-read') ||
 		!await uploadCDNAsset(icon128Key, icons.icon128, 'public-read')) {
 		return null;
 	}
 
 	const icon32 = `/${icon32Key}`;
+	const icon48 = `/${icon48Key}`;
 	const icon64 = `/${icon64Key}`;
+	const icon96 = `/${icon96Key}`;
 	const icon128 = `/${icon128Key}`;
 
 	return {
 		icon32,
+		icon48,
 		icon64,
+		icon96,
 		icon128,
 		tgaBlob: icons.tga.toString('base64')
 	};
