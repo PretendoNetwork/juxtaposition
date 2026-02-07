@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<% var banned = (userSettings.account_status < 0  || userSettings.account_status > 1 || pnid.accessLevel < 0); %></0>
+<%- include('partials/head', { title: pnid.mii.name }); %>
+<body>
+<div id="body">
+	<header id="header" class="buttons"
+		data-toolbar-config
+		data-toolbar-mode="0"
+		<%if(pnid.pid === pid) {%>
+		data-toolbar-active-button="5"
+		<%}%>>
+        <h1 id="page-title" class="community">
+            <span>
+                <span class="icon-container">
+                    <img src="<%if (banned || pnid.deleted) { %>/images/bandwidthlost.png<% } else { %><%= cdnURL %>/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon">
+                </span>
+                <span class="community-name">
+                    <% if(banned) { %>Banned User<% } else if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %> @<%= pnid.username %><%}%>
+                </span>
+				<%if(!pnid.deleted && !banned) {%>
+                <span class="text">
+                    <span>
+                        <span class="sprite sp-post-count inline-sprite"></span>
+                        <span id="post-count"><%=numPosts%></span>
+                    </span>
+                    <span>|
+                        <span class="sprite sp-follower-count inline-sprite"></span>
+                        <span id="followers"><%= userContent.following_users.length - 1 %></span>
+                    </span>
+                </span>
+				<% } %>
+            </span>
+            </span>
+        </h1>
+        <%if(pnid.pid === pid) {%>
+            <a id="header-communities-button" class="header-button left" href="/users/me/settings" data-pjax="#body">Settings</a>
+        <%}%>
+        <%if(pnid.pid !== pid && !pnid.deleted && !banned) {%>
+        <button type="button" class="submit follow yeah-button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>">
+            <span class="sprite sp-yeah inline-sprite"></span>
+        </button>
+        <%}%>
+    </header>
+    <div class="body-content tab2-content" id="community-post-list">
+		<%if(!pnid.deleted && !banned) {%>
+        <menu class="tab-header user-page no-margin">
+            <li id="tab-header-post" class="tab-button <%if(selection === 0){ %>selected<%}%>">
+                <a href="<%= link %>" data-sound="SE_WAVE_SELECT_TAB">
+                    <span class="new-post"><%= lang.user_page.posts %></span>
+                </a>
+            </li>
+            <li id="tab-header-friends" class="tab-button <%if(selection === 1){ %>selected<%}%>">
+                <a href="<%= link %>friends" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.user_page.friends %></span>
+                </a>
+            </li>
+            <li id="tab-header-following" class="tab-button <%if(selection === 2){ %>selected<%}%>">
+                <a href="<%= link %>following" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.user_page.following %></span>
+                </a>
+            </li>
+            <br>
+            <li id="tab-header-followers" class="tab-button <%if(pnid.pid !== pid) {%>double<%}%> <%if(selection === 3){ %>selected<%}%>">
+                <a href="<%= link %>followers" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.user_page.followers %></span>
+                </a>
+            </li>
+            <li id="tab-header-yeahs" class="tab-button <%if(pnid.pid !== pid) {%>double<%}%> <%if(selection === 4){ %>selected<%}%>">
+                <a href="<%= link %>yeahs" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.global.yeahs %></span>
+                </a>
+            </li>
+            <%if(pnid.pid === pid) {%>
+            <li id="tab-header-requests" class="tab-button">
+                <a href="/news/friend_requests" data-sound="SE_WAVE_SELECT_TAB">
+                    <span>Requests</span>
+                </a>
+            </li>
+            <%}%>
+        </menu>
+        <div class="tab-body post-list">
+            <%- include('partials/' + template, { bundle }); %>
+        </div>
+		<%}%>
+    </div>
+</div>
+</body>
+</html>

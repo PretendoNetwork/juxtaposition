@@ -7,11 +7,12 @@ import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
 import type { RenderContext } from '@/services/juxt-web/views/context';
+import type { PostDto } from '@/api/post';
 
 export type PostViewProps = {
 	ctx: RenderContext;
-	userContent: InferSchemaType<typeof ContentSchema>;
-	post: InferSchemaType<typeof PostSchema>;
+	userContent?: InferSchemaType<typeof ContentSchema> | null;
+	post: InferSchemaType<typeof PostSchema> | PostDto;
 	isReply?: boolean;
 	isMainPost?: boolean;
 };
@@ -53,7 +54,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 						: null}
 
 					<h4>
-						{moment(post.created_at).fromNow()}
+						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
 						{' - '}
 						<a href={`/titles/${post.community_id}`}>{props.ctx.communityMap.get(post.community_id ?? '')}</a>
 					</h4>

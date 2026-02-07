@@ -15,11 +15,16 @@ export default defineConfig([
 		rules: {
 			'no-restricted-imports': 'off' // It's a special compile step, we can't use path aliases
 		},
-		files: ['src/webfiles/**/*.js']
+		files: ['webfiles/**/*.js', 'webfiles/**/*.ts']
 	},
 	{
 		// Rules that apply to the 3DS (CTR) and Wii U (Portal) browsers
-		files: ['src/webfiles/ctr/**/*.js', 'src/webfiles/portal/**/*.js'],
+		files: [
+			'webfiles/ctr/**/*.js',
+			'webfiles/ctr/**/*.ts',
+			'webfiles/portal/**/*.js',
+			'webfiles/portal/**/*.ts'
+		],
 		rules: {
 			'no-var': 'off' // 3DS and Wii U browsers need to use var
 		},
@@ -46,6 +51,6 @@ export default defineConfig([
 				...globals.builtin
 			}
 		},
-		ignores: ['src/webfiles/**/*.js']
+		ignores: ['webfiles/**/*.js', 'webfiles/**/*.ts']
 	}
 ]);

@@ -89,11 +89,12 @@ export async function getPostsByEmpathy(tokens: UserTokens, empathy_by: number, 
 	return posts;
 }
 
-export async function getPostsByParentId(tokens: UserTokens, parent_id: string, offset: number): Promise<PageDto<PostDto> | null> {
+export async function getPostsByParentId(tokens: UserTokens, parent_id: string, offset: number, limit: number): Promise<PageDto<PostDto> | null> {
 	const posts = await apiFetchUser<PageDto<PostDto>>(tokens, `/api/v1/posts`, {
 		query: {
 			parent_id: parent_id,
 			offset,
+			limit,
 			include_replies: true,
 			sort: 'oldest'
 		}

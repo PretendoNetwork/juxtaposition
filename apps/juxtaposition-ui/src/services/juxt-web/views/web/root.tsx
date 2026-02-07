@@ -1,13 +1,13 @@
 import { InlineScript } from '@/services/juxt-web/views/common';
 import type { ReactNode } from 'react';
 
-function DefaultHead(): ReactNode {
+export function DefaultHead(): ReactNode {
 	return (
 		<>
+			<meta charSet="UTF-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-			<link rel="stylesheet" type="text/css" href="/css/web.css" />
-			<script src="/js/web.global.js" />
 			<link rel="manifest" href="/web/manifest.json" />
+			<link rel="preconnect" href="https://fonts.gstatic.com" />
 			<link
 				href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap"
 				rel="stylesheet"
@@ -29,9 +29,19 @@ function DefaultHead(): ReactNode {
 	);
 }
 
+export function DefaultStyling(): ReactNode {
+	return (
+		<>
+			<link rel="stylesheet" type="text/css" href="/css/web.css" />
+			<script src="/js/web.global.js" />
+		</>
+	);
+}
+
 export type HtmlProps = {
 	children?: ReactNode;
 	head?: ReactNode;
+	replaceDefaultAssets?: boolean;
 };
 
 export function WebRoot(props: HtmlProps): ReactNode {
@@ -39,6 +49,7 @@ export function WebRoot(props: HtmlProps): ReactNode {
 		<html lang="en">
 			<head>
 				<DefaultHead />
+				{!props.replaceDefaultAssets ? <DefaultStyling /> : null}
 				{props.head}
 			</head>
 			<body>
@@ -50,11 +61,12 @@ export function WebRoot(props: HtmlProps): ReactNode {
 
 export type WrapperProps = {
 	children?: ReactNode;
+	className?: string;
 };
 
 export function WebWrapper(props: WrapperProps): ReactNode {
 	return (
-		<div id="wrapper">
+		<div id="wrapper" className={props.className}>
 			{props.children}
 		</div>
 	);

@@ -23,7 +23,8 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 		parent_id: postIdSchema.optional(),
 		include_replies: z.stringbool().default(false),
 		sort: z.enum(['newest', 'oldest']).default('newest')
-	}).and(pageSchema()).parse(req.query);
+	// Increased page limit for replies
+	}).and(pageSchema(500)).parse(req.query);
 
 	if (query.parent_id && !query.include_replies) {
 		throw new errors.badRequest('Please set include_replies=true to get replies to a parent');

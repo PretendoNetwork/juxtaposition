@@ -25,6 +25,11 @@ declare global {
 			disableDoctypeFor?: Request['directory'][];
 		};
 
+		type ErrorRenderArgs = {
+			code: string | number;
+			message: string;
+		};
+
 		interface Response {
 			/**
 			 * Render JSX as static markup. Only static! No state or event handlers are supported.
@@ -35,6 +40,11 @@ declare global {
 			 * Render JSX for directory set on req.directory as static markup. Only static! No state or event handlers are supported.
 			 */
 			jsxForDirectory: (el: JsxforDirectoryOptions) => Response;
+
+			/**
+			 * Render error page
+			 */
+			renderError: (el: ErrorRenderArgs) => Response;
 		}
 	}
 }
