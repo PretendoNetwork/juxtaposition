@@ -6,7 +6,7 @@ import type { TopicTagViewProps } from '@/services/juxt-web/views/web/topics';
 
 export function PortalTopicTagView(props: TopicTagViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
+		<PortalRoot ctx={props.ctx} title={props.title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
 			<PortalNavBar ctx={props.ctx} selection={-1} />
 			<PortalPageBody>
 				<header id="header">

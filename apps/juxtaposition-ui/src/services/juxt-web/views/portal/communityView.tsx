@@ -15,7 +15,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 		: utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`);
 
 	return (
-		<PortalRoot title={community.name}>
+		<PortalRoot ctx={props.ctx} title={community.name}>
 			<PortalNavBar ctx={props.ctx} selection={2} />
 			<PortalPageBody>
 				<header id="header">
