@@ -12,7 +12,7 @@ function updateComponent(component: Element, input: HTMLInputElement): void {
 }
 
 export function initCheckboxes(): void {
-	document.querySelectorAll('.checkbox').forEach((component) => {
+	document.querySelectorAll('[data-checkbox]').forEach((component) => {
 		component.querySelectorAll('input[type="checkbox"]').forEach((input) => {
 			input.addEventListener('change', () => updateComponent(component, input as HTMLInputElement));
 		});

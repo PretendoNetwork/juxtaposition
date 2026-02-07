@@ -26,6 +26,6 @@ export function initNewPostView(): void {
 	memo_image.addEventListener('click', delayedMemo);
 
 	// Set up tab control
-	var ctab = page.querySelector('.ctabs')!;
+	var ctab = page.querySelector('[data-ctabs-control]')!;
 	ctabOnShown(ctab, 'painting', delayedMemo);
 }

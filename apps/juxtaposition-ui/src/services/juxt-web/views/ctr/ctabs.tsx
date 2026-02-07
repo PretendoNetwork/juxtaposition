@@ -19,7 +19,7 @@ export function CtrTabView(props: CtrTabViewProps): ReactNode {
 	const selected = { selected: props.default };
 	return (
 		<>
-			<li className={cx('ctab', selected)}>
+			<li className={cx('ctab', selected)} data-ctab="1">
 				<div className={cx('sprite', 'centred', props.sprite, selected)}></div>
 				<input
 					type="radio"
@@ -30,7 +30,7 @@ export function CtrTabView(props: CtrTabViewProps): ReactNode {
 			</li>
 			{
 				props.children
-					? <div className="ctab-content" data-value={props.value}>{props.children}</div>
+					? <div className="ctab-content" data-ctab-content={props.value}>{props.children}</div>
 					: {}
 			}
 		</>
@@ -44,7 +44,7 @@ export type CtrTabsViewProps = {
 
 export function CtrTabsView(props: CtrTabsViewProps): ReactNode {
 	return (
-		<menu className={cx('ctabs', props.className)}>
+		<menu className={cx('ctabs', props.className)} data-ctabs-control="1">
 			{props.children}
 		</menu>
 	);

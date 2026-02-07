@@ -1,11 +1,11 @@
 // Client-side tab control from ctabs.tsx
 
 function updateComponent(component: Element): void {
-	component.querySelectorAll('.ctab').forEach((tab) => {
+	component.querySelectorAll('[data-ctab]').forEach((tab) => {
 		var input = tab.querySelector('input')!;
 		var sprite = tab.querySelector('.sprite')!;
 		var value = input.value;
-		var content = component.querySelector(`.ctab-content[data-value="${value}"]`);
+		var content = component.querySelector(`[data-ctab-content="${value}"]`);
 
 		if (input.checked) {
 			tab.classList.add('selected');
@@ -19,15 +19,15 @@ function updateComponent(component: Element): void {
 }
 
 export function initClientTabs(): void {
-	document.querySelectorAll('.ctabs').forEach((component) => {
-		component.querySelectorAll('.ctab input[type="radio"]').forEach((input) => {
+	document.querySelectorAll('[data-ctabs-control]').forEach((component) => {
+		component.querySelectorAll('[data-ctab] input[type="radio"]').forEach((input) => {
 			input.addEventListener('change', () => updateComponent(component));
 		});
 	});
 }
 
 export function ctabOnShown(component: Element, value: string, cb: EventListenerOrEventListenerObject): boolean {
-	var content = component.querySelector(`.ctab-content[data-value="${value}"]`);
+	var content = component.querySelector(`[data-ctab-content="${value}"]`);
 	if (!content) {
 		return false;
 	}
