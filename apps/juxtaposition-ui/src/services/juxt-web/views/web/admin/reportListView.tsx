@@ -11,12 +11,16 @@ import type { ContentSchema } from '@/models/content';
 import type { HydratedReportDocument } from '@/models/report';
 import type { PostSchema } from '@/models/post';
 
+export type ReportWithPost = {
+	report: HydratedReportDocument;
+	post: InferSchemaType<typeof PostSchema>;
+};
+
 export type ReportListViewProps = {
 	ctx: RenderContext;
 	reasonMap: string[];
 	userContent: InferSchemaType<typeof ContentSchema>;
-	reports: HydratedReportDocument[];
-	posts: InferSchemaType<typeof PostSchema>[];
+	reports: ReportWithPost[];
 };
 
 export type ReportProps = {
@@ -79,13 +83,9 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 				{props.reports.length > 0
 					? (
 							<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
-								{props.reports.map((report) => {
-									const post = props.posts.find(post => post.id === report.post_id);
-									if (!post) {
-										return null;
-									}
-									return <Report ctx={props.ctx} key={report.id} userContent={props.userContent} reasonMap={props.reasonMap} post={post} report={report} />;
-								})}
+								{props.reports.map(({ report, post }) => (
+									<Report ctx={props.ctx} key={report.id} userContent={props.userContent} reasonMap={props.reasonMap} post={post} report={report} />
+								))}
 							</ul>
 						)
 					: null}

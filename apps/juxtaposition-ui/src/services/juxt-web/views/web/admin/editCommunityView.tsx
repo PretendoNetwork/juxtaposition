@@ -105,7 +105,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 							id="parent"
 							name="parent"
 							className="form-control"
-							value={community.parent}
+							value={community.parent ?? ''}
 						/>
 					</div>
 					<div className="col-md-4">

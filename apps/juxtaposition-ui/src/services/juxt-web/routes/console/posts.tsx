@@ -169,7 +169,8 @@ postsRouter.get('/:post_id', async function (req, res) {
 		return res.redirect('/404');
 	}
 
-	const replies = (await getPostsByParentId(maybeTokens, post.id, 0))?.items ?? [];
+	// increase limit for post replies since there's no pagination yet
+	const replies = (await getPostsByParentId(maybeTokens, post.id, 0, 500))?.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
 	const canPost = hasAuth() && (
 		(community.permissions.open && community.type < 2) ||

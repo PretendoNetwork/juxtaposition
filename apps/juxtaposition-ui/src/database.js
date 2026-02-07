@@ -34,6 +34,10 @@ function verifyConnected() {
 	}
 }
 
+export function notBanned() {
+	return { account_status: { $in: [0, 1] } };
+}
+
 async function getCommunities(numberOfCommunities, offset) {
 	verifyConnected();
 	if (!offset) {
@@ -288,7 +292,8 @@ async function getUserContent(pid) {
 async function getFollowingUsers(content) {
 	verifyConnected();
 	return SETTINGS.find({
-		pid: content.following_users
+		pid: content.following_users,
+		...notBanned()
 	});
 }
 
