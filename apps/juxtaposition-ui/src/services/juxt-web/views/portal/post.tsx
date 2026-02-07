@@ -80,7 +80,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						? (
 								<a href={`/titles/${post.community_id}`} className="community-banner" data-pjax="#body">
 									<span className="title-icon-container" data-pjax="#body">
-										<img src={utils.cdn(props.ctx, `/icons/${post.community_id}/32.png`)} className="title-icon" />
+										<img src={utils.cdn(props.ctx, `/icons/${post.community_id}/64.png`)} className="title-icon" />
 									</span>
 									<span className="community-name">{props.ctx.communityMap.get(post.community_id ?? '')}</span>
 								</a>
