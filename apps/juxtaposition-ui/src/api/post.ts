@@ -95,7 +95,8 @@ export async function getPostsByParentId(tokens: UserTokens, parent_id: string, 
 			parent_id: parent_id,
 			offset,
 			limit,
-			include_replies: true
+			include_replies: true,
+			sort: 'oldest'
 		}
 	});
 	return posts;

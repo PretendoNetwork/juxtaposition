@@ -21,7 +21,8 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 		posted_by: z.coerce.number().optional(),
 		empathy_by: z.coerce.number().optional(),
 		parent_id: postIdSchema.optional(),
-		include_replies: z.stringbool().default(false)
+		include_replies: z.stringbool().default(false),
+		sort: z.enum(['newest', 'oldest']).default('newest')
 	// Increased page limit for replies
 	}).and(pageSchema(500)).parse(req.query);
 
@@ -33,6 +34,7 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 		throw new errors.unauthorized('Authentication token not provided');
 	}
 
+	const sortOrder = query.sort === 'newest' ? -1 : 1;
 	const posts = await Post.find(deleteOptional({
 		pid: query.posted_by,
 		topic_tag: query.topic_tag,
@@ -42,7 +44,7 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 		message_to_pid: null, // messages aren't really posts
 		...query.include_replies ? {} : { parent: null },
 		...filterRemovedPosts(res.locals.account)
-	})).sort({ created_at: -1 }).skip(query.offset).limit(query.limit);
+	})).sort({ created_at: sortOrder }).skip(query.offset).limit(query.limit);
 
 	// PageDto<PostDto>
 	return mapPages(posts.map(mapPost));
