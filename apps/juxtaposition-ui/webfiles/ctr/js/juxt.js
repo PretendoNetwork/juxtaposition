@@ -1,7 +1,7 @@
 import { Pjax } from './pjax';
 import { GET, POST } from './xhr';
-import { initPostPageView } from './post';
-import { empathyPostById } from './api';
+import { initPostPageView, initYeahButton } from './post';
+import { classList } from './util';
 
 var pjax;
 setInterval(checkForUpdates, 30000);
@@ -119,54 +119,10 @@ function initPosts() {
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
 		});
 	}
-	initYeah();
+	initYeahButton(document);
 	initSpoilers();
 }
-function initYeah() {
-	var els = document.querySelectorAll('button[data-post]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].onclick = yeah;
-	}
-	function yeah(e) {
-		var el = e.currentTarget;
-		var sprite = el.querySelector('.sprite.sp-yeah');
-		var id = el.getAttribute('data-post');
-		var parent = document.getElementById(id);
-		var count = document.getElementById('count-' + id);
-		el.disabled = true;
-		if (classList.contains(el, 'selected')) {
-			classList.remove(el, 'selected');
-			classList.remove(sprite, 'selected');
-			classList.remove(parent, 'yeah');
-			if (count) {
-				count.innerText -= 1;
-			}
-			cave.snd_playSe('SE_OLV_CANCEL');
-		} else {
-			classList.add(el, 'selected');
-			classList.add(sprite, 'selected');
-			classList.add(parent, 'yeah');
-			if (count) {
-				count.innerText = ++count.innerText;
-			}
-			cave.snd_playSe('SE_OLV_MII_ADD');
-		}
-		empathyPostById(id, function (post) {
-			if (post.status !== 200) {
-				// Apparently there was an actual error code for not being able to yeah a post, who knew!
-				// TODO: Find more of these
-				return cave.error_callErrorViewer(155927);
-			}
-			el.disabled = false;
-			if (count) {
-				count.innerText = post.count;
-			}
-		});
-	}
-}
+
 function initSpoilers() {
 	var els = document.querySelectorAll('button[data-post-id]');
 	if (!els) {
@@ -372,18 +328,6 @@ var PostStorage = {
 				n && !PostStorage.hasKey(n) && cave.lls_removeItem(o);
 			}
 		}
-	}
-};
-
-var classList = {
-	contains: function (el, string) {
-		return el.className.indexOf(string) !== -1;
-	},
-	add: function (el, string) {
-		el.className += ' ' + string;
-	},
-	remove: function (el, string) {
-		el.className = el.className.replace(string, '');
 	}
 };
 
