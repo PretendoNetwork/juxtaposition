@@ -89,7 +89,7 @@ async function auth(request: express.Request, response: express.Response, next: 
 
 	const userSettings = await getUserSettings(request.pid);
 
-	if (!userSettings && request.path === '/v1/endpoint') {
+	if (request.path === '/v1/endpoint') {
 		return next();
 	} else if (!userSettings) {
 		return badRequest(response, ApiErrorCode.SETUP_NOT_COMPLETE);
@@ -97,8 +97,10 @@ async function auth(request: express.Request, response: express.Response, next: 
 
 	if (moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
 		userSettings.account_status = 0;
+		userSettings.ban_lift_date = null;
 		await userSettings.save();
 	}
+
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
 	if (userSettings.account_status < 0 || userSettings.account_status > 1 || user.accessLevel < 0) {

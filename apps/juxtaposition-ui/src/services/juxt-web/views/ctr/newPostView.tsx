@@ -7,38 +7,38 @@ const empathies = [
 		value: 0,
 		miiFaceFile: 'normal_face.png',
 		sound: 'SE_WAVE_MII_FACE_00',
-		className: 'feeling-button-normal',
+		className: 'sprite sp-feeling-normal',
 		isDefault: true
 	},
 	{
 		value: 1,
 		miiFaceFile: 'smile_open_mouth.png',
 		sound: 'SE_WAVE_MII_FACE_01',
-		className: 'feeling-button-happy'
+		className: 'sprite sp-feeling-happy'
 	},
 	{
 		value: 2,
 		miiFaceFile: 'wink_left.png',
 		sound: 'SE_WAVE_MII_FACE_02',
-		className: 'feeling-button-like'
+		className: 'sprite sp-feeling-like'
 	},
 	{
 		value: 3,
 		miiFaceFile: 'surprise_open_mouth.png',
 		sound: 'SE_WAVE_MII_FACE_03',
-		className: 'feeling-button-surprised'
+		className: 'sprite sp-feeling-surprise'
 	},
 	{
 		value: 4,
 		miiFaceFile: 'frustrated.png',
 		sound: 'SE_WAVE_MII_FACE_04',
-		className: 'feeling-button-frustrated'
+		className: 'sprite sp-feeling-frustrated'
 	},
 	{
 		value: 5,
 		miiFaceFile: 'sorrow.png',
 		sound: 'SE_WAVE_MII_FACE_05',
-		className: 'feeling-button-puzzled'
+		className: 'sprite sp-feeling-puzzled'
 	}
 ];
 
@@ -83,14 +83,14 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 							data-sound="SE_WAVE_BALLOON_OPEN"
 							evt-click="window.alert('Screenshots are not ready yet. Check back soon!')"
 						>
-							<img className="preview-image sprite" src="" />
+							<img className="sprite sp-screenshot" src="" />
 						</button>
 						<input id="screenshot-value" type="hidden" name="screenshot" value="" />
 					</div>
 					<div className="textarea-container textarea-with-menu active-text">
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
-								<span className="sprite text-input selected" id="text-sprite"></span>
+								<span className="sprite sp-text-input selected" id="text-sprite"></span>
 								<input
 									type="radio"
 									name="_post_type"
@@ -110,7 +110,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								</textarea>
 							</li>
 							<li className="textarea-menu-memo">
-								<span className="sprite memo" id="memo-sprite"></span>
+								<span className="sprite sp-memo-input" id="memo-sprite"></span>
 								<input
 									type="radio"
 									name="_post_type"

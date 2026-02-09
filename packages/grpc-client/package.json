@@ -14,7 +14,7 @@
     "devDependencies": {
         "@bufbuild/buf": "^1.61.0",
         "nice-grpc-common": "^2.0.2",
-        "ts-proto": "^2.8.3",
+        "ts-proto": "^2.11.2",
         "typescript": "^5.9.3"
     },
     "exports": {

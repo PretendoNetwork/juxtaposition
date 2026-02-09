@@ -1,0 +1,435 @@
+import Pjax from 'pjax';
+import { popupItemCb, setupPopup } from './menus';
+import { initReportForm, reportPost } from './reports';
+import { POST, GET } from './xhr';
+import { deletePostById, empathyPostById } from './api';
+
+let pjax;
+setInterval(checkForUpdates, 30000);
+
+function initNavBar() {
+	const els = document.querySelectorAll('#nav-menu > li');
+	if (!els) {
+		return;
+	}
+	for (let i = 0; i < els.length; i++) {
+		els[i].addEventListener('click', function (e) {
+			const el = e.currentTarget;
+			for (let i = 0; i < els.length; i++) {
+				if (els[i].classList.contains('selected')) {
+					els[i].classList.remove('selected');
+				}
+			}
+			el.classList.add('selected');
+		});
+	}
+}
+function initYeah() {
+	const els = document.querySelectorAll('span[data-post]');
+	if (!els) {
+		return;
+	}
+	for (let i = 0; i < els.length; i++) {
+		els[i].removeEventListener('click', yeah);
+		els[i].addEventListener('click', yeah);
+	}
+	function yeah(e) {
+		const el = e.currentTarget;
+		const id = el.getAttribute('data-post');
+		const parent = document.getElementById(id);
+		const count = document.getElementById('count-' + id);
+		el.disabled = true;
+		if (el.classList.contains('selected')) {
+			el.classList.remove('selected');
+			parent.classList.remove('yeah');
+			count.innerText -= 1;
+		} else {
+			el.classList.add('selected');
+			parent.classList.add('yeah');
+			count.innerText = ++count.innerText;
+		}
+
+		empathyPostById(id, function (post) {
+			if (post.status !== 200) {
+				return Toast('You cannot give this post a Yeah!');
+			}
+			el.disabled = false;
+			count.innerText = post.count;
+		});
+	}
+}
+function initTabs() {
+	const els = document.querySelectorAll('.tab-button');
+	if (!els) {
+		return;
+	}
+	for (let i = 0; i < els.length; i++) {
+		els[i].removeEventListener('click', tabs);
+		els[i].addEventListener('click', tabs);
+	}
+	function tabs(e) {
+		e.preventDefault();
+		const el = e.currentTarget;
+		const child = el.children[0];
+
+		for (let i = 0; i < els.length; i++) {
+			if (els[i].classList.contains('selected')) {
+				els[i].classList.remove('selected');
+			}
+		}
+		el.classList.add('selected');
+
+		GET(child.getAttribute('href') + '?pjax=true', function a(data) {
+			const response = data.response;
+			if (response && data.status === 200) {
+				document.getElementsByClassName('tab-body')[0].innerHTML = data.response;
+				window.history.pushState({ url: child.href, title: '', scrollPos: [0, 0] }, '', child.href);
+				initPosts();
+				initMorePosts();
+			}
+		});
+	}
+}
+
+function initPopupMenus() {
+	document.querySelectorAll('.post-hamburger').forEach((menu) => {
+		const button = menu.parentElement;
+		setupPopup(button);
+
+		const post = menu.getAttribute('data-post');
+
+		popupItemCb(menu.querySelector('[data-action="report"]'), (_item, _ev) => {
+			reportPost(post);
+		});
+		popupItemCb(menu.querySelector('[data-action="delete"]'), async (item, _ev) => {
+			const moderator = item.getAttribute('data-moderator');
+			let reason = '';
+			if (moderator === 'true') {
+				reason = prompt('Provide explanation for removing post:');
+			} else {
+				reason =
+					confirm('Are you sure you want to delete your post? This cannot be undone.')
+						? ''
+						: null;
+			}
+
+			if (reason == null) {
+				return; // User canceled
+			}
+			deletePostById(post, reason, (result) => {
+				if (result.status !== 200) {
+					return alert(`Post was not able to be deleted. Please try again later. (${result.status})`);
+				}
+
+				alert('Post has been deleted');
+				if (moderator === true) {
+					window.location.href = result.nextUrl;
+				}
+			});
+		});
+		popupItemCb(menu.querySelector('[data-action="copy"]'), (_item, _ev) => {
+			copyToClipboard(`${window.location.origin}/posts/${post}`);
+		});
+	});
+}
+
+function initPosts() {
+	const els = document.querySelectorAll('.post-content[data-href]');
+	for (let i = 0; i < els.length; i++) {
+		els[i].addEventListener('click', function (e) {
+			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
+		});
+	}
+	initYeah();
+	initSpoilers();
+	initPopupMenus();
+}
+function initMorePosts() {
+	const els = document.querySelectorAll('#load-more[data-href]');
+	for (let i = 0; i < els.length; i++) {
+		els[i].addEventListener('click', function (e) {
+			const el = e.currentTarget;
+			GET(el.getAttribute('data-href'), function a(data) {
+				const response = data.response;
+				if (response && data.status === 200) {
+					el.parentElement.outerHTML = data.response;
+					initPosts();
+					initMorePosts();
+				} else {
+					el.parentElement.remove();
+				}
+			});
+		});
+	}
+}
+function initPostModules() {
+	const els = document.querySelectorAll('[data-module-show]');
+	console.log(els);
+	if (!els) {
+		return;
+	}
+	for (let i = 0; i < els.length; i++) {
+		els[i].addEventListener('click', function (e) {
+			const el = e.currentTarget;
+			const show = el.getAttribute('data-module-show');
+			const hide = el.getAttribute('data-module-hide');
+			const header = el.getAttribute('data-header');
+			const menu = el.getAttribute('data-menu');
+			if (!show || !hide) {
+				return;
+			}
+			document.getElementById(hide).style.display = 'none';
+			document.getElementById(show).style.display = '';
+			if (header === 'true') {
+				document.getElementById('title').style.display = '';
+			} else {
+				document.getElementById('title').style.display = 'none';
+			}
+			if (menu === 'true') {
+				document.getElementById('nav-menu').style.display = '';
+			} else {
+				document.getElementById('nav-menu').style.display = 'none';
+			}
+			initNewPost();
+		});
+	}
+}
+function initPostEmotion() {
+	const els = document.querySelectorAll('input[data-mii-face-url]');
+	if (!els) {
+		return;
+	}
+	for (let i = 0; i < els.length; i++) {
+		els[i].addEventListener('click', function (e) {
+			const el = e.currentTarget;
+			document.getElementById('mii-face').src = el.getAttribute('data-mii-face-url');
+		});
+	}
+}
+function initNewPost() {
+	initPostEmotion();
+}
+function initSpoilers() {
+	const els = document.querySelectorAll('button[data-post-id]');
+	if (!els) {
+		return;
+	}
+	for (let i = 0; i < els.length; i++) {
+		els[i].addEventListener('click', function (e) {
+			const el = e.currentTarget;
+			document.getElementById('post-' + el.getAttribute('data-post-id')).classList.remove('spoiler');
+			el.remove();
+		});
+	}
+}
+
+function initAll() {
+	initNavBar();
+	initTabs();
+	initPosts();
+	initMorePosts();
+	initPostModules();
+	initReportForm();
+	initToast();
+	pjax.refresh();
+}
+
+console.debug('Document initialized:' + window.location.href);
+document.addEventListener('pjax:send', function () {
+	console.debug('Event: pjax:send', arguments);
+});
+document.addEventListener('pjax:complete', function () {
+	console.debug('Event: pjax:complete', arguments);
+});
+document.addEventListener('pjax:error', function (e) {
+	Toast('Error: Unable to load element. \nPlease send the error code and what you were doing in #support');
+	console.debug(e);
+});
+document.addEventListener('pjax:success', function () {
+	console.debug('Event: pjax:success', arguments);
+	initAll();
+});
+document.addEventListener('DOMContentLoaded', function () {
+	pjax = new Pjax({
+		elements: 'a[data-pjax]' +
+			'',
+		selectors: ['title', '#body'],
+		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
+	});
+	console.debug('Pjax initialized.', pjax);
+	initAll();
+});
+
+function follow(el) {
+	const id = el.getAttribute('data-community-id');
+	const count = document.getElementById('followers');
+	const oldtext = el.innerText;
+	const newtext = el.getAttribute('data-text');
+	el.disabled = true;
+	const params = 'id=' + id;
+	if (el.classList.contains('checked')) {
+		el.classList.remove('checked');
+	} else {
+		el.classList.add('checked');
+	}
+	el.setAttribute('data-text', oldtext);
+	el.innerText = newtext;
+	POST(el.getAttribute('data-url'), params, function a(data) {
+		const element = JSON.parse(data.response);
+		if (!element || element.status !== 200) {
+			// Apparently there was an actual error code for not being able to yeah a post, who knew!
+			// TODO: Find more of these
+			return Toast('Unable to follow. Please try again later.');
+		}
+		el.disabled = false;
+		count.innerText = element.count;
+	});
+}
+window.follow = follow;
+
+function checkForUpdates() {
+	const xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function () {
+		if (this.readyState === 4 && this.status === 200) {
+			const notificationObj = JSON.parse(this.responseText);
+			const messages = document.getElementById('message-badge');
+			const news = document.getElementById('news-badge');
+			/**/
+			if (notificationObj.message_count > 0 && notificationObj.message_count < 99) {
+				messages.innerHTML = notificationObj.message_count;
+				messages.style.display = 'unset';
+			} else if (notificationObj.message_count >= 99) {
+				messages.innerHTML = '99+';
+				messages.style.display = 'unset';
+			} else {
+				messages.innerHTML = '';
+				messages.style.display = 'none';
+			}
+			/* Check for Notifications */
+			if (notificationObj.notification_count > 0 && notificationObj.notification_count < 99) {
+				news.innerHTML = notificationObj.notification_count;
+				news.style.display = 'unset';
+			} else if (notificationObj.notification_count >= 99) {
+				news.innerHTML = '99+';
+				news.style.display = 'unset';
+			} else {
+				news.innerHTML = '';
+				news.style.display = 'none';
+			}
+		}
+	};
+	xhttp.open('GET', '/users/notifications.json', true);
+	xhttp.send();
+}
+
+window.onscroll = function (_ev) {
+	if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && document.getElementById('load-more')) {
+		document.getElementById('load-more').click();
+	}
+};
+
+function copyToClipboard(text) {
+	const inputc = document.getElementsByTagName('header')[0].appendChild(document.createElement('input'));
+	inputc.value = text;
+	inputc.focus();
+	inputc.select();
+	document.execCommand('copy');
+	inputc.parentNode.removeChild(inputc);
+	Toast('Copied to clipboard.');
+}
+
+function Toast(text, ms) {
+	const x = document.getElementById('toast');
+	x.innerText = text;
+	x.className = 'show';
+	startHideToast(ms ? ms : 3000);
+}
+
+function initToast() {
+	const x = document.getElementById('toast');
+	if (!x) {
+		return; // No toast on screen
+	}
+	const attr = x.getAttribute('data-show');
+	if (!attr) {
+		return; // Nothing to do
+	}
+
+	x.removeAttribute('data-show');
+	setTimeout(() => Toast(x.innerText, 20000), 100); // Show after a delay so it shows an animation
+}
+
+function startHideToast(ms) {
+	setTimeout(function () {
+		const x = document.getElementById('toast');
+		x.className = x.className.replace('show', '');
+	}, ms);
+}
+
+function downloadURI(uri, name) {
+	const link = document.createElement('a');
+	link.download = name;
+	link.href = uri;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}
+window.downloadURI = downloadURI;
+
+function openText() {
+	const textArea = document.getElementById('new-post-text');
+	const paintingArea = document.getElementById('new-post-memo');
+	const paintingOverlay = document.getElementById('painting-wrapper');
+
+	if (!textArea || !paintingArea || !paintingOverlay) {
+		return;
+	}
+
+	textArea.style.display = '';
+	paintingArea.style.display = 'none';
+	paintingOverlay.style.display = 'none';
+}
+window.openText = openText;
+
+function newPainting(clear) {
+	const textArea = document.getElementById('new-post-text');
+	const paintingArea = document.getElementById('new-post-memo');
+	const paintingOverlay = document.getElementById('painting-wrapper');
+	const c = document.getElementById('painting');
+
+	if (!textArea || !paintingArea || !paintingOverlay) {
+		return;
+	}
+
+	if (clear) {
+		/* global clearCanvas -- defined from painting.js */
+		clearCanvas();
+	}
+
+	textArea.style.display = 'none';
+	paintingArea.style.display = 'flex';
+	paintingOverlay.style.display = '';
+
+	// eslint-disable-next-line no-unused-vars -- Modifies scale from painting.js
+	/* global scale:writeable -- defined from painting.js */
+	window.scale = c.getBoundingClientRect().width / 320;
+}
+window.newPainting = newPainting;
+
+function closePainting(save) {
+	const paintingArea = document.getElementById('new-post-memo');
+	const paintingOverlay = document.getElementById('painting-wrapper');
+	const memo = document.getElementById('memo');
+	const c = document.getElementById('painting');
+
+	if (!paintingOverlay || !paintingArea || !memo) {
+		return;
+	}
+
+	if (save) {
+		memo.src = c.toDataURL();
+	}
+
+	paintingOverlay.style.display = 'none';
+}
+window.closePainting = closePainting;

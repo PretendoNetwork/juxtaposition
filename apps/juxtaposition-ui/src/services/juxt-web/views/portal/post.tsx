@@ -99,7 +99,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 							{ props.isReply && (post.pid === props.ctx.pid || isModerator)
 								? (
 										<div>
-											<button type="button" className="submit remove" data-post={post.id} evt-click="deletePost(this)"></button>
+											<button type="button" className="submit remove" data-button-delete-post={post.id}></button>
 										</div>
 									)
 								: null}

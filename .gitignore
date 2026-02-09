@@ -7,3 +7,8 @@ config.json
 uploads/
 
 .docker/mitmproxy-data
+.DS_Store
+
+# auto generated files
+apps/juxtaposition-ui/webfiles/ctr/css/sprites.css
+apps/juxtaposition-ui/webfiles/ctr/images/sprites.png

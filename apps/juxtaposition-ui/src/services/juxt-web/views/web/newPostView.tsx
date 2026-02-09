@@ -48,7 +48,7 @@ export type NewPostViewProps = {
 	name: string;
 	url: string;
 	show: string;
-	messagePid: number;
+	messagePid?: number;
 };
 
 export function WebNewPostView(props: NewPostViewProps): ReactNode {

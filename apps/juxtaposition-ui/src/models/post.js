@@ -102,6 +102,13 @@ PostSchema.index({
 	removed: 1
 });
 
+// Index for post count on community page
+PostSchema.index({
+	community_id: 1,
+	removed: 1,
+	parent: 1
+});
+
 PostSchema.methods.upReply = async function () {
 	const replyCount = this.get('reply_count');
 	if (replyCount + 1 < 0) {

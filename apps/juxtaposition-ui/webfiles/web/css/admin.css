@@ -1,0 +1,42 @@
+.community-create {
+    .col-md-4, .col-md-3, .col-md-9 {
+        display: flex;
+        align-items: center;
+        padding: 0.5em 0;
+        justify-content: center;
+    }
+    input[type="text"], input[type="file"], select, textarea {
+        width: 200px;
+        margin-left: 0.5em;
+        background: var(--text-secondary);
+        border: none;
+        border-radius: 5px;
+        height: 25px;
+    }
+    textarea {
+        height: 100px;
+    }
+    .labels {
+        width: 300px;
+        text-align: right;
+    }
+    input[type="file"] {
+        width: unset;
+        background: unset;
+    }
+    #browserIconPreview, #CTRbrowserHeaderPreview, #WiiUbrowserHeaderPreview {
+        object-fit: cover;
+    }
+    #browserIconPreview {
+        width: 128px;
+        height: 128px;
+    }
+    #CTRbrowserHeaderPreview {
+        width: 200px;
+        height: 110px;
+    }
+    #WiiUbrowserHeaderPreview {
+        width: 320px;
+        height: 45px;
+    }
+}

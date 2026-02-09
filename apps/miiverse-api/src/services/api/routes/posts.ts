@@ -278,18 +278,24 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		community = await getCommunityByTitleID(request.paramPack.title_id);
 	}
 
-	if (!community || userSettings.account_status !== 0 || community.community_id === 'announcements') {
-		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
-	}
-
 	let parentPost: HydratedPostDocument | null = null;
 	if (request.params.post_id) {
 		parentPost = await getPostByID(request.params.post_id.toString());
-
 		if (!parentPost) {
 			request.log.warn('Request missing parent post');
 			return badRequest(response, ApiErrorCode.BAD_PARAMS);
+		} else {
+			community = await getCommunityByID(parentPost.community_id);
+			if (!community) {
+				community = await Community.findOne({
+					olive_community_id: parentPost.community_id
+				});
+			}
 		}
+	}
+
+	if (!community || userSettings.account_status !== 0 || community.community_id === 'announcements') {
+		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
 	if (!canPost(community, userSettings, parentPost, request.user)) {

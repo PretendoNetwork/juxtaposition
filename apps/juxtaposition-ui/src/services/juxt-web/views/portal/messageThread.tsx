@@ -52,7 +52,7 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
 
 	return (
-		<PortalRoot title={props.ctx.lang.global.messages}>
+		<PortalRoot title={props.ctx.lang.global.messages} onLoad="window.scrollTo(0, 50000);">
 			<PortalNavBar ctx={props.ctx} selection={3} />
 			<PortalPageBody>
 				<header id="header">
@@ -63,7 +63,6 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
 				</div>
 				<PortalNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
-				<img src="" evt-error="setTimeout(function() { window.scrollTo(0, 50000); }, 500)" />
 			</PortalPageBody>
 		</PortalRoot>
 	);

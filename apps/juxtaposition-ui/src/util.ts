@@ -8,6 +8,8 @@ import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import HashMap from 'hashmap';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
+import { DateTime } from 'luxon';
+import { z } from 'zod';
 import { database } from '@/database';
 import { COMMUNITY } from '@/models/communities';
 import { NOTIFICATION } from '@/models/notifications';
@@ -19,6 +21,7 @@ import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
 import { translations } from '@/translations';
+import type { ZodType } from 'zod';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -26,7 +29,7 @@ import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonet
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
 import type { GetUserFriendPIDsResponse } from '@pretendonetwork/grpc/friends/get_user_friend_pids_rpc';
-import type { Notification } from '@/types/juxt/notification';
+import type { NotificationCreateArgs } from '@/types/juxt/notification';
 import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { CommunitySchema } from '@/models/communities';
@@ -77,7 +80,7 @@ function refreshCache(): void {
 		}
 		logger.success('Created community index');
 
-		const users = await database.getUsersSettings(-1);
+		const users = await database.getUsersSettings(-1, 0);
 
 		for (const user of users) {
 			if (user.pid === undefined || user.screen_name === undefined) {
@@ -304,7 +307,7 @@ export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCanne
 	}
 }
 
-export async function newNotification(notification: Notification): Promise<InferSchemaType<typeof NotificationSchema> | null> {
+export async function newNotification(notification: NotificationCreateArgs): Promise<InferSchemaType<typeof NotificationSchema> | null> {
 	const now = new Date();
 	if (notification.type === 'follow') {
 		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
@@ -459,13 +462,13 @@ export async function passwordLogin(username: string, password: string): Promise
 // 	});
 // }
 
-export async function createLogEntry(actor: number, action: string, target: string, context: string, fields: string[]): Promise<void> {
+export async function createLogEntry(actor: number, action: string, target: string, context: string, fields?: string[]): Promise<void> {
 	const newLog = new LOGS({
 		actor: actor,
 		action: action,
 		target: target,
 		context: context,
-		changed_fields: fields
+		changed_fields: fields ?? []
 	});
 	await newLog.save();
 }
@@ -485,6 +488,50 @@ export function deleteOptional<T extends {}>(obj: T): Partial<T> { // Partial<T>
 	return obj;
 }
 
+export function fixupUnicodes(input: string): string {
+	// 202F NARROW NON BREAKING SPACE
+	// -> normal NBSP (Cemu doesn't render NNBSP right)
+	input = input.replaceAll('\u202F', '\u00A0');
+
+	return input;
+}
+
+function makeDateObject(date: Date | DateTime | string): DateTime {
+	if (date instanceof Date) {
+		date = DateTime.fromJSDate(date);
+	} else if (typeof date === 'string') {
+		date = DateTime.fromISO(date);
+	}
+
+	return date;
+}
+
+export function humanDate(date?: Date | DateTime | string | null): string {
+	if (!date) {
+		return 'null';
+	}
+	date = makeDateObject(date);
+
+	const dateString = date.toUTC().toLocaleString(DateTime.DATETIME_MED) + ' UTC';
+	return fixupUnicodes(dateString);
+}
+
+export function humanFromNow(date?: Date | DateTime | string | null): string {
+	if (!date) {
+		return 'unknown time';
+	}
+	date = makeDateObject(date);
+
+	const durationString = date.toRelative({
+		rounding: 'expand'
+	});
+	return durationString ?? 'unknown time';
+}
+
 const filename = fileURLToPath(import.meta.url);
 // The root of the dist/ folder.
 export const distFolder = path.dirname(filename);
+
+export function zodFallback<T>(value: T): ZodType<T> {
+	return z.any().transform(() => value);
+}

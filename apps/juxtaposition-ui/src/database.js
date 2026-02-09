@@ -34,6 +34,10 @@ function verifyConnected() {
 	}
 }
 
+export function notBanned() {
+	return { account_status: { $in: [0, 1] } };
+}
+
 async function getCommunities(numberOfCommunities, offset) {
 	verifyConnected();
 	if (!offset) {
@@ -257,16 +261,7 @@ async function getEndPoint(accessLevel) {
 	});
 }
 
-async function getUsersSettings(numberOfUsers) {
-	verifyConnected();
-	if (numberOfUsers === -1) {
-		return SETTINGS.find({});
-	} else {
-		return SETTINGS.find({}).limit(numberOfUsers);
-	}
-}
-
-async function getUsersContent(numberOfUsers, offset) {
+async function getUsersSettings(numberOfUsers, offset) {
 	verifyConnected();
 	if (numberOfUsers === -1) {
 		return SETTINGS.find({}).skip(offset);
@@ -297,7 +292,8 @@ async function getUserContent(pid) {
 async function getFollowingUsers(content) {
 	verifyConnected();
 	return SETTINGS.find({
-		pid: content.following_users
+		pid: content.following_users,
+		...notBanned()
 	});
 }
 
@@ -521,7 +517,6 @@ export const database = {
 	getUnreadConversationCount,
 	getLatestMessage,
 	getUsersSettings,
-	getUsersContent,
 	getUserSettings,
 	getUserSettingsFuzzySearch,
 	getUserContent,
