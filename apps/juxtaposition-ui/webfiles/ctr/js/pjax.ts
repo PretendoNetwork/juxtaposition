@@ -68,7 +68,8 @@ function pjaxParseDom(xhr: XMLHttpRequest, url: string): void {
 
 	pjaxRefresh();
 	href = url;
-	document.dispatchEvent(PjaxDone);
+	// Delay to next tick so replaceChild can finish
+	setTimeout(() => document.dispatchEvent(PjaxDone), 0);
 }
 
 export function pjaxCanGoBack(): boolean {
