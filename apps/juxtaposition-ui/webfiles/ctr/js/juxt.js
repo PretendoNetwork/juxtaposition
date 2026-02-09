@@ -3,7 +3,6 @@ import { GET, POST } from './xhr';
 import { initPostPageView } from './post';
 import { empathyPostById } from './api';
 
-var pjax;
 setInterval(checkForUpdates, 30000);
 
 cave.toolbar_setCallback(1, back);
@@ -471,9 +470,6 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('PjaxRequest', function (_e) {
 	// console.log(e);
 	cave.transition_begin();
-});
-document.addEventListener('PjaxLoaded', function (_e) {
-	// console.log(e);
 });
 document.addEventListener('PjaxDone', function (_e) {
 	initAll();
