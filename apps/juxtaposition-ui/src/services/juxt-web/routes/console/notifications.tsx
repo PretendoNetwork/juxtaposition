@@ -1,14 +1,16 @@
 import express from 'express';
-import moment from 'moment';
 import { z } from 'zod';
 import { database } from '@/database';
-import { getUserHash, getUserFriendRequestsIncoming } from '@/util';
+import { getUserFriendRequestsIncoming } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebNotificationListView, WebNotificationWrapperView } from '@/services/juxt-web/views/web/notificationListView';
 import { buildContext } from '@/services/juxt-web/views/context';
 import { PortalNotificationListView, PortalNotificationWrapperView } from '@/services/juxt-web/views/portal/notificationListView';
 import { CtrNotificationListView, CtrNotificationWrapperView } from '@/services/juxt-web/views/ctr/notificationListView';
+import { PortalFriendRequestListView } from '@/services/juxt-web/views/portal/friendRequestListView';
+import { CtrFriendRequestListView } from '@/services/juxt-web/views/ctr/friendRequestListView';
 import type { NotificationListViewProps } from '@/services/juxt-web/views/web/notificationListView';
+import type { FriendRequestListViewProps } from '@/services/juxt-web/views/web/friendRequestListView';
 export const notificationRouter = express.Router();
 
 notificationRouter.get('/my_news', async function (req, res) {
@@ -63,26 +65,32 @@ notificationRouter.get('/friend_requests', async function (req, res) {
 		})
 	});
 
-	let requests = (await getUserFriendRequestsIncoming(auth().pid)).reverse();
 	const now = new Date();
-	requests = requests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
-	const userMap = getUserHash();
-	const bundle = {
-		requests: requests ? requests : [],
-		userMap
+	const allRequests = (await getUserFriendRequestsIncoming(auth().pid)).reverse();
+	const validRequests = allRequests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
+
+	const props: FriendRequestListViewProps = {
+		ctx: buildContext(res),
+		requests: validRequests
 	};
 
 	if (query.pjax) {
-		return res.render(req.directory + '/partials/requests.ejs', {
-			bundle,
-			moment
+		return res.jsxForDirectory({
+			portal: <PortalFriendRequestListView {...props} />,
+			ctr: <CtrFriendRequestListView {...props} />
 		});
 	}
 
-	res.render(req.directory + '/notifications.ejs', {
-		moment,
-		selection: 1,
-		bundle,
-		template: 'requests'
+	res.jsxForDirectory({
+		portal: (
+			<PortalNotificationWrapperView ctx={props.ctx} selectedTab={1}>
+				<PortalFriendRequestListView {...props} />
+			</PortalNotificationWrapperView>
+		),
+		ctr: (
+			<CtrNotificationWrapperView ctx={props.ctx} selectedTab={1}>
+				<CtrFriendRequestListView {...props} />
+			</CtrNotificationWrapperView>
+		)
 	});
 });
