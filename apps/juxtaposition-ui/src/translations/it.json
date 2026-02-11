@@ -3,7 +3,7 @@
     "global": {
         "user_page": "Pagina dell'utente",
         "activity_feed": "Attività",
-        "communities": "Comunità",
+        "communities": "Gruppi",
         "messages": "Messaggi",
         "notifications": "Notifiche",
         "go_back": "Torna indietro",
@@ -18,16 +18,16 @@
         "next": "Avanti"
     },
     "all_communities": {
-        "text": "Tutte le comunità",
+        "text": "Tutti i gruppi",
         "announcements": "Annunci",
         "ann_string": "Clicca qui per vedere gli annunci più recenti!",
         "popular_places": "Luoghi popolari",
-        "new_communities": "Nuove comunità",
+        "new_communities": "Nuovi gruppi",
         "show_all": "Mostra tutto",
-        "search": "Cerca comunità..."
+        "search": "Cerca gruppi..."
     },
     "community": {
-        "follow": "Segui comunità",
+        "follow": "Segui gruppo",
         "following": "Seguiti",
         "followers": "Seguaci",
         "posts": "Post",
@@ -77,7 +77,7 @@
         "swearing": "Il post non deve contenere linguaggio esplicito."
     },
     "messages": {
-        "coming_soon": "La funzionalità di messaggistica non è ancora pronta. Ricontrolla presto!"
+        "coming_soon": "Nessun messaggio"
     },
     "setup": {
         "welcome": "Benvenuto/a su Juxtaposition!",
@@ -89,12 +89,12 @@
             "third": "Il sito web, il suo software e tutto il contenuto presente in esso sono forniti “tali e quali” e “secondo disponibilità”. Pretendo Network non fornisce nessuna garanzia, esplicita o implicita, riguardo all'idoneità o usabilità del sito, il suo software o qualunque suo contenuto."
         },
         "info": "Cos'è Juxtaposition?",
-        "info_text": "Juxt è una comunità di gioco guidata dagli utenti dove puoi interagire con persone\n                da tutto il mondo. Puoi scrivere o disegnare post in una comunità di un gioco o mandare messaggi diretti ai tuoi amici.",
+        "info_text": "Juxt è una comunità di gioco guidata dagli utenti dove puoi interagire con persone\n                da tutto il mondo. Puoi scrivere o disegnare post in un gruppo di un gioco o mandare messaggi direttamente ai tuoi amici.",
         "rules": "Regole di Juxt",
         "rules_text": {
             "first": "Di seguito sono elencate delle linee guida importanti per rendere Juxt un'esperienza divertente e piacevole per tutti. Il codice di condotta di Juxt contiene informazioni dettagliate, quindi leggilo attentamente.",
             "second": "I post possono essere visualizzati da tutto il mondo",
-            "third": "Juxt contiene diverse comunità di gioco dove persone da tutto il mondo possono condividere le loro opinioni. Quando posti in una community, ricordati che chiunque può vederle il tuo post, quindi esprimiti in modo rispettoso verso tutti. Usa il buon senso, e pensa prima di postare. Juxt è un servizio che è anche accessibile via Internet, quindi tieni a mente che i tuoi post potrebbero essere visualizzati anche da persone che non utilizzano Juxt. Inoltre, qualunque commento che scrivi su un post di un tuo amico potra essere visto non solo dai tuoi amici, ma anche da persone da tutto il mondo. Per favore, tieni questo a mente.",
+            "third": "Juxt contiene diversi gruppi di gioco dove persone da tutto il mondo possono condividere le loro opinioni. Quando posti in un gruppo, ricordati che chiunque può vedere il tuo post, quindi esprimiti in modo rispettoso verso tutti. Usa il buon senso e pensa prima di postare. Juxt è un servizio che è anche accessibile via Internet, quindi tieni a mente che i tuoi post potrebbero essere visualizzati anche da persone che non utilizzano Juxt. Inoltre, qualunque commento che scrivi su un post di un tuo amico potra essere visto non solo dai tuoi amici, ma anche da persone da tutto il mondo. Per favore, tieni questo a mente.",
             "fourth": "Sii gentile verso gli altri utenti",
             "fifth": "Affinché Juxt resti un luogo divertente per tutti, ti chiediamo di essere rispettoso degli altri utenti. Aiutaci a fare di Juxt un'esperienza picacevole e non postare niente di inappropriato o offensivo.",
             "sixth": "Non postare informazioni personali - tue o di qualcun altro",
@@ -104,7 +104,7 @@
             "tenth": "Violazioni del Codice di Condotta",
             "eleventh": "Il nostro obiettivo è rendere Juxt divertente e piacevole per tutti. Nel caso in cui qualcuno violi il Codice di Condotta, prenderemo i provvedimenti opportuni, fino a bloccare l'utente o la console incriminati.",
             "twelfth": "Hai mai giocato a quel gioco?",
-            "thirteenth": "Se stai postando nella comunità di un gioco a cui hai giocato, i tuoi post avranno un'icona per indicare che ci hai giocato."
+            "thirteenth": "Se stai postando nel gruppo di un gioco a cui hai giocato, i tuoi post avranno un'icona per indicare che ci hai giocato."
         },
         "experience": "Esperienza di gioco",
         "experience_text": {
@@ -116,7 +116,7 @@
         "google": "Google Analytics",
         "google_text": "Juxtaposition utilizza Google Analytics per tracciare il modo in cui gli utenti utilizzano il nostro servizio. I dati raccolti includono ma non si limitano a: momento della visita, pagine visitate e tempo passato sul sito. Questi dati non sono ricollegabili a te in alcun modo, e non sono utilizzati per finalità pubblicitarie da noi o Google.",
         "ready": "Pronto a iniziare a usare Juxt",
-        "ready_text": "Per prima cosa dai un'occhiata a qualche community e scopri di cosa stanno parlando persone da tutto il mondo. Cogli questa opportunità per familiarizzarti con Juxt. Potresti fare nuove scoperte strada facendo!",
+        "ready_text": "Per prima cosa dai un'occhiata a qualche gruppo e scopri di cosa stanno parlando persone da tutto il mondo. Cogli questa opportunità per familiarizzarti con Juxt. Potresti fare nuove scoperte strada facendo!",
         "done": "Divertiti in Juxt!",
         "done_button": "Andiamo!",
         "guest": "Modalità ospite",
