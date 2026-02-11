@@ -87,12 +87,14 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 					<div className="post-buttons">
 						<button
 							type="button"
-							className={cx('submit yeah-button', {
+							className="submit yeah-button"
+							data-button-yeah-post={post.id}
+						>
+							<span className={cx('sprite sp-yeah inline-sprite', {
 								selected: hasYeahed
 							})}
-							data-post={post.id}
-						>
-							<span className="sprite sp-yeah inline-sprite"></span>
+							>
+							</span>
 						</button>
 						<a href={`/posts/${post.id}`} className="to-permalink-button" data-pjax="#body">
 							<span className="sprite sp-yeah-small inline-sprite"></span>
