@@ -4,6 +4,11 @@ import { z } from 'zod';
 import { database } from '@/database';
 import { getUserHash, getUserFriendRequestsIncoming } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { WebNotificationListView, WebNotificationWrapperView } from '@/services/juxt-web/views/web/notificationListView';
+import { buildContext } from '@/services/juxt-web/views/context';
+import { PortalNotificationListView, PortalNotificationWrapperView } from '@/services/juxt-web/views/portal/notificationListView';
+import { CtrNotificationListView, CtrNotificationWrapperView } from '@/services/juxt-web/views/ctr/notificationListView';
+import type { NotificationListViewProps } from '@/services/juxt-web/views/web/notificationListView';
 export const notificationRouter = express.Router();
 
 notificationRouter.get('/my_news', async function (req, res) {
@@ -14,29 +19,40 @@ notificationRouter.get('/my_news', async function (req, res) {
 	});
 
 	const notifications = await database.getNotifications(auth().pid, 25, 0);
-	const userMap = getUserHash();
-	const bundle = {
-		notifications,
-		userMap
-	};
-
 	for (const notif of notifications.filter(noti => noti.read === false)) {
 		// Pretty terrible use of `any` here, but database models aren't typed yet so I have to
 		await (notif as any).markRead();
 	}
 
+	const props: NotificationListViewProps = {
+		ctx: buildContext(res),
+		notifications
+	};
+
 	if (query.pjax) {
-		return res.render(req.directory + '/partials/notifications.ejs', {
-			bundle,
-			moment
+		return res.jsxForDirectory({
+			web: <WebNotificationListView {...props} />,
+			portal: <PortalNotificationListView {...props} />,
+			ctr: <CtrNotificationListView {...props} />
 		});
 	}
 
-	res.render(req.directory + '/notifications.ejs', {
-		moment,
-		selection: 0,
-		bundle,
-		template: 'notifications'
+	res.jsxForDirectory({
+		web: (
+			<WebNotificationWrapperView ctx={props.ctx} selectedTab={0}>
+				<WebNotificationListView {...props} />
+			</WebNotificationWrapperView>
+		),
+		portal: (
+			<PortalNotificationWrapperView ctx={props.ctx} selectedTab={0}>
+				<PortalNotificationListView {...props} />
+			</PortalNotificationWrapperView>
+		),
+		ctr: (
+			<CtrNotificationWrapperView ctx={props.ctx} selectedTab={0}>
+				<CtrNotificationListView {...props} />
+			</CtrNotificationWrapperView>
+		)
 	});
 });
 
