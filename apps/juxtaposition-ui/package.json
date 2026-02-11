@@ -76,7 +76,7 @@
     "esbuild-fix-imports-plugin": "^1.0.23",
     "esbuild-raw-plugin": "^0.3.1",
     "esbuild-plugin-copy": "^2.1.1",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "globals": "^17.3.0",
     "nodemon": "^3.1.11",
     "npm-run-all": "^4.1.5",
