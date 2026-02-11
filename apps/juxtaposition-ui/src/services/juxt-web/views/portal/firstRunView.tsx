@@ -74,7 +74,7 @@ export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
 	);
 
 	return (
-		<PortalRoot title="" onLoad="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3);" head={head}>
+		<PortalRoot ctx={props.ctx} title="" onLoad="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3);" head={head}>
 			<PortalPageBody>
 				<AboutSection.Root id={sections.welcome} visible>
 					<AboutSection.Title>{props.ctx.lang.setup.welcome}</AboutSection.Title>

@@ -23,7 +23,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						'post-screenshot',
 						`post-screenshot-${post.screenshot_aspect}`
 					)}
-					src={utils.cdn(props.ctx, post.screenshot)}
+					src={utils.cdn(props.ctx, post.screenshot_big ? post.screenshot_big : post.screenshot)}
 				/>
 			);
 		} else {
@@ -80,7 +80,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						? (
 								<a href={`/titles/${post.community_id}`} className="community-banner" data-pjax="#body">
 									<span className="title-icon-container" data-pjax="#body">
-										<img src={utils.cdn(props.ctx, `/icons/${post.community_id}/32.png`)} className="title-icon" />
+										<img src={utils.cdn(props.ctx, `/icons/${post.community_id}/64.png`)} className="title-icon" />
 									</span>
 									<span className="community-name">{props.ctx.communityMap.get(post.community_id ?? '')}</span>
 								</a>
@@ -101,7 +101,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 					>
 						{post.body !== '' ? <p className="post-content-text">{post.body}</p> : null}
 						{screenshot}
-						{post.painting !== '' ? <img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
+						{post.painting !== '' ? <img className="post-memo" src={utils.cdn(props.ctx, post.painting_big ? post.painting_big : `/paintings/${post.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
 					</div>
 

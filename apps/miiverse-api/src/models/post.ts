@@ -23,7 +23,10 @@ const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 	app_data: { type: String },
 
 	painting: { type: String },
+	painting_img: { type: String },
+	painting_big: { type: String },
 	screenshot: { type: String },
+	screenshot_big: { type: String },
 	screenshot_thumb: { type: String },
 	screenshot_length: { type: Number },
 	screenshot_aspect: { type: String },

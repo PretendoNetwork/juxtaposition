@@ -13,10 +13,13 @@ export type PostDto = {
 	app_data?: string; // nintendo base64
 
 	painting?: string; // base64 or '', undef for PMs
+	painting_img?: string; // URL frag (leading /) or '', undef for PMs
+	painting_big?: string; // URL frag (leading /) or '', undef for PMs
 	screenshot?: string; // URL frag (leading /) or '', undef for PMs
+	screenshot_big?: string; // URL frag (leading /) or '', undef for PMs/old posts
 	screenshot_thumb?: string; // URL frag (leading /) or '', undef for PMs/old posts
 	screenshot_length?: number;
-	screenshot_aspect?: string; // '4:3' '5:4' '16:9'
+	screenshot_aspect?: string; // '4:3' '5:3' '16:9'
 
 	search_key?: string[]; // can be []
 	topic_tag?: string; // can be ''
@@ -69,7 +72,10 @@ export function mapPost(post: IPost): PostDto {
 		app_data: post.app_data,
 
 		painting: post.painting,
+		painting_img: post.painting_img,
+		painting_big: post.painting_big,
 		screenshot: post.screenshot,
+		screenshot_big: post.screenshot_big,
 		screenshot_thumb: post.screenshot_thumb,
 		screenshot_length: post.screenshot_length,
 		screenshot_aspect: post.screenshot_aspect,

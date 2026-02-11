@@ -8,6 +8,7 @@ import type { IMagickImage } from '@imagemagick/magick-wasm';
 
 export type Painting = {
 	png: Buffer;
+	big: Buffer;
 	tgaz: Buffer;
 };
 
@@ -27,6 +28,12 @@ function processPainting(image: IMagickImage): Painting {
 
 	return {
 		png: image.write('PNG', Buffer.from),
+		big: image.clone((image) => {
+			image.filterType = FilterType.Point;
+			image.resize(640, 240);
+
+			return image.write('PNG', Buffer.from);
+		}),
 		tgaz: image.clone((image) => {
 			// Ingame TGA decoders don't support all the fun stuff.
 			image.colorType = ColorType.TrueColorAlpha;
@@ -82,6 +89,11 @@ export type ProcessPaintingOptions = {
 	pid: number;
 	postId: string;
 };
+export type PaintingUrls = {
+	blob: string;
+	img: string;
+	big: string;
+};
 /**
  * Processes and uploads a new painting to the CDN - to paintings/${pid}/${postID}.png.
  * @param paintingBlob base64 TGAZ or BMP blob from the client request body.
@@ -90,7 +102,7 @@ export type ProcessPaintingOptions = {
  * @param postID Post ID.
  * @returns base64 TGAZ blob, sanitised.
  */
-export async function uploadPainting(opts: ProcessPaintingOptions): Promise<string | null> {
+export async function uploadPainting(opts: ProcessPaintingOptions): Promise<PaintingUrls | null> {
 	const paintingBuf = Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
 	const paintings = ((): Painting => {
 		if (opts.autodetectFormat) {
@@ -102,44 +114,66 @@ export async function uploadPainting(opts: ProcessPaintingOptions): Promise<stri
 		}
 	})();
 
-	if (!await uploadCDNAsset(`paintings/${opts.pid}/${opts.postId}.png`, paintings.png, 'public-read')) {
+	const imgKey = `paintings/${opts.pid}/${opts.postId}.png`;
+	const bigKey = `paintings/${opts.pid}/${opts.postId}-big.png`;
+
+	if (!await uploadCDNAsset(imgKey, paintings.png, 'public-read')) {
 		return null;
 	}
 
-	return paintings.tgaz.toString('base64');
+	if (!await uploadCDNAsset(bigKey, paintings.big, 'public-read')) {
+		return null;
+	}
+
+	return {
+		blob: paintings.tgaz.toString('base64'),
+		img: `/${imgKey}`,
+		big: `/${bigKey}`
+	};
 }
 
-export type Aspect = '16:9' | '5:4' | '4:3';
+export type Aspect = '16:9' | '5:3' | '4:3';
 
 export type Screenshot = {
+	// Normal image
 	jpg: Buffer;
+	// Tiny image (for ctr)
 	thumb: Buffer;
+	// 2x image (for wiiu)
+	big: Buffer | null;
+
 	aspect: Aspect;
 };
 
-type ScreenshotRes = {
-	// full res
+type Res = {
 	w: number;
 	h: number;
-	// thumbnail res
-	tw: number;
-	th: number;
-	// other
+};
+function res(w: number, h: number): Res {
+	return { w, h };
+}
+
+type ScreenshotRes = {
+	full: Res;
+	thumb: Res;
+	big: Res | null;
+
 	aspect: Aspect;
 };
 
 const validResolutions: ScreenshotRes[] = [
-	{ w: 800, h: 450, tw: 320, th: 180, aspect: '16:9' },
-	{ w: 400, h: 240, tw: 320, th: 192, aspect: '5:4' },
-	{ w: 320, h: 240, tw: 320, th: 240, aspect: '4:3' },
-	{ w: 640, h: 480, tw: 320, th: 240, aspect: '4:3' }
+	{ full: res(800, 450), thumb: res(320, 180), big: null, aspect: '16:9' },
+	{ full: res(400, 240), thumb: res(320, 192), big: res(800, 480), aspect: '5:3' },
+	{ full: res(320, 240), thumb: res(320, 240), big: res(640, 480), aspect: '4:3' },
+	{ full: res(640, 480), thumb: res(320, 240), big: null, aspect: '4:3' }
 ];
 
 function processScreenshot(image: IMagickImage): Screenshot | null {
-	const res = validResolutions.find(({ w, h }) => w === image.width && h === image.height);
+	const res = validResolutions.find(({ full }) => full.w === image.width && full.h === image.height);
 	if (res === undefined) {
 		return null;
 	}
+	const { thumb, big, aspect } = res;
 	// Remove EXIF whatever
 	image.strip();
 
@@ -151,12 +185,25 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 		jpg: image.write('JPEG', Buffer.from),
 		thumb: image.clone((image) => {
 			image.filterType = FilterType.Lanczos2;
-			image.resize(res.tw, res.th);
-			image.extent(res.tw, res.th, Gravity.Center);
-			image.quality = 80; // smash 'em
+			image.resize(thumb.w, thumb.h);
+			image.extent(thumb.w, thumb.h, Gravity.Center);
+
+			image.quality = 85; // smash 'em
 			return image.write('JPEG', Buffer.from);
 		}),
-		aspect: res.aspect
+		big: image.clone((image) => {
+			if (!big) {
+				return null;
+			}
+
+			// the entire purpose of doing this is to get sharp pixels
+			image.filterType = FilterType.Point;
+			image.resize(big.w, big.h);
+			image.extent(big.w, big.h, Gravity.Center);
+
+			return image.write('JPEG', Buffer.from);
+		}),
+		aspect
 	};
 }
 
@@ -168,6 +215,7 @@ export type ScreenshotUrls = {
 	full: string;
 	fullLength: number;
 	thumb: string;
+	big: string | null;
 	aspect: Aspect;
 };
 
@@ -185,6 +233,7 @@ export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<S
 
 	const fullKey = `screenshots/${opts.pid}/${opts.postId}.jpg`;
 	const thumbKey = `screenshots/${opts.pid}/${opts.postId}-thumb.jpg`;
+	const bigKey = `screenshots/${opts.pid}/${opts.postId}-big.jpg`;
 
 	const fullLength = screenshots.jpg.byteLength;
 
@@ -196,15 +245,22 @@ export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<S
 		return null;
 	}
 
+	if (screenshots.big && !await uploadCDNAsset(bigKey, screenshots.big, 'public-read')) {
+		return null;
+	}
+
 	const full = `/${fullKey}`;
 	const thumb = `/${thumbKey}`;
+	const big = screenshots.big ? `/${bigKey}` : null;
 
-	return { full, fullLength, thumb, aspect: screenshots.aspect };
+	return { full, fullLength, thumb, big, aspect: screenshots.aspect };
 }
 
 type Icon = {
 	icon32: Buffer;
+	icon48: Buffer;
 	icon64: Buffer;
+	icon96: Buffer;
 	icon128: Buffer;
 	tga: Buffer;
 };
@@ -225,8 +281,16 @@ function processIcon(image: IMagickImage): Icon | null {
 			image.resize(32, 32);
 			return image.write('PNG', Buffer.from);
 		}),
+		icon48: image.clone((image) => {
+			image.resize(48, 48);
+			return image.write('PNG', Buffer.from);
+		}),
 		icon64: image.clone((image) => {
 			image.resize(64, 64);
+			return image.write('PNG', Buffer.from);
+		}),
+		icon96: image.clone((image) => {
+			image.resize(96, 96);
 			return image.write('PNG', Buffer.from);
 		}),
 		icon128: image.clone((image) => {
@@ -251,7 +315,9 @@ function processIcon(image: IMagickImage): Icon | null {
 
 export type IconUrls = {
 	icon32: string;
+	icon48: string;
 	icon64: string;
+	icon96: string;
 	icon128: string;
 	tgaBlob: string;
 };
@@ -267,22 +333,30 @@ export async function uploadIcons(opts: UploadIconsOptions): Promise<IconUrls | 
 	}
 
 	const icon32Key = `icons/${opts.communityId}/32.png`;
+	const icon48Key = `icons/${opts.communityId}/48.png`;
 	const icon64Key = `icons/${opts.communityId}/64.png`;
+	const icon96Key = `icons/${opts.communityId}/96.png`;
 	const icon128Key = `icons/${opts.communityId}/128.png`;
 
 	if (!await uploadCDNAsset(icon32Key, icons.icon32, 'public-read') ||
+		!await uploadCDNAsset(icon48Key, icons.icon48, 'public-read') ||
 		!await uploadCDNAsset(icon64Key, icons.icon64, 'public-read') ||
+		!await uploadCDNAsset(icon96Key, icons.icon96, 'public-read') ||
 		!await uploadCDNAsset(icon128Key, icons.icon128, 'public-read')) {
 		return null;
 	}
 
 	const icon32 = `/${icon32Key}`;
+	const icon48 = `/${icon48Key}`;
 	const icon64 = `/${icon64Key}`;
+	const icon96 = `/${icon96Key}`;
 	const icon128 = `/${icon128Key}`;
 
 	return {
 		icon32,
+		icon48,
 		icon64,
+		icon96,
 		icon128,
 		tgaBlob: icons.tga.toString('base64')
 	};

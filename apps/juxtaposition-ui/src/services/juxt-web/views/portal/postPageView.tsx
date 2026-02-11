@@ -10,7 +10,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 	const pageTitle = !post.removed ? post.screen_name : 'Removed Post';
 
 	return (
-		<PortalRoot title={props.ctx.lang.global.activity_feed}>
+		<PortalRoot ctx={props.ctx} title={props.ctx.lang.global.activity_feed}>
 			<PortalNavBar ctx={props.ctx} selection={-1} />
 			<PortalPageBody>
 				<header id="header">

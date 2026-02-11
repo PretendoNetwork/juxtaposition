@@ -14,7 +14,7 @@ export type SubCommunityViewProps = {
 
 export function PortalSubCommunityView(props: SubCommunityViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.global.communities} onLoad="stopLoading();">
+		<PortalRoot ctx={props.ctx} title={props.ctx.lang.global.communities} onLoad="stopLoading();">
 			<PortalNavBar ctx={props.ctx} selection={2} />
 			<PortalPageBody>
 				<header id="header">
