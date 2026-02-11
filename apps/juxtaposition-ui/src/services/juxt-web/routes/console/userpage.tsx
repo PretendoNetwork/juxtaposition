@@ -1,12 +1,15 @@
 import express from 'express';
 import moment from 'moment';
 import multer from 'multer';
+import { z } from 'zod';
 import { getPostsByEmpathy, getPostsByPoster } from '@/api/post';
 import { database } from '@/database';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { getCommunityHash, getUserAccountData, getUserFriendPIDs, newNotification } from '@/util';
+import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import type { Request, Response } from 'express';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
@@ -33,11 +36,13 @@ userPageRouter.get('/notifications.json', async function (req, res) {
 });
 
 userPageRouter.get('/downloadUserData.json', async function (req, res) {
-	res.set('Content-Type', 'text/json');
-	res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
 	const rawPosts = await POST.find({ pid: req.pid });
 	const userSettings = await database.getUserSettings(req.pid);
 	const userContent = await database.getUserContent(req.pid);
+
+	if (!userContent || !userSettings) {
+		return res.redirect('/404');
+	}
 
 	// Clean non-user data
 	userSettings.banned_by = null;
@@ -51,12 +56,14 @@ userPageRouter.get('/downloadUserData.json', async function (req, res) {
 		user_settings: userSettings,
 		posts: postsJson
 	};
+	res.set('Content-Type', 'text/json');
+	res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
 	res.send(doc);
 });
 
 userPageRouter.get('/me/settings', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
-	const communityMap = await getCommunityHash();
+	const communityMap = getCommunityHash();
 	res.render(req.directory + '/settings.ejs', {
 		communityMap: communityMap,
 		moment: moment,
@@ -70,6 +77,9 @@ userPageRouter.get('/me/:type', async function (req, res) {
 
 userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
+	if (!userSettings) {
+		return res.redirect('/users/me');
+	}
 
 	userSettings.country_visibility = !!req.body.country;
 	userSettings.birthday_visibility = !!req.body.birthday;
@@ -103,24 +113,35 @@ userPageRouter.get('/:pid/:type', async function (req, res) {
 
 // TODO: Remove the need for a parameter to toggle the following state
 userPageRouter.post('/follow', upload.none(), async function (req, res) {
-	const userToFollowContent = await database.getUserContent(req.body.id);
+	const { auth } = parseReq(req);
+
+	const userToFollow = await database.getUserContent(req.body.id);
 	const userContent = await database.getUserContent(req.pid);
-	if (userContent !== null && userContent.followed_users.indexOf(userToFollowContent.pid) === -1) {
-		userToFollowContent.addToFollowers(userContent.pid);
-		userContent.addToUsers(userToFollowContent.pid);
-		res.send({ status: 200, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
-		const picked = await database.getNotification(userToFollowContent.pid, 2, userContent.pid);
-		// pid, type, reference_id, origin_pid, title, content
-		if (picked === null) {
-			await newNotification({ pid: userToFollowContent.pid, type: 'follow', objectID: req.pid, link: `/users/${req.pid}` });
-		}
-	} else if (userContent !== null && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1) {
-		userToFollowContent.removeFromFollowers(userContent.pid);
-		userContent.removeFromUsers(userToFollowContent.pid);
-		res.send({ status: 200, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
-	} else {
-		res.send({ status: 423, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
+	if (!userToFollow || !userContent || !userToFollow.pid) {
+		// Invalid state, can't do a follow
+		return res.send({ status: 423, id: req.body.id, count: userToFollow?.following_users.length ?? 0 });
 	}
+
+	const isFollowing = userContent.followed_users.includes(userToFollow.pid);
+	let newFollowerCount = userToFollow.following_users.length;
+	if (!isFollowing) {
+		// Follow
+		await (userToFollow as any).addToFollowers(userContent.pid);
+		await (userContent as any).addToUsers(userToFollow.pid);
+		newFollowerCount++;
+		const existingNotification = await database.getNotification(userToFollow.pid, 2, userContent.pid);
+		if (!existingNotification) {
+			await newNotification({ pid: userToFollow.pid, type: 'follow', objectID: auth().pid.toString(), link: `/users/${auth().pid}` });
+		}
+	} else {
+		// Unfollow
+		await (userToFollow as any).removeFromFollowers(userContent.pid);
+		await (userContent as any).removeFromUsers(userToFollow.pid);
+		newFollowerCount--;
+	}
+
+	// idk why, but it always subtracts one from the count before returning
+	res.send({ status: 200, id: userToFollow.pid, count: newFollowerCount - 1 });
 });
 
 userPageRouter.get('/:pid', async function (req, res) {
@@ -139,7 +160,7 @@ userPageRouter.get('/:pid/:type', async function (req, res) {
 	await userRelations(req, res, userID);
 });
 
-async function userPage(req, res, userID) {
+async function userPage(req: Request, res: Response, userID: number): Promise<any> {
 	if (!userID || isNaN(userID)) {
 		return res.redirect('/404');
 	}
@@ -149,12 +170,12 @@ async function userPage(req, res, userID) {
 				logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
 			});
 	const userContent = await database.getUserContent(userID);
-	if (isNaN(userID) || !pnid || !userContent) {
+	const userSettings = await database.getUserSettings(userID);
+	if (isNaN(userID) || !pnid || !userContent || !userSettings) {
 		return res.redirect('/404');
 	}
 
-	const userSettings = await database.getUserSettings(userID);
-	const posts = (await getPostsByPoster(req.tokens, userID, 0))?.items;
+	const posts = (await getPostsByPoster(req.tokens, userID, 0))?.items ?? [];
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await getCommunityHash();
@@ -196,7 +217,7 @@ async function userPage(req, res, userID) {
 	});
 }
 
-async function userRelations(req, res, userID) {
+async function userRelations(req: Request, res: Response, userID: number): Promise<any> {
 	const pnid = userID === req.pid ? req.user : await getUserAccountData(userID);
 	const userContent = await database.getUserContent(userID);
 	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
@@ -207,18 +228,17 @@ async function userRelations(req, res, userID) {
 	if (pnid.pid !== req.pid) {
 		parentUserContent = await database.getUserContent(req.pid);
 	}
-	if (isNaN(userID) || !pnid) {
+	if (isNaN(userID) || !pnid || !userSettings) {
 		return res.redirect('/404');
 	}
 
 	let followers;
-	let communities;
-	let communityMap;
+	let communities: string[] = [];
+	const communityMap = getCommunityHash();
 	let selection;
 
 	if (req.params.type === 'yeahs') {
-		const posts = (await getPostsByEmpathy(req.tokens, userID, 0))?.items;
-		const communityMap = await getCommunityHash();
+		const posts = (await getPostsByEmpathy(req.tokens, userID, 0))?.items ?? [];
 		const bundle = {
 			posts,
 			open: true,
@@ -246,23 +266,20 @@ async function userRelations(req, res, userID) {
 				link,
 				friends,
 				parentUserContent,
-				isActive: isDateInRange(userSettings.last_active, 10)
+				isActive: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false
 			});
 		}
 	}
 
 	if (req.params.type === 'friends') {
 		followers = await SETTINGS.find({ pid: friends });
-		communities = [];
 		selection = 1;
 	} else if (req.params.type === 'followers') {
 		followers = await database.getFollowingUsers(userContent);
-		communities = [];
 		selection = 3;
 	} else {
 		followers = await database.getFollowedUsers(userContent);
 		communities = userContent.followed_communities;
-		communityMap = await getCommunityHash();
 		selection = 2;
 	}
 
@@ -299,14 +316,17 @@ async function userRelations(req, res, userID) {
 	});
 }
 
-async function morePosts(req, res, userID) {
-	let offset = parseInt(req.query.offset);
+async function morePosts(req: Request, res: Response, userID: number): Promise<any> {
+	const { query } = parseReq(req, {
+		query: z.object({
+			offset: z.coerce.number().nonnegative().default(0)
+		})
+	});
+	const { offset } = query;
+
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await getCommunityHash();
-	if (!offset) {
-		offset = 0;
-	}
-	const posts = (await getPostsByPoster(req.tokens, userID, offset))?.items;
+	const communityMap = getCommunityHash();
+	const posts = (await getPostsByPoster(req.tokens, userID, offset))?.items ?? [];
 
 	const bundle = {
 		posts,
@@ -317,26 +337,29 @@ async function morePosts(req, res, userID) {
 		link: `/users/${userID}/more?offset=${offset + posts.length}&pjax=true`
 	};
 
-	if (posts.length > 0) {
-		res.render(req.directory + '/partials/posts_list.ejs', {
-			communityMap: communityMap,
-			moment: moment,
-			database: database,
-			bundle
-		});
-	} else {
-		res.sendStatus(204);
+	if (posts.length === 0) {
+		return res.sendStatus(204);
 	}
+
+	res.render(req.directory + '/partials/posts_list.ejs', {
+		communityMap: communityMap,
+		moment: moment,
+		database: database,
+		bundle
+	});
 }
 
-async function moreYeahPosts(req, res, userID) {
-	let offset = parseInt(req.query.offset);
+async function moreYeahPosts(req: Request, res: Response, userID: number): Promise<any> {
+	const { query } = parseReq(req, {
+		query: z.object({
+			offset: z.coerce.number().nonnegative().default(0)
+		})
+	});
+	const { offset } = query;
+
 	const userContent = await database.getUserContent(userID);
-	const communityMap = await getCommunityHash();
-	if (!offset) {
-		offset = 0;
-	}
-	const posts = (await getPostsByEmpathy(req.tokens, userID, offset))?.items;
+	const communityMap = getCommunityHash();
+	const posts = (await getPostsByEmpathy(req.tokens, userID, offset))?.items ?? [];
 
 	const bundle = {
 		posts: posts,
@@ -347,23 +370,23 @@ async function moreYeahPosts(req, res, userID) {
 		link: `/users/${userID}/yeahs/more?offset=${offset + posts.length}&pjax=true`
 	};
 
-	if (posts.length > 0) {
-		res.render(req.directory + '/partials/posts_list.ejs', {
-			communityMap: communityMap,
-			moment: moment,
-			database: database,
-			bundle
-		});
-	} else {
-		res.sendStatus(204);
+	if (posts.length === 0) {
+		return res.sendStatus(204);
 	}
+
+	res.render(req.directory + '/partials/posts_list.ejs', {
+		communityMap: communityMap,
+		moment: moment,
+		database: database,
+		bundle
+	});
 }
 
-function isDateInRange(date, minutes) {
-	// return false;
+function isDateInRange(date: Date | null | undefined, minutes: number): boolean {
+	if (!date) {
+		return false;
+	}
 	const now = new Date();
 	const tenMinutesAgo = new Date(now.getTime() - minutes * 60 * 1000);
-	// console.log('last active: ' + date);
-	// console.log('ten min ago: ' + tenMinutesAgo);
 	return date >= tenMinutesAgo && date <= now;
 }
