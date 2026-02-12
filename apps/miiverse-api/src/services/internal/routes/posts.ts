@@ -6,7 +6,7 @@ import { deleteOptional, filterRemovedPosts, handle } from '@/services/internal/
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPost } from '@/services/internal/contract/post';
 import { mapPages } from '@/services/internal/contract/page';
-import { pageSchema } from '@/services/internal/pagination';
+import { pageSchema, sortOptionToQuery, sortSchema } from '@/services/internal/pagination';
 import { mapResult } from '@/services/internal/contract/result';
 import { mapEmpathy } from '@/services/internal/contract/empathy';
 import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
@@ -22,7 +22,7 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 		empathy_by: z.coerce.number().optional(),
 		parent_id: postIdSchema.optional(),
 		include_replies: z.stringbool().default(false),
-		sort: z.enum(['newest', 'oldest']).default('newest')
+		sort: sortSchema()
 	// Increased page limit for replies
 	}).and(pageSchema(500)).parse(req.query);
 
@@ -34,7 +34,6 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 		throw new errors.unauthorized('Authentication token not provided');
 	}
 
-	const sortOrder = query.sort === 'newest' ? -1 : 1;
 	const posts = await Post.find(deleteOptional({
 		pid: query.posted_by,
 		topic_tag: query.topic_tag,
@@ -44,7 +43,7 @@ postsRouter.get('/posts', guards.guest, handle(async ({ req, res }) => {
 		message_to_pid: null, // messages aren't really posts
 		...query.include_replies ? {} : { parent: null },
 		...filterRemovedPosts(res.locals.account)
-	})).sort({ created_at: sortOrder }).skip(query.offset).limit(query.limit);
+	})).sort({ created_at: sortOptionToQuery(query.sort) }).skip(query.offset).limit(query.limit);
 
 	// PageDto<PostDto>
 	return mapPages(posts.map(mapPost));

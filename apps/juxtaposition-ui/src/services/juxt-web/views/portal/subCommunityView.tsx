@@ -5,11 +5,12 @@ import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { CommunitySchema } from '@/models/communities';
+import type { CommunityDto } from '@/api/community';
 
 export type SubCommunityViewProps = {
 	ctx: RenderContext;
 	community: InferSchemaType<typeof CommunitySchema>;
-	subcommunities: InferSchemaType<typeof CommunitySchema>[];
+	subcommunities: CommunityDto[];
 };
 
 export function PortalSubCommunityView(props: SubCommunityViewProps): ReactNode {

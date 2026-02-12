@@ -4,6 +4,13 @@ import { MongoError } from 'mongodb';
 import type { CommunityData } from '@/types/miiverse/community';
 import type { ICommunity, ICommunityMethods, CommunityModel, ICommunityPermissions, HydratedCommunityDocument, ICommunityInput } from '@/types/mongoose/community';
 
+export const communityTypes = {
+	main: 0,
+	sub: 1,
+	announcement: 2,
+	private: 3
+} as const;
+
 const PermissionsSchema = new Schema<ICommunityPermissions>({
 	open: {
 		type: Boolean,
@@ -50,10 +57,7 @@ const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods
 		default: true
 	},
 	/**
-     * 0: Main Community
-     * 1: Sub-Community
-     * 2: Announcement Community
-     * 3: Private Community
+     * See `communityTypes`
      */
 	type: {
 		type: Number,

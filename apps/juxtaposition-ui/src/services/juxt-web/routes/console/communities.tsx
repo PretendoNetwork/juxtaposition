@@ -20,6 +20,7 @@ import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { zodFallback } from '@/util';
+import { listCommunities, listSubcommunities } from '@/api/community';
 import type { InferSchemaType } from 'mongoose';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -45,11 +46,11 @@ communitiesRouter.get('/', async function (req, res) {
 });
 
 communitiesRouter.get('/all', async function (req, res) {
-	const communities = await database.getCommunities(90);
+	const communities = await listCommunities(req.tokens, { limit: 90 });
 
 	const props: CommunityListViewProps = {
 		ctx: buildContext(res),
-		communities
+		communities: communities?.items ?? []
 	};
 	res.jsxForDirectory({
 		web: <WebCommunityListView {...props} />,
@@ -101,15 +102,15 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 			message: 'Community not Found'
 		});
 	}
-	const children = await database.getSubCommunities(community.olive_community_id);
-	if (!children) {
+	const children = await listSubcommunities(req.tokens, community.olive_community_id, { limit: 90 });
+	if (!children || children.items.length === 0) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
 	const props: SubCommunityViewProps = {
 		ctx: buildContext(res),
 		community,
-		subcommunities: children
+		subcommunities: children.items
 	};
 	res.jsxForDirectory({
 		portal: <PortalSubCommunityView {...props} />,
@@ -157,7 +158,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	) && userSettings.account_status === 0;
 	const isUserFollowing = userContent.followed_communities.includes(community.olive_community_id);
 
-	const subCommunities = await database.getSubCommunities(community.olive_community_id);
+	const subCommunities = await listSubcommunities(req.tokens, community.olive_community_id, { limit: 1 });
 	let posts;
 	let type;
 
@@ -192,7 +193,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		ctx: buildContext(res),
 		feedType: type,
 		community,
-		hasSubCommunities: subCommunities.length > 0,
+		hasSubCommunities: (subCommunities?.items ?? []).length > 0,
 		totalPosts: numPosts,
 		canPost,
 		isUserFollowing

@@ -19,9 +19,11 @@ import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/mana
 import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newCommunityView';
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
+import { listCommunities, searchCommunities } from '@/api/community';
 import type { ReportWithPost } from '@/services/juxt-web/views/web/admin/reportListView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
+import type { PageControls } from '@/api/common';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
@@ -391,14 +393,17 @@ adminRouter.get('/communities', async function (req, res) {
 		})
 	});
 
-	const page = query.page;
 	const search = query.search;
 	const limit = 20;
+	const page: PageControls = { offset: query.page * limit, limit };
 
-	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
+	const communityPage = search
+		? await searchCommunities(req.tokens, search, page)
+		: await listCommunities(req.tokens, page);
+	const communities = communityPage?.items ?? [];
 
 	res.jsxForDirectory({
-		web: <WebManageCommunityView ctx={buildContext(res)} hasNextPage={communities.length === limit} communities={communities} page={page} search={search} />
+		web: <WebManageCommunityView ctx={buildContext(res)} hasNextPage={communities.length === limit} communities={communities} page={query.page} search={search} />
 	});
 });
 
