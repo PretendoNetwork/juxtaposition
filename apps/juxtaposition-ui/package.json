@@ -68,7 +68,7 @@
     "@types/luxon": "^3.7.1",
     "@types/method-override": "^3.0.0",
     "@types/node": "^22.19.11",
-    "@types/react": "^19.1.13",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "browserslist": "^4.28.0",
     "browserslist-to-esbuild": "^2.1.1",
