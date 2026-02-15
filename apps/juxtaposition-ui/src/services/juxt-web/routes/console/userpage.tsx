@@ -14,12 +14,19 @@ import { buildContext } from '@/services/juxt-web/views/context';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
+import { WebUserPageFollowingView } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { Request, Response } from 'express';
+import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
+
+// TODO ctr/portal userpage.ejs
+// TODO ctr/portal following_list.ejs
+// TODO user_menu.ejs
+// TODO settings.ejs
 
 const pidParamSchema = z.union([z.literal('me'), z.coerce.number()]);
 
@@ -283,7 +290,7 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 	return res.jsxForDirectory({
 		web: (
 			<WebUserPageView {...props}>
-				{/* TODO following_list.ejs */}
+				<WebPostListView {...postListProps} />
 			</WebUserPageView>
 		)
 	});
@@ -313,7 +320,6 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 
 	let followers: HydratedSettingsDocument[] = [];
 	let communities: string[] = [];
-	const communityMap = getCommunityHash();
 	let selection = 0;
 
 	if (params.type === 'yeahs') {
@@ -365,21 +371,15 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		selection = 2;
 	}
 
-	const bundle = {
-		followers: followers ? followers : [],
-		communities: communities,
-		communityMap: communityMap
-	};
-
-	const postListProps: PostListViewProps = {
+	const communityMap = getCommunityHash();
+	const listProps: UserPageFollowingViewProps = {
 		ctx: buildContext(res),
-		nextLink: '#',
-		posts: [],
-		userContent: parentUserContent ?? userContent
+		followers: followers.filter(v => v.pid !== 0),
+		communities: communities.map(com => ({ id: com, name: communityMap.get(com) ?? com }))
 	};
 	if (query.pjax) {
 		return res.jsxForDirectory({
-			web: <WebPostListView {...postListProps} /> // TODO following_list.ejs
+			web: <WebUserPageFollowingView {...listProps} />
 		});
 	}
 	const props: UserPageViewProps = {
@@ -397,7 +397,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	return res.jsxForDirectory({
 		web: (
 			<WebUserPageView {...props}>
-				{/* TODO following_list.ejs */}
+				<WebUserPageFollowingView {...listProps} />
 			</WebUserPageView>
 		)
 	});
