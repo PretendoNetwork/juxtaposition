@@ -15,6 +15,8 @@ import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { WebUserPageFollowingView } from '@/services/juxt-web/views/web/userPageFollowingView';
+import { PortalUserPageFollowingView } from '@/services/juxt-web/views/portal/userPageFollowingView';
+import { CtrUserPageFollowingView } from '@/services/juxt-web/views/ctr/userPageFollowingView';
 import type { Request, Response } from 'express';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
@@ -24,7 +26,6 @@ export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
 // TODO ctr/portal userpage.ejs
-// TODO ctr/portal following_list.ejs
 // TODO user_menu.ejs
 // TODO settings.ejs
 
@@ -379,7 +380,9 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	};
 	if (query.pjax) {
 		return res.jsxForDirectory({
-			web: <WebUserPageFollowingView {...listProps} />
+			web: <WebUserPageFollowingView {...listProps} />,
+			portal: <PortalUserPageFollowingView {...listProps} />,
+			ctr: <CtrUserPageFollowingView {...listProps} />
 		});
 	}
 	const props: UserPageViewProps = {
