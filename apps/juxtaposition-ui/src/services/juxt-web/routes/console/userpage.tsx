@@ -10,23 +10,33 @@ import { SETTINGS } from '@/models/settings';
 import { getCommunityHash, getUserAccountData, getUserFriendPIDs, newNotification } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import type { Request, Response } from 'express';
+import type { HydratedSettingsDocument } from '@/models/settings';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
+const pidParamSchema = z.union([z.literal('me'), z.coerce.number()]);
+
 userPageRouter.get('/menu', async function (req, res) {
-	const user = await database.getUserSettings(req.pid);
+	const { auth } = parseReq(req);
+	const user = await database.getUserSettings(auth().pid);
 	res.render('ctr/user_menu.ejs', {
 		user: user
 	});
 });
 
 userPageRouter.get('/me', async function (req, res) {
-	await userPage(req, res, req.pid);
+	const { auth, hasAuth } = parseReq(req);
+	if (!hasAuth()) {
+		return res.redirect('/404');
+	}
+
+	await userPage(req, res, auth().pid);
 });
 
 userPageRouter.get('/notifications.json', async function (req, res) {
-	const notifications = await database.getUnreadNotificationCount(req.pid);
-	const messagesCount = await database.getUnreadConversationCount(req.pid);
+	const { auth } = parseReq(req);
+	const notifications = await database.getUnreadNotificationCount(auth().pid);
+	const messagesCount = await database.getUnreadConversationCount(auth().pid);
 	res.send(
 		{
 			message_count: messagesCount,
@@ -36,9 +46,10 @@ userPageRouter.get('/notifications.json', async function (req, res) {
 });
 
 userPageRouter.get('/downloadUserData.json', async function (req, res) {
-	const rawPosts = await POST.find({ pid: req.pid });
-	const userSettings = await database.getUserSettings(req.pid);
-	const userContent = await database.getUserContent(req.pid);
+	const { auth } = parseReq(req);
+	const rawPosts = await POST.find({ pid: auth().pid });
+	const userSettings = await database.getUserSettings(auth().pid);
+	const userContent = await database.getUserContent(auth().pid);
 
 	if (!userContent || !userSettings) {
 		return res.redirect('/404');
@@ -57,12 +68,13 @@ userPageRouter.get('/downloadUserData.json', async function (req, res) {
 		posts: postsJson
 	};
 	res.set('Content-Type', 'text/json');
-	res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
+	res.set('Content-Disposition', `attachment; filename="${auth().pid}_user_data.json"`);
 	res.send(doc);
 });
 
 userPageRouter.get('/me/settings', async function (req, res) {
-	const userSettings = await database.getUserSettings(req.pid);
+	const { auth } = parseReq(req);
+	const userSettings = await database.getUserSettings(auth().pid);
 	const communityMap = getCommunityHash();
 	res.render(req.directory + '/settings.ejs', {
 		communityMap: communityMap,
@@ -72,54 +84,93 @@ userPageRouter.get('/me/settings', async function (req, res) {
 });
 
 userPageRouter.get('/me/:type', async function (req, res) {
-	await userRelations(req, res, req.pid);
+	const { auth, hasAuth } = parseReq(req);
+	if (!hasAuth()) {
+		return res.redirect('/404');
+	}
+
+	await userRelations(req, res, auth().pid);
 });
 
 userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
-	const userSettings = await database.getUserSettings(req.pid);
+	const { body, auth } = parseReq(req, {
+		body: z.object({
+			country: z.coerce.boolean(),
+			birthday: z.coerce.boolean(),
+			experience: z.coerce.boolean(),
+			comment: z.string().optional()
+		})
+	});
+	const userSettings = await database.getUserSettings(auth().pid);
 	if (!userSettings) {
 		return res.redirect('/users/me');
 	}
 
-	userSettings.country_visibility = !!req.body.country;
-	userSettings.birthday_visibility = !!req.body.birthday;
-	userSettings.game_skill_visibility = !!req.body.experience;
-	userSettings.profile_comment_visibility = !!req.body.comment;
-
-	if (req.body.comment) {
-		userSettings.updateComment(req.body.comment);
-	} else {
-		userSettings.updateComment('');
-	}
+	userSettings.country_visibility = body.country;
+	userSettings.birthday_visibility = body.birthday;
+	userSettings.game_skill_visibility = body.experience;
+	userSettings.profile_comment_visibility = !!body.comment;
+	userSettings.updateComment(body.comment ?? '');
 
 	res.redirect('/users/me');
 });
 
 userPageRouter.get('/show', async function (req, res) {
-	res.redirect(`/users/${req.query.pid}`);
+	const { query } = parseReq(req, {
+		query: z.object({
+			pid: z.string().optional()
+		})
+	});
+	if (!query.pid) {
+		return res.redirect('/404');
+	}
+
+	res.redirect(`/users/${query.pid}`);
 });
 
 userPageRouter.get('/:pid/more', async function (req, res) {
-	await morePosts(req, res, req.params.pid);
+	const { params } = parseReq(req, {
+		params: z.object({
+			pid: z.coerce.number()
+		})
+	});
+
+	await morePosts(req, res, params.pid);
 });
 
 userPageRouter.get('/:pid/yeahs/more', async function (req, res) {
-	await moreYeahPosts(req, res, req.params.pid);
+	const { params } = parseReq(req, {
+		params: z.object({
+			pid: z.coerce.number()
+		})
+	});
+
+	await moreYeahPosts(req, res, params.pid);
 });
 
 userPageRouter.get('/:pid/:type', async function (req, res) {
-	await userRelations(req, res, req.params.pid);
+	const { params } = parseReq(req, {
+		params: z.object({
+			pid: z.coerce.number()
+		})
+	});
+
+	await userRelations(req, res, params.pid);
 });
 
 // TODO: Remove the need for a parameter to toggle the following state
 userPageRouter.post('/follow', upload.none(), async function (req, res) {
-	const { auth } = parseReq(req);
+	const { body, auth } = parseReq(req, {
+		body: z.object({
+			id: z.string()
+		})
+	});
 
-	const userToFollow = await database.getUserContent(req.body.id);
-	const userContent = await database.getUserContent(req.pid);
+	const userToFollow = await database.getUserContent(body.id);
+	const userContent = await database.getUserContent(auth().pid);
 	if (!userToFollow || !userContent || !userToFollow.pid) {
 		// Invalid state, can't do a follow
-		return res.send({ status: 423, id: req.body.id, count: userToFollow?.following_users.length ?? 0 });
+		return res.send({ status: 423, id: body.id, count: userToFollow?.following_users.length ?? 0 });
 	}
 
 	const isFollowing = userContent.followed_users.includes(userToFollow.pid);
@@ -145,33 +196,47 @@ userPageRouter.post('/follow', upload.none(), async function (req, res) {
 });
 
 userPageRouter.get('/:pid', async function (req, res) {
-	const userID = req.params.pid;
-	if (userID === 'me' || Number(userID) === req.pid) {
+	const { params } = parseReq(req, {
+		params: z.object({
+			pid: pidParamSchema
+		})
+	});
+	if (params.pid === 'me' || params.pid === req.pid) {
 		return res.redirect('/users/me');
 	}
-	await userPage(req, res, userID);
+
+	await userPage(req, res, params.pid);
 });
 
 userPageRouter.get('/:pid/:type', async function (req, res) {
-	const userID = req.params.pid;
-	if (userID === 'me' || Number(userID) === req.pid) {
+	const { params } = parseReq(req, {
+		params: z.object({
+			pid: pidParamSchema
+		})
+	});
+	if (params.pid === 'me' || params.pid === req.pid) {
 		return res.redirect('/users/me');
 	}
-	await userRelations(req, res, userID);
+
+	await userRelations(req, res, params.pid);
 });
 
 async function userPage(req: Request, res: Response, userID: number): Promise<any> {
-	if (!userID || isNaN(userID)) {
-		return res.redirect('/404');
-	}
-	const pnid = userID === req.pid
-		? req.user
+	const { query, auth, hasAuth } = parseReq(req, {
+		query: z.object({
+			pjax: z.string().optional()
+		})
+	});
+	const isSelf = hasAuth() && userID === auth().pid;
+
+	const pnid = isSelf
+		? auth().user
 		: await getUserAccountData(userID).catch((e) => {
-				logger.error(e, `Could not fetch userdata for ${req.params.pid}`);
+				logger.error(e, `Could not fetch userdata for ${userID}`);
 			});
 	const userContent = await database.getUserContent(userID);
 	const userSettings = await database.getUserSettings(userID);
-	if (isNaN(userID) || !pnid || !userContent || !userSettings) {
+	if (!pnid || !userContent || !userSettings) {
 		return res.redirect('/404');
 	}
 
@@ -182,7 +247,7 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 	const friends = await getUserFriendPIDs(userID);
 
 	let parentUserContent;
-	if (pnid.pid !== req.pid) {
+	if (!isSelf) {
 		parentUserContent = await database.getUserContent(req.pid);
 	}
 
@@ -194,13 +259,13 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		userContent: parentUserContent ? parentUserContent : userContent,
 		link: `/users/${userID}/more?offset=${posts.length}&pjax=true`
 	};
-	if (req.query.pjax) {
+	if (query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
 			moment
 		});
 	}
-	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
+	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 	res.render(req.directory + '/user_page.ejs', {
 		template: 'posts_list',
 		selection: 0,
@@ -218,26 +283,36 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 }
 
 async function userRelations(req: Request, res: Response, userID: number): Promise<any> {
-	const pnid = userID === req.pid ? req.user : await getUserAccountData(userID);
+	const { params, query, auth, hasAuth } = parseReq(req, {
+		params: z.object({
+			type: z.string()
+		}),
+		query: z.object({
+			pjax: z.string().optional()
+		})
+	});
+	const isSelf = hasAuth() && userID === auth().pid;
+
+	const pnid = isSelf ? auth().user : await getUserAccountData(userID);
 	const userContent = await database.getUserContent(userID);
-	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
+	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
 	let parentUserContent;
-	if (pnid.pid !== req.pid) {
+	if (!isSelf) {
 		parentUserContent = await database.getUserContent(req.pid);
 	}
-	if (isNaN(userID) || !pnid || !userSettings) {
+	if (!pnid || !userSettings) {
 		return res.redirect('/404');
 	}
 
-	let followers;
+	let followers: HydratedSettingsDocument[] = [];
 	let communities: string[] = [];
 	const communityMap = getCommunityHash();
-	let selection;
+	let selection = 0;
 
-	if (req.params.type === 'yeahs') {
+	if (params.type === 'yeahs') {
 		const posts = (await getPostsByEmpathy(req.tokens, userID, 0))?.items ?? [];
 		const bundle = {
 			posts,
@@ -248,7 +323,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 			link: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`
 		};
 
-		if (req.query.pjax) {
+		if (query.pjax) {
 			return res.render(req.directory + '/partials/posts_list.ejs', {
 				bundle,
 				moment
@@ -271,23 +346,16 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		}
 	}
 
-	if (req.params.type === 'friends') {
+	if (params.type === 'friends') {
 		followers = await SETTINGS.find({ pid: friends });
 		selection = 1;
-	} else if (req.params.type === 'followers') {
+	} else if (params.type === 'followers') {
 		followers = await database.getFollowingUsers(userContent);
 		selection = 3;
 	} else {
 		followers = await database.getFollowedUsers(userContent);
-		communities = userContent.followed_communities;
+		communities = userContent?.followed_communities ?? [];
 		selection = 2;
-	}
-
-	if (followers[0] === '0') {
-		followers.splice(0, 0);
-	}
-	if (communities[0] === '0') {
-		communities.splice(0, 1);
 	}
 
 	const bundle = {
@@ -296,7 +364,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		communityMap: communityMap
 	};
 
-	if (req.query.pjax) {
+	if (query.pjax) {
 		return res.render(req.directory + '/partials/following_list.ejs', {
 			bundle
 		});
