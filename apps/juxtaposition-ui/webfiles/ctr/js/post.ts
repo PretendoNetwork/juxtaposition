@@ -1,4 +1,4 @@
-// Script for the post page view (post.ejs/postPageView.tsx)
+// Script for the post page view (postPageView.tsx)
 import { deletePostById, empathyPostById } from './api';
 import { classList } from './util';
 
