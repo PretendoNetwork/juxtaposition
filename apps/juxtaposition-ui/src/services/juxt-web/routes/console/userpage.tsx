@@ -9,7 +9,14 @@ import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { getCommunityHash, getUserAccountData, getUserFriendPIDs, newNotification } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
+import { buildContext } from '@/services/juxt-web/views/context';
+import { WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
+import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import type { Request, Response } from 'express';
+import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
+import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
@@ -243,42 +250,42 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 	const posts = (await getPostsByPoster(req.tokens, userID, 0))?.items ?? [];
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
-	const communityMap = await getCommunityHash();
 	const friends = await getUserFriendPIDs(userID);
 
-	let parentUserContent;
-	if (!isSelf) {
-		parentUserContent = await database.getUserContent(req.pid);
-	}
+	const parentUserContent = await database.getUserContent(req.pid);
+	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
-	const bundle = {
+	const postListProps: PostListViewProps = {
+		ctx: buildContext(res),
+		nextLink: `/users/${userID}/more?offset=${posts.length}&pjax=true`,
 		posts,
-		open: true,
-		numPosts,
-		communityMap,
-		userContent: parentUserContent ? parentUserContent : userContent,
-		link: `/users/${userID}/more?offset=${posts.length}&pjax=true`
+		userContent: parentUserContent ?? userContent
 	};
 	if (query.pjax) {
-		return res.render(req.directory + '/partials/posts_list.ejs', {
-			bundle,
-			moment
+		return res.jsxForDirectory({
+			web: <WebPostListView {...postListProps} />,
+			portal: <PortalPostListView {...postListProps} />,
+			ctr: <CtrPostListView {...postListProps} />
 		});
 	}
-	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
-	res.render(req.directory + '/user_page.ejs', {
-		template: 'posts_list',
-		selection: 0,
-		moment,
-		pnid,
-		numPosts,
-		userContent,
-		userSettings,
-		bundle,
-		link,
-		friends,
-		parentUserContent,
-		isActive: isDateInRange(userSettings.last_active, 10)
+	const props: UserPageViewProps = {
+		ctx: buildContext(res),
+		baseLink: link,
+		friendPids: friends,
+		isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
+		selectedTab: 0,
+		totalPosts: numPosts,
+		user: pnid,
+		userContent: userContent,
+		userSettings: userSettings,
+		requestUserContent: parentUserContent
+	};
+	return res.jsxForDirectory({
+		web: (
+			<WebUserPageView {...props}>
+				{/* TODO following_list.ejs */}
+			</WebUserPageView>
+		)
 	});
 }
 
@@ -299,11 +306,8 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	const userSettings = await database.getUserSettings(userID);
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
-	let parentUserContent;
-	if (!isSelf) {
-		parentUserContent = await database.getUserContent(req.pid);
-	}
-	if (!pnid || !userSettings) {
+	const parentUserContent = await database.getUserContent(req.pid);
+	if (!pnid || !userSettings || !userContent) {
 		return res.redirect('/404');
 	}
 
@@ -314,36 +318,39 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 
 	if (params.type === 'yeahs') {
 		const posts = (await getPostsByEmpathy(req.tokens, userID, 0))?.items ?? [];
-		const bundle = {
+		const postListProps: PostListViewProps = {
+			ctx: buildContext(res),
 			posts,
-			open: true,
-			numPosts: posts.length,
-			communityMap,
-			userContent: parentUserContent ? parentUserContent : userContent,
-			link: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`
+			nextLink: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`,
+			userContent: parentUserContent ?? userContent
 		};
-
 		if (query.pjax) {
-			return res.render(req.directory + '/partials/posts_list.ejs', {
-				bundle,
-				moment
-			});
-		} else {
-			return res.render(req.directory + '/user_page.ejs', {
-				template: 'posts_list',
-				selection: 4,
-				moment,
-				pnid,
-				numPosts,
-				userContent,
-				userSettings,
-				bundle,
-				link,
-				friends,
-				parentUserContent,
-				isActive: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false
+			return res.jsxForDirectory({
+				web: <WebPostListView {...postListProps} />,
+				portal: <PortalPostListView {...postListProps} />,
+				ctr: <CtrPostListView {...postListProps} />
 			});
 		}
+
+		const props: UserPageViewProps = {
+			ctx: buildContext(res),
+			baseLink: link,
+			friendPids: friends,
+			isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
+			selectedTab: 4,
+			totalPosts: numPosts,
+			user: pnid,
+			userContent: userContent,
+			userSettings: userSettings,
+			requestUserContent: parentUserContent
+		};
+		return res.jsxForDirectory({
+			web: (
+				<WebUserPageView {...props}>
+					<WebPostListView {...postListProps} />
+				</WebUserPageView>
+			)
+		});
 	}
 
 	if (params.type === 'friends') {
@@ -364,23 +371,35 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		communityMap: communityMap
 	};
 
+	const postListProps: PostListViewProps = {
+		ctx: buildContext(res),
+		nextLink: '#',
+		posts: [],
+		userContent: parentUserContent ?? userContent
+	};
 	if (query.pjax) {
-		return res.render(req.directory + '/partials/following_list.ejs', {
-			bundle
+		return res.jsxForDirectory({
+			web: <WebPostListView {...postListProps} /> // TODO following_list.ejs
 		});
 	}
-	res.render(req.directory + '/user_page.ejs', {
-		template: 'following_list',
-		selection: selection,
-		moment,
-		pnid,
-		numPosts,
-		userContent,
-		userSettings,
-		bundle,
-		link,
-		parentUserContent,
-		isActive: isDateInRange(userSettings.last_active, 10)
+	const props: UserPageViewProps = {
+		ctx: buildContext(res),
+		baseLink: link,
+		friendPids: friends,
+		isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
+		selectedTab: selection,
+		totalPosts: numPosts,
+		user: pnid,
+		userContent: userContent,
+		userSettings: userSettings,
+		requestUserContent: parentUserContent
+	};
+	return res.jsxForDirectory({
+		web: (
+			<WebUserPageView {...props}>
+				{/* TODO following_list.ejs */}
+			</WebUserPageView>
+		)
 	});
 }
 
@@ -393,27 +412,22 @@ async function morePosts(req: Request, res: Response, userID: number): Promise<a
 	const { offset } = query;
 
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = getCommunityHash();
 	const posts = (await getPostsByPoster(req.tokens, userID, offset))?.items ?? [];
 
-	const bundle = {
-		posts,
-		numPosts: posts.length,
-		open: true,
-		communityMap,
-		userContent,
-		link: `/users/${userID}/more?offset=${offset + posts.length}&pjax=true`
-	};
-
-	if (posts.length === 0) {
+	if (posts.length === 0 || !userContent) {
 		return res.sendStatus(204);
 	}
 
-	res.render(req.directory + '/partials/posts_list.ejs', {
-		communityMap: communityMap,
-		moment: moment,
-		database: database,
-		bundle
+	const props: PostListViewProps = {
+		ctx: buildContext(res),
+		posts,
+		nextLink: `/users/${userID}/more?offset=${offset + posts.length}&pjax=true`,
+		userContent: userContent
+	};
+	return res.jsxForDirectory({
+		web: <WebPostListView {...props} />,
+		portal: <PortalPostListView {...props} />,
+		ctr: <CtrPostListView {...props} />
 	});
 }
 
@@ -426,27 +440,22 @@ async function moreYeahPosts(req: Request, res: Response, userID: number): Promi
 	const { offset } = query;
 
 	const userContent = await database.getUserContent(userID);
-	const communityMap = getCommunityHash();
 	const posts = (await getPostsByEmpathy(req.tokens, userID, offset))?.items ?? [];
 
-	const bundle = {
-		posts: posts,
-		numPosts: posts.length,
-		open: true,
-		communityMap,
-		userContent,
-		link: `/users/${userID}/yeahs/more?offset=${offset + posts.length}&pjax=true`
-	};
-
-	if (posts.length === 0) {
+	if (posts.length === 0 || !userContent) {
 		return res.sendStatus(204);
 	}
 
-	res.render(req.directory + '/partials/posts_list.ejs', {
-		communityMap: communityMap,
-		moment: moment,
-		database: database,
-		bundle
+	const props: PostListViewProps = {
+		ctx: buildContext(res),
+		posts,
+		nextLink: `/users/${userID}/yeahs/more?offset=${offset + posts.length}&pjax=true`,
+		userContent: userContent
+	};
+	return res.jsxForDirectory({
+		web: <WebPostListView {...props} />,
+		portal: <PortalPostListView {...props} />,
+		ctr: <CtrPostListView {...props} />
 	});
 }
 
