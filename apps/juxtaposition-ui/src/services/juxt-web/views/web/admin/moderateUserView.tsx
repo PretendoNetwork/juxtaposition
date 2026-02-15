@@ -34,7 +34,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 		<>
 			<script src="/js/admin.global.js"></script>
 			<link rel="stylesheet" href="/css/admin.css" />
-			<WebUserPageMeta ctx={props.ctx} user={props.pnid} userSettings={props.userSettings} />
+			<WebUserPageMeta ctx={props.ctx} user={props.pnid} userSettings={props.userSettings} withImage />
 		</>
 	);
 

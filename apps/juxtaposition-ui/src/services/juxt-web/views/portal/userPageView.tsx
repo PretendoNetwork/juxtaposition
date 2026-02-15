@@ -95,7 +95,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 	const isSelf = props.ctx.pid === props.user.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
-	const isUserFollowingRequester = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
+	const isUserFollowingRequester = props.userContent.followed_users.includes(props.ctx.pid);
 
 	return (
 		<PortalRoot title={pnidName}>
@@ -240,7 +240,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 										</li>
 										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3 })}>
 											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.following}</span>
+												<span>{props.ctx.lang.user_page.followers}</span>
 											</a>
 										</li>
 										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4 })}>

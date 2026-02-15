@@ -144,7 +144,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 	const isSelf = props.ctx.pid === props.user.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
-	const isUserFollowingRequester = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
+	const isUserFollowingRequester = props.userContent.followed_users.includes(props.ctx.pid);
 
 	let head: ReactNode = null;
 	if (isUserDataViewable) {

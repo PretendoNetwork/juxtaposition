@@ -91,7 +91,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 										</li>
 										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3 })}>
 											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.following}</span>
+												<span>{props.ctx.lang.user_page.followers}</span>
 											</a>
 										</li>
 										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4 })}>
@@ -101,7 +101,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 										</li>
 										{isSelf
 											? (
-													<li id="tab-header-yeahs" className="tab-button">
+													<li id="tab-header-requests" className="tab-button">
 														<a href="/news/friend_requests" data-sound="SE_WAVE_SELECT_TAB">
 															<span>Requests</span>
 														</a>
