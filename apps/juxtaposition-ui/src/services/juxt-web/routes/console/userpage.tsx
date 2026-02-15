@@ -1,5 +1,4 @@
 import express from 'express';
-import moment from 'moment';
 import multer from 'multer';
 import { z } from 'zod';
 import { getPostsByEmpathy, getPostsByPoster } from '@/api/post';
@@ -18,16 +17,18 @@ import { WebUserPageFollowingView } from '@/services/juxt-web/views/web/userPage
 import { PortalUserPageFollowingView } from '@/services/juxt-web/views/portal/userPageFollowingView';
 import { CtrUserPageFollowingView } from '@/services/juxt-web/views/ctr/userPageFollowingView';
 import { CtrUserMenuView } from '@/services/juxt-web/views/ctr/userMenu';
+import { PortalUserSettingsView } from '@/services/juxt-web/views/portal/userSettingsView';
+import { CtrUserSettingsView } from '@/services/juxt-web/views/ctr/userSettingsView';
 import type { Request, Response } from 'express';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { HydratedSettingsDocument } from '@/models/settings';
+import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
 // TODO ctr/portal userpage.ejs
-// TODO settings.ejs
 
 const pidParamSchema = z.union([z.literal('me'), z.coerce.number()]);
 
@@ -86,11 +87,17 @@ userPageRouter.get('/downloadUserData.json', async function (req, res) {
 userPageRouter.get('/me/settings', async function (req, res) {
 	const { auth } = parseReq(req);
 	const userSettings = await database.getUserSettings(auth().pid);
-	const communityMap = getCommunityHash();
-	res.render(req.directory + '/settings.ejs', {
-		communityMap: communityMap,
-		moment: moment,
-		userSettings: userSettings
+	if (!userSettings) {
+		return res.redirect('/404');
+	}
+
+	const props: UserSettingsViewProps = {
+		ctx: buildContext(res),
+		userSettings
+	};
+	res.jsxForDirectory({
+		portal: <PortalUserSettingsView {...props} />,
+		ctr: <CtrUserSettingsView {...props} />
 	});
 });
 
