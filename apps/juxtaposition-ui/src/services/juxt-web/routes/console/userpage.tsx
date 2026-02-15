@@ -17,6 +17,7 @@ import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { WebUserPageFollowingView } from '@/services/juxt-web/views/web/userPageFollowingView';
 import { PortalUserPageFollowingView } from '@/services/juxt-web/views/portal/userPageFollowingView';
 import { CtrUserPageFollowingView } from '@/services/juxt-web/views/ctr/userPageFollowingView';
+import { CtrUserMenuView } from '@/services/juxt-web/views/ctr/userMenu';
 import type { Request, Response } from 'express';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
@@ -26,17 +27,12 @@ export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
 // TODO ctr/portal userpage.ejs
-// TODO user_menu.ejs
 // TODO settings.ejs
 
 const pidParamSchema = z.union([z.literal('me'), z.coerce.number()]);
 
 userPageRouter.get('/menu', async function (req, res) {
-	const { auth } = parseReq(req);
-	const user = await database.getUserSettings(auth().pid);
-	res.render('ctr/user_menu.ejs', {
-		user: user
-	});
+	res.jsx(<CtrUserMenuView ctx={buildContext(res)} />);
 });
 
 userPageRouter.get('/me', async function (req, res) {
