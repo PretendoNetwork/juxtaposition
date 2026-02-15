@@ -399,7 +399,9 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	const listProps: UserPageFollowingViewProps = {
 		ctx: buildContext(res),
 		followers: followers.filter(v => v.pid !== 0),
-		communities: communities.map(com => ({ id: com, name: communityMap.get(com) ?? com }))
+		communities: communities
+			.filter(v => v !== '0') // UserContent had a wrong default of [0], which means it needs to be filtered out before usage
+			.map(com => ({ id: com, name: communityMap.get(com) ?? com }))
 	};
 	if (query.pjax) {
 		return res.jsxForDirectory({
