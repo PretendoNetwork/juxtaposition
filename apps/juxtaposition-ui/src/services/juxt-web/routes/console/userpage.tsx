@@ -19,6 +19,8 @@ import { CtrUserPageFollowingView } from '@/services/juxt-web/views/ctr/userPage
 import { CtrUserMenuView } from '@/services/juxt-web/views/ctr/userMenu';
 import { PortalUserSettingsView } from '@/services/juxt-web/views/portal/userSettingsView';
 import { CtrUserSettingsView } from '@/services/juxt-web/views/ctr/userSettingsView';
+import { PortalUserPageView } from '@/services/juxt-web/views/portal/userPageView';
+import { CtrUserPageView } from '@/services/juxt-web/views/ctr/userPageView';
 import type { Request, Response } from 'express';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
@@ -27,8 +29,6 @@ import type { HydratedSettingsDocument } from '@/models/settings';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
-
-// TODO ctr/portal userpage.ejs
 
 const pidParamSchema = z.union([z.literal('me'), z.coerce.number()]);
 
@@ -296,6 +296,16 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 			<WebUserPageView {...props}>
 				<WebPostListView {...postListProps} />
 			</WebUserPageView>
+		),
+		portal: (
+			<PortalUserPageView {...props}>
+				<PortalPostListView {...postListProps} />
+			</PortalUserPageView>
+		),
+		ctr: (
+			<CtrUserPageView {...props}>
+				<CtrPostListView {...postListProps} />
+			</CtrUserPageView>
 		)
 	});
 }
@@ -359,6 +369,16 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 				<WebUserPageView {...props}>
 					<WebPostListView {...postListProps} />
 				</WebUserPageView>
+			),
+			portal: (
+				<PortalUserPageView {...props}>
+					<PortalPostListView {...postListProps} />
+				</PortalUserPageView>
+			),
+			ctr: (
+				<CtrUserPageView {...props}>
+					<CtrPostListView {...postListProps} />
+				</CtrUserPageView>
 			)
 		});
 	}
@@ -405,6 +425,16 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 			<WebUserPageView {...props}>
 				<WebUserPageFollowingView {...listProps} />
 			</WebUserPageView>
+		),
+		portal: (
+			<PortalUserPageView {...props}>
+				<PortalUserPageFollowingView {...listProps} />
+			</PortalUserPageView>
+		),
+		ctr: (
+			<CtrUserPageView {...props}>
+				<CtrUserPageFollowingView {...listProps} />
+			</CtrUserPageView>
 		)
 	});
 }
