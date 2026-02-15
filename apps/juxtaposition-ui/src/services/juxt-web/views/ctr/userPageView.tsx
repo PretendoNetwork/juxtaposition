@@ -89,12 +89,16 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 												<span>{props.ctx.lang.user_page.following}</span>
 											</a>
 										</li>
-										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3 })}>
+
+										{/* make it it wrap */}
+										<br />
+
+										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3, double: !isSelf })}>
 											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
 												<span>{props.ctx.lang.user_page.followers}</span>
 											</a>
 										</li>
-										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4 })}>
+										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4, double: !isSelf })}>
 											<a href={props.baseLink + 'yeahs'} data-sound="SE_WAVE_SELECT_TAB">
 												<span>{props.ctx.lang.global.yeahs}</span>
 											</a>
