@@ -1,4 +1,3 @@
-import path from 'node:path';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
@@ -13,7 +12,6 @@ import { router } from '@/services/juxt-web';
 import { healthzRouter } from '@/services/healthz';
 import { config } from '@/config';
 import { jsxRenderer } from '@/middleware/jsx';
-import { distFolder } from '@/util';
 import { initImageProcessing } from '@/images';
 import { loginWall } from '@/middleware/webAuth';
 import { listenMetrics, registerMetrics } from '@/metrics';
@@ -38,8 +36,6 @@ const metricsApp = registerMetrics(app);
 
 app.set('etag', false);
 app.disable('x-powered-by');
-app.set('view engine', 'ejs');
-app.set('views', path.join(distFolder, '/webfiles'));
 app.set('trust proxy', config.http.trustProxy);
 
 // Create router
