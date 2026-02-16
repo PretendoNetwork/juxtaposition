@@ -2,7 +2,35 @@ import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
-import type { PostViewProps } from '@/services/juxt-web/views/web/post';
+import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
+
+function CtrPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const post = props.post;
+	if (!post.screenshot) {
+		return <></>;
+	}
+
+	if (post.screenshot_aspect && post.screenshot_thumb) {
+		// modern type
+		return (
+			<img
+				className={cx(
+					'post-screenshot',
+					`post-screenshot-${post.screenshot_aspect}`
+				)}
+				src={utils.cdn(props.ctx, post.screenshot_thumb)}
+			/>
+		);
+	} else {
+		// legacy type
+		return (
+			<img
+				className="post-screenshot"
+				src={utils.cdn(props.ctx, post.screenshot)}
+			/>
+		);
+	}
+}
 
 export function CtrPostView(props: PostViewProps): ReactNode {
 	const post = props.post;
@@ -71,11 +99,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 									<p className="post-content-text">{post.body}</p>
 								)
 							: null}
-						{post.screenshot && post.screenshot !== ''
-							? (
-									<img className="post-screenshot" src={utils.cdn(props.ctx, post.screenshot)} evt-click="alert(this.src)" />
-								)
-							: null}
+						<CtrPostScreenshot ctx={props.ctx} post={post}></CtrPostScreenshot>
 						{post.painting !== ''
 							? (
 									<img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} />

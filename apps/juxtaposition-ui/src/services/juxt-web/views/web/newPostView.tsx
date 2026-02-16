@@ -49,6 +49,9 @@ export type NewPostViewProps = {
 	url: string;
 	show: string;
 	messagePid?: number;
+	// ctr only
+	ctrBanner?: string;
+	ctrLegacy?: boolean;
 };
 
 export function WebNewPostView(props: NewPostViewProps): ReactNode {

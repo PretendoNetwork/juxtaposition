@@ -2,7 +2,35 @@ import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
-import type { PostViewProps } from '@/services/juxt-web/views/web/post';
+import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
+
+function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const post = props.post;
+	if (!post.screenshot) {
+		return <></>;
+	}
+
+	if (post.screenshot_aspect) {
+		// modern type
+		return (
+			<img
+				className={cx(
+					'post-screenshot',
+					`post-screenshot-${post.screenshot_aspect}`
+				)}
+				src={utils.cdn(props.ctx, post.screenshot)}
+			/>
+		);
+	} else {
+		// legacy type
+		return (
+			<img
+				className="post-screenshot"
+				src={utils.cdn(props.ctx, post.screenshot)}
+			/>
+		);
+	}
+}
 
 export function PortalPostView(props: PostViewProps): ReactNode {
 	const post = props.post;
@@ -73,7 +101,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
 					>
 						{post.body !== '' ? <p className="post-content-text">{post.body}</p> : null}
-						{post.screenshot && post.screenshot !== '' ? <img className="post-screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
+						<PortalPostScreenshot ctx={props.ctx} post={post}></PortalPostScreenshot>
 						{post.painting !== '' ? <img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
 					</div>
