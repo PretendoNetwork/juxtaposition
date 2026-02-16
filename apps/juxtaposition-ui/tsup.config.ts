@@ -42,7 +42,8 @@ export default defineConfig([
 			'webfiles/ctr/js/juxt.js',
 			'webfiles/ctr/js/debug.js',
 			'webfiles/ctr/js/firstrun.js',
-			'webfiles/ctr/css/juxt.css'
+			'webfiles/ctr/css/juxt.css',
+			'webfiles/ctr/css/firstrun.css'
 		],
 		bundle: true,
 		sourcemap: true,

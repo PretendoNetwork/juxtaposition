@@ -2,32 +2,31 @@ import './polyfills';
 import { initNewPostView } from './new-post-view';
 import { initCheckboxes } from './controls/checkbox';
 import { initClientTabs } from './controls/ctabs';
-import { Pjax } from './pjax';
+import { pjaxInit, pjaxLoadUrl, pjaxHistory, pjaxCanGoBack, pjaxBack, pjaxRefresh } from './pjax';
 import { GET, POST } from './xhr';
-import { initPostPageView } from './post';
-import { empathyPostById } from './api';
+import { initPostPageView, initYeahButton } from './post';
+import { classList } from './util';
 
-var pjax;
 setInterval(checkForUpdates, 30000);
 
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);
 cave.toolbar_setCallback(2, function () {
 	cave.toolbar_setActiveButton(2);
-	pjax.loadUrl('/feed');
+	pjaxLoadUrl('/feed', true);
 });
 cave.toolbar_setCallback(3, function () {
 	cave.toolbar_setActiveButton(3);
-	pjax.loadUrl('/titles');
+	pjaxLoadUrl('/titles', true);
 });
 cave.toolbar_setCallback(4, function () {
 	cave.toolbar_setActiveButton(4);
 	checkForUpdates();
-	pjax.loadUrl('/news/my_news');
+	pjaxLoadUrl('/news/my_news', true);
 });
 cave.toolbar_setCallback(5, function () {
 	cave.toolbar_setActiveButton(5);
-	pjax.loadUrl('/users/me');
+	pjaxLoadUrl('/users/me', true);
 });
 cave.toolbar_setCallback(8, function () { });
 
@@ -112,57 +111,13 @@ function initPosts() {
 	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
-			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
+			pjaxLoadUrl(e.currentTarget.getAttribute('data-href'), true);
 		});
 	}
-	initYeah();
+	initYeahButton(document);
 	initSpoilers();
 }
-function initYeah() {
-	var els = document.querySelectorAll('button[data-post]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].onclick = yeah;
-	}
-	function yeah(e) {
-		var el = e.currentTarget;
-		var sprite = el.querySelector('.sprite.sp-yeah');
-		var id = el.getAttribute('data-post');
-		var parent = document.getElementById(id);
-		var count = document.getElementById('count-' + id);
-		el.disabled = true;
-		if (classList.contains(el, 'selected')) {
-			classList.remove(el, 'selected');
-			classList.remove(sprite, 'selected');
-			classList.remove(parent, 'yeah');
-			if (count) {
-				count.innerText -= 1;
-			}
-			cave.snd_playSe('SE_OLV_CANCEL');
-		} else {
-			classList.add(el, 'selected');
-			classList.add(sprite, 'selected');
-			classList.add(parent, 'yeah');
-			if (count) {
-				count.innerText = ++count.innerText;
-			}
-			cave.snd_playSe('SE_OLV_MII_ADD');
-		}
-		empathyPostById(id, function (post) {
-			if (post.status !== 200) {
-				// Apparently there was an actual error code for not being able to yeah a post, who knew!
-				// TODO: Find more of these
-				return cave.error_callErrorViewer(155927);
-			}
-			el.disabled = false;
-			if (count) {
-				count.innerText = post.count;
-			}
-		});
-	}
-}
+
 function initSpoilers() {
 	var els = document.querySelectorAll('button[data-post-id]');
 	if (!els) {
@@ -207,7 +162,7 @@ function initTabs() {
 			var response = data.responseText;
 			if (response && data.status === 200) {
 				document.getElementsByClassName('tab-body')[0].innerHTML = response;
-				pjax.history.push(child.href);
+				pjaxHistory.push(child.href);
 				initPosts();
 				initMorePosts();
 				cave.transition_end();
@@ -290,10 +245,10 @@ function reportPost(post) {
 window.reportPost = reportPost;
 
 function back() {
-	if (!pjax.canGoBack()) {
+	if (!pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(0);
 	} else {
-		pjax.back();
+		pjaxBack();
 	}
 }
 
@@ -319,20 +274,8 @@ function initAll() {
 	initCheckboxes();
 	checkForUpdates();
 	initToolbarConfigs();
-	pjax.refresh();
+	pjaxRefresh();
 }
-
-var classList = {
-	contains: function (el, string) {
-		return el.className.indexOf(string) !== -1;
-	},
-	add: function (el, string) {
-		el.className += ' ' + string;
-	},
-	remove: function (el, string) {
-		el.className = el.className.replace(string, '');
-	}
-};
 
 function checkForUpdates() {
 	GET('/users/notifications.json', function updates(data) {
@@ -374,17 +317,17 @@ function saveUserSettings() {
 }
 window.saveUserSettings = saveUserSettings;
 function exitUserSettings() {
-	pjax.loadUrl('/users/me');
+	pjaxLoadUrl('/users/me', true);
 	cave.toolbar_setButtonType(1);
 }
 window.exitUserSettings = exitUserSettings;
 
 document.addEventListener('DOMContentLoaded', function () {
-	pjax = Pjax.init({
+	pjaxInit({
 		elements: 'a[data-pjax]',
 		selectors: ['title', '#body']
 	});
-	console.debug('Pjax initialized.', pjax);
+	console.debug('Pjax initialized.');
 	initAll();
 	stopLoading();
 });
@@ -394,7 +337,7 @@ document.addEventListener('PjaxRequest', function () {
 document.addEventListener('PjaxDone', function () {
 	initAll();
 	cave.brw_scrollImmediately(0, 0);
-	if (pjax.canGoBack()) {
+	if (pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(1);
 	} else {
 		cave.toolbar_setButtonType(0);
