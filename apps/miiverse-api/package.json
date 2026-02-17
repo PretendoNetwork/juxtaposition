@@ -28,6 +28,7 @@
 		"express-subdomain": "^1.0.6",
 		"moment": "^2.24.0",
 		"mongoose": "^8.22.0",
+		"mongoose-fuzzy-search-next": "^1.0.13",
 		"multer": "^2.0.2",
 		"nice-grpc": "^2.1.14",
 		"node-snowflake": "0.0.1",

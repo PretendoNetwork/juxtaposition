@@ -3,14 +3,13 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
-import type { CommunitySchema } from '@/models/communities';
+import type { CommunityDto } from '@/api/community';
 
 export type ManageCommunityViewProps = {
 	ctx: RenderContext;
 	search?: string;
-	communities: InferSchemaType<typeof CommunitySchema>[];
+	communities: CommunityDto[];
 	hasNextPage: boolean;
 	page: number;
 };
