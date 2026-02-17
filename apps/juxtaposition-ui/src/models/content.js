@@ -4,15 +4,15 @@ export const ContentSchema = new Schema({
 	pid: Number,
 	followed_communities: {
 		type: [String],
-		default: [0]
+		default: []
 	},
 	followed_users: {
 		type: [Number],
-		default: [0]
+		default: []
 	},
 	following_users: {
 		type: [Number],
-		default: [0]
+		default: []
 	}
 });
 

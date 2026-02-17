@@ -962,7 +962,7 @@ h6.yeah-text {
 .icon-container,
 .mii-icon-container,
 .post-permalink-feeling-icon,
-.text>span>svg {
+.text>span svg {
  position:relative
 }
 #community-post-list .community-info.with-header-banner .icon {
@@ -1001,7 +1001,7 @@ h6.yeah-text {
 .text>.rating::before {
  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='25' fill='%23ffffff' viewBox='0 0 210 260'%3E%3Crect width='256' height='256' fill='none'%3E%3C/rect%3E%3Ccircle cx='88' cy='108' r='52' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'%3E%3C/circle%3E%3Cpath d='M155.4,57.9A54.5,54.5,0,0,1,169.5,56a52,52,0,0,1,0,104' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'%3E%3C/path%3E%3Cpath d='M16,197.4a88,88,0,0,1,144,0' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'%3E%3C/path%3E%3Cpath d='M169.5,160a87.9,87.9,0,0,1,72,37.4' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'%3E%3C/path%3E%3C/svg%3E")
 }
-.text>span>svg {
+.text>span svg {
  -webkit-transform:translate(0,10%)
 }
 .message-post-list .post {
@@ -1707,27 +1707,27 @@ input[type=radio] {
 .feeling-button-puzzled:checked {
  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23ce80ff' stroke='%23fff' viewBox='0 0 256 256'%3E%3Ccircle cx='128' cy='128' r='96' fill='23ce80ff' stroke='%23ce80ff' stroke-miterlimit='10' stroke-width='16'/%3E%3Cpolyline points='80 172 96 152 112 172 128 152 144 172 160 152 176 172' fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3E%3Ccircle cx='92' cy='108' r='12' fill='%23fff'/%3E%3Ccircle cx='164' cy='108' r='12' fill='%23fff'/%3E%3C/svg%3E")!important
 }
-.supporter-star.mario>svg {
+.supporter-star.mario svg {
  fill:rgba(255,132,132,.2);
  color:#ff8484
 }
-.supporter-star.super>svg {
+.supporter-star.super svg {
  fill:rgba(89,201,165,.3);
  color:#59c9a5
 }
-.supporter-star.mega>svg {
+.supporter-star.mega svg {
  fill:rgba(202,177,251,.3);
  color:#cab1fb
 }
-.supporter-star.dev>svg {
+.supporter-star.dev svg {
  color:#fff;
  fill:url(#rainbow)
 }
-.supporter-star.admin>svg {
+.supporter-star.admin svg {
  fill:rgba(220,226,27,.3);
  color:#dce21b
 }
-.supporter-star.tester>svg {
+.supporter-star.tester svg {
  fill:rgba(23,212,237,.3);
  color:#17d4ed;
  -webkit-transform:translate(0,15%)
