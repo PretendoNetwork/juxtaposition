@@ -8,7 +8,7 @@
                 <path id="XMLID_9_" d="M55.68,47.8a10.719,10.719,0,0,0-6.71,2.3H45.983A1.336,1.336,0,0,0,44.6,51.376V75.84a1.431,1.431,0,0,0,1.383,1.383h3.023a1.367,1.367,0,0,0,1.309-1.383V68.392A10.993,10.993,0,1,0,55.68,47.8Zm0,17.182a6.213,6.213,0,1,1,6.213-6.213A6.216,6.216,0,0,1,55.68,64.982Z" transform="translate(-44.6 -40.406)" fill="#9d6ff3"></path>
             </g>
         </g>
-        <text id="Pretendo" transform="translate(593 492)" fill="#fff" fontSize="17" fontFamily="Poppins-Bold, Poppins" fontWeight="700">
+        <text id="Pretendo" transform="translate(593 492)" fill="#fff" font-size="17" font-family="Poppins-Bold, Poppins" font-weight="700">
             <tspan x="0" y="0">Pretendo</tspan>
         </text>
     </g>
