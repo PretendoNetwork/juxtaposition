@@ -18,7 +18,6 @@ body {
 
 #body {
     background-image: url(@/images/background.png);
-    background-size: 100px;
     background-repeat: repeat;
     padding-bottom: 28px; /* Toolbar location */
 }
