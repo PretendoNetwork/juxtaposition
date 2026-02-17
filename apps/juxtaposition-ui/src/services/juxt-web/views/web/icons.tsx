@@ -6,15 +6,23 @@ import menuIcon from './assets/menu_icon.svg?raw';
 import flagIcon from './assets/flag_icon.svg?raw';
 import binIcon from './assets/bin_icon.svg?raw';
 import shareIcon from './assets/share_icon.svg?raw';
+import devBadgeIcon from './assets/dev_badge.svg?raw';
+import modBadgeIcon from './assets/mod_badge.svg?raw';
+import starBadgeIcon from './assets/star_badge.svg?raw';
+import testerBadgeIcon from './assets/tester_badge.svg?raw';
 import type { ReactNode } from 'react';
 
 const icons = {
-	heart: heartIcon,
-	reply: replyIcon,
-	menu: menuIcon,
-	flag: flagIcon,
-	bin: binIcon,
-	share: shareIcon
+	'dev-badge': devBadgeIcon,
+	'mod-badge': modBadgeIcon,
+	'star-badge': starBadgeIcon,
+	'tester-badge': testerBadgeIcon,
+	'heart': heartIcon,
+	'reply': replyIcon,
+	'menu': menuIcon,
+	'flag': flagIcon,
+	'bin': binIcon,
+	'share': shareIcon
 } as const;
 
 type WebIcon = keyof typeof icons;

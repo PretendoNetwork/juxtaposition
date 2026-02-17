@@ -4,6 +4,7 @@ import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/roo
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
+import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -70,102 +71,12 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						<span className="title">{community.name}</span>
 						<span className="text">
 							<span>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="20"
-									height="23"
-									fill="#ffffff"
-									viewBox="0 0 256 200"
-								>
-									<rect width="256" height="256" fill="none"></rect>
-									<polygon
-										points="128 160 96 160 96 128 192 32 224 64 128 160"
-										fill="none"
-										stroke="#ffffff"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="24"
-									>
-									</polygon>
-									<line
-										x1="164"
-										y1="60"
-										x2="196"
-										y2="92"
-										fill="none"
-										stroke="#ffffff"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="24"
-									>
-									</line>
-									<path
-										d="M216,128.6V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h79.4"
-										fill="none"
-										stroke="#ffffff"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="24"
-									>
-									</path>
-								</svg>
+								<PortalIcon name="posts" />
 								{props.totalPosts}
 							</span>
 							<span>
 								|
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="20"
-									height="23"
-									fill="#ffffff"
-									viewBox="0 0 256 200"
-								>
-									<rect width="256" height="256" fill="none"></rect>
-									<line
-										x1="204"
-										y1="136"
-										x2="244"
-										y2="136"
-										fill="none"
-										stroke="#ffffff"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="24"
-									>
-									</line>
-									<line
-										x1="224"
-										y1="116"
-										x2="224"
-										y2="156"
-										fill="none"
-										stroke="#ffffff"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="24"
-									>
-									</line>
-									<circle
-										cx="108"
-										cy="100"
-										r="60"
-										fill="none"
-										stroke="#ffffff"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="24"
-									>
-									</circle>
-									<path
-										d="M22.2,200a112,112,0,0,1,171.6,0"
-										fill="none"
-										stroke="#ffffff"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="24"
-									>
-									</path>
-								</svg>
+								<PortalIcon name="followers" />
 								<span id="followers">
 									{community.followers}
 								</span>

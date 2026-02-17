@@ -4,6 +4,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { utils } from '@/services/juxt-web/views/utils';
+import { WebIcon } from '@/services/juxt-web/views/web/icons';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -34,7 +35,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		tierPart = (
 			<span className="supporter-star mario">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+				<WebIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -42,7 +43,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		tierPart = (
 			<span className="supporter-star super">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+				<WebIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -50,7 +51,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		tierPart = (
 			<span className="supporter-star mega">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+				<WebIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -59,19 +60,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		accessLevelPart = (
 			<span className="supporter-star dev">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-tool">
-					<defs>
-						<linearGradient id="rainbow">
-							<stop offset="16%" stop-color="red" />
-							<stop offset="32%" stop-color="orange" />
-							<stop offset="48%" stop-color="yellow" />
-							<stop offset="64%" stop-color="green" />
-							<stop offset="80%" stop-color="blue" />
-							<stop offset="96%" stop-color="purple" />
-						</linearGradient>
-					</defs>
-					<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-				</svg>
+				<WebIcon name="dev-badge" />
 			</span>
 		);
 	}
@@ -79,7 +68,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		accessLevelPart = (
 			<span className="supporter-star mega">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+				<WebIcon name="mod-badge" />
 			</span>
 		);
 	}
@@ -87,11 +76,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		accessLevelPart = (
 			<span className="supporter-star tester">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor">
-					<path d="M104,32V93.8a8.4,8.4,0,0,1-1.1,4.1l-63.6,106A8,8,0,0,0,46.1,216H209.9a8,8,0,0,0,6.8-12.1l-63.6-106a8.4,8.4,0,0,1-1.1-4.1V32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-					<line x1="88" y1="32" x2="168" y2="32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-					<path d="M62.6,165c11.8-8.7,32.1-13.6,65.4,3,35.7,17.9,56.5,10.8,67.9,1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-				</svg>
+				<WebIcon name="tester-badge" />
 			</span>
 		);
 	}

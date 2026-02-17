@@ -1,8 +1,8 @@
 /* eslint-disable no-restricted-imports -- raw import plugin does not support path aliases */
-import devBadgeIcon from './assets/dev-badge.svg?raw';
-import modBadgeIcon from './assets/mod-badge.svg?raw';
-import starBadgeIcon from './assets/star-badge.svg?raw';
-import testerBadgeIcon from './assets/tester-badge.svg?raw';
+import devBadgeIcon from './assets/dev_badge.svg?raw';
+import modBadgeIcon from './assets/mod_badge.svg?raw';
+import starBadgeIcon from './assets/star_badge.svg?raw';
+import testerBadgeIcon from './assets/tester_badge.svg?raw';
 import birthdayIcon from './assets/birthday.svg?raw';
 import countryIcon from './assets/country.svg?raw';
 import followersIcon from './assets/followers.svg?raw';
