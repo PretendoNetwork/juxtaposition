@@ -1079,27 +1079,27 @@ input[type="radio"] {
 .feeling-button-puzzled:checked {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23ce80ff' stroke='%23fff' viewBox='0 0 256 256'%3E%3Ccircle cx='128' cy='128' r='96' fill='23ce80ff' stroke='%23ce80ff' stroke-miterlimit='10' stroke-width='16'/%3E%3Cpolyline points='80 172 96 152 112 172 128 152 144 172 160 152 176 172' fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3E%3Ccircle cx='92' cy='108' r='12' fill='%23fff'/%3E%3Ccircle cx='164' cy='108' r='12' fill='%23fff'/%3E%3C/svg%3E") !important;
 }
-.supporter-star.mario>svg {
+.supporter-star.mario svg {
 	fill:rgba(255,132,132,.2);
 	color:#ff8484
 }
-.supporter-star.super>svg {
+.supporter-star.super svg {
 	fill:rgba(89,201,165,.3);
 	color:#59c9a5
 }
-.supporter-star.mega>svg {
+.supporter-star.mega svg {
 	fill:rgba(202,177,251,.3);
 	color:#cab1fb
 }
-.supporter-star.dev>svg {
+.supporter-star.dev svg {
 	color:#fff;
 	fill:url(#rainbow)
 }
-.supporter-star.admin>svg {
+.supporter-star.admin svg {
 	fill:rgba(220,226,27,.3);
 	color:#dce21b
 }
-.supporter-star.tester>svg {
+.supporter-star.tester svg {
 	fill:rgba(23,212,237,.3);
 	color:#17d4ed;
 	-webkit-transform:translate(0,15%)

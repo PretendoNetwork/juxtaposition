@@ -3,6 +3,7 @@ import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -15,7 +16,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star mario">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+				<PortalIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -23,7 +24,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star super">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+				<PortalIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -31,7 +32,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star mega">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
+				<PortalIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -40,19 +41,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star dev">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-tool">
-					<defs>
-						<linearGradient id="rainbow">
-							<stop offset="16%" stop-color="red" />
-							<stop offset="32%" stop-color="orange" />
-							<stop offset="48%" stop-color="yellow" />
-							<stop offset="64%" stop-color="green" />
-							<stop offset="80%" stop-color="blue" />
-							<stop offset="96%" stop-color="purple" />
-						</linearGradient>
-					</defs>
-					<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-				</svg>
+				<PortalIcon name="dev-badge" />
 			</span>
 		);
 	}
@@ -60,7 +49,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star mega">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
+				<PortalIcon name="mod-badge" />
 			</span>
 		);
 	}
@@ -68,11 +57,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star tester">
 				|
-				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor">
-					<path d="M104,32V93.8a8.4,8.4,0,0,1-1.1,4.1l-63.6,106A8,8,0,0,0,46.1,216H209.9a8,8,0,0,0,6.8-12.1l-63.6-106a8.4,8.4,0,0,1-1.1-4.1V32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-					<line x1="88" y1="32" x2="168" y2="32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-					<path d="M62.6,165c11.8-8.7,32.1-13.6,65.4,3,35.7,17.9,56.5,10.8,67.9,1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-				</svg>
+				<PortalIcon name="tester-badge" />
 			</span>
 		);
 	}
@@ -135,36 +120,19 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 											</span>
 											<span>
 												|
-												<svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#ffffff" viewBox="0 0 256 200">
-													<rect width="256" height="256" fill="none"></rect>
-													<polygon points="128 160 96 160 96 128 192 32 224 64 128 160" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polygon>
-													<line x1="164" y1="60" x2="196" y2="92" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
-													<path d="M216,128.6V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h79.4" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path>
-												</svg>
+												<PortalIcon name="posts" />
 												{props.totalPosts}
 											</span>
 											<span>
 												|
-												<svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#ffffff" viewBox="0 0 256 200">
-													<rect width="256" height="256" fill="none"></rect>
-													<line x1="204" y1="136" x2="244" y2="136" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
-													<line x1="224" y1="116" x2="224" y2="156" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line>
-													<circle cx="108" cy="100" r="60" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle>
-													<path d="M22.2,200a112,112,0,0,1,171.6,0" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path>
-												</svg>
+												<PortalIcon name="followers" />
 												<span id="followers">{props.userContent.following_users.length - 1}</span>
 											</span>
 											{props.userSettings.country_visibility
 												? (
 														<span>
 															|
-															<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 256">
-																<rect width="256" height="256" fill="none" />
-																<circle cx="128" cy="128" r="96" fill="none" stroke="#ffffff" stroke-miterlimit="10" stroke-width="16" />
-																<line x1="37.5" y1="96" x2="218.5" y2="96" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<line x1="37.5" y1="160" x2="218.5" y2="160" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<ellipse cx="128" cy="128" rx="40" ry="93.4" fill="none" stroke="#ffffff" stroke-miterlimit="10" stroke-width="16" />
-															</svg>
+															<PortalIcon name="country" />
 															{props.user.country}
 														</span>
 													)
@@ -173,14 +141,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												? (
 														<span>
 															|
-															<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 256">
-																<rect width="256" height="256" fill="none" />
-																<line x1="128" y1="88" x2="128" y2="64" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<path d="M128,64c46.2-16,0-56,0-56S80,48,128,64Z" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<path d="M162,126a34,34,0,0,1-68,0" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<path d="M94,126a34,34,0,0,1-33.3,34c-19.1.4-34.7-15.6-34.7-34.7V112A23.9,23.9,0,0,1,50,88H206a23.9,23.9,0,0,1,24,24v13.3c0,19.1-15.6,35.1-34.7,34.7A34,34,0,0,1,162,126" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<path d="M216,153.3V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V153.3" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-															</svg>
+															<PortalIcon name="birthday" />
 															{moment.utc(props.user.birthdate).format('MMM Do')}
 														</span>
 													)
@@ -189,14 +150,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												? (
 														<span>
 															|
-															<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 256">
-																<rect width="256" height="256" fill="none" />
-																<line x1="152" y1="108" x2="184" y2="108" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<line x1="72" y1="108" x2="104" y2="108" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<line x1="88" y1="92" x2="88" y2="124" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<path d="M172,55.7,84,56A52.1,52.1,0,0,0,32.8,99h0L16.4,183.1a28,28,0,0,0,47.4,24.7h0L107,160l65-.3a52,52,0,1,0,0-104Z" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-																<path d="M223.2,98.7l16.4,84.4a28,28,0,0,1-47.4,24.7h0l-43.2-48" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-															</svg>
+															<PortalIcon name="skill" />
 															{props.userSettings.game_skill === 0
 																? (
 																		<>{props.ctx.lang.setup.experience_text.beginner}</>
