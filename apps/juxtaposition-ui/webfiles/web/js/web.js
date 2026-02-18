@@ -2,7 +2,8 @@ import Pjax from 'pjax';
 import { popupItemCb, setupPopup } from './menus';
 import { initReportForm, reportPost } from './reports';
 import { POST, GET } from './xhr';
-import { deletePostById, empathyPostById } from './api';
+import { deletePostById } from './api';
+import { initYeahButton } from './post';
 
 let pjax;
 setInterval(checkForUpdates, 30000);
@@ -24,40 +25,7 @@ function initNavBar() {
 		});
 	}
 }
-function initYeah() {
-	const els = document.querySelectorAll('span[data-post]');
-	if (!els) {
-		return;
-	}
-	for (let i = 0; i < els.length; i++) {
-		els[i].removeEventListener('click', yeah);
-		els[i].addEventListener('click', yeah);
-	}
-	function yeah(e) {
-		const el = e.currentTarget;
-		const id = el.getAttribute('data-post');
-		const parent = document.getElementById(id);
-		const count = document.getElementById('count-' + id);
-		el.disabled = true;
-		if (el.classList.contains('selected')) {
-			el.classList.remove('selected');
-			parent.classList.remove('yeah');
-			count.innerText -= 1;
-		} else {
-			el.classList.add('selected');
-			parent.classList.add('yeah');
-			count.innerText = ++count.innerText;
-		}
 
-		empathyPostById(id, function (post) {
-			if (post.status !== 200) {
-				return Toast('You cannot give this post a Yeah!');
-			}
-			el.disabled = false;
-			count.innerText = post.count;
-		});
-	}
-}
 function initTabs() {
 	const els = document.querySelectorAll('.tab-button');
 	if (!els) {
@@ -140,7 +108,7 @@ function initPosts() {
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
 		});
 	}
-	initYeah();
+	initYeahButton(document);
 	initSpoilers();
 	initPopupMenus();
 }

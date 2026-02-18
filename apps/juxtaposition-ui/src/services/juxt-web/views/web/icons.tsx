@@ -44,7 +44,14 @@ export type WebIconProps = {
 
 export function WebIcon(props: WebIconProps): ReactNode {
 	const iconHtml = icons[props.name];
-	return <span style={{ lineHeight: '0.7' }} dangerouslySetInnerHTML={{ __html: iconHtml }} />;
+	return (
+		<span
+			role="img"
+			aria-label={`${props.name} icon`}
+			style={{ lineHeight: '0.7' }}
+			dangerouslySetInnerHTML={{ __html: iconHtml }}
+		/>
+	);
 }
 
 export function PretendoLogo(): ReactNode {
