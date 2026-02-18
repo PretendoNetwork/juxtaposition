@@ -327,7 +327,8 @@ body {
  height:96px;
  border-radius:12px;
  background-color:#fff;
- user-select:none
+ user-select:none;
+ overflow: hidden;
 }
 .list-content-with-icon-and-text .body,
 .list-content-with-icon-column .body {

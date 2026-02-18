@@ -1,8 +1,9 @@
-import moment from 'moment';
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { humanFromNow } from '@/util';
+import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/mii-icon';
+import { PortalIconView } from '@/services/juxt-web/views/portal/components/icon';
 import type { ReactNode } from 'react';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
 
@@ -12,9 +13,7 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
 		return (
 			<>
-				<a href={`/users/${notif.objectID}`} data-pjax="#body" className="icon-container notify">
-					<img src={utils.cdn(props.ctx, `/mii/${notif.objectID}/normal_face.png`)} className="icon" />
-				</a>
+				<PortalMiiIcon ctx={props.ctx} pid={Number(notif.objectID)} big={true}></PortalMiiIcon>
 				<div className="body">
 					<p className="text">
 						{notif.users.length === 1
@@ -47,10 +46,13 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 											</span>
 										</>
 									)}
-						<a className="link" href={notif.link ?? '#'}>{props.ctx.lang.notifications.new_follower}</a>
+						<a className="link" href={notif.link ?? '#'}>
+							{' '}
+							{props.ctx.lang.notifications.new_follower}
+						</a>
 						<span className="timestamp">
 							{' '}
-							{moment(notif.lastUpdated).fromNow()}
+							{humanFromNow(notif.lastUpdated)}
 						</span>
 					</p>
 				</div>
@@ -61,16 +63,14 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<>
-				<a href={notif.link ?? '#'} data-pjax="#body" className="icon-container notify">
-					<img src={notif.image ?? undefined} className="icon" />
-				</a>
+				<PortalIconView ctx={props.ctx} href={notif.link ?? undefined} src={notif.image ?? ''}></PortalIconView>
 				<div className="body">
-					<a className="body" href={notif.link ?? '#'}>
+					<a href={notif.link ?? '#'}>
 						<span className="text">
 							{notif.text}
 							<span className="timestamp">
 								{' '}
-								{moment(notif.lastUpdated).fromNow()}
+								{humanFromNow(notif.lastUpdated)}
 							</span>
 						</span>
 					</a>
