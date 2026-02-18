@@ -112,8 +112,8 @@
         "info_text": "Juxt je herná komunita riadená používateľmi, kde môžete komunikovať s ľuďmi\n                po celom svete. Môžete písať alebo kresliť príspevky v herných komunitách alebo posielať správy priamo svojim priateľom.",
         "ready_text": "Najprv si pozrite niektoré komunity a zistite, o čom píšu ľudia z celého sveta. Využite túto príležitosť a zoznámte sa s Juxtom. Na ceste môžete urobiť nejaké nové objavy!",
         "experience": "Herný zážitok",
-        "google": "Google Analytics",
-        "google_text": "Juxtaposition používa Google Analytics na sledovanie toho, ako používatelia používajú našu službu. Zhromaždené údaje zahŕňajú, ale nie sú obmedzené na čas návštevy, navštívené stránky a čas strávený na stránke. Tieto údaje sa k vám žiadnym spôsobom nepripájajú a nepoužívajú sa ani my, ani spoločnosť Google.",
+        "analytics": "Analytics",
+        "analytics_text": "Juxtaposition používa Cloudflare Web Analytics na sledovanie toho, ako používatelia používajú našu službu. Zhromaždené údaje zahŕňajú, ale nie sú obmedzené na čas návštevy, navštívené stránky a čas strávený na stránke. Tieto údaje sa k vám žiadnym spôsobom nepripájajú a nepoužívajú sa ani my, ani spoločnosť Cloudflare.",
         "done": "Bavte sa v Juxte!",
         "guest_text": "Momentálne nemôžeme overiť váš účet, čo pravdepodobne znamená, že sa momentálne prihlasujete pomocou účtu Nintendo Network. Stále budete môcť prehliadať Juxt, ale nebudete môcť Áno! príspevky alebo vytvorte vlastné príspevky, kým sa neprihlásite pomocou účtu Pretendo Network. Pre viac informácií skontrolujte Discord server."
     },

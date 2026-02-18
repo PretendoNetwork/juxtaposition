@@ -46,8 +46,8 @@
         "guest": "",
         "ready": "",
         "guest_text": "",
-        "google": "",
-        "google_text": ""
+        "analytics": "",
+        "analytics_text": ""
     },
     "user_page": {
         "followers": "Følgere",

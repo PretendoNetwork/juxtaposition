@@ -71,12 +71,12 @@
         },
         "ready_text": "Pertama, kunjungi beberapa komunitas dan lihat apa yang diposting orang-orang dari seluruh dunia. Manfaatkan kesempatan ini untuk mengenal Juxt lebih jauh. Anda mungkin akan menemukan beberapa hal baru di sepanjang perjalanan!",
         "done": "Bersenang-senanglah di Juxt!",
-        "google": "Google Analytics",
+        "analytics": "Analytics",
         "ready": "Siap untuk Mulai Menggunakan Juxt",
         "guest": "Mode Tamu",
         "info_text": "Juxt adalah komunitas game yang digerakkan oleh pengguna tempat anda dapat berinteraksi dengan orang-orang\n                di seluruh dunia. Anda dapat menulis atau menggambar postingan di komunitas game atau mengirim pesan langsung ke teman-teman anda.",
         "guest_text": "Kami tidak dapat memverifikasi akun anda saat ini, yang kemungkinan berarti Anda saat ini masuk dengan akun Nintendo Network. Anda masih dapat menjelajahi Juxt, tetapi anda tidak akan dapat memposting Ya! atau membuat postingan sendiri hingga anda masuk dengan akun Pretendo Network. Untuk informasi lebih lanjut, lihat di server Discord.",
-        "google_text": "Juxt menggunakan Google Analytics untuk melacak bagaimana pengguna menggunakan layanan kami. Data yang dikumpulkan termasuk tetapi tidak terbatas pada waktu kunjungan, halaman yang dikunjungi, dan waktu yang dihabiskan di situs. Data ini tidak dikaitkan dengan Anda dengan cara apa pun, dan tidak digunakan untuk iklan oleh kami atau Google.",
+        "analytics_text": "Juxt menggunakan Cloudflare Web Analytics untuk melacak bagaimana pengguna menggunakan layanan kami. Data yang dikumpulkan termasuk tetapi tidak terbatas pada waktu kunjungan, halaman yang dikunjungi, dan waktu yang dihabiskan di situs. Data ini tidak dikaitkan dengan Anda dengan cara apa pun, dan tidak digunakan untuk iklan oleh kami atau Cloudflare.",
         "info": "Apa itu Juxtaposition?"
     },
     "community": {

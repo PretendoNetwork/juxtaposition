@@ -50,9 +50,9 @@
             "intermediate": "Średniozaawansowany",
             "expert": "Ekspert"
         },
-        "google": "Analityki Google",
+        "analytics": "Analityki",
         "info_text": "Juxt to społeczność graczy, w której możesz wchodzić w interakcje z ludźmi z całego świata.\n                z całego świata. Możesz pisać lub rysować posty w społecznościach gier lub wysyłać wiadomości bezpośrednio do swoich znajomych.",
-        "google_text": "Juxtaposition wykorzystuje Analityki Google w celu śledzenia, jak użytkownicy korzystają z naszego serwisu. Zbierane dane obejmują, ale nie ograniczają się do czasu wizyty, odwiedzanych stron i czasu spędzonego na stronie. Dane te nie są w żaden sposób powiązane z użytkownikiem i nie są wykorzystywane do reklam przez nas lub Google.",
+        "analytics_text": "Juxtaposition wykorzystuje Analityki Cloudflare w celu śledzenia, jak użytkownicy korzystają z naszego serwisu. Zbierane dane obejmują, ale nie ograniczają się do czasu wizyty, odwiedzanych stron i czasu spędzonego na stronie. Dane te nie są w żaden sposób powiązane z użytkownikiem i nie są wykorzystywane do reklam przez nas lub Cloudflare.",
         "ready": "Gotowy(wa), aby zacząc korzystać z Juxt",
         "ready_text": "Najpierw sprawdź kilka społeczności i zobacz, o czym piszą ludzie z całego świata. Skorzystaj z okazji, aby zapoznać się z Juxt. Być może po drodze dokonasz kilku nowych odkryć!",
         "done": "Baw się dobrze w Juxt!",
