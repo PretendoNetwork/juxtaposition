@@ -135,7 +135,22 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 					</div>
 				</div>
 			</div>
-			{/* TODO add locals.yeah logic back */}
+			{ props.isMainPost && post.yeahs.length > 0
+				? (
+						<>
+							<h6 className="yeah-text">
+								<span className="feeling">{ post.yeahs.length }</span>
+								{' '}
+								people gave this post a yeah.
+							</h6>
+							<div className="yeah-list">
+								{post.yeahs.slice(0, 10).map(pid => (
+									<CtrMiiIcon ctx={props.ctx} pid={pid}></CtrMiiIcon>
+								))}
+							</div>
+						</>
+					)
+				: null}
 		</div>
 	);
 }
