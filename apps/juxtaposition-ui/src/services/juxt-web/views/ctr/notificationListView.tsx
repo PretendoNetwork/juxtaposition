@@ -64,7 +64,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 			<>
 				<CtrIcon ctx={props.ctx} href={notif.link ?? undefined} src={notif.image ?? ''}></CtrIcon>
 				<div className="body">
-					<a className="body" href={notif.link ?? undefined}>
+					<a href={notif.link ?? undefined}>
 						<p style={{ color: 'black' }}>
 							<span>{notif.text}</span>
 							<span className="timestamp">
