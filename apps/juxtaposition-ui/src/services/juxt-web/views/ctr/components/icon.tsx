@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import type { ReactNode } from 'react';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 
@@ -6,14 +7,15 @@ export type CtrIconProps = {
 
 	src: string;
 	href?: string;
-	className?: string; // default ".icon"
+	baseClass?: string; // default ".icon"
+	className?: string; // extra classes
 };
 
 export function CtrIcon(props: CtrIconProps): ReactNode {
-	const className = props.className ?? 'icon';
+	const baseClass = props.baseClass ?? 'icon';
 	return (
-		<a href={props.href} className={`${className}-container`} data-pjax="#body">
-			<img src={props.src} className={className} />
+		<a href={props.href} className={cx(`${baseClass}-container`, props.className)} data-pjax="#body">
+			<img src={props.src} className={baseClass} />
 		</a>
 	);
 }
