@@ -1,4 +1,4 @@
-import { POST, DELETE } from './xhr';
+import { DELETE, POSTNoTranstion } from './xhr';
 
 export type EmpathyPostResponse = {
 	status: number;
@@ -9,7 +9,7 @@ export type EmpathyPostResponse = {
 export function empathyPostById(id: string, cb: (post: EmpathyPostResponse) => void): void {
 	var params = 'postID=' + id;
 
-	POST('/posts/empathy', params, (xhr) => {
+	POSTNoTranstion('/posts/empathy', params, (xhr) => {
 		if (xhr.status !== 200) {
 			return cb({ status: xhr.status, id, count: 0 });
 		}

@@ -1,5 +1,5 @@
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { Request, Response } from 'express';
+import type { Request } from 'express';
 import type { z } from 'zod';
 import type { UserTokens } from '@/types/juxt/tokens';
 import type { ParamPack } from '@/types/common/param-pack';
@@ -106,14 +106,4 @@ export function parseReq<TBody extends AnySchema = undefined, TQuery extends Any
 		auth: getAuthContext,
 		hasAuth
 	} as ParsedRequest<TBody, TQuery, TParams, TFiles>;
-}
-
-/**
- * Returns a Mongoose filter if the account isn't a moderator.
- */
-export function ifNotMod<T>(res: Response, filter: T): T | {} {
-	if (res.locals.moderator) {
-		return {};
-	}
-	return filter;
 }

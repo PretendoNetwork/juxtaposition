@@ -1,41 +1,43 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
+import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import type { ReactNode } from 'react';
-import type { PostViewProps } from '@/services/juxt-web/views/web/post';
+import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
+
+function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const post = props.post;
+	if (!post.screenshot) {
+		return <></>;
+	}
+
+	if (post.screenshot_aspect) {
+		// modern type
+		return (
+			<img
+				className={cx(
+					'post-screenshot',
+					`post-screenshot-${post.screenshot_aspect}`
+				)}
+				src={utils.cdn(props.ctx, post.screenshot_big ? post.screenshot_big : post.screenshot)}
+			/>
+		);
+	} else {
+		// legacy type
+		return (
+			<img
+				className="post-screenshot"
+				src={utils.cdn(props.ctx, post.screenshot)}
+			/>
+		);
+	}
+}
 
 export function PortalPostView(props: PostViewProps): ReactNode {
 	const post = props.post;
 	const hasYeahed = post.yeahs && post.yeahs.indexOf(props.ctx.pid) !== -1;
 	const isModerator = props.ctx.moderator;
 	// TODO implement moderator removed post logic
-
-	const screenshot = ((): ReactNode => {
-		if (!post.screenshot) {
-			return <></>;
-		}
-
-		if (post.screenshot_aspect) {
-			// modern type
-			return (
-				<img
-					className={cx(
-						'post-screenshot',
-						`post-screenshot-${post.screenshot_aspect}`
-					)}
-					src={utils.cdn(props.ctx, post.screenshot_big ? post.screenshot_big : post.screenshot)}
-				/>
-			);
-		} else {
-			// legacy type
-			return (
-				<img
-					className="post-screenshot"
-					src={utils.cdn(props.ctx, post.screenshot)}
-				/>
-			);
-		}
-	})();
 
 	const content = (
 		<>
@@ -66,10 +68,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 							? (
 									<a href={utils.url('/topics', { topic_tag: post.topic_tag })} data-pjax="#body">
 										{/* TODO this has been modified due to inbalanced tags */}
-										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="30" height="30">
-											<path d="M42.34,138.34A8,8,0,0,1,40,132.69V40h92.69a8,8,0,0,1,5.65,2.34l99.32,99.32a8,8,0,0,1,0,11.31L153,237.66a8,8,0,0,1-11.31,0Z" fill="#a362d8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-											<circle fill="#fff" cx="84" cy="84" r="12" />
-										</svg>
+										<PortalIcon name="topic" />
 										<span className="tags">{post.topic_tag}</span>
 									</a>
 								)
@@ -100,7 +99,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
 					>
 						{post.body !== '' ? <p className="post-content-text">{post.body}</p> : null}
-						{screenshot}
+						<PortalPostScreenshot ctx={props.ctx} post={post}></PortalPostScreenshot>
 						{post.painting !== '' ? <img className="post-memo" src={utils.cdn(props.ctx, post.painting_big ? post.painting_big : `/paintings/${post.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
 					</div>

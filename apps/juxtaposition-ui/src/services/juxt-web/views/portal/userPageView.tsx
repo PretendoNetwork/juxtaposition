@@ -1,0 +1,216 @@
+import cx from 'classnames';
+import moment from 'moment';
+import { utils } from '@/services/juxt-web/views/utils';
+import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
+import type { ReactNode } from 'react';
+import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
+
+export function PortalUserTier(props: { user: UserPageViewProps['user'] }): ReactNode {
+	const tierName = props.user.tierName;
+	let tierPart: ReactNode = null;
+	let accessLevelPart: ReactNode = null;
+
+	if (tierName === 'Mario') {
+		tierPart = (
+			<span className="supporter-star mario">
+				|
+				<PortalIcon name="star-badge" />
+			</span>
+		);
+	}
+	if (tierName === 'Super Mario') {
+		tierPart = (
+			<span className="supporter-star super">
+				|
+				<PortalIcon name="star-badge" />
+			</span>
+		);
+	}
+	if (tierName === 'Mega Mushroom') {
+		tierPart = (
+			<span className="supporter-star mega">
+				|
+				<PortalIcon name="star-badge" />
+			</span>
+		);
+	}
+
+	if (props.user.accessLevel === 3) {
+		accessLevelPart = (
+			<span className="supporter-star dev">
+				|
+				<PortalIcon name="dev-badge" />
+			</span>
+		);
+	}
+	if (props.user.accessLevel === 2) {
+		accessLevelPart = (
+			<span className="supporter-star mega">
+				|
+				<PortalIcon name="mod-badge" />
+			</span>
+		);
+	}
+	if (props.user.accessLevel === 1) {
+		accessLevelPart = (
+			<span className="supporter-star tester">
+				|
+				<PortalIcon name="tester-badge" />
+			</span>
+		);
+	}
+
+	return (
+		<>
+			{tierPart}
+			{accessLevelPart}
+		</>
+	);
+}
+
+export function PortalUserPageView(props: UserPageViewProps): ReactNode {
+	const pnidName = props.user.mii?.name ?? props.user.username;
+
+	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
+	const isUserDeleted = props.user.deleted;
+	const isUserDataViewable = !isUserBanned && !isUserDeleted;
+	const canViewUser = isUserDataViewable || props.ctx.moderator;
+	const isSelf = props.ctx.pid === props.user.pid;
+
+	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
+	const isUserFollowingRequester = props.userContent.followed_users.includes(props.ctx.pid);
+
+	return (
+		<PortalRoot title={pnidName}>
+			<PortalNavBar ctx={props.ctx} selection={-1} />
+			<PortalPageBody>
+				<header id="header">
+					{isSelf ? <a id="header-communities-button" className="user-page" href="/users/me/settings" data-pjax="#body">Settings</a> : null}
+				</header>
+
+				<div className="body-content tab2-content" id="community-post-list">
+					<div className="header-banner-container">
+						<img src="/images/banner.png" className="header-banner with-top-button" />
+					</div>
+					<div className="community-info info-content with-header-banner">
+						<span className="icon-container">
+							<img className={cx('icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? utils.cdn(props.ctx, `/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+						</span>
+						{canViewUser && !isSelf
+							? (
+									<>
+										<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}></a>
+										{ isRequesterFollowingUser && isUserFollowingRequester ? <a href={`/friend_messages/new/${props.user.pid}`} className="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a> : null }
+									</>
+								)
+							: null}
+						<span className="title">
+							{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
+							{ isUserDataViewable ? pnidName : null}
+						</span>
+						<span className="text">
+							{canViewUser
+								? (
+										<>
+											<span>
+												@
+												{props.user.username}
+											</span>
+											<span>
+												|
+												<PortalIcon name="posts" />
+												{props.totalPosts}
+											</span>
+											<span>
+												|
+												<PortalIcon name="followers" />
+												<span id="followers">{props.userContent.following_users.length - 1}</span>
+											</span>
+											{props.userSettings.country_visibility
+												? (
+														<span>
+															|
+															<PortalIcon name="country" />
+															{props.user.country}
+														</span>
+													)
+												: null}
+											{props.userSettings.birthday_visibility
+												? (
+														<span>
+															|
+															<PortalIcon name="birthday" />
+															{moment.utc(props.user.birthdate).format('MMM Do')}
+														</span>
+													)
+												: null}
+											{props.userSettings.game_skill_visibility
+												? (
+														<span>
+															|
+															<PortalIcon name="skill" />
+															{props.userSettings.game_skill === 0
+																? (
+																		<>{props.ctx.lang.setup.experience_text.beginner}</>
+																	)
+																: props.userSettings.game_skill === 1
+																	? (
+																			<>{props.ctx.lang.setup.experience_text.intermediate}</>
+																		)
+																	: props.userSettings.game_skill === 2
+																		? (
+																				<>{props.ctx.lang.setup.experience_text.expert}</>
+																			)
+																		: <>N/A</>}
+														</span>
+													)
+												: null}
+											<PortalUserTier user={props.user} />
+										</>
+									)
+								: null}
+						</span>
+					</div>
+					{isUserDataViewable
+						? (
+								<>
+									<menu className="tab-header user-page">
+										<li id="tab-header-post" className={cx('tab-button', { selected: props.selectedTab === 0 })}>
+											<a href={props.baseLink} data-sound="SE_WAVE_SELECT_TAB">
+												<span className="new-post">{props.ctx.lang.user_page.posts}</span>
+											</a>
+										</li>
+										<li id="tab-header-friends" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
+											<a href={props.baseLink + 'friends'} data-sound="SE_WAVE_SELECT_TAB">
+												<span>{props.ctx.lang.user_page.friends}</span>
+											</a>
+										</li>
+										<li id="tab-header-following" className={cx('tab-button', { selected: props.selectedTab === 2 })}>
+											<a href={props.baseLink + 'following'} data-sound="SE_WAVE_SELECT_TAB">
+												<span>{props.ctx.lang.user_page.following}</span>
+											</a>
+										</li>
+										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3 })}>
+											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
+												<span>{props.ctx.lang.user_page.followers}</span>
+											</a>
+										</li>
+										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4 })}>
+											<a href={props.baseLink + 'yeahs'} data-sound="SE_WAVE_SELECT_TAB">
+												<span>{props.ctx.lang.global.yeahs}</span>
+											</a>
+										</li>
+									</menu>
+									<div className="tab-body post-list">
+										{props.children}
+									</div>
+								</>
+							)
+						: null}
+				</div>
+			</PortalPageBody>
+		</PortalRoot>
+	);
+}

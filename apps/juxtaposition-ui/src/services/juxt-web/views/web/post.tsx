@@ -9,6 +9,20 @@ import type { PostSchema } from '@/models/post';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { PostDto } from '@/api/post';
 
+export type PostScreenshotProps = {
+	ctx: RenderContext;
+	post: InferSchemaType<typeof PostSchema> | PostDto;
+};
+
+export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const post = props.post;
+	if (!post.screenshot) {
+		return <></>;
+	}
+
+	return <img id={post.id ?? undefined} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} />;
+}
+
 export type PostViewProps = {
 	ctx: RenderContext;
 	userContent?: InferSchemaType<typeof ContentSchema> | null;
@@ -77,7 +91,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
 				{post.body !== '' ? <h4>{post.body}</h4> : null}
-				{post.screenshot && post.screenshot !== '' ? <img id={post.id ?? undefined} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
+				<WebPostScreenshot ctx={props.ctx} post={props.post}></WebPostScreenshot>
 				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
 			</div>

@@ -2,39 +2,40 @@ import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
-import type { PostViewProps } from '@/services/juxt-web/views/web/post';
+import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
+
+function CtrPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const post = props.post;
+	if (!post.screenshot) {
+		return <></>;
+	}
+
+	if (post.screenshot_aspect && post.screenshot_thumb) {
+		// modern type
+		return (
+			<img
+				className={cx(
+					'post-screenshot',
+					`post-screenshot-${post.screenshot_aspect}`
+				)}
+				src={utils.cdn(props.ctx, post.screenshot_thumb)}
+			/>
+		);
+	} else {
+		// legacy type
+		return (
+			<img
+				className="post-screenshot"
+				src={utils.cdn(props.ctx, post.screenshot)}
+			/>
+		);
+	}
+}
 
 export function CtrPostView(props: PostViewProps): ReactNode {
 	const post = props.post;
 	const hasYeahed = post.yeahs && post.yeahs.indexOf(props.ctx.pid) !== -1;
 	// TODO implement moderator removed post logic
-
-	const screenshot = ((): ReactNode => {
-		if (!post.screenshot) {
-			return <></>;
-		}
-
-		if (post.screenshot_aspect && post.screenshot_thumb) {
-			// modern type
-			return (
-				<img
-					className={cx(
-						'post-screenshot',
-						`post-screenshot-${post.screenshot_aspect}`
-					)}
-					src={utils.cdn(props.ctx, post.screenshot_thumb)}
-				/>
-			);
-		} else {
-			// legacy type
-			return (
-				<img
-					className="post-screenshot"
-					src={utils.cdn(props.ctx, post.screenshot)}
-				/>
-			);
-		}
-	})();
 
 	return (
 		<div
@@ -98,7 +99,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 									<p className="post-content-text">{post.body}</p>
 								)
 							: null}
-						{screenshot}
+						<CtrPostScreenshot ctx={props.ctx} post={post}></CtrPostScreenshot>
 						{post.painting !== ''
 							? (
 									<img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} />
@@ -110,12 +111,14 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 					<div className="post-buttons">
 						<button
 							type="button"
-							className={cx('submit yeah-button', {
+							className="submit yeah-button"
+							data-button-yeah-post={post.id}
+						>
+							<span className={cx('sprite sp-yeah inline-sprite', {
 								selected: hasYeahed
 							})}
-							data-post={post.id}
-						>
-							<span className="sprite sp-yeah inline-sprite"></span>
+							>
+							</span>
 						</button>
 						<a href={`/posts/${post.id}`} className="to-permalink-button" data-pjax="#body">
 							<span className="sprite sp-yeah-small inline-sprite"></span>
