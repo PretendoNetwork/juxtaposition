@@ -154,7 +154,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 								<details>
 									<summary>
 										<div className="hover">
-											<a href={`/users/${log.actor}`} data-pjax="#body" className="icon-container notify">
+											<a href={`/users/${log.actor}`} className="icon-container notify">
 												<img src={utils.cdn(props.ctx, `/mii/${log.actor}/normal_face.png`)} className="icon" style={{ width: '32px', height: '32px' }} />
 											</a>
 											<span className="body messages report">
@@ -197,7 +197,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 									<details>
 										<summary>
 											<div className="hover">
-												<a href={`/users/${report.reported_by}`} data-pjax="#body" className="icon-container notify">
+												<a href={`/users/${report.reported_by}`} className="icon-container notify">
 													<img src={utils.cdn(props.ctx, `/mii/${report.reported_by}/normal_face.png`)} className="icon" />
 												</a>
 												<span className="body messages report">
@@ -259,7 +259,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 									<details>
 										<summary>
 											<div className="hover">
-												<a href={`/users/${report.reported_by}`} data-pjax="#body" className="icon-container notify">
+												<a href={`/users/${report.reported_by}`} className="icon-container notify">
 													<img src={utils.cdn(props.ctx, `/mii/${report.reported_by}/normal_face.png`)} className="icon" />
 												</a>
 												<span className="body messages report">
@@ -320,7 +320,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 								<details>
 									<summary>
 										<div className="hover">
-											<a href={`/users/${post.removed_by}`} data-pjax="#body" className="icon-container notify">
+											<a href={`/users/${post.removed_by}`} className="icon-container notify">
 												<img src={utils.cdn(props.ctx, `/mii/${post.removed_by}/normal_face.png`)} className="icon" />
 											</a>
 											<span className="body messages report">

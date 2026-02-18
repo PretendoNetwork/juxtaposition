@@ -20,7 +20,7 @@ export function WebUserPageFollowingView(props: UserPageFollowingViewProps): Rea
 			{props.followers.map(user => (
 				<li key={user.pid} id={user.pid.toString()}>
 					<div className="hover">
-						<a href={`/users/${user.pid}`} data-pjax="#body" className="icon-container notify">
+						<a href={`/users/${user.pid}`} className="icon-container notify">
 							<img src={utils.cdn(props.ctx, `/mii/${user.pid}/normal_face.png`)} className="icon" />
 						</a>
 						<a className="body" href={`/users/${user.pid}`}>
@@ -32,7 +32,7 @@ export function WebUserPageFollowingView(props: UserPageFollowingViewProps): Rea
 			{props.communities.map(community => (
 				<li key={community.id} id={community.id}>
 					<div className="hover">
-						<a href={`/titles/${community.id}/new`} data-pjax="#body" className="icon-container notify">
+						<a href={`/titles/${community.id}/new`} className="icon-container notify">
 							<img src={utils.cdn(props.ctx, `/icons/${community.id}/128.png`)} className="icon" />
 						</a>
 						<a className="body" href={`/titles/${community.id}/new`}>

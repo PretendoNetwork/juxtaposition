@@ -30,7 +30,7 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
 		return (
 			<div className="hover">
-				<a href={`/users/${notif.objectID}`} data-pjax="#body" className="icon-container notify">
+				<a href={`/users/${notif.objectID}`} className="icon-container notify">
 					<img src={utils.cdn(props.ctx, `/mii/${notif.objectID}/normal_face.png`)} className="icon" />
 				</a>
 				<a className="body" href={notif.link ?? '#'}>
@@ -79,7 +79,7 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<div className="hover">
-				<a href={notif.link ?? '#'} data-pjax="#body" className="icon-container notify">
+				<a href={notif.link ?? '#'} className="icon-container notify">
 					<img src={notif.image ?? undefined} className="icon" />
 				</a>
 				<a className="body" href={notif.link ?? '#'}>

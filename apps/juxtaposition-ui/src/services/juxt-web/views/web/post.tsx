@@ -50,13 +50,14 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	const contentPart = (
 		<>
 			<div className="post-user-info-wrapper" id={post.id ?? undefined}>
-				<img
-					className={cx('user-icon', {
-						verified: post.verified
-					})}
-					src={post.mii_face_url ?? undefined}
-					data-pjax={utils.url('/users/show', { pid: post.pid })}
-				/>
+				<a href={utils.url('/users/show', { pid: post.pid })}>
+					<img
+						className={cx('user-icon', {
+							verified: post.verified
+						})}
+						src={post.mii_face_url ?? undefined}
+					/>
+				</a>
 
 				<div className="post-meta-wrapper">
 					<h3>
