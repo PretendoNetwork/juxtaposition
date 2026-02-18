@@ -15,7 +15,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 	if (tierName === 'Mario') {
 		tierPart = (
 			<span className="supporter-star mario">
-				|
+				{' | '}
 				<PortalIcon name="star-badge" />
 			</span>
 		);
@@ -23,7 +23,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 	if (tierName === 'Super Mario') {
 		tierPart = (
 			<span className="supporter-star super">
-				|
+				{' | '}
 				<PortalIcon name="star-badge" />
 			</span>
 		);
@@ -31,7 +31,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 	if (tierName === 'Mega Mushroom') {
 		tierPart = (
 			<span className="supporter-star mega">
-				|
+				{' | '}
 				<PortalIcon name="star-badge" />
 			</span>
 		);
@@ -40,7 +40,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 	if (props.user.accessLevel === 3) {
 		accessLevelPart = (
 			<span className="supporter-star dev">
-				|
+				{' | '}
 				<PortalIcon name="dev-badge" />
 			</span>
 		);
@@ -48,7 +48,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 	if (props.user.accessLevel === 2) {
 		accessLevelPart = (
 			<span className="supporter-star mega">
-				|
+				{' | '}
 				<PortalIcon name="mod-badge" />
 			</span>
 		);
@@ -56,7 +56,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 	if (props.user.accessLevel === 1) {
 		accessLevelPart = (
 			<span className="supporter-star tester">
-				|
+				{' | '}
 				<PortalIcon name="tester-badge" />
 			</span>
 		);
@@ -119,20 +119,23 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												{props.user.username}
 											</span>
 											<span>
-												|
+												{' | '}
 												<PortalIcon name="posts" />
+												{' '}
 												{props.totalPosts}
 											</span>
 											<span>
-												|
+												{' | '}
 												<PortalIcon name="followers" />
+												{' '}
 												<span id="followers">{props.userContent.following_users.length - 1}</span>
 											</span>
 											{props.userSettings.country_visibility
 												? (
 														<span>
-															|
+															{' | '}
 															<PortalIcon name="country" />
+															{' '}
 															{props.user.country}
 														</span>
 													)
@@ -140,8 +143,9 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 											{props.userSettings.birthday_visibility
 												? (
 														<span>
-															|
+															{' | '}
 															<PortalIcon name="birthday" />
+															{' '}
 															{moment.utc(props.user.birthdate).format('MMM Do')}
 														</span>
 													)
@@ -149,8 +153,9 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 											{props.userSettings.game_skill_visibility
 												? (
 														<span>
-															|
+															{' | '}
 															<PortalIcon name="skill" />
+															{' '}
 															{props.userSettings.game_skill === 0
 																? (
 																		<>{props.ctx.lang.setup.experience_text.beginner}</>
