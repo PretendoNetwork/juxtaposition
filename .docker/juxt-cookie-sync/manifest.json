@@ -1,0 +1,30 @@
+{
+	"manifest_version": 2,
+	"name": "Juxt cookie sync",
+	"version": "1.0",
+
+	"description": "JUXT DEV ONLY: syncs your access_token to olv domains",
+
+	"browser_action": {
+		"default_title": "Juxt cookie sync"
+	},
+
+	"background": {
+		"scripts": [ "juxt.js" ]
+	},
+
+	"permissions": [
+		"cookies",
+		"*://*.olv.pretendo.cc/",
+		"*://*.pretendo.network/"
+	],
+
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "juxt-dev-cookie-sync@pretendo.network",
+			"data_collection_permissions": {
+				"required": ["none"]
+			}
+		}
+	}
+}
