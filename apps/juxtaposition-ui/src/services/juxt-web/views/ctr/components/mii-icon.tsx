@@ -1,4 +1,5 @@
 import { utils } from '@/services/juxt-web/views/utils';
+import { CtrIcon } from '@/services/juxt-web/views/ctr/components/icon';
 import type { ReactNode } from 'react';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 
@@ -7,14 +8,13 @@ export type CtrMiiIconProps = {
 
 	pid: number;
 	face_url?: string;
+	big?: boolean; // Use .icon (CtrIcon) instead of .mii-icon
 };
 
 export function CtrMiiIcon(props: CtrMiiIconProps): ReactNode {
 	const url = props.face_url ?? utils.cdn(props.ctx, `/mii/${props.pid}/normal_face.png`);
+	const href = `/users/${props.pid}`;
+	const className = !props.big ? 'mii-icon' : undefined;
 
-	return (
-		<a href={`/users/${props.pid}`} className="mii-icon-container" data-pjax="#body">
-			<img src={url} className="mii-icon" />
-		</a>
-	);
+	return <CtrIcon ctx={props.ctx} href={href} src={url} className={className}></CtrIcon>;
 }

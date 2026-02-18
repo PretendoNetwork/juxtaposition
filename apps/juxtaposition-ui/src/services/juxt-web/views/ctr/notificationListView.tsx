@@ -1,7 +1,8 @@
-import moment from 'moment';
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
+import { CtrIcon } from '@/services/juxt-web/views/ctr/components/icon';
+import { humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
 
@@ -11,9 +12,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
 		return (
 			<>
-				<a href={`/users/${notif.objectID}`} data-pjax="#body" className="icon-container notify">
-					<img src={utils.cdn(props.ctx, `/mii/${notif.objectID}/normal_face.png`)} className="icon" />
-				</a>
+				<CtrMiiIcon ctx={props.ctx} pid={Number(notif.objectID)} big={true}></CtrMiiIcon>
 				<div className="body">
 					<p>
 						{notif.users.length === 1
@@ -46,10 +45,13 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 											</span>
 										</>
 									)}
-						<a className="link" href={notif.link ?? '#'}>{props.ctx.lang.notifications.new_follower}</a>
+						<a className="link" href={notif.link ?? '#'}>
+							{' '}
+							{props.ctx.lang.notifications.new_follower}
+						</a>
 						<span className="timestamp">
 							{' '}
-							{moment(notif.lastUpdated).fromNow()}
+							{humanFromNow(notif.lastUpdated)}
 						</span>
 					</p>
 				</div>
@@ -60,16 +62,14 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<>
-				<a href={notif.link ?? '#'} data-pjax="#body" className="icon-container notify">
-					<img src={notif.image ?? undefined} className="icon" />
-				</a>
+				<CtrIcon ctx={props.ctx} href={notif.link ?? undefined} src={notif.image ?? ''}></CtrIcon>
 				<div className="body">
-					<a className="body" href={notif.link ?? '#'}>
+					<a className="body" href={notif.link ?? undefined}>
 						<p style={{ color: 'black' }}>
 							<span>{notif.text}</span>
 							<span className="timestamp">
 								{' '}
-								{moment(notif.lastUpdated).fromNow()}
+								{humanFromNow(notif.lastUpdated)}
 							</span>
 						</p>
 					</a>
