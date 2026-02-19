@@ -46,7 +46,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 				'other-post': msg.pid !== props.ctx.pid
 			})}
 		>
-			<a href={utils.url('/users/show', { pid: msg.pid })} data-pjax="#body" className="scroll-focus mii-icon-container">
+			<a href={utils.url('/users/show', { pid: msg.pid })} className="scroll-focus mii-icon-container">
 				<img src={utils.cdn(props.ctx, `${msg.mii_face_url?.substring(msg.mii_face_url.lastIndexOf('/mii'))}`)} className="mii-icon" />
 			</a>
 			<div className="post-body">

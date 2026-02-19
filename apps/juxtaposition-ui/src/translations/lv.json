@@ -115,8 +115,8 @@
             "second": "Tas var saturēt absolūtu datubāžu izdzēšanu beta testēšanas perioda laikā vai pēc tā."
         },
         "info_text": "Juxt ir lietotāju vadīta spēlētāju kopiena, kurā tu vari mijiedarboties ar cilvēkiem\n                no visas pasaules. Tu vari rakstīt vai uzzīmēt ziņas spēļu kopienām vai arī sūtīt ziņas tieši draugiem.",
-        "google": "Google analītika",
-        "google_text": "Juxtaposition izmanto \"Google Analytics\", lai izsekotu, kā lietotāji izmanto mūsu pakalpojumus. Savāktie dati ietver, bet neaprobežojas ar apmeklējuma laiku, apmeklētajām lapām un vietnē pavadīto laiku. Šie dati nav nekādā veidā saistīti ar jums(?), un mēs vai Google(?) tos neizmanto reklāmām.",
+        "analytics": "Analītika",
+        "analytics_text": "Juxtaposition izmanto \"Cloudflare Web Analytics\", lai izsekotu, kā lietotāji izmanto mūsu pakalpojumus. Savāktie dati ietver, bet neaprobežojas ar apmeklējuma laiku, apmeklētajām lapām un vietnē pavadīto laiku. Šie dati nav nekādā veidā saistīti ar jums, un mēs vai Cloudflare tos neizmanto reklāmām.",
         "welcome_text": "Juxt ir spēlētāju kopiena, kas savieno cilvēkus no visas pasaules, izmantojot Mii varoņus. Izmanto Juxt, lai dalītos savā spēlēšanas pieredzē un satiktu cilvēkus no visas pasaules."
     },
     "language": "Latviešu valoda",

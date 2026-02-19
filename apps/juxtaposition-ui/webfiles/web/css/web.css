@@ -257,7 +257,7 @@ header > .selected svg {
   margin-left: 74px;
 }
 
-.post-buttons-wrapper > span {
+.post-buttons-wrapper > .post-button {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -265,26 +265,27 @@ header > .selected svg {
   border-radius: 0.75em;
 }
 
-.post-buttons-wrapper > span:hover {
+.post-buttons-wrapper > .empathy-button:hover {
   cursor: pointer;
   background: rgba(255, 0, 0, 0.25);
 }
 
-.post-buttons-wrapper > span:nth-of-type(2):hover {
+.post-buttons-wrapper > .reply-button:hover {
   background: rgba(0, 255, 0, 0.25);
+  text-decoration: none;
 }
 
-.post-buttons-wrapper > span:last-child:hover {
+.post-buttons-wrapper > .post-hamburger-button:hover {
   background: rgba(0, 150, 255, 0.25);
 }
 
-.post-buttons-wrapper > span > h4 {
+.post-buttons-wrapper > .post-button > h4 {
   padding-left: 0.5em;
   margin: 0;
 }
 
 /* Red fill for .selected icons (Yeah'd post) */
-.post-buttons-wrapper > span.selected svg {
+.post-buttons-wrapper > .post-button.selected svg {
   fill: red;
   stroke: red;
 }

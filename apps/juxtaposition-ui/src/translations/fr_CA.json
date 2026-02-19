@@ -112,7 +112,7 @@
             "intermediate": "Intermédiaire",
             "expert": "Expert"
         },
-        "google": "Google Analytics",
+        "analytics": "Analytics",
         "ready": "Prêt à commencer à utiliser Juxt",
         "ready_text": "Consultez d’abord certaines communautés et voyez ce que les gens du tout le monde entier publient. Profitez de cette occasion pour vous familiariser avec Juxt. Vous ferez peut-être de nouvelles découvertes en cours de route !",
         "done": "Amusez-vous dans Juxt!",
@@ -120,7 +120,7 @@
         "guest": "Mode Invité",
         "guest_button": "Je Comprends",
         "guest_text": "Nous ne pouvons pas vérifier votre compte pour le moment, ce qui signifie probablement que vous êtes connecté avec un compte Nintendo Network. Vous pourrez toujours parcourir Juxt, mais vous ne pourrez pas accéder à Yeah! des publiez ou créez vos propres publications jusqu'à ce que vous vous connectiez avec un compte Pretendo Network. Pour plus d'informations, consultez le serveur Discord.",
-        "google_text": "Juxtaposition utilise Google Analytics afin de comprendre comment les utilisateurs utilisent notre service. Les données collectées incluent, sans toutefois s'y limiter, l'heure de visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas associées à vous et ne seront pas utilisées à des fins publicitaires, ni par nous ni par Google."
+        "analytics_text": "Juxtaposition utilise Cloudflare Web Analytics afin de comprendre comment les utilisateurs utilisent notre service. Les données collectées incluent, sans toutefois s'y limiter, l'heure de visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas associées à vous et ne seront pas utilisées à des fins publicitaires, ni par nous ni par Cloudflare."
     },
     "language": "Français (Canada)"
 }

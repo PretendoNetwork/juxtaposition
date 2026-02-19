@@ -1,4 +1,3 @@
-import { InlineScript } from '@/services/juxt-web/views/common';
 import type { ReactNode } from 'react';
 
 export function DefaultHead(): ReactNode {
@@ -11,19 +10,6 @@ export function DefaultHead(): ReactNode {
 			<link
 				href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&amp;display=swap"
 				rel="stylesheet"
-			/>
-			{/* Global site tag (gtag.js) - Google Analytics Testing */}
-			<script
-				async
-				src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"
-			/>
-			<InlineScript
-				src={`
-					window.dataLayer = window.dataLayer || [];
-					function gtag(){dataLayer.push(arguments);}
-					gtag('js', new Date());
-					gtag('config', 'UA-195842548-1');
-				`}
 			/>
 		</>
 	);

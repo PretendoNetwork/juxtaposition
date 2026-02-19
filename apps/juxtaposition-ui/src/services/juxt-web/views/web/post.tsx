@@ -36,6 +36,8 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	const isModerator = props.ctx.moderator;
 	const canAccessContent = !post.removed || isModerator;
 
+	const yeahed = !!props.userContent && !!post.yeahs && post.yeahs.includes(props.ctx.pid);
+
 	let removedPostPart = null;
 	if (post.removed) {
 		removedPostPart = (
@@ -48,13 +50,14 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	const contentPart = (
 		<>
 			<div className="post-user-info-wrapper" id={post.id ?? undefined}>
-				<img
-					className={cx('user-icon', {
-						verified: post.verified
-					})}
-					src={post.mii_face_url ?? undefined}
-					data-pjax={utils.url('/users/show', { pid: post.pid })}
-				/>
+				<a href={utils.url('/users/show', { pid: post.pid })}>
+					<img
+						className={cx('user-icon', {
+							verified: post.verified
+						})}
+						src={post.mii_face_url ?? undefined}
+					/>
+				</a>
 
 				<div className="post-meta-wrapper">
 					<h3>
@@ -99,24 +102,29 @@ export function WebPostView(props: PostViewProps): ReactNode {
 			<div className="post-buttons-wrapper">
 				{/* Heart/Empathy button */}
 				<span
-					data-post={post.id}
-					className={cx('empathy-button', {
-						selected: props.userContent && post.yeahs && post.yeahs.includes(props.ctx.pid)
+					data-button-yeah-post={post.id}
+					className={cx('post-button', 'empathy-button', {
+						selected: yeahed
 					})}
+					role="button"
+					aria-pressed={yeahed}
 				>
-
 					<WebIcon name="heart" />
 					<h4 id={`count-${post.id}`}>{post.empathy_count}</h4>
 				</span>
 
 				{/* Reply "button" */}
-				<span className="reply-button">
+				<a
+					href={`/posts/${post.id}`}
+					className="post-button reply-button"
+					role="button"
+				>
 					<WebIcon name="reply" />
 					<h4>{post.reply_count}</h4>
-				</span>
+				</a>
 
 				{/* Hamburger menu */}
-				<span className="post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
+				<span className="post-button post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
 					<WebIcon name="menu" />
 					<ul className="post-hamburger" role="menu" data-post={post.id}>
 						<li role="menuitem" data-action="report">

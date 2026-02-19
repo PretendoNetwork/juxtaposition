@@ -1,10 +1,9 @@
-import Pjax from 'pjax';
 import { popupItemCb, setupPopup } from './menus';
 import { initReportForm, reportPost } from './reports';
 import { POST, GET } from './xhr';
-import { deletePostById, empathyPostById } from './api';
+import { deletePostById } from './api';
+import { initYeahButton } from './post';
 
-let pjax;
 setInterval(checkForUpdates, 30000);
 
 function initNavBar() {
@@ -24,40 +23,7 @@ function initNavBar() {
 		});
 	}
 }
-function initYeah() {
-	const els = document.querySelectorAll('span[data-post]');
-	if (!els) {
-		return;
-	}
-	for (let i = 0; i < els.length; i++) {
-		els[i].removeEventListener('click', yeah);
-		els[i].addEventListener('click', yeah);
-	}
-	function yeah(e) {
-		const el = e.currentTarget;
-		const id = el.getAttribute('data-post');
-		const parent = document.getElementById(id);
-		const count = document.getElementById('count-' + id);
-		el.disabled = true;
-		if (el.classList.contains('selected')) {
-			el.classList.remove('selected');
-			parent.classList.remove('yeah');
-			count.innerText -= 1;
-		} else {
-			el.classList.add('selected');
-			parent.classList.add('yeah');
-			count.innerText = ++count.innerText;
-		}
 
-		empathyPostById(id, function (post) {
-			if (post.status !== 200) {
-				return Toast('You cannot give this post a Yeah!');
-			}
-			el.disabled = false;
-			count.innerText = post.count;
-		});
-	}
-}
 function initTabs() {
 	const els = document.querySelectorAll('.tab-button');
 	if (!els) {
@@ -134,14 +100,7 @@ function initPopupMenus() {
 }
 
 function initPosts() {
-	const els = document.querySelectorAll('.post-content[data-href]');
-	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
-		});
-	}
-	initYeah();
-	initSpoilers();
+	initYeahButton(document);
 	initPopupMenus();
 }
 function initMorePosts() {
@@ -209,19 +168,6 @@ function initPostEmotion() {
 function initNewPost() {
 	initPostEmotion();
 }
-function initSpoilers() {
-	const els = document.querySelectorAll('button[data-post-id]');
-	if (!els) {
-		return;
-	}
-	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			const el = e.currentTarget;
-			document.getElementById('post-' + el.getAttribute('data-post-id')).classList.remove('spoiler');
-			el.remove();
-		});
-	}
-}
 
 function initAll() {
 	initNavBar();
@@ -231,32 +177,10 @@ function initAll() {
 	initPostModules();
 	initReportForm();
 	initToast();
-	pjax.refresh();
 }
 
 console.debug('Document initialized:' + window.location.href);
-document.addEventListener('pjax:send', function () {
-	console.debug('Event: pjax:send', arguments);
-});
-document.addEventListener('pjax:complete', function () {
-	console.debug('Event: pjax:complete', arguments);
-});
-document.addEventListener('pjax:error', function (e) {
-	Toast('Error: Unable to load element. \nPlease send the error code and what you were doing in #support');
-	console.debug(e);
-});
-document.addEventListener('pjax:success', function () {
-	console.debug('Event: pjax:success', arguments);
-	initAll();
-});
 document.addEventListener('DOMContentLoaded', function () {
-	pjax = new Pjax({
-		elements: 'a[data-pjax]' +
-			'',
-		selectors: ['title', '#body'],
-		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
-	});
-	console.debug('Pjax initialized.', pjax);
 	initAll();
 });
 

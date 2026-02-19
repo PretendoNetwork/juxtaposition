@@ -113,8 +113,8 @@
             "intermediate": "중급자",
             "expert": "전문가"
         },
-        "google": "Google Analytics",
-        "google_text": "Juxtaposition은 사용자들이 어떻게 저희의 서비스를 활용하고 있는지 트래킹하기 위해 Google Analytics를 사용합니다. 수집하고 있는 데이터는 방문 횟수, 방문 페이지, 사이트에서 보낸 시간 등을 포함합니다. 이 데이터는 당신과 어떠한 연결도 없으며, 저희나 Google의 광고에 쓰이지도 않습니다.",
+        "analytics": "Analytics",
+        "analytics_text": "Juxtaposition은 사용자들이 어떻게 저희의 서비스를 활용하고 있는지 트래킹하기 위해 Cloudflare Web Analytics를 사용합니다. 수집하고 있는 데이터는 방문 횟수, 방문 페이지, 사이트에서 보낸 시간 등을 포함합니다. 이 데이터는 당신과 어떠한 연결도 없으며, 저희나 Cloudflare의 광고에 쓰이지도 않습니다.",
         "ready": "Juxt 사용 준비 완료",
         "ready_text": "먼저 유명한 커뮤니티부터 찾아보세요! 사람들이 뭘 올리는지 확인하고, 그리고 이번 기회에 사람들이 어떤 걸 하는지 찾아보세요. 새로운 발견이 될 수도 있으니까요!",
         "done": "Juxt에서 좋은 시간을 보내시기 바랍니다!",

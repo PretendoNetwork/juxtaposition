@@ -31,14 +31,14 @@
             "expert": "Ekspertti",
             "beginner": "Aloittelija"
         },
-        "google": "Googlen analytiikka",
+        "analytics": "analytiikka",
         "done": "Pidä hauskaa Juxtissa!",
         "guest": "Vierastila",
         "guest_button": "Ymmärrän",
         "welcome_text": "Juxt on maailmanlaajuinen pelaajayhteisö joka käyttää Mii -hahmoja. Jaa pelikokemuksesi ja tapaa ihmisiä ympäri maapalloa Juxtin kautta.",
         "ready": "Valmiina Juxtin käyttöön",
         "guest_text": "Emme voi varmistaa tiliäsi tällä hetkellä, joka todennäköisesti tarkoittaa että olet kirjautuneena Nintendo Network:in tilillesi. Voit jatkaa Juxtin selailua, muttet voi tykätä viesteistä tai kirjoittaa omia ennen kuin olet kirjautunut Pretendo Network:in tilillesi. Lisätietoja saat Pretendon Discordista.",
-        "google_text": "Joxtaposition käyttää Googlen analytiikkaa seuratakseen miten käyttäjät käyttävät palveluamme. Kerätty tieto sisältää, mutta ei ole rajoitettu seuraaviin: käyntiaika, vieraillut sivut ja sivustolla vietetty aika. Googlen mukaan tietoa ei ole kytketty mitenkään sinuun ja sitä ei käytetä palvelumme tai Googlen tarjoamiin mainoksiin.",
+        "analytics_text": "Juxtaposition käyttää Cloudflare analytiikkaa seuratakseen miten käyttäjät käyttävät palveluamme. Kerätty tieto sisältää, mutta ei ole rajoitettu seuraaviin: käyntiaika, vieraillut sivut ja sivustolla vietetty aika. Cloudflare mukaan tietoa ei ole kytketty mitenkään sinuun ja sitä ei käytetä palvelumme tai Cloudflare tarjoamiin mainoksiin.",
         "ready_text": "Aluksi tutustu joihinkin yhteisöihin katsoaksesi mitä ihmiset ympäri maailman keskustelevat. Käytä tätä hyväksesi tutustuaksesi Juxtiin paremmin. Saatat jopa löytää uusia asioita tätä kautta!",
         "done_button": "Aloitetaan!",
         "info_text": "Juxt on käyttäjälähtöinen pelaajayhteisö, jossa voit olla vuorovaikutuksessa ihmisten kanssa ympäri maailman.\nVoit kirjoittaa tai piirtää viestejä peliyhteisöihin tai lähettää viestejä suoraan ystävillesi."

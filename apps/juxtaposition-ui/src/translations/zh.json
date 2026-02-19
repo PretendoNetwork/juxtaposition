@@ -113,8 +113,8 @@
             "intermediate": "中等",
             "expert": "高级"
         },
-        "google": "谷歌 Analytics",
-        "google_text": "Juxtaposition 使用 谷歌 Analytics 来跟踪用户如何使用我们的服务。收集的数据包括但不限于访问时间、访问的页面以及在网站上花费的时间。此数据不会以任何方式附加到您身上，也不会被我们或谷歌用于广告。",
+        "analytics": "Analytics",
+        "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 来跟踪用户如何使用我们的服务。收集的数据包括但不限于访问时间、访问的页面以及在网站上花费的时间。此数据不会以任何方式附加到您身上，也不会被我们或 Cloudflare 用于广告。",
         "ready": "开始使用 Juxt",
         "ready_text": "首先看一看一些社区，看看大家都在发布什么。借此机会熟悉 Juxt。一路上你可能会有新发现！",
         "done": "在 Juxt 玩得开心！",

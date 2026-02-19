@@ -37,7 +37,7 @@ function Report(props: ReportProps): ReactNode {
 			<details>
 				<summary>
 					<div className="hover">
-						<span data-pjax="#body" className="icon-container notify">
+						<span className="icon-container notify">
 							<img src={utils.cdn(props.ctx, `/mii/${props.report.reported_by}/normal_face.png`)} className="icon" />
 						</span>
 						<span className="body messages report">

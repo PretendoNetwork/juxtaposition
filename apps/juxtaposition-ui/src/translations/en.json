@@ -113,8 +113,8 @@
       "intermediate": "Intermediate",
       "expert": "Expert"
     },
-    "google": "Google Analytics",
-    "google_text": "Juxtaposition uses Google Analytics in order to track how users are using our service. The data collected includes but is not limited to time of visit, pages visited, and time spent on the site. This data is not attached to you in any way, and is not used for advertisements by us or Google.",
+    "analytics": "Analytics",
+    "analytics_text": "Juxtaposition uses Cloudflare Web Analytics in order to track how users are using our service. The data collected includes but is not limited to time of visit, pages visited, and time spent on the site. This data is not attached to you in any way, and is not used for advertisements by us or Cloudflare.",
     "ready": "Ready to Start Using Juxt",
     "ready_text": "First check out some communities and see what people from all over the world are posting about. Take this opportunity to familiarize yourself with Juxt. You might make some new discoveries along the way!",
     "done": "Have fun in Juxt!",

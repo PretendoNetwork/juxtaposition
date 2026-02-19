@@ -103,7 +103,7 @@
             "twelfth": "Ar tu žaidėi šį žaidimą?",
             "eleventh": "Mūsų tikslas yra palaikyti Juxt faina ir malonią vietą visiems. Jeigu kažkas pažeidžia Juxt elgesio taisykles, mes imsimės atitinkamų veiksmų, ir kai kuriais atvėjais, užblokuojant vartotoją arba konsolę."
         },
-        "google": "Google Analitika",
+        "analytics": "Analitika",
         "guest": "Svečio režimas",
         "guest_button": "Aš supratau",
         "welcome_text": "Juxt yra žaidimų bendruomenė kuri sujungia žmones iš viso pasaulio naudodamasi Mii veikėjus. Naudok Juxt kad galėtum pasidalinti savo žaidimo patirtį ir susipažinti su žmonėms iš viso pasaulio.",
@@ -118,7 +118,7 @@
             "intermediate": "Pažengęs",
             "expert": "Ekspertas"
         },
-        "google_text": "Juxtaposition naudoja Google analitikas kad stebėtų kaip vartotojai naudojasi mūsų servisu. Duomenys kurie yra surinkti apima bet neriboja: kada apsilankei, kokius puslapius lankei, ir laiko kiek praleidai svetainėje. Šita informacija jokais būdais nėra suasocijuojama su jumis, ir nei mes nei Google naudoja to reklaminiais tiklsais.",
+        "analytics_text": "Juxtaposition naudoja Cloudflare analitikas kad stebėtų kaip vartotojai naudojasi mūsų servisu. Duomenys kurie yra surinkti apima bet neriboja: kada apsilankei, kokius puslapius lankei, ir laiko kiek praleidai svetainėje. Šita informacija jokais būdais nėra suasocijuojama su jumis, ir nei mes nei Cloudflare naudoja to reklaminiais tiklsais.",
         "done": "Pasilinksmink Juxt'e!",
         "done_button": "Eiti į Juxt!",
         "ready_text": "Pirma peržvelk bendruomenes ir pažurėk apie ką žmonės iš viso pasaulio kelia. Pasinaudok šia galimybe kad susipažintum su Juxt. Tu gal būt atrasi kažką naujo pakelui!"
