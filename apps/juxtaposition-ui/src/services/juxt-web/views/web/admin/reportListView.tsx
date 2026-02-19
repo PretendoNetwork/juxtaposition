@@ -73,13 +73,23 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 	return (
 		<WebRoot head={head}>
 			<h2 id="title" className="page-header">
-				User Reports
+				User Reports (
+				{props.reports.length}
+				)
 			</h2>
 			<WebNavBar ctx={props.ctx} selection={5} />
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs ctx={props.ctx} selected="reports" />
-				{props.reports.length === 0 ? <p>No Reports found</p> : null }
+				{props.reports.length === 0
+					? (
+							<p>
+								All reports handled 🎉
+								<br />
+								Good job team!
+							</p>
+						)
+					: null }
 				{props.reports.length > 0
 					? (
 							<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
