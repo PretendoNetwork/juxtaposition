@@ -34,13 +34,17 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 								<span>
 									<span className="sprite sp-post-count inline-sprite"></span>
 									<span id="post-count">
+										{' '}
 										{props.totalPosts}
 									</span>
 								</span>
 								<span>
-									|
+									{' | '}
 									<span className="sprite sp-follower-count inline-sprite"></span>
-									<span id="followers">{community.followers}</span>
+									<span id="followers">
+										{' '}
+										{community.followers}
+									</span>
 								</span>
 							</span>
 						</span>

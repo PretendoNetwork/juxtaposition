@@ -14,6 +14,8 @@ function DefaultHead(props: DefaultHeadProps): ReactNode {
 			<link rel="stylesheet" type="text/css" href="/css/juxt.css" />
 			{/* Debug allows non-console browsers to have some amount of the cave API. */}
 			{addDebugJs ? <script src="/js/debug.global.js"></script> : null}
+			{/* Non-console browsers probably want this too. */}
+			{addDebugJs ? <meta name="viewport" content="width=device-width, initial-scale=1.0" /> : null}
 			{loadJs ? <script src="/js/juxt.global.js"></script> : null}
 		</>
 	);

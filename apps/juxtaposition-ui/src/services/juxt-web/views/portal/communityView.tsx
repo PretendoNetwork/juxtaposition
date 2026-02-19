@@ -72,11 +72,13 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						<span className="text">
 							<span>
 								<PortalIcon name="posts" />
+								{' '}
 								{props.totalPosts}
 							</span>
 							<span>
-								|
+								{' | '}
 								<PortalIcon name="followers" />
+								{' '}
 								<span id="followers">
 									{community.followers}
 								</span>
