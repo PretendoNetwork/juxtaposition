@@ -5,7 +5,7 @@
         "apps/*"
     ],
     "devDependencies": {
-        "@bufbuild/buf": "^1.61.0"
+        "@bufbuild/buf": "^1.65.0"
     },
     "overrides": {
         "get-pixels": "github:scijs/get-pixels#5283976"
