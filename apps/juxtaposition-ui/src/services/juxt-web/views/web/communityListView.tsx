@@ -1,6 +1,6 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -23,9 +23,10 @@ export type CommunityItemProps = {
 };
 
 function WebCommunityItem(props: CommunityItemProps): ReactNode {
+	const url = useUrl();
 	return (
 		<a key={props.community.olive_community_id} className="community-list-wrapper" href={`/titles/${props.community.olive_community_id}/new`}>
-			<img className="community-list-icon" src={utils.cdn(props.ctx, `/icons/${props.community.olive_community_id}/128.png`)} />
+			<img className="community-list-icon" src={url.cdn(`/icons/${props.community.olive_community_id}/128.png`)} />
 			<h2 className="community-list-title">{props.community.name}</h2>
 			<h4 className="community-list-followers">
 				{props.community.followers}

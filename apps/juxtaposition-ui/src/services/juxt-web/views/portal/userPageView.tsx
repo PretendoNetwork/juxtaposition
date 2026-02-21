@@ -1,9 +1,9 @@
 import cx from 'classnames';
 import moment from 'moment';
-import { utils } from '@/services/juxt-web/views/utils';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -71,6 +71,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 }
 
 export function PortalUserPageView(props: UserPageViewProps): ReactNode {
+	const url = useUrl();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 
 	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
@@ -96,7 +97,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 					</div>
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
-							<img className={cx('icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? utils.cdn(props.ctx, `/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+							<img className={cx('icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
 						</span>
 						{canViewUser && !isSelf
 							? (

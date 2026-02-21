@@ -3,8 +3,8 @@ import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebIcon } from '@/services/juxt-web/views/web/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -90,9 +90,10 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 }
 
 export function WebUserPageMeta(props: { ctx: RenderContext; user: GetUserDataResponse; userSettings: HydratedSettingsDocument; withImage?: boolean }): ReactNode {
+	const url = useUrl();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 	const pageTitle = `Juxt - ${pnidName}`;
-	const pageImage = utils.cdn(props.ctx, `/mii/${props.userSettings.pid}/smile_open_mouth.png`);
+	const pageImage = url.cdn(`/mii/${props.userSettings.pid}/smile_open_mouth.png`);
 	return (
 		<>
 			<title>{pageTitle}</title>
@@ -122,6 +123,7 @@ export function WebUserPageMeta(props: { ctx: RenderContext; user: GetUserDataRe
 }
 
 export function WebUserPageView(props: UserPageViewProps): ReactNode {
+	const url = useUrl();
 	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
 	const isUserDeleted = props.user.deleted;
 	const isUserDataViewable = !isUserBanned && !isUserDeleted;
@@ -148,7 +150,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						active: props.isOnline
 					})}
 					>
-						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? utils.cdn(props.ctx, `/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
 						<h2 className="community-title">
 							{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
 							{ isUserDataViewable

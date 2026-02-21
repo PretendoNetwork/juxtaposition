@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import moment from 'moment';
-import { utils } from '@/services/juxt-web/views/utils';
 import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -19,7 +19,7 @@ function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
 					'post-screenshot',
 					`post-screenshot-${post.screenshot_aspect}`
 				)}
-				src={utils.cdn(props.ctx, post.screenshot)}
+				src={url.cdn(post.screenshot)}
 			/>
 		);
 	} else {
@@ -27,13 +27,14 @@ function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
 		return (
 			<img
 				className="post-screenshot"
-				src={utils.cdn(props.ctx, post.screenshot)}
+				src={url.cdn(post.screenshot)}
 			/>
 		);
 	}
 }
 
 export function PortalPostView(props: PostViewProps): ReactNode {
+	const url = useUrl();
 	const post = props.post;
 	const hasYeahed = post.yeahs && post.yeahs.indexOf(props.ctx.pid) !== -1;
 	const isModerator = props.ctx.moderator;
@@ -41,7 +42,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 
 	const content = (
 		<>
-			<a href={utils.url('/users/show', { pid: post.pid })} className="mii-icon-container" data-pjax="#body">
+			<a href={url.url('/users/show', { pid: post.pid })} className="mii-icon-container" data-pjax="#body">
 				<img src={post.mii_face_url ?? undefined} className="mii-icon" />
 			</a>
 			<div
@@ -66,7 +67,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						</span>
 						{post.topic_tag
 							? (
-									<a href={utils.url('/topics', { topic_tag: post.topic_tag })} data-pjax="#body">
+									<a href={url.url('/topics', { topic_tag: post.topic_tag })} data-pjax="#body">
 										{/* TODO this has been modified due to inbalanced tags */}
 										<PortalIcon name="topic" />
 										<span className="tags">{post.topic_tag}</span>
@@ -79,7 +80,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						? (
 								<a href={`/titles/${post.community_id}`} className="community-banner" data-pjax="#body">
 									<span className="title-icon-container" data-pjax="#body">
-										<img src={utils.cdn(props.ctx, `/icons/${post.community_id}/32.png`)} className="title-icon" />
+										<img src={url.cdn(`/icons/${post.community_id}/32.png`)} className="title-icon" />
 									</span>
 									<span className="community-name">{props.ctx.communityMap.get(post.community_id ?? '')}</span>
 								</a>
@@ -100,7 +101,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 					>
 						{post.body !== '' ? <p className="post-content-text">{post.body}</p> : null}
 						<PortalPostScreenshot ctx={props.ctx} post={post}></PortalPostScreenshot>
-						{post.painting !== '' ? <img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
+						{post.painting !== '' ? <img className="post-memo" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
 					</div>
 
@@ -159,7 +160,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 							<div className="yeah-list">
 								{post.yeahs.slice(0, 9).map(yeah => (
 									<a href={`/users/${yeah}`} className="mii-icon-container" data-pjax="#body">
-										<img src={utils.cdn(props.ctx, `/mii/${yeah}/normal_face.png`)} className="mii-icon" />
+										<img src={url.cdn(`/mii/${yeah}/normal_face.png`)} className="mii-icon" />
 									</a>
 								))}
 							</div>

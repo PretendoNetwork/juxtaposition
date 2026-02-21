@@ -5,7 +5,7 @@ import {
 	PortalPageBody,
 	PortalRoot
 } from '@/services/juxt-web/views/portal/root';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -13,6 +13,7 @@ import type {
 } from '@/services/juxt-web/views/web/messages';
 
 export function PortalMessagesView(props: MessagesViewProps): ReactNode {
+	const url = useUrl();
 	return (
 		<PortalRoot title={props.ctx.lang.global.messages}>
 			<PortalNavBar ctx={props.ctx} selection={3} />
@@ -48,12 +49,12 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 										return (
 											<li key={convo.id}>
 												<a
-													href={utils.url('/users/show', { pid: userObj.pid })}
+													href={url.url('/users/show', { pid: userObj.pid })}
 													data-pjax="#body"
 													className="icon-container trigger"
 												>
 													<img
-														src={utils.cdn(props.ctx, `/mii/${userObj.pid}/normal_face.png`)}
+														src={url.cdn(`/mii/${userObj.pid}/normal_face.png`)}
 														className={cx('icon', {
 															verified: userObj.official
 														})}

@@ -4,7 +4,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { WebNewPostView } from '@/services/juxt-web/views/web/newPostView';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -26,16 +26,17 @@ export type MessageThreadItemProps = {
 };
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
+	const url = useUrl();
 	const msg = props.message;
 
 	let screenshotContent: ReactNode = null;
 	if (msg.screenshot) {
-		screenshotContent = <img className="message-viewer-bubble-sent-screenshot" src={utils.cdn(props.ctx, msg.screenshot)} />;
+		screenshotContent = <img className="message-viewer-bubble-sent-screenshot" src={url.cdn(msg.screenshot)} />;
 	}
 
 	let content = <p className="post-content">{ msg.body }</p>;
 	if (msg.painting) {
-		content = <img className="message-viewer-bubble-sent-memo" src={utils.cdn(props.ctx, `/paintings/${msg.pid}/${msg.id}.png`)} />;
+		content = <img className="message-viewer-bubble-sent-memo" src={url.cdn(`/paintings/${msg.pid}/${msg.id}.png`)} />;
 	}
 
 	return (
@@ -47,7 +48,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 			})}
 		>
 			<a href={utils.url('/users/show', { pid: msg.pid })} className="scroll-focus mii-icon-container">
-				<img src={utils.cdn(props.ctx, `${msg.mii_face_url?.substring(msg.mii_face_url.lastIndexOf('/mii'))}`)} className="mii-icon" />
+				<img src={url.cdn(`${msg.mii_face_url?.substring(msg.mii_face_url.lastIndexOf('/mii'))}`)} className="mii-icon" />
 			</a>
 			<div className="post-body">
 				{screenshotContent}

@@ -1,8 +1,8 @@
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -22,6 +22,7 @@ export type PostPageViewProps = {
 };
 
 function PostHead(props: PostPageViewProps): ReactNode {
+	const url = useUrl();
 	const post = props.post;
 	const pageTitle = `Post by ${post.screen_name}`;
 
@@ -36,9 +37,9 @@ function PostHead(props: PostPageViewProps): ReactNode {
 		`${post.reply_count} 🗨️  ${post.empathy_count} ❤️`;
 	let image: string | null = null;
 	if (post.screenshot) {
-		image = utils.cdn(props.ctx, post.screenshot);
+		image = url.cdn(post.screenshot);
 	} else if (post.painting) {
-		image = utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`);
+		image = url.cdn(`/paintings/${post.pid}/${post.id}.png`);
 	}
 
 	return (

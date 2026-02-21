@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import moment from 'moment';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebIcon } from '@/services/juxt-web/views/web/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
@@ -15,12 +15,13 @@ export type PostScreenshotProps = {
 };
 
 export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const url = useUrl();
 	const post = props.post;
 	if (!post.screenshot) {
 		return <></>;
 	}
 
-	return <img id={post.id ?? undefined} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} />;
+	return <img id={post.id ?? undefined} className="screenshot" src={url.cdn(post.screenshot)} />;
 }
 
 export type PostViewProps = {
@@ -32,6 +33,7 @@ export type PostViewProps = {
 };
 
 export function WebPostView(props: PostViewProps): ReactNode {
+	const url = useUrl();
 	const post = props.post;
 	const isModerator = props.ctx.moderator;
 	const canAccessContent = !post.removed || isModerator;
@@ -50,7 +52,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	const contentPart = (
 		<>
 			<div className="post-user-info-wrapper" id={post.id ?? undefined}>
-				<a href={utils.url('/users/show', { pid: post.pid })}>
+				<a href={url.url('/users/show', { pid: post.pid })}>
 					<img
 						className={cx('user-icon', {
 							verified: post.verified
@@ -61,7 +63,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 
 				<div className="post-meta-wrapper">
 					<h3>
-						<a href={utils.url('/users/show', { pid: post.pid })}>{post.screen_name}</a>
+						<a href={url.url('/users/show', { pid: post.pid })}>{post.screen_name}</a>
 					</h3>
 
 					{ post.verified
@@ -95,7 +97,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 			>
 				{post.body !== '' ? <h4>{post.body}</h4> : null}
 				<WebPostScreenshot ctx={props.ctx} post={props.post}></WebPostScreenshot>
-				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
+				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
 			</div>
 

@@ -1,7 +1,7 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -13,6 +13,7 @@ export type EditCommunityViewProps = {
 };
 
 export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
+	const url = useUrl();
 	const community = props.community;
 	const imageId = community.parent ? community.parent : community.olive_community_id;
 	const head = (
@@ -70,7 +71,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 						<input type="file" id="browserIcon" data-image-preview accept="image/jpg" name="browserIcon" />
 					</div>
 					<div className="col-md-3">
-						<img src={utils.cdn(props.ctx, `/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" id="browserIconPreview" />
+						<img src={url.cdn(`/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" id="browserIconPreview" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="CTRbrowserHeader">3DS Browser Banner (400px x 220px)</label>
@@ -79,10 +80,10 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					<div className="col-md-3">
 						{community.ctr_header
 							? (
-									<img src={utils.cdn(props.ctx, community.ctr_header)} data-image-preview-for="CTRbrowserHeader" id="CTRbrowserHeaderPreview" />
+									<img src={url.cdn(community.ctr_header)} data-image-preview-for="CTRbrowserHeader" id="CTRbrowserHeaderPreview" />
 								)
 							: (
-									<img src={utils.cdn(props.ctx, `/headers/${imageId}/3DS.png`)} data-image-preview-for="CTRbrowserHeader" />
+									<img src={url.cdn(`/headers/${imageId}/3DS.png`)} data-image-preview-for="CTRbrowserHeader" />
 								)}
 					</div>
 					<div className="col-md-3">
@@ -92,10 +93,10 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					<div className="col-md-3">
 						{community.wup_header
 							? (
-									<img src={utils.cdn(props.ctx, community.wup_header)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
+									<img src={url.cdn(community.wup_header)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
 								)
 							: (
-									<img src={utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
+									<img src={url.cdn(`/headers/${imageId}/WiiU.png`)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
 								)}
 					</div>
 					<div className="col-md-4">

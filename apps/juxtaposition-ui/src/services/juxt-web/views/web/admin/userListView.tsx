@@ -1,7 +1,7 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { HydratedSettingsDocument } from '@/models/settings';
@@ -16,9 +16,10 @@ export type UserListViewProps = {
 };
 
 export function WebUserListView(props: UserListViewProps): ReactNode {
+	const url = useUrl();
 	const head = <script src="/js/admin.global.js"></script>;
-	const prevUrl = utils.url('/admin/accounts', { page: props.page - 1, search: props.search });
-	const nextUrl = utils.url('/admin/accounts', { page: props.page + 1, search: props.search });
+	const prevUrl = url.url('/admin/accounts', { page: props.page - 1, search: props.search });
+	const nextUrl = url.url('/admin/accounts', { page: props.page + 1, search: props.search });
 
 	return (
 		<WebRoot head={head}>
@@ -48,7 +49,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 										<li key={user.pid}>
 											<div className="hover">
 												<a href={`/users/${user.pid}`} className="icon-container notify">
-													<img src={utils.cdn(props.ctx, `/mii/${user.pid}/normal_face.png`)} className="icon" />
+													<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} className="icon" />
 												</a>
 												<a className="body" href={`/users/${user.pid}`}>
 													<span className="text">

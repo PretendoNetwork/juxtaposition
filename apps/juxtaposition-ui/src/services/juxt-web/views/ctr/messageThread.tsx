@@ -2,22 +2,23 @@ import moment from 'moment';
 import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
-import { utils } from '@/services/juxt-web/views/utils';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
+	const url = useUrl();
 	const msg = props.message;
 
 	let screenshotContent: ReactNode = null;
 	if (msg.screenshot) {
-		screenshotContent = <img className="message-viewer-bubble-sent-screenshot" src={utils.cdn(props.ctx, msg.screenshot)} />;
+		screenshotContent = <img className="message-viewer-bubble-sent-screenshot" src={url.cdn(msg.screenshot)} />;
 	}
 
 	let content = <p className="post-content">{ msg.body }</p>;
 	if (msg.painting) {
-		content = <img className="message-viewer-bubble-sent-memo" src={utils.cdn(props.ctx, `/paintings/${msg.pid}/${msg.id}.png`)} />;
+		content = <img className="message-viewer-bubble-sent-memo" src={url.cdn(`/paintings/${msg.pid}/${msg.id}.png`)} />;
 	}
 
 	return (

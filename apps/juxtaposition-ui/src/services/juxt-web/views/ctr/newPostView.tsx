@@ -1,7 +1,7 @@
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/controls/ctabs';
 import { CtrCheckbox } from '@/services/juxt-web/views/ctr/controls/checkbox';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -34,6 +34,7 @@ const empathies = [
 ];
 
 export function CtrNewPostView(props: NewPostViewProps): ReactNode {
+	const url = useUrl();
 	const { ctrBanner, ctrLegacy } = props;
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
@@ -57,7 +58,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				<input type="hidden" name="bmp" value="true" />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
-						<img src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)} className="icon" />
+						<img src={url.cdn(`/mii/${props.ctx.pid}/normal_face.png`)} className="icon" />
 						<menu className="buttons">
 							{empathies.map(v => (
 								<input

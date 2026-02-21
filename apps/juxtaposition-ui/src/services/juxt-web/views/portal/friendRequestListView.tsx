@@ -1,14 +1,15 @@
 import moment from 'moment';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { FriendRequestItemProps, FriendRequestListViewProps } from '@/services/juxt-web/views/web/friendRequestListView';
 
 function PortalFriendRequestItem(props: FriendRequestItemProps): ReactNode {
+	const url = useUrl();
 	const senderId = props.request.sender;
 	return (
 		<li>
 			<a href={`/users/${senderId}`} data-pjax="#body" className="icon-container notify">
-				<img src={utils.cdn(props.ctx, `/mii/${senderId}/normal_face.png`)} className="icon" />
+				<img src={url.cdn(`/mii/${senderId}/normal_face.png`)} className="icon" />
 			</a>
 			<div className="body">
 				<p className="text">

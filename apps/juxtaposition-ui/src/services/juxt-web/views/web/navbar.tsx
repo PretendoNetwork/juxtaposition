@@ -1,5 +1,5 @@
-import { utils } from '@/services/juxt-web/views/utils';
 import { JuxtLogo, WebIcon } from '@/services/juxt-web/views/web/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 
@@ -9,6 +9,7 @@ export type NavBarProps = {
 };
 
 export function WebNavBar(props: NavBarProps): ReactNode {
+	const url = useUrl();
 	const selectedClasses = (id: number): string =>
 		id === props.selection ? 'selected' : '';
 
@@ -23,7 +24,7 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 							<a href="/users/me" className={selectedClasses(0)}>
 								<img
 									className="mii-icon"
-									src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)}
+									src={url.cdn(`/mii/${props.ctx.pid}/normal_face.png`)}
 									alt="User Page"
 								/>
 								<p>{props.ctx.lang.global.user_page}</p>

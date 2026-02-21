@@ -2,9 +2,9 @@ import cx from 'classnames';
 import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { WebUserPageMeta, WebUserTier } from '@/services/juxt-web/views/web/userPageView';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { InferSchemaType } from 'mongoose';
@@ -29,6 +29,7 @@ export type ModerateUserViewProps = {
 };
 
 export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
+	const url = useUrl();
 	const pnidName = props.pnid.mii?.name ?? props.pnid.username;
 	const head = (
 		<>
@@ -49,7 +50,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 				<div className="community-top">
 					<img className="banner" src="https://juxt-web-cdn.b-cdn.net/images/banner.png" alt="" />
 					<div className="community-info">
-						<img className={cx('user-icon', { verified: props.pnid.accessLevel > 2 })} src={utils.cdn(props.ctx, `/mii/${props.userSettings.pid}/normal_face.png`)} />
+						<img className={cx('user-icon', { verified: props.pnid.accessLevel > 2 })} src={url.cdn(`/mii/${props.userSettings.pid}/normal_face.png`)} />
 						<h2 className="community-title">
 							{pnidName}
 							{' '}
@@ -155,7 +156,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 									<summary>
 										<div className="hover">
 											<a href={`/users/${log.actor}`} className="icon-container notify">
-												<img src={utils.cdn(props.ctx, `/mii/${log.actor}/normal_face.png`)} className="icon" style={{ width: '32px', height: '32px' }} />
+												<img src={url.cdn(`/mii/${log.actor}/normal_face.png`)} className="icon" style={{ width: '32px', height: '32px' }} />
 											</a>
 											<span className="body messages report">
 												<span className="text">
@@ -198,7 +199,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 										<summary>
 											<div className="hover">
 												<a href={`/users/${report.reported_by}`} className="icon-container notify">
-													<img src={utils.cdn(props.ctx, `/mii/${report.reported_by}/normal_face.png`)} className="icon" />
+													<img src={url.cdn(`/mii/${report.reported_by}/normal_face.png`)} className="icon" />
 												</a>
 												<span className="body messages report">
 													<span className="text">
@@ -260,7 +261,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 										<summary>
 											<div className="hover">
 												<a href={`/users/${report.reported_by}`} className="icon-container notify">
-													<img src={utils.cdn(props.ctx, `/mii/${report.reported_by}/normal_face.png`)} className="icon" />
+													<img src={url.cdn(`/mii/${report.reported_by}/normal_face.png`)} className="icon" />
 												</a>
 												<span className="body messages report">
 													<span className="text">
@@ -321,7 +322,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 									<summary>
 										<div className="hover">
 											<a href={`/users/${post.removed_by}`} className="icon-container notify">
-												<img src={utils.cdn(props.ctx, `/mii/${post.removed_by}/normal_face.png`)} className="icon" />
+												<img src={url.cdn(`/mii/${post.removed_by}/normal_face.png`)} className="icon" />
 											</a>
 											<span className="body messages report">
 												<span className="text">

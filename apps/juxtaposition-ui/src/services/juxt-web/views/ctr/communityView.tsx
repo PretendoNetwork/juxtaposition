@@ -1,14 +1,15 @@
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { CtrPostListClosedView } from '@/services/juxt-web/views/ctr/postList';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
 export function CtrCommunityView(props: CommunityViewProps): ReactNode {
+	const url = useUrl();
 	const community = props.community;
-	const { bannerUrl, imageId, legacy } = utils.ctrHeader(props.ctx, community);
+	const { bannerUrl, imageId, legacy } = url.ctrHeader(community);
 
 	return (
 		<CtrRoot ctx={props.ctx} title={community.name}>
@@ -25,7 +26,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 					<h1 id="page-title" className="community">
 						<span>
 							<span className="icon-container">
-								<img src={utils.cdn(props.ctx, `/icons/${imageId}/64.png`)} className="icon" />
+								<img src={url.cdn(`/icons/${imageId}/64.png`)} className="icon" />
 							</span>
 							<span className="community-name">
 								{community.name}

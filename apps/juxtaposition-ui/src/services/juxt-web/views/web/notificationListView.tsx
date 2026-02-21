@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -25,13 +25,14 @@ export type NotificationItemProps = {
 };
 
 function WebNotificationItem(props: NotificationItemProps): ReactNode {
+	const url = useUrl();
 	const notif = props.notification;
 	if (notif.type === 'follow') {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
 		return (
 			<div className="hover">
 				<a href={`/users/${notif.objectID}`} className="icon-container notify">
-					<img src={utils.cdn(props.ctx, `/mii/${notif.objectID}/normal_face.png`)} className="icon" />
+					<img src={url.cdn(`/mii/${notif.objectID}/normal_face.png`)} className="icon" />
 				</a>
 				<a className="body" href={notif.link ?? '#'}>
 					<span className="text">

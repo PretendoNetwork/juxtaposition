@@ -2,13 +2,14 @@ import cx from 'classnames';
 import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
 export function CtrPostPageView(props: PostPageViewProps): ReactNode {
+	const url = useUrl();
 	const { post, community } = props;
-	const { bannerUrl, legacy } = utils.ctrHeader(props.ctx, community);
+	const { bannerUrl, legacy } = url.ctrHeader(community);
 
 	return (
 		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.activity_feed}>

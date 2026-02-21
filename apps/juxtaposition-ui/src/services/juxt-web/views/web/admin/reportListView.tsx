@@ -2,8 +2,8 @@ import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -32,13 +32,14 @@ export type ReportProps = {
 };
 
 function Report(props: ReportProps): ReactNode {
+	const url = useUrl();
 	return (
 		<li className="reports">
 			<details>
 				<summary>
 					<div className="hover">
 						<span className="icon-container notify">
-							<img src={utils.cdn(props.ctx, `/mii/${props.report.reported_by}/normal_face.png`)} className="icon" />
+							<img src={url.cdn(`/mii/${props.report.reported_by}/normal_face.png`)} className="icon" />
 						</span>
 						<span className="body messages report">
 							<span className="text">

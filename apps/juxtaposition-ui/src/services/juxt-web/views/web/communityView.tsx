@@ -1,9 +1,9 @@
 import cx from 'classnames';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { WebPostListClosedView } from '@/services/juxt-web/views/web/postList';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -21,11 +21,12 @@ export type CommunityViewProps = {
 };
 
 export function WebCommunityHead(props: CommunityViewProps): ReactNode {
+	const url = useUrl();
 	const name = props.community.name;
 	const title = `Juxt - ${name}`;
 	const description = props.community.description;
-	const image = utils.cdn(props.ctx, `/icons/${props.community.olive_community_id}/128.png`);
-	const url = `https://juxt.pretendo.cc/communities/${props.community.olive_community_id}/new`;
+	const image = url.cdn(`/icons/${props.community.olive_community_id}/128.png`);
+	const communityUrl = `https://juxt.pretendo.cc/communities/${props.community.olive_community_id}/new`;
 
 	return (
 		<>
@@ -38,7 +39,7 @@ export function WebCommunityHead(props: CommunityViewProps): ReactNode {
 			{/* Open Graph Meta Tags */}
 			<meta property="og:title" content={title} />
 			<meta property="og:description" content={description} />
-			<meta property="og:url" content={url} />
+			<meta property="og:url" content={communityUrl} />
 			<meta property="og:image" content={image} />
 			<meta property="og:site_name" content="Juxtaposition" />
 
@@ -54,11 +55,12 @@ export function WebCommunityHead(props: CommunityViewProps): ReactNode {
 }
 
 export function WebCommunityView(props: CommunityViewProps): ReactNode {
+	const url = useUrl();
 	const community = props.community;
 	const imageId = community.parent ? community.parent : community.olive_community_id;
 	const bannerUrl = community.wup_header
-		? utils.cdn(props.ctx, community.wup_header)
-		: utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`);
+		? url.cdn(community.wup_header)
+		: url.cdn(`/headers/${imageId}/WiiU.png`);
 
 	return (
 		<WebRoot head={<WebCommunityHead {...props} />}>
@@ -71,7 +73,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 				<div className="community-top">
 					<img className="banner" src={bannerUrl} />
 					<div className="community-info">
-						<img className="user-icon" src={utils.cdn(props.ctx, `/icons/${imageId}/128.png`)} />
+						<img className="user-icon" src={url.cdn(`/icons/${imageId}/128.png`)} />
 						<h2 className="community-title">{community.name}</h2>
 						{community.permissions.open
 							? (

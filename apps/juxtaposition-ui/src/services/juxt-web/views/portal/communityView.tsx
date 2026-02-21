@@ -1,19 +1,20 @@
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
 import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
 export function PortalCommunityView(props: CommunityViewProps): ReactNode {
+	const url = useUrl();
 	const community = props.community;
 	const imageId = community.parent ? community.parent : community.olive_community_id;
 	const bannerUrl = community.wup_header
-		? utils.cdn(props.ctx, community.wup_header)
-		: utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`);
+		? url.cdn(community.wup_header)
+		: url.cdn(`/headers/${imageId}/WiiU.png`);
 
 	return (
 		<PortalRoot title={community.name}>
@@ -50,7 +51,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
 							<img
-								src={utils.cdn(props.ctx, `/icons/${imageId}/128.png`)}
+								src={url.cdn(`/icons/${imageId}/128.png`)}
 								className="icon"
 							/>
 						</span>

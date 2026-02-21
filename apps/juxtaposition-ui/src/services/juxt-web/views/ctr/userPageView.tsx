@@ -1,10 +1,11 @@
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
 export function CtrUserPageView(props: UserPageViewProps): ReactNode {
+	const url = useUrl();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 
 	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
@@ -28,7 +29,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 					<h1 id="page-title" className="community">
 						<span>
 							<span className="icon-container">
-								<img className="icon" src={isUserDataViewable ? utils.cdn(props.ctx, `/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+								<img className="icon" src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
 							</span>
 							<span className="community-name">
 								{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}

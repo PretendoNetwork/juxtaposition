@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot } from '@/services/juxt-web/views/web/root';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ConversationSchema } from '@/models/conversation';
@@ -16,6 +16,7 @@ export type MessagesViewProps = {
 };
 
 export function WebMessagesView(props: MessagesViewProps): ReactNode {
+	const url = useUrl();
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
@@ -59,7 +60,7 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 													className="icon-container notify"
 												>
 													<img
-														src={utils.cdn(props.ctx, `/mii/${userObj.pid}/normal_face.png`)}
+														src={url.cdn(`/mii/${userObj.pid}/normal_face.png`)}
 														className="icon"
 													/>
 												</a>
