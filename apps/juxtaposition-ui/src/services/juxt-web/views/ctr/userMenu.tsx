@@ -1,9 +1,7 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type UserMenuViewProps = {
-	ctx: RenderContext;
 };
 
 export function CtrUserMenuView(props: UserMenuViewProps): ReactNode {

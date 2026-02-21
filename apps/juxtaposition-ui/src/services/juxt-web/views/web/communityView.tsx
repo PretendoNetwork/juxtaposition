@@ -6,11 +6,9 @@ import { WebPostListClosedView } from '@/services/juxt-web/views/web/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { CommunitySchema } from '@/models/communities';
 
 export type CommunityViewProps = {
-	ctx: RenderContext;
 	community: InferSchemaType<typeof CommunitySchema>;
 	totalPosts: number;
 	canPost: boolean;

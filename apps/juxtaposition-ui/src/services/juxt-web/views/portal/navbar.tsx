@@ -1,9 +1,7 @@
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type NavBarProps = {
-	ctx: RenderContext;
 	selection: number;
 };
 

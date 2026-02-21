@@ -8,12 +8,10 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ContentSchema } from '@/models/content';
 import type { HydratedSettingsDocument } from '@/models/settings';
 
 export type UserPageViewProps = {
-	ctx: RenderContext;
 	baseLink: string;
 	selectedTab: number;
 	children?: ReactNode;

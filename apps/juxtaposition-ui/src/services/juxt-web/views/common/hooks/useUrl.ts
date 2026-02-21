@@ -36,6 +36,7 @@ export type UseUrlValue = {
 	ctrHeader: (com: InferSchemaType<typeof CommunitySchema>) => CtrHeader;
 	url: (u: string, query?: Record<string, Serializable>) => string;
 	cdn: (path: string) => string;
+	// TODO add util for building a mii image
 };
 
 export function useUrl(): UseUrlValue {

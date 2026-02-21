@@ -5,12 +5,10 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
 
 export type FeedViewProps = {
-	ctx: RenderContext;
 	title: string;
 	userContent: InferSchemaType<typeof ContentSchema>;
 	posts: InferSchemaType<typeof PostSchema>[];

@@ -8,7 +8,6 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
 import type { HydratedReportDocument } from '@/models/report';
@@ -16,7 +15,6 @@ import type { PostSchema } from '@/models/post';
 import type { auditLogSchema } from '@/models/logs';
 
 export type ModerateUserViewProps = {
-	ctx: RenderContext;
 	pnid: AccountGetUserDataResponse;
 	userSettings: HydratedSettingsDocument;
 	userContent: InferSchemaType<typeof ContentSchema>;

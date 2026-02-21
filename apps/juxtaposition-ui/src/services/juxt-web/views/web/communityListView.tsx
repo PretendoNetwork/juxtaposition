@@ -3,22 +3,18 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { CommunitySchema } from '@/models/communities';
 
 export type CommunityListViewProps = {
-	ctx: RenderContext;
 	communities: InferSchemaType<typeof CommunitySchema>[];
 };
 
 export type CommunityOverviewViewProps = {
-	ctx: RenderContext;
 	popularCommunities: InferSchemaType<typeof CommunitySchema>[];
 	newCommunities: InferSchemaType<typeof CommunitySchema>[];
 };
 
 export type CommunityItemProps = {
-	ctx: RenderContext;
 	community: InferSchemaType<typeof CommunitySchema>;
 };
 

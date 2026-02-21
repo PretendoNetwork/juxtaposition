@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type DefaultHeadProps = {
-	ctx: RenderContext;
 	preventJsLoad?: boolean;
 };
 
@@ -22,7 +20,6 @@ function DefaultHead(props: DefaultHeadProps): ReactNode {
 }
 
 export type HtmlProps = {
-	ctx: RenderContext;
 	children?: ReactNode;
 	head?: ReactNode;
 	title: string;

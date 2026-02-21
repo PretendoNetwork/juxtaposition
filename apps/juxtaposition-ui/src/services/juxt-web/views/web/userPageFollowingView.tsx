@@ -1,6 +1,5 @@
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { HydratedSettingsDocument } from '@/models/settings';
 
 export type CommunityViewData = {
@@ -9,7 +8,6 @@ export type CommunityViewData = {
 };
 
 export type UserPageFollowingViewProps = {
-	ctx: RenderContext;
 	followers: HydratedSettingsDocument[];
 	communities: CommunityViewData[];
 };

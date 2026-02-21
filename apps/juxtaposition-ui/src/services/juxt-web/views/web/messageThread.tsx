@@ -7,21 +7,18 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
 import type { PostSchema } from '@/models/post';
 
 export type ConversationPost = InferSchemaType<typeof PostSchema>;
 
 export type MessageThreadViewProps = {
-	ctx: RenderContext;
 	conversation: ConversationModel;
 	otherUser: ConversationUserModel;
 	messages: ConversationPost[];
 };
 
 export type MessageThreadItemProps = {
-	ctx: RenderContext;
 	message: ConversationPost;
 };
 

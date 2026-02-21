@@ -1,8 +1,6 @@
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type ReportModalViewProps = {
-	ctx: RenderContext;
 };
 
 export function WebReportModalView(props: ReportModalViewProps): ReactNode {

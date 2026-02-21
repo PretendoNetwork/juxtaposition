@@ -3,11 +3,9 @@ import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { PostDto } from '@/api/post';
 
 export type PostListViewProps = {
-	ctx: RenderContext;
 	userContent: InferSchemaType<typeof ContentSchema>;
 	posts: InferSchemaType<typeof PostSchema>[] | PostDto[];
 	nextLink: string;

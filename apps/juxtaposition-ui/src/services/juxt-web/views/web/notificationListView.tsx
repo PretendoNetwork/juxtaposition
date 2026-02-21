@@ -5,22 +5,18 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { NotificationSchema } from '@/models/notifications';
 
 export type NotificationWrapperViewProps = {
-	ctx: RenderContext;
 	selectedTab: number;
 	children?: ReactNode;
 };
 
 export type NotificationListViewProps = {
-	ctx: RenderContext;
 	notifications: InferSchemaType<typeof NotificationSchema>[];
 };
 
 export type NotificationItemProps = {
-	ctx: RenderContext;
 	notification: InferSchemaType<typeof NotificationSchema>;
 };
 

@@ -5,13 +5,11 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ConversationSchema } from '@/models/conversation';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type ConversationModel = InferSchemaType<typeof ConversationSchema>;
 export type ConversationUserModel = ConversationModel['users'][number];
 
 export type MessagesViewProps = {
-	ctx: RenderContext;
 	conversations: ConversationModel[];
 };
 

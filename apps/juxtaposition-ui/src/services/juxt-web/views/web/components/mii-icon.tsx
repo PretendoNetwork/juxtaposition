@@ -1,7 +1,5 @@
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type MiiIconProps = {
-	ctx: RenderContext;
 
 	pid: number;
 	face_url?: string;

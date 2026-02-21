@@ -2,10 +2,8 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type NewCommunityViewProps = {
-	ctx: RenderContext;
 };
 
 export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {

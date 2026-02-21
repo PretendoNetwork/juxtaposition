@@ -4,11 +4,9 @@ import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { CommunitySchema } from '@/models/communities';
 
 export type ManageCommunityViewProps = {
-	ctx: RenderContext;
 	search?: string;
 	communities: InferSchemaType<typeof CommunitySchema>[];
 	hasNextPage: boolean;

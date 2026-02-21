@@ -6,7 +6,6 @@ import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ContentSchema } from '@/models/content';
 import type { HydratedReportDocument } from '@/models/report';
 import type { PostSchema } from '@/models/post';
@@ -17,14 +16,12 @@ export type ReportWithPost = {
 };
 
 export type ReportListViewProps = {
-	ctx: RenderContext;
 	reasonMap: string[];
 	userContent: InferSchemaType<typeof ContentSchema>;
 	reports: ReportWithPost[];
 };
 
 export type ReportProps = {
-	ctx: RenderContext;
 	reasonMap: string[];
 	userContent: InferSchemaType<typeof ContentSchema>;
 	report: HydratedReportDocument;
