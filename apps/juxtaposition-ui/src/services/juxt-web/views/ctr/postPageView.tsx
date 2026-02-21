@@ -12,7 +12,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 	const { bannerUrl, legacy } = url.ctrHeader(community);
 
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.activity_feed}>
+		<CtrRoot title={props.ctx.lang.global.activity_feed}>
 			<CtrPageBody>
 				<header
 					id="header"
@@ -56,13 +56,13 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 
 				<div className="body-content tab2-content" id="post">
 					<div className="post-wrapper parent">
-						<CtrPostView ctx={props.ctx} post={post} userContent={props.userContent} isMainPost />
+						<CtrPostView post={post} userContent={props.userContent} isMainPost />
 					</div>
 					{props.replies.map(replyPost => (
-						<CtrPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
+						<CtrPostView key={post.id} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
-				{props.canPost ? <CtrNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" ctrBanner={bannerUrl} ctrLegacy={legacy} /> : null}
+				{props.canPost ? <CtrNewPostView id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" ctrBanner={bannerUrl} ctrLegacy={legacy} /> : null}
 
 				<div id="report-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 					<header className="add-post-page-header" id="header">

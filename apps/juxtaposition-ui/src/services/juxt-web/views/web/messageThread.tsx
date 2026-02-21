@@ -72,14 +72,14 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				{otherUserName}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={3} />
+			<WebNavBar selection={3} />
 			<div id="toast" />
 			<div id="wrapper">
 				<div className="body-content message-post-list" id="message-page">
 					<button id="header-post-button" className="header-button" data-module-hide="message-page" data-module-show="add-post-page" data-header="true" data-menu="true">+</button>
-					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
+					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
 				</div>
-				<WebNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
+				<WebNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
 				<div id="painting-wrapper" className="painting-wrapper" style={{ display: 'none' }}>
 					<div id="painting-content">
 						<div className="tools">
@@ -121,7 +121,7 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					<script src="/js/painting.global.js" />
 				</div>
 			</div>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

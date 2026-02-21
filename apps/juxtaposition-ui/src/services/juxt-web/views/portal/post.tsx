@@ -100,7 +100,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
 					>
 						{post.body !== '' ? <p className="post-content-text">{post.body}</p> : null}
-						<PortalPostScreenshot ctx={props.ctx} post={post}></PortalPostScreenshot>
+						<PortalPostScreenshot post={post}></PortalPostScreenshot>
 						{post.painting !== '' ? <img className="post-memo" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
 					</div>

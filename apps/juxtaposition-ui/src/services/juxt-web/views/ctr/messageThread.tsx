@@ -29,7 +29,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 				'other-post': msg.pid !== props.ctx.pid
 			})}
 		>
-			<CtrMiiIcon ctx={props.ctx} pid={msg.pid ?? 0} face_url={msg.mii_face_url ?? undefined}></CtrMiiIcon>
+			<CtrMiiIcon pid={msg.pid ?? 0} face_url={msg.mii_face_url ?? undefined}></CtrMiiIcon>
 			<header>
 				<span className="timestamp">{moment(msg.created_at).fromNow()}</span>
 			</header>
@@ -51,7 +51,7 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
 
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.messages} onLoad="cave.toolbar_setActiveButton(4);window.scrollTo(0, 500000);">
+		<CtrRoot title={props.ctx.lang.global.messages} onLoad="cave.toolbar_setActiveButton(4);window.scrollTo(0, 500000);">
 			<CtrPageBody>
 				<header id="header" className="buttons">
 					<h1 id="page-title">{otherUserName}</h1>
@@ -70,9 +70,9 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					</a>
 				</header>
 				<div className="body-content message-post-list" id="message-page">
-					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
+					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
 				</div>
-				<CtrNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
+				<CtrNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
 			</CtrPageBody>
 		</CtrRoot>
 	);

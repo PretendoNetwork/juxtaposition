@@ -12,7 +12,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 	const { bannerUrl, imageId, legacy } = url.ctrHeader(community);
 
 	return (
-		<CtrRoot ctx={props.ctx} title={community.name}>
+		<CtrRoot title={community.name}>
 			<CtrPageBody>
 				<header
 					id="header"
@@ -106,7 +106,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						{props.children}
 					</div>
 				</div>
-				<CtrNewPostView ctx={props.ctx} id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" ctrBanner={bannerUrl} ctrLegacy={legacy} />
+				<CtrNewPostView id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" ctrBanner={bannerUrl} ctrLegacy={legacy} />
 			</CtrPageBody>
 		</CtrRoot>
 	);

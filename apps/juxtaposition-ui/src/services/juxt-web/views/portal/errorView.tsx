@@ -9,7 +9,7 @@ export function PortalErrorView(props: ErrorViewProps): ReactNode {
 
 	return (
 		<PortalRoot title={title} onLoad="wiiuBrowser.endStartUp();">
-			<PortalNavBar ctx={props.ctx} selection={-1} />
+			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title" className=""></h1>

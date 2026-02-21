@@ -54,16 +54,16 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 
 	return (
 		<PortalRoot title={props.ctx.lang.global.messages} onLoad="window.scrollTo(0, 50000);">
-			<PortalNavBar ctx={props.ctx} selection={3} />
+			<PortalNavBar selection={3} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title">{otherUserName}</h1>
 					<a id="header-post-button" className="header-button" href="#" data-module-hide="message-page" data-module-show="add-post-page" data-header="false" data-menu="false">Post</a>
 				</header>
 				<div className="body-content message-post-list" id="message-page">
-					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
+					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
 				</div>
-				<PortalNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
+				<PortalNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
 			</PortalPageBody>
 		</PortalRoot>
 	);

@@ -38,7 +38,6 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 							return (
 								<li key={convo.id}>
 									<CtrMiiIcon
-										ctx={props.ctx}
 										pid={userObj.pid}
 										big={true}
 										className={cx({ verified: userObj.official })}

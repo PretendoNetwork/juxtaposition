@@ -11,7 +11,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 
 	return (
 		<PortalRoot title={props.ctx.lang.global.activity_feed}>
-			<PortalNavBar ctx={props.ctx} selection={-1} />
+			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title" className="left">{pageTitle}</h1>
@@ -37,13 +37,13 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 				</header>
 				<div className="body-content post-list" id="post">
 					<div className="post-wrapper parent">
-						<PortalPostView ctx={props.ctx} post={post} userContent={props.userContent} isMainPost />
+						<PortalPostView post={post} userContent={props.userContent} isMainPost />
 					</div>
 					{props.replies.map(replyPost => (
-						<PortalPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
+						<PortalPostView key={post.id} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
-				{props.canPost ? <PortalNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" /> : null}
+				{props.canPost ? <PortalNewPostView id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" /> : null}
 
 				<div id="report-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 					<header className="add-post-page-header">

@@ -4,7 +4,7 @@ import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSe
 
 export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title="Whoops!">
+		<CtrRoot title="Whoops!">
 			<CtrPageBody>
 				<header
 					id="header"

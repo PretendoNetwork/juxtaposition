@@ -55,7 +55,7 @@ function Report(props: ReportProps): ReactNode {
 						</span>
 					</div>
 				</summary>
-				<WebPostView ctx={props.ctx} post={props.post} userContent={props.userContent} isReply={false} />
+				<WebPostView post={props.post} userContent={props.userContent} isReply={false} />
 				<div className="button-spacer">
 					<button evt-click="removeReport(this)" data-id={props.report._id}>Remove Post</button>
 					<button evt-click="ignoreReport(this)" data-id={props.report._id}>Ignore Report</button>
@@ -75,10 +75,10 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 				{props.reports.length}
 				)
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={5} />
+			<WebNavBar selection={5} />
 			<div id="toast"></div>
 			<WebWrapper>
-				<WebModerationTabs ctx={props.ctx} selected="reports" />
+				<WebModerationTabs selected="reports" />
 				{props.reports.length === 0
 					? (
 							<p>
@@ -92,7 +92,7 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 					? (
 							<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
 								{props.reports.map(({ report, post }) => (
-									<Report ctx={props.ctx} key={report.id} userContent={props.userContent} reasonMap={props.reasonMap} post={post} report={report} />
+									<Report key={report.id} userContent={props.userContent} reasonMap={props.reasonMap} post={post} report={report} />
 								))}
 							</ul>
 						)

@@ -24,10 +24,10 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 			<h2 id="title" className="page-header">
 				Manage Communities
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={5} />
+			<WebNavBar selection={5} />
 			<div id="toast"></div>
 			<WebWrapper>
-				<WebModerationTabs ctx={props.ctx} selected="communities" />
+				<WebModerationTabs selected="communities" />
 				<input type="string" id="community-search" className="searchbar" placeholder="Search..." value={props.search} />
 				<button style={{ marginTop: '1em' }}>
 					<a href="/admin/communities/new" className="button">Create Community</a>

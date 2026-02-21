@@ -17,7 +17,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
 
 	return (
-		<CtrRoot ctx={props.ctx} title={pnidName}>
+		<CtrRoot title={pnidName}>
 			<CtrPageBody>
 				<header
 					id="header"

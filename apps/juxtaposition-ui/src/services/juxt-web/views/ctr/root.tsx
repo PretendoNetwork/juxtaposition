@@ -31,7 +31,7 @@ export function CtrRoot(props: HtmlProps): ReactNode {
 	return (
 		<html lang="en">
 			<head>
-				<DefaultHead preventJsLoad={props.preventJsLoad} ctx={props.ctx} />
+				<DefaultHead preventJsLoad={props.preventJsLoad} />
 				<title>{props.title}</title>
 				{props.head}
 			</head>

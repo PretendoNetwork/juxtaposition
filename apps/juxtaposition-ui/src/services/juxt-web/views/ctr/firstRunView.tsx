@@ -74,7 +74,7 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 	);
 
 	return (
-		<CtrRoot ctx={props.ctx} preventJsLoad title="First Run" onLoad="cave.snd_playBgm('BGM_CAVE_SYOKAI');cave.toolbar_setVisible(false);" head={head}>
+		<CtrRoot preventJsLoad title="First Run" onLoad="cave.snd_playBgm('BGM_CAVE_SYOKAI');cave.toolbar_setVisible(false);" head={head}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">Juxtaposition Setup</h1>

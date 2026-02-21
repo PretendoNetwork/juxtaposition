@@ -33,7 +33,7 @@ export function CtrFriendRequestListView(props: FriendRequestListViewProps): Rea
 				if (!props.ctx.usersMap.get(req.sender)) {
 					return null;
 				}
-				return <CtrFriendRequestItem key={i} ctx={props.ctx} request={req} />;
+				return <CtrFriendRequestItem key={i} request={req} />;
 			})}
 		</ul>
 	);

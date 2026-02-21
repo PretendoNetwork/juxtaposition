@@ -11,7 +11,6 @@ export function PortalMiiIcon(props: MiiIconProps): ReactNode {
 
 	return (
 		<PortalIconView
-			ctx={props.ctx}
 			href={href}
 			src={miiUrl}
 			baseClass={baseClass}

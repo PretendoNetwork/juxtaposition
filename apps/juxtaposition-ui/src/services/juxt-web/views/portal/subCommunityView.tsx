@@ -13,7 +13,7 @@ export type SubCommunityViewProps = {
 export function PortalSubCommunityView(props: SubCommunityViewProps): ReactNode {
 	return (
 		<PortalRoot title={props.ctx.lang.global.communities} onLoad="stopLoading();">
-			<PortalNavBar ctx={props.ctx} selection={2} />
+			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title">
@@ -26,7 +26,7 @@ export function PortalSubCommunityView(props: SubCommunityViewProps): ReactNode 
 					<div className="communities-list double">
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.subcommunities.map(community => (
-								<PortalCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 					</div>

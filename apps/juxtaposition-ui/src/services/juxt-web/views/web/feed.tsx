@@ -52,13 +52,13 @@ export function WebPersonalFeedView(props: FeedViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.activity_feed}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={1} />
+			<WebNavBar selection={1} />
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebFeedTabs selected={0} />
-				<WebPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 			</WebWrapper>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }
@@ -69,13 +69,13 @@ export function WebGlobalFeedView(props: FeedViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.activity_feed}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={1} />
+			<WebNavBar selection={1} />
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebFeedTabs selected={1} />
-				<WebPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 			</WebWrapper>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

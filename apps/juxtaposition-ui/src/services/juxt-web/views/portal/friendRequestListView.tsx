@@ -33,7 +33,7 @@ export function PortalFriendRequestListView(props: FriendRequestListViewProps): 
 				if (!props.ctx.usersMap.get(req.sender)) {
 					return null;
 				}
-				return <PortalFriendRequestItem key={i} ctx={props.ctx} request={req} />;
+				return <PortalFriendRequestItem key={i} request={req} />;
 			})}
 		</ul>
 	);

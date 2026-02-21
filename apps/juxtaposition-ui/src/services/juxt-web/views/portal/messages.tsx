@@ -16,7 +16,7 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 	const url = useUrl();
 	return (
 		<PortalRoot title={props.ctx.lang.global.messages}>
-			<PortalNavBar ctx={props.ctx} selection={3} />
+			<PortalNavBar selection={3} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.ctx.lang.global.messages}</h1>

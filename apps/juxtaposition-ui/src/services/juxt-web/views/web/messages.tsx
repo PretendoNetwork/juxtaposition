@@ -20,7 +20,7 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.messages}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={3} />
+			<WebNavBar selection={3} />
 			<div id="toast"></div>
 			<div id="wrapper">
 				{props.conversations.length === 0

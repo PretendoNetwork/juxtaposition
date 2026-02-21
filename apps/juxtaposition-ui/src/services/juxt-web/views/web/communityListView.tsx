@@ -39,12 +39,12 @@ export function WebCommunityListView(props: CommunityListViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.all_communities.text}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={2} />
+			<WebNavBar selection={2} />
 			<div id="toast"></div>
 			<WebWrapper>
 				<div id="popular" className="communities-wrapper">
 					{props.communities.map(community => (
-						<WebCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+						<WebCommunityItem key={community.olive_community_id} community={community} />
 					))}
 				</div>
 			</WebWrapper>
@@ -58,19 +58,19 @@ export function WebCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.communities}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={2} />
+			<WebNavBar selection={2} />
 			<div id="toast"></div>
 			<WebWrapper>
 				<h3 className="communities-header">{props.ctx.lang.all_communities.popular_places}</h3>
 				<div id="popular" className="communities-wrapper">
 					{props.popularCommunities.map(community => (
-						<WebCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+						<WebCommunityItem key={community.olive_community_id} community={community} />
 					))}
 				</div>
 				<h3 className="communities-header">{props.ctx.lang.all_communities.new_communities}</h3>
 				<div id="new" className="communities-wrapper">
 					{props.newCommunities.map(community => (
-						<WebCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+						<WebCommunityItem key={community.olive_community_id} community={community} />
 					))}
 				</div>
 			</WebWrapper>

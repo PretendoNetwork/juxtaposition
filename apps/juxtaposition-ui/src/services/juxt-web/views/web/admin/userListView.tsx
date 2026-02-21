@@ -24,10 +24,10 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				User Accounts
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={5} />
+			<WebNavBar selection={5} />
 			<div id="toast"></div>
 			<WebWrapper>
-				<WebModerationTabs ctx={props.ctx} selected="users" />
+				<WebModerationTabs selected="users" />
 				<input type="string" id="user-search" className="searchbar" placeholder="Search..." value={props.search} />
 				<span style={{ marginTop: '16px' }}>
 					{ props.userCount }

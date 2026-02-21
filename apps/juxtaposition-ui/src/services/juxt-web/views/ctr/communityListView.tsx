@@ -28,7 +28,7 @@ export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 
 export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.all_communities.text}>
+		<CtrRoot title={props.ctx.lang.all_communities.text}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.ctx.lang.all_communities.text}</h1>
@@ -37,7 +37,7 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 					<div className="communities-list">
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.communities.map(community => (
-								<CtrCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<CtrCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 					</div>
@@ -49,7 +49,7 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 
 export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.communities}>
+		<CtrRoot title={props.ctx.lang.global.communities}>
 			<CtrPageBody>
 				<header
 					id="header"
@@ -67,7 +67,7 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 						</div>
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.popularCommunities.map(community => (
-								<CtrCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<CtrCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 						<div className="headline headline-green">
@@ -75,7 +75,7 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 						</div>
 						<ul className="list-content-with-icon-column" id="community-top-content">
 							{props.newCommunities.map(community => (
-								<CtrCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<CtrCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 					</div>

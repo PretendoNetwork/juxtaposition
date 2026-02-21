@@ -65,7 +65,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.communities}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={2} />
+			<WebNavBar selection={2} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
 				<div className="community-top">
@@ -131,7 +131,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 				{!community.permissions.open ? <WebPostListClosedView /> : null}
 				{props.children}
 			</WebWrapper>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

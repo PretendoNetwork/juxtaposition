@@ -33,7 +33,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 		<>
 			<script src="/js/admin.global.js"></script>
 			<link rel="stylesheet" href="/css/admin.css" />
-			<WebUserPageMeta ctx={props.ctx} user={props.pnid} userSettings={props.userSettings} withImage />
+			<WebUserPageMeta user={props.pnid} userSettings={props.userSettings} withImage />
 		</>
 	);
 
@@ -42,7 +42,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.user_page}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={-1} />
+			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper>
 				<div className="community-top">
@@ -232,7 +232,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 												</span>
 											</div>
 										</summary>
-										{ post ? <WebPostView ctx={props.ctx} post={post} isReply={false} /> : <p>Post could not be found</p> }
+										{ post ? <WebPostView post={post} isReply={false} /> : <p>Post could not be found</p> }
 									</details>
 								</li>
 							);
@@ -294,7 +294,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 												</span>
 											</div>
 										</summary>
-										{ post ? <WebPostView ctx={props.ctx} post={post} isReply={false} /> : <p>Post could not be found</p> }
+										{ post ? <WebPostView post={post} isReply={false} /> : <p>Post could not be found</p> }
 									</details>
 								</li>
 							);
@@ -338,7 +338,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 											</span>
 										</div>
 									</summary>
-									<WebPostView ctx={props.ctx} post={post} isReply={false} />
+									<WebPostView post={post} isReply={false} />
 								</details>
 							</li>
 						))}

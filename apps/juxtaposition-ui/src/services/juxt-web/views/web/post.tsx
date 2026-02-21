@@ -93,7 +93,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
 				{post.body !== '' ? <h4>{post.body}</h4> : null}
-				<WebPostScreenshot ctx={props.ctx} post={props.post}></WebPostScreenshot>
+				<WebPostScreenshot post={props.post}></WebPostScreenshot>
 				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
 			</div>

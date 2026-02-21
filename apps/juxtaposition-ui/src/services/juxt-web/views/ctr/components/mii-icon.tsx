@@ -12,7 +12,6 @@ export function CtrMiiIcon(props: MiiIconProps): ReactNode {
 
 	return (
 		<CtrIcon
-			ctx={props.ctx}
 			href={href}
 			src={miiUrl}
 			baseClass={baseClass}

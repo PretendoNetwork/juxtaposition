@@ -101,7 +101,7 @@ export function WebNotificationListView(props: NotificationListViewProps): React
 			{props.notifications.length === 0 ? <li style={{ borderBottom: 'none' }}><p>{props.ctx.lang.notifications.none}</p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<li key={i}>
-					<WebNotificationItem ctx={props.ctx} notification={notification} />
+					<WebNotificationItem notification={notification} />
 				</li>
 			))}
 		</ul>
@@ -114,12 +114,12 @@ export function WebNotificationWrapperView(props: NotificationWrapperViewProps):
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.notifications}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={4} />
+			<WebNavBar selection={4} />
 			<div id="toast"></div>
 			<WebWrapper>
 				{props.children}
 			</WebWrapper>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

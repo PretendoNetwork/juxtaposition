@@ -18,7 +18,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 
 	return (
 		<PortalRoot title={community.name}>
-			<PortalNavBar ctx={props.ctx} selection={2} />
+			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
 					{props.canPost
@@ -119,7 +119,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						{props.children}
 					</div>
 				</div>
-				<PortalNewPostView ctx={props.ctx} id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" />
+				<PortalNewPostView id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" />
 			</PortalPageBody>
 		</PortalRoot>
 	);

@@ -133,13 +133,13 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 
 	let head: ReactNode = null;
 	if (isUserDataViewable) {
-		head = <WebUserPageMeta ctx={props.ctx} user={props.user} userSettings={props.userSettings} />;
+		head = <WebUserPageMeta user={props.user} userSettings={props.userSettings} />;
 	}
 
 	return (
 		<WebRoot head={head}>
 			<h2 id="title" className="page-header">{props.ctx.lang.global.user_page}</h2>
-			<WebNavBar ctx={props.ctx} selection={-1} />
+			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
 				<div className="community-top">
@@ -253,7 +253,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 				</div>
 				{props.children}
 			</WebWrapper>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

@@ -20,12 +20,12 @@ export function WebTopicTagView(props: TopicTagViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.activity_feed}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={1} />
+			<WebNavBar selection={1} />
 			<div id="toast"></div>
 			<WebWrapper>
-				<WebPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 			</WebWrapper>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

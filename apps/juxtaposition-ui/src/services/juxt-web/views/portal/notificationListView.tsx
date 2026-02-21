@@ -13,7 +13,7 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
 		return (
 			<>
-				<PortalMiiIcon ctx={props.ctx} pid={Number(notif.objectID)} big={true}></PortalMiiIcon>
+				<PortalMiiIcon pid={Number(notif.objectID)} big={true}></PortalMiiIcon>
 				<div className="body">
 					<p className="text">
 						{notif.users.length === 1
@@ -63,7 +63,7 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<>
-				<PortalIconView ctx={props.ctx} href={notif.link ?? undefined} src={notif.image ?? ''}></PortalIconView>
+				<PortalIconView href={notif.link ?? undefined} src={notif.image ?? ''}></PortalIconView>
 				<div className="body">
 					<a href={notif.link ?? '#'}>
 						<span className="text">
@@ -88,7 +88,7 @@ export function PortalNotificationListView(props: NotificationListViewProps): Re
 			{props.notifications.length === 0 ? <li><p>{props.ctx.lang.notifications.none}</p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<li key={i}>
-					<PortalNotificationItem ctx={props.ctx} notification={notification} />
+					<PortalNotificationItem notification={notification} />
 				</li>
 			))}
 		</ul>
@@ -98,7 +98,7 @@ export function PortalNotificationListView(props: NotificationListViewProps): Re
 export function PortalNotificationWrapperView(props: NotificationWrapperViewProps): ReactNode {
 	return (
 		<PortalRoot title={props.ctx.lang.global.notifications}>
-			<PortalNavBar ctx={props.ctx} selection={4} />
+			<PortalNavBar selection={4} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title">Notifications</h1>

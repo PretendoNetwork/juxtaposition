@@ -7,7 +7,7 @@ export function CtrErrorView(props: ErrorViewProps): ReactNode {
 	const title = `Error: ${props.code}`;
 
 	return (
-		<CtrRoot ctx={props.ctx} title={title}>
+		<CtrRoot title={title}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">

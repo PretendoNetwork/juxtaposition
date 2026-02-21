@@ -20,10 +20,10 @@ export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				New Community
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={-1} />
+			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box community-create">
-				<WebModerationTabs ctx={props.ctx} selected="communities" />
+				<WebModerationTabs selected="communities" />
 				<form action="/admin/communities/new" method="post" encType="multipart/form-data">
 					<div className="col-md-4">
 						<label className="labels" htmlFor="name">Community Name:</label>

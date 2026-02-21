@@ -12,7 +12,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
 		return (
 			<>
-				<CtrMiiIcon ctx={props.ctx} pid={Number(notif.objectID)} big={true}></CtrMiiIcon>
+				<CtrMiiIcon pid={Number(notif.objectID)} big={true}></CtrMiiIcon>
 				<div className="body">
 					<p>
 						{notif.users.length === 1
@@ -62,7 +62,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<>
-				<CtrIcon ctx={props.ctx} href={notif.link ?? undefined} src={notif.image ?? ''}></CtrIcon>
+				<CtrIcon href={notif.link ?? undefined} src={notif.image ?? ''}></CtrIcon>
 				<div className="body">
 					<a href={notif.link ?? undefined}>
 						<p style={{ color: 'black' }}>
@@ -87,7 +87,7 @@ export function CtrNotificationListView(props: NotificationListViewProps): React
 			{props.notifications.length === 0 ? <li><p>{props.ctx.lang.notifications.none}</p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<li key={i}>
-					<CtrNotificationItem ctx={props.ctx} notification={notification} />
+					<CtrNotificationItem notification={notification} />
 				</li>
 			))}
 		</ul>
@@ -96,7 +96,7 @@ export function CtrNotificationListView(props: NotificationListViewProps): React
 
 export function CtrNotificationWrapperView(props: NotificationWrapperViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title="Notifications and Messages">
+		<CtrRoot title="Notifications and Messages">
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">Notifications and Messages</h1>

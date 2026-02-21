@@ -6,7 +6,7 @@ export type UserMenuViewProps = {
 
 export function CtrUserMenuView(props: UserMenuViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title="Whoops!">
+		<CtrRoot title="Whoops!">
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">User Menu</h1>

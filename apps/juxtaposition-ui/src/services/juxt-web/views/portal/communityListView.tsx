@@ -29,7 +29,7 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 export function PortalCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
 		<PortalRoot title={props.ctx.lang.all_communities.text} onLoad="stopLoading();">
-			<PortalNavBar ctx={props.ctx} selection={2} />
+			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.ctx.lang.all_communities.text}</h1>
@@ -39,7 +39,7 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 					<div className="communities-list">
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.communities.map(community => (
-								<PortalCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 					</div>
@@ -52,7 +52,7 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): ReactNode {
 	return (
 		<PortalRoot title={props.ctx.lang.global.communities} onLoad="stopLoading();">
-			<PortalNavBar ctx={props.ctx} selection={2} />
+			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.ctx.lang.global.communities}</h1>
@@ -65,7 +65,7 @@ export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): 
 						</div>
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.popularCommunities.map(community => (
-								<PortalCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 						<div className="headline headline-green">
@@ -73,7 +73,7 @@ export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): 
 						</div>
 						<ul className="list-content-with-icon-column" id="community-top-content">
 							{props.newCommunities.map(community => (
-								<PortalCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 					</div>

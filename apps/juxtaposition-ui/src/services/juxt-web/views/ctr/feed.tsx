@@ -34,7 +34,7 @@ export function CtrFeedTabs(props: FeedTabsProps): ReactNode {
 
 export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title={props.title}>
+		<CtrRoot title={props.title}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.title}</h1>
@@ -42,7 +42,7 @@ export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrFeedTabs selected={0} />
 					<div className="tab-body post-list">
-						<CtrPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						<CtrPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>
 				</div>
 			</CtrPageBody>
@@ -52,7 +52,7 @@ export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 
 export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title={props.title}>
+		<CtrRoot title={props.title}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.title}</h1>
@@ -60,7 +60,7 @@ export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrFeedTabs selected={1} />
 					<div className="tab-body post-list">
-						<CtrPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						<CtrPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>
 				</div>
 			</CtrPageBody>

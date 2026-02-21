@@ -72,21 +72,21 @@ export function WebPostPageView(props: PostPageViewProps): ReactNode {
 	return (
 		<WebRoot head={<PostHead {...props} />}>
 			<h2 id="title" className="page-header">Post</h2>
-			<WebNavBar ctx={props.ctx} selection={2} />
+			<WebNavBar selection={2} />
 			<div id="toast"></div>
 			<div className="community-page-post-box" id="post">
 				<WebWrapper>
-					<WebPostView ctx={props.ctx} post={props.post} userContent={props.userContent} isMainPost />
+					<WebPostView post={props.post} userContent={props.userContent} isMainPost />
 					<span className="replies-line" />
 					{props.replies.map(replyPost => (
 						<div key={replyPost.id}>
-							<WebPostView ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
+							<WebPostView post={replyPost} userContent={props.userContent} isReply />
 							<span className="replies-line" />
 						</div>
 					))}
 				</WebWrapper>
 			</div>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

@@ -48,7 +48,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 				spoiler: post.is_spoiler
 			})}
 		>
-			<CtrMiiIcon ctx={props.ctx} pid={post.pid ?? 0} face_url={post.mii_face_url ?? undefined}></CtrMiiIcon>
+			<CtrMiiIcon pid={post.pid ?? 0} face_url={post.mii_face_url ?? undefined}></CtrMiiIcon>
 			<div className="post-body-content">
 				<div
 					id={post.id ?? undefined}
@@ -100,7 +100,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 									<p className="post-content-text">{post.body}</p>
 								)
 							: null}
-						<CtrPostScreenshot ctx={props.ctx} post={post}></CtrPostScreenshot>
+						<CtrPostScreenshot post={post}></CtrPostScreenshot>
 						{post.painting !== ''
 							? (
 									<img className="post-memo" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} />
@@ -147,7 +147,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 							</h6>
 							<div className="yeah-list">
 								{post.yeahs.slice(0, 10).map(pid => (
-									<CtrMiiIcon ctx={props.ctx} pid={pid}></CtrMiiIcon>
+									<CtrMiiIcon pid={pid}></CtrMiiIcon>
 								))}
 							</div>
 						</>
