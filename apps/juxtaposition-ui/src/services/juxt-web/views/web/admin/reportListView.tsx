@@ -4,6 +4,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { ContentSchema } from '@/models/content';
@@ -30,6 +31,7 @@ export type ReportProps = {
 
 function Report(props: ReportProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
 	return (
 		<li className="reports">
 			<details>
@@ -42,7 +44,7 @@ function Report(props: ReportProps): ReactNode {
 							<span className="text">
 								<span className="nick-name">
 									Reported By:
-									{props.ctx.usersMap.get(props.report.reported_by)}
+									{cache.getUserName(props.report.reported_by)}
 								</span>
 								<span className="timestamp">{moment(props.report.created_at).fromNow()}</span>
 							</span>

@@ -87,7 +87,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 	);
 }
 
-export function WebUserPageMeta(props: { ctx: RenderContext; user: GetUserDataResponse; userSettings: HydratedSettingsDocument; withImage?: boolean }): ReactNode {
+export function WebUserPageMeta(props: { user: GetUserDataResponse; userSettings: HydratedSettingsDocument; withImage?: boolean }): ReactNode {
 	const url = useUrl();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 	const pageTitle = `Juxt - ${pnidName}`;

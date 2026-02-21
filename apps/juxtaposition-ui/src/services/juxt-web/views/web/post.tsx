@@ -2,6 +2,7 @@ import cx from 'classnames';
 import moment from 'moment';
 import { WebIcon } from '@/services/juxt-web/views/web/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
@@ -31,6 +32,7 @@ export type PostViewProps = {
 
 export function WebPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
 	const post = props.post;
 	const isModerator = props.ctx.moderator;
 	const canAccessContent = !post.removed || isModerator;
@@ -72,7 +74,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					<h4>
 						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
 						{' - '}
-						<a href={`/titles/${post.community_id}`}>{props.ctx.communityMap.get(post.community_id ?? '')}</a>
+						<a href={`/titles/${post.community_id}`}>{cache.getCommunityName(post.community_id ?? '')}</a>
 					</h4>
 				</div>
 			</div>

@@ -4,6 +4,7 @@ import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/roo
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
@@ -50,7 +51,8 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 	if (!props.conversation.id) {
 		throw new Error('Conversation does not have an ID');
 	}
-	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
+	const cache = useCache();
+	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
 
 	return (
 		<PortalRoot title={props.ctx.lang.global.messages} onLoad="window.scrollTo(0, 50000);">

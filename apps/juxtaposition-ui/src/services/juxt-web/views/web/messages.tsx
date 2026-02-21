@@ -2,6 +2,7 @@ import moment from 'moment';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ConversationSchema } from '@/models/conversation';
@@ -15,6 +16,7 @@ export type MessagesViewProps = {
 
 export function WebMessagesView(props: MessagesViewProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
@@ -68,11 +70,11 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 												>
 													<span className="text">
 														<span className="nick-name">
-															{props.ctx.usersMap.get(userObj.pid)}
+															{cache.getUserName(userObj.pid)}
 														</span>
 														<span className="timestamp">
 															@
-															{props.ctx.usersMap.get(userObj.pid)}
+															{cache.getUserName(userObj.pid)}
 														</span>
 													</span>
 													<span className="text">

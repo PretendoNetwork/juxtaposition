@@ -2,6 +2,7 @@ import cx from 'classnames';
 import moment from 'moment';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -36,6 +37,8 @@ function CtrPostScreenshot(props: PostScreenshotProps): ReactNode {
 
 export function CtrPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
+
 	const post = props.post;
 	const hasYeahed = post.yeahs && post.yeahs.indexOf(props.ctx.pid) !== -1;
 	// TODO implement moderator removed post logic
@@ -81,7 +84,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 									<span className="title-icon-container" data-pjax="#body">
 										<img src={url.cdn(`/icons/${post.community_id}/32.png`)} className="title-icon" />
 									</span>
-									<span className="community-name">{props.ctx.communityMap.get(post.community_id ?? '')}</span>
+									<span className="community-name">{cache.getCommunityName(post.community_id ?? '')}</span>
 								</a>
 							)
 						: null}

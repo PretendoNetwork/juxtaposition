@@ -4,6 +4,7 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
@@ -42,13 +43,15 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 }
 
 export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
+	const cache = useCache();
+
 	if (!props.otherUser.pid) {
 		throw new Error('Other PID is undefined');
 	}
 	if (!props.conversation.id) {
 		throw new Error('Conversation does not have an ID');
 	}
-	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
+	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
 
 	return (
 		<CtrRoot title={props.ctx.lang.global.messages} onLoad="cave.toolbar_setActiveButton(4);window.scrollTo(0, 500000);">

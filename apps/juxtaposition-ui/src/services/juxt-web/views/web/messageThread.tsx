@@ -5,6 +5,7 @@ import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { WebNewPostView } from '@/services/juxt-web/views/web/newPostView';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
@@ -44,7 +45,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 				'other-post': msg.pid !== props.ctx.pid
 			})}
 		>
-			<a href={utils.url('/users/show', { pid: msg.pid })} className="scroll-focus mii-icon-container">
+			<a href={url.url('/users/show', { pid: msg.pid })} className="scroll-focus mii-icon-container">
 				<img src={url.cdn(`${msg.mii_face_url?.substring(msg.mii_face_url.lastIndexOf('/mii'))}`)} className="mii-icon" />
 			</a>
 			<div className="post-body">
@@ -65,7 +66,8 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	if (!props.conversation.id) {
 		throw new Error('Conversation does not have an ID');
 	}
-	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
+	const cache = useCache();
+	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
 
 	return (
 		<WebRoot>

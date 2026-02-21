@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { humanFromNow } from '@/util';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -8,6 +9,7 @@ import type {
 } from '@/services/juxt-web/views/web/messages';
 
 export function CtrMessagesView(props: MessagesViewProps): ReactNode {
+	const cache = useCache();
 	return (
 		<ul
 			className="list-content-with-icon-column arrow-list"
@@ -52,11 +54,11 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 									<div className="body message">
 										<p>
 											<span className="nick-name">
-												{props.ctx.usersMap.get(userObj.pid)}
+												{cache.getUserName(userObj.pid)}
 											</span>
 											<span className="id-name">
 												{' @'}
-												{props.ctx.usersMap.get(userObj.pid)}
+												{cache.getUserName(userObj.pid)}
 											</span>
 											<span>
 												{' '}

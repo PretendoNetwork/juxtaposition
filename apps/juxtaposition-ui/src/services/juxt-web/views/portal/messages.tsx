@@ -6,6 +6,7 @@ import {
 	PortalRoot
 } from '@/services/juxt-web/views/portal/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -14,6 +15,7 @@ import type {
 
 export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
 	return (
 		<PortalRoot title={props.ctx.lang.global.messages}>
 			<PortalNavBar selection={3} />
@@ -69,11 +71,11 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 												<div className="body">
 													<p className="title">
 														<span className="nick-name">
-															{props.ctx.usersMap.get(userObj.pid)}
+															{cache.getUserName(userObj.pid)}
 														</span>
 														<span className="id-name">
 															@
-															{props.ctx.usersMap.get(userObj.pid)}
+															{cache.getUserName(userObj.pid)}
 														</span>
 													</p>
 													<span className="timestamp">

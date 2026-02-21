@@ -3,13 +3,15 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { CtrIcon } from '@/services/juxt-web/views/ctr/components/icon';
 import { humanFromNow } from '@/util';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
 
 function CtrNotificationItem(props: NotificationItemProps): ReactNode {
+	const cache = useCache();
 	const notif = props.notification;
 	if (notif.type === 'follow') {
-		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
+		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
 		return (
 			<>
 				<CtrMiiIcon pid={Number(notif.objectID)} big={true}></CtrMiiIcon>

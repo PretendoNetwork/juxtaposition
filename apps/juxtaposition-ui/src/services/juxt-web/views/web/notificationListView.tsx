@@ -3,6 +3,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { NotificationSchema } from '@/models/notifications';
@@ -22,9 +23,10 @@ export type NotificationItemProps = {
 
 function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
 	const notif = props.notification;
 	if (notif.type === 'follow') {
-		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
+		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
 		return (
 			<div className="hover">
 				<a href={`/users/${notif.objectID}`} className="icon-container notify">

@@ -2,6 +2,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { HydratedSettingsDocument } from '@/models/settings';
 
@@ -15,6 +16,7 @@ export type UserListViewProps = {
 
 export function WebUserListView(props: UserListViewProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
 	const head = <script src="/js/admin.global.js"></script>;
 	const prevUrl = url.url('/admin/accounts', { page: props.page - 1, search: props.search });
 	const nextUrl = url.url('/admin/accounts', { page: props.page + 1, search: props.search });
@@ -55,7 +57,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 															{user.pid}
 															:
 															{' '}
-															{props.ctx.usersMap.get(user.pid)}
+															{cache.getUserName(user.pid)}
 														</span>
 													</span>
 												</a>

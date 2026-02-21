@@ -5,6 +5,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { WebUserPageMeta, WebUserTier } from '@/services/juxt-web/views/web/userPageView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { InferSchemaType } from 'mongoose';
@@ -28,6 +29,7 @@ export type ModerateUserViewProps = {
 
 export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
 	const pnidName = props.pnid.mii?.name ?? props.pnid.username;
 	const head = (
 		<>
@@ -158,7 +160,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 											</a>
 											<span className="body messages report">
 												<span className="text">
-													<a href={`/users/${log.actor}`} className="nick-name">{props.ctx.usersMap.get(log.actor)}</a>
+													<a href={`/users/${log.actor}`} className="nick-name">{cache.getUserName(log.actor)}</a>
 													<span title={moment(log.timestamp).toString()} className="timestamp">
 														:
 														{log.action}
@@ -203,7 +205,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 													<span className="text">
 														<a href={`/users/${report.reported_by}`} className="nick-name">
 															Reported By:
-															{props.ctx.usersMap.get(report.reported_by)}
+															{cache.getUserName(report.reported_by)}
 														</a>
 														<span title={moment(report.created_at).toString()} className="timestamp">{moment(report.created_at).fromNow()}</span>
 													</span>
@@ -221,7 +223,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 																	<span className="text">
 																		<span className="nick-name">
 																			Resolved By:
-																			{report.resolved_by ? props.ctx.usersMap.get(report.resolved_by) : 'Nobody'}
+																			{report.resolved_by ? cache.getUserName(report.resolved_by) : 'Nobody'}
 																		</span>
 																		<span title={moment(report.resolved_at).toString()} className="timestamp">{moment(report.resolved_at).fromNow()}</span>
 																	</span>
@@ -265,7 +267,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 													<span className="text">
 														<a href={`/users/${report.reported_by}`} className="nick-name">
 															Reported By:
-															{props.ctx.usersMap.get(report.reported_by)}
+															{cache.getUserName(report.reported_by)}
 														</a>
 														<span title={moment(report.created_at).toString()} className="timestamp">{moment(report.created_at).fromNow()}</span>
 													</span>
@@ -283,7 +285,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 																	<span className="text">
 																		<span className="nick-name">
 																			Resolved By:
-																			{report.resolved_by ? props.ctx.usersMap.get(report.resolved_by) : 'Nobody'}
+																			{report.resolved_by ? cache.getUserName(report.resolved_by) : 'Nobody'}
 																		</span>
 																		<span title={moment(report.resolved_at).toString()} className="timestamp">{moment(report.resolved_at).fromNow()}</span>
 																	</span>
@@ -326,7 +328,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 												<span className="text">
 													<a href={`/users/${post.removed_by}`} className="nick-name">
 														Removed By:
-														{post.removed_by ? props.ctx.usersMap.get(post.removed_by) : 'Nobody'}
+														{post.removed_by ? cache.getUserName(post.removed_by) : 'Nobody'}
 													</a>
 													<span title={moment(post.removed_at).toString()} className="timestamp">{moment(post.removed_at).fromNow()}</span>
 												</span>
