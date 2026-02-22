@@ -1,8 +1,9 @@
 import { config } from '@/config';
+import { getLanguage } from '@/i18n';
 import { logger } from '@/logger';
 import { CtrFatalErrorView } from '@/services/juxt-web/views/ctr/errorView';
 import { PortalFatalErrorView } from '@/services/juxt-web/views/portal/errorView';
-import { decodeParamPack, getPIDFromServiceToken, getUserAccountData, getUserDataFromToken, processLanguage } from '@/util';
+import { decodeParamPack, getPIDFromServiceToken, getUserAccountData, getUserDataFromToken } from '@/util';
 import type { RequestHandler, Response } from 'express';
 
 function renderAuthError(res: Response, code: number, message: string): void {
@@ -79,7 +80,7 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 	}
 
 	response.locals.uaIsConsole = uaIsConsole;
-	response.locals.lang = processLanguage(request.paramPackData);
+	response.locals.lang = getLanguage(request.paramPackData);
 	response.locals.pid = request.pid;
 	return next();
 };

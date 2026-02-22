@@ -20,7 +20,6 @@ import { LOGS } from '@/models/logs';
 import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
-import { translations } from '@/translations';
 import type { ZodType } from 'zod';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { InferSchemaType } from 'mongoose';
@@ -268,29 +267,6 @@ export function getReasonMap(): string[] {
 	];
 }
 
-export function processLanguage(paramPack?: ParamPack | null): typeof translations.EN {
-	if (!paramPack) {
-		return translations.EN;
-	}
-	const languageIdMap: Record<string, keyof typeof translations> = {
-		0: 'JA',
-		1: 'EN',
-		2: 'FR',
-		3: 'DE',
-		4: 'IT',
-		5: 'ES',
-		6: 'ZH',
-		7: 'KO',
-		8: 'NL',
-		9: 'PT',
-		10: 'RU',
-		11: 'ZH'
-	};
-
-	const language = languageIdMap[paramPack.language_id] ?? 'EN';
-	return translations[language];
-}
-
 export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCannedACL): Promise<boolean> {
 	const awsPutParams = new PutObjectCommand({
 		Body: data,
@@ -531,6 +507,7 @@ export function humanFromNow(date?: Date | DateTime | string | null): string {
 const filename = fileURLToPath(import.meta.url);
 // The root of the dist/ folder.
 export const distFolder = path.dirname(filename);
+export const langsFolder = path.join(path.dirname(filename), 'assets/locales');
 
 export function zodFallback<T>(value: T): ZodType<T> {
 	return z.any().transform(() => value);
