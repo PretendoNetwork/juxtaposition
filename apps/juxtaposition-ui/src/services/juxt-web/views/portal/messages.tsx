@@ -8,6 +8,7 @@ import {
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -20,18 +21,18 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 	const user = useUser();
 
 	return (
-		<PortalRoot title={props.ctx.lang.global.messages}>
+		<PortalRoot title={<T k="global.messages" />}>
 			<PortalNavBar selection={3} />
 			<PortalPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.ctx.lang.global.messages}</h1>
+					<h1 id="page-title"><T k="global.messages" /></h1>
 				</header>
 				<div className="body-content" id="messages-list">
 					<ul className="list-content-with-icon-and-text arrow-list">
 						{props.conversations.length === 0
 							? (
 									<p className="no-posts-text">
-										{props.ctx.lang.messages.coming_soon}
+										<T k="messages.coming_soon" />
 									</p>
 								)
 							: (

@@ -5,6 +5,7 @@ import { humanFromNow } from '@/util';
 import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/mii-icon';
 import { PortalIconView } from '@/services/juxt-web/views/portal/components/icon';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
 
@@ -50,7 +51,7 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 									)}
 						<a className="link" href={notif.link ?? '#'}>
 							{' '}
-							{props.ctx.lang.notifications.new_follower}
+							<T k="notifications.new_follower" />
 						</a>
 						<span className="timestamp">
 							{' '}
@@ -87,7 +88,7 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 export function PortalNotificationListView(props: NotificationListViewProps): ReactNode {
 	return (
 		<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
-			{props.notifications.length === 0 ? <li><p>{props.ctx.lang.notifications.none}</p></li> : null}
+			{props.notifications.length === 0 ? <li><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<li key={i}>
 					<PortalNotificationItem notification={notification} />
@@ -99,7 +100,7 @@ export function PortalNotificationListView(props: NotificationListViewProps): Re
 
 export function PortalNotificationWrapperView(props: NotificationWrapperViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.global.notifications}>
+		<PortalRoot title={<T k="global.notifications" />}>
 			<PortalNavBar selection={4} />
 			<PortalPageBody>
 				<header id="header">

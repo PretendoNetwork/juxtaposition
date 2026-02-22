@@ -4,6 +4,7 @@ import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ConversationSchema } from '@/models/conversation';
@@ -22,7 +23,7 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.global.messages}
+				<T k="global.messages" />
 			</h2>
 			<WebNavBar selection={3} />
 			<div id="toast"></div>
@@ -30,7 +31,7 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 				{props.conversations.length === 0
 					? (
 							<li style={{ listStyle: 'none' }}>
-								<p>{props.ctx.lang.messages.coming_soon}</p>
+								<p><T k="messages.coming_soon" /></p>
 							</li>
 						)
 					: (

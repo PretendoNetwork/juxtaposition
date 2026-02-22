@@ -3,6 +3,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { ContentSchema } from '@/models/content';
@@ -50,7 +51,7 @@ export function WebPersonalFeedView(props: FeedViewProps): ReactNode {
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.global.activity_feed}
+				<T k="global.activity_feed" />
 			</h2>
 			<WebNavBar selection={1} />
 			<div id="toast"></div>
@@ -67,7 +68,7 @@ export function WebGlobalFeedView(props: FeedViewProps): ReactNode {
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.global.activity_feed}
+				<T k="global.activity_feed" />
 			</h2>
 			<WebNavBar selection={1} />
 			<div id="toast"></div>

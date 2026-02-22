@@ -3,6 +3,7 @@ import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/controls/
 import { CtrCheckbox } from '@/services/juxt-web/views/ctr/controls/checkbox';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -50,7 +51,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				)}
 			>
 				<h1 id="page-title">
-					{props.ctx.lang.new_post.post_to}
+					<T k="new_post.post_to" />
 					{' '}
 					{props.name}
 				</h1>

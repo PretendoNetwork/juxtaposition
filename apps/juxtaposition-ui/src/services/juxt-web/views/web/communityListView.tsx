@@ -1,6 +1,7 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { CommunitySchema } from '@/models/communities';
@@ -37,7 +38,7 @@ export function WebCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.all_communities.text}
+				<T k="all_communities.text" />
 			</h2>
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
@@ -56,18 +57,18 @@ export function WebCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.global.communities}
+				<T k="global.communities" />
 			</h2>
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
 			<WebWrapper>
-				<h3 className="communities-header">{props.ctx.lang.all_communities.popular_places}</h3>
+				<h3 className="communities-header"><T k="all_communities.popular_places" /></h3>
 				<div id="popular" className="communities-wrapper">
 					{props.popularCommunities.map(community => (
 						<WebCommunityItem key={community.olive_community_id} community={community} />
 					))}
 				</div>
-				<h3 className="communities-header">{props.ctx.lang.all_communities.new_communities}</h3>
+				<h3 className="communities-header"><T k="all_communities.new_communities" /></h3>
 				<div id="new" className="communities-wrapper">
 					{props.newCommunities.map(community => (
 						<WebCommunityItem key={community.olive_community_id} community={community} />
@@ -75,7 +76,7 @@ export function WebCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 				</div>
 			</WebWrapper>
 			<WebWrapper className="bottom">
-				<button id="load-more-posts-button" data-offset="20" evt-click="location.href='/titles/all'">{props.ctx.lang.all_communities.text}</button>
+				<button id="load-more-posts-button" data-offset="20" evt-click="location.href='/titles/all'"><T k="all_communities.text" /></button>
 			</WebWrapper>
 		</WebRoot>
 	);

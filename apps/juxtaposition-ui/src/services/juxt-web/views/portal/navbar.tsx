@@ -1,3 +1,4 @@
+import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
@@ -22,12 +23,12 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 							alt="User Page"
 						/>
 					</span>
-					<span>{props.ctx.lang.global.user_page}</span>
+					<span><T k="global.user_page" /></span>
 				</a>
 			</li>
 			<li id="nav-menu-feed" data-tab="feed" className={selectedClasses(1)}>
 				<a href="/feed" data-pjax="#body" data-sound="SE_WAVE_MENU">
-					{props.ctx.lang.global.activity_feed}
+					<T k="global.activity_feed" />
 				</a>
 			</li>
 			<li
@@ -36,7 +37,7 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 				className={selectedClasses(2)}
 			>
 				<a href="/titles" data-pjax="#body" data-sound="SE_WAVE_MENU">
-					{props.ctx.lang.global.communities}
+					<T k="global.communities" />
 				</a>
 			</li>
 			<li
@@ -45,7 +46,7 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 				className={selectedClasses(3)}
 			>
 				<a href="/friend_messages" data-pjax="#body" data-sound="SE_WAVE_MENU">
-					{props.ctx.lang.global.messages}
+					<T k="global.messages" />
 					<span id="message-badge" className="badge">
 						0
 					</span>
@@ -53,7 +54,7 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 			</li>
 			<li id="nav-menu-news" data-tab="news" className={selectedClasses(4)}>
 				<a href="/news/my_news" data-pjax="#body" data-sound="SE_WAVE_MENU">
-					{props.ctx.lang.global.notifications}
+					<T k="global.notifications" />
 					<span id="news-badge" className="badge">
 						0
 					</span>
@@ -61,12 +62,12 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 			</li>
 			<li id="nav-menu-exit" evt-click="exit()">
 				<a role="button" data-sound="SE_WAVE_EXIT">
-					{props.ctx.lang.global.close}
+					<T k="global.close" />
 				</a>
 			</li>
 			<li id="nav-menu-back" className="none" evt-click="back()">
 				<a role="button" className="accesskey-B" data-sound="SE_WAVE_BACK">
-					{props.ctx.lang.global.go_back}
+					<T k="global.go_back" />
 				</a>
 			</li>
 		</menu>

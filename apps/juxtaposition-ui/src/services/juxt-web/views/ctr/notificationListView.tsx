@@ -4,6 +4,7 @@ import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { CtrIcon } from '@/services/juxt-web/views/ctr/components/icon';
 import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
 
@@ -49,7 +50,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 									)}
 						<a className="link" href={notif.link ?? '#'}>
 							{' '}
-							{props.ctx.lang.notifications.new_follower}
+							<T k="notifications.new_follower" />
 						</a>
 						<span className="timestamp">
 							{' '}
@@ -86,7 +87,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 export function CtrNotificationListView(props: NotificationListViewProps): ReactNode {
 	return (
 		<ul className="list-content-with-icon-column arrow-list" id="news-list-content">
-			{props.notifications.length === 0 ? <li><p>{props.ctx.lang.notifications.none}</p></li> : null}
+			{props.notifications.length === 0 ? <li><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<li key={i}>
 					<CtrNotificationItem notification={notification} />
@@ -112,7 +113,7 @@ export function CtrNotificationWrapperView(props: NotificationWrapperViewProps):
 						</li>
 						<li id="tab-header-friend-request" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
 							<a href="/friend_messages" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-								<span>{props.ctx.lang.global.messages}</span>
+								<span><T k="global.messages" /></span>
 							</a>
 						</li>
 					</menu>

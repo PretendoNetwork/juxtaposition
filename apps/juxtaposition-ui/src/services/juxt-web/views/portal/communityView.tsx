@@ -5,6 +5,7 @@ import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView'
 import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
 import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -93,7 +94,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 								data-sound="SE_WAVE_SELECT_TAB"
 							>
 								<span className="new-post">
-									{props.ctx.lang.community.recent}
+									<T k="community.recent" />
 								</span>
 							</a>
 						</li>
@@ -103,14 +104,14 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 								data-sound="SE_WAVE_SELECT_TAB"
 							>
 								<span>
-									{props.ctx.lang.community.popular}
+									<T k="community.popular" />
 								</span>
 							</a>
 						</li>
 					</menu>
 					<div id="new-post-button-container" className="none">
 						<a href="#" className="button" data-offset="10">
-							{props.ctx.lang.global.more}
+							<T k="global.more" />
 						</a>
 						<div id="new-post"></div>
 					</div>

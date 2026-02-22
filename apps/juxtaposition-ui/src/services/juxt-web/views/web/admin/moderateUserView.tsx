@@ -6,6 +6,7 @@ import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { WebUserPageMeta, WebUserTier } from '@/services/juxt-web/views/web/userPageView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { InferSchemaType } from 'mongoose';
@@ -42,7 +43,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 	return (
 		<WebRoot head={head}>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.global.user_page}
+				<T k="global.user_page" />
 			</h2>
 			<WebNavBar selection={-1} />
 			<div id="toast"></div>
@@ -65,33 +66,33 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 					</h4>
 					<div className="info-boxes-wrapper">
 						<div>
-							<h4>{props.ctx.lang.user_page.country}</h4>
+							<h4><T k="user_page.country" /></h4>
 							<h4>{props.pnid.country}</h4>
 						</div>
 						<div>
-							<h4>{ props.ctx.lang.user_page.birthday }</h4>
+							<h4><T k="user_page.birthday" /></h4>
 							<h4>{moment.utc(props.pnid.birthdate).format('MMM Do')}</h4>
 						</div>
 						<div>
-							<h4>{ props.ctx.lang.user_page.game_experience }</h4>
+							<h4><T k="user_page.game_experience" /></h4>
 							<h4>
 								{props.userSettings.game_skill === 0
 									? (
-											<>{props.ctx.lang.setup.experience_text.beginner}</>
+											<><T k="setup.experience_text.beginner" /></>
 										)
 									: props.userSettings.game_skill === 1
 										? (
-												<>{props.ctx.lang.setup.experience_text.intermediate}</>
+												<><T k="setup.experience_text.intermediate" /></>
 											)
 										: props.userSettings.game_skill === 2
 											? (
-													<>{props.ctx.lang.setup.experience_text.expert}</>
+													<><T k="setup.experience_text.expert" /></>
 												)
 											: <>N/A</>}
 							</h4>
 						</div>
 						<div>
-							<h4>{props.ctx.lang.user_page.followers}</h4>
+							<h4><T k="user_page.followers" /></h4>
 							<h4 id="user-page-followers-tab">{props.userContent.following_users.length}</h4>
 						</div>
 						<div>

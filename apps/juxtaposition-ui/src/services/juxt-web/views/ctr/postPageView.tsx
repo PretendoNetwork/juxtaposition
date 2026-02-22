@@ -4,6 +4,7 @@ import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
@@ -14,7 +15,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 	const { bannerUrl, legacy } = url.ctrHeader(community);
 
 	return (
-		<CtrRoot title={props.ctx.lang.global.activity_feed}>
+		<CtrRoot title={<T k="global.activity_feed" />}>
 			<CtrPageBody>
 				<header
 					id="header"

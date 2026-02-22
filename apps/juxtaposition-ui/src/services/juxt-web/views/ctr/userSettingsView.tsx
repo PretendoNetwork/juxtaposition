@@ -1,4 +1,5 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
 
@@ -24,21 +25,21 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 							<ul className="list-content-with-icon-column settings-list">
 								<li data-name="profile_comment_visibility" className="scroll">
 									<label className="checkbox-container" htmlFor="country">
-										<p className="settings-label">{props.ctx.lang.user_settings.show_country}</p>
+										<p className="settings-label"><T k="user_settings.show_country" /></p>
 										<input type="checkbox" id="country" name="country" value="true" checked={!!props.userSettings?.country_visibility} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
 								<li data-name="game_skill" className="scroll">
 									<label className="checkbox-container" htmlFor="birthday">
-										<p className="settings-label">{props.ctx.lang.user_settings.show_birthday}</p>
+										<p className="settings-label"><T k="user_settings.show_birthday" /></p>
 										<input type="checkbox" id="birthday" name="birthday" value="true" checked={!!props.userSettings?.birthday_visibility} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
 								<li data-name="game_skill_visibility" className="scroll">
 									<label className="checkbox-container" htmlFor="experience">
-										<p className="settings-label">{props.ctx.lang.user_settings.show_game}</p>
+										<p className="settings-label"><T k="user_settings.show_game" /></p>
 										<input type="checkbox" id="experience" name="experience" value="true" checked={!!props.userSettings?.game_skill_visibility} />
 										<span className="checkmark"></span>
 									</label>

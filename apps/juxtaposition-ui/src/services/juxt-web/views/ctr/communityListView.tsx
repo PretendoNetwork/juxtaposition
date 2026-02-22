@@ -1,5 +1,6 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
@@ -17,7 +18,7 @@ export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 						<span className="text">
 							{props.community.followers}
 							{' '}
-							{props.ctx.lang.community.followers}
+							<T k="community.followers" />
 						</span>
 					</div>
 				</div>
@@ -28,10 +29,10 @@ export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 
 export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
-		<CtrRoot title={props.ctx.lang.all_communities.text}>
+		<CtrRoot title={<T k="all_communities.text" />}>
 			<CtrPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.ctx.lang.all_communities.text}</h1>
+					<h1 id="page-title"><T k="all_communities.text" /></h1>
 				</header>
 				<div className="body-content">
 					<div className="communities-list">
@@ -49,7 +50,7 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 
 export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): ReactNode {
 	return (
-		<CtrRoot title={props.ctx.lang.global.communities}>
+		<CtrRoot title={<T k="global.communities" />}>
 			<CtrPageBody>
 				<header
 					id="header"
@@ -57,13 +58,13 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 					data-toolbar-config
 					data-toolbar-active-button="3"
 				>
-					<h1 id="page-title">{props.ctx.lang.global.communities}</h1>
-					<a id="header-communities-button" className="right" href="/titles/all" data-pjax="#body">{props.ctx.lang.all_communities.text}</a>
+					<h1 id="page-title"><T k="global.communities" /></h1>
+					<a id="header-communities-button" className="right" href="/titles/all" data-pjax="#body"><T k="all_communities.text" /></a>
 				</header>
 				<div className="body-content">
 					<div className="communities-list">
 						<div className="headline">
-							<h2>{props.ctx.lang.all_communities.popular_places}</h2>
+							<h2><T k="all_communities.popular_places" /></h2>
 						</div>
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.popularCommunities.map(community => (
@@ -71,7 +72,7 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 							))}
 						</ul>
 						<div className="headline headline-green">
-							<h2>{props.ctx.lang.all_communities.new_communities}</h2>
+							<h2><T k="all_communities.new_communities" /></h2>
 						</div>
 						<ul className="list-content-with-icon-column" id="community-top-content">
 							{props.newCommunities.map(community => (

@@ -6,6 +6,7 @@ import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView'
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
@@ -57,7 +58,7 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
 
 	return (
-		<PortalRoot title={props.ctx.lang.global.messages} onLoad="window.scrollTo(0, 50000);">
+		<PortalRoot title={<T k="global.messages" />} onLoad="window.scrollTo(0, 50000);">
 			<PortalNavBar selection={3} />
 			<PortalPageBody>
 				<header id="header">

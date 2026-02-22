@@ -1,5 +1,6 @@
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -51,7 +52,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header className="add-post-page-header">
 				<h1 className="page-title">
-					{props.ctx.lang.new_post.post_to}
+					<T k="new_post.post_to" />
 					{' '}
 					{props.name}
 				</h1>
@@ -104,7 +105,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
 								<input type="radio" name="_post_type" value="body" defaultChecked data-sound="" />
-								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={props.ctx.lang.user_settings.swearing} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
+								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={<T k="user_settings.swearing" />} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
 							</li>
 							<li className="textarea-menu-memo">
 								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" />

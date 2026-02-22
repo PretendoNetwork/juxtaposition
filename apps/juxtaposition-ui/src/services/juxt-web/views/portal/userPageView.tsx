@@ -5,6 +5,7 @@ import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -161,15 +162,15 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 															{' '}
 															{props.userSettings.game_skill === 0
 																? (
-																		<>{props.ctx.lang.setup.experience_text.beginner}</>
+																		<><T k="setup.experience_text.beginner" /></>
 																	)
 																: props.userSettings.game_skill === 1
 																	? (
-																			<>{props.ctx.lang.setup.experience_text.intermediate}</>
+																			<><T k="setup.experience_text.intermediate" /></>
 																		)
 																	: props.userSettings.game_skill === 2
 																		? (
-																				<>{props.ctx.lang.setup.experience_text.expert}</>
+																				<><T k="setup.experience_text.expert" /></>
 																			)
 																		: <>N/A</>}
 														</span>
@@ -187,27 +188,27 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 									<menu className="tab-header user-page">
 										<li id="tab-header-post" className={cx('tab-button', { selected: props.selectedTab === 0 })}>
 											<a href={props.baseLink} data-sound="SE_WAVE_SELECT_TAB">
-												<span className="new-post">{props.ctx.lang.user_page.posts}</span>
+												<span className="new-post"><T k="user_page.posts" /></span>
 											</a>
 										</li>
 										<li id="tab-header-friends" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
 											<a href={props.baseLink + 'friends'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.friends}</span>
+												<span><T k="user_page.friends" /></span>
 											</a>
 										</li>
 										<li id="tab-header-following" className={cx('tab-button', { selected: props.selectedTab === 2 })}>
 											<a href={props.baseLink + 'following'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.following}</span>
+												<span><T k="user_page.following" /></span>
 											</a>
 										</li>
 										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3 })}>
 											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.followers}</span>
+												<span><T k="user_page.followers" /></span>
 											</a>
 										</li>
 										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4 })}>
 											<a href={props.baseLink + 'yeahs'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.global.yeahs}</span>
+												<span><T k="global.yeahs" /></span>
 											</a>
 										</li>
 									</menu>

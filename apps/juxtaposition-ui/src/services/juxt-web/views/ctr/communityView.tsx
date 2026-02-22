@@ -3,6 +3,7 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { CtrPostListClosedView } from '@/services/juxt-web/views/ctr/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -61,7 +62,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 									data-module-show="add-post-page"
 									data-header="false"
 									data-screenshot="true"
-									data-message={`${props.ctx.lang.new_post.post_to} ${community.name}`}
+									data-message={`$<T k="new_post.post_to" /> ${community.name}`}
 								>
 									Post +
 								</a>
@@ -95,10 +96,10 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 					</div>
 					<menu className="tab-header">
 						<li id="tab-header-post" className={cx('tab-button', { selected: props.feedType === 0 })}>
-							<a href={`/titles/${community.olive_community_id}/new`} data-sound="SE_WAVE_SELECT_TAB"><span className="new-post">{props.ctx.lang.community.recent}</span></a>
+							<a href={`/titles/${community.olive_community_id}/new`} data-sound="SE_WAVE_SELECT_TAB"><span className="new-post"><T k="community.recent" /></span></a>
 						</li>
 						<li id="tab-header-hot-post" className={cx('tab-button', { selected: props.feedType === 1 })}>
-							<a href={`/titles/${community.olive_community_id}/hot`} data-sound="SE_WAVE_SELECT_TAB"><span>{props.ctx.lang.community.popular}</span></a>
+							<a href={`/titles/${community.olive_community_id}/hot`} data-sound="SE_WAVE_SELECT_TAB"><span><T k="community.popular" /></span></a>
 						</li>
 					</menu>
 					<div className="tab-body post-list">

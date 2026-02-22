@@ -3,6 +3,7 @@ import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -20,7 +21,7 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 		>
 			{props.conversations.length === 0
 				? (
-						<p className="no-posts-text">{props.ctx.lang.messages.coming_soon}</p>
+						<p className="no-posts-text"><T k="messages.coming_soon" /></p>
 					)
 				: (
 						props.conversations.map((convo) => {

@@ -4,6 +4,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { WebPostListClosedView } from '@/services/juxt-web/views/web/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { CommunitySchema } from '@/models/communities';
@@ -63,7 +64,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 	return (
 		<WebRoot head={<WebCommunityHead {...props} />}>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.global.communities}
+				<T k="global.communities" />
 			</h2>
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
@@ -84,9 +85,9 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 										data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 										data-url="/titles/follow"
 										data-community-id={community.olive_community_id}
-										data-text={props.isUserFollowing ? props.ctx.lang.user_page.follow_user : props.ctx.lang.user_page.following_user}
+										data-text={props.isUserFollowing ? <T k="user_page.follow_user" /> : <T k="user_page.following_user" />}
 									>
-										{props.isUserFollowing ? props.ctx.lang.user_page.following_user : props.ctx.lang.user_page.follow_user}
+										{props.isUserFollowing ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
 									</a>
 								)
 							: null}
@@ -95,15 +96,15 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 					<span className="community-page-follow-button-text" id={community.olive_community_id}></span>
 					<div className="info-boxes-wrapper">
 						<div>
-							<h4>{props.ctx.lang.community.followers}</h4>
+							<h4><T k="community.followers" /></h4>
 							<h4 className="community-page-table-text" id="followers">{community.followers}</h4>
 						</div>
 						<div>
-							<h4>{props.ctx.lang.community.posts}</h4>
+							<h4><T k="community.posts" /></h4>
 							<h4>{props.totalPosts}</h4>
 						</div>
 						<div>
-							<h4>{props.ctx.lang.community.tags}</h4>
+							<h4><T k="community.tags" /></h4>
 							<h4>N/A</h4>
 						</div>
 					</div>
@@ -116,7 +117,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 						})}
 						href={`/titles/${community.olive_community_id}/new`}
 					>
-						{props.ctx.lang.community.recent}
+						<T k="community.recent" />
 					</a>
 					<a
 						id="popular-tab"
@@ -125,7 +126,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 						})}
 						href={`/titles/${community.olive_community_id}/hot`}
 					>
-						{props.ctx.lang.community.popular}
+						<T k="community.popular" />
 					</a>
 				</div>
 				{!community.permissions.open ? <WebPostListClosedView /> : null}

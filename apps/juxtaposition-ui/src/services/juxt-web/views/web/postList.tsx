@@ -1,4 +1,5 @@
 import { WebPostView } from '@/services/juxt-web/views/web/post';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
@@ -13,7 +14,7 @@ export type PostListViewProps = {
 
 export function WebPostListView(props: PostListViewProps): ReactNode {
 	if (props.posts.length === 0) {
-		return <p className="no-posts-text">{props.ctx.lang.global.no_posts}</p>;
+		return <p className="no-posts-text"><T k="global.no_posts" /></p>;
 	}
 
 	return (
@@ -22,7 +23,7 @@ export function WebPostListView(props: PostListViewProps): ReactNode {
 				<WebPostView key={v.id} post={v} userContent={props.userContent} />
 			))}
 			<div id="wrapper" className="bottom">
-				<button id="load-more" data-href={props.nextLink}>{props.ctx.lang.global.more}</button>
+				<button id="load-more" data-href={props.nextLink}><T k="global.more" /></button>
 			</div>
 		</>
 	);

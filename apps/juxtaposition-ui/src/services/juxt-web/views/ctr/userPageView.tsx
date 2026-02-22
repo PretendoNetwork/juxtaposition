@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -85,17 +86,17 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 									<menu className="tab-header user-page no-margin">
 										<li id="tab-header-post" className={cx('tab-button', { selected: props.selectedTab === 0 })}>
 											<a href={props.baseLink} data-sound="SE_WAVE_SELECT_TAB">
-												<span className="new-post">{props.ctx.lang.user_page.posts}</span>
+												<span className="new-post"><T k="user_page.posts" /></span>
 											</a>
 										</li>
 										<li id="tab-header-friends" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
 											<a href={props.baseLink + 'friends'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.friends}</span>
+												<span><T k="user_page.friends" /></span>
 											</a>
 										</li>
 										<li id="tab-header-following" className={cx('tab-button', { selected: props.selectedTab === 2 })}>
 											<a href={props.baseLink + 'following'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.following}</span>
+												<span><T k="user_page.following" /></span>
 											</a>
 										</li>
 
@@ -104,12 +105,12 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 
 										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3, double: !isSelf })}>
 											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.followers}</span>
+												<span><T k="user_page.followers" /></span>
 											</a>
 										</li>
 										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4, double: !isSelf })}>
 											<a href={props.baseLink + 'yeahs'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.global.yeahs}</span>
+												<span><T k="global.yeahs" /></span>
 											</a>
 										</li>
 										{isSelf

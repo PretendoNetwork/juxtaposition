@@ -6,6 +6,7 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { WebIcon } from '@/services/juxt-web/views/web/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -140,7 +141,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 
 	return (
 		<WebRoot head={head}>
-			<h2 id="title" className="page-header">{props.ctx.lang.global.user_page}</h2>
+			<h2 id="title" className="page-header"><T k="global.user_page" /></h2>
 			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
@@ -175,9 +176,9 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 											data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 											data-url="/users/follow"
 											data-community-id={props.user.pid}
-											data-text={isRequesterFollowingUser ? props.ctx.lang.user_page.follow_user : props.ctx.lang.user_page.following_user}
+											data-text={isRequesterFollowingUser ? <T k="user_page.follow_user" /> : <T k="user_page.following_user" />}
 										>
-											{isRequesterFollowingUser ? props.ctx.lang.user_page.following_user : props.ctx.lang.user_page.follow_user}
+											{isRequesterFollowingUser ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
 										</a>
 										{ isRequesterFollowingUser && isUserFollowingRequester ? <a href={`/friend_messages/new/${props.user.pid}`} className="message-button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a> : null }
 									</>
@@ -188,42 +189,42 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						? (
 								<>
 									<h4 className="community-description">
-										{props.userSettings.profile_comment_visibility ? props.userSettings.profile_comment : props.ctx.lang.global.private}
+										{props.userSettings.profile_comment_visibility ? props.userSettings.profile_comment : <T k="global.private" />}
 										<WebUserTier user={props.user} />
 									</h4>
 									<div className="info-boxes-wrapper">
 										<div>
-											<h4>{props.ctx.lang.user_page.country}</h4>
-											<h4>{props.userSettings.country_visibility ? props.user.country : props.ctx.lang.global.private}</h4>
+											<h4><T k="user_page.country" /></h4>
+											<h4>{props.userSettings.country_visibility ? props.user.country : <T k="global.private" />}</h4>
 										</div>
 										<div>
-											<h4>{props.ctx.lang.user_page.birthday}</h4>
-											<h4>{props.userSettings.birthday_visibility ? moment.utc(props.user.birthdate).format('MMM Do') : props.ctx.lang.global.private}</h4>
+											<h4><T k="user_page.birthday" /></h4>
+											<h4>{props.userSettings.birthday_visibility ? moment.utc(props.user.birthdate).format('MMM Do') : <T k="global.private" />}</h4>
 										</div>
 										<div>
-											<h4>{ props.ctx.lang.user_page.game_experience }</h4>
+											<h4><T k="user_page.game_experience" /></h4>
 											{ props.userSettings.game_skill_visibility
 												? (
 														<h4>
 															{props.userSettings.game_skill === 0
 																? (
-																		<>{props.ctx.lang.setup.experience_text.beginner}</>
+																		<><T k="setup.experience_text.beginner" /></>
 																	)
 																: props.userSettings.game_skill === 1
 																	? (
-																			<>{props.ctx.lang.setup.experience_text.intermediate}</>
+																			<><T k="setup.experience_text.intermediate" /></>
 																		)
 																	: props.userSettings.game_skill === 2
 																		? (
-																				<>{props.ctx.lang.setup.experience_text.expert}</>
+																				<><T k="setup.experience_text.expert" /></>
 																			)
 																		: <>N/A</>}
 														</h4>
 													)
-												: <h4>{props.ctx.lang.global.private}</h4>}
+												: <h4><T k="global.private" /></h4>}
 										</div>
 										<div>
-											<h4>{props.ctx.lang.user_page.followers}</h4>
+											<h4><T k="user_page.followers" /></h4>
 											<h4 id="user-page-followers-tab">{props.userContent.following_users.length}</h4>
 										</div>
 										{isSelf
@@ -247,11 +248,11 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						: null}
 				</div>
 				<div className="buttons tabs">
-					<a id="tab-header-post" className={props.selectedTab === 0 ? 'selected' : ''} href={props.baseLink}>{props.ctx.lang.user_page.posts}</a>
-					<a id="tab-header-friends" className={props.selectedTab === 1 ? 'selected' : ''} href={props.baseLink + 'friends'}>{props.ctx.lang.user_page.friends}</a>
-					<a id="tab-header-following" className={props.selectedTab === 2 ? 'selected' : ''} href={props.baseLink + 'following'}>{props.ctx.lang.user_page.following}</a>
-					<a id="tab-header-followers" className={props.selectedTab === 3 ? 'selected' : ''} href={props.baseLink + 'followers'}>{props.ctx.lang.user_page.followers}</a>
-					<a id="tab-header-yeahs" className={props.selectedTab === 4 ? 'selected' : ''} href={props.baseLink + 'yeahs'}>{props.ctx.lang.global.yeahs}</a>
+					<a id="tab-header-post" className={props.selectedTab === 0 ? 'selected' : ''} href={props.baseLink}><T k="user_page.posts" /></a>
+					<a id="tab-header-friends" className={props.selectedTab === 1 ? 'selected' : ''} href={props.baseLink + 'friends'}><T k="user_page.friends" /></a>
+					<a id="tab-header-following" className={props.selectedTab === 2 ? 'selected' : ''} href={props.baseLink + 'following'}><T k="user_page.following" /></a>
+					<a id="tab-header-followers" className={props.selectedTab === 3 ? 'selected' : ''} href={props.baseLink + 'followers'}><T k="user_page.followers" /></a>
+					<a id="tab-header-yeahs" className={props.selectedTab === 4 ? 'selected' : ''} href={props.baseLink + 'yeahs'}><T k="global.yeahs" /></a>
 				</div>
 				{props.children}
 			</WebWrapper>

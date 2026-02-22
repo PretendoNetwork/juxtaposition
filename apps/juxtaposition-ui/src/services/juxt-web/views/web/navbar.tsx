@@ -1,6 +1,7 @@
 import { JuxtLogo, WebIcon } from '@/services/juxt-web/views/web/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 
 export type NavBarProps = {
@@ -27,25 +28,25 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 									src={url.cdn(`/mii/${user.pid}/normal_face.png`)}
 									alt="User Page"
 								/>
-								<p>{props.ctx.lang.global.user_page}</p>
+								<p><T k="global.user_page" /></p>
 							</a>
 							<a href="/feed" className={selectedClasses(1)}>
 								<WebIcon name="home" />
-								<p>{props.ctx.lang.global.activity_feed}</p>
+								<p><T k="global.activity_feed" /></p>
 							</a>
 							<a href="/titles" className={selectedClasses(2)}>
 								<WebIcon name="users" />
-								<p>{props.ctx.lang.global.communities}</p>
+								<p><T k="global.communities" /></p>
 							</a>
 							<a href="/friend_messages" className={selectedClasses(3)}>
 								<WebIcon name="mail" />
 								<span id="message-badge" className="badge"></span>
-								<p>{props.ctx.lang.global.messages}</p>
+								<p><T k="global.messages" /></p>
 							</a>
 							<a href="/news/my_news" className={selectedClasses(4)}>
 								<WebIcon name="bell" />
 								<span id="news-badge" className="badge"></span>
-								<p>{props.ctx.lang.global.notifications}</p>
+								<p><T k="global.notifications" /></p>
 							</a>
 							{user.perms.moderator
 								? (

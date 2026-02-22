@@ -4,6 +4,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { NotificationSchema } from '@/models/notifications';
@@ -64,7 +65,7 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 											</span>
 										</>
 									)}
-						<span className="link">{props.ctx.lang.notifications.new_follower}</span>
+						<span className="link"><T k="notifications.new_follower" /></span>
 						<span className="timestamp">
 							{' '}
 							{moment(notif.lastUpdated).fromNow()}
@@ -100,7 +101,7 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 export function WebNotificationListView(props: NotificationListViewProps): ReactNode {
 	return (
 		<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
-			{props.notifications.length === 0 ? <li style={{ borderBottom: 'none' }}><p>{props.ctx.lang.notifications.none}</p></li> : null}
+			{props.notifications.length === 0 ? <li style={{ borderBottom: 'none' }}><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<li key={i}>
 					<WebNotificationItem notification={notification} />
@@ -114,7 +115,7 @@ export function WebNotificationWrapperView(props: NotificationWrapperViewProps):
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.global.notifications}
+				<T k="global.notifications" />
 			</h2>
 			<WebNavBar selection={4} />
 			<div id="toast"></div>

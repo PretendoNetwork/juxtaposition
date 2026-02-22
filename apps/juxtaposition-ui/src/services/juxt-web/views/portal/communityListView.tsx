@@ -1,6 +1,7 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
@@ -18,7 +19,7 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 					<span className="text">
 						{props.community.followers}
 						{' '}
-						{props.ctx.lang.community.followers}
+						<T k="community.followers" />
 					</span>
 				</div>
 			</div>
@@ -28,12 +29,12 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 
 export function PortalCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.all_communities.text} onLoad="stopLoading();">
+		<PortalRoot title={<T k="all_communities.text" />} onLoad="stopLoading();">
 			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.ctx.lang.all_communities.text}</h1>
-					<a id="header-communities-button" href="/titles/all" data-pjax="#body">{props.ctx.lang.all_communities.text}</a>
+					<h1 id="page-title"><T k="all_communities.text" /></h1>
+					<a id="header-communities-button" href="/titles/all" data-pjax="#body"><T k="all_communities.text" /></a>
 				</header>
 				<div className="body-content">
 					<div className="communities-list">
@@ -51,17 +52,17 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 
 export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.global.communities} onLoad="stopLoading();">
+		<PortalRoot title={<T k="global.communities" />} onLoad="stopLoading();">
 			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.ctx.lang.global.communities}</h1>
-					<a id="header-communities-button" href="/titles/all" data-pjax="#body">{props.ctx.lang.all_communities.text}</a>
+					<h1 id="page-title"><T k="global.communities" /></h1>
+					<a id="header-communities-button" href="/titles/all" data-pjax="#body"><T k="all_communities.text" /></a>
 				</header>
 				<div className="body-content">
 					<div className="communities-list">
 						<div className="headline">
-							<h2>{props.ctx.lang.all_communities.popular_places}</h2>
+							<h2><T k="all_communities.popular_places" /></h2>
 						</div>
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.popularCommunities.map(community => (
@@ -69,7 +70,7 @@ export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): 
 							))}
 						</ul>
 						<div className="headline headline-green">
-							<h2>{props.ctx.lang.all_communities.new_communities}</h2>
+							<h2><T k="all_communities.new_communities" /></h2>
 						</div>
 						<ul className="list-content-with-icon-column" id="community-top-content">
 							{props.newCommunities.map(community => (
