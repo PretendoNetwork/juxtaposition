@@ -6,7 +6,6 @@ import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { CONVERSATION } from '@/models/conversation';
 import { POST } from '@/models/post';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { CtrMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
@@ -23,9 +22,9 @@ messagesRouter.get('/', async function (req, res) {
 	const { auth } = parseReq(req);
 	const conversations = await database.getConversations(auth().pid);
 	res.jsxForDirectory({
-		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
-		portal: <PortalMessagesView conversations={conversations} ctx={buildContext(res)} />,
-		ctr: <CtrMessagesView conversations={conversations} ctx={buildContext(res)} />,
+		web: <WebMessagesView conversations={conversations} />,
+		portal: <PortalMessagesView conversations={conversations} />,
+		ctr: <CtrMessagesView conversations={conversations} />,
 		disableDoctypeFor: ['ctr']
 	});
 });
@@ -256,9 +255,9 @@ messagesRouter.get('/:message_id', async function (req, res) {
 
 	await conversation.markAsRead(authCtx.pid);
 	res.jsxForDirectory({
-		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
-		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
-		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />
+		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />,
+		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />,
+		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />
 	});
 });
 

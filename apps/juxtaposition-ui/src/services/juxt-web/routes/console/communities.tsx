@@ -8,7 +8,6 @@ import { POST } from '@/models/post';
 import { redisGet, redisRemove, redisSet } from '@/redisCache';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebCommunityListView, WebCommunityOverviewView } from '@/services/juxt-web/views/web/communityListView';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { PortalCommunityListView, PortalCommunityOverviewView } from '@/services/juxt-web/views/portal/communityListView';
 import { CtrCommunityListView, CtrCommunityOverviewView } from '@/services/juxt-web/views/ctr/communityListView';
 import { PortalSubCommunityView } from '@/services/juxt-web/views/portal/subCommunityView';
@@ -33,7 +32,6 @@ communitiesRouter.get('/', async function (req, res) {
 	const communityStats = await getCommunityStats();
 
 	const props: CommunityOverviewViewProps = {
-		ctx: buildContext(res),
 		newCommunities: communityStats.new,
 		popularCommunities: communityStats.popular
 	};
@@ -48,7 +46,6 @@ communitiesRouter.get('/all', async function (req, res) {
 	const communities = await database.getCommunities(90);
 
 	const props: CommunityListViewProps = {
-		ctx: buildContext(res),
 		communities
 	};
 	res.jsxForDirectory({
@@ -107,7 +104,6 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 	}
 
 	const props: SubCommunityViewProps = {
-		ctx: buildContext(res),
 		community,
 		subcommunities: children
 	};
@@ -174,7 +170,6 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	const numPosts = await database.getTotalPostsByCommunity(community);
 
 	const postListProps: PostListViewProps = {
-		ctx: buildContext(res),
 		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${posts.length}&pjax=true`,
 		posts,
 		userContent
@@ -189,7 +184,6 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	}
 
 	const props: CommunityViewProps = {
-		ctx: buildContext(res),
 		feedType: type,
 		community,
 		hasSubCommunities: subCommunities.length > 0,
@@ -247,7 +241,6 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 	}
 
 	const postListProps: PostListViewProps = {
-		ctx: buildContext(res),
 		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${offset + posts.length}&pjax=true`,
 		posts,
 		userContent

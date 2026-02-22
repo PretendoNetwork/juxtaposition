@@ -1,5 +1,5 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { InlineScript } from '@/services/juxt-web/views/common';
+import { Inline } from '@/services/juxt-web/views/common/components/Inline';
 import type { ReactNode } from 'react';
 import type { ErrorViewProps, FatalErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
@@ -52,7 +52,7 @@ export function CtrFatalErrorView(props: FatalErrorViewProps): ReactNode {
 				</h1>
 				<p style={{ whiteSpace: 'pre-line' }}>{props.message}</p>
 			</body>
-			<InlineScript src={errorJs} />
+			<Inline.Script src={errorJs} />
 		</html>
 	);
 }

@@ -1,6 +1,6 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { InlineScript } from '@/services/juxt-web/views/common';
+import { Inline } from '@/services/juxt-web/views/common/components/Inline';
 import type { ReactNode } from 'react';
 import type { ErrorViewProps, FatalErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
@@ -59,7 +59,7 @@ export function PortalFatalErrorView(props: FatalErrorViewProps): ReactNode {
 				</h1>
 				<p style={{ whiteSpace: 'pre-line' }}>{props.message}</p>
 			</body>
-			<InlineScript src={errorJs} />
+			<Inline.Script src={errorJs} />
 		</html>
 	);
 }

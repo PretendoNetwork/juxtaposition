@@ -4,7 +4,6 @@ import { config } from '@/config';
 import { database } from '@/database';
 import { POST } from '@/models/post';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
@@ -33,17 +32,17 @@ topicsRouter.get('/', async function (req, res) {
 
 	if (query.pjax) {
 		return res.jsxForDirectory({
-			web: <WebPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-			portal: <PortalPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-			ctr: <CtrPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />
+			web: <WebPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+			portal: <PortalPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+			ctr: <CtrPostListView nextLink={nextLink} posts={posts} userContent={userContent} />
 		});
 	}
 
 	const title = query.topic_tag;
 	return res.jsxForDirectory({
-		web: <WebTopicTagView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalTopicTagView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrTopicTagView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebTopicTagView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalTopicTagView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrTopicTagView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });
 
@@ -70,8 +69,8 @@ topicsRouter.get('/more', async function (req, res) {
 	}
 
 	return res.jsxForDirectory({
-		web: <WebPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrPostListView nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });
