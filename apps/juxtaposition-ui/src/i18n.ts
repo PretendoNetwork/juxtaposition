@@ -22,6 +22,8 @@ export function getLanguage(paramPack?: ParamPack | null): string {
 	if (!paramPack) {
 		return fallback;
 	}
+
+	// Not currently possible to get any other languages, maybe we can add an in-app selector later?
 	const languageIdMap: Record<string, string> = {
 		0: 'JA',
 		1: 'EN',
