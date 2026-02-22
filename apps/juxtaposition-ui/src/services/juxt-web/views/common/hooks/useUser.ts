@@ -5,7 +5,6 @@ export type UserPermissions = {
 	developer: boolean;
 };
 
-// TODO add selected language
 export type UseUserValue = {
 	pid: number; // TODO make this `null` when not logged in
 	perms: UserPermissions;

@@ -3,8 +3,10 @@ import { WebErrorView } from '@/services/juxt-web/views/web/errorView';
 import { CtrErrorView } from '@/services/juxt-web/views/ctr/errorView';
 import { PortalErrorView } from '@/services/juxt-web/views/portal/errorView';
 import { buildContext, RenderContext } from '@/services/juxt-web/views/common/components/RenderContext';
+import { LangProvider } from '@/services/juxt-web/views/common/components/LangProvider';
 import type { ReactElement, ReactNode } from 'react';
 import type { RequestHandler } from 'express';
+import type { RenderContextContent } from '@/services/juxt-web/views/common/components/RenderContext';
 import type { ErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
 const htmlDoctype = '<!DOCTYPE html>';
@@ -15,14 +17,19 @@ export function renderJsx(el: ReactElement): string {
 	return htmlWithEvents;
 }
 
+export function ContextProviders(props: { ctx: RenderContextContent; children?: ReactNode }): ReactNode {
+	return (
+		<RenderContext value={props.ctx}>
+			<LangProvider>{props.children}</LangProvider>
+		</RenderContext>
+	);
+}
 /**
  * Render JSX as static markup. Only static! No state or event handlers are supported.
  */
 export const jsxRenderer: RequestHandler = (request, response, next) => {
 	response.jsx = (el, addDoctype): typeof response => {
-		const ctx = buildContext(response);
-		const ContextProviders = (props: { children?: ReactNode }): ReactNode => <RenderContext value={ctx}>{props.children}</RenderContext>;
-		const finalEl = <ContextProviders>{el}</ContextProviders>;
+		const finalEl = <ContextProviders ctx={buildContext(response)}>{el}</ContextProviders>;
 
 		const prefix = (addDoctype ?? true) ? htmlDoctype + '\n' : '';
 		response.send(prefix + renderJsx(finalEl));

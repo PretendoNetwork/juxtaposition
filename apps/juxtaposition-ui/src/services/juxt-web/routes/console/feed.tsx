@@ -35,11 +35,10 @@ feedRouter.get('/', async function (req, res) {
 		});
 	}
 
-	const title = res.locals.lang.global.activity_feed;
 	return res.jsxForDirectory({
-		web: <WebPersonalFeedView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalPersonalFeedView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrPersonalFeedView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebPersonalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalPersonalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrPersonalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });
 
@@ -69,11 +68,10 @@ feedRouter.get('/all', async function (req, res) {
 		});
 	}
 
-	const title = res.locals.lang.global.activity_feed;
 	return res.jsxForDirectory({
-		web: <WebGlobalFeedView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalGlobalFeedView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrGlobalFeedView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebGlobalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalGlobalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrGlobalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });
 

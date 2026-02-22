@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import type { Response } from 'express';
 
 export type RenderContextContent = {
-	lang: Record<string, any>;
+	lang: string;
 	cdnUrl: string;
 	moderator: boolean;
 	developer: boolean;

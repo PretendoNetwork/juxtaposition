@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import type { ReactNode } from 'react';
@@ -33,11 +34,12 @@ export function CtrFeedTabs(props: FeedTabsProps): ReactNode {
 }
 
 export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
+	const title = t('global.activity_feed');
 	return (
-		<CtrRoot title={props.title}>
+		<CtrRoot title={title}>
 			<CtrPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.title}</h1>
+					<h1 id="page-title">{title}</h1>
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrFeedTabs selected={0} />
@@ -51,11 +53,12 @@ export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 }
 
 export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
+	const title = t('global.activity_feed');
 	return (
-		<CtrRoot title={props.title}>
+		<CtrRoot title={title}>
 			<CtrPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.title}</h1>
+					<h1 id="page-title">{title}</h1>
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrFeedTabs selected={1} />

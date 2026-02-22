@@ -6,12 +6,14 @@ export type UserAgentInfo = {
 
 export type UseRequestValue = {
 	// TODO add request ID
+	lang: string;
 	userAgent: UserAgentInfo;
 };
 
 export function useRequest(): UseRequestValue {
 	const ctx = useRenderContext();
 	return {
+		lang: ctx.lang,
 		userAgent: {
 			isConsole: ctx.uaIsConsole ?? false
 		}

@@ -10,7 +10,6 @@ import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
 
 export type FeedViewProps = {
-	title: string;
 	userContent: InferSchemaType<typeof ContentSchema>;
 	posts: InferSchemaType<typeof PostSchema>[];
 	nextLink: string;
