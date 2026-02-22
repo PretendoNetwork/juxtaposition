@@ -27,7 +27,7 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 
 export function PortalCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.all_communities.text} onLoad="stopLoading();">
+		<PortalRoot ctx={props.ctx} title={props.ctx.lang.all_communities.text} onLoad="stopLoading();">
 			<PortalNavBar ctx={props.ctx} selection={2} />
 			<PortalPageBody>
 				<header id="header">
@@ -50,7 +50,7 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 
 export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.global.communities} onLoad="stopLoading();">
+		<PortalRoot ctx={props.ctx} title={props.ctx.lang.global.communities} onLoad="stopLoading();">
 			<PortalNavBar ctx={props.ctx} selection={2} />
 			<PortalPageBody>
 				<header id="header">

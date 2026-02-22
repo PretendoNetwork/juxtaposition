@@ -97,7 +97,7 @@ export function PortalNotificationListView(props: NotificationListViewProps): Re
 
 export function PortalNotificationWrapperView(props: NotificationWrapperViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.global.notifications}>
+		<PortalRoot ctx={props.ctx} title={props.ctx.lang.global.notifications}>
 			<PortalNavBar ctx={props.ctx} selection={4} />
 			<PortalPageBody>
 				<header id="header">

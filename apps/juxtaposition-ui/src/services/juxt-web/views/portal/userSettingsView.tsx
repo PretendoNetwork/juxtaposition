@@ -5,7 +5,7 @@ import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSe
 
 export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.user_settings.profile_settings}>
+		<PortalRoot ctx={props.ctx} title={props.ctx.lang.user_settings.profile_settings}>
 			<PortalNavBar ctx={props.ctx} selection={1} />
 			<PortalPageBody>
 				<header id="header"></header>

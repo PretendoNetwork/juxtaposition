@@ -1,16 +1,24 @@
 import type { ReactNode } from 'react';
+import type { RenderContext } from '@/services/juxt-web/views/context';
 
-function DefaultHead(): ReactNode {
+export type DefaultHeadProps = {
+	ctx: RenderContext;
+};
+
+function DefaultHead(props: DefaultHeadProps): ReactNode {
+	const addDebugJs = !props.ctx.uaIsConsole; // Only serve debug js to non-console browsers
 	return (
 		<>
 			<link rel="stylesheet" type="text/css" href="/css/juxt.css" />
-			<script src="/js/debug.global.js"></script>
+			{/* Debug allows non-console browsers to have some amount of the wiiu APIs. */}
+			{addDebugJs ? <script src="/js/debug.global.js"></script> : null}
 			<script src="/js/juxt.global.js"></script>
 		</>
 	);
 }
 
 export type HtmlProps = {
+	ctx: RenderContext;
 	children?: ReactNode;
 	head?: ReactNode;
 	title: string;
@@ -21,7 +29,7 @@ export function PortalRoot(props: HtmlProps): ReactNode {
 	return (
 		<html lang="en">
 			<head>
-				<DefaultHead />
+				<DefaultHead ctx={props.ctx} />
 				<title>{props.title}</title>
 				{props.head}
 			</head>

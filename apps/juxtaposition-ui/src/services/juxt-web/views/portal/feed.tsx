@@ -35,7 +35,7 @@ export function PortalFeedTabs(props: FeedTabsProps): ReactNode {
 
 export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
+		<PortalRoot ctx={props.ctx} title={props.title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
 			<PortalNavBar ctx={props.ctx} selection={-1} />
 			<PortalPageBody>
 				<header id="header">
@@ -58,7 +58,7 @@ export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
 
 export function PortalGlobalFeedView(props: FeedViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
+		<PortalRoot ctx={props.ctx} title={props.title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
 			<PortalNavBar ctx={props.ctx} selection={-1} />
 			<PortalPageBody>
 				<header id="header">

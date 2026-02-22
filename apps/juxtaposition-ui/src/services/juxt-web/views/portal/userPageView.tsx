@@ -83,7 +83,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 	const isUserFollowingRequester = props.userContent.followed_users.includes(props.ctx.pid);
 
 	return (
-		<PortalRoot title={pnidName}>
+		<PortalRoot ctx={props.ctx} title={pnidName}>
 			<PortalNavBar ctx={props.ctx} selection={-1} />
 			<PortalPageBody>
 				<header id="header">
