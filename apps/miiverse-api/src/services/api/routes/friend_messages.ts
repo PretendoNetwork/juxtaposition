@@ -150,7 +150,10 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		body: messageBody,
 		app_data: appData,
 		painting: '',
+		painting_img: '',
+		painting_big: '',
 		screenshot: '',
+		screenshot_big: '',
 		screenshot_thumb: '',
 		screenshot_aspect: '',
 		screenshot_length: 0,
@@ -175,20 +178,22 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 	});
 
 	if (painting) {
-		const paintingBlob = await uploadPainting({
+		const paintings = await uploadPainting({
 			blob: painting,
 			autodetectFormat: true,
 			isBmp: false,
 			pid: post.pid,
 			postId: post.id
 		});
-		if (paintingBlob === null) {
+		if (paintings === null) {
 			// The document we already submitted to the db is invalid, so drop it.
 			post.deleteOne();
 			return serverError(response, ApiErrorCode.DATABASE_ERROR);
 		}
 
-		post.painting = paintingBlob;
+		post.painting = paintings.blob;
+		post.painting_img = paintings.img;
+		post.painting_big = paintings.big;
 	}
 
 	if (screenshot) {
@@ -204,6 +209,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 		}
 
 		post.screenshot = screenshotUrls.full;
+		post.screenshot_big = screenshotUrls.big ?? '';
 		post.screenshot_length = screenshotUrls.fullLength;
 		post.screenshot_thumb = screenshotUrls.thumb;
 		post.screenshot_aspect = screenshotUrls.aspect;
