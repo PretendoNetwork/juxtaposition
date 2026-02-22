@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -105,7 +106,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
 								<input type="radio" name="_post_type" value="body" defaultChecked data-sound="" />
-								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={<T k="user_settings.swearing" />} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
+								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={t('user_settings.swearing')} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
 							</li>
 							<li className="textarea-menu-memo">
 								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" />

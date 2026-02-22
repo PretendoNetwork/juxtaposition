@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { CtrPostListClosedView } from '@/services/juxt-web/views/ctr/postList';
@@ -62,7 +63,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 									data-module-show="add-post-page"
 									data-header="false"
 									data-screenshot="true"
-									data-message={`$<T k="new_post.post_to" /> ${community.name}`}
+									data-message={`${t('new_post.post_to')} ${community.name}`}
 								>
 									Post +
 								</a>

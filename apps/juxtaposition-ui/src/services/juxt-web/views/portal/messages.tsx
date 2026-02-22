@@ -1,5 +1,6 @@
 import cx from 'classnames';
 import moment from 'moment';
+import { t } from 'i18next';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import {
 	PortalPageBody,
@@ -21,7 +22,7 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 	const user = useUser();
 
 	return (
-		<PortalRoot title={<T k="global.messages" />}>
+		<PortalRoot title={t('global.messages')}>
 			<PortalNavBar selection={3} />
 			<PortalPageBody>
 				<header id="header">

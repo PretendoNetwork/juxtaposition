@@ -1,12 +1,12 @@
+import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrCommunityItem } from '@/services/juxt-web/views/ctr/communityListView';
-import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 
 export function CtrSubCommunityView(props: SubCommunityViewProps): ReactNode {
 	return (
-		<CtrRoot title={<T k="all_communities.text" />}>
+		<CtrRoot title={t('all_communities.text')}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">

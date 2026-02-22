@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { humanFromNow } from '@/util';
@@ -100,7 +101,7 @@ export function PortalNotificationListView(props: NotificationListViewProps): Re
 
 export function PortalNotificationWrapperView(props: NotificationWrapperViewProps): ReactNode {
 	return (
-		<PortalRoot title={<T k="global.notifications" />}>
+		<PortalRoot title={t('global.notifications')}>
 			<PortalNavBar selection={4} />
 			<PortalPageBody>
 				<header id="header">

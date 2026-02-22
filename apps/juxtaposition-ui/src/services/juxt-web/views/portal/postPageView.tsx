@@ -1,9 +1,9 @@
+import { t } from 'i18next';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalPostView } from '@/services/juxt-web/views/portal/post';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
-import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
@@ -13,7 +13,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 	const pageTitle = !post.removed ? post.screen_name : 'Removed Post';
 
 	return (
-		<PortalRoot title={<T k="global.activity_feed" />}>
+		<PortalRoot title={t('global.activity_feed')}>
 			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">

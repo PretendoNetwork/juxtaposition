@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
@@ -55,7 +56,7 @@ const AboutSection = {
 	}
 };
 
-export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
+export function PortalFirstRunView(_props: FirstRunViewProps): ReactNode {
 	const sections = {
 		welcome: 'welcome',
 		beta: 'beta',
@@ -85,8 +86,8 @@ export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
 						</p>
 					</AboutSection.Body>
 
-					<AboutSection.BackButton currentId="add-post-page" text={<T k="global.exit" />} onClick="exit()" />
-					<AboutSection.NextButton currentId={sections.welcome} nextId={sections.beta} text={<T k="global.next" />} />
+					<AboutSection.BackButton currentId="add-post-page" text={t('global.exit')} onClick="exit()" />
+					<AboutSection.NextButton currentId={sections.welcome} nextId={sections.beta} text={t('global.next')} />
 				</AboutSection.Root>
 
 				<AboutSection.Root id={sections.beta}>
@@ -101,8 +102,8 @@ export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
 						</p>
 					</AboutSection.Body>
 
-					<AboutSection.BackButton currentId={sections.beta} previousId={sections.welcome} text={<T k="global.back" />} />
-					<AboutSection.NextButton currentId={sections.beta} nextId={sections.about} text={<T k="global.next" />} />
+					<AboutSection.BackButton currentId={sections.beta} previousId={sections.welcome} text={t('global.back')} />
+					<AboutSection.NextButton currentId={sections.beta} nextId={sections.about} text={t('global.next')} />
 				</AboutSection.Root>
 
 				<AboutSection.Root id={sections.about}>
@@ -113,8 +114,8 @@ export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
 						</p>
 					</AboutSection.Body>
 
-					<AboutSection.BackButton currentId={sections.about} previousId={sections.beta} text={<T k="global.back" />} />
-					<AboutSection.NextButton currentId={sections.about} nextId={sections.manners} text={<T k="global.next" />} />
+					<AboutSection.BackButton currentId={sections.about} previousId={sections.beta} text={t('global.back')} />
+					<AboutSection.NextButton currentId={sections.about} nextId={sections.manners} text={t('global.next')} />
 				</AboutSection.Root>
 
 				<AboutSection.Root id={sections.manners}>
@@ -163,8 +164,8 @@ export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
 						</p>
 					</AboutSection.Body>
 
-					<AboutSection.BackButton currentId={sections.manners} previousId={sections.about} text={<T k="global.back" />} />
-					<AboutSection.NextButton currentId={sections.manners} nextId={sections.analytics} text={<T k="global.next" />} />
+					<AboutSection.BackButton currentId={sections.manners} previousId={sections.about} text={t('global.back')} />
+					<AboutSection.NextButton currentId={sections.manners} nextId={sections.analytics} text={t('global.next')} />
 				</AboutSection.Root>
 
 				<AboutSection.Root id={sections.analytics}>
@@ -175,8 +176,8 @@ export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
 						</p>
 					</AboutSection.Body>
 
-					<AboutSection.BackButton currentId={sections.analytics} previousId={sections.manners} text={<T k="global.back" />} />
-					<AboutSection.NextButton currentId={sections.analytics} nextId={sections.experience} text={<T k="global.next" />} />
+					<AboutSection.BackButton currentId={sections.analytics} previousId={sections.manners} text={t('global.back')} />
+					<AboutSection.NextButton currentId={sections.analytics} nextId={sections.experience} text={t('global.next')} />
 				</AboutSection.Root>
 
 				<AboutSection.Root id={sections.experience}>
@@ -196,8 +197,8 @@ export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
 						</ul>
 					</div>
 
-					<AboutSection.BackButton currentId={sections.experience} previousId={sections.analytics} text={<T k="global.back" />} />
-					<AboutSection.NextButton currentId={sections.experience} nextId={sections.ready} text={<T k="global.next" />} />
+					<AboutSection.BackButton currentId={sections.experience} previousId={sections.analytics} text={t('global.back')} />
+					<AboutSection.NextButton currentId={sections.experience} nextId={sections.ready} text={t('global.next')} />
 				</AboutSection.Root>
 
 				<AboutSection.Root id={sections.ready}>
@@ -208,8 +209,8 @@ export function PortalFirstRunView(props: FirstRunViewProps): ReactNode {
 						</p>
 					</AboutSection.Body>
 
-					<AboutSection.BackButton currentId={sections.ready} previousId={sections.experience} text={<T k="global.back" />} />
-					<AboutSection.NextButton currentId={sections.ready} onClick="firstRunSubmit()" sound="GL_OLV_INIT_END" nextId={sections.end} text={<T k="global.next" />} />
+					<AboutSection.BackButton currentId={sections.ready} previousId={sections.experience} text={t('global.back')} />
+					<AboutSection.NextButton currentId={sections.ready} onClick="firstRunSubmit()" sound="GL_OLV_INIT_END" nextId={sections.end} text={t('global.next')} />
 				</AboutSection.Root>
 
 				<AboutSection.Root id={sections.end}>

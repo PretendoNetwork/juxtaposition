@@ -1,3 +1,4 @@
+import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -6,7 +7,7 @@ import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSe
 
 export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode {
 	return (
-		<PortalRoot title={<T k="user_settings.profile_settings" />}>
+		<PortalRoot title={t('user_settings.profile_settings')}>
 			<PortalNavBar selection={1} />
 			<PortalPageBody>
 				<header id="header"></header>

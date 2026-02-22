@@ -1,7 +1,7 @@
+import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalCommunityItem } from '@/services/juxt-web/views/portal/communityListView';
-import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { CommunitySchema } from '@/models/communities';
@@ -13,7 +13,7 @@ export type SubCommunityViewProps = {
 
 export function PortalSubCommunityView(props: SubCommunityViewProps): ReactNode {
 	return (
-		<PortalRoot title={<T k="global.communities" />} onLoad="stopLoading();">
+		<PortalRoot title={t('global.communities')} onLoad="stopLoading();">
 			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">

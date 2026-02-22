@@ -1,12 +1,12 @@
 import moment from 'moment';
 import cx from 'classnames';
+import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
-import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
@@ -57,7 +57,7 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
 
 	return (
-		<CtrRoot title={<T k="global.messages" />} onLoad="cave.toolbar_setActiveButton(4);window.scrollTo(0, 500000);">
+		<CtrRoot title={t('global.messages')} onLoad="cave.toolbar_setActiveButton(4);window.scrollTo(0, 500000);">
 			<CtrPageBody>
 				<header id="header" className="buttons">
 					<h1 id="page-title">{otherUserName}</h1>
