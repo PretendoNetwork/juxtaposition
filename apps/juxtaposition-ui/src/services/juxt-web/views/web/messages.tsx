@@ -3,6 +3,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ConversationSchema } from '@/models/conversation';
@@ -16,6 +17,7 @@ export type MessagesViewProps = {
 
 export function WebMessagesView(props: MessagesViewProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const cache = useCache();
 	return (
 		<WebRoot>
@@ -39,10 +41,10 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 								{props.conversations.map((convo) => {
 									let userObj: ConversationUserModel | null = null;
 									let me: ConversationUserModel | null = null;
-									if (convo.users[0].pid === props.ctx.pid) {
+									if (convo.users[0].pid === user.pid) {
 										userObj = convo.users[1];
 										me = convo.users[0];
-									} else if (convo.users[1].pid === props.ctx.pid) {
+									} else if (convo.users[1].pid === user.pid) {
 										userObj = convo.users[0];
 										me = convo.users[1];
 									}

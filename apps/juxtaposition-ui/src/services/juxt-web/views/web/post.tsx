@@ -3,6 +3,7 @@ import moment from 'moment';
 import { WebIcon } from '@/services/juxt-web/views/web/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
@@ -32,12 +33,13 @@ export type PostViewProps = {
 
 export function WebPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const cache = useCache();
 	const post = props.post;
-	const isModerator = props.ctx.moderator;
+	const isModerator = user.perms.moderator;
 	const canAccessContent = !post.removed || isModerator;
 
-	const yeahed = !!props.userContent && !!post.yeahs && post.yeahs.includes(props.ctx.pid);
+	const yeahed = !!props.userContent && !!post.yeahs && post.yeahs.includes(user.pid);
 
 	let removedPostPart = null;
 	if (post.removed) {
@@ -133,7 +135,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 							{' '}
 							Report Post
 						</li>
-						{ isModerator || post.pid === props.ctx.pid
+						{ isModerator || post.pid === user.pid
 							? (
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebIcon name="bin" />

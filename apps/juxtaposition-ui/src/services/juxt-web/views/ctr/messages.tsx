@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -10,6 +11,8 @@ import type {
 
 export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 	const cache = useCache();
+	const user = useUser();
+
 	return (
 		<ul
 			className="list-content-with-icon-column arrow-list"
@@ -23,10 +26,10 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 						props.conversations.map((convo) => {
 							let userObj: ConversationUserModel | null = null;
 							let me: ConversationUserModel | null = null;
-							if (convo.users[0].pid === props.ctx.pid) {
+							if (convo.users[0].pid === user.pid) {
 								userObj = convo.users[1];
 								me = convo.users[0];
-							} else if (convo.users[1].pid === props.ctx.pid) {
+							} else if (convo.users[1].pid === user.pid) {
 								userObj = convo.users[0];
 								me = convo.users[1];
 							}

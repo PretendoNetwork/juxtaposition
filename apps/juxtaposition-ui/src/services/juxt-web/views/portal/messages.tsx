@@ -7,6 +7,7 @@ import {
 } from '@/services/juxt-web/views/portal/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -16,6 +17,8 @@ import type {
 export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 	const url = useUrl();
 	const cache = useCache();
+	const user = useUser();
+
 	return (
 		<PortalRoot title={props.ctx.lang.global.messages}>
 			<PortalNavBar selection={3} />
@@ -35,10 +38,10 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 									props.conversations.map((convo) => {
 										let userObj: ConversationUserModel | null = null;
 										let me: ConversationUserModel | null = null;
-										if (convo.users[0].pid === props.ctx.pid) {
+										if (convo.users[0].pid === user.pid) {
 											userObj = convo.users[1];
 											me = convo.users[0];
-										} else if (convo.users[1].pid === props.ctx.pid) {
+										} else if (convo.users[1].pid === user.pid) {
 											userObj = convo.users[0];
 											me = convo.users[1];
 										}

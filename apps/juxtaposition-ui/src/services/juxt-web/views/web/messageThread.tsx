@@ -6,6 +6,7 @@ import { WebNewPostView } from '@/services/juxt-web/views/web/newPostView';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
@@ -25,6 +26,7 @@ export type MessageThreadItemProps = {
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const msg = props.message;
 
 	let screenshotContent: ReactNode = null;
@@ -41,8 +43,8 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 		<div
 			id={`message-${msg.id}`}
 			className={cx('post scroll', {
-				'my-post': msg.pid === props.ctx.pid,
-				'other-post': msg.pid !== props.ctx.pid
+				'my-post': msg.pid === user.pid,
+				'other-post': msg.pid !== user.pid
 			})}
 		>
 			<a href={url.url('/users/show', { pid: msg.pid })} className="scroll-focus mii-icon-container">

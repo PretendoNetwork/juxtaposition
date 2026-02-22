@@ -5,6 +5,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { WebIcon } from '@/services/juxt-web/views/web/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -122,14 +123,15 @@ export function WebUserPageMeta(props: { user: GetUserDataResponse; userSettings
 
 export function WebUserPageView(props: UserPageViewProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
 	const isUserDeleted = props.user.deleted;
 	const isUserDataViewable = !isUserBanned && !isUserDeleted;
-	const canViewUser = isUserDataViewable || props.ctx.moderator;
-	const isSelf = props.ctx.pid === props.user.pid;
+	const canViewUser = isUserDataViewable || user.perms.moderator;
+	const isSelf = user.pid === props.user.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
-	const isUserFollowingRequester = props.userContent.followed_users.includes(props.ctx.pid);
+	const isUserFollowingRequester = props.userContent.followed_users.includes(user.pid);
 
 	let head: ReactNode = null;
 	if (isUserDataViewable) {
@@ -232,7 +234,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 													</div>
 												)
 											: null}
-										{props.ctx.moderator
+										{user.perms.moderator
 											? (
 													<div>
 														<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.user.pid}`}>Moderate User</a></h4>

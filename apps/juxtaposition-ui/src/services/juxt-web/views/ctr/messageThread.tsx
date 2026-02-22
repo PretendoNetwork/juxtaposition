@@ -5,11 +5,13 @@ import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const msg = props.message;
 
 	let screenshotContent: ReactNode = null;
@@ -26,8 +28,8 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 		<div
 			id={`message-${msg.id}`}
 			className={cx('post scroll', {
-				'my-post': msg.pid === props.ctx.pid,
-				'other-post': msg.pid !== props.ctx.pid
+				'my-post': msg.pid === user.pid,
+				'other-post': msg.pid !== user.pid
 			})}
 		>
 			<CtrMiiIcon pid={msg.pid ?? 0} face_url={msg.mii_face_url ?? undefined}></CtrMiiIcon>

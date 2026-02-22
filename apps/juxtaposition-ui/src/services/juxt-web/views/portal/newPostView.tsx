@@ -1,4 +1,5 @@
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -44,6 +45,8 @@ const empathies = [
 
 export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
+
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header className="add-post-page-header">
@@ -57,7 +60,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 				<input type="hidden" name="community_id" value={props.id} />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
-						<img src={url.cdn(`/mii/${props.ctx.pid}/normal_face.png`)} id="mii-face" className="icon" />
+						<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} id="mii-face" className="icon" />
 						<ul className="buttons">
 							{empathies.map(v => (
 								<li key={v.value}>
@@ -66,7 +69,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 										name="feeling_id"
 										value={v.value}
 										className={v.className}
-										data-mii-face-url={url.cdn(`/mii/${props.ctx.pid}/${v.miiFaceFile}`)}
+										data-mii-face-url={url.cdn(`/mii/${user.pid}/${v.miiFaceFile}`)}
 										defaultChecked={v.isDefault}
 										data-sound={v.sound}
 									/>

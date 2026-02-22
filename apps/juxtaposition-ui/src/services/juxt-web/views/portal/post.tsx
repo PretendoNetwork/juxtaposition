@@ -3,6 +3,7 @@ import moment from 'moment';
 import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -39,9 +40,10 @@ function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
 export function PortalPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
 	const cache = useCache();
+	const user = useUser();
 	const post = props.post;
-	const hasYeahed = post.yeahs && post.yeahs.indexOf(props.ctx.pid) !== -1;
-	const isModerator = props.ctx.moderator;
+	const hasYeahed = post.yeahs && post.yeahs.indexOf(user.pid) !== -1;
+	const isModerator = user.perms.moderator;
 	// TODO implement moderator removed post logic
 
 	const content = (
@@ -120,14 +122,14 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						</button>
 						{' '}
 						<a href={!props.isReply ? `/posts/${post.id}` : undefined} className="to-permalink-button" data-pjax="#body">
-							{ props.isReply && post.pid !== props.ctx.pid && !isModerator
+							{ props.isReply && post.pid !== user.pid && !isModerator
 								? (
 										<div>
 											<button type="button" className="submit report" data-post={post.id} evt-click="reportPost(this)"></button>
 										</div>
 									)
 								: null}
-							{ props.isReply && (post.pid === props.ctx.pid || isModerator)
+							{ props.isReply && (post.pid === user.pid || isModerator)
 								? (
 										<div>
 											<button type="button" className="submit remove" data-button-delete-post={post.id}></button>

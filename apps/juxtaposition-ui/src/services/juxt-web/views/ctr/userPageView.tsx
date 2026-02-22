@@ -1,18 +1,20 @@
 import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
 export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 
 	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
 	const isUserDeleted = props.user.deleted;
 	const isUserDataViewable = !isUserBanned && !isUserDeleted;
-	const canViewUser = isUserDataViewable || props.ctx.moderator;
-	const isSelf = props.ctx.pid === props.user.pid;
+	const canViewUser = isUserDataViewable || user.perms.moderator;
+	const isSelf = user.pid === props.user.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
 

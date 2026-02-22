@@ -3,11 +3,13 @@ import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
 export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const { post, community } = props;
 	const { bannerUrl, legacy } = url.ctrHeader(community);
 
@@ -42,7 +44,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 								</a>
 							)
 						: null}
-					{post.pid === props.ctx.pid
+					{post.pid === user.pid
 						? (
 								<a id="header-communities-button" className="delete header-button right" href="#" data-button-delete-post={post.id}>Delete Post</a>
 							)

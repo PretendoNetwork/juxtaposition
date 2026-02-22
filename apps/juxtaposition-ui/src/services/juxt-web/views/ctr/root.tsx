@@ -1,3 +1,4 @@
+import { useRequest } from '@/services/juxt-web/views/common/hooks/useRequest';
 import type { ReactNode } from 'react';
 
 export type DefaultHeadProps = {
@@ -5,8 +6,9 @@ export type DefaultHeadProps = {
 };
 
 function DefaultHead(props: DefaultHeadProps): ReactNode {
+	const req = useRequest();
 	const loadJs = !props.preventJsLoad;
-	const addDebugJs = !props.ctx.uaIsConsole; // Only serve debug js to non-console browsers
+	const addDebugJs = !req.userAgent.isConsole; // Only serve debug js to non-console browsers
 	return (
 		<>
 			<link rel="stylesheet" type="text/css" href="/css/juxt.css" />

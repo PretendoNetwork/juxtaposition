@@ -3,6 +3,7 @@ import moment from 'moment';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -37,10 +38,11 @@ function CtrPostScreenshot(props: PostScreenshotProps): ReactNode {
 
 export function CtrPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const cache = useCache();
 
 	const post = props.post;
-	const hasYeahed = post.yeahs && post.yeahs.indexOf(props.ctx.pid) !== -1;
+	const hasYeahed = post.yeahs && post.yeahs.indexOf(user.pid) !== -1;
 	// TODO implement moderator removed post logic
 
 	return (

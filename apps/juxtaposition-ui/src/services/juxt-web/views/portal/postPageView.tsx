@@ -2,10 +2,12 @@ import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalPostView } from '@/services/juxt-web/views/portal/post';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
 export function PortalPostPageView(props: PostPageViewProps): ReactNode {
+	const user = useUser();
 	const { post } = props;
 	const pageTitle = !post.removed ? post.screen_name : 'Removed Post';
 
@@ -22,7 +24,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 						: null}
 					{!post.removed
 						? (
-								post.pid === props.ctx.pid
+								post.pid === user.pid
 									? (
 											<a id="header-communities-button" className="delete" href="#" data-button-delete-post={post.id}>Delete Post</a>
 										)
