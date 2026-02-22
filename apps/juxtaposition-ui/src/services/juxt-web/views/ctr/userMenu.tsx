@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 export type UserMenuViewProps = {
 };
 
-export function CtrUserMenuView(props: UserMenuViewProps): ReactNode {
+export function CtrUserMenuView(_props: UserMenuViewProps): ReactNode {
 	return (
 		<CtrRoot title="Whoops!">
 			<CtrPageBody>

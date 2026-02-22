@@ -6,7 +6,7 @@ import type { ReactNode } from 'react';
 export type NewCommunityViewProps = {
 };
 
-export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {
+export function WebNewCommunityView(_props: NewCommunityViewProps): ReactNode {
 	const head = (
 		<>
 			<script src="/js/admin.global.js"></script>
