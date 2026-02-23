@@ -1350,6 +1350,19 @@ li.reports .button-spacer {
   color: var(--text);
 }
 
+/* TODO this style isn't really done */
+.searchbar-button {
+  margin-top: 16px;
+
+  height: 2em;
+  border-radius: 1em;
+  border: 1px solid var(--background-alt-alt);
+  font-size: 1rem;
+  background-color: var(--background-alt);
+  padding: 2px 12px;
+  color: var(--text);
+}
+
 .community-page-post-box .buttons.tabs {
   margin-bottom: 1em;
 }

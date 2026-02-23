@@ -2,6 +2,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { utils } from '@/services/juxt-web/views/utils';
+import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -28,7 +29,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs ctx={props.ctx} selected="communities" />
-				<input type="string" id="community-search" className="searchbar" placeholder="Search..." value={props.search} />
+				<WebSearchBar ctx={props.ctx} search={props.search} />
 				<button style={{ marginTop: '1em' }}>
 					<a href="/admin/communities/new" className="button">Create Community</a>
 				</button>
