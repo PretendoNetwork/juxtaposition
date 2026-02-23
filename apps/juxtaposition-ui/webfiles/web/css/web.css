@@ -562,7 +562,9 @@ iframe {
   color: var(--theme-light);
 }
 
-#news-list-content li .text .timestamp {
+#news-list-content li .text .timestamp,
+#news-list-content li .text .reported-by,
+#news-list-content li .text .pid-display {
   color: #969696;
   white-space: nowrap;
 }
@@ -1280,7 +1282,6 @@ input.eraser.large {
 
 li.reports .hover {
   display: flex;
-  user-select: none;
   cursor: pointer;
   padding: 0;
   padding-left: 2ch;

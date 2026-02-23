@@ -1,9 +1,9 @@
-import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
+import { humanDate, humanFromNow } from '@/util';
+import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { RenderContext } from '@/services/juxt-web/views/context';
@@ -32,21 +32,25 @@ export type ReportProps = {
 };
 
 function Report(props: ReportProps): ReactNode {
+	const reporter = props.report.reported_by;
+
 	return (
 		<li className="reports">
 			<details>
 				<summary>
 					<div className="hover">
-						<span className="icon-container notify">
-							<img src={utils.cdn(props.ctx, `/mii/${props.report.reported_by}/normal_face.png`)} className="icon" />
-						</span>
+						<WebMiiIcon ctx={props.ctx} pid={reporter} type="icon" />
 						<span className="body messages report">
 							<span className="text">
-								<span className="nick-name">
-									Reported By:
-									{props.ctx.usersMap.get(props.report.reported_by)}
-								</span>
-								<span className="timestamp">{moment(props.report.created_at).fromNow()}</span>
+								<span className="reported-by">Reported by</span>
+								{' '}
+								<a className="nick-name" href={`/users/${reporter}`}>
+									{props.ctx.usersMap.get(reporter)}
+								</a>
+								{' - '}
+								<span className="pid-display">{reporter}</span>
+								{' - '}
+								<abbr className="timestamp" title={humanDate(props.report.created_at)}>{humanFromNow(props.report.created_at)}</abbr>
 							</span>
 							<span className="text">
 								<h4>{props.reasonMap[props.report.reason] ?? 'Unknown'}</h4>
