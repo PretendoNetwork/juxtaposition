@@ -1,39 +1,6 @@
 import './web.js';
 import { initBanLiftDate, initSavePnidButton } from './admin/moderate-user.js';
-
-function removeReport(element: HTMLElement): void {
-	const id = element.getAttribute('data-id');
-	const reason = prompt('Provide explanation for removing post:');
-	if (!id || !reason) {
-		return;
-	}
-
-	const params = new URLSearchParams({ reason });
-	fetch(`/admin/${id}?${params}`, {
-		method: 'DELETE'
-	})
-		.then(res => res.text())
-		.then(_res => location.reload());
-}
-// @ts-expect-error window hack
-window.removeReport = removeReport;
-
-function ignoreReport(element: HTMLElement): void {
-	const id = element.getAttribute('data-id');
-	const reason = prompt('Provide explanation for ignoring this report:');
-	if (!id || !reason) {
-		return;
-	}
-
-	const params = new URLSearchParams({ reason });
-	fetch(`/admin/${id}?${params}`, {
-		method: 'PUT'
-	})
-		.then(res => res.text())
-		.then(_res => location.reload());
-}
-// @ts-expect-error window hack
-window.ignoreReport = ignoreReport;
+import { initReportButtons } from './admin/reports.js';
 
 function initUploadPreview(): void {
 	const els = document.querySelectorAll('*[data-image-preview]') as NodeListOf<HTMLInputElement>;
@@ -52,7 +19,13 @@ function initUploadPreview(): void {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+	// user page
 	initBanLiftDate();
 	initSavePnidButton();
+
+	// report list
+	initReportButtons();
+
+	// community page
 	initUploadPreview();
 });
