@@ -507,7 +507,7 @@ export function humanFromNow(date?: Date | DateTime | string | null): string {
 const filename = fileURLToPath(import.meta.url);
 // The root of the dist/ folder.
 export const distFolder = path.dirname(filename);
-export const langsFolder = path.join(path.dirname(filename), 'assets/locales');
+export const langsFolder = path.join(distFolder, 'assets/locales');
 
 export function zodFallback<T>(value: T): ZodType<T> {
 	return z.any().transform(() => value);

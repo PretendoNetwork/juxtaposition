@@ -8,9 +8,9 @@ type Serializable = string | number | boolean | undefined | null;
 function buildUrl(u: string, query?: Record<string, Serializable>): string {
 	const [pathName, search = ''] = u.split('?', 2);
 	const originalParams = new URLSearchParams(search);
-	Object.entries(query ?? {}).forEach((entry) => {
-		if (entry[1]) {
-			originalParams.set(entry[0], entry[1].toString());
+	Object.entries(query ?? {}).forEach(([key, value]) => {
+		if (value != null && value !== undefined) {
+			originalParams.set(key, value.toString());
 		}
 	});
 	return pathName + (originalParams.size > 0 ? '?' + originalParams.toString() : '');
