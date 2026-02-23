@@ -60,8 +60,9 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 						</select>
 					</div>
 					<div className="col-md-9">
-						<label className="labels" htmlFor="title_ids">Title IDs (comma separated list)</label>
-						<input id="title-ids" name="title_ids" type="text" className="form-control" placeholder="1407375153678336, 1407375153685760, 1407375153686016" value={community.title_id} />
+						<label className="labels" htmlFor="title_ids">Title IDs (hex)</label>
+						<textarea rows={10} data-input-admin-title-ids="#title-ids"></textarea>
+						<input id="title-ids" name="title_ids" type="hidden" value={community.title_id} />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="browserIcon">Browser Icon (128px x 128px)</label>

@@ -1,7 +1,7 @@
 import './web.js';
 import { initBanLiftDate, initSavePnidButton } from './admin/moderate-user.js';
 import { initReportButtons } from './admin/reports.js';
-import { initUploadPreview } from './admin/edit-community.js';
+import { initTitleIdControl, initUploadPreview } from './admin/edit-community.js';
 
 document.addEventListener('DOMContentLoaded', function () {
 	// user page
@@ -13,4 +13,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	// community page
 	initUploadPreview();
+	initTitleIdControl();
 });
