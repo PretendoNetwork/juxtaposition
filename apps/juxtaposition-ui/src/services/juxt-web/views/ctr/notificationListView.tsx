@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
-import { CtrIcon } from '@/services/juxt-web/views/ctr/components/icon';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
+import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
 import { humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -12,7 +12,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? props.ctx.usersMap.get(Number(userId)) : null}</span>;
 		return (
 			<>
-				<CtrMiiIcon ctx={props.ctx} pid={Number(notif.objectID)} big={true}></CtrMiiIcon>
+				<CtrMiiIcon ctx={props.ctx} pid={Number(notif.objectID)} type="icon"></CtrMiiIcon>
 				<div className="body">
 					<p>
 						{notif.users.length === 1

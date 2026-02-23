@@ -4,7 +4,7 @@ import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/roo
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
-import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
+import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -71,13 +71,13 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						<span className="title">{community.name}</span>
 						<span className="text">
 							<span>
-								<PortalIcon name="posts" />
+								<PortalUIIcon name="posts" />
 								{' '}
 								{props.totalPosts}
 							</span>
 							<span>
 								{' | '}
-								<PortalIcon name="followers" />
+								<PortalUIIcon name="followers" />
 								{' '}
 								<span id="followers">
 									{community.followers}
