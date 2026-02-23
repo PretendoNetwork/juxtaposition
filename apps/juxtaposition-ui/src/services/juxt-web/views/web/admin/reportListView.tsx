@@ -72,10 +72,8 @@ function Report(props: ReportProps): ReactNode {
 }
 
 export function WebReportListView(props: ReportListViewProps): ReactNode {
-	const head = <script src="/js/admin.global.js"></script>;
-
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin">
 			<h2 id="title" className="page-header">
 				User Reports (
 				{props.reports.length}

@@ -1,3 +1,4 @@
+import './web.js';
 import { DateTime } from 'luxon';
 
 function initBanLiftDate() {

@@ -32,14 +32,12 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 	const pnidName = props.pnid.mii?.name ?? props.pnid.username;
 	const head = (
 		<>
-			<script src="/js/admin.global.js"></script>
-			<link rel="stylesheet" href="/css/admin.css" />
 			<WebUserPageMeta ctx={props.ctx} user={props.pnid} userSettings={props.userSettings} withImage />
 		</>
 	);
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin" head={head}>
 			<h2 id="title" className="page-header">
 				{props.ctx.lang.global.user_page}
 			</h2>

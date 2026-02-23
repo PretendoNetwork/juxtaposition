@@ -16,12 +16,11 @@ export type ManageCommunityViewProps = {
 };
 
 export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNode {
-	const head = <script src="/js/admin.global.js"></script>;
 	const prevUrl = utils.url('/admin/communities', { page: props.page - 1, search: props.search });
 	const nextUrl = utils.url('/admin/communities', { page: props.page + 1, search: props.search });
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin">
 			<h2 id="title" className="page-header">
 				Manage Communities
 			</h2>

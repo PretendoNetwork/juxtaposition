@@ -16,12 +16,11 @@ export type UserListViewProps = {
 };
 
 export function WebUserListView(props: UserListViewProps): ReactNode {
-	const head = <script src="/js/admin.global.js"></script>;
 	const prevUrl = utils.url('/admin/accounts', { page: props.page - 1, search: props.search });
 	const nextUrl = utils.url('/admin/accounts', { page: props.page + 1, search: props.search });
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin">
 			<h2 id="title" className="page-header">
 				User Accounts
 			</h2>

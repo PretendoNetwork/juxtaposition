@@ -17,8 +17,6 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 	const imageId = community.parent ? community.parent : community.olive_community_id;
 	const head = (
 		<>
-			<script src="/js/admin.global.js"></script>
-			<link rel="stylesheet" href="/css/admin.css" />
 			<title>
 				Juxt -
 				{community.name}
@@ -27,7 +25,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 	);
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin" head={head}>
 			<h2 id="title" className="page-header">
 				Edit Community
 			</h2>
