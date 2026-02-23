@@ -118,7 +118,7 @@ export default defineConfig([
 	/* Main web frontend (Modern browsers) */
 	{
 		entry: [
-			'webfiles/web/js/admin.js',
+			'webfiles/web/js/admin.ts',
 			'webfiles/web/js/login.js',
 			'webfiles/web/js/painting.js',
 			'webfiles/web/js/web.js',
