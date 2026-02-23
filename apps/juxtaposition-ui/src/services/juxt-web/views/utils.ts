@@ -1,3 +1,5 @@
+import type { InferSchemaType } from 'mongoose';
+import type { CommunitySchema } from '@/models/communities';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 
 type Serializable = string | number | boolean | undefined | null;
@@ -18,7 +20,20 @@ function buildCdnUrl(ctx: RenderContext, path: string): string {
 	return ctx.cdnUrl + withSlash;
 }
 
+function getCtrHeader(ctx: RenderContext, community: InferSchemaType<typeof CommunitySchema>):
+{ bannerUrl: string; imageId: string; legacy: boolean } {
+	const imageId = community.parent ? community.parent : community.olive_community_id;
+	const bannerUrl = community.ctr_header
+		? utils.cdn(ctx, community.ctr_header)
+		: utils.cdn(ctx, `/headers/${imageId}/3DS.png`);
+
+	const legacy = !community.ctr_header;
+
+	return { bannerUrl, imageId, legacy };
+}
+
 export const utils = {
 	url: buildUrl,
-	cdn: buildCdnUrl
+	cdn: buildCdnUrl,
+	ctrHeader: getCtrHeader
 };

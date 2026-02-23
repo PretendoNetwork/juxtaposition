@@ -3,6 +3,7 @@ import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { utils } from '@/services/juxt-web/views/utils';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
@@ -27,9 +28,7 @@ function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
 				'other-post': msg.pid !== props.ctx.pid
 			})}
 		>
-			<a href={utils.url('/users/show', { pid: msg.pid })} data-pjax="#body" className="scroll-focus mii-icon-container">
-				<img src={msg.mii_face_url?.replace('http:', 'https:')} className="mii-icon" />
-			</a>
+			<CtrMiiIcon ctx={props.ctx} pid={msg.pid ?? 0} face_url={msg.mii_face_url ?? undefined}></CtrMiiIcon>
 			<header>
 				<span className="timestamp">{moment(msg.created_at).fromNow()}</span>
 			</header>

@@ -41,7 +41,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 									{props.communities.map(community => (
 										<li key={community.community_id}>
 											<div className="hover">
-												<a href={`/communities/${community.olive_community_id}`} data-pjax="#body" className="icon-container notify">
+												<a href={`/communities/${community.olive_community_id}`} className="icon-container notify">
 													<img src={utils.cdn(props.ctx, `/icons/${community.olive_community_id}/128.png`)} className="icon" />
 												</a>
 												<a className="body" href={`/communities/${community.olive_community_id}`}>

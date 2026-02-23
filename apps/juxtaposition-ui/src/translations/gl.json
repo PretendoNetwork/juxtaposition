@@ -70,7 +70,7 @@
             "tenth": "Violacións do Código de Conducta",
             "ninth": "Algunhas persoas veñen a Juxt buscando pistas e trucos para xogos, pero outros queren descubrir os segredos dun xogo eles sós. As publicacións que revelen segredos dun xogo ou da súa historia chámanse \"spoilers\". Se vai a subir algo sobre un xogo que pode que sexa un spoiler, asegúrese de marcar a casilla de Spoilers antes de envíar a súa publicación. De esta maneira, a xente que non quere que lle fagan spoiler non verá a súa publicación."
         },
-        "google": "Analíticas de Google",
+        "analytics": "Analíticas",
         "done": "Pásao ben en Juxt!",
         "done_button": "Vamos alá!",
         "experience_text": {
@@ -96,7 +96,7 @@
         "guest_text": "Non podemos verificar a súa conta en este momento, o que probablemente significa que vostede está iniciando a sesión con unha conta de Nintendo Network account. Vas a ser capaz de mirar Juxt, pero non poderá \"Yeah!\" publicacións e non facer as súas propias publicacións hasta que inicie a sesión con unha conta de Pretendo Network. Para máis información revise o servidor de Discord.",
         "guest_button": "Entendóo",
         "welcome_text": "Juxtaposition é unha comunidade de xogadores que conecta xente de todo o mundo usando persoaxes Mii. Usa Juxtaposition para compartir as túas experiencias xogando e coñece a xente de todo o mundo.",
-        "google_text": "Juxtaposition utiliza Google Analytics para ver como os usuarios utilizan o noso servicio. Os datos recollidos inclúen máis non limitan ao tempo de visita, páxinas visitadas e tempo pasado no sito. Estos datos non están unidos a vostede en ningunha maneira, e non está usada para anuncios nosos ou de Google."
+        "analytics_text": "Juxtaposition utiliza Cloudflare Web Analytics para ver como os usuarios utilizan o noso servicio. Os datos recollidos inclúen máis non limitan ao tempo de visita, páxinas visitadas e tempo pasado no sito. Estos datos non están unidos a vostede en ningunha maneira, e non está usada para anuncios nosos ou de Cloudflare."
     },
     "new_post": {
         "text_hint": "Toca aiquí para facer unha publicación.",

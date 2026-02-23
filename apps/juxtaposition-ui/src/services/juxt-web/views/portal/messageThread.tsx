@@ -52,7 +52,7 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
 
 	return (
-		<PortalRoot title={props.ctx.lang.global.messages} onLoad="window.scrollTo(0, 50000);">
+		<PortalRoot ctx={props.ctx} title={props.ctx.lang.global.messages} onLoad="window.scrollTo(0, 50000);">
 			<PortalNavBar ctx={props.ctx} selection={3} />
 			<PortalPageBody>
 				<header id="header">

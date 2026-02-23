@@ -71,10 +71,6 @@ export default defineConfig([
 				resolveFrom: 'cwd',
 				assets: [
 					{
-						from: ['./webfiles/ctr/**/*.ejs'],
-						to: ['./dist/webfiles/ctr']
-					},
-					{
 						from: ['./webfiles/ctr/images/**'],
 						to: ['./dist/webfiles/ctr/images']
 					},
@@ -108,10 +104,6 @@ export default defineConfig([
 				resolveFrom: 'cwd',
 				assets: [
 					{
-						from: ['./webfiles/portal/**/*.ejs'],
-						to: ['./dist/webfiles/portal']
-					},
-					{
 						from: ['./webfiles/portal/images/**'],
 						to: ['./dist/webfiles/portal/images']
 					},
@@ -144,10 +136,6 @@ export default defineConfig([
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
-					{
-						from: ['./webfiles/web/**/*.ejs'],
-						to: ['./dist/webfiles/web']
-					},
 					{
 						from: ['./webfiles/web/partials/assets/**'],
 						to: ['./dist/webfiles/web/partials/assets']

@@ -1,8 +1,37 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import type { ReactNode } from 'react';
-import type { PostViewProps } from '@/services/juxt-web/views/web/post';
+import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
+
+function CtrPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const post = props.post;
+	if (!post.screenshot) {
+		return <></>;
+	}
+
+	if (post.screenshot_aspect && post.screenshot_thumb) {
+		// modern type
+		return (
+			<img
+				className={cx(
+					'post-screenshot',
+					`post-screenshot-${post.screenshot_aspect}`
+				)}
+				src={utils.cdn(props.ctx, post.screenshot_thumb)}
+			/>
+		);
+	} else {
+		// legacy type
+		return (
+			<img
+				className="post-screenshot"
+				src={utils.cdn(props.ctx, post.screenshot)}
+			/>
+		);
+	}
+}
 
 export function CtrPostView(props: PostViewProps): ReactNode {
 	const post = props.post;
@@ -17,9 +46,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 				spoiler: post.is_spoiler
 			})}
 		>
-			<a href={utils.url('/users/show', { pid: post.pid })} className="mii-icon-container" data-pjax="#body">
-				<img src={post.mii_face_url ?? undefined} className="mii-icon" />
-			</a>
+			<CtrMiiIcon ctx={props.ctx} pid={post.pid ?? 0} face_url={post.mii_face_url ?? undefined}></CtrMiiIcon>
 			<div className="post-body-content">
 				<div
 					id={post.id ?? undefined}
@@ -71,11 +98,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 									<p className="post-content-text">{post.body}</p>
 								)
 							: null}
-						{post.screenshot && post.screenshot !== ''
-							? (
-									<img className="post-screenshot" src={utils.cdn(props.ctx, post.screenshot)} evt-click="alert(this.src)" />
-								)
-							: null}
+						<CtrPostScreenshot ctx={props.ctx} post={post}></CtrPostScreenshot>
 						{post.painting !== ''
 							? (
 									<img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} />
@@ -112,7 +135,22 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 					</div>
 				</div>
 			</div>
-			{/* TODO add locals.yeah logic back */}
+			{ props.isMainPost && post.yeahs.length > 0
+				? (
+						<>
+							<h6 className="yeah-text">
+								<span className="feeling">{ post.yeahs.length }</span>
+								{' '}
+								people gave this post a yeah.
+							</h6>
+							<div className="yeah-list">
+								{post.yeahs.slice(0, 10).map(pid => (
+									<CtrMiiIcon ctx={props.ctx} pid={pid}></CtrMiiIcon>
+								))}
+							</div>
+						</>
+					)
+				: null}
 		</div>
 	);
 }

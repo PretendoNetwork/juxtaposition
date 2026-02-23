@@ -61,7 +61,7 @@
             "expert": "",
             "beginner": ""
         },
-        "google": "Google Analytics",
+        "analytics": "Analytics",
         "rules_text": {
             "eighth": "Спойлер жазбаңыз",
             "eleventh": "",
@@ -90,7 +90,7 @@
         "experience": "",
         "rules": "",
         "welcome_text": "",
-        "google_text": "",
+        "analytics_text": "",
         "info": "",
         "info_text": "",
         "ready_text": "",

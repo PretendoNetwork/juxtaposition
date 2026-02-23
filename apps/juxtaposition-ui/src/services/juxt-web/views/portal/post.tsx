@@ -1,8 +1,37 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
+import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import type { ReactNode } from 'react';
-import type { PostViewProps } from '@/services/juxt-web/views/web/post';
+import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
+
+function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const post = props.post;
+	if (!post.screenshot) {
+		return <></>;
+	}
+
+	if (post.screenshot_aspect) {
+		// modern type
+		return (
+			<img
+				className={cx(
+					'post-screenshot',
+					`post-screenshot-${post.screenshot_aspect}`
+				)}
+				src={utils.cdn(props.ctx, post.screenshot_big ? post.screenshot_big : post.screenshot)}
+			/>
+		);
+	} else {
+		// legacy type
+		return (
+			<img
+				className="post-screenshot"
+				src={utils.cdn(props.ctx, post.screenshot)}
+			/>
+		);
+	}
+}
 
 export function PortalPostView(props: PostViewProps): ReactNode {
 	const post = props.post;
@@ -39,10 +68,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 							? (
 									<a href={utils.url('/topics', { topic_tag: post.topic_tag })} data-pjax="#body">
 										{/* TODO this has been modified due to inbalanced tags */}
-										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="30" height="30">
-											<path d="M42.34,138.34A8,8,0,0,1,40,132.69V40h92.69a8,8,0,0,1,5.65,2.34l99.32,99.32a8,8,0,0,1,0,11.31L153,237.66a8,8,0,0,1-11.31,0Z" fill="#a362d8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-											<circle fill="#fff" cx="84" cy="84" r="12" />
-										</svg>
+										<PortalIcon name="topic" />
 										<span className="tags">{post.topic_tag}</span>
 									</a>
 								)
@@ -53,7 +79,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						? (
 								<a href={`/titles/${post.community_id}`} className="community-banner" data-pjax="#body">
 									<span className="title-icon-container" data-pjax="#body">
-										<img src={utils.cdn(props.ctx, `/icons/${post.community_id}/32.png`)} className="title-icon" />
+										<img src={utils.cdn(props.ctx, `/icons/${post.community_id}/64.png`)} className="title-icon" />
 									</span>
 									<span className="community-name">{props.ctx.communityMap.get(post.community_id ?? '')}</span>
 								</a>
@@ -73,8 +99,8 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
 					>
 						{post.body !== '' ? <p className="post-content-text">{post.body}</p> : null}
-						{post.screenshot && post.screenshot !== '' ? <img className="post-screenshot" src={utils.cdn(props.ctx, post.screenshot)} /> : null}
-						{post.painting !== '' ? <img className="post-memo" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
+						<PortalPostScreenshot ctx={props.ctx} post={post}></PortalPostScreenshot>
+						{post.painting !== '' ? <img className="post-memo" src={utils.cdn(props.ctx, post.painting_big ? post.painting_big : `/paintings/${post.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
 					</div>
 
