@@ -291,6 +291,10 @@ async function newPost(request: express.Request, response: express.Response): Pr
 					olive_community_id: parentPost.community_id
 				});
 			}
+			if (parentPost.removed) {
+				request.log.warn('Request wants to reply to parent post, but parent post has been removed');
+				return badRequest(response, ApiErrorCode.BAD_PARAMS);
+			}
 		}
 	}
 
