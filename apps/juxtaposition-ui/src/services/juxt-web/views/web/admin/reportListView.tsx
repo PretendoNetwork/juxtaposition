@@ -42,10 +42,8 @@ function Report(props: ReportProps): ReactNode {
 						<WebMiiIcon ctx={props.ctx} pid={reporter} type="icon" />
 						<span className="body messages report">
 							<span className="text">
-								<span className="reported-by">Reported by</span>
-								{' '}
 								<a className="nick-name" href={`/users/${reporter}`}>
-									{props.ctx.usersMap.get(reporter)}
+									{`Reported by ${props.ctx.usersMap.get(reporter)}`}
 								</a>
 								{' - '}
 								<span className="pid-display">{reporter}</span>

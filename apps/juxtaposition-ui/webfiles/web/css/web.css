@@ -563,7 +563,6 @@ iframe {
 }
 
 #news-list-content li .text .timestamp,
-#news-list-content li .text .reported-by,
 #news-list-content li .text .pid-display {
   color: #969696;
   white-space: nowrap;
