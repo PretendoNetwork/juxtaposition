@@ -341,6 +341,10 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			return;
 		} else {
 			community = await database.getCommunityByID(parentPost.community_id);
+			if (parentPost.removed) {
+				res.sendStatus(400);
+				return;
+			}
 		}
 	}
 	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '')) {
