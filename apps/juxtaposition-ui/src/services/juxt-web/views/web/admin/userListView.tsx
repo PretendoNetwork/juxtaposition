@@ -47,7 +47,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 									{props.users.map(user => (
 										<li key={user.pid}>
 											<div className="hover">
-												<a href={`/users/${user.pid}`} data-pjax="#body" className="icon-container notify">
+												<a href={`/users/${user.pid}`} className="icon-container notify">
 													<img src={utils.cdn(props.ctx, `/mii/${user.pid}/normal_face.png`)} className="icon" />
 												</a>
 												<a className="body" href={`/users/${user.pid}`}>

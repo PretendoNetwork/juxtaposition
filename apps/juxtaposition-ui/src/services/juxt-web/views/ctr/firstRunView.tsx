@@ -60,7 +60,7 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 		beta: 'beta',
 		about: 'about',
 		manners: 'manners',
-		ga: 'google-analytics',
+		analytics: 'analytics',
 		experience: 'game-experience',
 		ready: 'ready',
 		end: 'have-fun'
@@ -169,19 +169,19 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 							</AboutSection.Body>
 
 							<AboutSection.BackButton currentId={sections.manners} previousId={sections.about} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.manners} nextId={sections.ga} text={props.ctx.lang.global.next} />
+							<AboutSection.NextButton currentId={sections.manners} nextId={sections.analytics} text={props.ctx.lang.global.next} />
 						</AboutSection.Root>
 
-						<AboutSection.Root id={sections.ga}>
-							<AboutSection.Title>{props.ctx.lang.setup.google}</AboutSection.Title>
+						<AboutSection.Root id={sections.analytics}>
+							<AboutSection.Title>{props.ctx.lang.setup.analytics}</AboutSection.Title>
 							<AboutSection.Body>
 								<p>
-									{ props.ctx.lang.setup.google_text }
+									{ props.ctx.lang.setup.analytics_text }
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.ga} previousId={sections.manners} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.ga} nextId={sections.experience} text={props.ctx.lang.global.next} />
+							<AboutSection.BackButton currentId={sections.analytics} previousId={sections.manners} text={props.ctx.lang.global.back} />
+							<AboutSection.NextButton currentId={sections.analytics} nextId={sections.experience} text={props.ctx.lang.global.next} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.experience}>
@@ -213,7 +213,7 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 								<br />
 							</div>
 
-							<AboutSection.BackButton currentId={sections.experience} previousId={sections.ga} text={props.ctx.lang.global.back} />
+							<AboutSection.BackButton currentId={sections.experience} previousId={sections.analytics} text={props.ctx.lang.global.back} />
 							<AboutSection.NextButton currentId={sections.experience} nextId={sections.ready} text={props.ctx.lang.global.next} />
 						</AboutSection.Root>
 

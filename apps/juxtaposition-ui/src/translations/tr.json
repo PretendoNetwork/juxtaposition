@@ -98,8 +98,8 @@
         "guest": "Misafir Modu",
         "guest_button": "Anlıyorum",
         "welcome_text": "Juxt, Mii karakterlerini kullanarak dünyanın her yerinden insanları birbirine bağlayan bir oyun topluluğudur. Oyun deneyimlerinizi paylaşmak ve dünyanın her yerinden insanlarla tanışmak için Juxt'u kullanın.",
-        "google": "Google Analytics",
-        "google_text": "Juxtaposition, kullanıcıların hizmetimizi nasıl kullandığını izlemek için Google Analytics'i kullanır. Toplanan veriler, ziyaret süresi, ziyaret edilen sayfalar ve sitede geçirilen süreyi içerir ancak bunlarla sınırlı değildir. Bu veriler hiçbir şekilde size bağlı değildir ve biz veya Google tarafından reklamlar için kullanılmaz.",
+        "analytics": "Analytics",
+        "analytics_text": "Juxtaposition, kullanıcıların hizmetimizi nasıl kullandığını izlemek için Cloudflare Web Analytics'i kullanır. Toplanan veriler, ziyaret süresi, ziyaret edilen sayfalar ve sitede geçirilen süreyi içerir ancak bunlarla sınırlı değildir. Bu veriler hiçbir şekilde size bağlı değildir ve biz veya Cloudflare tarafından reklamlar için kullanılmaz.",
         "guest_text": "Şu anda hesabınızı doğrulayamıyoruz, bu da muhtemelen şu anda bir Nintendo Network hesabıyla giriş yaptığınız anlamına geliyor. Juxt'a göz atmaya devam edebilirsiniz, ancak bir Pretendo Network hesabıyla oturum açana kadar gönderileri Evet! leyemezsiniz veya kendi gönderilerinizi paylaşamazsınız. Daha fazla bilgi için Discord sunucusunu kontrol edin."
     },
     "language": "Türkçe",

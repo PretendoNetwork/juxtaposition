@@ -106,7 +106,7 @@
         "info": "Kio estas Juxtaposition?",
         "info_text": "Juxt estas uzantobazita videoludokomunumo kie oni povas interagi kun homoj\n                de la tuta mondo. Oni povas skribi aŭ desegni afiŝojn en videoludokomunumoj aŭ rekte mesaĝi al viaj amikoj.",
         "rules": "reguloj de Juxt",
-        "google_text": "Juntapozicio uzas Google Analytics por spuri kiel uzantoj uzas nian servon. La datumoj kolektitaj inkluzivas sed ne estas limigitaj al tempo de vizito, paĝoj vizititaj kaj tempo pasigita en la retejo. Ĉi tiuj datumoj neniel estas ligitaj al vi, kaj ne estas uzataj por reklamoj de ni aŭ Guglo.",
+        "analytics_text": "Juxtaposition uzas Cloudflare Web Analytics por spuri kiel uzantoj uzas nian servon. La datumoj kolektitaj inkluzivas sed ne estas limigitaj al tempo de vizito, paĝoj vizititaj kaj tempo pasigita en la retejo. Ĉi tiuj datumoj neniel estas ligitaj al vi, kaj ne estas uzataj por reklamoj de ni aŭ Cloudflare.",
         "experience": "Ludosperto",
         "experience_text": {
             "expert": "Eksperto",
@@ -114,7 +114,7 @@
             "intermediate": "Mezo",
             "info": "Bonvolu rakonti al ni kiel vi priskribus vian spertonivelon pri ludoj. Vi povas poste ŝanĝi tiun ĉi agordon."
         },
-        "google": "Google Analytics",
+        "analytics": "Analytics",
         "ready_text": "Komence, miru kelkajn komunumojn kaj vidu pri kio afiŝadas homoj de la tuta mondo. Profitu ĉi tiun ŝancon por kutimiĝi kun Juxt. Eble kutimiĝante vi malkovrus ion aŭ iojn!",
         "done": "Amuziĝu en Juxt!",
         "ready": "Preta por Uzi Juxt",

@@ -108,7 +108,7 @@
             "intermediate": "Középszint",
             "expert": "Profi"
         },
-        "google": "Google Analytics",
+        "analytics": "Analytics",
         "ready": "Készen állsz használni a Juxt-ot",
         "ready_text": "Először nézz meg néhány közösséget, és nézd meg, miről posztolnak az emberek a világ minden tájáról. Használd ki az alkalmat, hogy megismerkedj a Juxttal. Útközben új felfedezéseket tehetsz!",
         "done": "Jó szórakozást a Juxt-ban!",
@@ -117,7 +117,7 @@
         "guest_text": "Jelenleg nem tudjuk ellenőrizni fiókod, ami valószínűleg azt jelenti, hogy egy Nintendo Network fiókkal vagy bejelentkezve. Továbbra is böngészhetsz a Juxtban, de nem fogsz tudni a Yeah! bejegyzéseket vagy saját bejegyzéseket készíteni, amíg be nem jelentkezel egy Pretendo Network fiókkal. További információkért nézd meg a Discord szervert.",
         "guest_button": "Megértettem",
         "welcome_text": "A Juxt egy játék közösség, ami összeköti az embereket a világ minden tájáról Mii karakterek használatával. Használd a Juxt-ot, hogy megoszd játék tapasztalataid és találkozz emberekkel a világ minden tájáról.",
-        "google_text": "A Juxtaposition a Google Analytics szolgáltatást használja annak nyomon követésére, hogy a felhasználók hogyan használják szolgáltatásunkat. Az összegyűjtött adatok magukban foglalják, de nem kizárólagosan a látogatás idejét, a meglátogatott oldalakat és az oldalon töltött időt. Ezeket az adatokat semmilyen módon nem kapcsoljuk Önhöz, és sem mi, sem a Google nem használja fel hirdetésekhez."
+        "analytics_text": "A Juxtaposition a Cloudflare Web Analytics szolgáltatást használja annak nyomon követésére, hogy a felhasználók hogyan használják szolgáltatásunkat. Az összegyűjtött adatok magukban foglalják, de nem kizárólagosan a látogatás idejét, a meglátogatott oldalakat és az oldalon töltött időt. Ezeket az adatokat semmilyen módon nem kapcsoljuk Önhöz, és sem mi, sem a Cloudflare nem használja fel hirdetésekhez."
     },
     "activity_feed": {
         "empty": "Nagyon üres itt. Próbálj meg valakit követni!"

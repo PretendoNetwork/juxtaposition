@@ -1,29 +1,32 @@
-import { Pjax } from './pjax';
+import './polyfills';
+import { initNewPostView } from './new-post-view';
+import { initCheckboxes } from './controls/checkbox';
+import { initClientTabs } from './controls/ctabs';
+import { pjaxInit, pjaxLoadUrl, pjaxHistory, pjaxCanGoBack, pjaxBack, pjaxRefresh } from './pjax';
 import { GET, POST } from './xhr';
-import { initPostPageView } from './post';
-import { empathyPostById } from './api';
+import { initPostPageView, initYeahButton } from './post';
+import { classList } from './util';
 
-var pjax;
 setInterval(checkForUpdates, 30000);
 
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);
 cave.toolbar_setCallback(2, function () {
 	cave.toolbar_setActiveButton(2);
-	pjax.loadUrl('/feed');
+	pjaxLoadUrl('/feed', true);
 });
 cave.toolbar_setCallback(3, function () {
 	cave.toolbar_setActiveButton(3);
-	pjax.loadUrl('/titles');
+	pjaxLoadUrl('/titles', true);
 });
 cave.toolbar_setCallback(4, function () {
 	cave.toolbar_setActiveButton(4);
 	checkForUpdates();
-	pjax.loadUrl('/news/my_news');
+	pjaxLoadUrl('/news/my_news', true);
 });
 cave.toolbar_setCallback(5, function () {
 	cave.toolbar_setActiveButton(5);
-	pjax.loadUrl('/users/me');
+	pjaxLoadUrl('/users/me', true);
 });
 cave.toolbar_setCallback(8, function () { });
 
@@ -42,7 +45,6 @@ function initPostModules() {
 		var header = el.getAttribute('data-header');
 		var sound = el.getAttribute('data-sound');
 		var message = el.getAttribute('data-message');
-		var screenshot = el.getAttribute('data-screenshot');
 
 		if (sound) {
 			cave.snd_playSe(sound);
@@ -56,13 +58,6 @@ function initPostModules() {
 			document.getElementById('header').style.display = 'block';
 		} else {
 			document.getElementById('header').style.display = 'none';
-		}
-		if (screenshot) {
-			var screenshotButton = document.getElementById('screenshot-button');
-			if (!cave.capture_isEnabled()) {
-				classList.add(screenshotButton, 'none');
-				screenshotButton.onclick = null;
-			}
 		}
 		function tempBk() {
 			document.getElementById('close-modal-button').click();
@@ -116,57 +111,13 @@ function initPosts() {
 	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
-			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
+			pjaxLoadUrl(e.currentTarget.getAttribute('data-href'), true);
 		});
 	}
-	initYeah();
+	initYeahButton(document);
 	initSpoilers();
 }
-function initYeah() {
-	var els = document.querySelectorAll('button[data-post]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].onclick = yeah;
-	}
-	function yeah(e) {
-		var el = e.currentTarget;
-		var sprite = el.querySelector('.sprite.sp-yeah');
-		var id = el.getAttribute('data-post');
-		var parent = document.getElementById(id);
-		var count = document.getElementById('count-' + id);
-		el.disabled = true;
-		if (classList.contains(el, 'selected')) {
-			classList.remove(el, 'selected');
-			classList.remove(sprite, 'selected');
-			classList.remove(parent, 'yeah');
-			if (count) {
-				count.innerText -= 1;
-			}
-			cave.snd_playSe('SE_OLV_CANCEL');
-		} else {
-			classList.add(el, 'selected');
-			classList.add(sprite, 'selected');
-			classList.add(parent, 'yeah');
-			if (count) {
-				count.innerText = ++count.innerText;
-			}
-			cave.snd_playSe('SE_OLV_MII_ADD');
-		}
-		empathyPostById(id, function (post) {
-			if (post.status !== 200) {
-				// Apparently there was an actual error code for not being able to yeah a post, who knew!
-				// TODO: Find more of these
-				return cave.error_callErrorViewer(155927);
-			}
-			el.disabled = false;
-			if (count) {
-				count.innerText = post.count;
-			}
-		});
-	}
-}
+
 function initSpoilers() {
 	var els = document.querySelectorAll('button[data-post-id]');
 	if (!els) {
@@ -211,7 +162,7 @@ function initTabs() {
 			var response = data.responseText;
 			if (response && data.status === 200) {
 				document.getElementsByClassName('tab-body')[0].innerHTML = response;
-				pjax.history.push(child.href);
+				pjaxHistory.push(child.href);
 				initPosts();
 				initMorePosts();
 				cave.transition_end();
@@ -294,10 +245,10 @@ function reportPost(post) {
 window.reportPost = reportPost;
 
 function back() {
-	if (!pjax.canGoBack()) {
+	if (!pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(0);
 	} else {
-		pjax.back();
+		pjaxBack();
 	}
 }
 
@@ -316,76 +267,15 @@ function initAll() {
 	initPosts();
 	initMorePosts();
 	initPostModules();
+	initNewPostView();
 	initTabs();
 	initPostPageView();
+	initClientTabs();
+	initCheckboxes();
 	checkForUpdates();
 	initToolbarConfigs();
-	pjax.refresh();
+	pjaxRefresh();
 }
-
-var PostStorage = {
-	maxLocalStorageNum: 3,
-	getPosts: function () {
-		return PostStorage.getAll()[0];
-	},
-	getAll: function () {
-		for (
-			var e = {},
-				t = cave.lls_getCount(),
-				i = new RegExp('^[0-9]+$'),
-				o = 0,
-				n = 0;
-			n < t;
-			n++
-		) {
-			var a = cave.lls_getKeyAt(n);
-			i.test(a) && ((e[a] = cave.lls_getItem(a)), (o += 1));
-		}
-		return [e, o];
-	},
-	getCount: function () {
-		return PostStorage.getAll()[1];
-	},
-	setItem: function (e) {
-		var t = new Date().getTime();
-		cave.lls_setItem(String(t), e);
-	},
-	removeItem: function (e) {
-		var t = JSON.parse(cave.lls_getItem(e));
-		t && t.screenShotKey && cave.lls_removeItem(t.screenShotKey),
-		cave.lls_removeItem(e);
-	},
-	hasKey: function (e) {
-		for (var t = cave.lls_getCount(), i = 0; i < t; i++) {
-			if (e === cave.lls_getKeyAt(i)) {
-				return !0;
-			}
-		}
-		return !1;
-	},
-	sweep: function () {
-		var t = PostStorage.getAll();
-		var i = t[0];
-		if (t[1] > 0) {
-			for (var o in i) {
-				var n = JSON.parse(cave.lls_getItem(o)).screenShotKey;
-				n && !PostStorage.hasKey(n) && cave.lls_removeItem(o);
-			}
-		}
-	}
-};
-
-var classList = {
-	contains: function (el, string) {
-		return el.className.indexOf(string) !== -1;
-	},
-	add: function (el, string) {
-		el.className += ' ' + string;
-	},
-	remove: function (el, string) {
-		el.className = el.className.replace(string, '');
-	}
-};
 
 function checkForUpdates() {
 	GET('/users/notifications.json', function updates(data) {
@@ -395,33 +285,6 @@ function checkForUpdates() {
 		cave.toolbar_setNotificationCount(count);
 	});
 }
-
-function newText() {
-	classList.remove(document.getElementById('memo-sprite'), 'selected');
-	classList.remove(document.getElementById('post-memo'), 'selected');
-	classList.add(document.getElementById('text-sprite'), 'selected');
-	classList.add(document.getElementById('post-text'), 'selected');
-}
-window.newText = newText;
-
-function newPainting(reset) {
-	if (reset) {
-		cave.memo_clear();
-	}
-	classList.remove(document.getElementById('text-sprite'), 'selected');
-	classList.remove(document.getElementById('post-text'), 'selected');
-	classList.add(document.getElementById('memo-sprite'), 'selected');
-	classList.add(document.getElementById('post-memo'), 'selected');
-	cave.memo_open();
-	setTimeout(function () {
-		if (cave.memo_hasValidImage()) {
-			document.getElementById('memo').src =
-				'data:image/png;base64,' + cave.memo_getImageBmp();
-			document.getElementById('memo-value').value = cave.memo_getImageBmp();
-		}
-	}, 250);
-}
-window.newPainting = newPainting;
 
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
@@ -454,31 +317,27 @@ function saveUserSettings() {
 }
 window.saveUserSettings = saveUserSettings;
 function exitUserSettings() {
-	pjax.loadUrl('/users/me');
+	pjaxLoadUrl('/users/me', true);
 	cave.toolbar_setButtonType(1);
 }
 window.exitUserSettings = exitUserSettings;
 
 document.addEventListener('DOMContentLoaded', function () {
-	pjax = Pjax.init({
+	pjaxInit({
 		elements: 'a[data-pjax]',
 		selectors: ['title', '#body']
 	});
-	console.debug('Pjax initialized.', pjax);
+	console.debug('Pjax initialized.');
 	initAll();
 	stopLoading();
 });
-document.addEventListener('PjaxRequest', function (_e) {
-	// console.log(e);
+document.addEventListener('PjaxRequest', function () {
 	cave.transition_begin();
 });
-document.addEventListener('PjaxLoaded', function (_e) {
-	// console.log(e);
-});
-document.addEventListener('PjaxDone', function (_e) {
+document.addEventListener('PjaxDone', function () {
 	initAll();
 	cave.brw_scrollImmediately(0, 0);
-	if (pjax.canGoBack()) {
+	if (pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(1);
 	} else {
 		cave.toolbar_setButtonType(0);

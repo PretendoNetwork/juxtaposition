@@ -3,7 +3,7 @@
     "src/",
     "webfiles/"
   ],
-  "ext": "js,ts,ejs,tsx,jsx,json,css",
+  "ext": "js,ts,tsx,jsx,json,css",
   "ignore": [
     "webfiles/ctr/css/sprites.css",
     "webfiles/ctr/images/sprites.png"

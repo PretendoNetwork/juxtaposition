@@ -1,6 +1,6 @@
-import moment from 'moment';
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
+import { humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -37,18 +37,13 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 
 							return (
 								<li key={convo.id}>
-									<a
-										href={`/users/${userObj.pid}`}
-										data-pjax="#body"
-										className={cx('icon-container', {
-											verified: userObj.official
-										})}
+									<CtrMiiIcon
+										ctx={props.ctx}
+										pid={userObj.pid}
+										big={true}
+										className={cx({ verified: userObj.official })}
 									>
-										<img
-											src={utils.cdn(props.ctx, `/mii/${userObj.pid}/normal_face.png`)}
-											className="icon"
-										/>
-									</a>
+									</CtrMiiIcon>
 									<a
 										href={`/friend_messages/${convo.id}`}
 										data-pjax="#body"
@@ -61,7 +56,7 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 												{props.ctx.usersMap.get(userObj.pid)}
 											</span>
 											<span className="id-name">
-												@
+												{' @'}
 												{props.ctx.usersMap.get(userObj.pid)}
 											</span>
 											<span>
@@ -70,7 +65,7 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 											</span>
 											<span className="timestamp">
 												{' '}
-												{moment(convo.last_updated).fromNow()}
+												{humanFromNow(convo.last_updated)}
 											</span>
 										</p>
 									</div>

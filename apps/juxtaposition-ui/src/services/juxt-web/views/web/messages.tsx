@@ -56,7 +56,6 @@ export function WebMessagesView(props: MessagesViewProps): ReactNode {
 											<div className="hover">
 												<a
 													href={`/users/${userObj.pid}`}
-													data-pjax="#body"
 													className="icon-container notify"
 												>
 													<img

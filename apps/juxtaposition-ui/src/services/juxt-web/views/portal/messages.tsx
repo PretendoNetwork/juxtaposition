@@ -14,7 +14,7 @@ import type {
 
 export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 	return (
-		<PortalRoot title={props.ctx.lang.global.messages}>
+		<PortalRoot ctx={props.ctx} title={props.ctx.lang.global.messages}>
 			<PortalNavBar ctx={props.ctx} selection={3} />
 			<PortalPageBody>
 				<header id="header">

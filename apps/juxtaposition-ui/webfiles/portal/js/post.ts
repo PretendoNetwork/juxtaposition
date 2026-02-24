@@ -1,4 +1,4 @@
-// Script for the post page view (post.ejs/postPageView.tsx)
+// Script for the post page view (postPageView.tsx)
 import { deletePostById } from './api';
 
 function deletePost(this: HTMLElement, _e: Event): void {

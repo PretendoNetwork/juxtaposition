@@ -42,7 +42,8 @@ export default defineConfig([
 			'webfiles/ctr/js/juxt.js',
 			'webfiles/ctr/js/debug.js',
 			'webfiles/ctr/js/firstrun.js',
-			'webfiles/ctr/css/juxt.css'
+			'webfiles/ctr/css/juxt.css',
+			'webfiles/ctr/css/firstrun.css'
 		],
 		bundle: true,
 		sourcemap: true,
@@ -69,10 +70,6 @@ export default defineConfig([
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
-					{
-						from: ['./webfiles/ctr/**/*.ejs'],
-						to: ['./dist/webfiles/ctr']
-					},
 					{
 						from: ['./webfiles/ctr/images/**'],
 						to: ['./dist/webfiles/ctr/images']
@@ -107,10 +104,6 @@ export default defineConfig([
 				resolveFrom: 'cwd',
 				assets: [
 					{
-						from: ['./webfiles/portal/**/*.ejs'],
-						to: ['./dist/webfiles/portal']
-					},
-					{
 						from: ['./webfiles/portal/images/**'],
 						to: ['./dist/webfiles/portal/images']
 					},
@@ -143,10 +136,6 @@ export default defineConfig([
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
-					{
-						from: ['./webfiles/web/**/*.ejs'],
-						to: ['./dist/webfiles/web']
-					},
 					{
 						from: ['./webfiles/web/partials/assets/**'],
 						to: ['./dist/webfiles/web/partials/assets']

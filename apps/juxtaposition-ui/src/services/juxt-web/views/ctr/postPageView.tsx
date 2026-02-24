@@ -1,16 +1,28 @@
+import cx from 'classnames';
 import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
 import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
+import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
 export function CtrPostPageView(props: PostPageViewProps): ReactNode {
-	const { post } = props;
+	const { post, community } = props;
+	const { bannerUrl, legacy } = utils.ctrHeader(props.ctx, community);
 
 	return (
 		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.activity_feed}>
 			<CtrPageBody>
-				<header id="header" className="buttons">
+				<header
+					id="header"
+					style={{
+						background: `url('${bannerUrl}')`
+					}}
+					className={cx(
+						'buttons',
+						{ 'header-legacy': legacy }
+					)}
+				>
 					<h1 id="page-title">{post.screen_name}</h1>
 					{props.canPost
 						? (
@@ -49,7 +61,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 						<CtrPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
-				{props.canPost ? <CtrNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" /> : null}
+				{props.canPost ? <CtrNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" ctrBanner={bannerUrl} ctrLegacy={legacy} /> : null}
 
 				<div id="report-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 					<header className="add-post-page-header" id="header">
