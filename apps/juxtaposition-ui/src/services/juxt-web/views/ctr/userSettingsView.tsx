@@ -8,13 +8,10 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 			<CtrPageBody>
 				<header
 					id="header"
-					data-toolbar-config
-					data-toolbar-mode="1"
+
+					data-toolbar-mode="wide"
 					data-toolbar-message="Save Settings"
-					data-toolbar-onclick="saveUserSettings"
-					data-toolbar-onback="exitUserSettings"
 					data-toolbar-bgm="BGM_CAVE_SETTING"
-					data-toolbar-exit-bgm="BGM_CAVE_MAIN_LOOP_NOWAIT"
 				>
 					<h1 id="page-title">User Settings</h1>
 				</header>

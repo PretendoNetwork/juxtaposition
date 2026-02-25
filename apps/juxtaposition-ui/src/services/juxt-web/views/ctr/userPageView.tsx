@@ -21,8 +21,8 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 				<header
 					id="header"
 					className="buttons"
-					data-toolbar-config
-					data-toolbar-mode="0"
+
+					data-toolbar-mode="normal"
 					data-toolbar-active-button={isSelf ? '5' : undefined}
 				>
 					<h1 id="page-title" className="community">

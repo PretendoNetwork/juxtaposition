@@ -26,6 +26,9 @@ export var caveFuncs: Partial<CaveAPI> = {
 		for (var b in buttons) {
 			buttons[b].style.background = 'lightgray';
 		}
+		if (button === 0) {
+			return;
+		}
 		buttons[button as number].style.background = 'lightblue';
 	},
 	toolbar_setNotificationCount: (count) => {

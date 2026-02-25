@@ -50,7 +50,13 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
 
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.messages} onLoad="cave.toolbar_setActiveButton(4);window.scrollTo(0, 500000);">
+		<CtrRoot
+			ctx={props.ctx}
+			title={props.ctx.lang.global.messages}
+			onLoad="window.scrollTo(0, 500000);"
+			data-toolbar-mode="normal"
+			data-toolbar-active-button="4"
+		>
 			<CtrPageBody>
 				<header id="header" className="buttons">
 					<h1 id="page-title">{otherUserName}</h1>

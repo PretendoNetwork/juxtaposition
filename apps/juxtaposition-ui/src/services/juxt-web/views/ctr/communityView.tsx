@@ -21,6 +21,9 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 					className={cx({
 						'header-legacy': legacy
 					})}
+
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="3"
 				>
 					<h1 id="page-title" className="community">
 						<span>

@@ -5,7 +5,12 @@ import type { TopicTagViewProps } from '@/services/juxt-web/views/web/topics';
 
 export function CtrTopicTagView(props: TopicTagViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title={props.title}>
+		<CtrRoot
+			ctx={props.ctx}
+			title={props.title}
+			data-toolbar-mode="normal"
+			data-toolbar-active-button="3"
+		>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">{props.title}</h1>

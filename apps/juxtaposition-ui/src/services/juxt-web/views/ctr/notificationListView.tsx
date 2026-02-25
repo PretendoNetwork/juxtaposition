@@ -98,7 +98,11 @@ export function CtrNotificationWrapperView(props: NotificationWrapperViewProps):
 	return (
 		<CtrRoot ctx={props.ctx} title="Notifications and Messages">
 			<CtrPageBody>
-				<header id="header">
+				<header
+					id="header"
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="4"
+				>
 					<h1 id="page-title">Notifications and Messages</h1>
 				</header>
 				<div className="body-content tab2-content" id="news-page">

@@ -22,6 +22,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 						'buttons',
 						{ 'header-legacy': legacy }
 					)}
+					data-toolbar-mode="normal"
 				>
 					<h1 id="page-title">{post.screen_name}</h1>
 					{props.canPost
