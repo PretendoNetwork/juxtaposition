@@ -42,6 +42,7 @@ export var caveFuncs: Partial<CaveAPI> = {
 export function initDebugToolbar(): void {
 	toolbar = document.createElement('div');
 	toolbar.id = 'debug-toolbar';
+	toolbar.hidden = true;
 	toolbar.style.width = '320px';
 	toolbar.style.height = '28px';
 

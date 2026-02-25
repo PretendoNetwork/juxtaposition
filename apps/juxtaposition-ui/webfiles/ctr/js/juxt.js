@@ -1,11 +1,13 @@
 import './polyfills';
-import { initNewPostView } from './new-post-view';
+
 import { initCheckboxes } from './controls/checkbox';
 import { initClientTabs } from './controls/ctabs';
-import { pjaxInit, pjaxLoadUrl, pjaxHistory, pjaxCanGoBack, pjaxBack, pjaxRefresh } from './pjax';
-import { GET, POST } from './xhr';
+import { initNewPostView } from './new-post-view';
+import { pjaxBack, pjaxCanGoBack, pjaxHistory, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
 import { initPostPageView, initYeahButton } from './post';
+import { initToolbarConfigs } from './toolbar';
 import { classList } from './util';
+import { GET, POST } from './xhr';
 
 setInterval(checkForUpdates, 30000);
 
@@ -168,64 +170,6 @@ function initTabs() {
 				cave.transition_end();
 			}
 		});
-	}
-}
-function initToolbarConfigs() {
-	var toolbarConfig = document.querySelector('[data-toolbar-config]');
-	if (!toolbarConfig) {
-		return;
-	}
-	var mode = toolbarConfig.getAttribute('data-toolbar-mode');
-	var message = toolbarConfig.getAttribute('data-toolbar-message');
-	var clickHandle = toolbarConfig.getAttribute('data-toolbar-onclick');
-	var backHandle = toolbarConfig.getAttribute('data-toolbar-onback');
-	var activeButton = toolbarConfig.getAttribute('data-toolbar-active-button');
-	var backgroundMusic = toolbarConfig.getAttribute('data-toolbar-bgm');
-	var backgroundMusicExit = toolbarConfig.getAttribute('data-toolbar-exit-bgm');
-	var sound = toolbarConfig.getAttribute('data-toolbar-sound');
-
-	if (mode) {
-		cave.toolbar_setMode(parseInt(mode));
-	}
-
-	if (message) {
-		cave.toolbar_setWideButtonMessage(message);
-	}
-
-	if (clickHandle) {
-		cave.toolbar_setCallback(8, function () {
-			cave.toolbar_setMode(0);
-			cave.toolbar_setButtonType(0);
-			if (backgroundMusicExit) {
-				cave.snd_playBgm(backgroundMusicExit);
-			}
-			eval(window[clickHandle]).call();
-		});
-	}
-
-	if (backHandle) {
-		function goBackHandle() {
-			cave.toolbar_setMode(0);
-			cave.toolbar_setButtonType(0);
-			if (backgroundMusicExit) {
-				cave.snd_playBgm(backgroundMusicExit);
-			}
-			eval(window[backHandle]).call();
-		}
-		cave.toolbar_setCallback(1, goBackHandle);
-		cave.toolbar_setCallback(99, goBackHandle);
-	}
-
-	if (activeButton) {
-		cave.toolbar_setActiveButton(parseInt(activeButton));
-	}
-
-	if (backgroundMusic) {
-		cave.snd_playBgm(backgroundMusic);
-	}
-
-	if (sound) {
-		cave.snd_playSe(sound);
 	}
 }
 
