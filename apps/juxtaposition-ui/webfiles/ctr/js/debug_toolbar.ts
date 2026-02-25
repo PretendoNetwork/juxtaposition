@@ -51,7 +51,7 @@ export function initDebugToolbar(): void {
 	toolbar.style.zIndex = '100000';
 
 	var names = [
-		{ num: BACK, name: 'Back' },
+		{ num: BACK, name: 'Exit' },
 		{ num: MY_MENU, name: 'Me' },
 		{ num: ACTIVITY, name: 'Feed' },
 		{ num: COMMUNITIES, name: 'Comm' },
@@ -78,7 +78,7 @@ export function initDebugToolbar(): void {
 
 	messageButton.style.display = 'none';
 
-	toolbar.append(messageButton);
+	toolbar.appendChild(messageButton);
 	buttons[MESSAGE] = messageButton;
 
 	var dummy = createButton(0);
@@ -97,6 +97,7 @@ function createButton(width: number): HTMLDivElement {
 
 	b.style.display = 'inline-block';
 	b.style.boxSizing = 'border-box';
+	b.style.webkitBoxSizing = 'border-box';
 	b.style.overflow = 'hidden';
 
 	b.style.background = 'lightgray';
