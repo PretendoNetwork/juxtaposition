@@ -2,6 +2,7 @@
 @import './controls/ctabs.css';
 @import './controls/checkbox.css';
 @import 'new-post-view.css';
+@import 'report-post-page.css';
 
 body {
     margin: 0;
@@ -785,19 +786,6 @@ menu.tab-header.no-margin {
 
 .message-post-list .post header {
     color: #969696;
-}
-#report-post-page p {
-	text-align: center;
-}
-#report-post-page .report > div {
-	display: inline-block;
-	width: 100%;
-	text-align: center;
-}
-#report-post-page .report > .textarea-text {
-	width: 377px;
-	margin: 4px;
-	padding: 4px;
 }
 
 .settings-list > li {
