@@ -173,21 +173,6 @@ function initTabs() {
 	}
 }
 
-function reportPost(post) {
-	var id = post.getAttribute('data-post');
-	var button = document.getElementById('report-launcher');
-	var form = document.getElementById('report-form');
-	var formID = document.getElementById('report-post-id');
-	if (!id || !button || !form || !formID) {
-		return;
-	}
-
-	form.action = '/posts/' + id + '/report';
-	formID.value = id;
-	button.click();
-}
-window.reportPost = reportPost;
-
 function back() {
 	if (!pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(0);

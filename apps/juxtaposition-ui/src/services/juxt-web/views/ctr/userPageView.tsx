@@ -69,7 +69,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 					{isSelf ? <a id="header-communities-button" className="header-button left" href="/users/me/settings" data-pjax="#body">Settings</a> : null}
 					{ canViewUser && !isSelf
 						? (
-								<button type="button" className={cx('submit follow yeah-button', { selected: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}>
+								<button type="button" className={cx('small-button follow', { selected: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}>
 									<span className="sprite sp-yeah inline-sprite"></span>
 								</button>
 							)

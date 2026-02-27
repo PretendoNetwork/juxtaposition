@@ -72,7 +72,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						? (
 								<button
 									type="button"
-									className={cx('submit follow yeah-button', {
+									className={cx('small-button follow', {
 										suggested: props.hasSubCommunities,
 										selected: props.isUserFollowing
 									})}
