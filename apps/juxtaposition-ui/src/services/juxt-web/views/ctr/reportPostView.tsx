@@ -19,8 +19,8 @@ export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 					This report will be sent to Pretendo's Juxtaposition administrators and not to the creator of the post.
 				</p>
 				<div className="dropdown">
+					<label htmlFor="report">{'Reason: '}</label>
 					<select name="reason" id="report">
-						<option value="" disabled selected>Select violation type...</option>
 						<option value="0">Spoiler</option>
 						<option value="1">Personal Information</option>
 						<option value="2">Violent Content</option>
