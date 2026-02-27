@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import express from 'express';
 import { Snowflake as snowflake } from 'node-snowflake';
+import { z } from 'zod';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
@@ -15,6 +16,8 @@ import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
 import { getInvalidPostRegex, getUserAccountData, getUserFriendPIDs } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
+import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
+import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import type { PaintingUrls, ScreenshotUrls } from '@/images';
 
 export const messagesRouter = express.Router();
@@ -262,6 +265,35 @@ messagesRouter.get('/:message_id', async function (req, res) {
 		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
 		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
 		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />
+	});
+});
+
+messagesRouter.get('/:message_id/create', async function (req, res) {
+	const { params, auth } = parseReq(req, {
+		params: z.object({
+			message_id: z.string()
+		})
+	});
+
+	const conversation = await database.getConversationByID(params.message_id);
+	if (!conversation || conversation.users.length < 2) {
+		return res.sendStatus(404);
+	}
+
+	// Get the conversation member who *isn't* us
+	const partner = conversation.users[0].pid !== auth().pid ? conversation.users[0] : conversation.users[1];
+
+	const props = {
+		ctx: buildContext(res),
+		id: conversation.id,
+		pid: partner.pid,
+		messagePid: partner.pid,
+		url: `/friend_messages/new`,
+		show: 'message-page'
+	};
+	res.jsxForDirectory({
+		ctr: <CtrNewPostPage {...props} />,
+		portal: <PortalNewPostPage {...props} />
 	});
 });
 

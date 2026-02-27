@@ -2,7 +2,6 @@ import moment from 'moment';
 import cx from 'classnames';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
@@ -57,12 +56,18 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title">{otherUserName}</h1>
-					<a id="header-post-button" className="header-button" href="#" data-module-hide="message-page" data-module-show="add-post-page" data-header="false" data-menu="false">Post</a>
+					<a
+						id="header-post-button"
+						className="header-button"
+						href={`/friend_messages/${props.conversation.id}/create`}
+						data-pjax="#body"
+					>
+						Post
+					</a>
 				</header>
 				<div className="body-content message-post-list" id="message-page">
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
 				</div>
-				<PortalNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
 			</PortalPageBody>
 		</PortalRoot>
 	);

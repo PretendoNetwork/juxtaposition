@@ -1,7 +1,6 @@
 import cx from 'classnames';
 import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
-import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { utils } from '@/services/juxt-web/views/utils';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
@@ -30,13 +29,8 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 								<a
 									id="header-post-button"
 									className="header-button left"
-									href="#"
-									data-sound="SE_WAVE_SELECT_TAB"
-									data-module-hide="post"
-									data-module-show="add-post-page"
-									data-header="false"
-									data-screenshot="true"
-									data-message={`Reply to ${post.screen_name}`}
+									href={`/posts/${post.id}/create`}
+									data-pjax="#body"
 								>
 									Reply +
 								</a>
@@ -62,7 +56,6 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 						<CtrPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
-				{props.canPost ? <CtrNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" ctrBanner={bannerUrl} ctrLegacy={legacy} /> : null}
 
 				<div id="report-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 					<header className="add-post-page-header" id="header">

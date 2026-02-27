@@ -175,9 +175,7 @@ function initPostModules() {
 }
 function initPostEmotion() {
 	var els = document.querySelectorAll('input[data-mii-face-url]');
-	if (!els) {
-		return;
-	}
+
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
@@ -199,8 +197,14 @@ function initSounds() {
 	}
 }
 function initScreenShots() {
-	document.getElementById('top-screen').src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(true);
-	document.getElementById('bottom-screen').src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(false);
+	var topScreen = document.getElementById('top-screen');
+	var btmScreen = document.getElementById('bottom-screen');
+	if (!topScreen | !btmScreen) {
+		return;
+	}
+
+	topScreen.src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(true);
+	btmScreen.src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(false);
 }
 function initNewPost() {
 	initPostEmotion();
@@ -228,6 +232,7 @@ function initAll() {
 	initPostModules();
 	initPostPageView();
 	initSounds();
+	initNewPost();
 	checkForUpdates();
 	pjax.refresh();
 }

@@ -1,6 +1,5 @@
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
-import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalPostView } from '@/services/juxt-web/views/portal/post';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
@@ -17,7 +16,14 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 					<h1 id="page-title" className="left">{pageTitle}</h1>
 					{!post.removed && props.canPost
 						? (
-								<a id="header-post-button" className="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
+								<a
+									id="header-post-button"
+									className="header-button"
+									href={`/posts/${post.id}/create`}
+									data-pjax="#body"
+								>
+									Reply
+								</a>
 							)
 						: null}
 					{!post.removed
@@ -43,7 +49,6 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 						<PortalPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
-				{props.canPost ? <PortalNewPostView ctx={props.ctx} id={post.community_id ?? ''} name={post.screen_name ?? ''} url={`/posts/${post.id}/new`} show="post" /> : null}
 
 				<div id="report-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 					<header className="add-post-page-header">
