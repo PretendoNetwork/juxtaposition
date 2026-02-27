@@ -101,20 +101,9 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				</div>
 				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
 				<input
-					id="close-modal-button"
-					type="button"
-					className="olv-modal-close-button fixed-bottom-button left"
-					value="Cancel"
-					data-module-show={props.show}
-					data-module-hide="add-post-page"
-					data-header="true"
-				/>
-				<input
 					type="submit"
 					id="submit"
-					className="post-button fixed-bottom-button"
-					value="Post"
-					evt-click="wiiuBrowser.lockUserOperation(true);"
+					className="post-button"
 				/>
 			</form>
 		</div>

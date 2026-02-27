@@ -32,58 +32,6 @@ cave.toolbar_setCallback(5, function () {
 });
 cave.toolbar_setCallback(8, function () { });
 
-function initPostModules() {
-	var els = document.querySelectorAll('[data-module-show]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].onclick = postModel;
-	}
-	function postModel(e) {
-		var el = e.currentTarget;
-		var show = el.getAttribute('data-module-show');
-		var hide = el.getAttribute('data-module-hide');
-		var header = el.getAttribute('data-header');
-		var sound = el.getAttribute('data-sound');
-		var message = el.getAttribute('data-message');
-
-		if (sound) {
-			cave.snd_playSe(sound);
-		}
-		if (!show || !hide) {
-			return;
-		}
-		document.getElementById(hide).style.display = 'none';
-		document.getElementById(show).style.display = 'block';
-		if (header === 'true') {
-			document.getElementById('header').style.display = 'block';
-		} else {
-			document.getElementById('header').style.display = 'none';
-		}
-		function tempBk() {
-			document.getElementById('close-modal-button').click();
-		}
-		if (message) {
-			cave.toolbar_setWideButtonMessage(message);
-			cave.toolbar_setMode(1);
-			cave.toolbar_setButtonType(1);
-			cave.toolbar_setCallback(1, tempBk);
-			cave.toolbar_setCallback(99, tempBk);
-			cave.toolbar_setCallback(8, function () {
-				cave.toolbar_setMode(0);
-				cave.toolbar_setButtonType(0);
-				document.getElementById('submit').click();
-			});
-		} else {
-			cave.toolbar_setMode(0);
-			cave.toolbar_setButtonType(0);
-			cave.toolbar_setCallback(1, back);
-			cave.toolbar_setCallback(99, back);
-		}
-		cave.transition_end();
-	}
-}
 function initMorePosts() {
 	var els = document.querySelectorAll('.load-more[data-href]');
 	if (!els) {
@@ -195,7 +143,6 @@ window.stopLoading = stopLoading;
 function initAll() {
 	initPosts();
 	initMorePosts();
-	initPostModules();
 	initNewPostView();
 	initTabs();
 	initPostPageView();

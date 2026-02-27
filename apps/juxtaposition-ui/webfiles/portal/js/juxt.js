@@ -134,6 +134,8 @@ function initMorePosts() {
 		});
 	}
 }
+
+// Only used for firstrun
 function initPostModules() {
 	var els = document.querySelectorAll('[data-module-show]');
 	console.log(els);
