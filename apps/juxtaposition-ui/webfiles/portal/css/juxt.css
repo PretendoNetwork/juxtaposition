@@ -1100,9 +1100,13 @@ h6.yeah-text {
 .none {
  display:none!important
 }
+.add-post-page {
+    padding-left: 160px; /* For navbar */
+}
 .add-post-page-header {
+ margin: auto;
  margin-top:60px;
- margin-left:200px
+ width: 880px;
 }
 .add-post-page form {
  display:-webkit-box;

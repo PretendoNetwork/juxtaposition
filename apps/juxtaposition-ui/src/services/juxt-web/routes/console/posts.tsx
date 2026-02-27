@@ -20,6 +20,8 @@ import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
 import { PortalPostPageView } from '@/services/juxt-web/views/portal/postPageView';
 import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
+import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
+import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import type { Request, Response } from 'express';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -274,6 +276,28 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
 		portal: <PortalNewPostPage {...props} />
+	});
+});
+
+postsRouter.get('/:post_id/report', async function (req, res) {
+	const { params, auth } = parseReq(req, {
+		params: z.object({
+			post_id: z.string()
+		})
+	});
+
+	const post = await getPostById(auth().tokens, params.post_id);
+	if (!post) {
+		return res.redirect('/404');
+	}
+
+	const props = {
+		ctx: buildContext(res),
+		id: params.post_id
+	};
+	return res.jsxForDirectory({
+		ctr: <CtrReportPostPage {...props} />,
+		portal: <PortalReportPostPage {...props} />
 	});
 });
 
