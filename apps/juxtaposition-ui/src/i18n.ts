@@ -17,10 +17,10 @@ export const resources: Record<string, { ns: typeof en }> = {
 	...finalObject
 };
 
+const fallbackLang = 'EN';
 export function getLanguage(paramPack?: ParamPack | null): string {
-	const fallback = 'EN';
 	if (!paramPack) {
-		return fallback;
+		return fallbackLang;
 	}
 
 	// Not currently possible to get any other languages, maybe we can add an in-app selector later?
@@ -39,7 +39,7 @@ export function getLanguage(paramPack?: ParamPack | null): string {
 		11: 'ZH'
 	};
 
-	return languageIdMap[paramPack.language_id] ?? fallback;
+	return languageIdMap[paramPack.language_id] ?? fallbackLang;
 }
 
 export const createI18n = (lang: string): any => i18next
@@ -47,6 +47,7 @@ export const createI18n = (lang: string): any => i18next
 	.init({
 		lng: lang,
 		resources,
+		fallbackLng: fallbackLang,
 		defaultNS: 'ns',
 		interpolation: {
 			escapeValue: false // JSX already safes from xss
