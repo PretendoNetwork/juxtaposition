@@ -48,7 +48,7 @@ export function pjaxLoadUrl(url: string, pushHistory: boolean): void {
 
 function pjaxParseDom(xhr: XMLHttpRequest, url: string): void {
 	var response = xhr.responseText;
-	if (xhr.status !== 200 || !response) {
+	if (!response) {
 		return;
 	}
 

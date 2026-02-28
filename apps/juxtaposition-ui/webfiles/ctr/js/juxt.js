@@ -1,11 +1,13 @@
 import './polyfills';
-import { initNewPostView } from './new-post-view';
+
 import { initCheckboxes } from './controls/checkbox';
 import { initClientTabs } from './controls/ctabs';
-import { pjaxInit, pjaxLoadUrl, pjaxHistory, pjaxCanGoBack, pjaxBack, pjaxRefresh } from './pjax';
-import { GET, POST } from './xhr';
+import { initNewPostView } from './new-post-view';
+import { pjaxBack, pjaxCanGoBack, pjaxHistory, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
 import { initPostPageView, initYeahButton } from './post';
+import { initToolbarConfigs } from './toolbar';
 import { classList } from './util';
+import { GET, POST } from './xhr';
 
 setInterval(checkForUpdates, 30000);
 
@@ -30,58 +32,6 @@ cave.toolbar_setCallback(5, function () {
 });
 cave.toolbar_setCallback(8, function () { });
 
-function initPostModules() {
-	var els = document.querySelectorAll('[data-module-show]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].onclick = postModel;
-	}
-	function postModel(e) {
-		var el = e.currentTarget;
-		var show = el.getAttribute('data-module-show');
-		var hide = el.getAttribute('data-module-hide');
-		var header = el.getAttribute('data-header');
-		var sound = el.getAttribute('data-sound');
-		var message = el.getAttribute('data-message');
-
-		if (sound) {
-			cave.snd_playSe(sound);
-		}
-		if (!show || !hide) {
-			return;
-		}
-		document.getElementById(hide).style.display = 'none';
-		document.getElementById(show).style.display = 'block';
-		if (header === 'true') {
-			document.getElementById('header').style.display = 'block';
-		} else {
-			document.getElementById('header').style.display = 'none';
-		}
-		function tempBk() {
-			document.getElementById('close-modal-button').click();
-		}
-		if (message) {
-			cave.toolbar_setWideButtonMessage(message);
-			cave.toolbar_setMode(1);
-			cave.toolbar_setButtonType(1);
-			cave.toolbar_setCallback(1, tempBk);
-			cave.toolbar_setCallback(99, tempBk);
-			cave.toolbar_setCallback(8, function () {
-				cave.toolbar_setMode(0);
-				cave.toolbar_setButtonType(0);
-				document.getElementById('submit').click();
-			});
-		} else {
-			cave.toolbar_setMode(0);
-			cave.toolbar_setButtonType(0);
-			cave.toolbar_setCallback(1, back);
-			cave.toolbar_setCallback(99, back);
-		}
-		cave.transition_end();
-	}
-}
 function initMorePosts() {
 	var els = document.querySelectorAll('.load-more[data-href]');
 	if (!els) {
@@ -170,79 +120,6 @@ function initTabs() {
 		});
 	}
 }
-function initToolbarConfigs() {
-	var toolbarConfig = document.querySelector('[data-toolbar-config]');
-	if (!toolbarConfig) {
-		return;
-	}
-	var mode = toolbarConfig.getAttribute('data-toolbar-mode');
-	var message = toolbarConfig.getAttribute('data-toolbar-message');
-	var clickHandle = toolbarConfig.getAttribute('data-toolbar-onclick');
-	var backHandle = toolbarConfig.getAttribute('data-toolbar-onback');
-	var activeButton = toolbarConfig.getAttribute('data-toolbar-active-button');
-	var backgroundMusic = toolbarConfig.getAttribute('data-toolbar-bgm');
-	var backgroundMusicExit = toolbarConfig.getAttribute('data-toolbar-exit-bgm');
-	var sound = toolbarConfig.getAttribute('data-toolbar-sound');
-
-	if (mode) {
-		cave.toolbar_setMode(parseInt(mode));
-	}
-
-	if (message) {
-		cave.toolbar_setWideButtonMessage(message);
-	}
-
-	if (clickHandle) {
-		cave.toolbar_setCallback(8, function () {
-			cave.toolbar_setMode(0);
-			cave.toolbar_setButtonType(0);
-			if (backgroundMusicExit) {
-				cave.snd_playBgm(backgroundMusicExit);
-			}
-			eval(window[clickHandle]).call();
-		});
-	}
-
-	if (backHandle) {
-		function goBackHandle() {
-			cave.toolbar_setMode(0);
-			cave.toolbar_setButtonType(0);
-			if (backgroundMusicExit) {
-				cave.snd_playBgm(backgroundMusicExit);
-			}
-			eval(window[backHandle]).call();
-		}
-		cave.toolbar_setCallback(1, goBackHandle);
-		cave.toolbar_setCallback(99, goBackHandle);
-	}
-
-	if (activeButton) {
-		cave.toolbar_setActiveButton(parseInt(activeButton));
-	}
-
-	if (backgroundMusic) {
-		cave.snd_playBgm(backgroundMusic);
-	}
-
-	if (sound) {
-		cave.snd_playSe(sound);
-	}
-}
-
-function reportPost(post) {
-	var id = post.getAttribute('data-post');
-	var button = document.getElementById('report-launcher');
-	var form = document.getElementById('report-form');
-	var formID = document.getElementById('report-post-id');
-	if (!id || !button || !form || !formID) {
-		return;
-	}
-
-	form.action = '/posts/' + id + '/report';
-	formID.value = id;
-	button.click();
-}
-window.reportPost = reportPost;
 
 function back() {
 	if (!pjaxCanGoBack()) {
@@ -266,7 +143,6 @@ window.stopLoading = stopLoading;
 function initAll() {
 	initPosts();
 	initMorePosts();
-	initPostModules();
 	initNewPostView();
 	initTabs();
 	initPostPageView();

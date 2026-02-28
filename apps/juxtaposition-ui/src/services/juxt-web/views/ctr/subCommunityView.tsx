@@ -5,7 +5,13 @@ import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/sub
 
 export function CtrSubCommunityView(props: SubCommunityViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.all_communities.text}>
+		<CtrRoot
+			ctx={props.ctx}
+			title={props.ctx.lang.all_communities.text}
+
+			data-toolbar-mode="normal"
+			data-toolbar-active-button="3"
+		>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">

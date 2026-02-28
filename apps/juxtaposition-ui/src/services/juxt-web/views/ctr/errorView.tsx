@@ -9,7 +9,12 @@ export function CtrErrorView(props: ErrorViewProps): ReactNode {
 	return (
 		<CtrRoot ctx={props.ctx} title={title}>
 			<CtrPageBody>
-				<header id="header">
+				<header
+					id="header"
+
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="0"
+				>
 					<h1 id="page-title">
 						Error
 						{' '}

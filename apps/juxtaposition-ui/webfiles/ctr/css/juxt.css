@@ -2,6 +2,7 @@
 @import './controls/ctabs.css';
 @import './controls/checkbox.css';
 @import 'new-post-view.css';
+@import 'report-post-page.css';
 
 body {
     margin: 0;
@@ -417,7 +418,6 @@ header svg {
     margin: 5px
 }
 
-#add-post-page,
 .spoiler .post-content {
     display: none
 }
@@ -447,14 +447,6 @@ header svg {
     display: inline-block;
     max-height: 85px;
     overflow: clip
-}
-
-.submit.yeah-button {
-    padding: 5px 5px 3px;
-    margin: 5px;
-    border: 1px solid gray;
-    border-radius: 8px;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), color-stop(.8, #f6f6f6), color-stop(.96, #f5f5f5), to(#bbb)) 0 0
 }
 
 .inline-sprite {
@@ -682,7 +674,20 @@ menu.tab-header.no-margin {
 .yeah-text {
     margin-left: 5px;
 }
-.submit.follow.yeah-button {
+
+.small-button {
+    position: relative;
+    padding: 0;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    border: 1px solid gray;
+    border-radius: 8px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), color-stop(.8, #f6f6f6), color-stop(.96, #f5f5f5), to(#bbb)) 0 0
+}
+
+.small-button.follow {
     position: absolute;
     bottom: -31px;
     left: 185px;
@@ -693,10 +698,10 @@ menu.tab-header.no-margin {
     color: #323232;
     border: 1px solid #cecece;
     border-radius: 0 0 8px 8px;
-}
 
-.submit.follow.yeah-button.suggested {
-    left: 135px;
+    &.suggested {
+        left: 135px;
+    }
 }
 
 #screenshot-button.none {
@@ -786,19 +791,6 @@ menu.tab-header.no-margin {
 
 .message-post-list .post header {
     color: #969696;
-}
-#report-post-page p {
-	text-align: center;
-}
-#report-post-page .report > div {
-	display: inline-block;
-	width: 100%;
-	text-align: center;
-}
-#report-post-page .report > .textarea-text {
-	width: 377px;
-	margin: 4px;
-	padding: 4px;
 }
 
 .settings-list > li {

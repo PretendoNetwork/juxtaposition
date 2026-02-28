@@ -2,6 +2,8 @@ import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
+import { CtrButton } from '@/services/juxt-web/views/ctr/components/ui/CtrButton';
+
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -108,17 +110,12 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 					</div>
 
 					<div className="post-buttons">
-						<button
-							type="button"
-							className="submit yeah-button"
-							data-button-yeah-post={post.id}
-						>
-							<span className={cx('sprite sp-yeah inline-sprite', {
-								selected: hasYeahed
-							})}
-							>
-							</span>
-						</button>
+						<CtrButton type="small" sprite="sp-yeah" selected={hasYeahed} data-button-yeah-post={post.id} />
+						{props.isReply && post.pid !== props.ctx.pid
+							? (
+									<CtrButton type="small" sprite="sp-flag" href={`/posts/${post.id}/report`} />
+								)
+							: null}
 						<a href={`/posts/${post.id}`} className="to-permalink-button" data-pjax="#body">
 							<span className="sprite sp-yeah-small inline-sprite"></span>
 							<span className="yeah-count" id={`count-${post.id}`}>{post.empathy_count}</span>

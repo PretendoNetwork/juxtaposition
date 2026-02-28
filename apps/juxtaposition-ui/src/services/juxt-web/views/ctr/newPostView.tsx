@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { utils } from '@/services/juxt-web/views/utils';
 import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/controls/ctabs';
 import { CtrCheckbox } from '@/services/juxt-web/views/ctr/controls/checkbox';
+import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -35,6 +36,7 @@ const empathies = [
 
 export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 	const { ctrBanner, ctrLegacy } = props;
+	const name = props.name ?? props.ctx.usersMap.get(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header
@@ -45,11 +47,14 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				className={cx(
 					{ 'header-legacy': ctrLegacy }
 				)}
+
+				data-toolbar-mode="wide"
+				data-toolbar-message={props.ctx.lang.new_post.post_to + ' ' + name}
 			>
 				<h1 id="page-title">
 					{props.ctx.lang.new_post.post_to}
 					{' '}
-					{props.name}
+					{name}
 				</h1>
 			</header>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
@@ -96,22 +101,22 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				</div>
 				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
 				<input
-					id="close-modal-button"
-					type="button"
-					className="olv-modal-close-button fixed-bottom-button left"
-					value="Cancel"
-					data-module-show={props.show}
-					data-module-hide="add-post-page"
-					data-header="true"
-				/>
-				<input
 					type="submit"
 					id="submit"
-					className="post-button fixed-bottom-button"
-					value="Post"
-					evt-click="wiiuBrowser.lockUserOperation(true);"
+					className="post-button"
 				/>
 			</form>
 		</div>
+	);
+}
+
+export function CtrNewPostPage(props: NewPostViewProps): ReactNode {
+	const name = props.name ?? props.ctx.usersMap.get(props.pid ?? 0);
+	return (
+		<CtrRoot ctx={props.ctx} title={props.ctx.lang.new_post.post_to + ' ' + name}>
+			<CtrPageBody>
+				<CtrNewPostView {... props} />
+			</CtrPageBody>
+		</CtrRoot>
 	);
 }
