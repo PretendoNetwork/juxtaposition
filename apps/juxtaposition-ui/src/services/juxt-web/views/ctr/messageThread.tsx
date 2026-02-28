@@ -2,7 +2,7 @@ import moment from 'moment';
 import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { utils } from '@/services/juxt-web/views/utils';
-import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 

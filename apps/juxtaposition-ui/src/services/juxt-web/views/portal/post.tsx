@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
-import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
+import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -68,7 +68,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 							? (
 									<a href={utils.url('/topics', { topic_tag: post.topic_tag })} data-pjax="#body">
 										{/* TODO this has been modified due to inbalanced tags */}
-										<PortalIcon name="topic" />
+										<PortalUIIcon name="topic" />
 										<span className="tags">{post.topic_tag}</span>
 									</a>
 								)
