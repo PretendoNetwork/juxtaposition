@@ -52,7 +52,7 @@ const postLimit = rateLimit({
 
 const yeahLimit = rateLimit({
 	windowMs: 60 * 1000, // 1 minute
-	max: 10, // Limit each IP to 60 requests per `window`
+	max: 60, // Limit each IP to 60 requests per `window`
 	standardHeaders: true,
 	legacyHeaders: true,
 	message: (req: Request) => {
