@@ -1,5 +1,5 @@
 import { utils } from '@/services/juxt-web/views/utils';
-import { JuxtLogo, WebIcon } from '@/services/juxt-web/views/web/icons';
+import { JuxtLogo, WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
 import type { RenderContext } from '@/services/juxt-web/views/context';
 
@@ -29,20 +29,20 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 								<p>{props.ctx.lang.global.user_page}</p>
 							</a>
 							<a href="/feed" className={selectedClasses(1)}>
-								<WebIcon name="home" />
+								<WebUIIcon name="home" />
 								<p>{props.ctx.lang.global.activity_feed}</p>
 							</a>
 							<a href="/titles" className={selectedClasses(2)}>
-								<WebIcon name="users" />
+								<WebUIIcon name="users" />
 								<p>{props.ctx.lang.global.communities}</p>
 							</a>
 							<a href="/friend_messages" className={selectedClasses(3)}>
-								<WebIcon name="mail" />
+								<WebUIIcon name="mail" />
 								<span id="message-badge" className="badge"></span>
 								<p>{props.ctx.lang.global.messages}</p>
 							</a>
 							<a href="/news/my_news" className={selectedClasses(4)}>
-								<WebIcon name="bell" />
+								<WebUIIcon name="bell" />
 								<span id="news-badge" className="badge"></span>
 								<p>{props.ctx.lang.global.notifications}</p>
 							</a>
@@ -50,7 +50,7 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 								? (
 										<>
 											<a href="/admin/posts" className={selectedClasses(5)}>
-												<WebIcon name="hammer" />
+												<WebUIIcon name="hammer" />
 												<span id="news-badge" className="badge"></span>
 												<p>Moderation</p>
 											</a>

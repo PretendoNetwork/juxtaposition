@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { utils } from '@/services/juxt-web/views/utils';
-import { WebIcon } from '@/services/juxt-web/views/web/icons';
+import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
@@ -109,7 +109,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					role="button"
 					aria-pressed={yeahed}
 				>
-					<WebIcon name="heart" />
+					<WebUIIcon name="heart" />
 					<h4 id={`count-${post.id}`}>{post.empathy_count}</h4>
 				</span>
 
@@ -119,30 +119,30 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					className="post-button reply-button"
 					role="button"
 				>
-					<WebIcon name="reply" />
+					<WebUIIcon name="reply" />
 					<h4>{post.reply_count}</h4>
 				</a>
 
 				{/* Hamburger menu */}
 				<span className="post-button post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
-					<WebIcon name="menu" />
+					<WebUIIcon name="menu" />
 					<ul className="post-hamburger" role="menu" data-post={post.id}>
 						<li role="menuitem" data-action="report">
-							<WebIcon name="flag" />
+							<WebUIIcon name="flag" />
 							{' '}
 							Report Post
 						</li>
 						{ isModerator || post.pid === props.ctx.pid
 							? (
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
-										<WebIcon name="bin" />
+										<WebUIIcon name="bin" />
 										{' '}
 										{isModerator ? 'Silently delete' : 'Delete Post'}
 									</li>
 								)
 							: null}
 						<li role="menuitem" data-action="copy">
-							<WebIcon name="share" />
+							<WebUIIcon name="share" />
 							{' '}
 							Copy link
 						</li>

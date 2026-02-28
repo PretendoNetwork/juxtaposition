@@ -562,7 +562,8 @@ iframe {
   color: var(--theme-light);
 }
 
-#news-list-content li .text .timestamp {
+#news-list-content li .text .timestamp,
+#news-list-content li .text .pid-display {
   color: #969696;
   white-space: nowrap;
 }
@@ -1280,7 +1281,6 @@ input.eraser.large {
 
 li.reports .hover {
   display: flex;
-  user-select: none;
   cursor: pointer;
   padding: 0;
   padding-left: 2ch;
@@ -1340,6 +1340,19 @@ li.reports .button-spacer {
 .searchbar {
   margin-top: 16px;
   width: 20em;
+  height: 2em;
+  border-radius: 1em;
+  border: 1px solid var(--background-alt-alt);
+  font-size: 1rem;
+  background-color: var(--background-alt);
+  padding: 2px 12px;
+  color: var(--text);
+}
+
+/* TODO this style isn't really done */
+.searchbar-button {
+  margin-top: 16px;
+
   height: 2em;
   border-radius: 1em;
   border: 1px solid var(--background-alt-alt);

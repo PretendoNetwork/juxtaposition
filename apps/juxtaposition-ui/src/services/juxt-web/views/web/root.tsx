@@ -15,27 +15,45 @@ export function DefaultHead(): ReactNode {
 	);
 }
 
-export function DefaultStyling(): ReactNode {
-	return (
-		<>
-			<link rel="stylesheet" type="text/css" href="/css/web.css" />
-			<script src="/js/web.global.js" />
-		</>
-	);
+type DefaultStylingType = 'normal' | 'admin';
+
+export type DefaultStylingProps = {
+	type: DefaultStylingType;
+};
+
+export function DefaultStyling(props: DefaultStylingProps): ReactNode {
+	if (props.type === 'admin') {
+		return (
+			<>
+				<link rel="stylesheet" type="text/css" href="/css/admin.css" />
+				<script src="/js/admin.global.js" />
+			</>
+		);
+	} else /* if (props.type === "normal") */ {
+		return (
+			<>
+				<link rel="stylesheet" type="text/css" href="/css/web.css" />
+				<script src="/js/web.global.js" />
+			</>
+		);
+	}
 }
 
 export type HtmlProps = {
 	children?: ReactNode;
 	head?: ReactNode;
-	replaceDefaultAssets?: boolean;
+
+	type?: DefaultStylingType; // default "normal"
 };
 
 export function WebRoot(props: HtmlProps): ReactNode {
+	const stylingType = props.type ?? 'normal';
+
 	return (
 		<html lang="en">
 			<head>
 				<DefaultHead />
-				{!props.replaceDefaultAssets ? <DefaultStyling /> : null}
+				<DefaultStyling type={stylingType} />
 				{props.head}
 			</head>
 			<body>
