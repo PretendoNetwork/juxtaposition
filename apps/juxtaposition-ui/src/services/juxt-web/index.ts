@@ -17,7 +17,6 @@ const webRouter = express.Router();
 router.use(detectVersion);
 router.use(routes.STATIC);
 router.use(routes.ENTRYPOINT);
-router.use('/robots.txt', routes.ROBOTS);
 router.use(checkDiscovery);
 
 // Create subdomains

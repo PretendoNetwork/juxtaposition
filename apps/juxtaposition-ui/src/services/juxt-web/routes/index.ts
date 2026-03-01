@@ -7,7 +7,6 @@ import { notificationRouter } from '@/services/juxt-web/routes/console/notificat
 import { messagesRouter } from '@/services/juxt-web/routes/console/messages';
 import { topicsRouter } from '@/services/juxt-web/routes/console/topics';
 import { loginRouter } from '@/services/juxt-web/routes/web/login';
-import { robotsRouter } from '@/services/juxt-web/routes/web/robots';
 import { adminRouter } from '@/services/juxt-web/routes/admin/admin';
 import { staticRouter } from '@/services/juxt-web/routes/console/static';
 import { entrypointRouter } from '@/services/juxt-web/routes/console/entrypoint';
@@ -22,7 +21,6 @@ export const routes = {
 	PORTAL_MESSAGES: messagesRouter,
 	PORTAL_TOPICS: topicsRouter,
 	WEB_LOGIN: loginRouter,
-	ROBOTS: robotsRouter,
 	ADMIN: adminRouter,
 	STATIC: staticRouter,
 	ENTRYPOINT: entrypointRouter
