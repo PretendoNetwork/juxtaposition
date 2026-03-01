@@ -143,7 +143,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
 				<div className="community-top">
-					<img className="banner" src="/images/banner.png" alt="" />
+					<img className="banner" src="/assets/web/images/banner.png" alt="" />
 					<div className={cx('community-info', {
 						active: props.isOnline
 					})}

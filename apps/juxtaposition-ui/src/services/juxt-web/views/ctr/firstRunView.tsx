@@ -68,8 +68,8 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 
 	const head = (
 		<>
-			<link rel="stylesheet" type="text/css" href="/css/firstrun.css" />
-			<script src="/js/firstrun.global.js"></script>
+			<link rel="stylesheet" type="text/css" href="/assets/ctr/css/firstrun.css" />
+			<script src="/assets/ctr/js/firstrun.global.js"></script>
 		</>
 	);
 

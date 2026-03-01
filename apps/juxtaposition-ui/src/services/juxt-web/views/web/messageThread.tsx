@@ -120,7 +120,7 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 							<button className="primary" evt-click="closePainting(true)">OK</button>
 						</div>
 					</div>
-					<script src="/js/painting.global.js" />
+					<script src="/assets/web/js/painting.global.js" />
 				</div>
 			</div>
 			<WebReportModalView ctx={props.ctx} />

@@ -92,7 +92,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="header-banner-container">
-						<img src="/images/banner.png" className="header-banner with-top-button" />
+						<img src="/assets/portal/images/banner.png" className="header-banner with-top-button" />
 					</div>
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
