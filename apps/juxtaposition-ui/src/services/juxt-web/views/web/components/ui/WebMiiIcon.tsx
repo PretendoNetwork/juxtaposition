@@ -1,11 +1,8 @@
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type MiiIconProps = {
-	ctx: RenderContext;
-
 	pid: number;
 	face_url?: string;
 
@@ -14,15 +11,15 @@ export type MiiIconProps = {
 };
 
 export function WebMiiIcon(props: MiiIconProps): ReactNode {
-	const url = props.face_url ?? utils.cdn(props.ctx, `/mii/${props.pid}/normal_face.png`);
+	const url = useUrl();
+	const miiUrl = props.face_url ?? url.cdn(`/mii/${props.pid}/normal_face.png`);
 	const href = `/users/${props.pid}`;
 	const type = props.type ?? 'mii-icon';
 
 	return (
 		<WebIcon
-			ctx={props.ctx}
 			href={href}
-			src={url}
+			src={miiUrl}
 			type={type}
 			className={props.className}
 		>

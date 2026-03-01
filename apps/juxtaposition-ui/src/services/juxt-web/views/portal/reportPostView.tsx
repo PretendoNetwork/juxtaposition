@@ -42,8 +42,8 @@ export function PortalReportPostView(props: ReportPostViewProps): ReactNode {
 
 export function PortalReportPostPage(props: ReportPostViewProps): ReactNode {
 	return (
-		<PortalRoot ctx={props.ctx} title="Report Post">
-			<PortalNavBar ctx={props.ctx} selection={-1} />
+		<PortalRoot title="Report Post">
+			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<PortalReportPostView {...props} />
 			</PortalPageBody>

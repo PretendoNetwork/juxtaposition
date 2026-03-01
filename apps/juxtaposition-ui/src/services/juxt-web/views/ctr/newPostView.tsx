@@ -1,8 +1,12 @@
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
+import { t } from 'i18next';
 import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/controls/ctabs';
 import { CtrCheckbox } from '@/services/juxt-web/views/ctr/controls/checkbox';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -35,8 +39,11 @@ const empathies = [
 ];
 
 export function CtrNewPostView(props: NewPostViewProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
+	const cache = useCache();
 	const { ctrBanner, ctrLegacy } = props;
-	const name = props.name ?? props.ctx.usersMap.get(props.pid ?? 0);
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header
@@ -49,10 +56,10 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				)}
 
 				data-toolbar-mode="wide"
-				data-toolbar-message={props.ctx.lang.new_post.post_to + ' ' + name}
+				data-toolbar-message={t('new_post.post_to') + ' ' + name}
 			>
 				<h1 id="page-title">
-					{props.ctx.lang.new_post.post_to}
+					<T k="new_post.post_to" />
 					{' '}
 					{name}
 				</h1>
@@ -62,7 +69,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				<input type="hidden" name="bmp" value="true" />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
-						<img src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)} className="icon" />
+						<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} className="icon" />
 						<menu className="buttons">
 							{empathies.map(v => (
 								<input
@@ -111,11 +118,12 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 }
 
 export function CtrNewPostPage(props: NewPostViewProps): ReactNode {
-	const name = props.name ?? props.ctx.usersMap.get(props.pid ?? 0);
+	const cache = useCache();
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.new_post.post_to + ' ' + name}>
+		<CtrRoot title={t('new_post.post_to') + ' ' + name}>
 			<CtrPageBody>
-				<CtrNewPostView {... props} />
+				<CtrNewPostView {...props} />
 			</CtrPageBody>
 		</CtrRoot>
 	);

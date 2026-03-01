@@ -4,7 +4,6 @@ import { database } from '@/database';
 import { getUserFriendRequestsIncoming } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebNotificationListView, WebNotificationWrapperView } from '@/services/juxt-web/views/web/notificationListView';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { PortalNotificationListView, PortalNotificationWrapperView } from '@/services/juxt-web/views/portal/notificationListView';
 import { CtrNotificationListView, CtrNotificationWrapperView } from '@/services/juxt-web/views/ctr/notificationListView';
 import { PortalFriendRequestListView } from '@/services/juxt-web/views/portal/friendRequestListView';
@@ -27,7 +26,6 @@ notificationRouter.get('/my_news', async function (req, res) {
 	}
 
 	const props: NotificationListViewProps = {
-		ctx: buildContext(res),
 		notifications
 	};
 
@@ -41,17 +39,17 @@ notificationRouter.get('/my_news', async function (req, res) {
 
 	res.jsxForDirectory({
 		web: (
-			<WebNotificationWrapperView ctx={props.ctx} selectedTab={0}>
+			<WebNotificationWrapperView selectedTab={0}>
 				<WebNotificationListView {...props} />
 			</WebNotificationWrapperView>
 		),
 		portal: (
-			<PortalNotificationWrapperView ctx={props.ctx} selectedTab={0}>
+			<PortalNotificationWrapperView selectedTab={0}>
 				<PortalNotificationListView {...props} />
 			</PortalNotificationWrapperView>
 		),
 		ctr: (
-			<CtrNotificationWrapperView ctx={props.ctx} selectedTab={0}>
+			<CtrNotificationWrapperView selectedTab={0}>
 				<CtrNotificationListView {...props} />
 			</CtrNotificationWrapperView>
 		)
@@ -70,7 +68,6 @@ notificationRouter.get('/friend_requests', async function (req, res) {
 	const validRequests = allRequests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
 
 	const props: FriendRequestListViewProps = {
-		ctx: buildContext(res),
 		requests: validRequests
 	};
 
@@ -83,12 +80,12 @@ notificationRouter.get('/friend_requests', async function (req, res) {
 
 	res.jsxForDirectory({
 		portal: (
-			<PortalNotificationWrapperView ctx={props.ctx} selectedTab={1}>
+			<PortalNotificationWrapperView selectedTab={1}>
 				<PortalFriendRequestListView {...props} />
 			</PortalNotificationWrapperView>
 		),
 		ctr: (
-			<CtrNotificationWrapperView ctx={props.ctx} selectedTab={1}>
+			<CtrNotificationWrapperView selectedTab={1}>
 				<CtrFriendRequestListView {...props} />
 			</CtrNotificationWrapperView>
 		)

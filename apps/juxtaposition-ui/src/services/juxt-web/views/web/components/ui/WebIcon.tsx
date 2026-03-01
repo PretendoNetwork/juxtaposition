@@ -1,10 +1,7 @@
 import cx from 'classnames';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type IconProps = {
-	ctx: RenderContext;
-
 	src: string;
 	href?: string;
 

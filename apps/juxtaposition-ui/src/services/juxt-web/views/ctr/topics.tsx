@@ -6,7 +6,6 @@ import type { TopicTagViewProps } from '@/services/juxt-web/views/web/topics';
 export function CtrTopicTagView(props: TopicTagViewProps): ReactNode {
 	return (
 		<CtrRoot
-			ctx={props.ctx}
 			title={props.title}
 			data-toolbar-mode="normal"
 			data-toolbar-active-button="3"
@@ -17,7 +16,7 @@ export function CtrTopicTagView(props: TopicTagViewProps): ReactNode {
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="tab-body post-list">
-						<CtrPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						<CtrPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>
 				</div>
 			</CtrPageBody>

@@ -5,7 +5,6 @@ import { POST } from '@/models/post';
 import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebGlobalFeedView, WebPersonalFeedView } from '@/services/juxt-web/views/web/feed';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { CtrGlobalFeedView, CtrPersonalFeedView } from '@/services/juxt-web/views/ctr/feed';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
@@ -30,17 +29,16 @@ feedRouter.get('/', async function (req, res) {
 
 	if (query.pjax) {
 		return res.jsxForDirectory({
-			web: <WebPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-			portal: <PortalPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-			ctr: <CtrPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />
+			web: <WebPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+			portal: <PortalPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+			ctr: <CtrPostListView nextLink={nextLink} posts={posts} userContent={userContent} />
 		});
 	}
 
-	const title = res.locals.lang.global.activity_feed;
 	return res.jsxForDirectory({
-		web: <WebPersonalFeedView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalPersonalFeedView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrPersonalFeedView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebPersonalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalPersonalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrPersonalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });
 
@@ -64,17 +62,16 @@ feedRouter.get('/all', async function (req, res) {
 
 	if (query.pjax) {
 		return res.jsxForDirectory({
-			web: <WebPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-			portal: <PortalPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-			ctr: <CtrPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />
+			web: <WebPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+			portal: <PortalPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+			ctr: <CtrPostListView nextLink={nextLink} posts={posts} userContent={userContent} />
 		});
 	}
 
-	const title = res.locals.lang.global.activity_feed;
 	return res.jsxForDirectory({
-		web: <WebGlobalFeedView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalGlobalFeedView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrGlobalFeedView ctx={buildContext(res)} title={title} nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebGlobalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalGlobalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrGlobalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });
 
@@ -98,9 +95,9 @@ feedRouter.get('/more', async function (req, res) {
 	}
 
 	return res.jsxForDirectory({
-		web: <WebPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrPostListView nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });
 
@@ -129,8 +126,8 @@ feedRouter.get('/all/more', async function (req, res) {
 	}
 
 	return res.jsxForDirectory({
-		web: <WebPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrPostListView ctx={buildContext(res)} nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrPostListView nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });

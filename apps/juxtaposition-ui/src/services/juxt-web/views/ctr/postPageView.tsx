@@ -1,16 +1,20 @@
 import cx from 'classnames';
+import { t } from 'i18next';
 import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
 export function CtrPostPageView(props: PostPageViewProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
 	const { post, community } = props;
-	const { bannerUrl, legacy } = utils.ctrHeader(props.ctx, community);
+	const { bannerUrl, legacy } = url.ctrHeader(community);
 
 	return (
-		<CtrRoot ctx={props.ctx} title={props.ctx.lang.global.activity_feed}>
+		<CtrRoot title={t('global.activity_feed')}>
 			<CtrPageBody>
 				<header
 					id="header"
@@ -36,7 +40,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 								</a>
 							)
 						: null}
-					{post.pid === props.ctx.pid
+					{post.pid === user.pid
 						? (
 								<a id="header-communities-button" className="delete header-button right" href="#" data-button-delete-post={post.id}>Delete Post</a>
 							)
@@ -56,10 +60,10 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 
 				<div className="body-content tab2-content" id="post">
 					<div className="post-wrapper parent">
-						<CtrPostView ctx={props.ctx} post={post} userContent={props.userContent} isMainPost />
+						<CtrPostView post={post} userContent={props.userContent} isMainPost />
 					</div>
 					{props.replies.map(replyPost => (
-						<CtrPostView key={post.id} ctx={props.ctx} post={replyPost} userContent={props.userContent} isReply />
+						<CtrPostView key={post.id} post={replyPost} userContent={props.userContent} isReply />
 					))}
 				</div>
 			</CtrPageBody>

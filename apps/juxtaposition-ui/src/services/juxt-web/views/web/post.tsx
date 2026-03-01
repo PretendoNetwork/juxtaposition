@@ -1,30 +1,30 @@
 import cx from 'classnames';
 import moment from 'moment';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { PostDto } from '@/api/post';
 
 export type PostScreenshotProps = {
-	ctx: RenderContext;
 	post: InferSchemaType<typeof PostSchema> | PostDto;
 };
 
 export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
+	const url = useUrl();
 	const post = props.post;
 	if (!post.screenshot) {
 		return <></>;
 	}
 
-	return <img id={post.id ?? undefined} className="screenshot" src={utils.cdn(props.ctx, post.screenshot)} />;
+	return <img id={post.id ?? undefined} className="screenshot" src={url.cdn(post.screenshot)} />;
 }
 
 export type PostViewProps = {
-	ctx: RenderContext;
 	userContent?: InferSchemaType<typeof ContentSchema> | null;
 	post: InferSchemaType<typeof PostSchema> | PostDto;
 	isReply?: boolean;
@@ -32,11 +32,14 @@ export type PostViewProps = {
 };
 
 export function WebPostView(props: PostViewProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
+	const cache = useCache();
 	const post = props.post;
-	const isModerator = props.ctx.moderator;
+	const isModerator = user.perms.moderator;
 	const canAccessContent = !post.removed || isModerator;
 
-	const yeahed = !!props.userContent && !!post.yeahs && post.yeahs.includes(props.ctx.pid);
+	const yeahed = !!props.userContent && !!post.yeahs && post.yeahs.includes(user.pid);
 
 	let removedPostPart = null;
 	if (post.removed) {
@@ -50,7 +53,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	const contentPart = (
 		<>
 			<div className="post-user-info-wrapper" id={post.id ?? undefined}>
-				<a href={utils.url('/users/show', { pid: post.pid })}>
+				<a href={url.url('/users/show', { pid: post.pid })}>
 					<img
 						className={cx('user-icon', {
 							verified: post.verified
@@ -61,7 +64,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 
 				<div className="post-meta-wrapper">
 					<h3>
-						<a href={utils.url('/users/show', { pid: post.pid })}>{post.screen_name}</a>
+						<a href={url.url('/users/show', { pid: post.pid })}>{post.screen_name}</a>
 					</h3>
 
 					{ post.verified
@@ -73,7 +76,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					<h4>
 						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
 						{' - '}
-						<a href={`/titles/${post.community_id}`}>{props.ctx.communityMap.get(post.community_id ?? '')}</a>
+						<a href={`/titles/${post.community_id}`}>{cache.getCommunityName(post.community_id ?? '')}</a>
 					</h4>
 				</div>
 			</div>
@@ -94,8 +97,8 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
 				{post.body !== '' ? <h4>{post.body}</h4> : null}
-				<WebPostScreenshot ctx={props.ctx} post={props.post}></WebPostScreenshot>
-				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={utils.cdn(props.ctx, `/paintings/${post.pid}/${post.id}.png`)} /> : null}
+				<WebPostScreenshot post={props.post}></WebPostScreenshot>
+				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
 			</div>
 
@@ -132,7 +135,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 							{' '}
 							Report Post
 						</li>
-						{ isModerator || post.pid === props.ctx.pid
+						{ isModerator || post.pid === user.pid
 							? (
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebUIIcon name="bin" />

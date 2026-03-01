@@ -29,8 +29,8 @@ export default defineConfig([
 				resolveFrom: 'cwd',
 				assets: [
 					{
-						from: ['./src/translations/**/*.json'],
-						to: ['./dist/translations']
+						from: ['./src/assets/**/*.json'],
+						to: ['./dist/assets']
 					}
 				]
 			})
