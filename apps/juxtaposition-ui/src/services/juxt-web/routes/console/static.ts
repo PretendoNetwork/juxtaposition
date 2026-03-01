@@ -3,9 +3,16 @@ import express from 'express';
 import { distFolder } from '@/util';
 export const staticRouter = express.Router();
 
+// Normal asset files
 const webFilesRoot = path.join(distFolder, 'webfiles');
-staticRouter.use('/assets', express.static(webFilesRoot));
+const assetsStaticRouter = express.Router();
+assetsStaticRouter.use(express.static(webFilesRoot));
+assetsStaticRouter.use((req, res, _next) => {
+	res.sendStatus(404); // 404 for only /assets
+});
+staticRouter.use('/assets', assetsStaticRouter);
 
+// Global files, served on the root of the domain
 const webFilesGlobalRoot = path.join(distFolder, 'webfiles', 'global');
 staticRouter.use('/', express.static(webFilesGlobalRoot));
 
