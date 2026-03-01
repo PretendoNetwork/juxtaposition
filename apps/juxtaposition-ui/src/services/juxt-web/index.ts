@@ -15,9 +15,9 @@ const webRouter = express.Router();
 // We want to check which domain we're running on before we fetch any files,
 // but we don't care about discovery until we're making it to the consoles themselves
 router.use(detectVersion);
-router.use('/', routes.WEB_FILES);
+router.use(routes.STATIC);
+router.use(routes.ENTRYPOINT);
 router.use('/robots.txt', routes.ROBOTS);
-router.use('/web', routes.PWA);
 router.use(checkDiscovery);
 
 // Create subdomains

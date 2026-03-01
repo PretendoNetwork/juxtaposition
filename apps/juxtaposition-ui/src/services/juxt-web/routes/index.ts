@@ -8,9 +8,9 @@ import { messagesRouter } from '@/services/juxt-web/routes/console/messages';
 import { topicsRouter } from '@/services/juxt-web/routes/console/topics';
 import { loginRouter } from '@/services/juxt-web/routes/web/login';
 import { robotsRouter } from '@/services/juxt-web/routes/web/robots';
-import { pwaRouter } from '@/services/juxt-web/routes/web/pwa';
 import { adminRouter } from '@/services/juxt-web/routes/admin/admin';
-import { webRouter } from '@/services/juxt-web/routes/console/web';
+import { staticRouter } from '@/services/juxt-web/routes/console/static';
+import { entrypointRouter } from '@/services/juxt-web/routes/console/entrypoint';
 
 export const routes = {
 	PORTAL_SHOW: showRouter,
@@ -23,7 +23,7 @@ export const routes = {
 	PORTAL_TOPICS: topicsRouter,
 	WEB_LOGIN: loginRouter,
 	ROBOTS: robotsRouter,
-	PWA: pwaRouter,
 	ADMIN: adminRouter,
-	WEB_FILES: webRouter
+	STATIC: staticRouter,
+	ENTRYPOINT: entrypointRouter
 };
