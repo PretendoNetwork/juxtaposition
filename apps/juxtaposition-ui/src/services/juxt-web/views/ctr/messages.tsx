@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
@@ -45,7 +45,7 @@ export function CtrMessagesView(props: MessagesViewProps): ReactNode {
 								<li key={convo.id}>
 									<CtrMiiIcon
 										pid={userObj.pid}
-										big={true}
+										type="icon"
 										className={cx({ verified: userObj.official })}
 									>
 									</CtrMiiIcon>

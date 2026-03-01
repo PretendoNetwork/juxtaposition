@@ -1,10 +1,10 @@
-import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
-import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { humanDate, humanFromNow } from '@/util';
+import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { ContentSchema } from '@/models/content';
@@ -30,23 +30,24 @@ export type ReportProps = {
 };
 
 function Report(props: ReportProps): ReactNode {
-	const url = useUrl();
 	const cache = useCache();
+	const reporter = props.report.reported_by;
+
 	return (
 		<li className="reports">
 			<details>
 				<summary>
 					<div className="hover">
-						<span className="icon-container notify">
-							<img src={url.cdn(`/mii/${props.report.reported_by}/normal_face.png`)} className="icon" />
-						</span>
+						<WebMiiIcon pid={reporter} type="icon" />
 						<span className="body messages report">
 							<span className="text">
-								<span className="nick-name">
-									Reported By:
-									{cache.getUserName(props.report.reported_by)}
-								</span>
-								<span className="timestamp">{moment(props.report.created_at).fromNow()}</span>
+								<a className="nick-name" href={`/users/${reporter}`}>
+									{`Reported by ${cache.getUserName(reporter)}`}
+								</a>
+								{' - '}
+								<span className="pid-display">{reporter}</span>
+								{' - '}
+								<abbr className="timestamp" title={humanDate(props.report.created_at)}>{humanFromNow(props.report.created_at)}</abbr>
 							</span>
 							<span className="text">
 								<h4>{props.reasonMap[props.report.reason] ?? 'Unknown'}</h4>
@@ -59,8 +60,8 @@ function Report(props: ReportProps): ReactNode {
 				</summary>
 				<WebPostView post={props.post} userContent={props.userContent} isReply={false} />
 				<div className="button-spacer">
-					<button evt-click="removeReport(this)" data-id={props.report._id}>Remove Post</button>
-					<button evt-click="ignoreReport(this)" data-id={props.report._id}>Ignore Report</button>
+					<button data-button-admin-remove-report={props.report._id}>Remove Post</button>
+					<button data-button-admin-ignore-report={props.report._id}>Ignore Report</button>
 				</div>
 			</details>
 		</li>
@@ -68,10 +69,8 @@ function Report(props: ReportProps): ReactNode {
 }
 
 export function WebReportListView(props: ReportListViewProps): ReactNode {
-	const head = <script src="/js/admin.global.js"></script>;
-
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin">
 			<h2 id="title" className="page-header">
 				User Reports (
 				{props.reports.length}

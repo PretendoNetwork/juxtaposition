@@ -3,6 +3,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
 import type { ReactNode } from 'react';
 import type { HydratedSettingsDocument } from '@/models/settings';
 
@@ -17,12 +18,11 @@ export type UserListViewProps = {
 export function WebUserListView(props: UserListViewProps): ReactNode {
 	const url = useUrl();
 	const cache = useCache();
-	const head = <script src="/js/admin.global.js"></script>;
 	const prevUrl = url.url('/admin/accounts', { page: props.page - 1, search: props.search });
 	const nextUrl = url.url('/admin/accounts', { page: props.page + 1, search: props.search });
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin">
 			<h2 id="title" className="page-header">
 				User Accounts
 			</h2>
@@ -30,7 +30,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="users" />
-				<input type="string" id="user-search" className="searchbar" placeholder="Search..." value={props.search} />
+				<WebSearchBar search={props.search} />
 				<span style={{ marginTop: '16px' }}>
 					{ props.userCount }
 					{' '}

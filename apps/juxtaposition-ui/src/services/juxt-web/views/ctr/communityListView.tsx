@@ -56,7 +56,8 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 				<header
 					id="header"
 					className="buttons"
-					data-toolbar-config
+
+					data-toolbar-mode="normal"
 					data-toolbar-active-button="3"
 				>
 					<h1 id="page-title"><T k="global.communities" /></h1>

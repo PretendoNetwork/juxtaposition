@@ -2,10 +2,10 @@ import cx from 'classnames';
 import moment from 'moment';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -18,7 +18,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star mario">
 				{' | '}
-				<PortalIcon name="star-badge" />
+				<PortalUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -26,7 +26,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star super">
 				{' | '}
-				<PortalIcon name="star-badge" />
+				<PortalUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -34,7 +34,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star mega">
 				{' | '}
-				<PortalIcon name="star-badge" />
+				<PortalUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -43,7 +43,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star dev">
 				{' | '}
-				<PortalIcon name="dev-badge" />
+				<PortalUIIcon name="dev-badge" />
 			</span>
 		);
 	}
@@ -51,7 +51,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star mega">
 				{' | '}
-				<PortalIcon name="mod-badge" />
+				<PortalUIIcon name="mod-badge" />
 			</span>
 		);
 	}
@@ -59,7 +59,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star tester">
 				{' | '}
-				<PortalIcon name="tester-badge" />
+				<PortalUIIcon name="tester-badge" />
 			</span>
 		);
 	}
@@ -124,13 +124,13 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 											</span>
 											<span>
 												{' | '}
-												<PortalIcon name="posts" />
+												<PortalUIIcon name="posts" />
 												{' '}
 												{props.totalPosts}
 											</span>
 											<span>
 												{' | '}
-												<PortalIcon name="followers" />
+												<PortalUIIcon name="followers" />
 												{' '}
 												<span id="followers">{props.userContent.following_users.length - 1}</span>
 											</span>
@@ -138,7 +138,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												? (
 														<span>
 															{' | '}
-															<PortalIcon name="country" />
+															<PortalUIIcon name="country" />
 															{' '}
 															{props.user.country}
 														</span>
@@ -148,7 +148,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												? (
 														<span>
 															{' | '}
-															<PortalIcon name="birthday" />
+															<PortalUIIcon name="birthday" />
 															{' '}
 															{moment.utc(props.user.birthdate).format('MMM Do')}
 														</span>
@@ -158,7 +158,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												? (
 														<span>
 															{' | '}
-															<PortalIcon name="skill" />
+															<PortalUIIcon name="skill" />
 															{' '}
 															{props.userSettings.game_skill === 0
 																? (

@@ -1,7 +1,7 @@
-import { JuxtLogo, WebIcon } from '@/services/juxt-web/views/web/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { JuxtLogo, WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
 
 export type NavBarProps = {
@@ -31,20 +31,20 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 								<p><T k="global.user_page" /></p>
 							</a>
 							<a href="/feed" className={selectedClasses(1)}>
-								<WebIcon name="home" />
+								<WebUIIcon name="home" />
 								<p><T k="global.activity_feed" /></p>
 							</a>
 							<a href="/titles" className={selectedClasses(2)}>
-								<WebIcon name="users" />
+								<WebUIIcon name="users" />
 								<p><T k="global.communities" /></p>
 							</a>
 							<a href="/friend_messages" className={selectedClasses(3)}>
-								<WebIcon name="mail" />
+								<WebUIIcon name="mail" />
 								<span id="message-badge" className="badge"></span>
 								<p><T k="global.messages" /></p>
 							</a>
 							<a href="/news/my_news" className={selectedClasses(4)}>
-								<WebIcon name="bell" />
+								<WebUIIcon name="bell" />
 								<span id="news-badge" className="badge"></span>
 								<p><T k="global.notifications" /></p>
 							</a>
@@ -52,7 +52,7 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 								? (
 										<>
 											<a href="/admin/posts" className={selectedClasses(5)}>
-												<WebIcon name="hammer" />
+												<WebUIIcon name="hammer" />
 												<span id="news-badge" className="badge"></span>
 												<p>Moderation</p>
 											</a>

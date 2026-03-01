@@ -1,11 +1,10 @@
 import cx from 'classnames';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
-import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -27,12 +26,8 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 								<a
 									id="header-post-button"
 									className="header-button"
-									href="#"
-									data-sound="SE_WAVE_SELECT_TAB"
-									data-module-hide="community-post-list"
-									data-module-show="add-post-page"
-									data-header="false"
-									data-menu="false"
+									href={`/titles/${community.olive_community_id}/create`}
+									data-pjax="#body"
 								>
 									Post
 								</a>
@@ -73,13 +68,13 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						<span className="title">{community.name}</span>
 						<span className="text">
 							<span>
-								<PortalIcon name="posts" />
+								<PortalUIIcon name="posts" />
 								{' '}
 								{props.totalPosts}
 							</span>
 							<span>
 								{' | '}
-								<PortalIcon name="followers" />
+								<PortalUIIcon name="followers" />
 								{' '}
 								<span id="followers">
 									{community.followers}
@@ -120,7 +115,6 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						{props.children}
 					</div>
 				</div>
-				<PortalNewPostView id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" />
 			</PortalPageBody>
 		</PortalRoot>
 	);

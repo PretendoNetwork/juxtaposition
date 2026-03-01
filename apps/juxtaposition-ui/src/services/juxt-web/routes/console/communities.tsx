@@ -19,6 +19,8 @@ import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { zodFallback } from '@/util';
+import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
+import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import type { InferSchemaType } from 'mongoose';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -110,6 +112,30 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 	res.jsxForDirectory({
 		portal: <PortalSubCommunityView {...props} />,
 		ctr: <CtrSubCommunityView {...props} />
+	});
+});
+
+communitiesRouter.get('/:communityID/create', async function (req, res) {
+	const { params } = parseReq(req, {
+		params: z.object({
+			communityID: z.string()
+		})
+	});
+
+	const community = await database.getCommunityByID(params.communityID);
+	if (!community) {
+		return res.sendStatus(404);
+	}
+
+	const props = {
+		id: community.olive_community_id,
+		name: community.name,
+		url: `/posts/new`,
+		show: 'post'
+	};
+	res.jsxForDirectory({
+		ctr: <CtrNewPostPage {...props} />,
+		portal: <PortalNewPostPage {...props} />
 	});
 });
 

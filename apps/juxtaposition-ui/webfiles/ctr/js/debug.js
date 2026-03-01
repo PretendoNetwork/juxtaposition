@@ -1,4 +1,7 @@
+import { initDebugToolbar, caveFuncs } from './debug_toolbar';
+
 if (typeof cave === 'undefined') {
+	initDebugToolbar();
 	window.cave = {
 		/**
          * Enables or disabled the back button on the toolbar
@@ -12,30 +15,22 @@ if (typeof cave === 'undefined') {
          * @param btnType
          * @param callback
          */
-		toolbar_setCallback: function (btnType, callback) {
-			console.log('cave.toolbar_setCallback(btnType = ' + btnType + ', callback = ' + typeof callback + ')');
-		},
+		toolbar_setCallback: caveFuncs.toolbar_setCallback,
 		/**
          * Toggles the visibility of the toolbar
          * @param visibility
          */
-		toolbar_setVisible: function (visibility) {
-			console.log('cave.toolbar_setVisible(visibility = ' + visibility + ')');
-		},
+		toolbar_setVisible: caveFuncs.toolbar_setVisible,
 		/**
          * (untested) Appears to set the "corner button" type.
          * @param type
          */
-		toolbar_setButtonType: function (type) {
-			console.log('cave.toolbar_setButtonType(type = ' + type + ')');
-		},
+		toolbar_setButtonType: caveFuncs.toolbar_setButtonType,
 		/**
          * Highlight a button - usually done in a button's own callback function to show that it has been activated.
          * @param btnType
          */
-		toolbar_setActiveButton: function (btnType) {
-			console.log('cave.toolbar_setActiveButton(btnType = ' + btnType + ')');
-		},
+		toolbar_setActiveButton: caveFuncs.toolbar_setActiveButton,
 		/**
          * Open the drawing tool interface.
          */
@@ -76,9 +71,7 @@ if (typeof cave === 'undefined') {
          * Set the current notification count
          * @param count
          */
-		toolbar_setNotificationCount: function (count) {
-			console.log('cave.toolbar_setNotificationCount(' + count + ')');
-		},
+		toolbar_setNotificationCount: caveFuncs.toolbar_setNotificationCount,
 		/**
          * Calls system error viewer with specified error code
          * @param errorCode
@@ -609,12 +602,8 @@ if (typeof cave === 'undefined') {
 			return document.referrer ? 1 : 0;
 		},
 
-		toolbar_setMode: function (mode) {
-			console.log('cave.toolbar_setMode(' + mode + ')');
-		},
-		toolbar_setWideButtonMessage: function (message) {
-			console.log('cave.toolbar_setWideButtonMessage(' + message + ')');
-		},
+		toolbar_setMode: caveFuncs.toolbar_setMode,
+		toolbar_setWideButtonMessage: caveFuncs.toolbar_setWideButtonMessage,
 		jump_existsWebbrs: function () {
 			console.log('jump_existsWebbrs()');
 			return true;

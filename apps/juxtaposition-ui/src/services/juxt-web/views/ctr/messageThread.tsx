@@ -2,11 +2,10 @@ import moment from 'moment';
 import cx from 'classnames';
 import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
-import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
@@ -57,20 +56,20 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
 
 	return (
-		<CtrRoot title={t('global.messages')} onLoad="cave.toolbar_setActiveButton(4);window.scrollTo(0, 500000);">
+		<CtrRoot
+			title={t('global.messages')}
+			onLoad="window.scrollTo(0, 500000);"
+			data-toolbar-mode="normal"
+			data-toolbar-active-button="4"
+		>
 			<CtrPageBody>
 				<header id="header" className="buttons">
 					<h1 id="page-title">{otherUserName}</h1>
 					<a
 						id="header-post-button"
 						className="header-button left"
-						href="#"
-						data-sound="SE_WAVE_SELECT_TAB"
-						data-module-hide="message-page"
-						data-module-show="add-post-page"
-						data-header="false"
-						data-screenshot="true"
-						data-message={`Message to ${otherUserName}`}
+						href={`/friend_messages/${props.conversation.id}/create`}
+						data-pjax="#body"
 					>
 						Post +
 					</a>
@@ -78,7 +77,6 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 				<div className="body-content message-post-list" id="message-page">
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
 				</div>
-				<CtrNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
 			</CtrPageBody>
 		</CtrRoot>
 	);

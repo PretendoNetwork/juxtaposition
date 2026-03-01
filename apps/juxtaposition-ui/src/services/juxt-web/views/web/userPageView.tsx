@@ -3,10 +3,10 @@ import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { WebIcon } from '@/services/juxt-web/views/web/icons';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -35,7 +35,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		tierPart = (
 			<span className="supporter-star mario">
 				|
-				<WebIcon name="star-badge" />
+				<WebUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -43,7 +43,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		tierPart = (
 			<span className="supporter-star super">
 				|
-				<WebIcon name="star-badge" />
+				<WebUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -51,7 +51,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		tierPart = (
 			<span className="supporter-star mega">
 				|
-				<WebIcon name="star-badge" />
+				<WebUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -60,7 +60,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		accessLevelPart = (
 			<span className="supporter-star dev">
 				|
-				<WebIcon name="dev-badge" />
+				<WebUIIcon name="dev-badge" />
 			</span>
 		);
 	}
@@ -68,7 +68,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		accessLevelPart = (
 			<span className="supporter-star mega">
 				|
-				<WebIcon name="mod-badge" />
+				<WebUIIcon name="mod-badge" />
 			</span>
 		);
 	}
@@ -76,7 +76,7 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 		accessLevelPart = (
 			<span className="supporter-star tester">
 				|
-				<WebIcon name="tester-badge" />
+				<WebUIIcon name="tester-badge" />
 			</span>
 		);
 	}

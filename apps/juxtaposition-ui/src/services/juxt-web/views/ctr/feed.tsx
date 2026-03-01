@@ -38,7 +38,11 @@ export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 	return (
 		<CtrRoot title={title}>
 			<CtrPageBody>
-				<header id="header">
+				<header
+					id="header"
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="2"
+				>
 					<h1 id="page-title">{title}</h1>
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">
@@ -57,7 +61,11 @@ export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
 	return (
 		<CtrRoot title={title}>
 			<CtrPageBody>
-				<header id="header">
+				<header
+					id="header"
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="2"
+				>
 					<h1 id="page-title">{title}</h1>
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">

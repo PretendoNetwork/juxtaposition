@@ -9,14 +9,12 @@ export type NewCommunityViewProps = {
 export function WebNewCommunityView(_props: NewCommunityViewProps): ReactNode {
 	const head = (
 		<>
-			<script src="/js/admin.global.js"></script>
-			<link rel="stylesheet" href="/css/admin.css" />
 			<title>Juxt - New Community</title>
 		</>
 	);
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin" head={head}>
 			<h2 id="title" className="page-header">
 				New Community
 			</h2>

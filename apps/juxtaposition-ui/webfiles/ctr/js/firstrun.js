@@ -44,7 +44,6 @@ var classList = {
 	}
 };
 
-// Copy pasted from juxt.js with a couple changes
 function initPostModules() {
 	var els = document.querySelectorAll('[data-module-show]');
 	if (!els) {

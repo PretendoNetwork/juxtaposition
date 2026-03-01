@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/mii-icon';
-import { CtrIcon } from '@/services/juxt-web/views/ctr/components/icon';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
+import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
 import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -15,7 +15,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
 		return (
 			<>
-				<CtrMiiIcon pid={Number(notif.objectID)} big={true}></CtrMiiIcon>
+				<CtrMiiIcon pid={Number(notif.objectID)} type="icon"></CtrMiiIcon>
 				<div className="body">
 					<p>
 						{notif.users.length === 1
@@ -101,7 +101,11 @@ export function CtrNotificationWrapperView(props: NotificationWrapperViewProps):
 	return (
 		<CtrRoot title="Notifications and Messages">
 			<CtrPageBody>
-				<header id="header">
+				<header
+					id="header"
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="4"
+				>
 					<h1 id="page-title">Notifications and Messages</h1>
 				</header>
 				<div className="body-content tab2-content" id="news-page">

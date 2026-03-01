@@ -2,6 +2,9 @@ import { t } from 'i18next';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -48,14 +51,16 @@ const empathies = [
 export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
+	const cache = useCache();
 
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header className="add-post-page-header">
 				<h1 className="page-title">
 					<T k="new_post.post_to" />
 					{' '}
-					{props.name}
+					{name}
 				</h1>
 			</header>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
@@ -124,18 +129,21 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 					</label>
 				</div>
 				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
-				<input
-					type="button"
-					className="olv-modal-close-button fixed-bottom-button left"
-					value="Cancel"
-					data-sound="SE_WAVE_CANCEL"
-					data-module-show={props.show}
-					data-module-hide="add-post-page"
-					data-header="true"
-					data-menu="true"
-				/>
 				<input type="submit" className="post-button fixed-bottom-button" value="Post" evt-click="wiiuBrowser.lockUserOperation(true);" />
 			</form>
 		</div>
+	);
+}
+
+export function PortalNewPostPage(props: NewPostViewProps): ReactNode {
+	const cache = useCache();
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
+	return (
+		<PortalRoot title={t('new_post.post_to') + ' ' + name}>
+			<PortalNavBar selection={-1} />
+			<PortalPageBody>
+				<PortalNewPostView {... props} />
+			</PortalPageBody>
+		</PortalRoot>
 	);
 }
