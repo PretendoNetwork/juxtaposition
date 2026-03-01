@@ -73,7 +73,7 @@
         "text_hint": "Dodirni ovdje za izradu objave."
     },
     "messages": {
-        "coming_soon": "Poruke još ne radi. Navrati kasnije!"
+        "coming_soon": "Nema poruka"
     },
     "setup": {
         "welcome": "Dobro došli u Juxtaposition!",
@@ -108,7 +108,7 @@
             "intermediate": "Napredni",
             "expert": "Profesionalac"
         },
-        "analytics": "Analytics",
+        "analytics": "Analitika",
         "analytics_text": "Juxtaposition koristi Cloudflare Web Analytics kako bi pratio način na koji korisnici koriste našu uslugu. Prikupljeni podaci uključuju, ali nisu ograničeni na vrijeme posjete, posjećene stranice i provedeno vrijeme na web stranici. Ovi podaci nisu na nikoji način s tobom povezani i mi niti Cloudflare ih ne koristimo za oglase.",
         "ready": "Sve je spremno za početak korištenja Juxta",
         "ready_text": "Najprije pogledaj neke zajednice i vidi što ljudi iz cijelog svijeta objavljuju. Iskoristi ovu priliku da upoznaš Juxt. Možda ćeš otkriti nešto novo!",
