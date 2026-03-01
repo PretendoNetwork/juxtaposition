@@ -1,5 +1,5 @@
 {
-    "language": "中文（简体）",
+    "language": "简体中文",
     "global": {
         "user_page": "用户页面",
         "activity_feed": "活动提要",
@@ -38,7 +38,7 @@
         "new": "新建帖子"
     },
     "user_page": {
-        "country": "国家",
+        "country": "国家/地区",
         "birthday": "生日",
         "game_experience": "游戏经验",
         "posts": "帖子",
