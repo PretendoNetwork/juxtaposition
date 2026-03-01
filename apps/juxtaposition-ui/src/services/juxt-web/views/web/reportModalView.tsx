@@ -1,12 +1,9 @@
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
-export type ReportModalViewProps = {
-	ctx: RenderContext;
-};
-
-export function WebReportModalView(props: ReportModalViewProps): ReactNode {
-	if (props.ctx.pid === 1000000000) {
+export function WebReportModalView(): ReactNode {
+	const user = useUser();
+	if (user.pid === 1000000000) {
 		return null;
 	}
 

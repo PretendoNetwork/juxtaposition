@@ -1,4 +1,6 @@
+import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { FirstRunViewProps } from '@/services/juxt-web/views/web/firstRunView';
 
@@ -54,7 +56,7 @@ const AboutSection = {
 	}
 };
 
-export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
+export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 	const sections = {
 		welcome: 'welcome',
 		beta: 'beta',
@@ -74,7 +76,7 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 	);
 
 	return (
-		<CtrRoot ctx={props.ctx} preventJsLoad title="First Run" onLoad="cave.snd_playBgm('BGM_CAVE_SYOKAI');cave.toolbar_setVisible(false);" head={head}>
+		<CtrRoot preventJsLoad title="First Run" onLoad="cave.snd_playBgm('BGM_CAVE_SYOKAI');cave.toolbar_setVisible(false);" head={head}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title">Juxtaposition Setup</h1>
@@ -83,129 +85,129 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 					<div className="communities-list">
 
 						<AboutSection.Root id={sections.welcome} visible>
-							<AboutSection.Title>{props.ctx.lang.setup.welcome}</AboutSection.Title>
+							<AboutSection.Title><T k="setup.welcome" /></AboutSection.Title>
 							<AboutSection.Body>
 								<p>
-									{props.ctx.lang.setup.welcome_text}
+									<T k="setup.welcome_text" />
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId="add-post-page" text={props.ctx.lang.global.exit} onClick="cave.exitApp()" />
-							<AboutSection.NextButton currentId={sections.welcome} nextId={sections.beta} text={props.ctx.lang.global.next} />
+							<AboutSection.BackButton currentId="add-post-page" text={t('global.exit')} onClick="cave.exitApp()" />
+							<AboutSection.NextButton currentId={sections.welcome} nextId={sections.beta} text={t('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.beta}>
-							<AboutSection.Title>{props.ctx.lang.setup.beta}</AboutSection.Title>
+							<AboutSection.Title><T k="setup.beta" /></AboutSection.Title>
 							<AboutSection.Body>
 								<p>
-									{props.ctx.lang.setup.beta_text.first}
+									<T k="setup.beta_text.first" />
 									<br />
-									<b><u>{props.ctx.lang.setup.beta_text.second}</u></b>
+									<b><u><T k="setup.beta_text.second" /></u></b>
 									<br />
-									{props.ctx.lang.setup.beta_text.third}
+									<T k="setup.beta_text.third" />
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.beta} previousId={sections.welcome} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.beta} nextId={sections.about} text={props.ctx.lang.global.next} />
+							<AboutSection.BackButton currentId={sections.beta} previousId={sections.welcome} text={t('global.back')} />
+							<AboutSection.NextButton currentId={sections.beta} nextId={sections.about} text={t('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.about}>
-							<AboutSection.Title>{props.ctx.lang.setup.info}</AboutSection.Title>
+							<AboutSection.Title><T k="setup.info" /></AboutSection.Title>
 							<AboutSection.Body>
 								<p>
-									{props.ctx.lang.setup.info_text}
+									<T k="setup.info_text" />
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.about} previousId={sections.beta} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.about} nextId={sections.manners} text={props.ctx.lang.global.next} />
+							<AboutSection.BackButton currentId={sections.about} previousId={sections.beta} text={t('global.back')} />
+							<AboutSection.NextButton currentId={sections.about} nextId={sections.manners} text={t('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.manners}>
-							<AboutSection.Title>{props.ctx.lang.setup.rules}</AboutSection.Title>
+							<AboutSection.Title><T k="setup.rules" /></AboutSection.Title>
 							<AboutSection.Body>
 								<p>
-									{ props.ctx.lang.setup.rules_text.first }
+									<T k="setup.rules_text.first" />
 									<br />
 									<br />
 									<div className="headline">
-										<h2>{ props.ctx.lang.setup.rules_text.second }</h2>
+										<h2><T k="setup.rules_text.second" /></h2>
 									</div>
-									{ props.ctx.lang.setup.rules_text.third }
+									<T k="setup.rules_text.third" />
 									<br />
 									<br />
 									<div className="headline">
-										<h2>{ props.ctx.lang.setup.rules_text.fourth }</h2>
+										<h2><T k="setup.rules_text.fourth" /></h2>
 									</div>
-									{ props.ctx.lang.setup.rules_text.fifth }
+									<T k="setup.rules_text.fifth" />
 									<br />
 									<br />
 									<div className="headline">
-										<h2>{ props.ctx.lang.setup.rules_text.sixth }</h2>
+										<h2><T k="setup.rules_text.sixth" /></h2>
 									</div>
-									{ props.ctx.lang.setup.rules_text.seventh }
+									<T k="setup.rules_text.seventh" />
 									<br />
 									<br />
 									<div className="headline">
-										<h2>{ props.ctx.lang.setup.rules_text.eighth }</h2>
+										<h2><T k="setup.rules_text.eighth" /></h2>
 									</div>
-									{ props.ctx.lang.setup.rules_text.ninth }
+									<T k="setup.rules_text.ninth" />
 									<br />
 									<br />
 									<div className="headline">
-										<h2>{ props.ctx.lang.setup.rules_text.tenth }</h2>
+										<h2><T k="setup.rules_text.tenth" /></h2>
 									</div>
-									{ props.ctx.lang.setup.rules_text.eleventh }
+									<T k="setup.rules_text.eleventh" />
 									<br />
 									<br />
 									<div className="headline">
-										<h2>{ props.ctx.lang.setup.rules_text.twelfth }</h2>
+										<h2><T k="setup.rules_text.twelfth" /></h2>
 									</div>
-									{ props.ctx.lang.setup.rules_text.thirteenth }
+									<T k="setup.rules_text.thirteenth" />
 									<br />
 									<br />
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.manners} previousId={sections.about} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.manners} nextId={sections.analytics} text={props.ctx.lang.global.next} />
+							<AboutSection.BackButton currentId={sections.manners} previousId={sections.about} text={t('global.back')} />
+							<AboutSection.NextButton currentId={sections.manners} nextId={sections.analytics} text={t('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.analytics}>
-							<AboutSection.Title>{props.ctx.lang.setup.analytics}</AboutSection.Title>
+							<AboutSection.Title><T k="setup.analytics" /></AboutSection.Title>
 							<AboutSection.Body>
 								<p>
-									{ props.ctx.lang.setup.analytics_text }
+									<T k="setup.analytics_text" />
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.analytics} previousId={sections.manners} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.analytics} nextId={sections.experience} text={props.ctx.lang.global.next} />
+							<AboutSection.BackButton currentId={sections.analytics} previousId={sections.manners} text={t('global.back')} />
+							<AboutSection.NextButton currentId={sections.analytics} nextId={sections.experience} text={t('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.experience}>
-							<AboutSection.Title>{props.ctx.lang.setup.experience}</AboutSection.Title>
+							<AboutSection.Title><T k="setup.experience" /></AboutSection.Title>
 							<AboutSection.Body>
 								<p>
-									{ props.ctx.lang.setup.experience_text.info }
+									<T k="setup.experience_text.info" />
 								</p>
 							</AboutSection.Body>
 							<div>
 								<menu className="tab-header user-page">
 									<li id="beginner" className="tab-button selected">
 										<a data-sound="SE_WAVE_SELECT_TAB" evt-click="selectExperience(0)">
-											<span className="new-post">{props.ctx.lang.setup.experience_text.beginner}</span>
+											<span className="new-post"><T k="setup.experience_text.beginner" /></span>
 										</a>
 									</li>
 									<li id="intermediate" className="tab-button">
 										<a data-sound="SE_WAVE_SELECT_TAB" evt-click="selectExperience(1)">
-											<span>{props.ctx.lang.setup.experience_text.intermediate}</span>
+											<span><T k="setup.experience_text.intermediate" /></span>
 										</a>
 									</li>
 									<li id="expert" className="tab-button">
 										<a data-sound="SE_WAVE_SELECT_TAB" evt-click="selectExperience(2)">
-											<span>{props.ctx.lang.setup.experience_text.expert}</span>
+											<span><T k="setup.experience_text.expert" /></span>
 										</a>
 									</li>
 								</menu>
@@ -213,26 +215,26 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 								<br />
 							</div>
 
-							<AboutSection.BackButton currentId={sections.experience} previousId={sections.analytics} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.experience} nextId={sections.ready} text={props.ctx.lang.global.next} />
+							<AboutSection.BackButton currentId={sections.experience} previousId={sections.analytics} text={t('global.back')} />
+							<AboutSection.NextButton currentId={sections.experience} nextId={sections.ready} text={t('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.ready}>
-							<AboutSection.Title>{props.ctx.lang.setup.ready}</AboutSection.Title>
+							<AboutSection.Title><T k="setup.ready" /></AboutSection.Title>
 							<AboutSection.Body>
 								<p>
-									{ props.ctx.lang.setup.ready_text }
+									<T k="setup.ready_text" />
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.ready} previousId={sections.experience} text={props.ctx.lang.global.back} />
-							<AboutSection.NextButton currentId={sections.ready} onClick="cave.snd_playBgm('BGM_CAVE_SYOKAI2');submitFirstRun()" sound="GL_OLV_INIT_END" nextId={sections.end} text={props.ctx.lang.global.next} />
+							<AboutSection.BackButton currentId={sections.ready} previousId={sections.experience} text={t('global.back')} />
+							<AboutSection.NextButton currentId={sections.ready} onClick="cave.snd_playBgm('BGM_CAVE_SYOKAI2');submitFirstRun()" sound="GL_OLV_INIT_END" nextId={sections.end} text={t('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.end}>
 							<AboutSection.Title />
 							<AboutSection.Body>
-								<AboutSection.Title>{props.ctx.lang.setup.done}</AboutSection.Title>
+								<AboutSection.Title><T k="setup.done" /></AboutSection.Title>
 							</AboutSection.Body>
 							<br />
 							<br />
@@ -243,7 +245,7 @@ export function CtrFirstRunView(props: FirstRunViewProps): ReactNode {
 									className="about-button"
 									evt-click="window.location.replace('/titles')"
 								>
-									{props.ctx.lang.setup.done_button}
+									<T k="setup.done_button" />
 								</button>
 							</div>
 						</AboutSection.Root>

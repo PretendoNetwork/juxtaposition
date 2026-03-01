@@ -1,10 +1,7 @@
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type WebSearchBarProps = {
-	ctx: RenderContext;
-
 	search?: string;
 };
 

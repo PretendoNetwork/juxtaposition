@@ -1,16 +1,17 @@
 import cx from 'classnames';
-import { findDataset } from '@/services/juxt-web/views/common';
+import { useDatasetProps } from '@/services/juxt-web/views/common/hooks/useDataset';
 import type { ReactNode } from 'react';
+import type { DatasetProps } from '@/services/juxt-web/views/common/hooks/useDataset';
 import type { ButtonProps } from '@/services/juxt-web/views/web/components/ui/WebButton';
 
 // todo: user/community follow buttons
 
-export type CtrButtonProps = ButtonProps & {
+export type CtrButtonProps = DatasetProps & ButtonProps & {
 	sprite?: string;
 };
 
 export function CtrButton(props: CtrButtonProps): ReactNode {
-	const dataset = findDataset(props);
+	const dataset = useDatasetProps(props);
 	const selected = { selected: props.selected };
 
 	const button = (

@@ -1,9 +1,10 @@
+import { createContext, useContext } from 'react';
 import { getCommunityHash, getUserHash } from '@/util';
+import type { ReactNode } from 'react';
 import type { Response } from 'express';
-import type HashMap from 'hashmap';
 
-export type RenderContext = {
-	lang: Record<string, any>;
+export type RenderContextContent = {
+	lang: string;
 	cdnUrl: string;
 	moderator: boolean;
 	developer: boolean;
@@ -18,7 +19,17 @@ export type RenderContext = {
 	communityMap: HashMap<string, string>;
 };
 
-export function buildContext(res: Response): RenderContext {
+const InternalRenderContext = createContext<RenderContextContent | null>(null);
+
+export function useRenderContext(): RenderContextContent {
+	const data = useContext(InternalRenderContext);
+	if (!data) {
+		throw new Error('RenderContext has not been populated');
+	}
+	return data;
+}
+
+export function buildContext(res: Response): RenderContextContent {
 	const locals = res.locals;
 	return {
 		usersMap: getUserHash(),
@@ -30,4 +41,12 @@ export function buildContext(res: Response): RenderContext {
 		uaIsConsole: locals.uaIsConsole,
 		pid: locals.pid
 	};
+}
+
+export function RenderContext(props: { children?: ReactNode; value: RenderContextContent }): ReactNode {
+	return (
+		<InternalRenderContext value={props.value}>
+			{props.children}
+		</InternalRenderContext>
+	);
 }

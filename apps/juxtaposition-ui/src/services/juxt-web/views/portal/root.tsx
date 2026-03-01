@@ -1,12 +1,9 @@
+import { useRequest } from '@/services/juxt-web/views/common/hooks/useRequest';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
-export type DefaultHeadProps = {
-	ctx: RenderContext;
-};
-
-function DefaultHead(props: DefaultHeadProps): ReactNode {
-	const addDebugJs = !props.ctx.uaIsConsole; // Only serve debug js to non-console browsers
+function DefaultHead(): ReactNode {
+	const req = useRequest();
+	const addDebugJs = !req.userAgent.isConsole; // Only serve debug js to non-console browsers
 	return (
 		<>
 			<link rel="stylesheet" type="text/css" href="/assets/portal/css/juxt.css" />
@@ -18,7 +15,6 @@ function DefaultHead(props: DefaultHeadProps): ReactNode {
 }
 
 export type HtmlProps = {
-	ctx: RenderContext;
 	children?: ReactNode;
 	head?: ReactNode;
 	title: string;
@@ -29,7 +25,7 @@ export function PortalRoot(props: HtmlProps): ReactNode {
 	return (
 		<html lang="en">
 			<head>
-				<DefaultHead ctx={props.ctx} />
+				<DefaultHead />
 				<title>{props.title}</title>
 				{props.head}
 			</head>

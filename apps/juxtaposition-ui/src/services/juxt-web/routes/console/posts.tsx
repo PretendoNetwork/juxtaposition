@@ -14,7 +14,6 @@ import { redisRemove } from '@/redisCache';
 import { createLogEntry, getInvalidPostRegex, getUserAccountData } from '@/util';
 import { addEmpathyById, removeEmpathyById } from '@/api/empathy';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
 import { PortalPostPageView } from '@/services/juxt-web/views/portal/postPageView';
@@ -184,7 +183,6 @@ postsRouter.get('/:post_id', async function (req, res) {
 	) && userSettings?.account_status === 0;
 
 	const props: PostPageViewProps = {
-		ctx: buildContext(res),
 		community,
 		post,
 		postPNID,
@@ -267,7 +265,6 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 	}
 
 	const props = {
-		ctx: buildContext(res),
 		id: parent.community_id,
 		pid: parent.pid,
 		url: `/posts/${parent.id}/new`,
@@ -292,7 +289,6 @@ postsRouter.get('/:post_id/report', async function (req, res) {
 	}
 
 	const props = {
-		ctx: buildContext(res),
 		id: params.post_id
 	};
 	return res.jsxForDirectory({

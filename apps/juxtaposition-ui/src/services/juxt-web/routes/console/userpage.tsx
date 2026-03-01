@@ -9,7 +9,6 @@ import { SETTINGS } from '@/models/settings';
 import { getCommunityHash, getUserAccountData, getUserFriendPIDs, newNotification } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
@@ -33,7 +32,7 @@ const upload = multer({ dest: 'uploads/' });
 const pidParamSchema = z.union([z.literal('me'), z.coerce.number()]);
 
 userPageRouter.get('/menu', async function (req, res) {
-	res.jsx(<CtrUserMenuView ctx={buildContext(res)} />);
+	res.jsx(<CtrUserMenuView />);
 });
 
 userPageRouter.get('/me', async function (req, res) {
@@ -92,7 +91,6 @@ userPageRouter.get('/me/settings', async function (req, res) {
 	}
 
 	const props: UserSettingsViewProps = {
-		ctx: buildContext(res),
 		userSettings
 	};
 	res.jsxForDirectory({
@@ -267,7 +265,6 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
 	const postListProps: PostListViewProps = {
-		ctx: buildContext(res),
 		nextLink: `/users/${userID}/more?offset=${posts.length}&pjax=true`,
 		posts,
 		userContent: parentUserContent ?? userContent
@@ -280,7 +277,6 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		});
 	}
 	const props: UserPageViewProps = {
-		ctx: buildContext(res),
 		baseLink: link,
 		friendPids: friends,
 		isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
@@ -339,7 +335,6 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	if (params.type === 'yeahs') {
 		const posts = (await getPostsByEmpathy(req.tokens, userID, 0))?.items ?? [];
 		const postListProps: PostListViewProps = {
-			ctx: buildContext(res),
 			posts,
 			nextLink: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`,
 			userContent: parentUserContent ?? userContent
@@ -353,7 +348,6 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		}
 
 		const props: UserPageViewProps = {
-			ctx: buildContext(res),
 			baseLink: link,
 			friendPids: friends,
 			isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
@@ -397,7 +391,6 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 
 	const communityMap = getCommunityHash();
 	const listProps: UserPageFollowingViewProps = {
-		ctx: buildContext(res),
 		followers: followers.filter(v => v.pid !== 0),
 		communities: communities
 			.filter(v => v !== '0') // UserContent had a wrong default of [0], which means it needs to be filtered out before usage
@@ -411,7 +404,6 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		});
 	}
 	const props: UserPageViewProps = {
-		ctx: buildContext(res),
 		baseLink: link,
 		friendPids: friends,
 		isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
@@ -457,7 +449,6 @@ async function morePosts(req: Request, res: Response, userID: number): Promise<a
 	}
 
 	const props: PostListViewProps = {
-		ctx: buildContext(res),
 		posts,
 		nextLink: `/users/${userID}/more?offset=${offset + posts.length}&pjax=true`,
 		userContent: userContent
@@ -485,7 +476,6 @@ async function moreYeahPosts(req: Request, res: Response, userID: number): Promi
 	}
 
 	const props: PostListViewProps = {
-		ctx: buildContext(res),
 		posts,
 		nextLink: `/users/${userID}/yeahs/more?offset=${offset + posts.length}&pjax=true`,
 		userContent: userContent

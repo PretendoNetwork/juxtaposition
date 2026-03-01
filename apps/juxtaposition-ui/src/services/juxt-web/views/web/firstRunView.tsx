@@ -1,9 +1,7 @@
 import { WebLoginRoot } from '@/services/juxt-web/views/web/login';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type FirstRunViewProps = {
-	ctx: RenderContext;
 };
 
 export function WebFirstRunView(_props: FirstRunViewProps): ReactNode {

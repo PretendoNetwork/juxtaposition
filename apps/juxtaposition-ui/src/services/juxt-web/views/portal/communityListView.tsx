@@ -1,15 +1,18 @@
-import { utils } from '@/services/juxt-web/views/utils';
+import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
 export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
+	const url = useUrl();
 	const id = props.community.olive_community_id;
 	const imageCommunityId = props.community.parent ? props.community.parent : id;
 	return (
 		<li id={id}>
-			<span className="icon-container"><img src={utils.cdn(props.ctx, `/icons/${imageCommunityId}/128.png`)} className="icon" alt="" /></span>
+			<span className="icon-container"><img src={url.cdn(`/icons/${imageCommunityId}/128.png`)} className="icon" alt="" /></span>
 			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button"></a>
 			<div className="body">
 				<div className="body-content">
@@ -17,7 +20,7 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 					<span className="text">
 						{props.community.followers}
 						{' '}
-						{props.ctx.lang.community.followers}
+						<T k="community.followers" />
 					</span>
 				</div>
 			</div>
@@ -27,18 +30,18 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 
 export function PortalCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
-		<PortalRoot ctx={props.ctx} title={props.ctx.lang.all_communities.text} onLoad="stopLoading();">
-			<PortalNavBar ctx={props.ctx} selection={2} />
+		<PortalRoot title={t('all_communities.text')} onLoad="stopLoading();">
+			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.ctx.lang.all_communities.text}</h1>
-					<a id="header-communities-button" href="/titles/all" data-pjax="#body">{props.ctx.lang.all_communities.text}</a>
+					<h1 id="page-title"><T k="all_communities.text" /></h1>
+					<a id="header-communities-button" href="/titles/all" data-pjax="#body"><T k="all_communities.text" /></a>
 				</header>
 				<div className="body-content">
 					<div className="communities-list">
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.communities.map(community => (
-								<PortalCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 					</div>
@@ -50,29 +53,29 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 
 export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): ReactNode {
 	return (
-		<PortalRoot ctx={props.ctx} title={props.ctx.lang.global.communities} onLoad="stopLoading();">
-			<PortalNavBar ctx={props.ctx} selection={2} />
+		<PortalRoot title={t('global.communities')} onLoad="stopLoading();">
+			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.ctx.lang.global.communities}</h1>
-					<a id="header-communities-button" href="/titles/all" data-pjax="#body">{props.ctx.lang.all_communities.text}</a>
+					<h1 id="page-title"><T k="global.communities" /></h1>
+					<a id="header-communities-button" href="/titles/all" data-pjax="#body"><T k="all_communities.text" /></a>
 				</header>
 				<div className="body-content">
 					<div className="communities-list">
 						<div className="headline">
-							<h2>{props.ctx.lang.all_communities.popular_places}</h2>
+							<h2><T k="all_communities.popular_places" /></h2>
 						</div>
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.popularCommunities.map(community => (
-								<PortalCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 						<div className="headline headline-green">
-							<h2>{props.ctx.lang.all_communities.new_communities}</h2>
+							<h2><T k="all_communities.new_communities" /></h2>
 						</div>
 						<ul className="list-content-with-icon-column" id="community-top-content">
 							{props.newCommunities.map(community => (
-								<PortalCommunityItem key={community.olive_community_id} ctx={props.ctx} community={community} />
+								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
 						</ul>
 					</div>

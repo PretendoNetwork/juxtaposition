@@ -49,7 +49,7 @@ export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 
 export function CtrReportPostPage(props: ReportPostViewProps): ReactNode {
 	return (
-		<CtrRoot ctx={props.ctx} title="Report Post">
+		<CtrRoot title="Report Post">
 			<CtrPageBody>
 				<CtrReportPostView {...props} />
 			</CtrPageBody>

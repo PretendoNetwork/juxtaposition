@@ -3,17 +3,17 @@ import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ContentSchema } from '@/models/content';
 import type { HydratedSettingsDocument } from '@/models/settings';
 
 export type UserPageViewProps = {
-	ctx: RenderContext;
 	baseLink: string;
 	selectedTab: number;
 	children?: ReactNode;
@@ -89,10 +89,11 @@ export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {
 	);
 }
 
-export function WebUserPageMeta(props: { ctx: RenderContext; user: GetUserDataResponse; userSettings: HydratedSettingsDocument; withImage?: boolean }): ReactNode {
+export function WebUserPageMeta(props: { user: GetUserDataResponse; userSettings: HydratedSettingsDocument; withImage?: boolean }): ReactNode {
+	const url = useUrl();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 	const pageTitle = `Juxt - ${pnidName}`;
-	const pageImage = utils.cdn(props.ctx, `/mii/${props.userSettings.pid}/smile_open_mouth.png`);
+	const pageImage = url.cdn(`/mii/${props.userSettings.pid}/smile_open_mouth.png`);
 	return (
 		<>
 			<title>{pageTitle}</title>
@@ -122,24 +123,26 @@ export function WebUserPageMeta(props: { ctx: RenderContext; user: GetUserDataRe
 }
 
 export function WebUserPageView(props: UserPageViewProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
 	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
 	const isUserDeleted = props.user.deleted;
 	const isUserDataViewable = !isUserBanned && !isUserDeleted;
-	const canViewUser = isUserDataViewable || props.ctx.moderator;
-	const isSelf = props.ctx.pid === props.user.pid;
+	const canViewUser = isUserDataViewable || user.perms.moderator;
+	const isSelf = user.pid === props.user.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
-	const isUserFollowingRequester = props.userContent.followed_users.includes(props.ctx.pid);
+	const isUserFollowingRequester = props.userContent.followed_users.includes(user.pid);
 
 	let head: ReactNode = null;
 	if (isUserDataViewable) {
-		head = <WebUserPageMeta ctx={props.ctx} user={props.user} userSettings={props.userSettings} />;
+		head = <WebUserPageMeta user={props.user} userSettings={props.userSettings} />;
 	}
 
 	return (
 		<WebRoot head={head}>
-			<h2 id="title" className="page-header">{props.ctx.lang.global.user_page}</h2>
-			<WebNavBar ctx={props.ctx} selection={-1} />
+			<h2 id="title" className="page-header"><T k="global.user_page" /></h2>
+			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
 				<div className="community-top">
@@ -148,7 +151,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						active: props.isOnline
 					})}
 					>
-						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? utils.cdn(props.ctx, `/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
 						<h2 className="community-title">
 							{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
 							{ isUserDataViewable
@@ -173,9 +176,9 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 											data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 											data-url="/users/follow"
 											data-community-id={props.user.pid}
-											data-text={isRequesterFollowingUser ? props.ctx.lang.user_page.follow_user : props.ctx.lang.user_page.following_user}
+											data-text={isRequesterFollowingUser ? <T k="user_page.follow_user" /> : <T k="user_page.following_user" />}
 										>
-											{isRequesterFollowingUser ? props.ctx.lang.user_page.following_user : props.ctx.lang.user_page.follow_user}
+											{isRequesterFollowingUser ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
 										</a>
 										{ isRequesterFollowingUser && isUserFollowingRequester ? <a href={`/friend_messages/new/${props.user.pid}`} className="message-button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a> : null }
 									</>
@@ -186,42 +189,42 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						? (
 								<>
 									<h4 className="community-description">
-										{props.userSettings.profile_comment_visibility ? props.userSettings.profile_comment : props.ctx.lang.global.private}
+										{props.userSettings.profile_comment_visibility ? props.userSettings.profile_comment : <T k="global.private" />}
 										<WebUserTier user={props.user} />
 									</h4>
 									<div className="info-boxes-wrapper">
 										<div>
-											<h4>{props.ctx.lang.user_page.country}</h4>
-											<h4>{props.userSettings.country_visibility ? props.user.country : props.ctx.lang.global.private}</h4>
+											<h4><T k="user_page.country" /></h4>
+											<h4>{props.userSettings.country_visibility ? props.user.country : <T k="global.private" />}</h4>
 										</div>
 										<div>
-											<h4>{props.ctx.lang.user_page.birthday}</h4>
-											<h4>{props.userSettings.birthday_visibility ? moment.utc(props.user.birthdate).format('MMM Do') : props.ctx.lang.global.private}</h4>
+											<h4><T k="user_page.birthday" /></h4>
+											<h4>{props.userSettings.birthday_visibility ? moment.utc(props.user.birthdate).format('MMM Do') : <T k="global.private" />}</h4>
 										</div>
 										<div>
-											<h4>{ props.ctx.lang.user_page.game_experience }</h4>
+											<h4><T k="user_page.game_experience" /></h4>
 											{ props.userSettings.game_skill_visibility
 												? (
 														<h4>
 															{props.userSettings.game_skill === 0
 																? (
-																		<>{props.ctx.lang.setup.experience_text.beginner}</>
+																		<><T k="setup.experience_text.beginner" /></>
 																	)
 																: props.userSettings.game_skill === 1
 																	? (
-																			<>{props.ctx.lang.setup.experience_text.intermediate}</>
+																			<><T k="setup.experience_text.intermediate" /></>
 																		)
 																	: props.userSettings.game_skill === 2
 																		? (
-																				<>{props.ctx.lang.setup.experience_text.expert}</>
+																				<><T k="setup.experience_text.expert" /></>
 																			)
 																		: <>N/A</>}
 														</h4>
 													)
-												: <h4>{props.ctx.lang.global.private}</h4>}
+												: <h4><T k="global.private" /></h4>}
 										</div>
 										<div>
-											<h4>{props.ctx.lang.user_page.followers}</h4>
+											<h4><T k="user_page.followers" /></h4>
 											<h4 id="user-page-followers-tab">{props.userContent.following_users.length}</h4>
 										</div>
 										{isSelf
@@ -232,7 +235,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 													</div>
 												)
 											: null}
-										{props.ctx.moderator
+										{user.perms.moderator
 											? (
 													<div>
 														<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.user.pid}`}>Moderate User</a></h4>
@@ -245,15 +248,15 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						: null}
 				</div>
 				<div className="buttons tabs">
-					<a id="tab-header-post" className={props.selectedTab === 0 ? 'selected' : ''} href={props.baseLink}>{props.ctx.lang.user_page.posts}</a>
-					<a id="tab-header-friends" className={props.selectedTab === 1 ? 'selected' : ''} href={props.baseLink + 'friends'}>{props.ctx.lang.user_page.friends}</a>
-					<a id="tab-header-following" className={props.selectedTab === 2 ? 'selected' : ''} href={props.baseLink + 'following'}>{props.ctx.lang.user_page.following}</a>
-					<a id="tab-header-followers" className={props.selectedTab === 3 ? 'selected' : ''} href={props.baseLink + 'followers'}>{props.ctx.lang.user_page.followers}</a>
-					<a id="tab-header-yeahs" className={props.selectedTab === 4 ? 'selected' : ''} href={props.baseLink + 'yeahs'}>{props.ctx.lang.global.yeahs}</a>
+					<a id="tab-header-post" className={props.selectedTab === 0 ? 'selected' : ''} href={props.baseLink}><T k="user_page.posts" /></a>
+					<a id="tab-header-friends" className={props.selectedTab === 1 ? 'selected' : ''} href={props.baseLink + 'friends'}><T k="user_page.friends" /></a>
+					<a id="tab-header-following" className={props.selectedTab === 2 ? 'selected' : ''} href={props.baseLink + 'following'}><T k="user_page.following" /></a>
+					<a id="tab-header-followers" className={props.selectedTab === 3 ? 'selected' : ''} href={props.baseLink + 'followers'}><T k="user_page.followers" /></a>
+					<a id="tab-header-yeahs" className={props.selectedTab === 4 ? 'selected' : ''} href={props.baseLink + 'yeahs'}><T k="global.yeahs" /></a>
 				</div>
 				{props.children}
 			</WebWrapper>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }
