@@ -151,7 +151,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						active: props.isOnline
 					})}
 					>
-						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/web/images/bandwidthlost.png'} />
 						<h2 className="community-title">
 							{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
 							{ isUserDataViewable

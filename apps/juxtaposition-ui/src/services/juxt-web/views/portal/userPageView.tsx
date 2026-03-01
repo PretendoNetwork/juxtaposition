@@ -100,7 +100,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 					</div>
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
-							<img className={cx('icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+							<img className={cx('icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/portal/images/bandwidthlost.png'} />
 						</span>
 						{canViewUser && !isSelf
 							? (

@@ -227,7 +227,7 @@ postsRouter.delete('/:post_id', async function (req, res) {
 		// 	pid: post.pid,
 		// 	type: 'notice',
 		// 	text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
-		// 	image: '/images/bandwidthalert.png',
+		// 	image: '/assets/web/images/bandwidthalert.png',
 		// 	link: '/titles/2551084080/new'
 		// });
 
