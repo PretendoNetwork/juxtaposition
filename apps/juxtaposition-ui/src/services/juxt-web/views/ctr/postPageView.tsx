@@ -4,6 +4,7 @@ import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
@@ -36,13 +37,16 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 									href={`/posts/${post.id}/create`}
 									data-pjax="#body"
 								>
-									Reply +
+									<T k="post.reply_post" />
+									{' +'}
 								</a>
 							)
 						: null}
 					{post.pid === user.pid
 						? (
-								<a id="header-communities-button" className="delete header-button right" href="#" data-button-delete-post={post.id}>Delete Post</a>
+								<a id="header-communities-button" className="delete header-button right" href="#" data-button-delete-post={post.id}>
+									<T k="post.delete_post" />
+								</a>
 							)
 						: (
 								<>
@@ -52,7 +56,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 										href={`/posts/${post.id}/report`}
 										data-pjax="#body"
 									>
-										Report Post
+										<T k="post.report_post" />
 									</a>
 								</>
 							)}

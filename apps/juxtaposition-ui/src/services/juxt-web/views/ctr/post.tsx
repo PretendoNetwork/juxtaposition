@@ -5,6 +5,7 @@ import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { CtrButton } from '@/services/juxt-web/views/ctr/components/ui/CtrButton';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -95,7 +96,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 					{ post.is_spoiler
 						? (
 								<div className="spoiler-wrapper" id={`spoiler-${post.id}`}>
-									<button data-post-id={post.id}>Show Spoiler</button>
+									<button data-post-id={post.id}><T k="post.show_spoiler" /></button>
 								</div>
 							)
 						: null }
@@ -142,9 +143,12 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 				? (
 						<>
 							<h6 className="yeah-text">
-								<span className="feeling">{ post.yeahs.length }</span>
-								{' '}
-								people gave this post a yeah.
+								<T
+									k={post.yeahs.length === 1 ? 'post.yeahs_count:one' : 'post.yeahs_count:multiple'}
+									components={{
+										count: <span className="feeling">{ post.yeahs.length }</span>
+									}}
+								/>
 							</h6>
 							<div className="yeah-list">
 								{post.yeahs.slice(0, 10).map(pid => (

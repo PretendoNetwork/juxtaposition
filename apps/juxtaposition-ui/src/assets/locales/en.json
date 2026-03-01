@@ -3,9 +3,13 @@
   "global": {
     "user_page": "User Page",
     "activity_feed": "Activity Feed",
+    "my_feed": "My Feed",
+    "global_feed": "Global Feed",
     "communities": "Communities",
     "messages": "Messages",
     "notifications": "Notifications",
+    "updates": "Updates",
+    "notifications_and_messages": "Notifications and Messages",
     "go_back": "Go Back",
     "back": "Back",
     "yeahs": "Yeahs",
@@ -16,6 +20,12 @@
     "save": "Save",
     "exit": "Exit",
     "next": "Next"
+  },
+  "error": {
+    "title": "Error {{code}}",
+    "heading": "Error {{code}: {{message}}",
+    "message": "Whoops! Looks like we couldn't find the page you're looking for.<newline/>Double-check your link or try again later",
+    "no_access": "You are not authorized to access this application ({{code}})"
   },
   "all_communities": {
     "text": "All Communities",
@@ -35,7 +45,10 @@
     "recent": "Recent Posts",
     "popular": "Popular Posts",
     "verified": "Verified Posts",
-    "new": "New Post"
+    "new": "New Post",
+    "related": "Related Communities",
+    "related_to": "{{community}} Related Communities",
+    "closed": "This community is closed to new posts."
   },
   "user_page": {
     "country": "Country",
@@ -52,7 +65,9 @@
     "unfriend": "Unfriend",
     "no_friends": "No Friends",
     "no_following": "Not Following Anyone",
-    "no_followers": "No Followers"
+    "no_followers": "No Followers",
+    "friend_requests": "Requests",
+    "settings": "Settings"
   },
   "user_settings": {
     "profile_settings": "Profile Settings",
@@ -68,18 +83,37 @@
   },
   "notifications": {
     "none": "No notifications.",
-    "new_follower": "followed you!"
+    "new_follower": "<follower_one /> followed you!",
+    "new_follower:multiple": "<follower_one />, <follower_two /> followed you!",
+    "new_follower_other": "<follower_one />, <follower_two />, and {{count_other}} other followed you!",
+    "new_follower_other:multiple": "<follower_one />, <follower_two />, and {{count_other}} others followed you!"
+  },
+  "friend_requests": {
+    "none": "No Friend Requests"
   },
   "new_post": {
     "new_post_text": "New Post",
-    "post_to": "Post to",
+    "new_post_short": "Post",
+    "post_to": "Post to {{user}}",
     "text_hint": "Tap here to make a post.",
-    "swearing": "Post cannot contain explicit language."
+    "swearing": "Post cannot contain explicit language.",
+    "content_placeholder": "Share your thoughts in a post to a community or to your followers.",
+    "screenshots_coming_soon": "Screenshots are not ready yet. Check back soon!",
+    "spoiler_label": "Spoiler"
+  },
+  "post": {
+    "yeahs_count:one": "<count/> person gave this post a yeah.",
+    "yeahs_count:multiple": "<count/> people gave this post a yeah.",
+    "show_spoiler": "Show Spoiler",
+    "reply_post": "Reply",
+    "report_post": "Report post",
+    "delete_post": "Delete post"
   },
   "messages": {
     "coming_soon": "No Messages"
   },
   "setup": {
+    "title": "Juxtaposition Setup",
     "welcome": "Welcome to Juxtaposition!",
     "welcome_text": "Juxt is a gaming community that connects people from all over the world using Mii characters. Use Juxt to share your gaming experiences and meet people from around the world.",
     "beta": "Beta Disclaimer",

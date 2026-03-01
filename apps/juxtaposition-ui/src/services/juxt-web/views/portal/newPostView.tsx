@@ -58,9 +58,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header className="add-post-page-header">
 				<h1 className="page-title">
-					<T k="new_post.post_to" />
-					{' '}
-					{name}
+					<T k="new_post.post_to" values={{ user: name ?? '' }} />
 				</h1>
 			</header>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
@@ -139,7 +137,7 @@ export function PortalNewPostPage(props: NewPostViewProps): ReactNode {
 	const cache = useCache();
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
-		<PortalRoot title={t('new_post.post_to') + ' ' + name}>
+		<PortalRoot title={t('new_post.post_to', { user: name })}>
 			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<PortalNewPostView {... props} />
