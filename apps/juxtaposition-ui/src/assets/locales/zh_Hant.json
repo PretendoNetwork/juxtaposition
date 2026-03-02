@@ -21,9 +21,9 @@
         "text": "所有社群",
         "announcements": "公告",
         "ann_string": "點觸此處查看最近公告！",
-        "popular_places": "熱門社群",
+        "popular_places": "熱門地點",
         "new_communities": "新設社群",
-        "show_all": "顯示所有",
+        "show_all": "顯示全部",
         "search": "搜尋社群……"
     },
     "activity_feed": {
@@ -52,7 +52,7 @@
             "eighth": "切勿發布劇透內容",
             "tenth": "違反《守則》懲處",
             "eleventh": "我們的目標是讓 Juxt 的大家都能享受樂趣。如果有人違反《Juxt 社群守則》，我們會採取適當行動，封鎖違規使用者或整臺遊戲機。",
-            "twelfth": "玩過遊戲了嗎？",
+            "twelfth": "玩過這個遊戲嗎？",
             "thirteenth": "如果您在有玩過的遊戲上發布貼文，其內文將會附有一個圖示表明您曾經玩過。",
             "third": "Juxt 匯聚了全世界人們對諸多遊戲的觀點。請您謹記，在遊戲社群發布貼文時既要真誠表達自己，也要考慮到他人感受，因為所有人都能看見您的貼文。發布貼文前應三思而後行。Juxt 服務範圍也包括網際網路，即使是不使用 Juxt 的人也能看見您的貼文。此外，您在好友貼文上已發布的回應不僅是好友能看見，而是所有人。敬請留意。",
             "seventh": "請您謹記，從 Juxt 認識某人不代表也從現實生活認識了他。切勿在 Juxt 共享您或他人的個人資料，包括電子郵件地址、工作場域、學校名稱等等。如果您在 Juxt 上收到某個人的線下見面邀請，請不要接受。Juxt 只是一個線上社群平臺，不應用於安排線下聚會。",
@@ -67,12 +67,12 @@
         },
         "welcome_text": "Juxt 旨在透過 Mii 角色將世界各地的人們與遊戲社群聯繫起來。使用 Juxt 分享你的遊戲體驗，認識來自世界各地的人。",
         "guest": "訪客模式",
-        "analytics": "Analytics（分析）",
+        "analytics": "分析",
         "ready": "開始使用 Juxt",
         "done": "祝您在 Juxt 玩得愉快！",
         "done_button": "走吧！",
         "guest_button": "我明白了",
-        "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics（分析）來追蹤使用者存取服務的情況。收集的資料包括但不限於拜訪時間、拜訪的頁面以及停留頁面的時間。這些資料不會以任何方式與您關連，也不會被我們或 Cloudflare 用於分析廣告投放。",
+        "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 來追蹤使用者如何使用我們的服務。收集的資料包括但不限於造訪時間、造訪頁面和在網站上停留的時間。這些資料不會以任何方式與您關聯，我們或 Cloudflare 也不會將其用於廣告用途。",
         "ready_text": "先到社群頁面，觀摩來自全世界的投稿作品吧。還能趁機熟悉 Juxt 的介面。您也可能就此發現新世界！",
         "guest_text": "我們目前無法驗證您的帳號（可能是因為您使用了 Nintendo Network 帳號）。您可以繼續瀏覽 Juxt，但在登入 Pretendo Network 前，將無法進行「讚同！」或發布貼文。如要查看詳情，請前往 Discord 伺服器瞭解。"
     },
@@ -108,10 +108,10 @@
         "show_country": "在個人檔案顯示國家/地區",
         "show_birthday": "在個人檔案顯示生日",
         "show_game": "在個人檔案顯示遊戲經驗",
-        "show_comment": "在個人檔案顯示自我介紹",
-        "profile_comment": "自我介紹",
+        "show_comment": "在個人檔案顯示評論",
+        "profile_comment": "個人檔案評論",
         "profile_settings": "個人檔案設定",
-        "swearing": "自我介紹不能包含露骨內容。"
+        "swearing": "個人檔案評論不能包含露骨內容。"
     },
     "notifications": {
         "none": "沒有通知。",
