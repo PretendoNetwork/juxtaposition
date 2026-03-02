@@ -2,9 +2,9 @@
     "language": "简体中文",
     "global": {
         "user_page": "用户页面",
-        "activity_feed": "活动提要",
+        "activity_feed": "活动动态",
         "communities": "社区",
-        "messages": "通知",
+        "messages": "消息",
         "notifications": "通知",
         "go_back": "返回",
         "back": "返回",
@@ -20,7 +20,7 @@
     "all_communities": {
         "text": "所有社区",
         "announcements": "公告",
-        "ann_string": "点击这里来查看最近的公告！",
+        "ann_string": "点击这里查看最近的公告！",
         "popular_places": "热门地点",
         "new_communities": "新建社区",
         "show_all": "显示全部",
@@ -32,8 +32,8 @@
         "followers": "关注者",
         "posts": "帖子",
         "tags": "标签",
-        "recent": "最近的帖子",
-        "popular": "热门的帖子",
+        "recent": "最近帖子",
+        "popular": "热门帖子",
         "verified": "已被审核的帖子",
         "new": "新建帖子"
     },
@@ -48,20 +48,20 @@
         "follow_user": "关注",
         "following_user": "正在关注",
         "befriend": "添加好友",
-        "pending": "正在审核",
+        "pending": "待处理",
         "unfriend": "删除好友",
         "no_friends": "没有好友",
         "no_following": "不在关注任何人",
         "no_followers": "没有关注者"
     },
     "user_settings": {
-        "profile_settings": "用户设置",
-        "show_country": "在名牌上显示国家",
-        "show_birthday": "在名牌上显示生日",
-        "show_game": "在名牌上显示游戏经验",
-        "show_comment": "在名牌上显示评论",
-        "profile_comment": "用户评论",
-        "swearing": "名牌评论不能包含明确的语言。"
+        "profile_settings": "个人资料设置",
+        "show_country": "在个人资料显示国家/地区",
+        "show_birthday": "在个人资料显示生日",
+        "show_game": "在个人资料显示游戏经验",
+        "show_comment": "在个人资料显示评论",
+        "profile_comment": "个人资料评论",
+        "swearing": "个人资料评论不能包含露骨语言。"
     },
     "activity_feed": {
         "empty": "这里是空的。尝试关注某人！"
@@ -74,10 +74,10 @@
         "new_post_text": "新建帖子",
         "post_to": "发布到",
         "text_hint": "点击此处发布帖子。",
-        "swearing": "请勿在帖子中包含露骨语言。"
+        "swearing": "帖子不能包含露骨语言。"
     },
     "messages": {
-        "coming_soon": "消息尚未准备好。稍后检查！"
+        "coming_soon": "没有消息"
     },
     "setup": {
         "welcome": "欢迎来到Juxtaposition！",
@@ -113,7 +113,7 @@
             "intermediate": "中等",
             "expert": "高级"
         },
-        "analytics": "Analytics",
+        "analytics": "分析",
         "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 来跟踪用户如何使用我们的服务。收集的数据包括但不限于访问时间、访问的页面以及在网站上花费的时间。此数据不会以任何方式附加到您身上，也不会被我们或 Cloudflare 用于广告。",
         "ready": "开始使用 Juxt",
         "ready_text": "首先看一看一些社区，看看大家都在发布什么。借此机会熟悉 Juxt。一路上你可能会有新发现！",
