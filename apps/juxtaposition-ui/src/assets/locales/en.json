@@ -8,6 +8,7 @@
     "communities": "Communities",
     "messages": "Messages",
     "notifications": "Notifications",
+    "friend_requests": "Friend Requests",
     "updates": "Updates",
     "notifications_and_messages": "Notifications and Messages",
     "go_back": "Go Back",
@@ -67,7 +68,9 @@
     "no_following": "Not Following Anyone",
     "no_followers": "No Followers",
     "friend_requests": "Requests",
-    "settings": "Settings"
+    "settings": "Settings",
+    "deleted": "Deleted User",
+    "banned": "Banned User"
   },
   "user_settings": {
     "profile_settings": "Profile Settings",
@@ -99,6 +102,7 @@
     "swearing": "Post cannot contain explicit language.",
     "content_placeholder": "Share your thoughts in a post to a community or to your followers.",
     "screenshots_coming_soon": "Screenshots are not ready yet. Check back soon!",
+    "no_screenshot": "No Screenshot",
     "spoiler_label": "Spoiler"
   },
   "post": {
@@ -107,7 +111,8 @@
     "show_spoiler": "Show Spoiler",
     "reply_post": "Reply",
     "report_post": "Report post",
-    "delete_post": "Delete post"
+    "delete_post": "Delete post",
+    "removed": "Post has been removed."
   },
   "messages": {
     "coming_soon": "No Messages"

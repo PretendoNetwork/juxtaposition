@@ -4,6 +4,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -96,7 +97,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 					{ post.is_spoiler
 						? (
 								<div className="spoiler-wrapper">
-									<button data-post-id={post.id}>Show Spoiler</button>
+									<button data-post-id={post.id}><T k="post.show_spoiler" /></button>
 								</div>
 							)
 						: null}
@@ -159,9 +160,12 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						<>
 
 							<h6 className="yeah-text">
-								<span className="feeling" id={`count-${post.id}`}>{post.empathy_count}</span>
-								{' '}
-								people gave this post a yeah.
+								<T
+									k={post.yeahs.length === 1 ? 'post.yeahs_count:one' : 'post.yeahs_count:multiple'}
+									components={{
+										count: <span className="feeling" id={`count-${post.id}`}>{post.empathy_count}</span>
+									}}
+								/>
 							</h6>
 							<div className="yeah-list">
 								{post.yeahs.slice(0, 9).map(yeah => (
@@ -187,7 +191,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 			{post.removed
 				? (
 						<div className="post-body-content removed">
-							<h2>Post has been removed.</h2>
+							<h2><T k="post.removed" /></h2>
 						</div>
 					)
 				: content}

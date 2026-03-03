@@ -35,7 +35,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 								<img className="icon" src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
 							</span>
 							<span className="community-name">
-								{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
+								{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
 								{ isUserDataViewable
 									? (
 											<>
