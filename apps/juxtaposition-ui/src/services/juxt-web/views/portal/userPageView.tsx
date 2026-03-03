@@ -172,7 +172,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 																		? (
 																				<><T k="setup.experience_text.expert" /></>
 																			)
-																		: <>N/A</>}
+																		: <><T k="user_page.game_experience_unknown" /></>}
 														</span>
 													)
 												: null}

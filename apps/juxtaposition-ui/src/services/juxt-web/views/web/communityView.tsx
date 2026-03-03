@@ -105,7 +105,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 						</div>
 						<div>
 							<h4><T k="community.tags" /></h4>
-							<h4>N/A</h4>
+							<h4><T k="community.tags_not_applicable" /></h4>
 						</div>
 					</div>
 				</div>

@@ -12,7 +12,7 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 					id="header"
 
 					data-toolbar-mode="wide"
-					data-toolbar-message="Save Settings"
+					data-toolbar-message={t('user_settings.save_action')}
 					data-toolbar-bgm="BGM_CAVE_SETTING"
 				>
 					<h1 id="page-title"><T k="user_settings.profile_settings" /></h1>
