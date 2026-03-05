@@ -11,12 +11,12 @@ function DefaultHead(props: DefaultHeadProps): ReactNode {
 	const addDebugJs = !req.userAgent.isConsole; // Only serve debug js to non-console browsers
 	return (
 		<>
-			<link rel="stylesheet" type="text/css" href="/css/juxt.css" />
+			<link rel="stylesheet" type="text/css" href="/assets/ctr/css/juxt.css" />
 			{/* Debug allows non-console browsers to have some amount of the cave API. */}
-			{addDebugJs ? <script src="/js/debug.global.js"></script> : null}
+			{addDebugJs ? <script src="/assets/ctr/js/debug.global.js"></script> : null}
 			{/* Non-console browsers probably want this too. */}
 			{addDebugJs ? <meta name="viewport" content="width=device-width, initial-scale=1.0" /> : null}
-			{loadJs ? <script src="/js/juxt.global.js"></script> : null}
+			{loadJs ? <script src="/assets/ctr/js/juxt.global.js"></script> : null}
 		</>
 	);
 }

@@ -28,7 +28,7 @@ export function PortalErrorView(props: ErrorViewProps): ReactNode {
 						</div>
 						<p>Whoops! Looks like we couldn't find the page you're looking for.</p>
 						<p>Double-check your link or try again later</p>
-						<img className="lost" src="/images/bandwidthlost.png" />
+						<img className="lost" src="/assets/portal/images/bandwidthlost.png" />
 					</div>
 				</div>
 			</PortalPageBody>

@@ -10,7 +10,7 @@ body {
  font-size:28px;
  line-height:1.5;
  margin:0;
- background:url(/images/background.png);
+ background:url(@/images/background.png);
  background-position-x: 25%;
  min-height:720px;
  overflow-x:hidden!important
