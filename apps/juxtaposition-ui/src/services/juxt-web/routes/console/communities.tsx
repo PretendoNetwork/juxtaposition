@@ -21,6 +21,7 @@ import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { zodFallback } from '@/util';
 import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
+import { isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import type { InferSchemaType } from 'mongoose';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -140,7 +141,7 @@ communitiesRouter.get('/:communityID/create', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID/:type', async function (req, res) {
-	const { query, params, auth } = parseReq(req, {
+	const { query, params, hasAuth, auth } = parseReq(req, {
 		params: z.object({
 			communityID: z.string(),
 			type: z.string()
@@ -172,11 +173,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		};
 		await community.save();
 	}
-	const canPost = (
-		(community.permissions.open && community.type < 2) ||
-		(community.admins && community.admins.indexOf(auth().pid) !== -1) ||
-		(auth().user.accessLevel >= community.permissions.minimum_new_post_access_level)
-	) && userSettings.account_status === 0;
+	const canPost = hasAuth() && userSettings !== null && isPostingAllowed(community, userSettings, null, auth().user);
 	const isUserFollowing = userContent.followed_communities.includes(community.olive_community_id);
 
 	const subCommunities = await database.getSubCommunities(community.olive_community_id);
