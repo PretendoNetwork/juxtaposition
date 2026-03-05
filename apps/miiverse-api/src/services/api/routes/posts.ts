@@ -25,6 +25,7 @@ import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { ParamPack } from '@/types/common/param-pack';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
@@ -218,6 +219,15 @@ function canPost(community: HydratedCommunityDocument, userSettings: HydratedSet
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
+export function isShotAllowed(community: HydratedCommunityDocument, pack: ParamPack | null): boolean {
+	if (pack === null) {
+		return false;
+	}
+
+	// Shots only on matching communities
+	return community.title_id.includes(pack.title_id);
+}
+
 async function newPost(request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
 
@@ -405,7 +415,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		post.painting_big = paintings.big;
 	}
 
-	if (screenshot) {
+	if (screenshot && isShotAllowed(community, request.paramPack)) {
 		const screenshotUrls = await uploadScreenshot({
 			blob: screenshot,
 			pid: post.pid,
