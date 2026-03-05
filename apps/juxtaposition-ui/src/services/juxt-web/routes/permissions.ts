@@ -4,6 +4,7 @@ import type { CommunitySchema } from '@/models/communities';
 import type { PostSchema } from '@/models/post';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { PostDto } from '@/api/post';
+import type { ParamPack } from '@/types/common/param-pack';
 
 export function isPostingAllowed(community: InferSchemaType<typeof CommunitySchema>, userSettings: HydratedSettingsDocument, parentPost: InferSchemaType<typeof PostSchema> | PostDto | null, user: GetUserDataResponse): boolean {
 	const isReply = !!parentPost;
@@ -29,4 +30,13 @@ export function isPostingAllowed(community: InferSchemaType<typeof CommunitySche
 	}
 
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
+}
+
+export function isShotAllowed(community: InferSchemaType<typeof CommunitySchema>, pack: ParamPack | null): boolean {
+	if (pack === null) {
+		return false;
+	}
+
+	// Shots only on matching communities
+	return community.title_id.includes(pack.title_id);
 }

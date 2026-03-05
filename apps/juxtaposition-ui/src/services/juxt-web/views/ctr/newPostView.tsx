@@ -93,9 +93,14 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								placeholder="Share your thoughts in a post to a community or to your followers."
 							/>
 						</CtrTabView>
-						<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input">
-							<div id="shot-msg">Screenshots are not ready yet. Check back soon!</div>
-						</CtrTabView>
+						{props.allowShot
+							? (
+									<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input">
+										<div id="shot-msg">Screenshots are not ready yet. Check back soon!</div>
+									</CtrTabView>
+								)
+							: null }
+
 						<CtrTabView name="_post_type" value="painting" sprite="sp-memo-input">
 							<img id="memo-img-input" src="" />
 							<input type="hidden" name="painting" />

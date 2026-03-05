@@ -21,7 +21,7 @@ import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
-import { isPostingAllowed } from '@/services/juxt-web/routes/permissions';
+import { isPostingAllowed, isShotAllowed } from '@/services/juxt-web/routes/permissions';
 import type { Request, Response } from 'express';
 import type { InferSchemaType } from 'mongoose';
 import type { PaintingUrls } from '@/images';
@@ -258,11 +258,19 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
+	const community = await database.getCommunityByID(parent.community_id);
+	if (!community) {
+		return res.sendStatus(404);
+	}
+
+	const allowShot = isShotAllowed(community, auth().paramPackData);
+
 	const props = {
 		id: parent.community_id,
 		pid: parent.pid,
 		url: `/posts/${parent.id}/new`,
-		show: 'post'
+		show: 'post',
+		allowShot
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
@@ -396,7 +404,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}
 	}
 	let screenshots = null;
-	if (body.screenshot) {
+	if (body.screenshot && isShotAllowed(community, auth().paramPackData)) {
 		screenshots = await uploadScreenshot({
 			blob: body.screenshot,
 			pid: auth().pid,

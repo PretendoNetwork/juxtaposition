@@ -84,29 +84,33 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 							))}
 						</ul>
 					</div>
-					<div className="image-selector dropdown">
-						<label data-toggle="dropdown" className="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN">
-							<img className="preview-image" src="/images/add-post-no-image.png" />
-							<input type="checkbox" id="screenshot-toggle" name="_screenshot_value" />
-							<div className="image-selector-window dropdown-menu">
-								<menu className="screenshot-menu">
-									<li className="image-wrapper">
-										<input type="radio" name="_screenshot_value" value="top" defaultChecked data-sound="" evt-click="chooseScreenShot(0)" />
-										<img id="top-screen" src="" className="capture-image" />
-									</li>
-									<li className="image-wrapper">
-										<input type="radio" name="_screenshot_value" value="bottom" data-sound="" evt-click="chooseScreenShot(1)" />
-										<img id="bottom-screen" src="" className="capture-image" />
-									</li>
-									<li className="button">
-										<input type="radio" name="_screenshot_value" value="none" data-sound="" evt-click="chooseScreenShot()" />
-										No Screenshot
-									</li>
-								</menu>
-							</div>
-						</label>
-						<input id="screenshot-value" type="hidden" name="screenshot" value="" />
-					</div>
+					{props.allowShot
+						? (
+								<div className="image-selector dropdown">
+									<label data-toggle="dropdown" className="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN">
+										<img className="preview-image" src="/images/add-post-no-image.png" />
+										<input type="checkbox" id="screenshot-toggle" name="_screenshot_value" />
+										<div className="image-selector-window dropdown-menu">
+											<menu className="screenshot-menu">
+												<li className="image-wrapper">
+													<input type="radio" name="_screenshot_value" value="top" defaultChecked data-sound="" evt-click="chooseScreenShot(0)" />
+													<img id="top-screen" src="" className="capture-image" />
+												</li>
+												<li className="image-wrapper">
+													<input type="radio" name="_screenshot_value" value="bottom" data-sound="" evt-click="chooseScreenShot(1)" />
+													<img id="bottom-screen" src="" className="capture-image" />
+												</li>
+												<li className="button">
+													<input type="radio" name="_screenshot_value" value="none" data-sound="" evt-click="chooseScreenShot()" />
+													No Screenshot
+												</li>
+											</menu>
+										</div>
+									</label>
+									<input id="screenshot-value" type="hidden" name="screenshot" value="" />
+								</div>
+							)
+						: null }
 					<div className="textarea-container textarea-with-menu active-text">
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">

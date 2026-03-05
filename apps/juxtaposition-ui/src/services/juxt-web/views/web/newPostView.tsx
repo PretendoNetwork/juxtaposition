@@ -50,6 +50,7 @@ export type NewPostViewProps = {
 	url: string;
 	show: string;
 	messagePid?: number;
+	allowShot: boolean;
 	// ctr only
 	ctrBanner?: string;
 	ctrLegacy?: boolean;
