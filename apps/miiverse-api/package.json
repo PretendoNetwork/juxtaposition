@@ -28,7 +28,7 @@
 		"express-subdomain": "^1.0.6",
 		"moment": "^2.24.0",
 		"mongoose": "^8.23.0",
-		"multer": "^2.0.2",
+		"multer": "^2.1.0",
 		"nice-grpc": "^2.1.14",
 		"node-snowflake": "0.0.1",
 		"pako": "^2.1.0",
