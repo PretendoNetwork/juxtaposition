@@ -10,9 +10,9 @@ body {
  font-size:28px;
  line-height:1.5;
  margin:0;
- background:url(/images/background.png);
+ background:url(@/images/background.png);
+ background-position-x: 25%;
  min-height:720px;
- background-size:1280px;
  overflow-x:hidden!important
 }
 #body {
@@ -922,7 +922,7 @@ h6.yeah-text {
  position:relative;
  min-height:110px;
  box-shadow:inset 0-3px 3px rgba(0,0,0,.2);
- background:#54389f url("data:image/svg+xml,%3Csvg width='1080' xmlns='http://www.w3.org/2000/svg' height='90' style='background-color:%2354389f;' fill='%233a1e86'%3E%3ClinearGradient xmlns='http://www.w3.org/2000/svg' gradientUnits='objectBoundingBox' y1='0' id='overlay' y2='0' x2='1' x1='0'%3E%3Cstop offset='0.2' stop-color='%2354389f'/%3E%3Cstop offset='1' stop-opacity='-2' stop-color='%2354389f'/%3E%3C/linearGradient%3E%3Cg xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke-width='0' id='svg_23'%3E%3Crect rx='5' id='svg_4' height='60' width='60' y='30' x='1050'/%3E%3Crect rx='5' id='svg_9' height='60' width='60' x='210' y='30'/%3E%3Crect rx='5' id='svg_10' height='60' width='60' y='-30' x='270'/%3E%3Crect rx='5' id='svg_11' height='60' width='60' y='30' x='330'/%3E%3Crect rx='5' id='svg_12' height='60' width='60' y='-30' x='390'/%3E%3Crect rx='5' id='svg_13' height='60' width='60' y='30' x='450'/%3E%3Crect rx='5' id='svg_14' height='60' width='60' y='-30' x='510'/%3E%3Crect rx='5' id='svg_15' height='60' width='60' y='30' x='570'/%3E%3Crect rx='5' id='svg_16' height='60' width='60' y='-30' x='630'/%3E%3Crect rx='5' id='svg_17' height='60' width='60' y='30' x='690'/%3E%3Crect rx='5' id='svg_18' height='60' width='60' y='-30' x='750'/%3E%3Crect rx='5' id='svg_19' height='60' width='60' y='30' x='810'/%3E%3Crect rx='5' id='svg_20' height='60' width='60' y='-30' x='870'/%3E%3Crect rx='5' id='svg_21' height='60' width='60' y='30' x='930'/%3E%3Crect rx='5' id='svg_22' height='60' width='60' y='-30' x='990'/%3E%3C/g%3E%3C/g%3E%3Crect width='1080' height='90' fill='url(%23overlay)'/%3E%3C/svg%3E")repeat-y right top
+ background:#54389f url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="100" fill="%233a1e86"><linearGradient id="a" x1="0" x2="311.769" y1="0" y2="0" gradientTransform="scale(3.99464 .33289)" gradientUnits="userSpaceOnUse"><stop offset=".2" stop-color="%2354389f"/><stop offset="1" stop-color="%2354389f" stop-opacity="-2"/></linearGradient><g stroke-width="0" transform="translate(0 15.405)scale(1.15315)"><rect width="60" height="60" x="1050" y="30" rx="5"/><rect width="60" height="60" x="210" y="30" rx="5"/><rect width="60" height="60" x="270" y="-30" rx="5"/><rect width="60" height="60" x="330" y="30" rx="5"/><rect width="60" height="60" x="390" y="-30" rx="5"/><rect width="60" height="60" x="450" y="30" rx="5"/><rect width="60" height="60" x="510" y="-30" rx="5"/><rect width="60" height="60" x="570" y="30" rx="5"/><rect width="60" height="60" x="630" y="-30" rx="5"/><rect width="60" height="60" x="690" y="30" rx="5"/><rect width="60" height="60" x="750" y="-30" rx="5"/><rect width="60" height="60" x="810" y="30" rx="5"/><rect width="60" height="60" x="870" y="-30" rx="5"/><rect width="60" height="60" x="930" y="30" rx="5"/><rect width="60" height="60" x="990" y="-30" rx="5"/></g><path fill="url(%23a)" d="M0 0h1245.405v103.784H0z" style="fill:url(%23a);stroke-width:1.15315"/></svg>') repeat-y right top;
 }
 #header #header-post-button {
  padding-left:75px;
@@ -1100,9 +1100,13 @@ h6.yeah-text {
 .none {
  display:none!important
 }
+.add-post-page {
+    padding-left: 160px; /* For navbar */
+}
 .add-post-page-header {
+ margin: auto;
  margin-top:60px;
- margin-left:200px
+ width: 880px;
 }
 .add-post-page form {
  display:-webkit-box;
@@ -1537,9 +1541,6 @@ textarea.placeholder {
 #setting-page-visible-title .window-body-inner {
  width:500px;
  padding-right:320px
-}
-#add-post-page {
- display:none
 }
 .checkbox-container {
  display:block;

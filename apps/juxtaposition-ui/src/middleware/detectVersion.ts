@@ -1,11 +1,11 @@
-import { processLanguage } from '@/util';
+import { getLanguage } from '@/i18n';
 import type { Request, RequestHandler } from 'express';
 
 export const detectVersion: RequestHandler = async (request, response, next) => {
 	// Check the domain and set the directory
 	if (includes(request, 'juxt')) {
 		request.directory = 'web';
-		response.locals.lang = processLanguage();
+		response.locals.lang = getLanguage();
 	} else {
 		request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
 	}

@@ -1,13 +1,13 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { HydratedSettingsDocument } from '@/models/settings';
 
 export type UserListViewProps = {
-	ctx: RenderContext;
 	search?: string;
 	userCount: number;
 	activeCount: number;
@@ -16,20 +16,21 @@ export type UserListViewProps = {
 };
 
 export function WebUserListView(props: UserListViewProps): ReactNode {
-	const head = <script src="/js/admin.global.js"></script>;
-	const prevUrl = utils.url('/admin/accounts', { page: props.page - 1, search: props.search });
-	const nextUrl = utils.url('/admin/accounts', { page: props.page + 1, search: props.search });
+	const url = useUrl();
+	const cache = useCache();
+	const prevUrl = url.url('/admin/accounts', { page: props.page - 1, search: props.search });
+	const nextUrl = url.url('/admin/accounts', { page: props.page + 1, search: props.search });
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin">
 			<h2 id="title" className="page-header">
 				User Accounts
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={5} />
+			<WebNavBar selection={5} />
 			<div id="toast"></div>
 			<WebWrapper>
-				<WebModerationTabs ctx={props.ctx} selected="users" />
-				<input type="string" id="user-search" className="searchbar" placeholder="Search..." value={props.search} />
+				<WebModerationTabs selected="users" />
+				<WebSearchBar search={props.search} />
 				<span style={{ marginTop: '16px' }}>
 					{ props.userCount }
 					{' '}
@@ -48,7 +49,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 										<li key={user.pid}>
 											<div className="hover">
 												<a href={`/users/${user.pid}`} className="icon-container notify">
-													<img src={utils.cdn(props.ctx, `/mii/${user.pid}/normal_face.png`)} className="icon" />
+													<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} className="icon" />
 												</a>
 												<a className="body" href={`/users/${user.pid}`}>
 													<span className="text">
@@ -56,7 +57,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 															{user.pid}
 															:
 															{' '}
-															{props.ctx.usersMap.get(user.pid)}
+															{cache.getUserName(user.pid)}
 														</span>
 													</span>
 												</a>

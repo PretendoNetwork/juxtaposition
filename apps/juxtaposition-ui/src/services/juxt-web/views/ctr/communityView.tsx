@@ -1,17 +1,18 @@
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { CtrNewPostView } from '@/services/juxt-web/views/ctr/newPostView';
 import { CtrPostListClosedView } from '@/services/juxt-web/views/ctr/postList';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
 export function CtrCommunityView(props: CommunityViewProps): ReactNode {
+	const url = useUrl();
 	const community = props.community;
-	const { bannerUrl, imageId, legacy } = utils.ctrHeader(props.ctx, community);
+	const { bannerUrl, imageId, legacy } = url.ctrHeader(community);
 
 	return (
-		<CtrRoot ctx={props.ctx} title={community.name}>
+		<CtrRoot title={community.name}>
 			<CtrPageBody>
 				<header
 					id="header"
@@ -21,11 +22,14 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 					className={cx({
 						'header-legacy': legacy
 					})}
+
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="3"
 				>
 					<h1 id="page-title" className="community">
 						<span>
 							<span className="icon-container">
-								<img src={utils.cdn(props.ctx, `/icons/${imageId}/64.png`)} className="icon" />
+								<img src={url.cdn(`/icons/${imageId}/64.png`)} className="icon" />
 							</span>
 							<span className="community-name">
 								{community.name}
@@ -54,13 +58,8 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 								<a
 									id="header-post-button"
 									className="header-button left"
-									href="#"
-									data-sound="SE_WAVE_SELECT_TAB"
-									data-module-hide="community-post-list"
-									data-module-show="add-post-page"
-									data-header="false"
-									data-screenshot="true"
-									data-message={`${props.ctx.lang.new_post.post_to} ${community.name}`}
+									href={`/titles/${community.olive_community_id}/create`}
+									data-pjax="#body"
 								>
 									Post +
 								</a>
@@ -75,7 +74,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						? (
 								<button
 									type="button"
-									className={cx('submit follow yeah-button', {
+									className={cx('small-button follow', {
 										suggested: props.hasSubCommunities,
 										selected: props.isUserFollowing
 									})}
@@ -94,10 +93,10 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 					</div>
 					<menu className="tab-header">
 						<li id="tab-header-post" className={cx('tab-button', { selected: props.feedType === 0 })}>
-							<a href={`/titles/${community.olive_community_id}/new`} data-sound="SE_WAVE_SELECT_TAB"><span className="new-post">{props.ctx.lang.community.recent}</span></a>
+							<a href={`/titles/${community.olive_community_id}/new`} data-sound="SE_WAVE_SELECT_TAB"><span className="new-post"><T k="community.recent" /></span></a>
 						</li>
 						<li id="tab-header-hot-post" className={cx('tab-button', { selected: props.feedType === 1 })}>
-							<a href={`/titles/${community.olive_community_id}/hot`} data-sound="SE_WAVE_SELECT_TAB"><span>{props.ctx.lang.community.popular}</span></a>
+							<a href={`/titles/${community.olive_community_id}/hot`} data-sound="SE_WAVE_SELECT_TAB"><span><T k="community.popular" /></span></a>
 						</li>
 					</menu>
 					<div className="tab-body post-list">
@@ -105,7 +104,6 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						{props.children}
 					</div>
 				</div>
-				<CtrNewPostView ctx={props.ctx} id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" ctrBanner={bannerUrl} ctrLegacy={legacy} />
 			</CtrPageBody>
 		</CtrRoot>
 	);

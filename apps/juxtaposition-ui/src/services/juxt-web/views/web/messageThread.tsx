@@ -4,50 +4,51 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot } from '@/services/juxt-web/views/web/root';
 import { WebNewPostView } from '@/services/juxt-web/views/web/newPostView';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
 import type { PostSchema } from '@/models/post';
 
 export type ConversationPost = InferSchemaType<typeof PostSchema>;
 
 export type MessageThreadViewProps = {
-	ctx: RenderContext;
 	conversation: ConversationModel;
 	otherUser: ConversationUserModel;
 	messages: ConversationPost[];
 };
 
 export type MessageThreadItemProps = {
-	ctx: RenderContext;
 	message: ConversationPost;
 };
 
 function MessageThreadItem(props: MessageThreadItemProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
 	const msg = props.message;
 
 	let screenshotContent: ReactNode = null;
 	if (msg.screenshot) {
-		screenshotContent = <img className="message-viewer-bubble-sent-screenshot" src={utils.cdn(props.ctx, msg.screenshot)} />;
+		screenshotContent = <img className="message-viewer-bubble-sent-screenshot" src={url.cdn(msg.screenshot)} />;
 	}
 
 	let content = <p className="post-content">{ msg.body }</p>;
 	if (msg.painting) {
-		content = <img className="message-viewer-bubble-sent-memo" src={utils.cdn(props.ctx, `/paintings/${msg.pid}/${msg.id}.png`)} />;
+		content = <img className="message-viewer-bubble-sent-memo" src={url.cdn(`/paintings/${msg.pid}/${msg.id}.png`)} />;
 	}
 
 	return (
 		<div
 			id={`message-${msg.id}`}
 			className={cx('post scroll', {
-				'my-post': msg.pid === props.ctx.pid,
-				'other-post': msg.pid !== props.ctx.pid
+				'my-post': msg.pid === user.pid,
+				'other-post': msg.pid !== user.pid
 			})}
 		>
-			<a href={utils.url('/users/show', { pid: msg.pid })} className="scroll-focus mii-icon-container">
-				<img src={utils.cdn(props.ctx, `${msg.mii_face_url?.substring(msg.mii_face_url.lastIndexOf('/mii'))}`)} className="mii-icon" />
+			<a href={url.url('/users/show', { pid: msg.pid })} className="scroll-focus mii-icon-container">
+				<img src={url.cdn(`${msg.mii_face_url?.substring(msg.mii_face_url.lastIndexOf('/mii'))}`)} className="mii-icon" />
 			</a>
 			<div className="post-body">
 				{screenshotContent}
@@ -67,21 +68,22 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	if (!props.conversation.id) {
 		throw new Error('Conversation does not have an ID');
 	}
-	const otherUserName = props.ctx.usersMap.get(props.otherUser.pid) ?? '';
+	const cache = useCache();
+	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
 
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
 				{otherUserName}
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={3} />
+			<WebNavBar selection={3} />
 			<div id="toast" />
 			<div id="wrapper">
 				<div className="body-content message-post-list" id="message-page">
 					<button id="header-post-button" className="header-button" data-module-hide="message-page" data-module-show="add-post-page" data-header="true" data-menu="true">+</button>
-					{props.messages.map(msg => <MessageThreadItem key={msg.id} ctx={props.ctx} message={msg} />)}
+					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
 				</div>
-				<WebNewPostView ctx={props.ctx} id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
+				<WebNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
 				<div id="painting-wrapper" className="painting-wrapper" style={{ display: 'none' }}>
 					<div id="painting-content">
 						<div className="tools">
@@ -120,10 +122,10 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 							<button className="primary" evt-click="closePainting(true)">OK</button>
 						</div>
 					</div>
-					<script src="/js/painting.global.js" />
+					<script src="/assets/web/js/painting.global.js" />
 				</div>
 			</div>
-			<WebReportModalView ctx={props.ctx} />
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

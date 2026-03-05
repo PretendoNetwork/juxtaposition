@@ -2,30 +2,26 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type NewCommunityViewProps = {
-	ctx: RenderContext;
 };
 
-export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {
+export function WebNewCommunityView(_props: NewCommunityViewProps): ReactNode {
 	const head = (
 		<>
-			<script src="/js/admin.global.js"></script>
-			<link rel="stylesheet" href="/css/admin.css" />
 			<title>Juxt - New Community</title>
 		</>
 	);
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin" head={head}>
 			<h2 id="title" className="page-header">
 				New Community
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={-1} />
+			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box community-create">
-				<WebModerationTabs ctx={props.ctx} selected="communities" />
+				<WebModerationTabs selected="communities" />
 				<form action="/admin/communities/new" method="post" encType="multipart/form-data">
 					<div className="col-md-4">
 						<label className="labels" htmlFor="name">Community Name:</label>

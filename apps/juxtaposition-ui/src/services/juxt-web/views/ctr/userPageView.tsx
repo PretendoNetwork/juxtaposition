@@ -1,34 +1,38 @@
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
 export function CtrUserPageView(props: UserPageViewProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 
 	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
 	const isUserDeleted = props.user.deleted;
 	const isUserDataViewable = !isUserBanned && !isUserDeleted;
-	const canViewUser = isUserDataViewable || props.ctx.moderator;
-	const isSelf = props.ctx.pid === props.user.pid;
+	const canViewUser = isUserDataViewable || user.perms.moderator;
+	const isSelf = user.pid === props.user.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
 
 	return (
-		<CtrRoot ctx={props.ctx} title={pnidName}>
+		<CtrRoot title={pnidName}>
 			<CtrPageBody>
 				<header
 					id="header"
 					className="buttons"
-					data-toolbar-config
-					data-toolbar-mode="0"
+
+					data-toolbar-mode="normal"
 					data-toolbar-active-button={isSelf ? '5' : undefined}
 				>
 					<h1 id="page-title" className="community">
 						<span>
 							<span className="icon-container">
-								<img className="icon" src={isUserDataViewable ? utils.cdn(props.ctx, `/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+								<img className="icon" src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/ctr/images/bandwidthlost.png'} />
 							</span>
 							<span className="community-name">
 								{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
@@ -69,7 +73,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 					{isSelf ? <a id="header-communities-button" className="header-button left" href="/users/me/settings" data-pjax="#body">Settings</a> : null}
 					{ canViewUser && !isSelf
 						? (
-								<button type="button" className={cx('submit follow yeah-button', { selected: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}>
+								<button type="button" className={cx('small-button follow', { selected: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}>
 									<span className="sprite sp-yeah inline-sprite"></span>
 								</button>
 							)
@@ -82,17 +86,17 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 									<menu className="tab-header user-page no-margin">
 										<li id="tab-header-post" className={cx('tab-button', { selected: props.selectedTab === 0 })}>
 											<a href={props.baseLink} data-sound="SE_WAVE_SELECT_TAB">
-												<span className="new-post">{props.ctx.lang.user_page.posts}</span>
+												<span className="new-post"><T k="user_page.posts" /></span>
 											</a>
 										</li>
 										<li id="tab-header-friends" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
 											<a href={props.baseLink + 'friends'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.friends}</span>
+												<span><T k="user_page.friends" /></span>
 											</a>
 										</li>
 										<li id="tab-header-following" className={cx('tab-button', { selected: props.selectedTab === 2 })}>
 											<a href={props.baseLink + 'following'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.following}</span>
+												<span><T k="user_page.following" /></span>
 											</a>
 										</li>
 
@@ -101,12 +105,12 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 
 										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3, double: !isSelf })}>
 											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.followers}</span>
+												<span><T k="user_page.followers" /></span>
 											</a>
 										</li>
 										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4, double: !isSelf })}>
 											<a href={props.baseLink + 'yeahs'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.global.yeahs}</span>
+												<span><T k="global.yeahs" /></span>
 											</a>
 										</li>
 										{isSelf

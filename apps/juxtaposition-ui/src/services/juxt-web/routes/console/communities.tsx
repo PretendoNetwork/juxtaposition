@@ -8,7 +8,6 @@ import { POST } from '@/models/post';
 import { redisGet, redisRemove, redisSet } from '@/redisCache';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebCommunityListView, WebCommunityOverviewView } from '@/services/juxt-web/views/web/communityListView';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { PortalCommunityListView, PortalCommunityOverviewView } from '@/services/juxt-web/views/portal/communityListView';
 import { CtrCommunityListView, CtrCommunityOverviewView } from '@/services/juxt-web/views/ctr/communityListView';
 import { PortalSubCommunityView } from '@/services/juxt-web/views/portal/subCommunityView';
@@ -20,6 +19,8 @@ import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { zodFallback } from '@/util';
+import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
+import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import type { InferSchemaType } from 'mongoose';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -33,7 +34,6 @@ communitiesRouter.get('/', async function (req, res) {
 	const communityStats = await getCommunityStats();
 
 	const props: CommunityOverviewViewProps = {
-		ctx: buildContext(res),
 		newCommunities: communityStats.new,
 		popularCommunities: communityStats.popular
 	};
@@ -48,7 +48,6 @@ communitiesRouter.get('/all', async function (req, res) {
 	const communities = await database.getCommunities(90);
 
 	const props: CommunityListViewProps = {
-		ctx: buildContext(res),
 		communities
 	};
 	res.jsxForDirectory({
@@ -107,13 +106,36 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 	}
 
 	const props: SubCommunityViewProps = {
-		ctx: buildContext(res),
 		community,
 		subcommunities: children
 	};
 	res.jsxForDirectory({
 		portal: <PortalSubCommunityView {...props} />,
 		ctr: <CtrSubCommunityView {...props} />
+	});
+});
+
+communitiesRouter.get('/:communityID/create', async function (req, res) {
+	const { params } = parseReq(req, {
+		params: z.object({
+			communityID: z.string()
+		})
+	});
+
+	const community = await database.getCommunityByID(params.communityID);
+	if (!community) {
+		return res.sendStatus(404);
+	}
+
+	const props = {
+		id: community.olive_community_id,
+		name: community.name,
+		url: `/posts/new`,
+		show: 'post'
+	};
+	res.jsxForDirectory({
+		ctr: <CtrNewPostPage {...props} />,
+		portal: <PortalNewPostPage {...props} />
 	});
 });
 
@@ -174,7 +196,6 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	const numPosts = await database.getTotalPostsByCommunity(community);
 
 	const postListProps: PostListViewProps = {
-		ctx: buildContext(res),
 		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${posts.length}&pjax=true`,
 		posts,
 		userContent
@@ -189,7 +210,6 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	}
 
 	const props: CommunityViewProps = {
-		ctx: buildContext(res),
 		feedType: type,
 		community,
 		hasSubCommunities: subCommunities.length > 0,
@@ -247,7 +267,6 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 	}
 
 	const postListProps: PostListViewProps = {
-		ctx: buildContext(res),
 		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${offset + posts.length}&pjax=true`,
 		posts,
 		userContent

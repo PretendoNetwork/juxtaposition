@@ -1,7 +1,9 @@
 import cx from 'classnames';
+import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { FeedTabsProps, FeedViewProps } from '@/services/juxt-web/views/web/feed';
 
@@ -34,21 +36,22 @@ export function PortalFeedTabs(props: FeedTabsProps): ReactNode {
 }
 
 export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
+	const title = t('global.activity_feed');
 	return (
-		<PortalRoot ctx={props.ctx} title={props.title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
-			<PortalNavBar ctx={props.ctx} selection={-1} />
+		<PortalRoot title={title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
+			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">
-					<h1 id="page-title" className="left">{props.title}</h1>
+					<h1 id="page-title" className="left">{title}</h1>
 				</header>
 				<div id="new-post-button-container" className="none">
-					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)">{props.ctx.lang.global.more}</a>
+					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more" /></a>
 					<div id="new-post"></div>
 				</div>
 				<div className="body-content" id="activity-feed">
 					<PortalFeedTabs selected={0} />
 					<div className="tab-body post-list">
-						<PortalPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						<PortalPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>
 				</div>
 			</PortalPageBody>
@@ -57,21 +60,22 @@ export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
 }
 
 export function PortalGlobalFeedView(props: FeedViewProps): ReactNode {
+	const title = t('global.activity_feed');
 	return (
-		<PortalRoot ctx={props.ctx} title={props.title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
-			<PortalNavBar ctx={props.ctx} selection={-1} />
+		<PortalRoot title={title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
+			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">
-					<h1 id="page-title" className="left">{props.title}</h1>
+					<h1 id="page-title" className="left">{title}</h1>
 				</header>
 				<div id="new-post-button-container" className="none">
-					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)">{props.ctx.lang.global.more}</a>
+					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more" /></a>
 					<div id="new-post"></div>
 				</div>
 				<div className="body-content" id="activity-feed">
 					<PortalFeedTabs selected={1} />
 					<div className="tab-body post-list">
-						<PortalPostListView ctx={props.ctx} nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						<PortalPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>
 				</div>
 			</PortalPageBody>

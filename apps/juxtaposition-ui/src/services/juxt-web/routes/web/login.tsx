@@ -5,7 +5,6 @@ import { passwordLogin, getUserDataFromToken } from '@/util';
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 
 export const loginRouter = express.Router();
@@ -17,7 +16,7 @@ loginRouter.get('/', async function (req, res) {
 			redirect: z.string().optional()
 		})
 	});
-	return res.jsx(<WebLoginView ctx={buildContext(res)} redirect={query.redirect} />);
+	return res.jsx(<WebLoginView redirect={query.redirect} />);
 });
 
 loginRouter.post('/', async (req, res) => {
@@ -32,14 +31,14 @@ loginRouter.post('/', async (req, res) => {
 	const login = await passwordLogin(username, password).catch((e) => {
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
-				res.jsx(<WebLoginView ctx={buildContext(res)} toast="Username was invalid." redirect={redirect} />);
+				res.jsx(<WebLoginView toast="Username was invalid." redirect={redirect} />);
 				break;
 			case 'INVALID_ARGUMENT: Password is incorrect':
-				res.jsx(<WebLoginView ctx={buildContext(res)} toast="Password was incorrect." redirect={redirect} />);
+				res.jsx(<WebLoginView toast="Password was incorrect." redirect={redirect} />);
 				break;
 			default:
 				logger.error(e, `Login error for ${username}`);
-				res.jsx(<WebLoginView ctx={buildContext(res)} toast="Invalid username or password." redirect={redirect} />);
+				res.jsx(<WebLoginView toast="Invalid username or password." redirect={redirect} />);
 				break;
 		}
 	});
@@ -49,7 +48,7 @@ loginRouter.post('/', async (req, res) => {
 
 	const PNID = await getUserDataFromToken(login.accessToken);
 	if (!PNID) {
-		return res.jsx(<WebLoginView ctx={buildContext(res)} toast="Invalid username or password." redirect={redirect} />);
+		return res.jsx(<WebLoginView toast="Invalid username or password." redirect={redirect} />);
 	}
 
 	const discovery = await database.getEndPoint(config.serverEnvironment);

@@ -13,7 +13,6 @@ import { humanDate, createLogEntry, getReasonMap, getUserAccountData, newNotific
 import { getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportListView';
 import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/manageCommunityView';
 import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newCommunityView';
@@ -62,7 +61,7 @@ adminRouter.get('/posts', async function (req, res) {
 	});
 
 	res.jsxForDirectory({
-		web: <WebReportListView ctx={buildContext(res)} reasonMap={getReasonMap()} userContent={userContent} reports={reports} />
+		web: <WebReportListView reasonMap={getReasonMap()} userContent={userContent} reports={reports} />
 	});
 });
 
@@ -123,7 +122,7 @@ adminRouter.get('/accounts', async function (req, res) {
 	const userMetrics = await getUserMetrics();
 
 	res.jsxForDirectory({
-		web: <WebUserListView ctx={buildContext(res)} users={users} page={page} search={search} userCount={userMetrics.totalUsers} activeCount={userMetrics.currentOnlineUsers} />
+		web: <WebUserListView users={users} page={page} search={search} userCount={userMetrics.totalUsers} activeCount={userMetrics.currentOnlineUsers} />
 	});
 });
 
@@ -172,7 +171,7 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	res.jsxForDirectory({
 		web: (
 			<WebModerateUserView
-				ctx={buildContext(res)}
+
 				userSettings={userSettings}
 				userContent={userContent}
 				pnid={pnid}
@@ -398,7 +397,7 @@ adminRouter.get('/communities', async function (req, res) {
 	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
 
 	res.jsxForDirectory({
-		web: <WebManageCommunityView ctx={buildContext(res)} hasNextPage={communities.length === limit} communities={communities} page={page} search={search} />
+		web: <WebManageCommunityView hasNextPage={communities.length === limit} communities={communities} page={page} search={search} />
 	});
 });
 
@@ -408,7 +407,7 @@ adminRouter.get('/communities/new', async function (req, res) {
 	}
 
 	res.jsxForDirectory({
-		web: <WebNewCommunityView ctx={buildContext(res)} />
+		web: <WebNewCommunityView />
 	});
 });
 
@@ -535,7 +534,7 @@ adminRouter.get('/communities/:community_id', async function (req, res) {
 	}
 
 	res.jsxForDirectory({
-		web: <WebEditCommunityView ctx={buildContext(res)} community={community} />
+		web: <WebEditCommunityView community={community} />
 	});
 });
 

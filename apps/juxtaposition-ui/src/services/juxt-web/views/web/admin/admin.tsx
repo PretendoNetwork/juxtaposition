@@ -1,13 +1,14 @@
 import cx from 'classnames';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type ModerationTabsProps = {
-	ctx: RenderContext;
 	selected: 'users' | 'reports' | 'communities';
 };
 
 export function WebModerationTabs(props: ModerationTabsProps): ReactNode {
+	const user = useUser();
+
 	return (
 		<div className="buttons tabs">
 			<a
@@ -28,7 +29,7 @@ export function WebModerationTabs(props: ModerationTabsProps): ReactNode {
 			>
 				Accounts
 			</a>
-			{ props.ctx.developer
+			{ user.perms.developer
 				? (
 						<a
 							id="communities"

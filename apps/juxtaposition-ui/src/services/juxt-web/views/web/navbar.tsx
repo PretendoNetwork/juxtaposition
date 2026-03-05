@@ -1,14 +1,16 @@
-import { utils } from '@/services/juxt-web/views/utils';
-import { JuxtLogo, WebIcon } from '@/services/juxt-web/views/web/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
+import { JuxtLogo, WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type NavBarProps = {
-	ctx: RenderContext;
 	selection: number;
 };
 
 export function WebNavBar(props: NavBarProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
 	const selectedClasses = (id: number): string =>
 		id === props.selection ? 'selected' : '';
 
@@ -17,40 +19,40 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 			<a href="/" className="logo-link">
 				<JuxtLogo />
 			</a>
-			{props.ctx.pid !== 1000000000
+			{user.pid !== 1000000000
 				? (
 						<>
 							<a href="/users/me" className={selectedClasses(0)}>
 								<img
 									className="mii-icon"
-									src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)}
+									src={url.cdn(`/mii/${user.pid}/normal_face.png`)}
 									alt="User Page"
 								/>
-								<p>{props.ctx.lang.global.user_page}</p>
+								<p><T k="global.user_page" /></p>
 							</a>
 							<a href="/feed" className={selectedClasses(1)}>
-								<WebIcon name="home" />
-								<p>{props.ctx.lang.global.activity_feed}</p>
+								<WebUIIcon name="home" />
+								<p><T k="global.activity_feed" /></p>
 							</a>
 							<a href="/titles" className={selectedClasses(2)}>
-								<WebIcon name="users" />
-								<p>{props.ctx.lang.global.communities}</p>
+								<WebUIIcon name="users" />
+								<p><T k="global.communities" /></p>
 							</a>
 							<a href="/friend_messages" className={selectedClasses(3)}>
-								<WebIcon name="mail" />
+								<WebUIIcon name="mail" />
 								<span id="message-badge" className="badge"></span>
-								<p>{props.ctx.lang.global.messages}</p>
+								<p><T k="global.messages" /></p>
 							</a>
 							<a href="/news/my_news" className={selectedClasses(4)}>
-								<WebIcon name="bell" />
+								<WebUIIcon name="bell" />
 								<span id="news-badge" className="badge"></span>
-								<p>{props.ctx.lang.global.notifications}</p>
+								<p><T k="global.notifications" /></p>
 							</a>
-							{props.ctx.moderator
+							{user.perms.moderator
 								? (
 										<>
 											<a href="/admin/posts" className={selectedClasses(5)}>
-												<WebIcon name="hammer" />
+												<WebUIIcon name="hammer" />
 												<span id="news-badge" className="badge"></span>
 												<p>Moderation</p>
 											</a>

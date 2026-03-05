@@ -1,0 +1,126 @@
+{
+    "language": "Euskara",
+    "global": {
+        "user_page": "Erabiltzailearen orria",
+        "activity_feed": "Jarduera",
+        "communities": "Komunitateak",
+        "messages": "Mezuak",
+        "notifications": "Jakinarazpenak",
+        "go_back": "Atzera joan",
+        "back": "Atzera",
+        "save": "Gorde",
+        "more": "Argitarapen gehiago erakutsi",
+        "no_posts": "Ez dago argitarapenik",
+        "private": "Pribatua",
+        "close": "Itxi",
+        "exit": "Irten",
+        "next": "Hurrengoa",
+        "yeahs": "Datseginak"
+    },
+    "all_communities": {
+        "text": "Komunitate denak",
+        "announcements": "Iragarpenak",
+        "ann_string": "Hemen klik egin notizia berriak ikusteko!",
+        "popular_places": "Toki ospetsuak",
+        "new_communities": "Komunitate berriak",
+        "show_all": "Dena erakutsi",
+        "search": "Komunitateak bilatu..."
+    },
+    "community": {
+        "follow": "Komunitatea Jarraitu",
+        "following": "Jarraitzen",
+        "followers": "Jarraitzaileak",
+        "posts": "Argitalpenak",
+        "tags": "Etiketak",
+        "recent": "Publikazio berriak",
+        "popular": "Argitaralpen ospetsuak",
+        "verified": "Egiaztatutako argitaralpenak",
+        "new": "Argitalpen berriak"
+    },
+    "user_page": {
+        "country": "Herrialdea",
+        "birthday": "Urtebetetzea",
+        "game_experience": "Joko mailak",
+        "friends": "Lagunak",
+        "following": "Jarraitzen",
+        "followers": "Jarraitzaileak",
+        "follow_user": "",
+        "no_following": "",
+        "befriend": "",
+        "posts": "",
+        "following_user": "",
+        "pending": "",
+        "unfriend": "",
+        "no_followers": "",
+        "no_friends": ""
+    },
+    "setup": {
+        "rules_text": {
+            "eleventh": "",
+            "tenth": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "second": "",
+            "sixth": "",
+            "first": "",
+            "eighth": "",
+            "seventh": "",
+            "twelfth": ""
+        },
+        "beta_text": {
+            "third": "",
+            "second": "",
+            "first": ""
+        },
+        "experience_text": {
+            "expert": "",
+            "info": "",
+            "intermediate": "",
+            "beginner": ""
+        },
+        "guest_button": "",
+        "analytics": "",
+        "done_button": "",
+        "guest": "",
+        "ready": "",
+        "guest_text": "",
+        "experience": "",
+        "rules": "",
+        "welcome_text": "",
+        "analytics_text": "",
+        "info": "",
+        "info_text": "",
+        "ready_text": "",
+        "done": "",
+        "beta": "",
+        "welcome": ""
+    },
+    "notifications": {
+        "none": "",
+        "new_follower": ""
+    },
+    "new_post": {
+        "swearing": "",
+        "text_hint": "",
+        "new_post_text": "",
+        "post_to": ""
+    },
+    "user_settings": {
+        "show_game": "",
+        "show_comment": "",
+        "show_birthday": "",
+        "profile_settings": "",
+        "profile_comment": "",
+        "swearing": "",
+        "show_country": ""
+    },
+    "activity_feed": {
+        "empty": ""
+    },
+    "messages": {
+        "coming_soon": ""
+    }
+}

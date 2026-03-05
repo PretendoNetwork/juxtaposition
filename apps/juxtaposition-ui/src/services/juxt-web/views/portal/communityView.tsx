@@ -1,23 +1,24 @@
 import cx from 'classnames';
-import { utils } from '@/services/juxt-web/views/utils';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { PortalNewPostView } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
-import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
 export function PortalCommunityView(props: CommunityViewProps): ReactNode {
+	const url = useUrl();
 	const community = props.community;
 	const imageId = community.parent ? community.parent : community.olive_community_id;
 	const bannerUrl = community.wup_header
-		? utils.cdn(props.ctx, community.wup_header)
-		: utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`);
+		? url.cdn(community.wup_header)
+		: url.cdn(`/headers/${imageId}/WiiU.png`);
 
 	return (
-		<PortalRoot ctx={props.ctx} title={community.name}>
-			<PortalNavBar ctx={props.ctx} selection={2} />
+		<PortalRoot title={community.name}>
+			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
 					{props.canPost
@@ -25,12 +26,8 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 								<a
 									id="header-post-button"
 									className="header-button"
-									href="#"
-									data-sound="SE_WAVE_SELECT_TAB"
-									data-module-hide="community-post-list"
-									data-module-show="add-post-page"
-									data-header="false"
-									data-menu="false"
+									href={`/titles/${community.olive_community_id}/create`}
+									data-pjax="#body"
 								>
 									Post
 								</a>
@@ -50,7 +47,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
 							<img
-								src={utils.cdn(props.ctx, `/icons/${imageId}/128.png`)}
+								src={url.cdn(`/icons/${imageId}/128.png`)}
 								className="icon"
 							/>
 						</span>
@@ -71,13 +68,13 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						<span className="title">{community.name}</span>
 						<span className="text">
 							<span>
-								<PortalIcon name="posts" />
+								<PortalUIIcon name="posts" />
 								{' '}
 								{props.totalPosts}
 							</span>
 							<span>
 								{' | '}
-								<PortalIcon name="followers" />
+								<PortalUIIcon name="followers" />
 								{' '}
 								<span id="followers">
 									{community.followers}
@@ -92,7 +89,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 								data-sound="SE_WAVE_SELECT_TAB"
 							>
 								<span className="new-post">
-									{props.ctx.lang.community.recent}
+									<T k="community.recent" />
 								</span>
 							</a>
 						</li>
@@ -102,14 +99,14 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 								data-sound="SE_WAVE_SELECT_TAB"
 							>
 								<span>
-									{props.ctx.lang.community.popular}
+									<T k="community.popular" />
 								</span>
 							</a>
 						</li>
 					</menu>
 					<div id="new-post-button-container" className="none">
 						<a href="#" className="button" data-offset="10">
-							{props.ctx.lang.global.more}
+							<T k="global.more" />
 						</a>
 						<div id="new-post"></div>
 					</div>
@@ -118,7 +115,6 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						{props.children}
 					</div>
 				</div>
-				<PortalNewPostView ctx={props.ctx} id={community.olive_community_id} name={community.name} url="/posts/new" show="community-post-list" />
 			</PortalPageBody>
 		</PortalRoot>
 	);

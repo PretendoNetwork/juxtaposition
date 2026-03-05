@@ -14,10 +14,13 @@ import { redisRemove } from '@/redisCache';
 import { createLogEntry, getInvalidPostRegex, getUserAccountData } from '@/util';
 import { addEmpathyById, removeEmpathyById } from '@/api/empathy';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
 import { PortalPostPageView } from '@/services/juxt-web/views/portal/postPageView';
+import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
+import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
+import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
+import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import type { Request, Response } from 'express';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -180,7 +183,6 @@ postsRouter.get('/:post_id', async function (req, res) {
 	) && userSettings?.account_status === 0;
 
 	const props: PostPageViewProps = {
-		ctx: buildContext(res),
 		community,
 		post,
 		postPNID,
@@ -248,6 +250,51 @@ postsRouter.delete('/:post_id', async function (req, res) {
 
 postsRouter.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
 	await newPost(req, res);
+});
+
+postsRouter.get('/:post_id/create', async function (req, res) {
+	const { params, auth } = parseReq(req, {
+		params: z.object({
+			post_id: z.string()
+		})
+	});
+
+	const parent = await getPostById(auth().tokens, params.post_id);
+	if (!parent) {
+		return res.sendStatus(404);
+	}
+
+	const props = {
+		id: parent.community_id,
+		pid: parent.pid,
+		url: `/posts/${parent.id}/new`,
+		show: 'post'
+	};
+	res.jsxForDirectory({
+		ctr: <CtrNewPostPage {...props} />,
+		portal: <PortalNewPostPage {...props} />
+	});
+});
+
+postsRouter.get('/:post_id/report', async function (req, res) {
+	const { params, auth } = parseReq(req, {
+		params: z.object({
+			post_id: z.string()
+		})
+	});
+
+	const post = await getPostById(auth().tokens, params.post_id);
+	if (!post) {
+		return res.redirect('/404');
+	}
+
+	const props = {
+		id: params.post_id
+	};
+	return res.jsxForDirectory({
+		ctr: <CtrReportPostPage {...props} />,
+		portal: <PortalReportPostPage {...props} />
+	});
 });
 
 postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
@@ -341,6 +388,10 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			return;
 		} else {
 			community = await database.getCommunityByID(parentPost.community_id);
+			if (parentPost.removed) {
+				res.sendStatus(400);
+				return;
+			}
 		}
 	}
 	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '')) {

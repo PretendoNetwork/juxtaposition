@@ -1,11 +1,9 @@
 import { WebLoginRoot } from '@/services/juxt-web/views/web/login';
-import { PretendoLogo } from '@/services/juxt-web/views/web/icons';
+import { PretendoLogo } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
 import type { ReqId } from 'pino-http';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type ErrorViewProps = {
-	ctx: RenderContext;
 	requestId: ReqId;
 	code: string | number;
 	message: string;

@@ -1,6 +1,6 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { InlineScript } from '@/services/juxt-web/views/common';
+import { Inline } from '@/services/juxt-web/views/common/components/Inline';
 import type { ReactNode } from 'react';
 import type { ErrorViewProps, FatalErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
@@ -8,8 +8,8 @@ export function PortalErrorView(props: ErrorViewProps): ReactNode {
 	const title = `Error: ${props.code}`;
 
 	return (
-		<PortalRoot ctx={props.ctx} title={title} onLoad="wiiuBrowser.endStartUp();">
-			<PortalNavBar ctx={props.ctx} selection={-1} />
+		<PortalRoot title={title} onLoad="wiiuBrowser.endStartUp();">
+			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title" className=""></h1>
@@ -28,7 +28,7 @@ export function PortalErrorView(props: ErrorViewProps): ReactNode {
 						</div>
 						<p>Whoops! Looks like we couldn't find the page you're looking for.</p>
 						<p>Double-check your link or try again later</p>
-						<img className="lost" src="/images/bandwidthlost.png" />
+						<img className="lost" src="/assets/portal/images/bandwidthlost.png" />
 					</div>
 				</div>
 			</PortalPageBody>
@@ -59,7 +59,7 @@ export function PortalFatalErrorView(props: FatalErrorViewProps): ReactNode {
 				</h1>
 				<p style={{ whiteSpace: 'pre-line' }}>{props.message}</p>
 			</body>
-			<InlineScript src={errorJs} />
+			<Inline.Script src={errorJs} />
 		</html>
 	);
 }

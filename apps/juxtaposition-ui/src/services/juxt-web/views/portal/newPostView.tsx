@@ -1,4 +1,10 @@
-import { utils } from '@/services/juxt-web/views/utils';
+import { t } from 'i18next';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -43,20 +49,25 @@ const empathies = [
 ];
 
 export function PortalNewPostView(props: NewPostViewProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
+	const cache = useCache();
+
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header className="add-post-page-header">
 				<h1 className="page-title">
-					{props.ctx.lang.new_post.post_to}
+					<T k="new_post.post_to" />
 					{' '}
-					{props.name}
+					{name}
 				</h1>
 			</header>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
 				<input type="hidden" name="community_id" value={props.id} />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
-						<img src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)} id="mii-face" className="icon" />
+						<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} id="mii-face" className="icon" />
 						<ul className="buttons">
 							{empathies.map(v => (
 								<li key={v.value}>
@@ -65,7 +76,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 										name="feeling_id"
 										value={v.value}
 										className={v.className}
-										data-mii-face-url={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/${v.miiFaceFile}`)}
+										data-mii-face-url={url.cdn(`/mii/${user.pid}/${v.miiFaceFile}`)}
 										defaultChecked={v.isDefault}
 										data-sound={v.sound}
 									/>
@@ -75,7 +86,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 					</div>
 					<div className="image-selector dropdown">
 						<label data-toggle="dropdown" className="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN">
-							<img className="preview-image" src="/images/add-post-no-image.png" />
+							<img className="preview-image" src="/assets/portal/images/add-post-no-image.png" />
 							<input type="checkbox" id="screenshot-toggle" name="_screenshot_value" />
 							<div className="image-selector-window dropdown-menu">
 								<menu className="screenshot-menu">
@@ -100,7 +111,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
 								<input type="radio" name="_post_type" value="body" defaultChecked data-sound="" />
-								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={props.ctx.lang.user_settings.swearing} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
+								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={t('user_settings.swearing')} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
 							</li>
 							<li className="textarea-menu-memo">
 								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" />
@@ -118,18 +129,21 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 					</label>
 				</div>
 				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
-				<input
-					type="button"
-					className="olv-modal-close-button fixed-bottom-button left"
-					value="Cancel"
-					data-sound="SE_WAVE_CANCEL"
-					data-module-show={props.show}
-					data-module-hide="add-post-page"
-					data-header="true"
-					data-menu="true"
-				/>
 				<input type="submit" className="post-button fixed-bottom-button" value="Post" evt-click="wiiuBrowser.lockUserOperation(true);" />
 			</form>
 		</div>
+	);
+}
+
+export function PortalNewPostPage(props: NewPostViewProps): ReactNode {
+	const cache = useCache();
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
+	return (
+		<PortalRoot title={t('new_post.post_to') + ' ' + name}>
+			<PortalNavBar selection={-1} />
+			<PortalPageBody>
+				<PortalNewPostView {... props} />
+			</PortalPageBody>
+		</PortalRoot>
 	);
 }

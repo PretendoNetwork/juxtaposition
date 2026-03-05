@@ -1,9 +1,11 @@
 import cx from 'classnames';
 import moment from 'moment';
-import { utils } from '@/services/juxt-web/views/utils';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { PortalIcon } from '@/services/juxt-web/views/portal/icons';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -16,7 +18,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star mario">
 				{' | '}
-				<PortalIcon name="star-badge" />
+				<PortalUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -24,7 +26,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star super">
 				{' | '}
-				<PortalIcon name="star-badge" />
+				<PortalUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -32,7 +34,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		tierPart = (
 			<span className="supporter-star mega">
 				{' | '}
-				<PortalIcon name="star-badge" />
+				<PortalUIIcon name="star-badge" />
 			</span>
 		);
 	}
@@ -41,7 +43,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star dev">
 				{' | '}
-				<PortalIcon name="dev-badge" />
+				<PortalUIIcon name="dev-badge" />
 			</span>
 		);
 	}
@@ -49,7 +51,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star mega">
 				{' | '}
-				<PortalIcon name="mod-badge" />
+				<PortalUIIcon name="mod-badge" />
 			</span>
 		);
 	}
@@ -57,7 +59,7 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		accessLevelPart = (
 			<span className="supporter-star tester">
 				{' | '}
-				<PortalIcon name="tester-badge" />
+				<PortalUIIcon name="tester-badge" />
 			</span>
 		);
 	}
@@ -71,20 +73,22 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 }
 
 export function PortalUserPageView(props: UserPageViewProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 
 	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
 	const isUserDeleted = props.user.deleted;
 	const isUserDataViewable = !isUserBanned && !isUserDeleted;
-	const canViewUser = isUserDataViewable || props.ctx.moderator;
-	const isSelf = props.ctx.pid === props.user.pid;
+	const canViewUser = isUserDataViewable || user.perms.moderator;
+	const isSelf = user.pid === props.user.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
-	const isUserFollowingRequester = props.userContent.followed_users.includes(props.ctx.pid);
+	const isUserFollowingRequester = props.userContent.followed_users.includes(user.pid);
 
 	return (
-		<PortalRoot ctx={props.ctx} title={pnidName}>
-			<PortalNavBar ctx={props.ctx} selection={-1} />
+		<PortalRoot title={pnidName}>
+			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">
 					{isSelf ? <a id="header-communities-button" className="user-page" href="/users/me/settings" data-pjax="#body">Settings</a> : null}
@@ -92,11 +96,11 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="header-banner-container">
-						<img src="/images/banner.png" className="header-banner with-top-button" />
+						<img src="/assets/portal/images/banner.png" className="header-banner with-top-button" />
 					</div>
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
-							<img className={cx('icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? utils.cdn(props.ctx, `/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+							<img className={cx('icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/portal/images/bandwidthlost.png'} />
 						</span>
 						{canViewUser && !isSelf
 							? (
@@ -120,13 +124,13 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 											</span>
 											<span>
 												{' | '}
-												<PortalIcon name="posts" />
+												<PortalUIIcon name="posts" />
 												{' '}
 												{props.totalPosts}
 											</span>
 											<span>
 												{' | '}
-												<PortalIcon name="followers" />
+												<PortalUIIcon name="followers" />
 												{' '}
 												<span id="followers">{props.userContent.following_users.length - 1}</span>
 											</span>
@@ -134,7 +138,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												? (
 														<span>
 															{' | '}
-															<PortalIcon name="country" />
+															<PortalUIIcon name="country" />
 															{' '}
 															{props.user.country}
 														</span>
@@ -144,7 +148,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												? (
 														<span>
 															{' | '}
-															<PortalIcon name="birthday" />
+															<PortalUIIcon name="birthday" />
 															{' '}
 															{moment.utc(props.user.birthdate).format('MMM Do')}
 														</span>
@@ -154,19 +158,19 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												? (
 														<span>
 															{' | '}
-															<PortalIcon name="skill" />
+															<PortalUIIcon name="skill" />
 															{' '}
 															{props.userSettings.game_skill === 0
 																? (
-																		<>{props.ctx.lang.setup.experience_text.beginner}</>
+																		<><T k="setup.experience_text.beginner" /></>
 																	)
 																: props.userSettings.game_skill === 1
 																	? (
-																			<>{props.ctx.lang.setup.experience_text.intermediate}</>
+																			<><T k="setup.experience_text.intermediate" /></>
 																		)
 																	: props.userSettings.game_skill === 2
 																		? (
-																				<>{props.ctx.lang.setup.experience_text.expert}</>
+																				<><T k="setup.experience_text.expert" /></>
 																			)
 																		: <>N/A</>}
 														</span>
@@ -184,27 +188,27 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 									<menu className="tab-header user-page">
 										<li id="tab-header-post" className={cx('tab-button', { selected: props.selectedTab === 0 })}>
 											<a href={props.baseLink} data-sound="SE_WAVE_SELECT_TAB">
-												<span className="new-post">{props.ctx.lang.user_page.posts}</span>
+												<span className="new-post"><T k="user_page.posts" /></span>
 											</a>
 										</li>
 										<li id="tab-header-friends" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
 											<a href={props.baseLink + 'friends'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.friends}</span>
+												<span><T k="user_page.friends" /></span>
 											</a>
 										</li>
 										<li id="tab-header-following" className={cx('tab-button', { selected: props.selectedTab === 2 })}>
 											<a href={props.baseLink + 'following'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.following}</span>
+												<span><T k="user_page.following" /></span>
 											</a>
 										</li>
 										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3 })}>
 											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.user_page.followers}</span>
+												<span><T k="user_page.followers" /></span>
 											</a>
 										</li>
 										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4 })}>
 											<a href={props.baseLink + 'yeahs'} data-sound="SE_WAVE_SELECT_TAB">
-												<span>{props.ctx.lang.global.yeahs}</span>
+												<span><T k="global.yeahs" /></span>
 											</a>
 										</li>
 									</menu>
