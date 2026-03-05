@@ -21,7 +21,7 @@ import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { zodFallback } from '@/util';
 import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
-import { isPostingAllowed, isShotAllowed } from '@/services/juxt-web/routes/permissions';
+import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import type { InferSchemaType } from 'mongoose';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -128,14 +128,14 @@ communitiesRouter.get('/:communityID/create', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	const allowShot = isShotAllowed(community, auth().paramPackData);
+	const shotMode = getShotMode(community, auth().paramPackData);
 
 	const props = {
 		id: community.olive_community_id,
 		name: community.name,
 		url: `/posts/new`,
 		show: 'post',
-		allowShot
+		shotMode
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,

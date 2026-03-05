@@ -288,7 +288,7 @@ messagesRouter.get('/:message_id/create', async function (req, res) {
 		messagePid: partner.pid,
 		url: `/friend_messages/new`,
 		show: 'message-page',
-		allowShot: true
+		shotMode: 'allow'
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,

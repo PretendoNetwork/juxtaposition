@@ -32,11 +32,24 @@ export function isPostingAllowed(community: InferSchemaType<typeof CommunitySche
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
-export function isShotAllowed(community: InferSchemaType<typeof CommunitySchema>, pack: ParamPack | null): boolean {
+export type ShotMode = 'allow' | 'block' | 'force';
+const shotModes = ['allow', 'block', 'force'];
+
+export function getShotMode(community: InferSchemaType<typeof CommunitySchema>, pack: ParamPack | null): ShotMode {
 	if (pack === null) {
-		return false;
+		return 'block';
 	}
 
 	// Shots only on matching communities
-	return community.title_id.includes(pack.title_id);
+	if (!community.title_id.includes(pack.title_id) &&
+		!community.shot_extra_title_id?.includes(pack.title_id)) {
+		return 'block';
+	}
+
+	// Check for bad community schema
+	if (!shotModes.includes(community.shot_mode ?? '')) {
+		return 'allow'; // default
+	}
+
+	return community.shot_mode as ShotMode; // type check above
 }

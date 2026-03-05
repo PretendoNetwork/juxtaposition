@@ -84,7 +84,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 							))}
 						</ul>
 					</div>
-					{props.allowShot
+					{props.shotMode !== 'block'
 						? (
 								<div className="image-selector dropdown">
 									<label data-toggle="dropdown" className="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN">

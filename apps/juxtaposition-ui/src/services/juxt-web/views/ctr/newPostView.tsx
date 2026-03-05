@@ -93,9 +93,9 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								placeholder="Share your thoughts in a post to a community or to your followers."
 							/>
 						</CtrTabView>
-						{props.allowShot
+						{props.shotMode !== 'block'
 							? (
-									<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input">
+									<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input" data-shot-mode={props.shotMode}>
 										<div id="shot-msg">Screenshots are not ready yet. Check back soon!</div>
 									</CtrTabView>
 								)

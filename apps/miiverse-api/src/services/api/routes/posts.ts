@@ -219,13 +219,26 @@ function canPost(community: HydratedCommunityDocument, userSettings: HydratedSet
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
-export function isShotAllowed(community: HydratedCommunityDocument, pack: ParamPack | null): boolean {
+export type ShotMode = 'allow' | 'block' | 'force';
+const shotModes = ['allow', 'block', 'force'];
+
+export function getShotMode(community: HydratedCommunityDocument, pack: ParamPack | null): ShotMode {
 	if (pack === null) {
-		return false;
+		return 'block';
 	}
 
 	// Shots only on matching communities
-	return community.title_id.includes(pack.title_id);
+	if (!community.title_id.includes(pack.title_id) &&
+		!community.shot_extra_title_id?.includes(pack.title_id)) {
+		return 'block';
+	}
+
+	// Check for bad community schema
+	if (!shotModes.includes(community.shot_mode ?? '')) {
+		return 'allow'; // default
+	}
+
+	return community.shot_mode as ShotMode; // type check above
 }
 
 async function newPost(request: express.Request, response: express.Response): Promise<void> {
@@ -415,7 +428,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		post.painting_big = paintings.big;
 	}
 
-	if (screenshot && isShotAllowed(community, request.paramPack)) {
+	if (screenshot && getShotMode(community, request.paramPack) !== 'block') {
 		const screenshotUrls = await uploadScreenshot({
 			blob: screenshot,
 			pid: post.pid,
