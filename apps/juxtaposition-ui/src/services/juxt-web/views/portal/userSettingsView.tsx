@@ -36,7 +36,7 @@ export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode 
 										<span className="checkmark"></span>
 									</label>
 								</li>
-								<input type="submit" className="post-button fixed-bottom-button" value="Save" />
+								<input type="submit" className="post-button fixed-bottom-button" value={t('global.save')} />
 							</ul>
 						</div>
 					</form>

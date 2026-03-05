@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { FeedTabsProps, FeedViewProps } from '@/services/juxt-web/views/web/feed';
 
@@ -16,7 +17,7 @@ export function CtrFeedTabs(props: FeedTabsProps): ReactNode {
 				data-show-post-button="1"
 			>
 				<a href="/feed" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-					<span className="new-post">My Feed</span>
+					<span className="new-post"><T k="global.my_feed" /></span>
 				</a>
 			</li>
 			<li
@@ -26,7 +27,7 @@ export function CtrFeedTabs(props: FeedTabsProps): ReactNode {
 				})}
 			>
 				<a href="/feed/all" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-					<span>Global Feed</span>
+					<span><T k="global.global_feed" /></span>
 				</a>
 			</li>
 		</menu>

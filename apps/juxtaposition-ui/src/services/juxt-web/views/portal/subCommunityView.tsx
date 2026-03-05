@@ -2,6 +2,7 @@ import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalCommunityItem } from '@/services/juxt-web/views/portal/communityListView';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { CommunitySchema } from '@/models/communities';
@@ -18,9 +19,7 @@ export function PortalSubCommunityView(props: SubCommunityViewProps): ReactNode 
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title">
-						{props.community.name}
-						{' '}
-						Related Communities
+						<T k="community.related_to" values={{ community: props.community.name }} />
 					</h1>
 				</header>
 				<div className="body-content">

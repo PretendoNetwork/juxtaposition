@@ -6,6 +6,7 @@ import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { MessageThreadItemProps, MessageThreadViewProps } from '@/services/juxt-web/views/web/messageThread';
 
@@ -68,7 +69,7 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 						href={`/friend_messages/${props.conversation.id}/create`}
 						data-pjax="#body"
 					>
-						Post
+						<T k="new_post.new_post_short" />
 					</a>
 				</header>
 				<div className="body-content message-post-list" id="message-page">

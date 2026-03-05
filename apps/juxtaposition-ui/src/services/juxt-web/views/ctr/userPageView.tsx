@@ -35,7 +35,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 								<img className="icon" src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
 							</span>
 							<span className="community-name">
-								{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
+								{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
 								{ isUserDataViewable
 									? (
 											<>
@@ -70,7 +70,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 								: null }
 						</span>
 					</h1>
-					{isSelf ? <a id="header-communities-button" className="header-button left" href="/users/me/settings" data-pjax="#body">Settings</a> : null}
+					{isSelf ? <a id="header-communities-button" className="header-button left" href="/users/me/settings" data-pjax="#body"><T k="user_page.settings" /></a> : null}
 					{ canViewUser && !isSelf
 						? (
 								<button type="button" className={cx('small-button follow', { selected: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}>
@@ -117,7 +117,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 											? (
 													<li id="tab-header-requests" className="tab-button">
 														<a href="/news/friend_requests" data-sound="SE_WAVE_SELECT_TAB">
-															<span>Requests</span>
+															<span><T k="user_page.settings" /></span>
 														</a>
 													</li>
 												)

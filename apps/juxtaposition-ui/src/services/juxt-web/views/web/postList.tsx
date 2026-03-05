@@ -30,5 +30,5 @@ export function WebPostListView(props: PostListViewProps): ReactNode {
 }
 
 export function WebPostListClosedView(): ReactNode {
-	return <div className="headline"><h2>This community is closed to new posts.</h2></div>;
+	return <div className="headline"><h2><T k="community.closed" /></h2></div>;
 }

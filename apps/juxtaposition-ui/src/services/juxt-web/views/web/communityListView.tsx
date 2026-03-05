@@ -26,9 +26,7 @@ function WebCommunityItem(props: CommunityItemProps): ReactNode {
 			<img className="community-list-icon" src={url.cdn(`/icons/${props.community.olive_community_id}/128.png`)} />
 			<h2 className="community-list-title">{props.community.name}</h2>
 			<h4 className="community-list-followers">
-				{props.community.followers}
-				{' '}
-				followers
+				<T k="community.followers_count" values={{ count: props.community.followers }} />
 			</h4>
 		</a>
 	);
