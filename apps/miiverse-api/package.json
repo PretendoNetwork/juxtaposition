@@ -48,7 +48,7 @@
 		"@types/multer": "^2.0.0",
 		"@types/newman": "^5.3.4",
 		"@types/pako": "^2.0.4",
-		"@types/supertest": "^6.0.3",
+		"@types/supertest": "^7.2.0",
 		"axios": "^1.13.5",
 		"eslint": "^9.39.3",
 		"newman": "^6.2.2",
