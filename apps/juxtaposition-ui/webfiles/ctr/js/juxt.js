@@ -3,7 +3,7 @@ import './polyfills';
 import { initCheckboxes } from './controls/checkbox';
 import { initClientTabs } from './controls/ctabs';
 import { initNewPostView } from './new-post-view';
-import { pjaxBack, pjaxCanGoBack, pjaxHistory, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
+import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
 import { initPostPageView, initYeahButton } from './post';
 import { initToolbarConfigs } from './toolbar';
 import { classList } from './util';
@@ -47,6 +47,7 @@ function initMorePosts() {
 					el.parentElement.outerHTML = response;
 					initPosts();
 					initMorePosts();
+					pjaxRefresh();
 				} else {
 					el.parentElement.outerHTML = '';
 				}
@@ -112,9 +113,9 @@ function initTabs() {
 			var response = data.responseText;
 			if (response && data.status === 200) {
 				document.getElementsByClassName('tab-body')[0].innerHTML = response;
-				pjaxHistory.push(child.href);
 				initPosts();
 				initMorePosts();
+				pjaxRefresh();
 				cave.transition_end();
 			}
 		});
