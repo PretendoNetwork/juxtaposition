@@ -31,6 +31,10 @@ export default defineConfig([
 					{
 						from: ['./src/assets/**/*.json'],
 						to: ['./dist/assets']
+					},
+					{
+						from: ['./webfiles/global/*'],
+						to: ['./dist/webfiles/global']
 					}
 				]
 			})

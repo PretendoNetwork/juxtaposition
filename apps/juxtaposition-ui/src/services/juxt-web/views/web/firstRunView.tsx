@@ -8,7 +8,7 @@ export function WebFirstRunView(_props: FirstRunViewProps): ReactNode {
 	const extraHead = (
 		<>
 			<title>Juxtaposition Log In</title>
-			<link rel="stylesheet" href="/css/first_run.css" />
+			<link rel="stylesheet" href="/assets/web/css/first_run.css" />
 		</>
 	);
 
