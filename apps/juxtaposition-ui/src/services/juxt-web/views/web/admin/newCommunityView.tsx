@@ -49,8 +49,9 @@ export function WebNewCommunityView(_props: NewCommunityViewProps): ReactNode {
 						</select>
 					</div>
 					<div className="col-md-9">
-						<label className="labels" htmlFor="title_ids">Title IDs (comma separated list)</label>
-						<input id="title-ids" name="title_ids" type="text" className="form-control" placeholder="1407375153678336, 1407375153685760, 1407375153686016" value="" />
+						<label className="labels" htmlFor="title_ids">Title IDs (hex)</label>
+						<textarea rows={10} data-input-admin-title-ids="#title-ids"></textarea>
+						<input id="title-ids" name="title_ids" type="hidden" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="browserIcon">Browser Icon (128px x 128px)</label>
@@ -104,6 +105,19 @@ export function WebNewCommunityView(_props: NewCommunityViewProps): ReactNode {
 						<div className="form-switch">
 							<input className="form-check-input" type="checkbox" id="has_shop_page" name="has_shop_page" />
 						</div>
+					</div>
+					<div className="col-md-3">
+						<label className="labels" htmlFor="shot_mode">Screenshot mode</label>
+						<select className="form-select" name="shot_mode" id="shot_mode">
+							<option value="allow" defaultChecked>Allow this game only (Default)</option>
+							<option value="block">Block all</option>
+							<option value="force">Allow, even if game disallows</option>
+						</select>
+					</div>
+					<div className="col-md-9">
+						<label className="labels" htmlFor="shot_extra_title_id">Extra screenshot titles (comma separated list)</label>
+						<textarea rows={10} data-input-admin-title-ids="#shot-extra-title-ids"></textarea>
+						<input id="shot-extra-title-ids" name="shot_extra_title_id" type="hidden" />
 					</div>
 					<div className="col-md-3">
 						<button className="btn btn-primary profile-button" type="submit">Save Community</button>
