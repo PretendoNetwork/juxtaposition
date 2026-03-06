@@ -76,15 +76,19 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 								<button
 									type="button"
 									className={cx('small-button follow', {
-										suggested: props.hasSubCommunities,
-										selected: props.isUserFollowing
+										suggested: props.hasSubCommunities
+
 									})}
 									evt-click="follow(this)"
 									data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 									data-url="/titles/follow"
 									data-community-id={community.olive_community_id}
 								>
-									<span className="sprite sp-yeah inline-sprite"></span>
+									<span className={cx('sprite sp-yeah inline-sprite', {
+										selected: props.isUserFollowing
+									})}
+									>
+									</span>
 								</button>
 							)
 						: null}
