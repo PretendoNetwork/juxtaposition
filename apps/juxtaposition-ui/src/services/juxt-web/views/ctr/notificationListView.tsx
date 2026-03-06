@@ -48,7 +48,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 											</span>
 										</>
 									)}
-						<a className="link" href={notif.link ?? '#'}>
+						<a className="link" href={notif.link ?? '#'} data-pjax="#body">
 							{' '}
 							<T k="notifications.new_follower" />
 						</a>
@@ -67,7 +67,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 			<>
 				<CtrIcon href={notif.link ?? undefined} src={notif.image ?? ''}></CtrIcon>
 				<div className="body">
-					<a href={notif.link ?? undefined}>
+					<a href={notif.link ?? undefined} data-pjax="#body">
 						<p style={{ color: 'black' }}>
 							<span>{notif.text}</span>
 							<span className="timestamp">

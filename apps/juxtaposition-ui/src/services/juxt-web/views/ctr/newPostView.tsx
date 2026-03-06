@@ -42,29 +42,31 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
 	const cache = useCache();
-	const { ctrBanner, ctrLegacy } = props;
+	const { bannerUrl, legacy } = props.community ? url.ctrHeader(props.community) : {};
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header
 				id="header"
 				style={{
-					background: ctrBanner ? `url('${ctrBanner}')` : ''
+					background: bannerUrl ? `url('${bannerUrl}')` : ''
 				}}
 				className={cx(
-					{ 'header-legacy': ctrLegacy }
+					{ 'header-legacy': legacy }
 				)}
 
 				data-toolbar-mode="wide"
 				data-toolbar-message={t('new_post.post_to') + ' ' + name}
 			>
 				<h1 id="page-title">
-					<T k="new_post.post_to" />
-					{' '}
-					{name}
+					<span className="community-name">
+						<T k="new_post.post_to" />
+						{' '}
+						{name}
+					</span>
 				</h1>
 			</header>
-			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
+			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1" encType="multipart/form-data">
 				<input type="hidden" name="community_id" value={props.id} />
 				<input type="hidden" name="bmp" value="true" />
 				<div className="add-post-page-content">
@@ -96,7 +98,18 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 						{props.shotMode !== 'block'
 							? (
 									<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input" data-shot-mode={props.shotMode}>
-										<div id="shot-msg">Screenshots are not ready yet. Check back soon!</div>
+										<div id="shot-preview" data-shot-preview="1"></div>
+
+										<div className="shot-picker">
+											<input type="radio" name="shot-type" className="shot top" data-shot="1" data-lls="shot-top"></input>
+											<input type="radio" name="shot-type" className="shot btm" data-shot="0" data-lls="shot-btm"></input>
+											<div id="shot-clear">
+												<div className="sprite sp-clear centred"></div>
+												<input type="radio" name="shot-type" data-shot-clear="1"></input>
+											</div>
+										</div>
+
+										<input type="file" name="shot" data-shot-upload="1" disabled></input>
 									</CtrTabView>
 								)
 							: null }

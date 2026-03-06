@@ -1,6 +1,5 @@
 // Script for the post page view (postPageView.tsx)
 import { deletePostById, empathyPostById } from './api';
-import { classList } from './util';
 
 function deletePost(this: HTMLElement, _e: Event): void {
 	var id = this.getAttribute('data-button-delete-post');
@@ -50,7 +49,7 @@ function yeahPost(this: HTMLInputElement, _e: Event): void {
 	var count = document.getElementById('count-' + id)!;
 	this.disabled = true;
 
-	if (classList.toggle(sprite, 'selected')) {
+	if (sprite.classList.toggle('selected')) {
 		count.innerText = inc(count.innerText, 1);
 		// @ts-expect-error incorrect upstream types for SE label
 		cave.snd_playSe('SE_OLV_MII_ADD');

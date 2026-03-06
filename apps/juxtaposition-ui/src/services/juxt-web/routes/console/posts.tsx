@@ -28,7 +28,8 @@ import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
-const upload = multer({ dest: 'uploads/' });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 export const postsRouter = express.Router();
 
 const postLimit = rateLimit({
@@ -136,7 +137,7 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
-postsRouter.post('/new', postLimit, upload.none(), async function (req, res) {
+postsRouter.post('/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
 	await newPost(req, res);
 });
 
@@ -242,7 +243,7 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
-postsRouter.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
+postsRouter.post('/:post_id/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
 	await newPost(req, res);
 });
 
@@ -270,7 +271,8 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		pid: parent.pid,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
-		shotMode
+		shotMode,
+		community
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
@@ -335,7 +337,7 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 });
 
 async function newPost(req: Request, res: Response): Promise<void> {
-	const { params, body, auth } = parseReq(req, {
+	const { params, body, files, auth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string().optional()
 		}),
@@ -350,7 +352,8 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			spoiler: z.stringbool().default(false),
 			is_app_jumpable: z.stringbool().default(false),
 			language_id: z.coerce.number().optional()
-		})
+		}),
+		files: ['shot']
 	});
 
 	const userSettings = await database.getUserSettings(auth().pid);
@@ -370,7 +373,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			}
 		}
 	}
-	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '')) {
+	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '' && files.shot.length == 0)) {
 		res.status(422);
 		return res.redirect('/posts/' + req.params.post_id.toString());
 	}
@@ -404,8 +407,10 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}
 	}
 	let screenshots = null;
-	if (body.screenshot && getShotMode(community, auth().paramPackData) !== 'block') {
+	if ((body.screenshot || files.shot.length === 1) &&
+		getShotMode(community, auth().paramPackData) !== 'block') {
 		screenshots = await uploadScreenshot({
+			buffer: files.shot[0]?.buffer,
 			blob: body.screenshot,
 			pid: auth().pid,
 			postId
