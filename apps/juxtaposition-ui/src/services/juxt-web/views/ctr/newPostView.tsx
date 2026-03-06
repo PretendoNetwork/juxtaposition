@@ -42,26 +42,28 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
 	const cache = useCache();
-	const { ctrBanner, ctrLegacy } = props;
+	const { bannerUrl, legacy } = props.community ? url.ctrHeader(props.community) : {};
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header
 				id="header"
 				style={{
-					background: ctrBanner ? `url('${ctrBanner}')` : ''
+					background: bannerUrl ? `url('${bannerUrl}')` : ''
 				}}
 				className={cx(
-					{ 'header-legacy': ctrLegacy }
+					{ 'header-legacy': legacy }
 				)}
 
 				data-toolbar-mode="wide"
 				data-toolbar-message={t('new_post.post_to') + ' ' + name}
 			>
 				<h1 id="page-title">
-					<T k="new_post.post_to" />
-					{' '}
-					{name}
+					<span className="community-name">
+						<T k="new_post.post_to" />
+						{' '}
+						{name}
+					</span>
 				</h1>
 			</header>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
