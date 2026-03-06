@@ -135,7 +135,8 @@ communitiesRouter.get('/:communityID/create', async function (req, res) {
 		name: community.name,
 		url: `/posts/new`,
 		show: 'post',
-		shotMode
+		shotMode,
+		community
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,

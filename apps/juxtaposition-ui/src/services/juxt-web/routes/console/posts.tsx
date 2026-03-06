@@ -270,7 +270,8 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		pid: parent.pid,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
-		shotMode
+		shotMode,
+		community
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
