@@ -4,6 +4,7 @@ import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalCommunityIcon } from '@/services/juxt-web/views/portal/components/ui/PortalCommunityIcon';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -45,12 +46,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 					</div>
 
 					<div className="community-info info-content with-header-banner">
-						<span className="icon-container">
-							<img
-								src={url.cdn(`/icons/${imageId}/128.png`)}
-								className="icon"
-							/>
-						</span>
+						<PortalCommunityIcon community={community} size="128"></PortalCommunityIcon>
 						{community.permissions.open
 							? (
 									<a

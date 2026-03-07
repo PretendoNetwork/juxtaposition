@@ -5,7 +5,6 @@ import type { MiiIconProps } from '@/services/juxt-web/views/web/components/ui/W
 
 export function CtrMiiIcon(props: MiiIconProps): ReactNode {
 	const url = useUrl();
-
 	const miiUrl = props.face_url ?? url.cdn(`/mii/${props.pid}/normal_face.png`);
 	const href = `/users/${props.pid}`;
 	const type = props.type ?? 'mii-icon';

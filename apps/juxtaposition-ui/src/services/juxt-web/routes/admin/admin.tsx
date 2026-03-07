@@ -451,6 +451,13 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		return res.sendStatus(422);
 	}
 
+	const iconPaths = {
+		32: icons.icon32,
+		48: icons.icon48,
+		64: icons.icon64,
+		96: icons.icon96,
+		128: icons.icon128
+	};
 	const document = {
 		platform_id: body.platform,
 		name: body.name,
@@ -467,6 +474,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		icon: icons.tgaBlob,
 		ctr_header: headers.ctr,
 		wup_header: headers.wup,
+		icon_paths: iconPaths,
 		title_id: body.title_ids,
 		community_id: communityId,
 		olive_community_id: communityId,
