@@ -68,7 +68,13 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 						<input type="file" id="browserIcon" data-image-preview accept="image/jpg" name="browserIcon" />
 					</div>
 					<div className="col-md-3">
-						<img src={url.cdn(`/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" id="browserIconPreview" />
+						{community.icon_paths
+							? (
+									<img src={url.cdn(community.icon_paths['128'])} data-image-preview-for="browserIcon" id="browserIconPreview" />
+								)
+							: (
+									<img src={url.cdn(`/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" id="browserIconPreview" />
+								)}
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="CTRbrowserHeader">3DS Browser Banner (400px x 220px)</label>
