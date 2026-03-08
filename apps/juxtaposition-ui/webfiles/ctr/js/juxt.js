@@ -228,7 +228,7 @@ document.addEventListener('PjaxDone', function () {
  * Ideally we never trigger this since we don't have page errors, but it happens,
  * especially when selfhosting. */
 document.addEventListener('error', (e) => {
-	var placeholder = '/images/placeholder.gif';
+	var placeholder = '/assets/ctr/images/placeholder.gif';
 	var target = e.target;
 	if (target.tagName === 'IMG' && target.getAttribute('src') !== placeholder) {
 		target.setAttribute('src', placeholder);

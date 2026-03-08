@@ -146,12 +146,12 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
 				<div className="community-top">
-					<img className="banner" src="/images/banner.png" alt="" />
+					<img className="banner" src="/assets/web/images/banner.png" alt="" />
 					<div className={cx('community-info', {
 						active: props.isOnline
 					})}
 					>
-						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/images/bandwidthlost.png'} />
+						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/web/images/bandwidthlost.png'} />
 						<h2 className="community-title">
 							{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
 							{ isUserDataViewable

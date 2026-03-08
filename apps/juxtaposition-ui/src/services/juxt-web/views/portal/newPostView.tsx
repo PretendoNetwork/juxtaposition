@@ -84,7 +84,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 					</div>
 					<div className="image-selector dropdown">
 						<label data-toggle="dropdown" className="dropdown-toggle" data-sound="SE_WAVE_BALLOON_OPEN">
-							<img className="preview-image" src="/images/add-post-no-image.png" />
+							<img className="preview-image" src="/assets/portal/images/add-post-no-image.png" />
 							<input type="checkbox" id="screenshot-toggle" name="_screenshot_value" />
 							<div className="image-selector-window dropdown-menu">
 								<menu className="screenshot-menu">

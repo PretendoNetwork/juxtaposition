@@ -23,7 +23,7 @@ export function PortalErrorView(props: ErrorViewProps): ReactNode {
 							</h2>
 						</div>
 						<p><T k="error.message" withNewline /></p>
-						<img className="lost" src="/images/bandwidthlost.png" />
+						<img className="lost" src="/assets/portal/images/bandwidthlost.png" />
 					</div>
 				</div>
 			</PortalPageBody>

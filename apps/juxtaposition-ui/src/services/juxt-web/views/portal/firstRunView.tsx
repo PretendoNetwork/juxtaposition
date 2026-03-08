@@ -70,8 +70,8 @@ export function PortalFirstRunView(_props: FirstRunViewProps): ReactNode {
 
 	const head = (
 		<>
-			<link rel="stylesheet" type="text/css" href="/css/firstrun.css" />
-			<script src="/js/firstrun.global.js"></script>
+			<link rel="stylesheet" type="text/css" href="/assets/portal/css/firstrun.css" />
+			<script src="/assets/portal/js/firstrun.global.js"></script>
 		</>
 	);
 
