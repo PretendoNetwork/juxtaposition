@@ -730,6 +730,9 @@ menu.tab-header.no-margin {
     font-size: 14px;
     color: #000;
 }
+.body .nick-name {
+    color: #000;
+}
 
 .message-post-list .post {
     background: transparent;
