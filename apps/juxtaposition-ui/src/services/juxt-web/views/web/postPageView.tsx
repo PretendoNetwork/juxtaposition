@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
@@ -24,7 +23,7 @@ export type PostPageViewProps = {
 function PostHead(props: PostPageViewProps): ReactNode {
 	const url = useUrl();
 	const post = props.post;
-	const pageTitle = t('post.title', { username: post.screen_name });
+	const pageTitle = T.str('post.title', { username: post.screen_name });
 
 	if (post.removed) {
 		return (

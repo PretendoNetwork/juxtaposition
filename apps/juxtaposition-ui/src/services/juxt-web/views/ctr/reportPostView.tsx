@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
@@ -10,7 +9,7 @@ export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 			<header
 				id="header"
 				data-toolbar-mode="wide"
-				data-toolbar-message={t('reporting.submit')}
+				data-toolbar-message={T.str('reporting.submit')}
 			>
 				<h1 id="page-title"><T k="reporting.title" /></h1>
 			</header>
@@ -40,7 +39,7 @@ export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 					name="message"
 					maxLength={280}
 					rows={4}
-					placeholder={t('reporting.additional_info_placeholder')}
+					placeholder={T.str('reporting.additional_info_placeholder')}
 				>
 				</textarea>
 				<input type="submit" id="submit" />
@@ -51,7 +50,7 @@ export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 
 export function CtrReportPostPage(props: ReportPostViewProps): ReactNode {
 	return (
-		<CtrRoot title={t('reporting.title')}>
+		<CtrRoot title={T.str('reporting.title')}>
 			<CtrPageBody>
 				<CtrReportPostView {...props} />
 			</CtrPageBody>

@@ -1,5 +1,4 @@
 import cx from 'classnames';
-import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
@@ -92,7 +91,7 @@ export function CtrNotificationListView(props: NotificationListViewProps): React
 
 export function CtrNotificationWrapperView(props: NotificationWrapperViewProps): ReactNode {
 	return (
-		<CtrRoot title={t('global.notifications_and_messages')}>
+		<CtrRoot title={T.str('global.notifications_and_messages')}>
 			<CtrPageBody>
 				<header
 					id="header"

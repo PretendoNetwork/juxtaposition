@@ -1,6 +1,5 @@
 import moment from 'moment';
 import cx from 'classnames';
-import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
@@ -58,7 +57,7 @@ export function PortalMessageThreadView(props: MessageThreadViewProps): ReactNod
 	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
 
 	return (
-		<PortalRoot title={t('global.messages')} onLoad="window.scrollTo(0, 50000);">
+		<PortalRoot title={T.str('global.messages')} onLoad="window.scrollTo(0, 50000);">
 			<PortalNavBar selection={3} />
 			<PortalPageBody>
 				<header id="header">

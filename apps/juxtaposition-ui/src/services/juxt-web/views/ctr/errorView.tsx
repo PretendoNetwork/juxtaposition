@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { Inline } from '@/services/juxt-web/views/common/components/Inline';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -6,7 +5,7 @@ import type { ReactNode } from 'react';
 import type { ErrorViewProps, FatalErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
 export function CtrErrorView(props: ErrorViewProps): ReactNode {
-	const title = t('error.title', { code: props.code });
+	const title = T.str('error.title', { code: props.code });
 
 	return (
 		<CtrRoot title={title}>

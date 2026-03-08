@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalPostView } from '@/services/juxt-web/views/portal/post';
@@ -13,7 +12,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 	const pageTitle = !post.removed ? post.screen_name : 'Removed Post';
 
 	return (
-		<PortalRoot title={t('global.activity_feed')}>
+		<PortalRoot title={T.str('global.activity_feed')}>
 			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">

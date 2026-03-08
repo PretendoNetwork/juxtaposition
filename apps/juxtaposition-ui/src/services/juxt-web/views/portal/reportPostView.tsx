@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -31,7 +30,7 @@ export function PortalReportPostView(props: ReportPostViewProps): ReactNode {
 							<option value="9"><T k="reporting.reason_other" /></option>
 						</select>
 					</div>
-					<textarea name="message" className="textarea-text" value="" maxLength={280} placeholder={t('reporting.additional_info_placeholder')}></textarea>
+					<textarea name="message" className="textarea-text" value="" maxLength={280} placeholder={T.str('reporting.additional_info_placeholder')}></textarea>
 				</div>
 				<input type="submit" className="post-button fixed-bottom-button" value="Submit" evt-click="wiiuBrowser.lockUserOperation(true);" />
 			</form>
@@ -41,7 +40,7 @@ export function PortalReportPostView(props: ReportPostViewProps): ReactNode {
 
 export function PortalReportPostPage(props: ReportPostViewProps): ReactNode {
 	return (
-		<PortalRoot title={t('reporting.title')}>
+		<PortalRoot title={T.str('reporting.title')}>
 			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<PortalReportPostView {...props} />

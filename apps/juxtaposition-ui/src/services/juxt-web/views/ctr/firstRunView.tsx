@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
@@ -92,8 +91,8 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId="add-post-page" text={t('global.exit')} onClick="cave.exitApp()" />
-							<AboutSection.NextButton currentId={sections.welcome} nextId={sections.beta} text={t('global.next')} />
+							<AboutSection.BackButton currentId="add-post-page" text={T.str('global.exit')} onClick="cave.exitApp()" />
+							<AboutSection.NextButton currentId={sections.welcome} nextId={sections.beta} text={T.str('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.beta}>
@@ -108,8 +107,8 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.beta} previousId={sections.welcome} text={t('global.back')} />
-							<AboutSection.NextButton currentId={sections.beta} nextId={sections.about} text={t('global.next')} />
+							<AboutSection.BackButton currentId={sections.beta} previousId={sections.welcome} text={T.str('global.back')} />
+							<AboutSection.NextButton currentId={sections.beta} nextId={sections.about} text={T.str('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.about}>
@@ -120,8 +119,8 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.about} previousId={sections.beta} text={t('global.back')} />
-							<AboutSection.NextButton currentId={sections.about} nextId={sections.manners} text={t('global.next')} />
+							<AboutSection.BackButton currentId={sections.about} previousId={sections.beta} text={T.str('global.back')} />
+							<AboutSection.NextButton currentId={sections.about} nextId={sections.manners} text={T.str('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.manners}>
@@ -170,8 +169,8 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.manners} previousId={sections.about} text={t('global.back')} />
-							<AboutSection.NextButton currentId={sections.manners} nextId={sections.analytics} text={t('global.next')} />
+							<AboutSection.BackButton currentId={sections.manners} previousId={sections.about} text={T.str('global.back')} />
+							<AboutSection.NextButton currentId={sections.manners} nextId={sections.analytics} text={T.str('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.analytics}>
@@ -182,8 +181,8 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.analytics} previousId={sections.manners} text={t('global.back')} />
-							<AboutSection.NextButton currentId={sections.analytics} nextId={sections.experience} text={t('global.next')} />
+							<AboutSection.BackButton currentId={sections.analytics} previousId={sections.manners} text={T.str('global.back')} />
+							<AboutSection.NextButton currentId={sections.analytics} nextId={sections.experience} text={T.str('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.experience}>
@@ -215,8 +214,8 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 								<br />
 							</div>
 
-							<AboutSection.BackButton currentId={sections.experience} previousId={sections.analytics} text={t('global.back')} />
-							<AboutSection.NextButton currentId={sections.experience} nextId={sections.ready} text={t('global.next')} />
+							<AboutSection.BackButton currentId={sections.experience} previousId={sections.analytics} text={T.str('global.back')} />
+							<AboutSection.NextButton currentId={sections.experience} nextId={sections.ready} text={T.str('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.ready}>
@@ -227,8 +226,8 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 								</p>
 							</AboutSection.Body>
 
-							<AboutSection.BackButton currentId={sections.ready} previousId={sections.experience} text={t('global.back')} />
-							<AboutSection.NextButton currentId={sections.ready} onClick="cave.snd_playBgm('BGM_CAVE_SYOKAI2');submitFirstRun()" sound="GL_OLV_INIT_END" nextId={sections.end} text={t('global.next')} />
+							<AboutSection.BackButton currentId={sections.ready} previousId={sections.experience} text={T.str('global.back')} />
+							<AboutSection.NextButton currentId={sections.ready} onClick="cave.snd_playBgm('BGM_CAVE_SYOKAI2');submitFirstRun()" sound="GL_OLV_INIT_END" nextId={sections.end} text={T.str('global.next')} />
 						</AboutSection.Root>
 
 						<AboutSection.Root id={sections.end}>

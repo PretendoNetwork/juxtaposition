@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { WebLoginRoot } from '@/services/juxt-web/views/web/login';
 import { PretendoLogo } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -10,7 +9,7 @@ export type LoginViewProps = {
 };
 
 export function WebLoginView(props: LoginViewProps): ReactNode {
-	const extraHead = <title>{t('login.title')}</title>;
+	const extraHead = <title>{T.str('login.title')}</title>;
 
 	return (
 		<WebLoginRoot head={extraHead}>

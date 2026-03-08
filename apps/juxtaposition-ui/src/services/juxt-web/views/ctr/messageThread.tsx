@@ -1,6 +1,5 @@
 import moment from 'moment';
 import cx from 'classnames';
-import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
@@ -58,7 +57,7 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 
 	return (
 		<CtrRoot
-			title={t('global.messages')}
+			title={T.str('global.messages')}
 			onLoad="window.scrollTo(0, 500000);"
 			data-toolbar-mode="normal"
 			data-toolbar-active-button="4"

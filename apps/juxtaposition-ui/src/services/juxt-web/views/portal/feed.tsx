@@ -1,5 +1,4 @@
 import cx from 'classnames';
-import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
@@ -36,7 +35,7 @@ export function PortalFeedTabs(props: FeedTabsProps): ReactNode {
 }
 
 export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
-	const title = t('global.activity_feed');
+	const title = T.str('global.activity_feed');
 	return (
 		<PortalRoot title={title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
 			<PortalNavBar selection={-1} />
@@ -60,7 +59,7 @@ export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
 }
 
 export function PortalGlobalFeedView(props: FeedViewProps): ReactNode {
-	const title = t('global.activity_feed');
+	const title = T.str('global.activity_feed');
 	return (
 		<PortalRoot title={title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
 			<PortalNavBar selection={-1} />

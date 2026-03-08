@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -7,7 +6,7 @@ import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSe
 
 export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode {
 	return (
-		<PortalRoot title={t('user_settings.profile_settings')}>
+		<PortalRoot title={T.str('user_settings.profile_settings')}>
 			<PortalNavBar selection={1} />
 			<PortalPageBody>
 				<header id="header"></header>
@@ -36,7 +35,7 @@ export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode 
 										<span className="checkmark"></span>
 									</label>
 								</li>
-								<input type="submit" className="post-button fixed-bottom-button" value={t('global.save')} />
+								<input type="submit" className="post-button fixed-bottom-button" value={T.str('global.save')} />
 							</ul>
 						</div>
 					</form>

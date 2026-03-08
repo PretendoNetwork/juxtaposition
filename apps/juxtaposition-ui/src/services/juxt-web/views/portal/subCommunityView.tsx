@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalCommunityItem } from '@/services/juxt-web/views/portal/communityListView';
@@ -14,7 +13,7 @@ export type SubCommunityViewProps = {
 
 export function PortalSubCommunityView(props: SubCommunityViewProps): ReactNode {
 	return (
-		<PortalRoot title={t('global.communities')} onLoad="stopLoading();">
+		<PortalRoot title={T.str('global.communities')} onLoad="stopLoading();">
 			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">

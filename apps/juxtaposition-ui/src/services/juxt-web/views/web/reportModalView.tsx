@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
@@ -35,8 +34,8 @@ export function WebReportModalView(): ReactNode {
 					<textarea name="message" value="" maxLength={280} placeholder="Enter additional comments or information"></textarea>
 				</div>
 				<div id="button-wrapper">
-					<input id="report-cancel-button" type="button" className="olv-modal-close-button fixed-bottom-button left" value={t('global.close')} />
-					<input id="report-submit-button" type="submit" className="post-button fixed-bottom-button" value={t('reporting.submit')} />
+					<input id="report-cancel-button" type="button" className="olv-modal-close-button fixed-bottom-button left" value={T.str('global.close')} />
+					<input id="report-submit-button" type="submit" className="post-button fixed-bottom-button" value={T.str('reporting.submit')} />
 				</div>
 			</form>
 		</div>

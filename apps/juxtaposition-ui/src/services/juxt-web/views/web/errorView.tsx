@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { WebLoginRoot } from '@/services/juxt-web/views/web/login';
 import { PretendoLogo } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -19,7 +18,7 @@ export type FatalErrorViewProps = {
 export function WebErrorView(props: ErrorViewProps): ReactNode {
 	const extraHead = (
 		<title>
-			{'Juxt - ' + t('error.title', { code: props.code })}
+			{'Juxt - ' + T.str('error.title', { code: props.code })}
 		</title>
 	);
 

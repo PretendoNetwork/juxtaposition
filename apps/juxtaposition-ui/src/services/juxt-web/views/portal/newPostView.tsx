@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -109,7 +108,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
 								<input type="radio" name="_post_type" value="body" defaultChecked data-sound="" />
-								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder={t('new_post.content_placeholder')} data-alert-text={t('user_settings.swearing')} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
+								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder={T.str('new_post.content_placeholder')} data-alert-text={T.str('user_settings.swearing')} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
 							</li>
 							<li className="textarea-menu-memo">
 								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" />
@@ -137,7 +136,7 @@ export function PortalNewPostPage(props: NewPostViewProps): ReactNode {
 	const cache = useCache();
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
-		<PortalRoot title={t('new_post.post_to', { user: name })}>
+		<PortalRoot title={T.str('new_post.post_to', { user: name })}>
 			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<PortalNewPostView {... props} />
