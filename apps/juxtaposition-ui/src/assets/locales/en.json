@@ -187,6 +187,24 @@
     "guest_text": "We can't verify your account at the moment, which likely means your are currently logging in with a Nintendo Network account. You will still be able to browse Juxt, but you will not be able to Yeah! posts or make posts of your own till you log in with a Pretendo Network account. For more information check the Discord server.",
     "guest_button": "I Understand"
   },
+  "reporting": {
+    "title": "Report Post",
+    "submit": "Submit Report",
+    "description": "You are about to report a post with content which violates the Juxtaposition Code of Conduct. This report will be sent to Pretendo's Juxtaposition administrators and not to the creator of the post.",
+    "label": "Reason:",
+    "additional_info_placeholder": "Enter additional comments or information",
+    "reason_spoiler": "Spoiler",
+    "reason_personal_info": "Personal Information",
+    "reason_violence": "Violent Content",
+    "reason_inappropiate": "Inappropriate/Harmful Conduct",
+    "reason_bullying": "Hateful/Bullying",
+    "reason_advertising": "Advertising",
+    "reason_nsfw": "Sexually Explicit",
+    "reason_piracy": "Piracy",
+    "reason_inappropiate_ingame": "Inappropriate Behavior in Game",
+    "reason_missing_images": "Missing Images",
+    "reason_other": "Other"
+  },
   "moderation": {
     "title": "Moderation",
     "silently_delete_post": "Silently delete",
