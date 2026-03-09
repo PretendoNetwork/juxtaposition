@@ -19,6 +19,29 @@ const PermissionsSchema = new Schema({
 	}
 });
 
+const IconPathsSchema = new Schema({
+	32: {
+		type: String,
+		required: true
+	},
+	48: {
+		type: String,
+		required: true
+	},
+	64: {
+		type: String,
+		required: true
+	},
+	96: {
+		type: String,
+		required: true
+	},
+	128: {
+		type: String,
+		required: true
+	}
+});
+
 export const CommunitySchema = new Schema({
 	platform_id: {
 		type: Number,
@@ -81,6 +104,10 @@ export const CommunitySchema = new Schema({
 	},
 	ctr_header: { type: String },
 	wup_header: { type: String },
+	icon_paths: {
+		type: IconPathsSchema,
+		required: true
+	},
 	title_ids: {
 		type: [String],
 		default: undefined
