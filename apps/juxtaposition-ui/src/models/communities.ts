@@ -35,6 +35,7 @@ export interface ICommunity {
 	icon: string;
 	ctr_header?: string;
 	wup_header?: string;
+	/** @deprecated Does not actually exist on any community. Use title_id */
 	title_ids?: string[]; // Does not exist on any community
 	title_id: string[];
 	community_id: string;
