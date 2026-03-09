@@ -20,9 +20,20 @@ export function CtrFeedTabs(props: FeedTabsProps): ReactNode {
 				</a>
 			</li>
 			<li
-				id="tab-header-global-feed"
+				id="tab-header-people-feed"
 				className={cx('tab-button', {
 					selected: props.selected === 1
+				})}
+				data-show-post-button="1"
+			>
+				<a href="/feed/people" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+					<span className="new-post"><T k="global.people_feed" /></span>
+				</a>
+			</li>
+			<li
+				id="tab-header-global-feed"
+				className={cx('tab-button', {
+					selected: props.selected === 2
 				})}
 			>
 				<a href="/feed/all" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
@@ -56,7 +67,7 @@ export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 	);
 }
 
-export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
+export function CtrPeopleFeedView(props: FeedViewProps): ReactNode {
 	const title = T.str('global.activity_feed');
 	return (
 		<CtrRoot title={title}>
@@ -70,6 +81,29 @@ export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrFeedTabs selected={1} />
+					<div className="tab-body post-list">
+						<CtrPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+					</div>
+				</div>
+			</CtrPageBody>
+		</CtrRoot>
+	);
+}
+
+export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
+	const title = T.str('global.activity_feed');
+	return (
+		<CtrRoot title={title}>
+			<CtrPageBody>
+				<header
+					id="header"
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="2"
+				>
+					<h1 id="page-title">{title}</h1>
+				</header>
+				<div className="body-content tab2-content" id="community-post-list">
+					<CtrFeedTabs selected={2} />
 					<div className="tab-body post-list">
 						<CtrPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>

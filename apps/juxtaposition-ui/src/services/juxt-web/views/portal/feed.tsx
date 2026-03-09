@@ -21,9 +21,20 @@ export function PortalFeedTabs(props: FeedTabsProps): ReactNode {
 				</a>
 			</li>
 			<li
-				id="tab-header-global-feed"
+				id="tab-header-people-feed"
 				className={cx('tab-button', {
 					selected: props.selected === 1
+				})}
+				data-show-post-button="1"
+			>
+				<a href="/feed/people" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+					<span className="new-post"><T k="global.people_feed" /></span>
+				</a>
+			</li>
+			<li
+				id="tab-header-global-feed"
+				className={cx('tab-button', {
+					selected: props.selected === 2
 				})}
 			>
 				<a href="/feed/all" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
@@ -58,7 +69,7 @@ export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
 	);
 }
 
-export function PortalGlobalFeedView(props: FeedViewProps): ReactNode {
+export function PortalPeopleFeedView(props: FeedViewProps): ReactNode {
 	const title = T.str('global.activity_feed');
 	return (
 		<PortalRoot title={title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
@@ -73,6 +84,30 @@ export function PortalGlobalFeedView(props: FeedViewProps): ReactNode {
 				</div>
 				<div className="body-content" id="activity-feed">
 					<PortalFeedTabs selected={1} />
+					<div className="tab-body post-list">
+						<PortalPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+					</div>
+				</div>
+			</PortalPageBody>
+		</PortalRoot>
+	);
+}
+
+export function PortalGlobalFeedView(props: FeedViewProps): ReactNode {
+	const title = T.str('global.activity_feed');
+	return (
+		<PortalRoot title={title} onLoad="stopLoading();wiiuBrowser.lockUserOperation(false);">
+			<PortalNavBar selection={-1} />
+			<PortalPageBody>
+				<header id="header">
+					<h1 id="page-title" className="left">{title}</h1>
+				</header>
+				<div id="new-post-button-container" className="none">
+					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more" /></a>
+					<div id="new-post"></div>
+				</div>
+				<div className="body-content" id="activity-feed">
+					<PortalFeedTabs selected={2} />
 					<div className="tab-body post-list">
 						<PortalPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 					</div>
