@@ -6,7 +6,7 @@ import { deletePostById, getPostById } from '@/api/post';
 import { database } from '@/database';
 import { uploadHeaders, uploadIcons } from '@/images';
 import { logger } from '@/logger';
-import { COMMUNITY } from '@/models/communities';
+import { COMMUNITY, CommunityShotModes } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { humanDate, createLogEntry, getReasonMap, getUserAccountData, newNotification, updateCommunityHash } from '@/util';
@@ -428,7 +428,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
 			title_ids: zodCommaSeperatedList,
 			app_data: z.string().trim(),
-			shot_mode: z.enum(['allow', 'block', 'force']),
+			shot_mode: z.enum(CommunityShotModes),
 			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
@@ -563,7 +563,7 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
 			title_ids: zodCommaSeperatedList,
 			app_data: z.string().trim(),
-			shot_mode: z.enum(['allow', 'block', 'force']),
+			shot_mode: z.enum(CommunityShotModes),
 			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
