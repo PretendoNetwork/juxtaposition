@@ -18,6 +18,7 @@ import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/mana
 import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newCommunityView';
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
+import { zodCommaSeperatedList } from '@/services/juxt-web/routes/schemas';
 import type { ReportWithPost } from '@/services/juxt-web/views/web/admin/reportListView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
@@ -425,14 +426,10 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 			description: z.string().trim(),
 			type: z.coerce.number().min(0).max(3),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
-			title_ids: z.string().trim()
-				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
-				.pipe(z.array(z.string().min(1))),
+			title_ids: zodCommaSeperatedList,
 			app_data: z.string().trim(),
 			shot_mode: z.enum(['allow', 'block', 'force']),
-			shot_extra_title_id: z.string().trim()
-				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
-				.pipe(z.array(z.string().min(1)))
+			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
@@ -564,14 +561,10 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 			description: z.string().trim(),
 			type: z.coerce.number().min(0).max(3),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
-			title_ids: z.string().trim()
-				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
-				.pipe(z.array(z.string().min(1))),
+			title_ids: zodCommaSeperatedList,
 			app_data: z.string().trim(),
 			shot_mode: z.enum(['allow', 'block', 'force']),
-			shot_extra_title_id: z.string().trim()
-				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
-				.pipe(z.array(z.string().min(1)))
+			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
