@@ -3,6 +3,7 @@ import path from 'path';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { langsFolder } from '@/util';
+import type { i18n } from 'i18next';
 import type en from '@/assets/locales/en.json';
 import type { ParamPack } from '@/types/common/param-pack';
 
@@ -18,9 +19,9 @@ export const resources: Record<string, { ns: typeof en }> = {
 };
 
 const fallbackLang = 'EN';
-export function getLanguage(paramPack?: ParamPack | null): string {
+export function getLanguage(paramPack?: ParamPack | null): string | null {
 	if (!paramPack) {
-		return fallbackLang;
+		return null;
 	}
 
 	// Not currently possible to get any other languages, maybe we can add an in-app selector later?
@@ -39,17 +40,33 @@ export function getLanguage(paramPack?: ParamPack | null): string {
 		11: 'ZH'
 	};
 
-	return languageIdMap[paramPack.language_id] ?? fallbackLang;
+	return languageIdMap[paramPack.language_id] ?? null;
 }
 
-export const createI18n = (lang: string): any => i18next
-	.use(initReactI18next)
-	.init({
-		lng: lang,
+// Add a simple guard so we don't accidentally use non-localized i18n instances
+await i18next.init({
+	showSupportNotice: false, // Disable annoying log message
+	saveMissing: true,
+	missingKeyHandler() {
+		throw new Error('global usage of `i18next.t()` is not allowed. Use `T.str()` instead');
+	}
+});
+
+export async function createI18n(): Promise<i18n> {
+	const i18n = i18next.createInstance({
 		resources,
 		fallbackLng: fallbackLang,
 		defaultNS: 'ns',
 		interpolation: {
 			escapeValue: false // JSX already safes from xss
+		},
+		showSupportNotice: false, // Disable annoying log message
+		react: {
+			useSuspense: false
 		}
 	});
+
+	await i18n.use(initReactI18next).init();
+
+	return i18n;
+}

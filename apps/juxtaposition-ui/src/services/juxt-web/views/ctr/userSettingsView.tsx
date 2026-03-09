@@ -11,10 +11,10 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 					id="header"
 
 					data-toolbar-mode="wide"
-					data-toolbar-message="Save Settings"
+					data-toolbar-message={T.str('user_settings.save_action')}
 					data-toolbar-bgm="BGM_CAVE_SETTING"
 				>
-					<h1 id="page-title">User Settings</h1>
+					<h1 id="page-title"><T k="user_settings.profile_settings" /></h1>
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="tab-body">
@@ -41,7 +41,7 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 										<span className="checkmark"></span>
 									</label>
 								</li>
-								<input id="submit" type="submit" className="post-button fixed-bottom-button" value="Save" />
+								<input id="submit" type="submit" className="post-button fixed-bottom-button" value={T.str('global.save')} />
 							</ul>
 						</form>
 					</div>

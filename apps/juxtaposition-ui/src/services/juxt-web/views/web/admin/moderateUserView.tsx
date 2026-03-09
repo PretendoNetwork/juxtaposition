@@ -86,7 +86,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 											? (
 													<><T k="setup.experience_text.expert" /></>
 												)
-											: <>N/A</>}
+											: <><T k="user_page.game_experience_unknown" /></>}
 							</h4>
 						</div>
 						<div>

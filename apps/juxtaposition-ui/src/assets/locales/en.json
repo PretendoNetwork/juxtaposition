@@ -3,9 +3,14 @@
   "global": {
     "user_page": "User Page",
     "activity_feed": "Activity Feed",
+    "my_feed": "My Feed",
+    "global_feed": "Global Feed",
     "communities": "Communities",
     "messages": "Messages",
     "notifications": "Notifications",
+    "friend_requests": "Friend Requests",
+    "updates": "Updates",
+    "notifications_and_messages": "Notifications and Messages",
     "go_back": "Go Back",
     "back": "Back",
     "yeahs": "Yeahs",
@@ -15,7 +20,27 @@
     "close": "Close",
     "save": "Save",
     "exit": "Exit",
-    "next": "Next"
+    "next": "Next",
+    "search": "Search..."
+  },
+  "login": {
+    "title": "Juxtaposition Log In",
+    "heading": "Juxtaposition Sign in",
+    "sub_title": "Enter your account details below",
+    "username": "Username",
+    "password": "Password",
+    "forgot_password": "Forgot your password?",
+    "no_account": "Don't have an account?",
+    "login_action": "Login",
+    "no_account_setup": "Account Creation is only available when you have a linked Wii U or 3DS."
+  },
+  "error": {
+    "title": "Error {{code}}",
+    "heading": "Error {{code}: {{message}}",
+    "message": "Whoops! Looks like we couldn't find the page you're looking for.<newline/>Double-check your link or try again later",
+    "no_access": "You are not authorized to access this application ({{code}})",
+    "message_web": "View current <status>server status</status>.<newline/>Or, <home>go back to the homepage</home>",
+    "error_details": "Request ID: {{id}}"
   },
   "all_communities": {
     "text": "All Communities",
@@ -30,17 +55,23 @@
     "follow": "Follow Community",
     "following": "Following",
     "followers": "Followers",
+    "followers_count": "{{count}} followers",
     "posts": "Posts",
     "tags": "Tags",
+    "tags_not_applicable": "N/A",
     "recent": "Recent Posts",
     "popular": "Popular Posts",
     "verified": "Verified Posts",
-    "new": "New Post"
+    "new": "New Post",
+    "related": "Related Communities",
+    "related_to": "{{community}} Related Communities",
+    "closed": "This community is closed to new posts."
   },
   "user_page": {
     "country": "Country",
     "birthday": "Birthday",
     "game_experience": "Game Experience",
+    "game_experience_unknown": "Unknown",
     "posts": "Posts",
     "friends": "Friends",
     "following": "Following",
@@ -52,7 +83,11 @@
     "unfriend": "Unfriend",
     "no_friends": "No Friends",
     "no_following": "Not Following Anyone",
-    "no_followers": "No Followers"
+    "no_followers": "No Followers",
+    "friend_requests": "Requests",
+    "settings": "Settings",
+    "deleted": "Deleted User",
+    "banned": "Banned User"
   },
   "user_settings": {
     "profile_settings": "Profile Settings",
@@ -61,25 +96,54 @@
     "show_game": "Show Game Experience on Profile",
     "show_comment": "Show Comment on Profile",
     "profile_comment": "Profile Comment",
-    "swearing": "Profile comment cannot contain explicit language."
+    "swearing": "Profile comment cannot contain explicit language.",
+    "save_action": "Save Settings",
+    "gdpr_download": "Download User Data",
+    "gdpr_download_action": "Download"
   },
   "activity_feed": {
     "empty": "It's empty here. Try following someone!"
   },
   "notifications": {
     "none": "No notifications.",
-    "new_follower": "followed you!"
+    "new_follower": "<follower_one /> followed you!",
+    "new_follower:multiple": "<follower_one />, <follower_two /> followed you!",
+    "new_follower_other": "<follower_one />, <follower_two />, and {{count_other}} other followed you!",
+    "new_follower_other:multiple": "<follower_one />, <follower_two />, and {{count_other}} others followed you!"
+  },
+  "friend_requests": {
+    "none": "No Friend Requests"
   },
   "new_post": {
     "new_post_text": "New Post",
-    "post_to": "Post to",
+    "new_post_short": "Post",
+    "post_to": "Post to {{user}}",
     "text_hint": "Tap here to make a post.",
-    "swearing": "Post cannot contain explicit language."
+    "swearing": "Post cannot contain explicit language.",
+    "content_placeholder": "Share your thoughts in a post to a community or to your followers.",
+    "screenshots_coming_soon": "Screenshots are not ready yet. Check back soon!",
+    "no_screenshot": "No Screenshot",
+    "spoiler_label": "Spoiler",
+    "painting_close": "Cancel",
+    "painting_submit": "OK"
+  },
+  "post": {
+    "title": "Post by {{username}}",
+    "heading": "Post",
+    "yeahs_count:one": "<count/> person gave this post a yeah.",
+    "yeahs_count:multiple": "<count/> people gave this post a yeah.",
+    "show_spoiler": "Show Spoiler",
+    "reply_post": "Reply",
+    "report_post": "Report post",
+    "delete_post": "Delete post",
+    "removed": "Post has been removed.",
+    "copy_link": "Copy link"
   },
   "messages": {
     "coming_soon": "No Messages"
   },
   "setup": {
+    "title": "Juxtaposition Setup",
     "welcome": "Welcome to Juxtaposition!",
     "welcome_text": "Juxt is a gaming community that connects people from all over the world using Mii characters. Use Juxt to share your gaming experiences and meet people from around the world.",
     "beta": "Beta Disclaimer",
@@ -122,5 +186,28 @@
     "guest": "Guest Mode",
     "guest_text": "We can't verify your account at the moment, which likely means your are currently logging in with a Nintendo Network account. You will still be able to browse Juxt, but you will not be able to Yeah! posts or make posts of your own till you log in with a Pretendo Network account. For more information check the Discord server.",
     "guest_button": "I Understand"
+  },
+  "reporting": {
+    "title": "Report Post",
+    "submit": "Submit Report",
+    "description": "You are about to report a post with content which violates the Juxtaposition Code of Conduct. This report will be sent to Pretendo's Juxtaposition administrators and not to the creator of the post.",
+    "label": "Reason:",
+    "additional_info_placeholder": "Enter additional comments or information",
+    "reason_spoiler": "Spoiler",
+    "reason_personal_info": "Personal Information",
+    "reason_violence": "Violent Content",
+    "reason_inappropiate": "Inappropriate/Harmful Conduct",
+    "reason_bullying": "Hateful/Bullying",
+    "reason_advertising": "Advertising",
+    "reason_nsfw": "Sexually Explicit",
+    "reason_piracy": "Piracy",
+    "reason_inappropiate_ingame": "Inappropriate Behavior in Game",
+    "reason_missing_images": "Missing Images",
+    "reason_other": "Other"
+  },
+  "moderation": {
+    "title": "Moderation",
+    "silently_delete_post": "Silently delete",
+    "moderate_user": "Moderate User"
   }
 }

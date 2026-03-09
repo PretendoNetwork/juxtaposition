@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
@@ -30,7 +29,7 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 
 export function PortalCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
-		<PortalRoot title={t('all_communities.text')} onLoad="stopLoading();">
+		<PortalRoot title={T.str('all_communities.text')} onLoad="stopLoading();">
 			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">
@@ -53,7 +52,7 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 
 export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): ReactNode {
 	return (
-		<PortalRoot title={t('global.communities')} onLoad="stopLoading();">
+		<PortalRoot title={T.str('global.communities')} onLoad="stopLoading();">
 			<PortalNavBar selection={2} />
 			<PortalPageBody>
 				<header id="header">

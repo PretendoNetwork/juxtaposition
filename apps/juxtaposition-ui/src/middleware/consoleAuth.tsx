@@ -80,7 +80,7 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 	}
 
 	response.locals.uaIsConsole = uaIsConsole;
-	response.locals.lang = getLanguage(request.paramPackData);
+	response.changeLanguage(getLanguage(request.paramPackData));
 	response.locals.pid = request.pid;
 	return next();
 };

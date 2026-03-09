@@ -7,6 +7,7 @@ import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
+import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationSchema } from '@/models/notifications';
 
 export type NotificationWrapperViewProps = {
@@ -28,6 +29,18 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	const notif = props.notification;
 	if (notif.type === 'follow') {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
+
+		let i18nKey: TranslationKey = 'notifications.new_follower';
+		if (notif.users.length === 2) {
+			i18nKey = 'notifications.new_follower:multiple';
+		}
+		if (notif.users.length === 3) {
+			i18nKey = 'notifications.new_follower_other';
+		}
+		if (notif.users.length > 3) {
+			i18nKey = 'notifications.new_follower_other:multiple';
+		}
+
 		return (
 			<div className="hover">
 				<a href={`/users/${notif.objectID}`} className="icon-container notify">
@@ -35,37 +48,19 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 				</a>
 				<a className="body" href={notif.link ?? '#'}>
 					<span className="text">
-						{notif.users.length === 1
-							? <NickName userId={notif.objectID} />
-							: notif.users.length === 2
-								? (
-										<>
-											<NickName userId={notif.objectID} />
-											<span>
-												and
-												{' '}
-												<NickName userId={notif.users[0].user} />
-											</span>
-										</>
-									)
-								: (
-										<>
-											<NickName userId={notif.objectID} />
-											{', '}
-											<NickName userId={notif.users[0].user} />
-											{', '}
-											<span>
-												and
-												{' '}
-												<span className="nick-name">
-													{notif.users.length - 2}
-													{' '}
-													other(s)
-												</span>
-											</span>
-										</>
-									)}
-						<span className="link"><T k="notifications.new_follower" /></span>
+						<span className="link">
+							<T
+								k={i18nKey}
+								values={{
+									count: notif.users.length,
+									count_other: Math.max(0, notif.users.length - 2)
+								}}
+								components={{
+									follower_one: <NickName userId={notif.objectID} />,
+									follower_two: <NickName userId={notif.users[0]?.user} />
+								}}
+							/>
+						</span>
 						<span className="timestamp">
 							{' '}
 							{moment(notif.lastUpdated).fromNow()}

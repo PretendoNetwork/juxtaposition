@@ -29,13 +29,15 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 									href={`/titles/${community.olive_community_id}/create`}
 									data-pjax="#body"
 								>
-									Post
+									<T k="new_post.new_post_short" />
 								</a>
 							)
 						: null}
 					{props.hasSubCommunities
 						? (
-								<a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>
+								<a id="header-communities-button" href="related" data-pjax="#body">
+									<T k="community.related" />
+								</a>
 							)
 						: null}
 				</header>

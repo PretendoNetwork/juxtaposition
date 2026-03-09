@@ -556,6 +556,7 @@ iframe {
 
 #news-list-content li .text .nick-name {
   font-weight: 700;
+  color: var(--text);
 }
 
 #news-list-content li .text .link {
