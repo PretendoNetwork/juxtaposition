@@ -36,7 +36,7 @@
   },
   "error": {
     "title": "Error {{code}}",
-    "heading": "Error {{code}: {{message}}",
+    "heading": "Error {{code}}: {{message}}",
     "message": "Whoops! Looks like we couldn't find the page you're looking for.<newline/>Double-check your link or try again later",
     "no_access": "You are not authorized to access this application ({{code}})",
     "message_web": "View current <status>server status</status>.<newline/>Or, <home>go back to the homepage</home>",
