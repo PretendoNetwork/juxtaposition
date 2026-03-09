@@ -169,7 +169,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 
 	if (!community.permissions) {
 		community.permissions = {
-			open: community.open,
+			open: !!community.open,
 			minimum_new_post_access_level: 0,
 			minimum_new_comment_access_level: 0,
 			minimum_new_community_access_level: 0
