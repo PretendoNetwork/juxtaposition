@@ -15,6 +15,9 @@ export interface ICommunityPermissions {
 	minimum_new_community_access_level: number;
 }
 
+export const CommunityShotModes = ['allow', 'block', 'force'] as const;
+export type CommunityShotMode = typeof CommunityShotModes[number];
+
 /* This type needs to reflect "reality" as it is in the DB
  * Thus, all the optionals, since some legacy documents are missing many fields
  */
@@ -44,7 +47,7 @@ export interface ICommunity {
 	app_data: string;
 	user_favorites?: number[];
 	permissions: ICommunityPermissions;
-	shot_mode?: string;
+	shot_mode?: CommunityShotMode;
 	shot_extra_title_id?: string[];
 }
 // Fields that have "default: " in the Mongoose schema should also be listed here to make them optional

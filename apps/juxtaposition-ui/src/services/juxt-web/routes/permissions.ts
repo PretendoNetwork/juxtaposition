@@ -1,6 +1,6 @@
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { CommunitySchema } from '@/models/communities';
+import type { CommunitySchema, CommunityShotMode } from '@/models/communities';
 import type { PostSchema } from '@/models/post';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { PostDto } from '@/api/post';
@@ -32,10 +32,7 @@ export function isPostingAllowed(community: InferSchemaType<typeof CommunitySche
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
-export type ShotMode = 'allow' | 'block' | 'force';
-const shotModes = ['allow', 'block', 'force'];
-
-export function getShotMode(community: InferSchemaType<typeof CommunitySchema>, pack: ParamPack | null): ShotMode {
+export function getShotMode(community: InferSchemaType<typeof CommunitySchema>, pack: ParamPack | null): CommunityShotMode {
 	if (pack === null) {
 		return 'block';
 	}
@@ -46,10 +43,5 @@ export function getShotMode(community: InferSchemaType<typeof CommunitySchema>, 
 		return 'block';
 	}
 
-	// Check for bad community schema
-	if (!shotModes.includes(community.shot_mode ?? '')) {
-		return 'allow'; // default
-	}
-
-	return community.shot_mode as ShotMode; // type check above
+	return community.shot_mode as CommunityShotMode; // type validated by database
 }

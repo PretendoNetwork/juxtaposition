@@ -23,7 +23,7 @@ import { uploadPainting, uploadScreenshot } from '@/images';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
-import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { CommunityShotMode, HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 import type { ParamPack } from '@/types/common/param-pack';
 
@@ -219,10 +219,7 @@ function canPost(community: HydratedCommunityDocument, userSettings: HydratedSet
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
-export type ShotMode = 'allow' | 'block' | 'force';
-const shotModes = ['allow', 'block', 'force'];
-
-export function getShotMode(community: HydratedCommunityDocument, pack: ParamPack | null): ShotMode {
+export function getShotMode(community: HydratedCommunityDocument, pack: ParamPack | null): CommunityShotMode {
 	if (pack === null) {
 		return 'block';
 	}
@@ -233,12 +230,7 @@ export function getShotMode(community: HydratedCommunityDocument, pack: ParamPac
 		return 'block';
 	}
 
-	// Check for bad community schema
-	if (!shotModes.includes(community.shot_mode ?? '')) {
-		return 'allow'; // default
-	}
-
-	return community.shot_mode as ShotMode; // type check above
+	return community.shot_mode as CommunityShotMode; // type validated by database
 }
 
 async function newPost(request: express.Request, response: express.Response): Promise<void> {

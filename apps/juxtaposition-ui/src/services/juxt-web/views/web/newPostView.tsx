@@ -1,6 +1,7 @@
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
+import type { CommunityShotMode } from '@/models/communities';
 
 const empathies = [
 	{
@@ -50,7 +51,7 @@ export type NewPostViewProps = {
 	url: string;
 	show: string;
 	messagePid?: number;
-	shotMode: string; // 'allow' | 'block' | 'force'
+	shotMode: CommunityShotMode;
 	// ctr only
 	ctrBanner?: string;
 	ctrLegacy?: boolean;
