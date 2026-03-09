@@ -3,7 +3,7 @@ import { GET } from './xhr';
 var elements: string = '';
 var selectors: string[] = [];
 var href: string = '';
-export var pjaxHistory: string[] = [];
+var pjaxHistory: string[] = [];
 var PjaxRequest = document.createEvent('Event');
 var PjaxDone = document.createEvent('Event');
 
@@ -82,4 +82,11 @@ export function pjaxBack(): void {
 	}
 	var url = pjaxHistory.pop()!;
 	pjaxLoadUrl(url, false);
+}
+
+export function pjaxPushHistory(url: string): void {
+	if (href.indexOf(url) === -1) {
+		pjaxHistory.push(href);
+	}
+	href = url;
 }

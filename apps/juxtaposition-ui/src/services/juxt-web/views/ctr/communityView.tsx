@@ -3,6 +3,7 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostListClosedView } from '@/services/juxt-web/views/ctr/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -19,7 +20,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 					style={{
 						background: `url('${bannerUrl}')`
 					}}
-					className={cx({
+					className={cx('buttons', {
 						'header-legacy': legacy
 					})}
 
@@ -92,14 +93,16 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="community-info info-content with-header-banner">
 					</div>
-					<menu className="tab-header">
-						<li id="tab-header-post" className={cx('tab-button', { selected: props.feedType === 0 })}>
-							<a href={`/titles/${community.olive_community_id}/new`} data-sound="SE_WAVE_SELECT_TAB"><span className="new-post"><T k="community.recent" /></span></a>
-						</li>
-						<li id="tab-header-hot-post" className={cx('tab-button', { selected: props.feedType === 1 })}>
-							<a href={`/titles/${community.olive_community_id}/hot`} data-sound="SE_WAVE_SELECT_TAB"><span><T k="community.popular" /></span></a>
-						</li>
-					</menu>
+					<CtrNavTabs target=".tab-body">
+						<CtrNavTabsRow>
+							<CtrNavTab href={`/titles/${community.olive_community_id}/new`} selected={props.feedType === 0}>
+								<T k="community.recent" />
+							</CtrNavTab>
+							<CtrNavTab href={`/titles/${community.olive_community_id}/hot`} selected={props.feedType === 1}>
+								<T k="community.popular" />
+							</CtrNavTab>
+						</CtrNavTabsRow>
+					</CtrNavTabs>
 					<div className="tab-body post-list">
 						{!community.permissions.open ? <CtrPostListClosedView /> : null}
 						{props.children}

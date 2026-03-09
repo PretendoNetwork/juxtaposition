@@ -3,11 +3,12 @@ import './polyfills';
 import { initCheckboxes } from './controls/checkbox';
 import { initClientTabs } from './controls/ctabs';
 import { initNewPostView } from './new-post-view';
-import { pjaxBack, pjaxCanGoBack, pjaxHistory, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
+import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
 import { initPostPageView, initYeahButton } from './post';
 import { initToolbarConfigs } from './toolbar';
 import { classList } from './util';
 import { GET, POST } from './xhr';
+import { initNavTabs } from './components/ui/CtrNavTabs';
 
 setInterval(checkForUpdates, 30000);
 
@@ -32,7 +33,7 @@ cave.toolbar_setCallback(5, function () {
 });
 cave.toolbar_setCallback(8, function () { });
 
-function initMorePosts() {
+export function initMorePosts() {
 	var els = document.querySelectorAll('.load-more[data-href]');
 	if (!els) {
 		return;
@@ -54,7 +55,7 @@ function initMorePosts() {
 		});
 	}
 }
-function initPosts() {
+export function initPosts() {
 	var els = document.querySelectorAll('.post-content[data-href]');
 	if (!els) {
 		return;
@@ -87,39 +88,6 @@ function initSpoilers() {
 		});
 	}
 }
-function initTabs() {
-	var els = document.querySelectorAll('.tab-button');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].onclick = tabs;
-	}
-	function tabs(e) {
-		e.preventDefault();
-		cave.transition_begin();
-		var el = e.currentTarget;
-		var child = el.children[0];
-
-		for (var i = 0; i < els.length; i++) {
-			if (classList.contains(els[i], 'selected')) {
-				classList.remove(els[i], 'selected');
-			}
-		}
-		classList.add(el, 'selected');
-
-		GET(child.getAttribute('href') + '?pjax=true', function a(data) {
-			var response = data.responseText;
-			if (response && data.status === 200) {
-				document.getElementsByClassName('tab-body')[0].innerHTML = response;
-				pjaxHistory.push(child.href);
-				initPosts();
-				initMorePosts();
-				cave.transition_end();
-			}
-		});
-	}
-}
 
 function back() {
 	if (!pjaxCanGoBack()) {
@@ -144,7 +112,7 @@ function initAll() {
 	initPosts();
 	initMorePosts();
 	initNewPostView();
-	initTabs();
+	initNavTabs();
 	initPostPageView();
 	initClientTabs();
 	initCheckboxes();
