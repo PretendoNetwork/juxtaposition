@@ -44,16 +44,10 @@
   },
   "all_communities": {
     "text": "All Communities",
-    "announcements": "Announcements",
-    "ann_string": "Click here to view recent announcements!",
     "popular_places": "Popular Places",
-    "new_communities": "New Communities",
-    "show_all": "Show All",
-    "search": "Search communities..."
+    "new_communities": "New Communities"
   },
   "community": {
-    "follow": "Follow Community",
-    "following": "Following",
     "followers": "Followers",
     "followers_count": "{{count}} followers",
     "posts": "Posts",
@@ -61,8 +55,6 @@
     "tags_not_applicable": "N/A",
     "recent": "Recent Posts",
     "popular": "Popular Posts",
-    "verified": "Verified Posts",
-    "new": "New Post",
     "related": "Related Communities",
     "related_to": "{{community}} Related Communities",
     "closed": "This community is closed to new posts."
@@ -78,13 +70,6 @@
     "followers": "Followers",
     "follow_user": "Follow",
     "following_user": "Following",
-    "befriend": "Befriend",
-    "pending": "Pending",
-    "unfriend": "Unfriend",
-    "no_friends": "No Friends",
-    "no_following": "Not Following Anyone",
-    "no_followers": "No Followers",
-    "friend_requests": "Requests",
     "settings": "Settings",
     "deleted": "Deleted User",
     "banned": "Banned User"
@@ -94,9 +79,6 @@
     "show_country": "Show Country on Profile",
     "show_birthday": "Show Birthday on Profile",
     "show_game": "Show Game Experience on Profile",
-    "show_comment": "Show Comment on Profile",
-    "profile_comment": "Profile Comment",
-    "swearing": "Profile comment cannot contain explicit language.",
     "save_action": "Save Settings",
     "gdpr_download": "Download User Data",
     "gdpr_download_action": "Download"
@@ -115,10 +97,8 @@
     "none": "No Friend Requests"
   },
   "new_post": {
-    "new_post_text": "New Post",
     "new_post_short": "Post",
     "post_to": "Post to {{user}}",
-    "text_hint": "Tap here to make a post.",
     "swearing": "Post cannot contain explicit language.",
     "content_placeholder": "Share your thoughts in a post to a community or to your followers.",
     "screenshots_coming_soon": "Screenshots are not ready yet. Check back soon!",
@@ -182,10 +162,7 @@
     "ready": "Ready to Start Using Juxt",
     "ready_text": "First check out some communities and see what people from all over the world are posting about. Take this opportunity to familiarize yourself with Juxt. You might make some new discoveries along the way!",
     "done": "Have fun in Juxt!",
-    "done_button": "Let's Go!",
-    "guest": "Guest Mode",
-    "guest_text": "We can't verify your account at the moment, which likely means your are currently logging in with a Nintendo Network account. You will still be able to browse Juxt, but you will not be able to Yeah! posts or make posts of your own till you log in with a Pretendo Network account. For more information check the Discord server.",
-    "guest_button": "I Understand"
+    "done_button": "Let's Go!"
   },
   "reporting": {
     "title": "Report Post",
