@@ -2,9 +2,10 @@ import { createContext, useContext } from 'react';
 import { getCommunityHash, getUserHash } from '@/util';
 import type { ReactNode } from 'react';
 import type { Response } from 'express';
+import type { i18n } from 'i18next';
 
 export type RenderContextContent = {
-	lang: string;
+	i18n: i18n;
 	cdnUrl: string;
 	moderator: boolean;
 	developer: boolean;
@@ -34,12 +35,12 @@ export function buildContext(res: Response): RenderContextContent {
 	return {
 		usersMap: getUserHash(),
 		communityMap: getCommunityHash(),
-		lang: locals.lang,
 		cdnUrl: locals.cdnURL,
 		moderator: locals.moderator,
 		developer: locals.developer,
 		uaIsConsole: locals.uaIsConsole,
-		pid: locals.pid
+		pid: locals.pid,
+		i18n: res.i18n
 	};
 }
 

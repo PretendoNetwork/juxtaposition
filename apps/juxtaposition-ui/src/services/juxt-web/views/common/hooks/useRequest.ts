@@ -13,7 +13,7 @@ export type UseRequestValue = {
 export function useRequest(): UseRequestValue {
 	const ctx = useRenderContext();
 	return {
-		lang: ctx.lang,
+		lang: ctx.i18n.language,
 		userAgent: {
 			isConsole: ctx.uaIsConsole ?? false
 		}

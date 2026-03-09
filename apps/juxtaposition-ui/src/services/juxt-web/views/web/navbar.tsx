@@ -54,7 +54,7 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 											<a href="/admin/posts" className={selectedClasses(5)}>
 												<WebUIIcon name="hammer" />
 												<span id="news-badge" className="badge"></span>
-												<p>Moderation</p>
+												<p><T k="moderation.title" /></p>
 											</a>
 										</>
 									)

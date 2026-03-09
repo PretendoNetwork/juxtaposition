@@ -111,7 +111,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 								)
 							: null}
 						<span className="title">
-							{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
+							{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
 							{ isUserDataViewable ? pnidName : null}
 						</span>
 						<span className="text">
@@ -172,7 +172,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 																		? (
 																				<><T k="setup.experience_text.expert" /></>
 																			)
-																		: <>N/A</>}
+																		: <><T k="user_page.game_experience_unknown" /></>}
 														</span>
 													)
 												: null}

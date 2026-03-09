@@ -6,6 +6,7 @@ import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
+import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
 
 function CtrNotificationItem(props: NotificationItemProps): ReactNode {
@@ -13,44 +14,35 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 	const notif = props.notification;
 	if (notif.type === 'follow') {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
+
+		let i18nKey: TranslationKey = 'notifications.new_follower';
+		if (notif.users.length === 2) {
+			i18nKey = 'notifications.new_follower:multiple';
+		}
+		if (notif.users.length === 3) {
+			i18nKey = 'notifications.new_follower_other';
+		}
+		if (notif.users.length > 3) {
+			i18nKey = 'notifications.new_follower_other:multiple';
+		}
+
 		return (
 			<>
 				<CtrMiiIcon pid={Number(notif.objectID)} type="icon"></CtrMiiIcon>
 				<div className="body">
 					<p>
-						{notif.users.length === 1
-							? <NickName userId={notif.objectID} />
-							: notif.users.length === 2
-								? (
-										<>
-											<NickName userId={notif.objectID} />
-											<span>
-												and
-												{' '}
-												<NickName userId={notif.users[0].user} />
-											</span>
-										</>
-									)
-								: (
-										<>
-											<NickName userId={notif.objectID} />
-											{', '}
-											<NickName userId={notif.users[0].user} />
-											{', '}
-											<span>
-												and
-												{' '}
-												<span className="nick-name">
-													{notif.users.length - 2}
-													{' '}
-													other(s)
-												</span>
-											</span>
-										</>
-									)}
 						<a className="link" href={notif.link ?? '#'}>
-							{' '}
-							<T k="notifications.new_follower" />
+							<T
+								k={i18nKey}
+								values={{
+									count: notif.users.length,
+									count_other: Math.max(0, notif.users.length - 2)
+								}}
+								components={{
+									follower_one: <NickName userId={notif.objectID} />,
+									follower_two: <NickName userId={notif.users[0]?.user} />
+								}}
+							/>
 						</a>
 						<span className="timestamp">
 							{' '}
@@ -99,20 +91,20 @@ export function CtrNotificationListView(props: NotificationListViewProps): React
 
 export function CtrNotificationWrapperView(props: NotificationWrapperViewProps): ReactNode {
 	return (
-		<CtrRoot title="Notifications and Messages">
+		<CtrRoot title={T.str('global.notifications_and_messages')}>
 			<CtrPageBody>
 				<header
 					id="header"
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="4"
 				>
-					<h1 id="page-title">Notifications and Messages</h1>
+					<h1 id="page-title"><T k="global.notifications_and_messages" /></h1>
 				</header>
 				<div className="body-content tab2-content" id="news-page">
 					<menu className="tab-header no-margin">
 						<li id="tab-header-my-news" className={cx('tab-button', { selected: props.selectedTab === 0 })} data-show-post-button="1">
 							<a href="/news/my_news" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-								<span className="new-post">Updates</span>
+								<span className="new-post"><T k="global.updates" /></span>
 							</a>
 						</li>
 						<li id="tab-header-friend-request" className={cx('tab-button', { selected: props.selectedTab === 1 })}>

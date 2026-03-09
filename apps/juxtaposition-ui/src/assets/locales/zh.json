@@ -2,9 +2,9 @@
     "language": "简体中文",
     "global": {
         "user_page": "用户页面",
-        "activity_feed": "活动提要",
+        "activity_feed": "活动动态",
         "communities": "社区",
-        "messages": "通知",
+        "messages": "消息",
         "notifications": "通知",
         "go_back": "返回",
         "back": "返回",
@@ -20,7 +20,7 @@
     "all_communities": {
         "text": "所有社区",
         "announcements": "公告",
-        "ann_string": "点击这里来查看最近的公告！",
+        "ann_string": "点击这里查看最近的公告！",
         "popular_places": "热门地点",
         "new_communities": "新建社区",
         "show_all": "显示全部",
@@ -32,8 +32,8 @@
         "followers": "关注者",
         "posts": "帖子",
         "tags": "标签",
-        "recent": "最近的帖子",
-        "popular": "热门的帖子",
+        "recent": "最近帖子",
+        "popular": "热门帖子",
         "verified": "已被审核的帖子",
         "new": "新建帖子"
     },
@@ -48,20 +48,20 @@
         "follow_user": "关注",
         "following_user": "正在关注",
         "befriend": "添加好友",
-        "pending": "正在审核",
+        "pending": "待处理",
         "unfriend": "删除好友",
         "no_friends": "没有好友",
         "no_following": "不在关注任何人",
         "no_followers": "没有关注者"
     },
     "user_settings": {
-        "profile_settings": "用户设置",
-        "show_country": "在名牌上显示国家",
-        "show_birthday": "在名牌上显示生日",
-        "show_game": "在名牌上显示游戏经验",
-        "show_comment": "在名牌上显示评论",
-        "profile_comment": "用户评论",
-        "swearing": "名牌评论不能包含明确的语言。"
+        "profile_settings": "个人资料设置",
+        "show_country": "在个人资料显示国家/地区",
+        "show_birthday": "在个人资料显示生日",
+        "show_game": "在个人资料显示游戏经验",
+        "show_comment": "在个人资料显示评论",
+        "profile_comment": "个人资料评论",
+        "swearing": "个人资料评论不能包含露骨语言。"
     },
     "activity_feed": {
         "empty": "这里是空的。尝试关注某人！"
@@ -74,10 +74,10 @@
         "new_post_text": "新建帖子",
         "post_to": "发布到",
         "text_hint": "点击此处发布帖子。",
-        "swearing": "请勿在帖子中包含露骨语言。"
+        "swearing": "帖子不能包含露骨语言。"
     },
     "messages": {
-        "coming_soon": "消息尚未准备好。稍后检查！"
+        "coming_soon": "没有消息"
     },
     "setup": {
         "welcome": "欢迎来到Juxtaposition！",
@@ -99,7 +99,7 @@
             "fifth": "为了让 Juxt 成为每个人都喜欢的地方，我们要求您体谅其他用户。不要发布任何冒犯性的内容，帮助我们保持 Juxt 的愉快体验。",
             "sixth": "不要发布您的或他人的个人信息",
             "seventh": "在 Juxt 中认识某人与在现实生活中认识不同。永远不要与 Juxt 上的任何人分享您的电子邮件地址、家庭住址、工作或学校名称或其他个人信息，也不要分享任何其他人的信息。此外，如果您在 Juxt 遇到的某个人邀请您在现实世界中与他或她见面，不要接受。 Juxt 是一个在线社区，不应用于安排现实世界的聚会。",
-            "eighth": "不要发剧透",
+            "eighth": "不要发布剧透内容",
             "ninth": "有些人来到 Juxt 是为了寻找游戏的提示和技巧，而另一些人则想自己发现游戏的秘密。揭示游戏秘密或其故事的帖子都被称为“剧透”。如果发布的游戏内容可能会剧透，请务必在发送帖子前勾选“剧透”框。这样，不想被剧透的人就不会看到你的帖子。",
             "tenth": "违反行为准则",
             "eleventh": "我们的目标是让 Juxt 对每个人都充满乐趣。如果有人违反 Juxt 的行为准则，我们将采取措施，包括阻止违规用户或硬件。",
@@ -113,14 +113,14 @@
             "intermediate": "中等",
             "expert": "高级"
         },
-        "analytics": "Analytics",
+        "analytics": "分析",
         "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 来跟踪用户如何使用我们的服务。收集的数据包括但不限于访问时间、访问的页面以及在网站上花费的时间。此数据不会以任何方式附加到您身上，也不会被我们或 Cloudflare 用于广告。",
         "ready": "开始使用 Juxt",
         "ready_text": "首先看一看一些社区，看看大家都在发布什么。借此机会熟悉 Juxt。一路上你可能会有新发现！",
         "done": "在 Juxt 玩得开心！",
         "done_button": "我们走吧！",
         "guest": "访客模式",
-        "guest_text": "我们目前无法验证您的帐户，这可能意味着您目前正在使用 任天堂 Network 帐户登录。您仍然可以浏览 Juxt，但您将无发评论。在您使用 Pretendo Network 帐户登录之前，您可以发布或创建自己的帖子。有关更多信息，请查看 Discord。",
+        "guest_text": "我们目前无法验证您的账号，这可能意味着您目前正在使用 Nintendo Network 账号登录。您仍然可以浏览 Juxt，但您将无发评论。在您使用 Pretendo Network 账号登录之前，您可以发布或创建自己的帖子。有关更多信息，请查看 Discord 服务器。",
         "guest_button": "同意"
     }
 }

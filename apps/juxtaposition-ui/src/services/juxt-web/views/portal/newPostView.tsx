@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -58,9 +57,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header className="add-post-page-header">
 				<h1 className="page-title">
-					<T k="new_post.post_to" />
-					{' '}
-					{name}
+					<T k="new_post.post_to" values={{ user: name ?? '' }} />
 				</h1>
 			</header>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
@@ -102,7 +99,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 												</li>
 												<li className="button">
 													<input type="radio" name="_screenshot_value" value="none" data-sound="" evt-click="chooseScreenShot()" />
-													No Screenshot
+													<T k="new_post.no_screenshot" />
 												</li>
 											</menu>
 										</div>
@@ -115,7 +112,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 						<menu className="textarea-menu">
 							<li className="textarea-menu-text">
 								<input type="radio" name="_post_type" value="body" defaultChecked data-sound="" />
-								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..." data-alert-text={t('user_settings.swearing')} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
+								<textarea name="body" className="textarea-text" value="" maxLength={280} placeholder={T.str('new_post.content_placeholder')} data-alert-text={T.str('new_post.swearing')} evt-change="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert(el.getAttribute('data-alert-text'));}"></textarea>
 							</li>
 							<li className="textarea-menu-memo">
 								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" />
@@ -127,7 +124,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 						</menu>
 					</div>
 					<label className="checkbox-container spoiler-button">
-						Spoilers
+						<T k="new_post.spoiler_label" />
 						<input type="checkbox" id="spoiler" name="spoiler" value="true" />
 						<span className="checkmark"></span>
 					</label>
@@ -143,7 +140,7 @@ export function PortalNewPostPage(props: NewPostViewProps): ReactNode {
 	const cache = useCache();
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
-		<PortalRoot title={t('new_post.post_to') + ' ' + name}>
+		<PortalRoot title={T.str('new_post.post_to', { user: name })}>
 			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<PortalNewPostView {... props} />

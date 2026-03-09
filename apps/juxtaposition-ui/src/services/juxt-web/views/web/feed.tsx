@@ -30,7 +30,7 @@ export function WebFeedTabs(props: FeedTabsProps): ReactNode {
 						selected: props.selected == 0
 					})}
 				>
-					My Feed
+					<T k="global.my_feed" />
 				</a>
 				<a
 					id="all-feed"
@@ -39,7 +39,7 @@ export function WebFeedTabs(props: FeedTabsProps): ReactNode {
 						selected: props.selected == 1
 					})}
 				>
-					Global Feed
+					<T k="global.global_feed" />
 				</a>
 			</div>
 		</>
