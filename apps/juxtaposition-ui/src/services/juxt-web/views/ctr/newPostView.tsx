@@ -90,9 +90,14 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								placeholder={T.str('new_post.content_placeholder')}
 							/>
 						</CtrTabView>
-						<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input">
-							<div id="shot-msg"><T k="new_post.screenshots_coming_soon" /></div>
-						</CtrTabView>
+						{props.shotMode !== 'block'
+							? (
+									<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input" data-shot-mode={props.shotMode}>
+										<div id="shot-msg">Screenshots are not ready yet. Check back soon!</div>
+									</CtrTabView>
+								)
+							: null }
+
 						<CtrTabView name="_post_type" value="painting" sprite="sp-memo-input">
 							<img id="memo-img-input" src="" />
 							<input type="hidden" name="painting" />

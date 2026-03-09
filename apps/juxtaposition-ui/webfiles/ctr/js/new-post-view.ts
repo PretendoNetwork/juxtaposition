@@ -5,6 +5,7 @@ export function initNewPostView(): void {
 	if (!page) {
 		return;
 	}
+	var ctab = page.querySelector('[data-ctabs-control]')!;
 
 	// paintings
 	var memo_image = page.querySelector('img#memo-img-input')! as HTMLImageElement;
@@ -24,8 +25,15 @@ export function initNewPostView(): void {
 		setTimeout(memo, 75);
 	}
 	memo_image.addEventListener('click', delayedMemo);
-
-	// Set up tab control
-	var ctab = page.querySelector('[data-ctabs-control]')!;
 	ctabOnShown(ctab, 'painting', delayedMemo);
+
+	// screenshots
+	var shot_tab = page.querySelector('[data-shot-mode]') as HTMLElement | null;
+	if (shot_tab !== null) {
+		var shotMode = shot_tab.getAttribute('data-shot-mode')!;
+		// Hide on game's request
+		if (shotMode === 'allow' && !cave.capture_isEnabled()) {
+			shot_tab.style.display = 'none';
+		}
+	}
 }
