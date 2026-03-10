@@ -5,9 +5,10 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { CommunitySchema } from '@/models/communities';
+import type { CommunityDto } from '@/api/community';
 
 export type CommunityListViewProps = {
-	communities: InferSchemaType<typeof CommunitySchema>[];
+	communities: CommunityDto[];
 };
 
 export type CommunityOverviewViewProps = {
@@ -16,7 +17,7 @@ export type CommunityOverviewViewProps = {
 };
 
 export type CommunityItemProps = {
-	community: InferSchemaType<typeof CommunitySchema>;
+	community: CommunityDto | InferSchemaType<typeof CommunitySchema>;
 };
 
 function WebCommunityItem(props: CommunityItemProps): ReactNode {

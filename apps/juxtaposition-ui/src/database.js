@@ -38,27 +38,6 @@ export function notBanned() {
 	return { account_status: { $in: [0, 1] } };
 }
 
-async function getCommunities(numberOfCommunities, offset) {
-	verifyConnected();
-	if (!offset) {
-		offset = 0;
-	}
-	if (numberOfCommunities === -1) {
-		return COMMUNITY.find({ parent: null, type: [0, 2] }).skip(offset);
-	} else {
-		return COMMUNITY.find({ parent: null, type: [0, 2] }).skip(offset).limit(numberOfCommunities);
-	}
-}
-
-async function getCommunitiesFuzzySearch(search_key, limit, offset) {
-	verifyConnected();
-	if (limit === -1) {
-		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset);
-	} else {
-		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset).limit(limit);
-	}
-}
-
 async function getMostPopularCommunities(numberOfCommunities) {
 	verifyConnected();
 	return COMMUNITY.find({ parent: null, type: 0 }).sort({ followers: -1 }).limit(numberOfCommunities);
@@ -67,13 +46,6 @@ async function getMostPopularCommunities(numberOfCommunities) {
 async function getNewCommunities(numberOfCommunities) {
 	verifyConnected();
 	return COMMUNITY.find({ parent: null, type: 0 }).sort([['created_at', -1]]).limit(numberOfCommunities);
-}
-
-async function getSubCommunities(communityID) {
-	verifyConnected();
-	return COMMUNITY.find({
-		parent: communityID
-	});
 }
 
 async function getCommunityByTitleID(title_id) {
@@ -481,11 +453,8 @@ async function getLogsForTarget(targetPID, offset, limit) {
 
 export const database = {
 	connect,
-	getCommunities,
-	getCommunitiesFuzzySearch,
 	getMostPopularCommunities,
 	getNewCommunities,
-	getSubCommunities,
 	getCommunityByTitleID,
 	getCommunityByID,
 	getTotalPostsByCommunity,

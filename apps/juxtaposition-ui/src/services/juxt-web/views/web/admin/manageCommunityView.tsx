@@ -4,12 +4,11 @@ import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { CommunitySchema } from '@/models/communities';
+import type { CommunityDto } from '@/api/community';
 
 export type ManageCommunityViewProps = {
 	search?: string;
-	communities: InferSchemaType<typeof CommunitySchema>[];
+	communities: CommunityDto[];
 	hasNextPage: boolean;
 	page: number;
 };
