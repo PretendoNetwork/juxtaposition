@@ -97,9 +97,9 @@
         height: 100%;
     }
 
-        #shot-preview {
+    #shot-preview {
         float: right;
-        width: 200px; /* to do */
+        width: 200px;
         height: 120px;
 
         background-color: lightgray;
