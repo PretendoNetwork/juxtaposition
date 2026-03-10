@@ -37,7 +37,7 @@ jobs:
 
       - name: Log into the container registry
         if: ${{ env.SHOULD_PUSH_IMAGE == 'true' }}
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -89,7 +89,7 @@ jobs:
 
       - name: Log into the container registry
         if: ${{ env.SHOULD_PUSH_IMAGE == 'true' }}
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
