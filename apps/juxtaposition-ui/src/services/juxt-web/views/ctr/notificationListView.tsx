@@ -31,7 +31,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 				<CtrMiiIcon pid={Number(notif.objectID)} type="icon"></CtrMiiIcon>
 				<div className="body">
 					<p>
-						<a className="link" href={notif.link ?? '#'}>
+						<a className="link" href={notif.link ?? '#'} data-pjax="#body">
 							<T
 								k={i18nKey}
 								values={{
@@ -59,7 +59,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 			<>
 				<CtrIcon href={notif.link ?? undefined} src={notif.image ?? ''}></CtrIcon>
 				<div className="body">
-					<a href={notif.link ?? undefined}>
+					<a href={notif.link ?? undefined} data-pjax="#body">
 						<p style={{ color: 'black' }}>
 							<span>{notif.text}</span>
 							<span className="timestamp">
