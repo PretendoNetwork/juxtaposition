@@ -1,2 +1,2 @@
-export type { ModuleContext, ModuleControls, ModuleOptions, ModuleContainer } from "./modules";
+export type { ModuleRunContext, ModuleHydrateContext, ModuleControls, ModuleOptions, ModuleContainer } from "./modules";
 export { createModule, extractModulesFromInput, createModuleContainer } from "./modules";

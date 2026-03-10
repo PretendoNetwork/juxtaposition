@@ -1,11 +1,15 @@
-export type ModuleContext = {
+export type ModuleRunContext = {
+	doc: HTMLElement;
+}
+
+export type ModuleHydrateContext = {
 	el: HTMLElement;
 }
 
 export type ModuleControls = {
 	__type: "module";
 	id: string;
-	run: (ctx: ModuleContext) => void;
+	run: (ctx: ModuleRunContext) => void;
 }
 
 export type ModuleContainer = {
@@ -15,8 +19,10 @@ export type ModuleContainer = {
 
 export type ModuleOptions = {
 	id: string;
-	selector: string;
-	hydrate: (el: ModuleContext) => void;
+	init?: (el: ModuleRunContext) => void;
+
+	selector?: string;
+	hydrate?: (el: ModuleHydrateContext) => void;
 }
 
 export function extractModulesFromInput(input: any): ModuleControls[] {
@@ -43,7 +49,12 @@ export function createModule(ops: ModuleOptions): ModuleControls {
 		__type: "module",
 		id: ops.id,
 		run(ctx) {
-			ops.hydrate(ctx);
+			ops.init?.(ctx);
+			if (ops.selector && ops.hydrate) {
+				ctx.doc.querySelectorAll(ops.selector).forEach(el => {
+					ops.hydrate?.({ el: el as HTMLElement })
+				})
+			}
 		},
 	}
 }
@@ -67,14 +78,14 @@ export function createModuleContainer(modules: ModuleControls[]): ModuleContaine
 
 	return {
 		init() {
-			var ctx: ModuleContext = {
-				el: document.body,
+			var ctx: ModuleRunContext = {
+				doc: document.body,
 			}
 			runForModule((mod) => mod.run(ctx));
 		},
 		loadNode(el) {
-			var ctx: ModuleContext = {
-				el,
+			var ctx: ModuleRunContext = {
+				doc: el,
 			}
 			runForModule((mod) => mod.run(ctx));
 		}
