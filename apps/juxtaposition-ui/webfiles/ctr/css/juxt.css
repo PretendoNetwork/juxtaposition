@@ -1,4 +1,8 @@
 @import 'sprites.css';
+@import './controls/ctabs.css';
+@import './controls/checkbox.css';
+@import 'new-post-view.css';
+@import 'report-post-page.css';
 
 body {
     margin: 0;
@@ -15,9 +19,8 @@ body {
 
 #body {
     background-image: url(@/images/background.png);
-    background-size: 100px;
     background-repeat: repeat;
-    padding-bottom: 30px
+    padding-bottom: 28px; /* Toolbar location */
 }
 
 a {
@@ -113,8 +116,7 @@ ul {
     padding: 0 10px
 }
 
-#body > .body-content,
-#posts-form {
+#body > .body-content {
     width: 322px;
     margin-left: 39px;
     min-height: 175px
@@ -140,8 +142,8 @@ menu.tab-header {
 }
 
 .icon-container > .icon {
-    width: 60px;
-    height: 60px;
+    width: 64px;
+    height: 64px;
     background: #e6eaf1
 }
 
@@ -321,7 +323,7 @@ menu.tab-header.user-page li:last-child {
     height: 180px;
 }
 
-.post-screenshot-5\3A 4 {
+.post-screenshot-5\3A 3 {
     height: 192px;
 }
 
@@ -415,7 +417,6 @@ header svg {
     margin: 5px
 }
 
-#add-post-page,
 .spoiler .post-content {
     display: none
 }
@@ -447,52 +448,9 @@ header svg {
     overflow: clip
 }
 
-.submit.yeah-button {
-    padding: 5px 5px 3px;
-    margin: 5px;
-    border: 1px solid gray;
-    border-radius: 8px;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), color-stop(.8, #f6f6f6), color-stop(.96, #f5f5f5), to(#bbb)) 0 0
-}
-
 .inline-sprite {
     display: inline-block;
     border: 0;
-}
-
-.feeling-selector .buttons {
-    position: relative;
-    float: left;
-    height: 36px;
-    border-radius: 2px;
-    background-color: #846abd;
-    margin-top: 5px;
-    margin-right: 5px;
-    padding: 0 3px;
-    font-size: 0; /* Collapse out whitespace */
-}
-
-.feeling-selector .buttons li {
-    display: inline-block;
-    height: 26px;
-    margin: 5px 3.5px
-}
-
-.feeling-selector .buttons input {
-    -webkit-appearance: none;
-    appearance: none;
-    display: inline-block;
-    width: 28px;
-    height: 28px;
-    border: 0;
-    text-indent: -3000px;
-    margin: -1px -2px -2px
-}
-
-.feeling-selector .icon {
-    float: left;
-    border: 1px solid gray;
-    margin: 5px 5px 0
 }
 
 #add-post-page > header {
@@ -502,12 +460,6 @@ header svg {
 .olv-modal-close-button,
 .post-button {
     display: none
-}
-
-#posts-form {
-    margin-bottom: -1px;
-    margin-top: 1px;
-    height: 208px
 }
 
 #body .image-selector .dropdown-toggle,
@@ -721,7 +673,20 @@ menu.tab-header.no-margin {
 .yeah-text {
     margin-left: 5px;
 }
-.submit.follow.yeah-button {
+
+.small-button {
+    position: relative;
+    padding: 0;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    border: 1px solid gray;
+    border-radius: 8px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), color-stop(.8, #f6f6f6), color-stop(.96, #f5f5f5), to(#bbb)) 0 0
+}
+
+.small-button.follow {
     position: absolute;
     bottom: -31px;
     left: 185px;
@@ -732,10 +697,10 @@ menu.tab-header.no-margin {
     color: #323232;
     border: 1px solid #cecece;
     border-radius: 0 0 8px 8px;
-}
 
-.submit.follow.yeah-button.suggested {
-    left: 135px;
+    &.suggested {
+        left: 135px;
+    }
 }
 
 #screenshot-button.none {
@@ -763,6 +728,9 @@ menu.tab-header.no-margin {
 }
 .body.message .nick-name {
     font-size: 14px;
+    color: #000;
+}
+.body .nick-name {
     color: #000;
 }
 
@@ -825,19 +793,6 @@ menu.tab-header.no-margin {
 
 .message-post-list .post header {
     color: #969696;
-}
-#report-post-page p {
-	text-align: center;
-}
-#report-post-page .report > div {
-	display: inline-block;
-	width: 100%;
-	text-align: center;
-}
-#report-post-page .report > .textarea-text {
-	width: 377px;
-	margin: 4px;
-	padding: 4px;
 }
 
 .settings-list > li {

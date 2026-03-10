@@ -2,30 +2,26 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type NewCommunityViewProps = {
-	ctx: RenderContext;
 };
 
-export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {
+export function WebNewCommunityView(_props: NewCommunityViewProps): ReactNode {
 	const head = (
 		<>
-			<script src="/js/admin.global.js"></script>
-			<link rel="stylesheet" href="/css/admin.css" />
 			<title>Juxt - New Community</title>
 		</>
 	);
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin" head={head}>
 			<h2 id="title" className="page-header">
 				New Community
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={-1} />
+			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box community-create">
-				<WebModerationTabs ctx={props.ctx} selected="communities" />
+				<WebModerationTabs selected="communities" />
 				<form action="/admin/communities/new" method="post" encType="multipart/form-data">
 					<div className="col-md-4">
 						<label className="labels" htmlFor="name">Community Name:</label>
@@ -53,8 +49,9 @@ export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {
 						</select>
 					</div>
 					<div className="col-md-9">
-						<label className="labels" htmlFor="title_ids">Title IDs (comma separated list)</label>
-						<input id="title-ids" name="title_ids" type="text" className="form-control" placeholder="1407375153678336, 1407375153685760, 1407375153686016" value="" />
+						<label className="labels" htmlFor="title_ids">Title IDs (hex)</label>
+						<textarea rows={10} data-input-admin-title-ids="#title-ids"></textarea>
+						<input id="title-ids" name="title_ids" type="hidden" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="browserIcon">Browser Icon (128px x 128px)</label>
@@ -108,6 +105,19 @@ export function WebNewCommunityView(props: NewCommunityViewProps): ReactNode {
 						<div className="form-switch">
 							<input className="form-check-input" type="checkbox" id="has_shop_page" name="has_shop_page" />
 						</div>
+					</div>
+					<div className="col-md-3">
+						<label className="labels" htmlFor="shot_mode">Screenshot mode</label>
+						<select className="form-select" name="shot_mode" id="shot_mode">
+							<option value="allow" defaultChecked>Allow this game only (Default)</option>
+							<option value="block">Block all</option>
+							<option value="force">Allow, even if game disallows</option>
+						</select>
+					</div>
+					<div className="col-md-9">
+						<label className="labels" htmlFor="shot_extra_title_id">Extra screenshot titles (comma separated list)</label>
+						<textarea rows={10} data-input-admin-title-ids="#shot-extra-title-ids"></textarea>
+						<input id="shot-extra-title-ids" name="shot_extra_title_id" type="hidden" />
 					</div>
 					<div className="col-md-3">
 						<button className="btn btn-primary profile-button" type="submit">Save Community</button>

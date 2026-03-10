@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1280"
+   height="100"
+   fill="#3a1e86"
+   version="1.1"
+   id="svg2"
+   sodipodi:docname="atsata.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.83842593"
+     inkscape:cx="694.15792"
+     inkscape:cy="373.31861"
+     inkscape:window-width="1920"
+     inkscape:window-height="1120"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <linearGradient
+     gradientUnits="userSpaceOnUse"
+     y1="0"
+     id="overlay"
+     y2="0"
+     x2="311.76917"
+     x1="0"
+     gradientTransform="scale(3.9946397,0.33288664)">
+    <stop
+       offset="0.2"
+       stop-color="#54389f"
+       id="stop1" />
+    <stop
+       offset="1"
+       stop-opacity="-2"
+       stop-color="#54389f"
+       id="stop2" />
+  </linearGradient>
+  <g
+     id="g2"
+     transform="matrix(1.1531532,0,0,1.1531532,0,15.405404)">
+    <g
+       stroke-width="0"
+       id="svg_23">
+      <rect
+         rx="5"
+         id="svg_4"
+         height="60"
+         width="60"
+         y="30"
+         x="1050" />
+      <rect
+         rx="5"
+         id="svg_9"
+         height="60"
+         width="60"
+         x="210"
+         y="30" />
+      <rect
+         rx="5"
+         id="svg_10"
+         height="60"
+         width="60"
+         y="-30"
+         x="270" />
+      <rect
+         rx="5"
+         id="svg_11"
+         height="60"
+         width="60"
+         y="30"
+         x="330" />
+      <rect
+         rx="5"
+         id="svg_12"
+         height="60"
+         width="60"
+         y="-30"
+         x="390" />
+      <rect
+         rx="5"
+         id="svg_13"
+         height="60"
+         width="60"
+         y="30"
+         x="450" />
+      <rect
+         rx="5"
+         id="svg_14"
+         height="60"
+         width="60"
+         y="-30"
+         x="510" />
+      <rect
+         rx="5"
+         id="svg_15"
+         height="60"
+         width="60"
+         y="30"
+         x="570" />
+      <rect
+         rx="5"
+         id="svg_16"
+         height="60"
+         width="60"
+         y="-30"
+         x="630" />
+      <rect
+         rx="5"
+         id="svg_17"
+         height="60"
+         width="60"
+         y="30"
+         x="690" />
+      <rect
+         rx="5"
+         id="svg_18"
+         height="60"
+         width="60"
+         y="-30"
+         x="750" />
+      <rect
+         rx="5"
+         id="svg_19"
+         height="60"
+         width="60"
+         y="30"
+         x="810" />
+      <rect
+         rx="5"
+         id="svg_20"
+         height="60"
+         width="60"
+         y="-30"
+         x="870" />
+      <rect
+         rx="5"
+         id="svg_21"
+         height="60"
+         width="60"
+         y="30"
+         x="930" />
+      <rect
+         rx="5"
+         id="svg_22"
+         height="60"
+         width="60"
+         y="-30"
+         x="990" />
+    </g>
+  </g>
+  <rect
+     width="1245.4054"
+     height="103.78378"
+     fill="url(#overlay)"
+     id="rect2"
+     x="0"
+     y="0"
+     style="fill:url(#overlay);stroke-width:1.15315" />
+</svg>

@@ -2,12 +2,14 @@ import cx from 'classnames';
 import moment from 'moment';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { utils } from '@/services/juxt-web/views/utils';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
+import { WebUserPageMeta, WebUserTier } from '@/services/juxt-web/views/web/userPageView';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
 import type { HydratedReportDocument } from '@/models/report';
@@ -15,7 +17,6 @@ import type { PostSchema } from '@/models/post';
 import type { auditLogSchema } from '@/models/logs';
 
 export type ModerateUserViewProps = {
-	ctx: RenderContext;
 	pnid: AccountGetUserDataResponse;
 	userSettings: HydratedSettingsDocument;
 	userContent: InferSchemaType<typeof ContentSchema>;
@@ -28,50 +29,27 @@ export type ModerateUserViewProps = {
 };
 
 export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
+	const url = useUrl();
+	const cache = useCache();
 	const pnidName = props.pnid.mii?.name ?? props.pnid.username;
-	const pageTitle = `Juxt - ${pnidName}`;
-	const pageImage = utils.cdn(props.ctx, `/mii/${props.userSettings.pid}/smile_open_mouth.png`);
 	const head = (
 		<>
-			<script src="/js/admin.global.js"></script>
-			<link rel="stylesheet" href="/css/admin.css" />
-			<title>{pageTitle}</title>
-
-			{/* Google / Search Engine Tags */}
-			<meta itemProp="name" content={pageTitle} />
-			{props.userSettings.profile_comment_visibility ? <meta itemProp="description" content={props.userSettings.profile_comment ?? undefined} /> : null}
-			<meta itemProp="image" content={pageImage} />
-
-			{/* Open Graph Meta Tags */}
-			<meta property="og:title" content={pageTitle} />
-			{props.userSettings.profile_comment_visibility ? <meta property="og:description" content={props.userSettings.profile_comment ?? undefined} /> : null}
-			<meta property="og:url" content={`https://juxt.pretendo.network/users/${props.userSettings.pid}`} />
-			<meta property="og:image" content={pageImage} />
-			<meta property="og:site_name" content="Juxtaposition" />
-
-			{/* Twitter Meta Tags */}
-			<meta name="twitter:card" content="summary_large_image" />
-			<meta name="twitter:title" content={pageTitle} />
-			{props.userSettings.profile_comment_visibility ? <meta name="twitter:description" content={props.userSettings.profile_comment ?? undefined} /> : null}
-			<meta name="twitter:site" content="@PretendoNetwork" />
-			<meta name="twitter:image" content={pageImage} />
-			<meta name="twitter:creator" content="@PretendoNetwork" />
-
+			<WebUserPageMeta user={props.pnid} userSettings={props.userSettings} withImage />
 		</>
 	);
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin" head={head}>
 			<h2 id="title" className="page-header">
-				{props.ctx.lang.global.user_page}
+				<T k="global.user_page" />
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={-1} />
+			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper>
 				<div className="community-top">
 					<img className="banner" src="https://juxt-web-cdn.b-cdn.net/images/banner.png" alt="" />
 					<div className="community-info">
-						<img className={cx('user-icon', { verified: props.pnid.accessLevel > 2 })} src={utils.cdn(props.ctx, `/mii/${props.userSettings.pid}/normal_face.png`)} />
+						<img className={cx('user-icon', { verified: props.pnid.accessLevel > 2 })} src={url.cdn(`/mii/${props.userSettings.pid}/normal_face.png`)} />
 						<h2 className="community-title">
 							{pnidName}
 							{' '}
@@ -82,99 +60,37 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 					</div>
 					<h4 className="community-description">
 						{props.userSettings.profile_comment}
-						{props.pnid.tierName === 'Mario'
-							? (
-									<span className="supporter-star mario">
-										|
-										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-									</span>
-								)
-							: props.pnid.tierName === 'Super Mario'
-								? (
-										<span className="supporter-star super">
-											|
-											<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-										</span>
-									)
-								: props.pnid.tierName === 'Mega Mushroom'
-									? (
-											<span className="supporter-star mega">
-												|
-												<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" className="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>
-											</span>
-										)
-									: null }
-
-						{ props.pnid.accessLevel === 3
-							? (
-									<span className="supporter-star dev">
-										|
-										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-tool">
-											<defs>
-												<linearGradient id="rainbow">
-													<stop offset="16%" stop-color="red" />
-													<stop offset="32%" stop-color="orange" />
-													<stop offset="48%" stop-color="yellow" />
-													<stop offset="64%" stop-color="green" />
-													<stop offset="80%" stop-color="blue" />
-													<stop offset="96%" stop-color="purple" />
-												</linearGradient>
-											</defs>
-											<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-										</svg>
-									</span>
-								)
-							: null}
-						{ props.pnid.accessLevel === 2
-							? (
-									<span className="supporter-star mega">
-										|
-										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-									</span>
-								)
-							: null}
-						{ props.pnid.accessLevel === 1
-							? (
-									<span className="supporter-star tester">
-										|
-										<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor">
-											<path d="M104,32V93.8a8.4,8.4,0,0,1-1.1,4.1l-63.6,106A8,8,0,0,0,46.1,216H209.9a8,8,0,0,0,6.8-12.1l-63.6-106a8.4,8.4,0,0,1-1.1-4.1V32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-											<line x1="88" y1="32" x2="168" y2="32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-											<path d="M62.6,165c11.8-8.7,32.1-13.6,65.4,3,35.7,17.9,56.5,10.8,67.9,1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="16" />
-										</svg>
-									</span>
-								)
-							: null}
+						<WebUserTier user={props.pnid} />
 					</h4>
 					<div className="info-boxes-wrapper">
 						<div>
-							<h4>{props.ctx.lang.user_page.country}</h4>
+							<h4><T k="user_page.country" /></h4>
 							<h4>{props.pnid.country}</h4>
 						</div>
 						<div>
-							<h4>{ props.ctx.lang.user_page.birthday }</h4>
+							<h4><T k="user_page.birthday" /></h4>
 							<h4>{moment.utc(props.pnid.birthdate).format('MMM Do')}</h4>
 						</div>
 						<div>
-							<h4>{ props.ctx.lang.user_page.game_experience }</h4>
+							<h4><T k="user_page.game_experience" /></h4>
 							<h4>
 								{props.userSettings.game_skill === 0
 									? (
-											<>{props.ctx.lang.setup.experience_text.beginner}</>
+											<><T k="setup.experience_text.beginner" /></>
 										)
 									: props.userSettings.game_skill === 1
 										? (
-												<>{props.ctx.lang.setup.experience_text.intermediate}</>
+												<><T k="setup.experience_text.intermediate" /></>
 											)
 										: props.userSettings.game_skill === 2
 											? (
-													<>{props.ctx.lang.setup.experience_text.expert}</>
+													<><T k="setup.experience_text.expert" /></>
 												)
-											: <>N/A</>}
+											: <><T k="user_page.game_experience_unknown" /></>}
 							</h4>
 						</div>
 						<div>
-							<h4>{props.ctx.lang.user_page.followers}</h4>
+							<h4><T k="user_page.followers" /></h4>
 							<h4 id="user-page-followers-tab">{props.userContent.following_users.length}</h4>
 						</div>
 						<div>
@@ -218,7 +134,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 					</div>
 					<div className="mt-5 text-center">
-						<button className="btn btn-primary profile-button" type="button" evt-click={`savePNID(${props.userSettings.pid})`}>Save User</button>
+						<button className="btn btn-primary profile-button" type="button" data-button-admin-save-pnid={props.userSettings.pid}>Save User</button>
 					</div>
 				</div>
 				<details open>
@@ -238,12 +154,12 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 								<details>
 									<summary>
 										<div className="hover">
-											<a href={`/users/${log.actor}`} data-pjax="#body" className="icon-container notify">
-												<img src={utils.cdn(props.ctx, `/mii/${log.actor}/normal_face.png`)} className="icon" style={{ width: '32px', height: '32px' }} />
+											<a href={`/users/${log.actor}`} className="icon-container notify">
+												<img src={url.cdn(`/mii/${log.actor}/normal_face.png`)} className="icon" style={{ width: '32px', height: '32px' }} />
 											</a>
 											<span className="body messages report">
 												<span className="text">
-													<a href={`/users/${log.actor}`} className="nick-name">{props.ctx.usersMap.get(log.actor)}</a>
+													<a href={`/users/${log.actor}`} className="nick-name">{cache.getUserName(log.actor)}</a>
 													<span title={moment(log.timestamp).toString()} className="timestamp">
 														:
 														{log.action}
@@ -281,14 +197,14 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 									<details>
 										<summary>
 											<div className="hover">
-												<a href={`/users/${report.reported_by}`} data-pjax="#body" className="icon-container notify">
-													<img src={utils.cdn(props.ctx, `/mii/${report.reported_by}/normal_face.png`)} className="icon" />
+												<a href={`/users/${report.reported_by}`} className="icon-container notify">
+													<img src={url.cdn(`/mii/${report.reported_by}/normal_face.png`)} className="icon" />
 												</a>
 												<span className="body messages report">
 													<span className="text">
 														<a href={`/users/${report.reported_by}`} className="nick-name">
 															Reported By:
-															{props.ctx.usersMap.get(report.reported_by)}
+															{cache.getUserName(report.reported_by)}
 														</a>
 														<span title={moment(report.created_at).toString()} className="timestamp">{moment(report.created_at).fromNow()}</span>
 													</span>
@@ -306,7 +222,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 																	<span className="text">
 																		<span className="nick-name">
 																			Resolved By:
-																			{report.resolved_by ? props.ctx.usersMap.get(report.resolved_by) : 'Nobody'}
+																			{report.resolved_by ? cache.getUserName(report.resolved_by) : 'Nobody'}
 																		</span>
 																		<span title={moment(report.resolved_at).toString()} className="timestamp">{moment(report.resolved_at).fromNow()}</span>
 																	</span>
@@ -317,7 +233,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 												</span>
 											</div>
 										</summary>
-										{ post ? <WebPostView ctx={props.ctx} post={post} isReply={false} /> : <p>Post could not be found</p> }
+										{ post ? <WebPostView post={post} isReply={false} /> : <p>Post could not be found</p> }
 									</details>
 								</li>
 							);
@@ -343,14 +259,14 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 									<details>
 										<summary>
 											<div className="hover">
-												<a href={`/users/${report.reported_by}`} data-pjax="#body" className="icon-container notify">
-													<img src={utils.cdn(props.ctx, `/mii/${report.reported_by}/normal_face.png`)} className="icon" />
+												<a href={`/users/${report.reported_by}`} className="icon-container notify">
+													<img src={url.cdn(`/mii/${report.reported_by}/normal_face.png`)} className="icon" />
 												</a>
 												<span className="body messages report">
 													<span className="text">
 														<a href={`/users/${report.reported_by}`} className="nick-name">
 															Reported By:
-															{props.ctx.usersMap.get(report.reported_by)}
+															{cache.getUserName(report.reported_by)}
 														</a>
 														<span title={moment(report.created_at).toString()} className="timestamp">{moment(report.created_at).fromNow()}</span>
 													</span>
@@ -368,7 +284,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 																	<span className="text">
 																		<span className="nick-name">
 																			Resolved By:
-																			{report.resolved_by ? props.ctx.usersMap.get(report.resolved_by) : 'Nobody'}
+																			{report.resolved_by ? cache.getUserName(report.resolved_by) : 'Nobody'}
 																		</span>
 																		<span title={moment(report.resolved_at).toString()} className="timestamp">{moment(report.resolved_at).fromNow()}</span>
 																	</span>
@@ -379,7 +295,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 												</span>
 											</div>
 										</summary>
-										{ post ? <WebPostView ctx={props.ctx} post={post} isReply={false} /> : <p>Post could not be found</p> }
+										{ post ? <WebPostView post={post} isReply={false} /> : <p>Post could not be found</p> }
 									</details>
 								</li>
 							);
@@ -404,14 +320,14 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 								<details>
 									<summary>
 										<div className="hover">
-											<a href={`/users/${post.removed_by}`} data-pjax="#body" className="icon-container notify">
-												<img src={utils.cdn(props.ctx, `/mii/${post.removed_by}/normal_face.png`)} className="icon" />
+											<a href={`/users/${post.removed_by}`} className="icon-container notify">
+												<img src={url.cdn(`/mii/${post.removed_by}/normal_face.png`)} className="icon" />
 											</a>
 											<span className="body messages report">
 												<span className="text">
 													<a href={`/users/${post.removed_by}`} className="nick-name">
 														Removed By:
-														{post.removed_by ? props.ctx.usersMap.get(post.removed_by) : 'Nobody'}
+														{post.removed_by ? cache.getUserName(post.removed_by) : 'Nobody'}
 													</a>
 													<span title={moment(post.removed_at).toString()} className="timestamp">{moment(post.removed_at).fromNow()}</span>
 												</span>
@@ -423,7 +339,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 											</span>
 										</div>
 									</summary>
-									<WebPostView ctx={props.ctx} post={post} isReply={false} />
+									<WebPostView post={post} isReply={false} />
 								</details>
 							</li>
 						))}

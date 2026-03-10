@@ -10,9 +10,9 @@ body {
  font-size:28px;
  line-height:1.5;
  margin:0;
- background:url(/images/background.png);
+ background:url(@/images/background.png);
+ background-position-x: 25%;
  min-height:720px;
- background-size:1280px;
  overflow-x:hidden!important
 }
 #body {
@@ -327,7 +327,8 @@ body {
  height:96px;
  border-radius:12px;
  background-color:#fff;
- user-select:none
+ user-select:none;
+ overflow: hidden;
 }
 .list-content-with-icon-and-text .body,
 .list-content-with-icon-column .body {
@@ -478,7 +479,7 @@ body {
  float:left;
  position:relative;
  min-width:400px;
- max-width:740px;
+ max-width:800px;
  padding:20px 25px 5px;
  z-index:2;
  background:#fff;
@@ -591,23 +592,27 @@ header svg {
  border-radius:10px
 }
 .post-list .post .post-screenshot {
- /* fallback for screenshots without aspect info */
- width:740px;
- height:416px;
- border-radius:10px
+    border-radius: 10px;
+
+    /* fallback for screenshots without aspect info */
+    width: 800px;
+    height: 450px;
+
+    /* &.post-screenshot-16\:9 {
+        width: 800px;
+        height: 450px;
+    } */ /* Identical to fallback */
+
+    &.post-screenshot-5\:3 {
+        /* width: 800px; */
+        height: 480px;
+    }
+    &.post-screenshot-4\:3 {
+        width: 640px;
+        height: 480px;
+    }
 }
-.post-list .post .post-screenshot-16\3A 9 {
- width:740px;
- height:416px;
-}
-.post-list .post .post-screenshot-5\3A 4 {
- width:520px;
- height:416px;
-}
-.post-list .post .post-screenshot-4\3A 3 {
- width:555px;
- height:416px;
-}
+
 .post-list .post .post-buttons {
  clear:both;
  margin:0 0 20px;
@@ -808,7 +813,8 @@ h6.yeah-text {
  margin-left:10px
 }
 #news-list-content li .text .nick-name {
- font-weight:700
+ font-weight:700;
+ color:#111;
 }
 #news-list-content li .text .link {
  color:#673db6
@@ -917,7 +923,7 @@ h6.yeah-text {
  position:relative;
  min-height:110px;
  box-shadow:inset 0-3px 3px rgba(0,0,0,.2);
- background:#54389f url("data:image/svg+xml,%3Csvg width='1080' xmlns='http://www.w3.org/2000/svg' height='90' style='background-color:%2354389f;' fill='%233a1e86'%3E%3ClinearGradient xmlns='http://www.w3.org/2000/svg' gradientUnits='objectBoundingBox' y1='0' id='overlay' y2='0' x2='1' x1='0'%3E%3Cstop offset='0.2' stop-color='%2354389f'/%3E%3Cstop offset='1' stop-opacity='-2' stop-color='%2354389f'/%3E%3C/linearGradient%3E%3Cg xmlns='http://www.w3.org/2000/svg'%3E%3Cg stroke-width='0' id='svg_23'%3E%3Crect rx='5' id='svg_4' height='60' width='60' y='30' x='1050'/%3E%3Crect rx='5' id='svg_9' height='60' width='60' x='210' y='30'/%3E%3Crect rx='5' id='svg_10' height='60' width='60' y='-30' x='270'/%3E%3Crect rx='5' id='svg_11' height='60' width='60' y='30' x='330'/%3E%3Crect rx='5' id='svg_12' height='60' width='60' y='-30' x='390'/%3E%3Crect rx='5' id='svg_13' height='60' width='60' y='30' x='450'/%3E%3Crect rx='5' id='svg_14' height='60' width='60' y='-30' x='510'/%3E%3Crect rx='5' id='svg_15' height='60' width='60' y='30' x='570'/%3E%3Crect rx='5' id='svg_16' height='60' width='60' y='-30' x='630'/%3E%3Crect rx='5' id='svg_17' height='60' width='60' y='30' x='690'/%3E%3Crect rx='5' id='svg_18' height='60' width='60' y='-30' x='750'/%3E%3Crect rx='5' id='svg_19' height='60' width='60' y='30' x='810'/%3E%3Crect rx='5' id='svg_20' height='60' width='60' y='-30' x='870'/%3E%3Crect rx='5' id='svg_21' height='60' width='60' y='30' x='930'/%3E%3Crect rx='5' id='svg_22' height='60' width='60' y='-30' x='990'/%3E%3C/g%3E%3C/g%3E%3Crect width='1080' height='90' fill='url(%23overlay)'/%3E%3C/svg%3E")repeat-y right top
+ background:#54389f url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="100" fill="%233a1e86"><linearGradient id="a" x1="0" x2="311.769" y1="0" y2="0" gradientTransform="scale(3.99464 .33289)" gradientUnits="userSpaceOnUse"><stop offset=".2" stop-color="%2354389f"/><stop offset="1" stop-color="%2354389f" stop-opacity="-2"/></linearGradient><g stroke-width="0" transform="translate(0 15.405)scale(1.15315)"><rect width="60" height="60" x="1050" y="30" rx="5"/><rect width="60" height="60" x="210" y="30" rx="5"/><rect width="60" height="60" x="270" y="-30" rx="5"/><rect width="60" height="60" x="330" y="30" rx="5"/><rect width="60" height="60" x="390" y="-30" rx="5"/><rect width="60" height="60" x="450" y="30" rx="5"/><rect width="60" height="60" x="510" y="-30" rx="5"/><rect width="60" height="60" x="570" y="30" rx="5"/><rect width="60" height="60" x="630" y="-30" rx="5"/><rect width="60" height="60" x="690" y="30" rx="5"/><rect width="60" height="60" x="750" y="-30" rx="5"/><rect width="60" height="60" x="810" y="30" rx="5"/><rect width="60" height="60" x="870" y="-30" rx="5"/><rect width="60" height="60" x="930" y="30" rx="5"/><rect width="60" height="60" x="990" y="-30" rx="5"/></g><path fill="url(%23a)" d="M0 0h1245.405v103.784H0z" style="fill:url(%23a);stroke-width:1.15315"/></svg>') repeat-y right top;
 }
 #header #header-post-button {
  padding-left:75px;
@@ -962,7 +968,7 @@ h6.yeah-text {
 .icon-container,
 .mii-icon-container,
 .post-permalink-feeling-icon,
-.text>span>svg {
+.text>span svg {
  position:relative
 }
 #community-post-list .community-info.with-header-banner .icon {
@@ -1001,7 +1007,7 @@ h6.yeah-text {
 .text>.rating::before {
  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='25' fill='%23ffffff' viewBox='0 0 210 260'%3E%3Crect width='256' height='256' fill='none'%3E%3C/rect%3E%3Ccircle cx='88' cy='108' r='52' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'%3E%3C/circle%3E%3Cpath d='M155.4,57.9A54.5,54.5,0,0,1,169.5,56a52,52,0,0,1,0,104' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'%3E%3C/path%3E%3Cpath d='M16,197.4a88,88,0,0,1,144,0' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'%3E%3C/path%3E%3Cpath d='M169.5,160a87.9,87.9,0,0,1,72,37.4' fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='24'%3E%3C/path%3E%3C/svg%3E")
 }
-.text>span>svg {
+.text>span svg {
  -webkit-transform:translate(0,10%)
 }
 .message-post-list .post {
@@ -1095,9 +1101,13 @@ h6.yeah-text {
 .none {
  display:none!important
 }
+.add-post-page {
+    padding-left: 160px; /* For navbar */
+}
 .add-post-page-header {
+ margin: auto;
  margin-top:60px;
- margin-left:200px
+ width: 880px;
 }
 .add-post-page form {
  display:-webkit-box;
@@ -1123,29 +1133,30 @@ h6.yeah-text {
  position:relative;
  float:left;
  width:600px;
- height:97px;
+ height:96px;
+ box-sizing: border-box;
+ padding: 0px 18px;
+
  margin-left:20px;
  border-radius:12px;
  background-color:#846abd;
  box-shadow:inset 0 7px 25px -3px rgba(66,45,120,.75),inset 0-3px 15px 5px rgba(128,101,213,.5)
 }
 .feeling-selector .buttons li {
- display:inline-block;
- height:87px;
- margin:5px 3px
+ display: inline-block;
 }
 .feeling-selector .buttons input {
  appearance:none;
- display:inline-block;
+ display: block;
  width:70px;
  height:70px;
  border:0;
- margin:8px;
- text-indent:-3000px;
  background-size:90px!important;
  box-shadow:0 3px 10px rgba(0,0,0,.6);
  border-radius:50px;
- background-position:-10px -12px!important
+ background-position:-10px -12px !important;
+
+ margin: 13px 12px;
 }
 .feeling-selector .buttons input:checked {
  background:#00f
@@ -1532,9 +1543,6 @@ textarea.placeholder {
  width:500px;
  padding-right:320px
 }
-#add-post-page {
- display:none
-}
 .checkbox-container {
  display:block;
  position:relative;
@@ -1707,27 +1715,27 @@ input[type=radio] {
 .feeling-button-puzzled:checked {
  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23ce80ff' stroke='%23fff' viewBox='0 0 256 256'%3E%3Ccircle cx='128' cy='128' r='96' fill='23ce80ff' stroke='%23ce80ff' stroke-miterlimit='10' stroke-width='16'/%3E%3Cpolyline points='80 172 96 152 112 172 128 152 144 172 160 152 176 172' fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3E%3Ccircle cx='92' cy='108' r='12' fill='%23fff'/%3E%3Ccircle cx='164' cy='108' r='12' fill='%23fff'/%3E%3C/svg%3E")!important
 }
-.supporter-star.mario>svg {
+.supporter-star.mario svg {
  fill:rgba(255,132,132,.2);
  color:#ff8484
 }
-.supporter-star.super>svg {
+.supporter-star.super svg {
  fill:rgba(89,201,165,.3);
  color:#59c9a5
 }
-.supporter-star.mega>svg {
+.supporter-star.mega svg {
  fill:rgba(202,177,251,.3);
  color:#cab1fb
 }
-.supporter-star.dev>svg {
+.supporter-star.dev svg {
  color:#fff;
  fill:url(#rainbow)
 }
-.supporter-star.admin>svg {
+.supporter-star.admin svg {
  fill:rgba(220,226,27,.3);
  color:#dce21b
 }
-.supporter-star.tester>svg {
+.supporter-star.tester svg {
  fill:rgba(23,212,237,.3);
  color:#17d4ed;
  -webkit-transform:translate(0,15%)

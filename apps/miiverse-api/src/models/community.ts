@@ -1,8 +1,9 @@
 import crypto from 'node:crypto';
 import { Schema, model } from 'mongoose';
 import { MongoError } from 'mongodb';
-import type { CommunityData } from '@/types/miiverse/community';
+import { CommunityShotModes } from '@/types/mongoose/community';
 import type { ICommunity, ICommunityMethods, CommunityModel, ICommunityPermissions, HydratedCommunityDocument, ICommunityInput } from '@/types/mongoose/community';
+import type { CommunityData } from '@/types/miiverse/community';
 
 export const communityTypes = {
 	main: 0,
@@ -125,6 +126,15 @@ const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods
 	permissions: {
 		type: PermissionsSchema,
 		default: {}
+	},
+	shot_mode: {
+		type: String,
+		enum: CommunityShotModes,
+		default: 'allow'
+	},
+	shot_extra_title_id: {
+		type: [String],
+		default: []
 	}
 });
 

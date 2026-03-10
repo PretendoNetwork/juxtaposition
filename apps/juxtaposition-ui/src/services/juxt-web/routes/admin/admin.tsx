@@ -6,20 +6,20 @@ import { deletePostById, getPostById } from '@/api/post';
 import { database } from '@/database';
 import { uploadHeaders, uploadIcons } from '@/images';
 import { logger } from '@/logger';
-import { COMMUNITY } from '@/models/communities';
+import { COMMUNITY, CommunityShotModes } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { humanDate, createLogEntry, getReasonMap, getUserAccountData, newNotification, updateCommunityHash } from '@/util';
 import { getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportListView';
 import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/manageCommunityView';
 import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newCommunityView';
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
 import { listCommunities, searchCommunities } from '@/api/community';
+import { zodCommaSeperatedList } from '@/services/juxt-web/routes/schemas';
 import type { ReportWithPost } from '@/services/juxt-web/views/web/admin/reportListView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
@@ -64,7 +64,7 @@ adminRouter.get('/posts', async function (req, res) {
 	});
 
 	res.jsxForDirectory({
-		web: <WebReportListView ctx={buildContext(res)} reasonMap={getReasonMap()} userContent={userContent} reports={reports} />
+		web: <WebReportListView reasonMap={getReasonMap()} userContent={userContent} reports={reports} />
 	});
 });
 
@@ -125,7 +125,7 @@ adminRouter.get('/accounts', async function (req, res) {
 	const userMetrics = await getUserMetrics();
 
 	res.jsxForDirectory({
-		web: <WebUserListView ctx={buildContext(res)} users={users} page={page} search={search} userCount={userMetrics.totalUsers} activeCount={userMetrics.currentOnlineUsers} />
+		web: <WebUserListView users={users} page={page} search={search} userCount={userMetrics.totalUsers} activeCount={userMetrics.currentOnlineUsers} />
 	});
 });
 
@@ -174,7 +174,7 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	res.jsxForDirectory({
 		web: (
 			<WebModerateUserView
-				ctx={buildContext(res)}
+
 				userSettings={userSettings}
 				userContent={userContent}
 				pnid={pnid}
@@ -403,7 +403,7 @@ adminRouter.get('/communities', async function (req, res) {
 	const communities = communityPage?.items ?? [];
 
 	res.jsxForDirectory({
-		web: <WebManageCommunityView ctx={buildContext(res)} hasNextPage={communities.length === limit} communities={communities} page={query.page} search={search} />
+		web: <WebManageCommunityView hasNextPage={communities.length === limit} communities={communities} page={query.page} search={search} />
 	});
 });
 
@@ -413,7 +413,7 @@ adminRouter.get('/communities/new', async function (req, res) {
 	}
 
 	res.jsxForDirectory({
-		web: <WebNewCommunityView ctx={buildContext(res)} />
+		web: <WebNewCommunityView />
 	});
 });
 
@@ -431,10 +431,10 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 			description: z.string().trim(),
 			type: z.coerce.number().min(0).max(3),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
-			title_ids: z.string().trim()
-				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
-				.pipe(z.array(z.string().min(1))),
-			app_data: z.string().trim()
+			title_ids: zodCommaSeperatedList,
+			app_data: z.string().trim(),
+			shot_mode: z.enum(CommunityShotModes),
+			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
@@ -477,7 +477,9 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		community_id: communityId,
 		olive_community_id: communityId,
 		is_recommended: body.is_recommended,
-		app_data: body.app_data
+		app_data: body.app_data,
+		shot_mode: body.shot_mode,
+		shot_extra_title_id: body.shot_extra_title_id
 	};
 	const newCommunity = new COMMUNITY(document);
 	await newCommunity.save();
@@ -540,7 +542,7 @@ adminRouter.get('/communities/:community_id', async function (req, res) {
 	}
 
 	res.jsxForDirectory({
-		web: <WebEditCommunityView ctx={buildContext(res)} community={community} />
+		web: <WebEditCommunityView community={community} />
 	});
 });
 
@@ -564,10 +566,10 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 			description: z.string().trim(),
 			type: z.coerce.number().min(0).max(3),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
-			title_ids: z.string().trim()
-				.transform(v => v.replaceAll(' ', '').split(',').filter(v => v.length > 0))
-				.pipe(z.array(z.string().min(1))),
-			app_data: z.string().trim()
+			title_ids: zodCommaSeperatedList,
+			app_data: z.string().trim(),
+			shot_mode: z.enum(CommunityShotModes),
+			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
@@ -617,7 +619,9 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		app_data: body.app_data,
 		is_recommended: body.is_recommended,
 		name: body.name,
-		description: body.description
+		description: body.description,
+		shot_mode: body.shot_mode,
+		shot_extra_title_id: body.shot_extra_title_id
 	};
 	const comm = await COMMUNITY.findOneAndUpdate({ olive_community_id: communityId }, { $set: document }, { upsert: true }).exec();
 	if (!comm) {

@@ -1,24 +1,21 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 import type { CommunitySchema } from '@/models/communities';
 
 export type EditCommunityViewProps = {
-	ctx: RenderContext;
 	community: InferSchemaType<typeof CommunitySchema>;
 };
 
 export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
+	const url = useUrl();
 	const community = props.community;
 	const imageId = community.parent ? community.parent : community.olive_community_id;
 	const head = (
 		<>
-			<script src="/js/admin.global.js"></script>
-			<link rel="stylesheet" href="/css/admin.css" />
 			<title>
 				Juxt -
 				{community.name}
@@ -27,14 +24,14 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 	);
 
 	return (
-		<WebRoot head={head}>
+		<WebRoot type="admin" head={head}>
 			<h2 id="title" className="page-header">
 				Edit Community
 			</h2>
-			<WebNavBar ctx={props.ctx} selection={-1} />
+			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box community-create">
-				<WebModerationTabs ctx={props.ctx} selected="communities" />
+				<WebModerationTabs selected="communities" />
 				<form action={`/admin/communities/${community.olive_community_id}`} method="post" encType="multipart/form-data">
 					<div className="col-md-4">
 						<label className="labels" htmlFor="name">Community Name:</label>
@@ -62,15 +59,16 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 						</select>
 					</div>
 					<div className="col-md-9">
-						<label className="labels" htmlFor="title_ids">Title IDs (comma separated list)</label>
-						<input id="title-ids" name="title_ids" type="text" className="form-control" placeholder="1407375153678336, 1407375153685760, 1407375153686016" value={community.title_id} />
+						<label className="labels" htmlFor="title_ids">Title IDs (hex)</label>
+						<textarea rows={10} data-input-admin-title-ids="#title-ids"></textarea>
+						<input id="title-ids" name="title_ids" type="hidden" value={community.title_id} />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="browserIcon">Browser Icon (128px x 128px)</label>
 						<input type="file" id="browserIcon" data-image-preview accept="image/jpg" name="browserIcon" />
 					</div>
 					<div className="col-md-3">
-						<img src={utils.cdn(props.ctx, `/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" id="browserIconPreview" />
+						<img src={url.cdn(`/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" id="browserIconPreview" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="CTRbrowserHeader">3DS Browser Banner (400px x 220px)</label>
@@ -79,10 +77,10 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					<div className="col-md-3">
 						{community.ctr_header
 							? (
-									<img src={utils.cdn(props.ctx, community.ctr_header)} data-image-preview-for="CTRbrowserHeader" id="CTRbrowserHeaderPreview" />
+									<img src={url.cdn(community.ctr_header)} data-image-preview-for="CTRbrowserHeader" id="CTRbrowserHeaderPreview" />
 								)
 							: (
-									<img src={utils.cdn(props.ctx, `/headers/${imageId}/3DS.png`)} data-image-preview-for="CTRbrowserHeader" />
+									<img src={url.cdn(`/headers/${imageId}/3DS.png`)} data-image-preview-for="CTRbrowserHeader" />
 								)}
 					</div>
 					<div className="col-md-3">
@@ -92,10 +90,10 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					<div className="col-md-3">
 						{community.wup_header
 							? (
-									<img src={utils.cdn(props.ctx, community.wup_header)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
+									<img src={url.cdn(community.wup_header)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
 								)
 							: (
-									<img src={utils.cdn(props.ctx, `/headers/${imageId}/WiiU.png`)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
+									<img src={url.cdn(`/headers/${imageId}/WiiU.png`)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
 								)}
 					</div>
 					<div className="col-md-4">
@@ -129,6 +127,19 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 						<div className="form-switch">
 							<input className="form-check-input" type="checkbox" id="has_shop_page" name="has_shop_page" checked={community.has_shop_page === 1} />
 						</div>
+					</div>
+					<div className="col-md-3">
+						<label className="labels" htmlFor="shot_mode">Screenshot mode</label>
+						<select className="form-select" name="shot_mode" id="shot_mode">
+							<option value="allow" selected={community.shot_mode === 'allow'}>Allow this game only (Default)</option>
+							<option value="block" selected={community.shot_mode === 'block'}>Block all</option>
+							<option value="force" selected={community.shot_mode === 'force'}>Allow, even if game disallows</option>
+						</select>
+					</div>
+					<div className="col-md-9">
+						<label className="labels" htmlFor="shot_extra_title_id">Extra screenshot titles (comma separated list)</label>
+						<textarea rows={10} data-input-admin-title-ids="#shot-extra-title-ids"></textarea>
+						<input id="shot-extra-title-ids" name="shot_extra_title_id" type="hidden" value={community.shot_extra_title_id} />
 					</div>
 					<div className="col-md-3" style={{ justifyContent: 'center' }}>
 						<button className="btn btn-primary profile-button" type="submit">

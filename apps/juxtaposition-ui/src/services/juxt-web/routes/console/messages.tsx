@@ -1,12 +1,12 @@
 import crypto from 'crypto';
 import express from 'express';
 import { Snowflake as snowflake } from 'node-snowflake';
+import { z } from 'zod';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { CONVERSATION } from '@/models/conversation';
 import { POST } from '@/models/post';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { CtrMessagesView } from '@/services/juxt-web/views/ctr/messages';
 import { CtrMessageThreadView } from '@/services/juxt-web/views/ctr/messageThread';
 import { PortalMessagesView } from '@/services/juxt-web/views/portal/messages';
@@ -15,7 +15,10 @@ import { WebMessagesView } from '@/services/juxt-web/views/web/messages';
 import { WebMessageThreadView } from '@/services/juxt-web/views/web/messageThread';
 import { getInvalidPostRegex, getUserAccountData, getUserFriendPIDs } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import type { ScreenshotUrls } from '@/images';
+import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
+import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
+import type { PaintingUrls, ScreenshotUrls } from '@/images';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
 export const messagesRouter = express.Router();
 
@@ -23,9 +26,9 @@ messagesRouter.get('/', async function (req, res) {
 	const { auth } = parseReq(req);
 	const conversations = await database.getConversations(auth().pid);
 	res.jsxForDirectory({
-		web: <WebMessagesView conversations={conversations} ctx={buildContext(res)} />,
-		portal: <PortalMessagesView conversations={conversations} ctx={buildContext(res)} />,
-		ctr: <CtrMessagesView conversations={conversations} ctx={buildContext(res)} />,
+		web: <WebMessagesView conversations={conversations} />,
+		portal: <PortalMessagesView conversations={conversations} />,
+		ctr: <CtrMessagesView conversations={conversations} />,
 		disableDoctypeFor: ['ctr']
 	});
 });
@@ -77,16 +80,16 @@ messagesRouter.post('/new', async function (req, res) {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	let paintingBlob: string | null = null;
+	let paintings: PaintingUrls | null = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
-		paintingBlob = await uploadPainting({
+		paintings = await uploadPainting({
 			blob: req.body.painting,
 			autodetectFormat: false,
 			isBmp: req.body.bmp === 'true',
 			pid: authCtx.pid,
 			postId
 		});
-		if (paintingBlob === null) {
+		if (paintings === null) {
 			res.status(422);
 			return res.renderError({
 				code: 422,
@@ -146,8 +149,11 @@ messagesRouter.post('/new', async function (req, res) {
 		community_id: conversation.id,
 		screen_name: authCtx.user.mii.name,
 		body: body,
-		painting: paintingBlob ?? '',
+		painting: paintings?.blob ?? '',
+		painting_img: paintings?.img ?? '',
+		painting_big: paintings?.big ?? '',
 		screenshot: screenshots?.full ?? '',
+		screenshot_big: screenshots?.big ?? '',
 		screenshot_length: screenshots?.fullLength ?? 0,
 		screenshot_thumb: screenshots?.thumb ?? '',
 		screenshot_aspect: screenshots?.aspect ?? '',
@@ -256,9 +262,38 @@ messagesRouter.get('/:message_id', async function (req, res) {
 
 	await conversation.markAsRead(authCtx.pid);
 	res.jsxForDirectory({
-		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
-		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />,
-		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} ctx={buildContext(res)} />
+		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />,
+		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />,
+		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />
+	});
+});
+
+messagesRouter.get('/:message_id/create', async function (req, res) {
+	const { params, auth } = parseReq(req, {
+		params: z.object({
+			message_id: z.string()
+		})
+	});
+
+	const conversation = await database.getConversationByID(params.message_id);
+	if (!conversation || conversation.users.length < 2) {
+		return res.sendStatus(404);
+	}
+
+	// Get the conversation member who *isn't* us
+	const partner = conversation.users[0].pid !== auth().pid ? conversation.users[0] : conversation.users[1];
+
+	const props: NewPostViewProps = {
+		id: conversation.id,
+		pid: partner.pid,
+		messagePid: partner.pid,
+		url: `/friend_messages/new`,
+		show: 'message-page',
+		shotMode: 'allow'
+	};
+	res.jsxForDirectory({
+		ctr: <CtrNewPostPage {...props} />,
+		portal: <PortalNewPostPage {...props} />
 	});
 });
 

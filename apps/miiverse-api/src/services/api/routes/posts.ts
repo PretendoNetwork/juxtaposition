@@ -23,8 +23,9 @@ import { uploadPainting, uploadScreenshot } from '@/images';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
-import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { CommunityShotMode, HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { ParamPack } from '@/types/common/param-pack';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
@@ -218,6 +219,20 @@ function canPost(community: HydratedCommunityDocument, userSettings: HydratedSet
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
+export function getShotMode(community: HydratedCommunityDocument, pack: ParamPack | null): CommunityShotMode {
+	if (pack === null) {
+		return 'block';
+	}
+
+	// Shots only on matching communities
+	if (!community.title_id.includes(pack.title_id) &&
+		!community.shot_extra_title_id?.includes(pack.title_id)) {
+		return 'block';
+	}
+
+	return community.shot_mode as CommunityShotMode; // type validated by database
+}
+
 async function newPost(request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
 
@@ -291,6 +306,10 @@ async function newPost(request: express.Request, response: express.Response): Pr
 					olive_community_id: parentPost.community_id
 				});
 			}
+			if (parentPost.removed) {
+				request.log.warn('Request wants to reply to parent post, but parent post has been removed');
+				return badRequest(response, ApiErrorCode.BAD_PARAMS);
+			}
 		}
 	}
 
@@ -348,7 +367,10 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		body: messageBody ? messageBody : '',
 		app_data: appData,
 		painting: '',
+		painting_img: '',
+		painting_big: '',
 		screenshot: '',
+		screenshot_big: '',
 		screenshot_thumb: '',
 		screenshot_aspect: '',
 		screenshot_length: 0,
@@ -380,23 +402,25 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	const post = await Post.create(document);
 
 	if (painting) {
-		const paintingBlob = await uploadPainting({
+		const paintings = await uploadPainting({
 			blob: painting,
 			autodetectFormat: true,
 			isBmp: false,
 			pid: post.pid,
 			postId: post.id
 		});
-		if (paintingBlob === null) {
+		if (paintings === null) {
 			// The document we already submitted to the db is invalid, so drop it.
 			post.deleteOne();
 			return serverError(response, ApiErrorCode.DATABASE_ERROR);
 		}
 
-		post.painting = paintingBlob;
+		post.painting = paintings.blob;
+		post.painting_img = paintings.img;
+		post.painting_big = paintings.big;
 	}
 
-	if (screenshot) {
+	if (screenshot && getShotMode(community, request.paramPack) !== 'block') {
 		const screenshotUrls = await uploadScreenshot({
 			blob: screenshot,
 			pid: post.pid,
@@ -409,6 +433,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		}
 
 		post.screenshot = screenshotUrls.full;
+		post.screenshot_big = screenshotUrls.big ?? '';
 		post.screenshot_length = screenshotUrls.fullLength;
 		post.screenshot_thumb = screenshotUrls.thumb;
 		post.screenshot_aspect = screenshotUrls.aspect;

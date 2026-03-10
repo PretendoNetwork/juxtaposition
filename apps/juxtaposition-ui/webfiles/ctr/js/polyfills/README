@@ -1,0 +1,8 @@
+minifill.js v0.0.17 (https://thednp.github.io/minifill/)
+Copyright 2015-2021 © thednp
+Licensed under MIT (https://github.com/thednp/minifill/blob/master/LICENSE)
+
+This is a subset of minifill needed for Chromium 4.0.273.0 (AppleWebKit/532.7).
+Lightly reformatted to get past our linter and modified to remove conditionals we don't need (since we know the exact target browser).
+
+This folder has all the features that are missing, then index.js contains the subset which are actually used for the application.

@@ -1,11 +1,10 @@
 import { WebLoginRoot } from '@/services/juxt-web/views/web/login';
-import { PretendoLogo } from '@/services/juxt-web/views/web/icons';
+import { PretendoLogo } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { ReqId } from 'pino-http';
-import type { RenderContext } from '@/services/juxt-web/views/context';
 
 export type ErrorViewProps = {
-	ctx: RenderContext;
 	requestId: ReqId;
 	code: string | number;
 	message: string;
@@ -17,7 +16,11 @@ export type FatalErrorViewProps = {
 };
 
 export function WebErrorView(props: ErrorViewProps): ReactNode {
-	const extraHead = <title>Juxt - Error</title>;
+	const extraHead = (
+		<title>
+			{'Juxt - ' + T.str('error.title', { code: props.code })}
+		</title>
+	);
 
 	return (
 		<WebLoginRoot head={extraHead}>
@@ -27,27 +30,23 @@ export function WebErrorView(props: ErrorViewProps): ReactNode {
 						<PretendoLogo />
 					</a>
 					<h2>
-						{props.code}
-						:
-						{' '}
-						{props.message}
+						<T k="error.heading" values={{ code: props.code, message: props.message }} />
 					</h2>
 					<h3>
-						View current
-						{' '}
-						<a href="https://stats.uptimerobot.com/R7E4wiGjJq">server status</a>
-						.
-					</h3>
-					<h3>
-						Or,
-						{' '}
-						<a href="/">go back to the homepage</a>
-						.
+						<T
+							k="error.message_web"
+							withNewline
+							components={{
+								status: <a href="https://stats.uptimerobot.com/R7E4wiGjJq">...</a>,
+								home: <a href="/">...</a>
+							}}
+						/>
 					</h3>
 					<p>
-						Request ID:
-						{' '}
-						{props.requestId.toString()}
+						<T
+							k="error.error_details"
+							values={{ id: props.requestId.toString() }}
+						/>
 					</p>
 				</div>
 			</div>

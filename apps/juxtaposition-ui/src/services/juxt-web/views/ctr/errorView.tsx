@@ -1,27 +1,27 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { InlineScript } from '@/services/juxt-web/views/common';
+import { Inline } from '@/services/juxt-web/views/common/components/Inline';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { ErrorViewProps, FatalErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
 export function CtrErrorView(props: ErrorViewProps): ReactNode {
-	const title = `Error: ${props.code}`;
+	const title = T.str('error.title', { code: props.code });
 
 	return (
-		<CtrRoot ctx={props.ctx} title={title}>
+		<CtrRoot title={title}>
 			<CtrPageBody>
-				<header id="header">
+				<header
+					id="header"
+
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="0"
+				>
 					<h1 id="page-title">
-						Error
-						{' '}
-						{props.code}
-						:
-						{' '}
-						{props.message}
+						<p><T k="error.heading" values={{ code: props.code, message: props.message }} /></p>
 					</h1>
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">
-					<p>Whoops! Looks like we couldn't find the page you're looking for.</p>
-					<p>Double-check your link or try again later</p>
+					<p><T k="error.message" withNewline /></p>
 				</div>
 			</CtrPageBody>
 		</CtrRoot>
@@ -43,15 +43,14 @@ export function CtrFatalErrorView(props: FatalErrorViewProps): ReactNode {
 			<head>
 				<meta id="error" data-code={props.code} data-message={props.message} />
 			</head>
-			<body>
+			{/* Intentionally give some scroll area on 3DS */}
+			<body style={{ width: '300px', minHeight: '800px', margin: 'auto' }}>
 				<h1>
-					You are not authorized to access this application (
-					{props.code}
-					)
+					<T k="error.no_access" values={{ code: props.code }} />
 				</h1>
 				<p style={{ whiteSpace: 'pre-line' }}>{props.message}</p>
 			</body>
-			<InlineScript src={errorJs} />
+			<Inline.Script src={errorJs} />
 		</html>
 	);
 }

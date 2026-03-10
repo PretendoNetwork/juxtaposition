@@ -12,10 +12,10 @@
     },
     "dependencies": {
         "@jsquash/oxipng": "^2.3.0",
-        "esbuild": "^0.27.2"
+        "esbuild": "^0.27.3"
     },
     "devDependencies": {
-        "@types/node": "^22.19.1",        
+        "@types/node": "^22.19.13",        
         "typescript": "^5.9.3"
     }
 }

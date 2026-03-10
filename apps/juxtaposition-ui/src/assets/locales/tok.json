@@ -1,0 +1,126 @@
+{
+    "setup": {
+        "rules_text": {
+            "eleventh": "",
+            "tenth": "",
+            "third": "",
+            "thirteenth": "",
+            "fifth": "",
+            "ninth": "",
+            "fourth": "",
+            "second": "",
+            "sixth": "",
+            "first": "",
+            "eighth": "",
+            "seventh": "",
+            "twelfth": ""
+        },
+        "beta_text": {
+            "third": "",
+            "second": "",
+            "first": ""
+        },
+        "experience_text": {
+            "expert": "",
+            "info": "",
+            "intermediate": "",
+            "beginner": ""
+        },
+        "guest_button": "",
+        "analytics": "",
+        "done_button": "",
+        "guest": "",
+        "ready": "",
+        "guest_text": "",
+        "experience": "",
+        "rules": "",
+        "welcome_text": "",
+        "analytics_text": "",
+        "info": "",
+        "info_text": "",
+        "ready_text": "",
+        "done": "",
+        "beta": "",
+        "welcome": ""
+    },
+    "global": {
+        "communities": "",
+        "more": "",
+        "next": "",
+        "yeahs": "",
+        "messages": "",
+        "activity_feed": "",
+        "exit": "",
+        "back": "",
+        "notifications": "",
+        "save": "",
+        "no_posts": "",
+        "private": "",
+        "close": "",
+        "user_page": "",
+        "go_back": ""
+    },
+    "notifications": {
+        "none": "",
+        "new_follower": ""
+    },
+    "user_page": {
+        "follow_user": "",
+        "game_experience": "",
+        "no_following": "",
+        "befriend": "",
+        "posts": "",
+        "friends": "",
+        "following_user": "",
+        "pending": "",
+        "followers": "",
+        "unfriend": "",
+        "no_followers": "",
+        "no_friends": "",
+        "birthday": "",
+        "country": "",
+        "following": ""
+    },
+    "new_post": {
+        "swearing": "",
+        "text_hint": "",
+        "new_post_text": "",
+        "post_to": ""
+    },
+    "community": {
+        "new": "",
+        "posts": "",
+        "tags": "",
+        "followers": "",
+        "following": "",
+        "follow": "",
+        "verified": "",
+        "recent": "",
+        "popular": ""
+    },
+    "user_settings": {
+        "show_game": "",
+        "show_comment": "",
+        "show_birthday": "",
+        "profile_settings": "",
+        "profile_comment": "",
+        "swearing": "",
+        "show_country": ""
+    },
+    "all_communities": {
+        "show_all": "",
+        "announcements": "",
+        "search": "",
+        "text": "",
+        "ann_string": "",
+        "new_communities": "",
+        "popular_places": ""
+    },
+    "language": "",
+    "activity_feed": {
+        "empty": ""
+    },
+    "messages": {
+        "coming_soon": ""
+    }
+}

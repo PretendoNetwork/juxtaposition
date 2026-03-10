@@ -123,7 +123,7 @@ header > .selected {
   color: var(--theme-light);
 }
 
-header > .selected > svg {
+header > .selected svg {
   stroke: var(--theme-light);
 }
 
@@ -257,7 +257,7 @@ header > .selected > svg {
   margin-left: 74px;
 }
 
-.post-buttons-wrapper > span {
+.post-buttons-wrapper > .post-button {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -265,26 +265,27 @@ header > .selected > svg {
   border-radius: 0.75em;
 }
 
-.post-buttons-wrapper > span:hover {
+.post-buttons-wrapper > .empathy-button:hover {
   cursor: pointer;
   background: rgba(255, 0, 0, 0.25);
 }
 
-.post-buttons-wrapper > span:nth-of-type(2):hover {
+.post-buttons-wrapper > .reply-button:hover {
   background: rgba(0, 255, 0, 0.25);
+  text-decoration: none;
 }
 
-.post-buttons-wrapper > span:last-child:hover {
+.post-buttons-wrapper > .post-hamburger-button:hover {
   background: rgba(0, 150, 255, 0.25);
 }
 
-.post-buttons-wrapper > span > h4 {
+.post-buttons-wrapper > .post-button > h4 {
   padding-left: 0.5em;
   margin: 0;
 }
 
 /* Red fill for .selected icons (Yeah'd post) */
-.post-buttons-wrapper > span.selected svg {
+.post-buttons-wrapper > .post-button.selected svg {
   fill: red;
   stroke: red;
 }
@@ -555,13 +556,15 @@ iframe {
 
 #news-list-content li .text .nick-name {
   font-weight: 700;
+  color: var(--text);
 }
 
 #news-list-content li .text .link {
   color: var(--theme-light);
 }
 
-#news-list-content li .text .timestamp {
+#news-list-content li .text .timestamp,
+#news-list-content li .text .pid-display {
   color: #969696;
   white-space: nowrap;
 }
@@ -1079,27 +1082,27 @@ input[type="radio"] {
 .feeling-button-puzzled:checked {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23ce80ff' stroke='%23fff' viewBox='0 0 256 256'%3E%3Ccircle cx='128' cy='128' r='96' fill='23ce80ff' stroke='%23ce80ff' stroke-miterlimit='10' stroke-width='16'/%3E%3Cpolyline points='80 172 96 152 112 172 128 152 144 172 160 152 176 172' fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3E%3Ccircle cx='92' cy='108' r='12' fill='%23fff'/%3E%3Ccircle cx='164' cy='108' r='12' fill='%23fff'/%3E%3C/svg%3E") !important;
 }
-.supporter-star.mario>svg {
+.supporter-star.mario svg {
 	fill:rgba(255,132,132,.2);
 	color:#ff8484
 }
-.supporter-star.super>svg {
+.supporter-star.super svg {
 	fill:rgba(89,201,165,.3);
 	color:#59c9a5
 }
-.supporter-star.mega>svg {
+.supporter-star.mega svg {
 	fill:rgba(202,177,251,.3);
 	color:#cab1fb
 }
-.supporter-star.dev>svg {
+.supporter-star.dev svg {
 	color:#fff;
 	fill:url(#rainbow)
 }
-.supporter-star.admin>svg {
+.supporter-star.admin svg {
 	fill:rgba(220,226,27,.3);
 	color:#dce21b
 }
-.supporter-star.tester>svg {
+.supporter-star.tester svg {
 	fill:rgba(23,212,237,.3);
 	color:#17d4ed;
 	-webkit-transform:translate(0,15%)
@@ -1279,7 +1282,6 @@ input.eraser.large {
 
 li.reports .hover {
   display: flex;
-  user-select: none;
   cursor: pointer;
   padding: 0;
   padding-left: 2ch;
@@ -1339,6 +1341,19 @@ li.reports .button-spacer {
 .searchbar {
   margin-top: 16px;
   width: 20em;
+  height: 2em;
+  border-radius: 1em;
+  border: 1px solid var(--background-alt-alt);
+  font-size: 1rem;
+  background-color: var(--background-alt);
+  padding: 2px 12px;
+  color: var(--text);
+}
+
+/* TODO this style isn't really done */
+.searchbar-button {
+  margin-top: 16px;
+
   height: 2em;
   border-radius: 1em;
   border: 1px solid var(--background-alt-alt);

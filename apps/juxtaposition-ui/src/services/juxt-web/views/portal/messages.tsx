@@ -5,7 +5,10 @@ import {
 	PortalPageBody,
 	PortalRoot
 } from '@/services/juxt-web/views/portal/root';
-import { utils } from '@/services/juxt-web/views/utils';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type {
 	ConversationUserModel,
@@ -13,29 +16,33 @@ import type {
 } from '@/services/juxt-web/views/web/messages';
 
 export function PortalMessagesView(props: MessagesViewProps): ReactNode {
+	const url = useUrl();
+	const cache = useCache();
+	const user = useUser();
+
 	return (
-		<PortalRoot title={props.ctx.lang.global.messages}>
-			<PortalNavBar ctx={props.ctx} selection={3} />
+		<PortalRoot title={T.str('global.messages')}>
+			<PortalNavBar selection={3} />
 			<PortalPageBody>
 				<header id="header">
-					<h1 id="page-title">{props.ctx.lang.global.messages}</h1>
+					<h1 id="page-title"><T k="global.messages" /></h1>
 				</header>
 				<div className="body-content" id="messages-list">
 					<ul className="list-content-with-icon-and-text arrow-list">
 						{props.conversations.length === 0
 							? (
 									<p className="no-posts-text">
-										{props.ctx.lang.messages.coming_soon}
+										<T k="messages.coming_soon" />
 									</p>
 								)
 							: (
 									props.conversations.map((convo) => {
 										let userObj: ConversationUserModel | null = null;
 										let me: ConversationUserModel | null = null;
-										if (convo.users[0].pid === props.ctx.pid) {
+										if (convo.users[0].pid === user.pid) {
 											userObj = convo.users[1];
 											me = convo.users[0];
-										} else if (convo.users[1].pid === props.ctx.pid) {
+										} else if (convo.users[1].pid === user.pid) {
 											userObj = convo.users[0];
 											me = convo.users[1];
 										}
@@ -48,12 +55,12 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 										return (
 											<li key={convo.id}>
 												<a
-													href={utils.url('/users/show', { pid: userObj.pid })}
+													href={url.url('/users/show', { pid: userObj.pid })}
 													data-pjax="#body"
 													className="icon-container trigger"
 												>
 													<img
-														src={utils.cdn(props.ctx, `/mii/${userObj.pid}/normal_face.png`)}
+														src={url.cdn(`/mii/${userObj.pid}/normal_face.png`)}
 														className={cx('icon', {
 															verified: userObj.official
 														})}
@@ -68,11 +75,11 @@ export function PortalMessagesView(props: MessagesViewProps): ReactNode {
 												<div className="body">
 													<p className="title">
 														<span className="nick-name">
-															{props.ctx.usersMap.get(userObj.pid)}
+															{cache.getUserName(userObj.pid)}
 														</span>
 														<span className="id-name">
 															@
-															{props.ctx.usersMap.get(userObj.pid)}
+															{cache.getUserName(userObj.pid)}
 														</span>
 													</p>
 													<span className="timestamp">

@@ -1,7 +1,6 @@
 import { database as db } from '@/database';
 import { config } from '@/config';
 import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
-import { buildContext } from '@/services/juxt-web/views/context';
 import { PortalFatalErrorView } from '@/services/juxt-web/views/portal/errorView';
 import { CtrFatalErrorView } from '@/services/juxt-web/views/ctr/errorView';
 import type { RequestHandler } from 'express';
@@ -24,7 +23,7 @@ export const checkDiscovery: RequestHandler = async (request, response, next) =>
 				break;
 		}
 		return response.jsxForDirectory({
-			web: <WebLoginView ctx={buildContext(response)} toast={message} redirect={request.originalUrl} />,
+			web: <WebLoginView toast={message} redirect={request.originalUrl} />,
 			portal: <PortalFatalErrorView code={5989999} message={message} />,
 			ctr: <CtrFatalErrorView code={5989999} message={message} />
 		});

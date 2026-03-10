@@ -1,6 +1,9 @@
-import { utils } from '@/services/juxt-web/views/utils';
+import { T } from '@/services/juxt-web/views/common/components/T';
+import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
-import type { RenderContext } from '@/services/juxt-web/views/context';
+import type { CommunitySchema, CommunityShotMode } from '@/models/communities';
 
 const empathies = [
 	{
@@ -43,22 +46,28 @@ const empathies = [
 ];
 
 export type NewPostViewProps = {
-	ctx: RenderContext;
 	id: string;
-	name: string;
+	// must provide name OR pid
+	name?: string;
+	pid?: number;
 	url: string;
 	show: string;
+	// must provide messagePid OR community
 	messagePid?: number;
+	community?: InferSchemaType<typeof CommunitySchema>;
+	shotMode: CommunityShotMode;
 };
 
 export function WebNewPostView(props: NewPostViewProps): ReactNode {
+	const url = useUrl();
+	const user = useUser();
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
 				<input type="hidden" name="community_id" value={props.id} />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
-						<img src={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/normal_face.png`)} id="mii-face" className="icon" />
+						<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} id="mii-face" className="icon" />
 						<ul className="buttons">
 							{empathies.map(v => (
 								<li key={v.value}>
@@ -67,7 +76,7 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 										name="feeling_id"
 										value={v.value}
 										className={v.className}
-										data-mii-face-url={utils.cdn(props.ctx, `/mii/${props.ctx.pid}/${v.miiFaceFile}`)}
+										data-mii-face-url={url.cdn(`/mii/${user.pid}/${v.miiFaceFile}`)}
 										defaultChecked={v.isDefault}
 										data-sound={v.sound}
 									/>
@@ -84,14 +93,14 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" disabled />
 							</li>
 						</menu>
-						<textarea id="new-post-text" name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..."></textarea>
+						<textarea id="new-post-text" name="body" className="textarea-text" value="" maxLength={280} placeholder={T.str('new_post.content_placeholder')}></textarea>
 						<div id="new-post-memo" className="textarea-memo trigger" data-sound="" evt-click="newPainting(false)" style={{ display: 'none' }}>
 							<img id="memo" className="textarea-memo-preview" src="" />
 							<input id="memo-value" type="hidden" name="painting" />
 						</div>
 					</div>
 					<label className="checkbox-container spoiler-button">
-						Spoilers
+						<T k="new_post.spoiler_label" />
 						<input type="checkbox" id="spoiler" name="spoiler" value="true" />
 						<span className="checkmark"></span>
 					</label>

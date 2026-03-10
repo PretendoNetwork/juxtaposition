@@ -1,6 +1,7 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { InlineScript } from '@/services/juxt-web/views/common';
+import { Inline } from '@/services/juxt-web/views/common/components/Inline';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { ErrorViewProps, FatalErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
@@ -9,7 +10,7 @@ export function PortalErrorView(props: ErrorViewProps): ReactNode {
 
 	return (
 		<PortalRoot title={title} onLoad="wiiuBrowser.endStartUp();">
-			<PortalNavBar ctx={props.ctx} selection={-1} />
+			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title" className=""></h1>
@@ -18,17 +19,11 @@ export function PortalErrorView(props: ErrorViewProps): ReactNode {
 					<div className="communities-list">
 						<div className="headline">
 							<h2>
-								Error
-								{' '}
-								{props.code}
-								:
-								{' '}
-								{props.message}
+								<T k="error.heading" values={{ code: props.code, message: props.message }} />
 							</h2>
 						</div>
-						<p>Whoops! Looks like we couldn't find the page you're looking for.</p>
-						<p>Double-check your link or try again later</p>
-						<img className="lost" src="/images/bandwidthlost.png" />
+						<p><T k="error.message" withNewline /></p>
+						<img className="lost" src="/assets/portal/images/bandwidthlost.png" />
 					</div>
 				</div>
 			</PortalPageBody>
@@ -53,13 +48,11 @@ export function PortalFatalErrorView(props: FatalErrorViewProps): ReactNode {
 			</head>
 			<body>
 				<h1>
-					You are not authorized to access this application (
-					{props.code}
-					)
+					<T k="error.no_access" values={{ code: props.code }} />
 				</h1>
 				<p style={{ whiteSpace: 'pre-line' }}>{props.message}</p>
 			</body>
-			<InlineScript src={errorJs} />
+			<Inline.Script src={errorJs} />
 		</html>
 	);
 }
