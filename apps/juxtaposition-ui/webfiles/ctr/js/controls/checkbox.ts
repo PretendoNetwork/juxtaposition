@@ -1,3 +1,5 @@
+import { createModule } from '@repo/frontend-common';
+
 // Client-side tab control from checkbox.tsx
 
 function updateComponent(component: Element, input: HTMLInputElement): void {
@@ -11,10 +13,12 @@ function updateComponent(component: Element, input: HTMLInputElement): void {
 	}
 }
 
-export function initCheckboxes(): void {
-	document.querySelectorAll('[data-checkbox]').forEach((component) => {
-		component.querySelectorAll('input[type="checkbox"]').forEach((input) => {
-			input.addEventListener('change', () => updateComponent(component, input as HTMLInputElement));
+export var checkboxModule = createModule({
+	id: 'checkbox',
+	selector: '[data-checkbox]',
+	hydrate({ el }) {
+		el.querySelectorAll('input[type="checkbox"]').forEach((input) => {
+			input.addEventListener('change', () => updateComponent(el, input as HTMLInputElement));
 		});
-	});
-}
+	}
+});

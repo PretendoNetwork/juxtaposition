@@ -19,10 +19,10 @@ export type ModuleContainer = {
 
 export type ModuleOptions = {
 	id: string;
-	init?: (el: ModuleRunContext) => void;
+	init?: (ctx: ModuleRunContext) => void;
 
 	selector?: string;
-	hydrate?: (el: ModuleHydrateContext) => void;
+	hydrate?: (ctx: ModuleHydrateContext) => void;
 }
 
 export function extractModulesFromInput(input: any): ModuleControls[] {

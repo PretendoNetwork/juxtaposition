@@ -1,5 +1,7 @@
-// Script for the post page view (postPageView.tsx)
+import { createModule } from '@repo/frontend-common';
 import { deletePostById, empathyPostById } from './api';
+
+// Script for the post page view (postPageView.tsx)
 
 function deletePost(this: HTMLElement, _e: Event): void {
 	var id = this.getAttribute('data-button-delete-post');
@@ -28,15 +30,6 @@ function deletePost(this: HTMLElement, _e: Event): void {
 		alert('Post has been deleted.');
 		window.location.href = response.nextUrl;
 	});
-}
-
-function initDeleteButton(): void {
-	var del = document.querySelector('[data-button-delete-post]');
-	if (!del) {
-		return;
-	}
-
-	(del as HTMLElement).addEventListener('click', deletePost);
 }
 
 function inc(base: string, val: number): string {
@@ -72,15 +65,18 @@ function yeahPost(this: HTMLInputElement, _e: Event): void {
 	});
 }
 
-/* NOTE exported temporarily until we have a longer-term solution to hydrating PJAX docs */
-export function initYeahButton(posts: Element | Document | DocumentFragment): void {
-	var els = posts.querySelectorAll('button[data-button-yeah-post]') as NodeListOf<HTMLInputElement>;
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', yeahPost);
+export var deleteButtonModule = createModule({
+	id: 'deleteButton',
+	selector: '[data-button-delete-post]',
+	hydrate({ el }) {
+		el.addEventListener('click', deletePost);
 	}
-}
+});
 
-export function initPostPageView(): void {
-	initDeleteButton();
-	// initYeahButton(document);
-}
+export var yeahButtonModule = createModule({
+	id: 'yeahButton',
+	selector: '[data-button-yeah-post]',
+	hydrate({ el }) {
+		el.addEventListener('click', yeahPost);
+	}
+});

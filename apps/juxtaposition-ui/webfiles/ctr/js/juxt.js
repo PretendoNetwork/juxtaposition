@@ -1,11 +1,12 @@
 import './polyfills';
 
-import { initCheckboxes } from './controls/checkbox';
-import { initClientTabs } from './controls/ctabs';
-import { initNewPostView } from './new-post-view';
+import { createModuleContainer, extractModulesFromInput } from '@repo/frontend-common';
+import { checkboxModule } from './controls/checkbox';
+import { ctabsModule } from './controls/ctabs';
+import { newPostViewModule } from './new-post-view';
 import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
-import { initPostPageView, initYeahButton } from './post';
-import { initToolbarConfigs } from './toolbar';
+import { deleteButtonModule, yeahButtonModule } from './post';
+import { toolbarConfigsModule } from './toolbar';
 import { GET, POST } from './xhr';
 
 setInterval(checkForUpdates, 30000);
@@ -64,7 +65,7 @@ function initPosts() {
 			pjaxLoadUrl(e.currentTarget.getAttribute('data-href'), true);
 		});
 	}
-	initYeahButton(document);
+	yeahButtonModule.run({ doc: document.body });
 	initSpoilers();
 }
 
@@ -135,19 +136,6 @@ function stopLoading() {
 	cave.toolbar_setVisible(true);
 }
 window.stopLoading = stopLoading;
-
-function initAll() {
-	initPosts();
-	initMorePosts();
-	initNewPostView();
-	initTabs();
-	initPostPageView();
-	initClientTabs();
-	initCheckboxes();
-	checkForUpdates();
-	initToolbarConfigs();
-	pjaxRefresh();
-}
 
 function checkForUpdates() {
 	GET('/users/notifications.json', function updates(data) {
@@ -229,3 +217,22 @@ document.addEventListener('error', (e) => {
 		target.setAttribute('src', placeholder);
 	}
 }, true);
+
+function initAll() {
+	modules.init();
+	initPosts();
+	initMorePosts();
+	initTabs();
+	checkForUpdates();
+	pjaxRefresh();
+}
+
+var moduleList = extractModulesFromInput([
+	checkboxModule,
+	ctabsModule,
+	newPostViewModule,
+	yeahButtonModule,
+	deleteButtonModule,
+	toolbarConfigsModule
+]);
+var modules = createModuleContainer(moduleList);

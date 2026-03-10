@@ -1,10 +1,7 @@
+import { createModule } from '@repo/frontend-common';
 import type { BGM, SoundEffect } from '@pretendonetwork/cave-types';
 
-export function initToolbarConfigs(): void {
-	var toolbarConfig = document.querySelector('[data-toolbar-mode]');
-	if (!toolbarConfig) {
-		return;
-	}
+function handleToolbarConfig(toolbarConfig: HTMLElement): void {
 	var mode = toolbarConfig.getAttribute('data-toolbar-mode');
 	var backgroundMusic = toolbarConfig.getAttribute('data-toolbar-bgm') as BGM | null;
 	var sound = toolbarConfig.getAttribute('data-toolbar-sound') as SoundEffect | null;
@@ -38,3 +35,11 @@ export function initToolbarConfigs(): void {
 		cave.snd_playSe(sound);
 	}
 }
+
+export var toolbarConfigsModule = createModule({
+	id: 'toolbarConfigs',
+	selector: '[data-toolbar-mode]',
+	hydrate({ el }) {
+		handleToolbarConfig(el);
+	}
+});
