@@ -52,5 +52,41 @@ export default defineConfig([
 			}
 		},
 		ignores: ['webfiles/**/*.js', 'webfiles/**/*.ts']
+	},
+	{
+		files: [
+			'webfiles/ctr/**'
+		],
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: 'webfiles/ctr/tsconfig.json'
+				}
+			}
+		}
+	},
+	{
+		files: [
+			'webfiles/portal/**'
+		],
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: 'webfiles/portal/tsconfig.json'
+				}
+			}
+		}
+	},
+	{
+		files: [
+			'webfiles/web/**'
+		],
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: 'webfiles/web/tsconfig.json'
+				}
+			}
+		}
 	}
 ]);
