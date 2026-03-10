@@ -6,9 +6,9 @@ import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebGlobalFeedView, WebPeopleFeedView, WebPersonalFeedView } from '@/services/juxt-web/views/web/feed';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
-import { CtrGlobalFeedView, CtrPersonalFeedView } from '@/services/juxt-web/views/ctr/feed';
+import { CtrGlobalFeedView, CtrPeopleFeedView, CtrPersonalFeedView } from '@/services/juxt-web/views/ctr/feed';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
-import { PortalGlobalFeedView, PortalPersonalFeedView } from '@/services/juxt-web/views/portal/feed';
+import { PortalGlobalFeedView, PortalPeopleFeedView, PortalPersonalFeedView } from '@/services/juxt-web/views/portal/feed';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 
 export const feedRouter = express.Router();
@@ -65,9 +65,9 @@ feedRouter.get('/people', async function (req, res) {
 	}
 
 	return res.jsxForDirectory({
-		web: <WebPeopleFeedView nextLink={nextLink} posts={posts} userContent={userContent} />
-		// portal: <PortalPersonalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
-		// ctr: <CtrPersonalFeedView nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: <WebPeopleFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		portal: <PortalPeopleFeedView nextLink={nextLink} posts={posts} userContent={userContent} />,
+		ctr: <CtrPeopleFeedView nextLink={nextLink} posts={posts} userContent={userContent} />
 	});
 });
 

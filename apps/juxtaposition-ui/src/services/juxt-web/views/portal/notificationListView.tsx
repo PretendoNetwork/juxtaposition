@@ -1,4 +1,3 @@
-import cx from 'classnames';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { humanFromNow } from '@/util';
@@ -6,6 +5,7 @@ import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/ui/PortalMiiIcon';
 import { PortalIcon } from '@/services/juxt-web/views/portal/components/ui/PortalIcon';
+import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -99,18 +99,16 @@ export function PortalNotificationWrapperView(props: NotificationWrapperViewProp
 					<h1 id="page-title"><T k="global.notifications" /></h1>
 				</header>
 				<div className="body-content tab2-content" id="news-page">
-					<menu className="tab-header">
-						<li id="tab-header-my-news" className={cx('tab-button', { selected: props.selectedTab === 0 })} data-show-post-button="1">
-							<a href="/news/my_news" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-								<span className="new-post"><T k="global.updates" /></span>
-							</a>
-						</li>
-						<li id="tab-header-friend-request" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
-							<a href="/news/friend_requests" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-								<span><T k="global.friend_requests" /></span>
-							</a>
-						</li>
-					</menu>
+					<PortalNavTabs target=".tab-body">
+						<PortalNavTabsRow>
+							<PortalNavTab href="/news/my_news" selected={props.selectedTab === 0}>
+								<T k="global.updates" />
+							</PortalNavTab>
+							<PortalNavTab href="/news/friend_requests" selected={props.selectedTab === 1}>
+								<T k="global.friend_requests" />
+							</PortalNavTab>
+						</PortalNavTabsRow>
+					</PortalNavTabs>
 					<div className="tab-body">
 						{props.children}
 					</div>

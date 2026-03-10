@@ -1,47 +1,26 @@
-import cx from 'classnames';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
 import type { FeedTabsProps, FeedViewProps } from '@/services/juxt-web/views/web/feed';
 
 export function PortalFeedTabs(props: FeedTabsProps): ReactNode {
 	return (
-		<menu className="tab-header">
-			<li
-				id="tab-header-my-feed"
-				className={cx('tab-button', {
-					selected: props.selected === 0
-				})}
-				data-show-post-button="1"
-			>
-				<a href="/feed/" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-					<span className="new-post"><T k="global.my_feed" /></span>
-				</a>
-			</li>
-			<li
-				id="tab-header-people-feed"
-				className={cx('tab-button', {
-					selected: props.selected === 1
-				})}
-				data-show-post-button="1"
-			>
-				<a href="/feed/people" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-					<span className="new-post"><T k="global.people_feed" /></span>
-				</a>
-			</li>
-			<li
-				id="tab-header-global-feed"
-				className={cx('tab-button', {
-					selected: props.selected === 2
-				})}
-			>
-				<a href="/feed/all" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-					<span><T k="global.global_feed" /></span>
-				</a>
-			</li>
-		</menu>
+		<PortalNavTabs target=".tab-body">
+			<PortalNavTabsRow>
+				<PortalNavTab href="/feed" selected={props.selected === 0}>
+					<T k="global.my_feed" />
+				</PortalNavTab>
+				<PortalNavTab href="/feed/people" selected={props.selected === 1}>
+					<T k="global.people_feed" />
+				</PortalNavTab>
+				<PortalNavTab href="/feed/all" selected={props.selected === 2}>
+					<T k="global.global_feed" />
+				</PortalNavTab>
+			</PortalNavTabsRow>
+		</PortalNavTabs>
 	);
 }
 
