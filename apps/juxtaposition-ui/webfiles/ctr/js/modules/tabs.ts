@@ -1,6 +1,6 @@
 import { createModule } from '@repo/frontend-common';
 import { GET } from '@/js/xhr';
-import { pjaxRefresh } from '@/js/pjax';
+import { modules } from '@/js/module-container';
 
 function handleTabs(doc: HTMLElement): void {
 	var els = doc.querySelectorAll<HTMLElement>('.tab-button');
@@ -24,11 +24,10 @@ function handleTabs(doc: HTMLElement): void {
 
 		GET(child.getAttribute('href') + '?pjax=true', function a(data) {
 			var response = data.responseText;
+			var parent = document.querySelectorAll<HTMLElement>('.tab-body')[0];
 			if (response && data.status === 200) {
-				document.getElementsByClassName('tab-body')[0].innerHTML = response;
-				initPosts();
-				initMorePosts();
-				pjaxRefresh();
+				parent.innerHTML = response;
+				modules.loadPartial(parent);
 				cave.transition_end();
 			}
 		});

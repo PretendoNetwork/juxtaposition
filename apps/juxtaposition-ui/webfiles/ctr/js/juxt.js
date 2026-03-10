@@ -1,15 +1,15 @@
 import './polyfills';
 
-import { createModuleContainer, extractModulesFromInput } from '@repo/frontend-common';
 import { tabsModule } from '@/js/modules/tabs';
 import { morePostsModule } from '@/js/modules/more-posts';
 import { checkForUpdates, updatesModule } from '@/js/modules/updates';
 import { postsModule } from '@/js/modules/posts';
 import { spoilersModule } from '@/js/modules/spoilers';
+import { modules } from '@/js/module-container';
 import { checkboxModule } from './modules/controls/checkbox';
 import { ctabsModule } from './modules/controls/ctabs';
 import { newPostViewModule } from './modules/new-post-view';
-import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
+import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl } from './pjax';
 import { deleteButtonModule, yeahButtonModule } from './modules/post';
 import { toolbarConfigsModule } from './modules/toolbar';
 import { POST } from './xhr';
@@ -95,14 +95,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		selectors: ['title', '#body']
 	});
 	console.debug('Pjax initialized.');
-	initModules();
+	modules.loadBody();
 	stopLoading();
 });
 document.addEventListener('PjaxRequest', function () {
 	cave.transition_begin();
 });
 document.addEventListener('PjaxDone', function () {
-	initModules();
+	modules.loadBody();
 	cave.brw_scrollImmediately(0, 0);
 	if (pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(1);
@@ -126,12 +126,7 @@ document.addEventListener('error', (e) => {
 	}
 }, true);
 
-function initModules() {
-	modules.init();
-	pjaxRefresh();
-}
-
-var moduleList = extractModulesFromInput([
+modules.register([
 	checkboxModule,
 	ctabsModule,
 	newPostViewModule,
@@ -144,4 +139,3 @@ var moduleList = extractModulesFromInput([
 	postsModule,
 	spoilersModule
 ]);
-var modules = createModuleContainer(moduleList);

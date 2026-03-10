@@ -1,6 +1,6 @@
 import { createModule } from '@repo/frontend-common';
 import { GET } from '@/js/xhr';
-import { pjaxRefresh } from '@/js/pjax';
+import { modules } from '@/js/module-container';
 
 export var morePostsModule = createModule({
 	id: 'more-posts',
@@ -16,9 +16,7 @@ export var morePostsModule = createModule({
 				var response = data.responseText;
 				if (response && data.status === 200) {
 					parent.outerHTML = response;
-					initPosts();
-					initMorePosts();
-					pjaxRefresh();
+					modules.loadPartial(parent);
 				} else {
 					parent.outerHTML = '';
 				}
