@@ -33,9 +33,9 @@ export function ctabOnShown(component: Element, value: string, cb: EventListener
 export var ctabsModule = createModule({
 	id: 'checkbox',
 	selector: '[data-ctabs-control]',
-	hydrate({ el }) {
-		el.querySelectorAll('[data-ctab] input[type="radio"]').forEach((input) => {
-			input.addEventListener('change', () => updateComponent(el));
+	hydrate: (ctx) => {
+		ctx.el.querySelectorAll('[data-ctab] input[type="radio"]').forEach((input) => {
+			input.addEventListener('change', () => updateComponent(ctx.el));
 		});
 	}
 });

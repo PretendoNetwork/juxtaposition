@@ -90,9 +90,9 @@ function initScreenshotControl(page: HTMLElement, ctab: Element): void {
 export var newPostViewModule = createModule({
 	id: 'newPostView',
 	selector: '#add-post-page',
-	hydrate({ el }) {
-		var ctab = el.querySelector('[data-ctabs-control]')!;
-		initNewPostView(el, ctab);
-		initScreenshotControl(el, ctab);
+	hydrate: (ctx) => {
+		var ctab = ctx.el.querySelector('[data-ctabs-control]')!;
+		initNewPostView(ctx.el, ctab);
+		initScreenshotControl(ctx.el, ctab);
 	}
 });

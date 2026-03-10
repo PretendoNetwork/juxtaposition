@@ -68,15 +68,15 @@ function yeahPost(this: HTMLInputElement, _e: Event): void {
 export var deleteButtonModule = createModule({
 	id: 'deleteButton',
 	selector: '[data-button-delete-post]',
-	hydrate({ el }) {
-		el.addEventListener('click', deletePost);
+	hydrate: (ctx) => {
+		ctx.el.addEventListener('click', deletePost);
 	}
 });
 
 export var yeahButtonModule = createModule({
 	id: 'yeahButton',
 	selector: '[data-button-yeah-post]',
-	hydrate({ el }) {
-		el.addEventListener('click', yeahPost);
+	hydrate: (ctx) => {
+		ctx.el.addEventListener('click', yeahPost);
 	}
 });

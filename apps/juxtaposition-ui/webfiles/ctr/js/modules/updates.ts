@@ -8,7 +8,7 @@ export function checkForUpdates(): void {
 // Not *really* a module, but it needs to trigger at the same times as a module
 export var updatesModule = createModule({
 	id: 'updates',
-	init() {
+	init: () => {
 		GET('/users/notifications.json', function updates(data) {
 			var notificationObj = JSON.parse(data.responseText);
 			var count =

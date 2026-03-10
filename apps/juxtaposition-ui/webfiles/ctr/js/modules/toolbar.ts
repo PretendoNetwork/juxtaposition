@@ -39,7 +39,7 @@ function handleToolbarConfig(toolbarConfig: HTMLElement): void {
 export var toolbarConfigsModule = createModule({
 	id: 'toolbarConfigs',
 	selector: '[data-toolbar-mode]',
-	hydrate({ el }) {
-		handleToolbarConfig(el);
+	hydrate: (ctx) => {
+		handleToolbarConfig(ctx.el);
 	}
 });

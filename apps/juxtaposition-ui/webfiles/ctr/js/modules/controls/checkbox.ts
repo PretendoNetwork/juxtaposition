@@ -16,9 +16,9 @@ function updateComponent(component: Element, input: HTMLInputElement): void {
 export var checkboxModule = createModule({
 	id: 'checkbox',
 	selector: '[data-checkbox]',
-	hydrate({ el }) {
-		el.querySelectorAll('input[type="checkbox"]').forEach((input) => {
-			input.addEventListener('change', () => updateComponent(el, input as HTMLInputElement));
+	hydrate: (ctx) => {
+		ctx.el.querySelectorAll('input[type="checkbox"]').forEach((input) => {
+			input.addEventListener('change', () => updateComponent(ctx.el, input as HTMLInputElement));
 		});
 	}
 });

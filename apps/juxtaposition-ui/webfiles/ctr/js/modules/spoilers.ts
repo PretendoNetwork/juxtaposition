@@ -3,9 +3,9 @@ import { createModule } from '@repo/frontend-common';
 export var spoilersModule = createModule({
 	id: 'spoilers',
 	selector: 'button[data-post-id]',
-	hydrate({ el }) {
-		el.addEventListener('click', function (_e) {
-			var target = document.getElementById('post-' + el.getAttribute('data-post-id'))!;
+	hydrate: (ctx) => {
+		ctx.el.addEventListener('click', function (_e) {
+			var target = document.getElementById('post-' + ctx.el.getAttribute('data-post-id'))!;
 			target.classList.remove(
 				'spoiler'
 			);

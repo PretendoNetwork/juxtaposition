@@ -1,16 +1,16 @@
 export type ModuleRunContext = {
 	doc: HTMLElement;
-}
+};
 
 export type ModuleHydrateContext = {
 	el: HTMLElement;
-}
+};
 
 export type ModuleControls = {
-	__type: "module";
+	__type: 'module';
 	id: string;
 	run: (ctx: ModuleRunContext) => void;
-}
+};
 
 export type ModuleOptions = {
 	id: string;
@@ -18,19 +18,19 @@ export type ModuleOptions = {
 
 	selector?: string;
 	hydrate?: (ctx: ModuleHydrateContext) => void;
-}
+};
 
 export function createModule(ops: ModuleOptions): ModuleControls {
 	return {
-		__type: "module",
+		__type: 'module',
 		id: ops.id,
-		run(ctx) {
+		run: function (ctx): void {
 			ops.init?.(ctx);
 			if (ops.selector && ops.hydrate) {
-				ctx.doc.querySelectorAll(ops.selector).forEach(el => {
-					ops.hydrate?.({ el: el as HTMLElement })
-				})
+				ctx.doc.querySelectorAll(ops.selector).forEach((el) => {
+					ops.hydrate?.({ el: el as HTMLElement });
+				});
 			}
-		},
-	}
+		}
+	};
 }

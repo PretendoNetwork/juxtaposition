@@ -1,4 +1,4 @@
-import { ModuleControls, ModuleRunContext } from "./modules";
+import type { ModuleControls, ModuleRunContext } from './modules';
 
 export type DeepArray<T> = T | Array<DeepArray<T>>;
 export type DeepModules = DeepArray<ModuleControls>;
@@ -6,13 +6,13 @@ export type DeepModules = DeepArray<ModuleControls>;
 export type ModuleContainerOptions = {
 	modules?: DeepModules;
 	onLoadFinished?: () => void;
-}
+};
 
 export type ModuleContainer = {
 	register: (mod: DeepModules) => void;
 	loadBody: () => void;
 	loadPartial: (el: HTMLElement) => void;
-}
+};
 
 function extractDeepArrayModules(input: DeepModules): ModuleControls[] {
 	if (Array.isArray(input)) {
@@ -30,7 +30,7 @@ function extractDeepArrayModules(input: DeepModules): ModuleControls[] {
 		return [input];
 	}
 
-	throw new Error("Expected ModuleControls, got '" + JSON.stringify(input) + "' instead.")
+	throw new Error('Expected ModuleControls, got \'' + JSON.stringify(input) + '\' instead.');
 }
 
 export function createModuleContainer(ops?: ModuleContainerOptions): ModuleContainer {
@@ -38,38 +38,40 @@ export function createModuleContainer(ops?: ModuleContainerOptions): ModuleConta
 	var moduleMap: Record<string, ModuleControls> = {};
 	function registerModule(mod: ModuleControls): void {
 		if (moduleMap[mod.id]) {
-			throw new Error("Module '" + mod.id + "' already exists in container");
+			throw new Error('Module \'' + mod.id + '\' already exists in container');
 		}
 		moduleMap[mod.id] = mod;
 		modules.push(mod);
 	}
 	function registerManyModules(mods: DeepArray<ModuleControls>): void {
 		var extracted = extractDeepArrayModules(mods);
-		for (let i = 0; i < extracted.length; i++) {
+		for (var i = 0; i < extracted.length; i++) {
 			registerModule(extracted[i]);
 		}
 	}
 
 	// Register input modules
 	if (ops && ops.modules) {
-		registerManyModules(ops.modules)
+		registerManyModules(ops.modules);
 	}
 
 	return {
 		register: registerManyModules,
-		loadBody() {
+		loadBody: function (): void {
 			this.loadPartial(document.body);
 		},
-		loadPartial(el) {
+		loadPartial: function (el): void {
 			var ctx: ModuleRunContext = {
-				doc: el,
-			}
-			for (let i = 0; i < modules.length; i++) {
+				doc: el
+			};
+			for (var i = 0; i < modules.length; i++) {
 				var mod = modules[i];
-				mod.run(ctx)
+				mod.run(ctx);
 			}
 
-			if (ops?.onLoadFinished) ops.onLoadFinished();
+			if (ops?.onLoadFinished) {
+				ops.onLoadFinished();
+			}
 		}
-	}
+	};
 }

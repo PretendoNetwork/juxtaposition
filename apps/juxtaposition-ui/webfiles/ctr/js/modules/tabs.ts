@@ -37,7 +37,7 @@ function handleTabs(doc: HTMLElement): void {
 export var tabsModule = createModule({
 	id: 'tabs',
 	selector: '.tab-button',
-	init({ doc }) {
-		handleTabs(doc);
+	init: (ctx) => {
+		handleTabs(ctx.doc);
 	}
 });
