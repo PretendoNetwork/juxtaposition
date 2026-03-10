@@ -1,15 +1,18 @@
 import './polyfills';
 
 import { createModuleContainer, extractModulesFromInput } from '@repo/frontend-common';
-import { checkboxModule } from './controls/checkbox';
-import { ctabsModule } from './controls/ctabs';
-import { newPostViewModule } from './new-post-view';
+import { tabsModule } from '@/js/modules/tabs';
+import { morePostsModule } from '@/js/modules/more-posts';
+import { checkForUpdates, updatesModule } from '@/js/modules/updates';
+import { postsModule } from '@/js/modules/posts';
+import { spoilersModule } from '@/js/modules/spoilers';
+import { checkboxModule } from './modules/controls/checkbox';
+import { ctabsModule } from './modules/controls/ctabs';
+import { newPostViewModule } from './modules/new-post-view';
 import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
-import { deleteButtonModule, yeahButtonModule } from './post';
-import { toolbarConfigsModule } from './toolbar';
-import { GET, POST } from './xhr';
-
-setInterval(checkForUpdates, 30000);
+import { deleteButtonModule, yeahButtonModule } from './modules/post';
+import { toolbarConfigsModule } from './modules/toolbar';
+import { POST } from './xhr';
 
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);
@@ -32,92 +35,6 @@ cave.toolbar_setCallback(5, function () {
 });
 cave.toolbar_setCallback(8, function () { });
 
-function initMorePosts() {
-	var els = document.querySelectorAll('.load-more[data-href]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			cave.snd_playSe('SE_OLV_OK');
-			GET(el.getAttribute('data-href'), function a(data) {
-				var response = data.responseText;
-				if (response && data.status === 200) {
-					el.parentElement.outerHTML = response;
-					initPosts();
-					initMorePosts();
-					pjaxRefresh();
-				} else {
-					el.parentElement.outerHTML = '';
-				}
-			});
-		});
-	}
-}
-function initPosts() {
-	var els = document.querySelectorAll('.post-content[data-href]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			pjaxLoadUrl(e.currentTarget.getAttribute('data-href'), true);
-		});
-	}
-	yeahButtonModule.run({ doc: document.body });
-	initSpoilers();
-}
-
-function initSpoilers() {
-	var els = document.querySelectorAll('button[data-post-id]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			var target = document.getElementById('post-' + el.getAttribute('data-post-id'));
-			target.classList.remove(
-				'spoiler'
-			);
-			target.outerHTML = '';
-			cave.snd_playSe('SE_OLV_OK');
-		});
-	}
-}
-function initTabs() {
-	var els = document.querySelectorAll('.tab-button');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].onclick = tabs;
-	}
-	function tabs(e) {
-		e.preventDefault();
-		cave.transition_begin();
-		var el = e.currentTarget;
-		var child = el.children[0];
-
-		for (var i = 0; i < els.length; i++) {
-			els[i].classList.remove('selected');
-		}
-		el.classList.add('selected');
-
-		GET(child.getAttribute('href') + '?pjax=true', function a(data) {
-			var response = data.responseText;
-			if (response && data.status === 200) {
-				document.getElementsByClassName('tab-body')[0].innerHTML = response;
-				initPosts();
-				initMorePosts();
-				pjaxRefresh();
-				cave.transition_end();
-			}
-		});
-	}
-}
-
 function back() {
 	if (!pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(0);
@@ -136,15 +53,6 @@ function stopLoading() {
 	cave.toolbar_setVisible(true);
 }
 window.stopLoading = stopLoading;
-
-function checkForUpdates() {
-	GET('/users/notifications.json', function updates(data) {
-		var notificationObj = JSON.parse(data.responseText);
-		var count =
-			notificationObj.message_count + notificationObj.notification_count;
-		cave.toolbar_setNotificationCount(count);
-	});
-}
 
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
@@ -187,14 +95,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		selectors: ['title', '#body']
 	});
 	console.debug('Pjax initialized.');
-	initAll();
+	initModules();
 	stopLoading();
 });
 document.addEventListener('PjaxRequest', function () {
 	cave.transition_begin();
 });
 document.addEventListener('PjaxDone', function () {
-	initAll();
+	initModules();
 	cave.brw_scrollImmediately(0, 0);
 	if (pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(1);
@@ -218,12 +126,8 @@ document.addEventListener('error', (e) => {
 	}
 }, true);
 
-function initAll() {
+function initModules() {
 	modules.init();
-	initPosts();
-	initMorePosts();
-	initTabs();
-	checkForUpdates();
 	pjaxRefresh();
 }
 
@@ -233,6 +137,11 @@ var moduleList = extractModulesFromInput([
 	newPostViewModule,
 	yeahButtonModule,
 	deleteButtonModule,
-	toolbarConfigsModule
+	toolbarConfigsModule,
+	tabsModule,
+	morePostsModule,
+	updatesModule,
+	postsModule,
+	spoilersModule
 ]);
 var modules = createModuleContainer(moduleList);

@@ -1,5 +1,5 @@
 import { createModule } from '@repo/frontend-common';
-import { deletePostById, empathyPostById } from './api';
+import { deletePostById, empathyPostById } from '../api';
 
 // Script for the post page view (postPageView.tsx)
 
