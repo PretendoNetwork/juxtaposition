@@ -14,6 +14,15 @@ import { deleteButtonModule, yeahButtonModule } from './modules/post';
 import { toolbarConfigsModule } from './modules/toolbar';
 import { POST } from './xhr';
 
+declare global {
+	interface Window {
+		stopLoading: () => void;
+		follow: (el: HTMLInputElement) => void;
+		saveUserSettings: () => void;
+		exitUserSettings: () => void;
+	}
+}
+
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);
 cave.toolbar_setCallback(2, function () {
@@ -33,9 +42,10 @@ cave.toolbar_setCallback(5, function () {
 	cave.toolbar_setActiveButton(5);
 	pjaxLoadUrl('/users/me', true);
 });
+// @ts-expect-error MESSAGE (8) missing from upstream types
 cave.toolbar_setCallback(8, function () { });
 
-function back() {
+function back(): void {
 	if (!pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(0);
 	} else {
@@ -43,30 +53,34 @@ function back() {
 	}
 }
 
-function stopLoading() {
+function stopLoading(): void {
 	if (window.location.href.indexOf('/titles/show/first') !== -1) {
 		return;
 	}
 	cave.transition_end();
 	cave.lls_setItem('agree_olv', '1');
+	// @ts-expect-error incorrect upstream types
 	cave.snd_playBgm('BGM_CAVE_MAIN');
 	cave.toolbar_setVisible(true);
 }
 window.stopLoading = stopLoading;
 
-function follow(el) {
+function follow(el: HTMLInputElement): void {
 	var id = el.getAttribute('data-community-id');
-	var count = document.getElementById('followers');
-	var sprite = el.querySelector('.sprite.sp-yeah');
+	var count = document.getElementById('followers')!;
+	var sprite = el.querySelector('.sprite.sp-yeah')!;
 	el.disabled = true;
 	var params = 'id=' + id;
 	if (sprite.classList.toggle('selected')) {
+		// @ts-expect-error incorrect upstream types for SE label
 		cave.snd_playSe('SE_OLV_MII_ADD');
 	} else {
+		// @ts-expect-error incorrect upstream types for SE label
 		cave.snd_playSe('SE_OLV_CANCEL');
 	}
 
-	POST(el.getAttribute('data-url'), params, function a(data) {
+	var url = el.getAttribute('data-url')!;
+	POST(url, params, function a(data) {
 		var element = JSON.parse(data.responseText);
 		if (!element || element.status !== 200) {
 			// Apparently there was an actual error code for not being able to yeah a post, who knew!
@@ -79,11 +93,14 @@ function follow(el) {
 }
 window.follow = follow;
 
-function saveUserSettings() {
-	document.getElementById('submit').click();
+function saveUserSettings(): void {
+	var submitButton = document.getElementById('submit');
+	if (submitButton) {
+		submitButton.click();
+	}
 }
 window.saveUserSettings = saveUserSettings;
-function exitUserSettings() {
+function exitUserSettings(): void {
 	pjaxLoadUrl('/users/me', true);
 	cave.toolbar_setButtonType(1);
 }
@@ -120,7 +137,7 @@ document.addEventListener('PjaxDone', function () {
  * especially when selfhosting. */
 document.addEventListener('error', (e) => {
 	var placeholder = '/assets/ctr/images/placeholder.gif';
-	var target = e.target;
+	var target = e.target as HTMLElement;
 	if (target.tagName === 'IMG' && target.getAttribute('src') !== placeholder) {
 		target.setAttribute('src', placeholder);
 	}
