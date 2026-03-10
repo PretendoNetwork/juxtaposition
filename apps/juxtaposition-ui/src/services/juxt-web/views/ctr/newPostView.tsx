@@ -96,15 +96,15 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 										<div id="shot-preview" data-shot-preview="1"></div>
 
 										<div className="shot-picker">
-											<input type="radio" name="shot-type" className="shot top" data-shot="1" data-lls="shot-top"></input>
-											<input type="radio" name="shot-type" className="shot btm" data-shot="0" data-lls="shot-btm"></input>
+											<input type="radio" name="shot-type" className="shot top" data-shot="1" data-lls="shot-top" />
+											<input type="radio" name="shot-type" className="shot btm" data-shot="0" data-lls="shot-btm" />
 											<div id="shot-clear">
-												<div className="sprite sp-clear centred"></div>
-												<input type="radio" name="shot-type" data-shot-clear="1"></input>
+												<div className="sprite sp-clear centred" />
+												<input type="radio" name="shot-type" data-shot-clear="1" />
 											</div>
 										</div>
 
-										<input type="file" name="shot" data-shot-upload="1" disabled></input>
+										<input type="file" name="shot" data-shot-upload="1" disabled />
 									</CtrTabView>
 								)
 							: null }
