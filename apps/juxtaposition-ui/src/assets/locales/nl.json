@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Nieuwe Post",
-        "post_to": "Post in",
+        "post_to": "Post in {{user}}",
         "text_hint": "Klik hier om een post te maken.",
         "swearing": "Post kan geen expliciete tekst bevatten."
     },

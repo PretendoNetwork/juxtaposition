@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Novo Afiŝo",
-        "post_to": "Afiŝi al",
+        "post_to": "Afiŝi al {{user}}",
         "text_hint": "Tuŝu ĉi tie por afiŝi.",
         "swearing": "La afiŝo ne povas enhavi maldecaĵojn"
     },

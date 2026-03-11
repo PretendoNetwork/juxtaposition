@@ -69,7 +69,7 @@
     },
     "new_post": {
         "new_post_text": "Nova objava",
-        "post_to": "Objavi na",
+        "post_to": "Objavi na {{user}}",
         "text_hint": "Dodirni ovde da napraviš objavu.",
         "swearing": ""
     },

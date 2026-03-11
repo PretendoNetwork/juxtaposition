@@ -68,7 +68,7 @@
     },
     "new_post": {
         "new_post_text": "Új bejegyzés",
-        "post_to": "Bejegyzés ehhez:",
+        "post_to": "Bejegyzés ehhez {{user}}",
         "swearing": "A bejegyzés nem tartalmazhat csúnya beszédet.",
         "text_hint": "Koppints ide egy új bejegyzés létrehozásához."
     },

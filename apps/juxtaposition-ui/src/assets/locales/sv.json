@@ -110,7 +110,7 @@
     "new_post": {
         "swearing": "Inlägg kan inte innehålla olämpligt språk.",
         "new_post_text": "Nytt Inlägg",
-        "post_to": "Publicera inlägg till",
+        "post_to": "Publicera inlägg till {{user}}",
         "text_hint": "Tryck här för att göra ett inlägg."
     },
     "notifications": {

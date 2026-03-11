@@ -116,7 +116,7 @@
     },
     "new_post": {
         "new_post_text": "Nowy post",
-        "post_to": "Postuj do",
+        "post_to": "Postuj do {{user}}",
         "text_hint": "Kliknij tutaj by zrobić post.",
         "swearing": "Post nie może zawierać obraźliwego języka."
     },

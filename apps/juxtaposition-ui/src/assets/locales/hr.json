@@ -68,7 +68,7 @@
     },
     "new_post": {
         "new_post_text": "Nova objava",
-        "post_to": "Objava za",
+        "post_to": "Objava za {{user}}",
         "swearing": "Objava ne smije sadržavati prostačke izraze.",
         "text_hint": "Dodirni ovdje za izradu objave."
     },

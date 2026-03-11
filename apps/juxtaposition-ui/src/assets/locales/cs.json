@@ -71,7 +71,7 @@
         "new_post_text": "Nový příspěvek",
         "swearing": "Příspěvky nesmí obsahovat nevhodné výrazy.",
         "text_hint": "Klikněte sem pro vytvoření příspěvku.",
-        "post_to": "Přispět do"
+        "post_to": "Přispět do {{user}}"
     },
     "setup": {
         "rules_text": {

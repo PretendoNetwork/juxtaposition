@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "新建帖子",
-        "post_to": "发布到",
+        "post_to": "发布到{{user}}",
         "text_hint": "点击此处发布帖子。",
         "swearing": "帖子不能包含露骨语言。"
     },

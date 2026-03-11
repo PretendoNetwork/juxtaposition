@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Nouvelle publication",
-        "post_to": "Poster sur",
+        "post_to": "Poster sur {{user}}",
         "text_hint": "Touchez ici pour commencer à poster.",
         "swearing": "Les publications ne peuvent pas contenir de language explicite."
     },

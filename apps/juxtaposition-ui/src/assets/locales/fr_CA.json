@@ -71,7 +71,7 @@
     },
     "new_post": {
         "new_post_text": "Nouvelle publication",
-        "post_to": "Poster à",
+        "post_to": "Poster à {{user}}",
         "text_hint": "Entrez ici le texte que vous allez publier.",
         "swearing": "La publication ne peut pas contenir du vocabulaire explicite."
     },

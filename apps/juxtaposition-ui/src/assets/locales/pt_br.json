@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Novo post",
-        "post_to": "Postar em",
+        "post_to": "Postar em {{user}}",
         "text_hint": "Clique aqui para fazer um post.",
         "swearing": "O post não pode ter linguagem imprópria."
     },

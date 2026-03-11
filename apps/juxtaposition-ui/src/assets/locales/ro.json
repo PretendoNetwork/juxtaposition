@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Postare nouă",
-        "post_to": "Postează la",
+        "post_to": "Postează la {{user}}",
         "text_hint": "Apasă aici ca să faci o postare.",
         "swearing": "Postările nu pot conține limbaj vulgar."
     },

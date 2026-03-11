@@ -116,7 +116,7 @@
     },
     "new_post": {
         "new_post_text": "Postingan Baru",
-        "post_to": "Posting ke",
+        "post_to": "Posting ke {{user}}",
         "text_hint": "Klik sini untuk membuat postingan.",
         "swearing": "Postingan tidak boleh mengandung bahasa eksplisit."
     },

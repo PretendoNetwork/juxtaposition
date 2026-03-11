@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Nueva publicación",
-        "post_to": "Publicar en",
+        "post_to": "Publicar en {{user}}",
         "text_hint": "Toca aquí para hacer una publicación.",
         "swearing": "No se puede incluir lenguaje inapropiado en las publicaciones."
     },

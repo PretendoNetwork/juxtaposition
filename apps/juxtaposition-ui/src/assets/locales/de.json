@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Neuer Beitrag",
-        "post_to": "Beitrag posten bei",
+        "post_to": "Beitrag posten bei {{user}}",
         "text_hint": "Tippe hier, um einen Beitrag zu erstellen.",
         "swearing": "Beitrag darf keine explizite Sprache enthalten."
     },

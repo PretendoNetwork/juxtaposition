@@ -101,7 +101,7 @@
     "new_post": {
         "text_hint": "Toca aiquí para facer unha publicación.",
         "new_post_text": "Nova Publicación",
-        "post_to": "Publicar a",
+        "post_to": "Publicar a {{user}}",
         "swearing": "A publicación non pode ter linguaxe explícito."
     },
     "user_settings": {

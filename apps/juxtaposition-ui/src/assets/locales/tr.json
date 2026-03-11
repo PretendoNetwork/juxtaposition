@@ -50,7 +50,7 @@
         "new_follower": "seni takip etti!"
     },
     "new_post": {
-        "post_to": "Şuraya gönder",
+        "post_to": "Şuraya gönder {{user}}",
         "text_hint": "Gönderi oluşturmak için buraya dokunun.",
         "new_post_text": "Yeni Gönderi",
         "swearing": "Gönderiler açık bir dil içeremez."

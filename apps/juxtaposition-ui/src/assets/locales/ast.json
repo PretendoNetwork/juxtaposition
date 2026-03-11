@@ -106,7 +106,7 @@
         "swearing": "La publicación no puede contener lenguaje explícito.",
         "text_hint": "Pulsa aquí para hacer una publicación.",
         "new_post_text": "Nueva publicación",
-        "post_to": "Publicar en"
+        "post_to": "Publicar en {{user}}"
     },
     "user_settings": {
         "show_game": "Mostrar experiencia de juego en el perfil",
