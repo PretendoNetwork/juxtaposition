@@ -446,14 +446,15 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			miiFace = 'normal_face.png';
 			break;
 	}
-	const postBody = req.body.body;
+	const postBody = body.body;
 	if (postBody && getInvalidPostRegex().test(postBody)) {
 		// TODO - Log this error
 		res.sendStatus(422);
 		return;
 	}
 
-	if (postBody && postBody.length > 280) {
+	/* Don't count \r\n as two */
+	if (postBody && postBody.replaceAll('\r\n', '\n').length > 280) {
 		// TODO - Log this error
 		res.sendStatus(422);
 		return;
