@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "새 게시물",
-        "post_to": "여기로 게시하기",
+        "post_to": "여기로 게시하기 {{user}}",
         "text_hint": "여기를 눌러 새 게시물을 작성하세요.",
         "swearing": "게시물에는 비속어를 사용 할 수 없습니다."
     },

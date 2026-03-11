@@ -65,7 +65,7 @@
     },
     "new_post": {
         "new_post_text": "Llwyth newydd",
-        "post_to": "Llwyth I",
+        "post_to": "Llwyth I {{user}}",
         "text_hint": "Tapiwch yma i creu llwyth.",
         "swearing": "Llwyth ddim gallu cynnwys iaith eglur."
     },

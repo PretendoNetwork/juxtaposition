@@ -70,7 +70,7 @@
         "new_follower": "- lean siad tú!"
     },
     "new_post": {
-        "post_to": "Postáil chuig",
+        "post_to": "Postáil chuig {{user}}",
         "text_hint": "Tapáil anseo chun postáil a cruthú.",
         "swearing": "Ní feidir le teanga follasach a bheith sa phostáil.",
         "new_post_text": "Postáil Nua"

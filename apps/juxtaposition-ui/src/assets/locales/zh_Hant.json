@@ -120,7 +120,7 @@
     "new_post": {
         "swearing": "貼文不能包含露骨內容。",
         "new_post_text": "新增貼文",
-        "post_to": "發佈至",
+        "post_to": "發佈至{{user}}",
         "text_hint": "點觸此處新增貼文。"
     }
 }

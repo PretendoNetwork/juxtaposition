@@ -144,7 +144,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 						<>
 							<h6 className="yeah-text">
 								<T
-									k={post.yeahs.length === 1 ? 'post.yeahs_count:one' : 'post.yeahs_count:multiple'}
+									k={post.yeahs.length === 1 ? 'post.yeahs_count/one' : 'post.yeahs_count/multiple'}
 									components={{
 										count: <span className="feeling">{ post.yeahs.length }</span>
 									}}

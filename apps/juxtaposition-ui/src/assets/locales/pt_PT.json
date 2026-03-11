@@ -116,7 +116,7 @@
     },
     "new_post": {
         "new_post_text": "Nova publicação",
-        "post_to": "Publicar em",
+        "post_to": "Publicar em {{user}}",
         "text_hint": "Toca aqui para criar uma publicação.",
         "swearing": "A publicação não pode ter linguagem obscena."
     },

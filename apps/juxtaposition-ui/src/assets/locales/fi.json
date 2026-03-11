@@ -116,7 +116,7 @@
     },
     "new_post": {
         "new_post_text": "Uusi aihe",
-        "post_to": "Vastaa",
+        "post_to": "Vastaa {{user}}",
         "text_hint": "Napauta tästä aloittaaksesi kirjoittamisen.",
         "swearing": "Kirjoitus ei saa sisältää rivoa kielenkäyttöä."
     },

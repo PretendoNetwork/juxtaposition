@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Nuovo post",
-        "post_to": "Posta su",
+        "post_to": "Posta su {{user}}",
         "text_hint": "Tocca qui per fare un post.",
         "swearing": "Il post non deve contenere linguaggio esplicito."
     },

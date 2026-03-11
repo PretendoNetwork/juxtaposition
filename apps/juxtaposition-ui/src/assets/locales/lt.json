@@ -77,7 +77,7 @@
         "new_post_text": "Naujas įrašas",
         "text_hint": "Žymėk čia kad sukurtum įrašą.",
         "swearing": "Profilis negali turėti nešvankios kalbos.",
-        "post_to": "Įkelti į"
+        "post_to": "Įkelti į {{user}}"
     },
     "setup": {
         "welcome": "Sveiki atvykę į Juxtaposition!",

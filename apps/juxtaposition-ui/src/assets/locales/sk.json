@@ -71,7 +71,7 @@
         "text_hint": "Ťuknite sem na vytvorenie príspevku.",
         "swearing": "Príspevok nemôže obsahovať nadávky.",
         "new_post_text": "Nový príspevok",
-        "post_to": "Uverejniť na"
+        "post_to": "Uverejniť na {{user}}"
     },
     "setup": {
         "welcome": "Vitajte v Juxtaposition!",

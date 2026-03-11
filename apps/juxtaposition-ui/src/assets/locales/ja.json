@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "投稿する",
-        "post_to": "次に投稿する:",
+        "post_to": "次に投稿する{{user}}",
         "text_hint": "ここをタップして投稿します。",
         "swearing": "投稿に露骨な表現を含めないでください。"
     },

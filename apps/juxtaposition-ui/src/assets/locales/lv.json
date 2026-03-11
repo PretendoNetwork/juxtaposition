@@ -70,7 +70,7 @@
         "new_follower": "sāka tev sekot!"
     },
     "new_post": {
-        "post_to": "Nosūtīt uz",
+        "post_to": "Nosūtīt uz {{user}}",
         "new_post_text": "Jauns ziņojums",
         "text_hint": "Spied šeit, lai rakstītu ziņojumu.",
         "swearing": "Ziņojums nedrīkst saturēt necenzētu valodu."

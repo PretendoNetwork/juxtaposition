@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import express from 'express';
 import { Snowflake as snowflake } from 'node-snowflake';
 import { z } from 'zod';
+import multer from 'multer';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
@@ -20,6 +21,9 @@ import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView'
 import type { PaintingUrls, ScreenshotUrls } from '@/images';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
 export const messagesRouter = express.Router();
 
 messagesRouter.get('/', async function (req, res) {
@@ -33,7 +37,7 @@ messagesRouter.get('/', async function (req, res) {
 	});
 });
 
-messagesRouter.post('/new', async function (req, res) {
+messagesRouter.post('/new', upload.none(), async function (req, res) {
 	// TODO add body validation
 	const { auth } = parseReq(req);
 	const authCtx = auth();

@@ -60,7 +60,7 @@
     "new_post": {
         "text_hint": "Toca aquí per fer una publicació.",
         "new_post_text": "Publicació nova",
-        "post_to": "Publica a",
+        "post_to": "Publica a {{user}}",
         "swearing": "La teva publicació no pot contenir llenguatge explícit."
     },
     "all_communities": {

@@ -2,7 +2,7 @@
     "new_post": {
         "swearing": "Opslag må ikke indeholde upassende sprog.",
         "new_post_text": "Ny Post",
-        "post_to": "Post til",
+        "post_to": "Post til {{user}}",
         "text_hint": "Tryk her for at lave et opslag."
     },
     "setup": {
