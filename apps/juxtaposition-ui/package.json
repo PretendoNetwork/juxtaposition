@@ -32,7 +32,7 @@
     "express-session": "^1.19.0",
     "express-subdomain": "^1.0.6",
     "hashmap": "^2.4.0",
-    "i18next": "^25.8.13",
+    "i18next": "^25.8.18",
     "luxon": "^3.7.2",
     "method-override": "^3.0.0",
     "moment": "^2.30.1",
