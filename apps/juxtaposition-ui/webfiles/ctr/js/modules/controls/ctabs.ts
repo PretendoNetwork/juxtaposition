@@ -31,7 +31,7 @@ export function ctabOnShown(component: Element, value: string, cb: EventListener
 }
 
 export var ctabsModule = createModule({
-	id: 'checkbox',
+	id: 'ctabs',
 	selector: '[data-ctabs-control]',
 	hydrate: (ctx) => {
 		ctx.el.querySelectorAll('[data-ctab] input[type="radio"]').forEach((input) => {
