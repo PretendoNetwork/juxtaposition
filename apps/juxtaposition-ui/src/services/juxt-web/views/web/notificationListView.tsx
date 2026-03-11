@@ -30,15 +30,15 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'follow') {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
 
-		let i18nKey: TranslationKey = 'notifications.new_follower';
+		let i18nKey: TranslationKey = 'notifications.new_follower/one';
 		if (notif.users.length === 2) {
-			i18nKey = 'notifications.new_follower:multiple';
+			i18nKey = 'notifications.new_follower/two';
 		}
 		if (notif.users.length === 3) {
-			i18nKey = 'notifications.new_follower_other';
+			i18nKey = 'notifications.new_follower/three';
 		}
 		if (notif.users.length > 3) {
-			i18nKey = 'notifications.new_follower_other:multiple';
+			i18nKey = 'notifications.new_follower/multiple';
 		}
 
 		return (
