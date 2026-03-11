@@ -80,7 +80,7 @@ function initSpoilers() {
 			target.classList.remove(
 				'spoiler'
 			);
-			target.outerHTML = '';
+			el.outerHTML = '';
 			cave.snd_playSe('SE_OLV_OK');
 		});
 	}
