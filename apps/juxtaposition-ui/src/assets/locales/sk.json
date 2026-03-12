@@ -18,14 +18,10 @@
         "yeahs": ""
     },
     "community": {
-        "following": "Odoberané",
         "followers": "Odoberatelia",
         "posts": "Príspevky",
         "recent": "Čerstvé príspevky",
         "popular": "Populárne príspevky",
-        "verified": "Overené príspevky",
-        "new": "Nové príspevky",
-        "follow": "Odoberané komunity",
         "tags": "Tagy"
     },
     "user_page": {
@@ -35,42 +31,26 @@
         "followers": "Odoberatelia",
         "follow_user": "Odoberať",
         "following_user": "Odoberané",
-        "unfriend": "Odstrániť priateľa",
-        "no_friends": "Žiadny priatelia",
         "posts": "Príspevky",
         "birthday": "Dátum narodenia",
-        "no_followers": "Žiadni odoberatelia",
-        "game_experience": "Herný zážitok",
-        "befriend": "Spriateliť sa",
-        "pending": "Čaká na spracovanie",
-        "no_following": "Nikoho nesledujem"
+        "game_experience": "Herný zážitok"
     },
     "all_communities": {
         "text": "Všetky komunity",
         "popular_places": "Populárne miesta",
-        "show_all": "Ukázať všetky",
-        "new_communities": "Nové komunity",
-        "announcements": "Oznamy",
-        "ann_string": "Kliknutím sem zobrazíte najnovšie oznámenia!",
-        "search": "Hľadať komunity..."
+        "new_communities": "Nové komunity"
     },
     "user_settings": {
         "profile_settings": "Nastavenia profilu",
         "show_country": "Ukázať krajinu na profile",
         "show_birthday": "Ukázať dátum narodenia na profile",
-        "show_game": "Zobraziť herný zážitok na profile",
-        "show_comment": "Zobraziť komentár k profilu",
-        "profile_comment": "Komentár k profilu",
-        "swearing": "Komentár profilu nemôže obsahovať explicitné výrazy."
+        "show_game": "Zobraziť herný zážitok na profile"
     },
     "notifications": {
-        "new_follower": "vás odoberá!",
         "none": "Žiadne pripomienky."
     },
     "new_post": {
-        "text_hint": "Ťuknite sem na vytvorenie príspevku.",
         "swearing": "Príspevok nemôže obsahovať nadávky.",
-        "new_post_text": "Nový príspevok",
         "post_to": "Uverejniť na {{user}}"
     },
     "setup": {
@@ -98,10 +78,8 @@
             "info": "Povedzte nám, ako by ste opísali úroveň svojich skúseností s hrami. Toto nastavenie môžete neskôr zmeniť.",
             "intermediate": "Stredne pokročilý"
         },
-        "guest_button": "Rozumiem",
         "ready": "Pripavený začať používať Juxt",
         "done_button": "Poďme do toho!",
-        "guest": "Režim návštevníka",
         "beta_text": {
             "first": "Chystáte sa vyskúšať prvú verejnú beta verziu Juxtu. To znamená, že veľa je stále vo vzduchu a veľa sa môže kedykoľvek zmeniť.",
             "third": "Webová lokalita, jej softvér a všetok obsah, ktorý sa na nej nachádza, sú poskytované „tak ako sú“ a „ako sú dostupné“. Sieť Pretendo neposkytuje žiadne záruky, či už výslovné alebo predpokladané, pokiaľ ide o vhodnosť alebo použiteľnosť webovej stránky, jej softvéru alebo akéhokoľvek obsahu.",
@@ -114,8 +92,7 @@
         "experience": "Herný zážitok",
         "analytics": "Analytics",
         "analytics_text": "Juxtaposition používa Cloudflare Web Analytics na sledovanie toho, ako používatelia používajú našu službu. Zhromaždené údaje zahŕňajú, ale nie sú obmedzené na čas návštevy, navštívené stránky a čas strávený na stránke. Tieto údaje sa k vám žiadnym spôsobom nepripájajú a nepoužívajú sa ani my, ani spoločnosť Cloudflare.",
-        "done": "Bavte sa v Juxte!",
-        "guest_text": "Momentálne nemôžeme overiť váš účet, čo pravdepodobne znamená, že sa momentálne prihlasujete pomocou účtu Nintendo Network. Stále budete môcť prehliadať Juxt, ale nebudete môcť Áno! príspevky alebo vytvorte vlastné príspevky, kým sa neprihlásite pomocou účtu Pretendo Network. Pre viac informácií skontrolujte Discord server."
+        "done": "Bavte sa v Juxte!"
     },
     "activity_feed": {
         "empty": "Je to tu prázdne. Skúste niekoho odoberať!"

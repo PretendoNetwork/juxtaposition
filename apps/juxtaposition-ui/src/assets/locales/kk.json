@@ -19,23 +19,15 @@
     },
     "all_communities": {
         "text": "Барлық қауымдастықтар",
-        "announcements": "Хабарландырулар",
-        "ann_string": "Соңғы хабарландыруларды көру үшін осы жерді басыңыз!",
         "popular_places": "Танымал орындар",
-        "new_communities": "Жаңа қауымдастықтар",
-        "show_all": "Барлығын көрсетіңіз",
-        "search": "Қауымдастықтарды іздеу..."
+        "new_communities": "Жаңа қауымдастықтар"
     },
     "community": {
-        "follow": "Қауымдастықты бақылаңыз",
-        "following": "Төменде",
         "followers": "Ізбасарлар",
         "posts": "Хабарламалар",
         "tags": "Тегтер",
         "recent": "Соңғы жазбалар",
-        "popular": "Танымал жазбалар",
-        "verified": "Тексерілген хабарламалар",
-        "new": "Жаңа пост"
+        "popular": "Танымал жазбалар"
     },
     "user_page": {
         "country": "Ел",
@@ -44,14 +36,8 @@
         "friends": "Достар",
         "posts": "Жазбалар",
         "follow_user": "",
-        "no_following": "",
-        "befriend": "",
         "following_user": "",
-        "pending": "",
         "followers": "",
-        "unfriend": "",
-        "no_followers": "",
-        "no_friends": "",
         "following": ""
     },
     "setup": {
@@ -78,15 +64,12 @@
             "twelfth": ""
         },
         "ready": "Juxt пайдалануды бастауға дайын",
-        "guest_button": "Мен түссіндім",
         "beta_text": {
             "third": "",
             "second": "",
             "first": ""
         },
         "done_button": "",
-        "guest": "",
-        "guest_text": "",
         "experience": "",
         "rules": "",
         "welcome_text": "",
@@ -99,22 +82,16 @@
         "welcome": ""
     },
     "notifications": {
-        "none": "",
-        "new_follower": ""
+        "none": ""
     },
     "new_post": {
         "swearing": "",
-        "text_hint": "",
-        "new_post_text": "",
         "post_to": ""
     },
     "user_settings": {
         "show_game": "",
-        "show_comment": "",
         "show_birthday": "",
         "profile_settings": "",
-        "profile_comment": "",
-        "swearing": "",
         "show_country": ""
     },
     "activity_feed": {

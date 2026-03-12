@@ -1,21 +1,13 @@
 {
     "all_communities": {
-        "ann_string": "kik mii 4 nws fwom da big cheese!",
         "popular_places": "so many kittehs in klans",
         "new_communities": "new kitteh klans!!",
-        "text": "all kitteh klans",
-        "show_all": "show da secrets",
-        "search": "find kitteh klans…",
-        "announcements": "da big cheese nws!!"
+        "text": "all kitteh klans"
     },
     "community": {
-        "follow": "join kitteh klan",
         "recent": "wecent p-posts",
-        "following": "Fowwowing",
         "followers": "Fowwowers",
         "popular": "Popuwaw P-posts",
-        "verified": "Vewwifiwed P-posts",
-        "new": "Nyew P-Post",
         "posts": "",
         "tags": ""
     },
@@ -34,11 +26,16 @@
         "next": "nex",
         "user_page": "kitteh pege",
         "notifications": "PINGS",
-        "no_posts": "no kittehs, sad :("
+        "no_posts": "no kittehs, sad :(",
+        "my_feed": "mah fwends",
+        "global_feed": "all da fwiends...",
+        "friend_requests": "new friends owo",
+        "updates": "u-updat!!",
+        "notifications_and_messages": "kitteh alerts :3",
+        "search": "kitteh lookz…"
     },
     "language": "lolcat",
     "user_page": {
-        "no_friends": "Nyo Fwiends",
         "friends": "Fwends",
         "posts": "P-posts",
         "country": "Countwy",
@@ -47,12 +44,7 @@
         "followers": "Fowwowers",
         "following": "Fowwowing",
         "follow_user": "Fowwow",
-        "following_user": "Fowwowing",
-        "befriend": "Befwiend",
-        "pending": "Pwending",
-        "unfriend": "Unfwiend",
-        "no_following": "Nyot Fowwowing Anyonye",
-        "no_followers": ""
+        "following_user": "Fowwowing"
     },
     "setup": {
         "rules_text": {
@@ -81,11 +73,8 @@
             "intermediate": "",
             "beginner": ""
         },
-        "guest_button": "",
         "done_button": "",
-        "guest": "",
         "ready": "",
-        "guest_text": "",
         "experience": "",
         "analytics": "",
         "rules": "",
@@ -99,22 +88,16 @@
         "welcome": ""
     },
     "notifications": {
-        "none": "",
-        "new_follower": ""
+        "none": ""
     },
     "new_post": {
         "swearing": "",
-        "text_hint": "",
-        "new_post_text": "",
         "post_to": ""
     },
     "user_settings": {
         "show_game": "",
-        "show_comment": "",
         "show_birthday": "",
         "profile_settings": "",
-        "profile_comment": "",
-        "swearing": "",
         "show_country": ""
     },
     "activity_feed": {
@@ -122,5 +105,22 @@
     },
     "messages": {
         "coming_soon": ""
+    },
+    "login": {
+        "title": "gimmeh ur passwrd :3c",
+        "heading": "gimmeh ur deets :3c",
+        "sub_title": "plz tap ur naem into da box,, for me uwu?",
+        "username": "gamertag :3",
+        "password": "sekrit code!",
+        "forgot_password": "i tell u ur sekrit words ;33",
+        "no_account": "u no use account?",
+        "login_action": "gimme",
+        "no_account_setup": "y u no 3ds? :( u need wii eu or 3ds to be here.."
+    },
+    "error": {
+        "title": "oh noes!! {{code}}",
+        "heading": "oh noes!! {{code}}: {{message}}",
+        "message": "aa omg &gt;&lt; i did a oopsie woopsie!! i can't find da page,,,<newline/>is da link ok? pls giv new link? :3c",
+        "no_access": "ur not aloud >:( ({{code}})"
     }
 }
