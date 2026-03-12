@@ -76,11 +76,11 @@ function initSpoilers() {
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
-			var target = document.getElementById('post-' + el.getAttribute('data-post-id'));
-			target.classList.remove(
-				'spoiler'
-			);
-			el.outerHTML = '';
+			var spoilerWrapper = document.getElementById('spoiler-' + el.getAttribute('data-post-id'));
+			var postEl = document.getElementById('post-' + el.getAttribute('data-post-id'));
+
+			postEl.classList.remove('spoiler');
+			spoilerWrapper.outerHTML = '';
 			cave.snd_playSe('SE_OLV_OK');
 		});
 	}
