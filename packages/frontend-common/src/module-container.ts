@@ -31,12 +31,21 @@ export function createModuleContainer(ops?: ModuleContainerOptions): ModuleConta
 			this.loadPartial(document.body);
 		},
 		loadPartial: function (el): void {
+			var hasDoubleHydrated = false;
+
 			var ctx: ModuleRunContext = {
-				doc: el
+				doc: el,
+				triggerDoubleHydrate: () => hasDoubleHydrated = true
 			};
 			for (var i = 0; i < modules.length; i++) {
 				var mod = modules[i];
 				mod.run(ctx);
+			}
+
+			if (hasDoubleHydrated) {
+				var text = 'Double hydration detected, have you called loadPartial twice?';
+				console.warn(text);
+				alert(text);
 			}
 		}
 	};
