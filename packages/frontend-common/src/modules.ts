@@ -7,7 +7,6 @@ export type ModuleHydrateContext = {
 };
 
 export type ModuleControls = {
-	__type: 'module';
 	id: string;
 	run: (ctx: ModuleRunContext) => void;
 };
@@ -22,7 +21,6 @@ export type ModuleOptions = {
 
 export function createModule(ops: ModuleOptions): ModuleControls {
 	return {
-		__type: 'module',
 		id: ops.id,
 		run: function (ctx): void {
 			ops.init?.(ctx);
