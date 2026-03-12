@@ -176,7 +176,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 											data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 											data-url="/users/follow"
 											data-community-id={props.user.pid}
-											data-text={isRequesterFollowingUser ? <T k="user_page.follow_user" /> : <T k="user_page.following_user" />}
+											data-text={isRequesterFollowingUser ? T.str('user_page.follow_user') : T.str('user_page.following_user')}
 										>
 											{isRequesterFollowingUser ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
 										</a>
