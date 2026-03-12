@@ -18,24 +18,16 @@
     },
     "language": "Română",
     "all_communities": {
-        "announcements": "Anunțuri",
-        "ann_string": "Apasă aici pentru a vedea anunțurile recente!",
         "popular_places": "Locuri populare",
         "new_communities": "Comunități noi",
-        "show_all": "Arată toate",
-        "search": "Caută comunități...",
         "text": "Toate comunitățile"
     },
     "community": {
-        "follow": "Urmărește comunitatea",
         "followers": "Urmăritori",
         "posts": "Postări",
         "tags": "Etichete",
         "recent": "Postări recente",
-        "popular": "Postări populare",
-        "verified": "Postări verificate",
-        "new": "Postare nouă",
-        "following": "Urmărești"
+        "popular": "Postări populare"
     },
     "user_page": {
         "country": "Țară",
@@ -46,34 +38,22 @@
         "following": "Următor",
         "followers": "Urmăritori",
         "follow_user": "Următor",
-        "following_user": "Urmărești deja",
-        "befriend": "Deveniți prieteni",
-        "unfriend": "Șterge prieten",
-        "no_following": "Nu urmărește pe nimeni",
-        "no_followers": "Niciun urmăritor",
-        "no_friends": "Niciun prieten",
-        "pending": "În așteptare"
+        "following_user": "Urmărești deja"
     },
     "user_settings": {
         "profile_settings": "Setările profilului",
         "show_country": "Arată țara pe profil",
         "show_birthday": "Arată ziua de naștere pe profil",
-        "show_game": "Arată experiența pe profil",
-        "show_comment": "Arată comentariu pe profil",
-        "profile_comment": "Comentariu de profil",
-        "swearing": "Comentariile de profil nu pot conține limbaj vulgar."
+        "show_game": "Arată experiența pe profil"
     },
     "activity_feed": {
         "empty": "E gol aici. Urmărește pe cineva!"
     },
     "notifications": {
-        "new_follower": "te-a urmărit!",
         "none": "Nicio notificare."
     },
     "new_post": {
-        "new_post_text": "Postare nouă",
-        "post_to": "Postează la",
-        "text_hint": "Apasă aici ca să faci o postare.",
+        "post_to": "Postează la {{user}}",
         "swearing": "Postările nu pot conține limbaj vulgar."
     },
     "setup": {
@@ -115,10 +95,7 @@
         "ready": "Gata să începeți să utilizați Juxt",
         "ready_text": "În primul rând, verificați câteva comunități și vedeți ce postează oameni din toată lumea. Profitați de această ocazie pentru a vă familiariza cu Juxt. S-ar putea să faceți noi descoperiri pe parcurs!",
         "done": "Distracție plăcută în Juxt!",
-        "done_button": "Să mergem!",
-        "guest": "Modul oaspete",
-        "guest_text": "Nu putem verifica contul dvs. în acest moment, ceea ce înseamnă probabil că vă conectați cu un cont Nintendo Network. Vei putea în continuare să navighezi pe Juxt, dar nu vei putea să publici mesaje Yeah! sau să faci mesaje proprii până când nu te conectezi cu un cont Pretendo Network. Pentru mai multe informații, verificați serverul Discord.",
-        "guest_button": "Înțeleg"
+        "done_button": "Să mergem!"
     },
     "messages": {
         "coming_soon": "Mesajele nu sunt gata încă. Reveniți mai târziu!"

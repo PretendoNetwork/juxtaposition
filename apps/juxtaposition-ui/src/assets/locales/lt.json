@@ -20,22 +20,14 @@
     "all_communities": {
         "popular_places": "Populiarios vietos",
         "new_communities": "Naujos bendruomenės",
-        "show_all": "Rodyti viską",
-        "search": "Ieškoti bendruomenių...",
-        "announcements": "Svarbūs pranešimai",
-        "ann_string": "Spausk čia kad pamatytum naujausius svarbiausius pranešimus!",
         "text": "Visos bendruomenės"
     },
     "community": {
-        "follow": "Sekti bendruomenę",
-        "following": "Sekama",
         "followers": "Sekėjai",
         "posts": "Įkėlimai",
         "tags": "Žymės",
         "popular": "Populiarus įkelimai",
-        "new": "Naujas įkelimas",
-        "recent": "Naujausi įkelimai",
-        "verified": "Patvirtinti įkėlimai"
+        "recent": "Naujausi įkelimai"
     },
     "user_page": {
         "country": "Šalis",
@@ -45,13 +37,7 @@
         "following": "Sekama",
         "followers": "Sekėjai",
         "following_user": "Sekama",
-        "befriend": "Draugauti",
-        "pending": "Laukiama",
-        "unfriend": "Nebedraugauti",
-        "no_following": "Neseka nieko",
-        "no_followers": "Nėra sekėjų",
         "follow_user": "Sekti",
-        "no_friends": "Nėra draugų",
         "friends": "Draugai"
     },
     "messages": {
@@ -61,23 +47,17 @@
         "profile_settings": "Profilio nustatymai",
         "show_country": "Rodyti šalį profilyje",
         "show_birthday": "Rodyt gimtadienį profilyje",
-        "show_comment": "Rodyt komentarus profilyje",
-        "profile_comment": "Profilo komentaras",
-        "swearing": "Profilio komentaras negali turėti nešvankios kalbos.",
         "show_game": "Rodyti žaidimo patitį profilyje"
     },
     "activity_feed": {
         "empty": "Dabar čia tuščia. Pabandyk pasekt kažką!"
     },
     "notifications": {
-        "new_follower": "Nuspredė tave sekti!",
         "none": "Nėra pranešimų."
     },
     "new_post": {
-        "new_post_text": "Naujas įrašas",
-        "text_hint": "Žymėk čia kad sukurtum įrašą.",
         "swearing": "Profilis negali turėti nešvankios kalbos.",
-        "post_to": "Įkelti į"
+        "post_to": "Įkelti į {{user}}"
     },
     "setup": {
         "welcome": "Sveiki atvykę į Juxtaposition!",
@@ -104,13 +84,10 @@
             "eleventh": "Mūsų tikslas yra palaikyti Juxt faina ir malonią vietą visiems. Jeigu kažkas pažeidžia Juxt elgesio taisykles, mes imsimės atitinkamų veiksmų, ir kai kuriais atvėjais, užblokuojant vartotoją arba konsolę."
         },
         "analytics": "Analitika",
-        "guest": "Svečio režimas",
-        "guest_button": "Aš supratau",
         "welcome_text": "Juxt yra žaidimų bendruomenė kuri sujungia žmones iš viso pasaulio naudodamasi Mii veikėjus. Naudok Juxt kad galėtum pasidalinti savo žaidimo patirtį ir susipažinti su žmonėms iš viso pasaulio.",
         "rules": "Juxt Taisyklės",
         "info_text": "Juxt yra naudotojų vedama žaidimo bendruomenė kur tu gali bendrauti su žmonėmis \n                po visą pasaulį. Tu gali rašyti arba nupiešti įrašus žaidimų bendruomėnėse arba nusiūsti žinutes tiesogiai savo draugams.",
         "ready": "Pasiruošęs pradėti naudoti Juxt",
-        "guest_text": "Mes dabar neglim patikrinti tavęs, ir tai reiškia kad mes manom kad tu esi prisijungęs su Nintendo Tinklo paskyra. Tu galėsi keliauti pro Juxt bet tu negalėsi Taip!-inti įrašų arba įkelti savo įrašus iki kol neprisijungsi su savo Pretendo Tinklo paskyra. Daugiau informacijos bus mūsų Discord serveryje.",
         "experience": "Žaidimo patirtis",
         "experience_text": {
             "info": "Prašome pasakyti kaip tu paaiškintum savo patirties lygį žaidimuose. Tu galėsi pakeisti šį nustatymą vėliau.",

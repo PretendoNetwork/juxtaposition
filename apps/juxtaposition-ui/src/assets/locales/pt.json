@@ -19,23 +19,15 @@
     },
     "all_communities": {
         "text": "Todas as comunidades",
-        "announcements": "Anúncios",
-        "ann_string": "Clica aqui para veres os anúncios recentes!",
         "popular_places": "Lugares Populares",
-        "new_communities": "Novas Comunidades",
-        "show_all": "Mostrar todas",
-        "search": "Procurar comunidades..."
+        "new_communities": "Novas Comunidades"
     },
     "community": {
-        "follow": "Seguir Comunidade",
-        "following": "A seguir",
         "followers": "Seguidores",
         "posts": "Publicações",
         "tags": "Tags",
         "recent": "Publicações Recentes",
-        "popular": "Publicações Populares",
-        "verified": "Publicações Verificadas",
-        "new": "Nova Publicação"
+        "popular": "Publicações Populares"
     },
     "user_page": {
         "country": "País",
@@ -46,34 +38,22 @@
         "following": "A seguir",
         "followers": "Seguidores",
         "follow_user": "Seguir",
-        "following_user": "Seguidores",
-        "befriend": "Tornar-se Amigo",
-        "pending": "Pendente",
-        "unfriend": "Remover Amizade",
-        "no_friends": "Sem Amigos",
-        "no_following": "Não segue ninguém",
-        "no_followers": "Sem seguidores"
+        "following_user": "Seguidores"
     },
     "user_settings": {
         "profile_settings": "Preferências de Perfil",
         "show_country": "Mostrar país no perfil",
         "show_birthday": "Mostrar data de aniversário no perfil",
-        "show_game": "Mostrar experiência de jogo no perfil",
-        "show_comment": "Mostrar comentário no perfil",
-        "profile_comment": "Comentário do Perfil",
-        "swearing": "O comentário do perfil não pode ter linguagem obscena."
+        "show_game": "Mostrar experiência de jogo no perfil"
     },
     "activity_feed": {
         "empty": "Isto está muito vazio. Começa a seguir alguém!"
     },
     "notifications": {
-        "none": "Sem notificações.",
-        "new_follower": "seguiu-te!"
+        "none": "Sem notificações."
     },
     "new_post": {
-        "new_post_text": "Nova publicação",
-        "post_to": "Publicar em",
-        "text_hint": "Toca aqui para criar uma publicação.",
+        "post_to": "Publicar em {{user}}",
         "swearing": "A publicação não pode ter linguagem obscena."
     },
     "messages": {
@@ -118,9 +98,6 @@
         "ready": "Pronto para usar Juxt",
         "ready_text": "Começa por explorar algumas comunidades e ver o que as pessoas de todo o mundo estão a publicar. Aproveita esta oportunidade para te familiarizares com Juxt. Pode ser que descubras algo novo pelo caminho!",
         "done": "Diverte-te com Juxt!",
-        "done_button": "Vamos a isso!",
-        "guest": "Modo de convidado",
-        "guest_text": "Não nos foi possível verificar a tua conta de momento, o que provavelmente significa que tens sessão iniciada com uma conta Nintendo Network. Podes explorar Juxt, mas não te será possível marcar publicações com Fixe! ou fazer publicações até que inicies sessão com uma conta Pretendo Network. Para mais informações visita o nosso servidor Discord.",
-        "guest_button": "Compreendo"
+        "done_button": "Vamos a isso!"
     }
 }

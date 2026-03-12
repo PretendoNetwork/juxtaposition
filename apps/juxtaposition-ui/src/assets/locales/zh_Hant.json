@@ -19,12 +19,8 @@
     },
     "all_communities": {
         "text": "所有社群",
-        "announcements": "公告",
-        "ann_string": "點觸此處查看最近公告！",
         "popular_places": "熱門地點",
-        "new_communities": "新設社群",
-        "show_all": "顯示全部",
-        "search": "搜尋社群……"
+        "new_communities": "新設社群"
     },
     "activity_feed": {
         "empty": "這裡空空如也。先去追蹤其他人吧！"
@@ -66,23 +62,16 @@
             "expert": "技藝高超"
         },
         "welcome_text": "Juxt 旨在透過 Mii 角色將世界各地的人們與遊戲社群聯繫起來。使用 Juxt 分享你的遊戲體驗，認識來自世界各地的人。",
-        "guest": "訪客模式",
         "analytics": "分析",
         "ready": "開始使用 Juxt",
         "done": "祝您在 Juxt 玩得愉快！",
         "done_button": "走吧！",
-        "guest_button": "我明白了",
         "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 來追蹤使用者如何使用我們的服務。收集的資料包括但不限於造訪時間、造訪頁面和在網站上停留的時間。這些資料不會以任何方式與您關聯，我們或 Cloudflare 也不會將其用於廣告用途。",
-        "ready_text": "先到社群頁面，觀摩來自全世界的投稿作品吧。還能趁機熟悉 Juxt 的介面。您也可能就此發現新世界！",
-        "guest_text": "我們目前無法驗證您的帳號（有可能是因為您正在使用 Nintendo Network 帳號）。您可以繼續瀏覽 Juxt，但在登入 Pretendo Network 前，將無法進行「讚同！」或發佈貼文。如要查看詳情，請前往 Discord 伺服器瞭解。"
+        "ready_text": "先到社群頁面，觀摩來自全世界的投稿作品吧。還能趁機熟悉 Juxt 的介面。您也可能就此發現新世界！"
     },
     "community": {
         "recent": "最近貼文",
         "popular": "熱門貼文",
-        "verified": "已驗證貼文",
-        "new": "新增貼文",
-        "follow": "追蹤社群",
-        "following": "追蹤中",
         "followers": "追蹤者",
         "posts": "貼文",
         "tags": "標籤"
@@ -94,33 +83,21 @@
         "following": "追蹤中",
         "followers": "追蹤者",
         "follow_user": "追蹤",
-        "befriend": "成為好友",
-        "pending": "待處理",
-        "unfriend": "刪除好友",
-        "no_friends": "沒有好友",
         "country": "國家/地區",
         "birthday": "生日",
-        "following_user": "追蹤中",
-        "no_following": "沒有追蹤任何人",
-        "no_followers": "沒有追蹤者"
+        "following_user": "追蹤中"
     },
     "user_settings": {
         "show_country": "在個人檔案顯示國家/地區",
         "show_birthday": "在個人檔案顯示生日",
         "show_game": "在個人檔案顯示遊戲經驗",
-        "show_comment": "在個人檔案顯示評論",
-        "profile_comment": "個人檔案評論",
-        "profile_settings": "個人檔案設定",
-        "swearing": "個人檔案評論不能包含露骨內容。"
+        "profile_settings": "個人檔案設定"
     },
     "notifications": {
-        "none": "沒有通知。",
-        "new_follower": "已開始追蹤你！"
+        "none": "沒有通知。"
     },
     "new_post": {
         "swearing": "貼文不能包含露骨內容。",
-        "new_post_text": "新增貼文",
-        "post_to": "發佈至",
-        "text_hint": "點觸此處新增貼文。"
+        "post_to": "發佈至{{user}}"
     }
 }

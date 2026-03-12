@@ -88,10 +88,10 @@
   },
   "notifications": {
     "none": "No notifications.",
-    "new_follower": "<follower_one /> followed you!",
-    "new_follower:multiple": "<follower_one />, <follower_two /> followed you!",
-    "new_follower_other": "<follower_one />, <follower_two />, and {{count_other}} other followed you!",
-    "new_follower_other:multiple": "<follower_one />, <follower_two />, and {{count_other}} others followed you!"
+    "new_follower/one": "<follower_one /> followed you!",
+    "new_follower/two": "<follower_one />, <follower_two /> followed you!",
+    "new_follower/three": "<follower_one />, <follower_two />, and {{count_other}} other followed you!",
+    "new_follower/multiple": "<follower_one />, <follower_two />, and {{count_other}} others followed you!"
   },
   "friend_requests": {
     "none": "No Friend Requests"
@@ -110,8 +110,8 @@
   "post": {
     "title": "Post by {{username}}",
     "heading": "Post",
-    "yeahs_count:one": "<count/> person gave this post a yeah.",
-    "yeahs_count:multiple": "<count/> people gave this post a yeah.",
+    "yeahs_count/one": "<count/> person gave this post a yeah.",
+    "yeahs_count/multiple": "<count/> people gave this post a yeah.",
     "show_spoiler": "Show Spoiler",
     "reply_post": "Reply",
     "report_post": "Report post",

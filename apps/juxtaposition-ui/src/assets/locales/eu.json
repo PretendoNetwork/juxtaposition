@@ -19,23 +19,15 @@
     },
     "all_communities": {
         "text": "Komunitate denak",
-        "announcements": "Iragarpenak",
-        "ann_string": "Hemen klik egin notizia berriak ikusteko!",
         "popular_places": "Toki ospetsuak",
-        "new_communities": "Komunitate berriak",
-        "show_all": "Dena erakutsi",
-        "search": "Komunitateak bilatu..."
+        "new_communities": "Komunitate berriak"
     },
     "community": {
-        "follow": "Komunitatea Jarraitu",
-        "following": "Jarraitzen",
         "followers": "Jarraitzaileak",
         "posts": "Argitalpenak",
         "tags": "Etiketak",
         "recent": "Publikazio berriak",
-        "popular": "Argitaralpen ospetsuak",
-        "verified": "Egiaztatutako argitaralpenak",
-        "new": "Argitalpen berriak"
+        "popular": "Argitaralpen ospetsuak"
     },
     "user_page": {
         "country": "Herrialdea",
@@ -45,14 +37,8 @@
         "following": "Jarraitzen",
         "followers": "Jarraitzaileak",
         "follow_user": "",
-        "no_following": "",
-        "befriend": "",
         "posts": "",
-        "following_user": "",
-        "pending": "",
-        "unfriend": "",
-        "no_followers": "",
-        "no_friends": ""
+        "following_user": ""
     },
     "setup": {
         "rules_text": {
@@ -81,12 +67,9 @@
             "intermediate": "",
             "beginner": ""
         },
-        "guest_button": "",
         "analytics": "",
         "done_button": "",
-        "guest": "",
         "ready": "",
-        "guest_text": "",
         "experience": "",
         "rules": "",
         "welcome_text": "",
@@ -99,22 +82,16 @@
         "welcome": ""
     },
     "notifications": {
-        "none": "",
-        "new_follower": ""
+        "none": ""
     },
     "new_post": {
         "swearing": "",
-        "text_hint": "",
-        "new_post_text": "",
         "post_to": ""
     },
     "user_settings": {
         "show_game": "",
-        "show_comment": "",
         "show_birthday": "",
         "profile_settings": "",
-        "profile_comment": "",
-        "swearing": "",
         "show_country": ""
     },
     "activity_feed": {

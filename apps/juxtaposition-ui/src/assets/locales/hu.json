@@ -17,24 +17,16 @@
         "notifications": "Értesítések"
     },
     "all_communities": {
-        "ann_string": "Kattints ide a legfrissebb bejelentések megtekintéséhez!",
         "popular_places": "Népszerű helyek",
-        "show_all": "Mindet mutatja",
         "text": "Minden közösség",
-        "new_communities": "Új közösségek",
-        "announcements": "Bejelentések",
-        "search": "Közösségek keresése..."
+        "new_communities": "Új közösségek"
     },
     "community": {
-        "follow": "Közösség követése",
-        "following": "Követed",
         "posts": "Bejegyzés",
         "tags": "Címke",
         "recent": "Legutolsó bejegyzések",
         "followers": "Követő",
-        "popular": "Népszerű bejegyzések",
-        "verified": "Ellenőrzött bejegyzések",
-        "new": "Új bejegyzés"
+        "popular": "Népszerű bejegyzések"
     },
     "user_page": {
         "country": "Ország",
@@ -44,33 +36,21 @@
         "followers": "Követő",
         "follow_user": "Követ",
         "following_user": "Követve",
-        "befriend": "Barátnak jelöl",
-        "pending": "Folyamatban",
-        "unfriend": "Barátok közül töröl",
-        "no_friends": "Nincsennek barátok",
-        "no_following": "Nem követ senkit",
-        "no_followers": "Nincsennek követők",
         "birthday": "Születésnap",
         "following": "Követed"
     },
     "user_settings": {
         "show_country": "Ország megjelenítése a Profilon",
         "show_birthday": "Születésnap megjelenítése a Profilon",
-        "profile_comment": "Profil megjegyzés",
         "profile_settings": "Profil beállítások",
-        "show_game": "Játéktapasztalat megjelenítése a Profilon",
-        "show_comment": "Megjegyzés megjelenítése a Profilon",
-        "swearing": "A profil megjegyzés nem tartalmazhat csúnya beszédet."
+        "show_game": "Játéktapasztalat megjelenítése a Profilon"
     },
     "notifications": {
-        "none": "Nincsennek értesítések.",
-        "new_follower": "követ téged!"
+        "none": "Nincsennek értesítések."
     },
     "new_post": {
-        "new_post_text": "Új bejegyzés",
-        "post_to": "Bejegyzés ehhez:",
-        "swearing": "A bejegyzés nem tartalmazhat csúnya beszédet.",
-        "text_hint": "Koppints ide egy új bejegyzés létrehozásához."
+        "post_to": "Bejegyzés ehhez {{user}}",
+        "swearing": "A bejegyzés nem tartalmazhat csúnya beszédet."
     },
     "messages": {
         "coming_soon": "Nincs üzenet"
@@ -113,9 +93,6 @@
         "ready_text": "Először nézz meg néhány közösséget, és nézd meg, miről posztolnak az emberek a világ minden tájáról. Használd ki az alkalmat, hogy megismerkedj a Juxttal. Útközben új felfedezéseket tehetsz!",
         "done": "Jó szórakozást a Juxt-ban!",
         "done_button": "Kezdjük!",
-        "guest": "Vendég mód",
-        "guest_text": "Jelenleg nem tudjuk ellenőrizni fiókod, ami valószínűleg azt jelenti, hogy egy Nintendo Network fiókkal vagy bejelentkezve. Továbbra is böngészhetsz a Juxtban, de nem fogsz tudni a Yeah! bejegyzéseket vagy saját bejegyzéseket készíteni, amíg be nem jelentkezel egy Pretendo Network fiókkal. További információkért nézd meg a Discord szervert.",
-        "guest_button": "Megértettem",
         "welcome_text": "A Juxt egy játék közösség, ami összeköti az embereket a világ minden tájáról Mii karakterek használatával. Használd a Juxt-ot, hogy megoszd játék tapasztalataid és találkozz emberekkel a világ minden tájáról.",
         "analytics_text": "A Juxtaposition a Cloudflare Web Analytics szolgáltatást használja annak nyomon követésére, hogy a felhasználók hogyan használják szolgáltatásunkat. Az összegyűjtött adatok magukban foglalják, de nem kizárólagosan a látogatás idejét, a meglátogatott oldalakat és az oldalon töltött időt. Ezeket az adatokat semmilyen módon nem kapcsoljuk Önhöz, és sem mi, sem a Cloudflare nem használja fel hirdetésekhez."
     },

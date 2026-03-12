@@ -19,23 +19,15 @@
     },
     "all_communities": {
         "text": "所有社区",
-        "announcements": "公告",
-        "ann_string": "点击这里查看最近的公告！",
         "popular_places": "热门地点",
-        "new_communities": "新建社区",
-        "show_all": "显示全部",
-        "search": "搜索社区......"
+        "new_communities": "新建社区"
     },
     "community": {
-        "follow": "关注社区",
-        "following": "正在关注",
         "followers": "关注者",
         "posts": "帖子",
         "tags": "标签",
         "recent": "最近帖子",
-        "popular": "热门帖子",
-        "verified": "已被审核的帖子",
-        "new": "新建帖子"
+        "popular": "热门帖子"
     },
     "user_page": {
         "country": "国家/地区",
@@ -46,34 +38,22 @@
         "following": "正在关注",
         "followers": "关注者",
         "follow_user": "关注",
-        "following_user": "正在关注",
-        "befriend": "添加好友",
-        "pending": "待处理",
-        "unfriend": "删除好友",
-        "no_friends": "没有好友",
-        "no_following": "不在关注任何人",
-        "no_followers": "没有关注者"
+        "following_user": "正在关注"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
         "show_country": "在个人资料显示国家/地区",
         "show_birthday": "在个人资料显示生日",
-        "show_game": "在个人资料显示游戏经验",
-        "show_comment": "在个人资料显示评论",
-        "profile_comment": "个人资料评论",
-        "swearing": "个人资料评论不能包含露骨语言。"
+        "show_game": "在个人资料显示游戏经验"
     },
     "activity_feed": {
         "empty": "这里是空的。尝试关注某人！"
     },
     "notifications": {
-        "none": "无通知。",
-        "new_follower": "关注了你！"
+        "none": "无通知。"
     },
     "new_post": {
-        "new_post_text": "新建帖子",
-        "post_to": "发布到",
-        "text_hint": "点击此处发布帖子。",
+        "post_to": "发布到{{user}}",
         "swearing": "帖子不能包含露骨语言。"
     },
     "messages": {
@@ -118,9 +98,6 @@
         "ready": "开始使用 Juxt",
         "ready_text": "首先看一看一些社区，看看大家都在发布什么。借此机会熟悉 Juxt。一路上你可能会有新发现！",
         "done": "在 Juxt 玩得开心！",
-        "done_button": "我们走吧！",
-        "guest": "访客模式",
-        "guest_text": "我们目前无法验证您的账号，这可能意味着您目前正在使用 Nintendo Network 账号登录。您仍然可以浏览 Juxt，但您将无发评论。在您使用 Pretendo Network 账号登录之前，您可以发布或创建自己的帖子。有关更多信息，请查看 Discord 服务器。",
-        "guest_button": "同意"
+        "done_button": "我们走吧！"
     }
 }

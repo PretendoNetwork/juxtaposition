@@ -56,30 +56,19 @@
         "ready": "Gotowy(wa), aby zacząc korzystać z Juxt",
         "ready_text": "Najpierw sprawdź kilka społeczności i zobacz, o czym piszą ludzie z całego świata. Skorzystaj z okazji, aby zapoznać się z Juxt. Być może po drodze dokonasz kilku nowych odkryć!",
         "done": "Baw się dobrze w Juxt!",
-        "done_button": "Zaczynamy!",
-        "guest": "Tryb gościa",
-        "guest_text": "Nie możemy zweryfikować Twojego konta w tej chwili, co prawdopodobnie oznacza, że obecnie logujesz się za pomocą konta Nintendo Network. Nadal będziesz mógł przeglądać Juxt, ale nie będziesz mógł pisać postów Yeah! lub pisać własnych, dopóki nie zalogujesz się na konto Pretendo Network. Aby uzyskać więcej informacji sprawdź serwer Discord.",
-        "guest_button": "Zrozumiano"
+        "done_button": "Zaczynamy!"
     },
     "all_communities": {
         "text": "Wszystkie społeczności",
-        "announcements": "Ogłoszenia",
-        "ann_string": "Kliknij tutaj aby zobaczyć nowe ogłoszenia!",
         "popular_places": "Popularne miejsca",
-        "new_communities": "Nowe społeczności",
-        "show_all": "Pokaż wszystkie",
-        "search": "Szukaj społeczności..."
+        "new_communities": "Nowe społeczności"
     },
     "community": {
-        "follow": "Obserwuj Społeczność",
-        "following": "Obserwujesz",
         "followers": "Obserwatorzy",
         "posts": "Posty",
         "tags": "Tagi",
         "recent": "Nowe posty",
-        "popular": "Popularne posty",
-        "verified": "Zweryfikowane posty",
-        "new": "Nowy post"
+        "popular": "Popularne posty"
     },
     "user_page": {
         "country": "Kraj",
@@ -90,34 +79,22 @@
         "following": "Obserwujsz",
         "followers": "Obserwatorzy",
         "follow_user": "Obserwuj",
-        "following_user": "Obserwuję",
-        "befriend": "Zaprzyjaźnij się",
-        "pending": "Oczekujące",
-        "unfriend": "Usuń znajomego",
-        "no_friends": "Brak znajomych",
-        "no_following": "Nikogo nie obserwujesz",
-        "no_followers": "Brak obserwujących"
+        "following_user": "Obserwuję"
     },
     "user_settings": {
         "profile_settings": "Ustawienia profilu",
         "show_country": "Pokaż kraj na profilu",
         "show_birthday": "Pokaż urodziny na profilu",
-        "show_game": "Pokaż doświadczenia w grze na profilu",
-        "show_comment": "Pokaż komentarze na profilu",
-        "profile_comment": "Skomentuj profil",
-        "swearing": "Komentarz profilu nie może zawierać obraźliwego języka."
+        "show_game": "Pokaż doświadczenia w grze na profilu"
     },
     "activity_feed": {
         "empty": "Pusto tutaj. Zaobserwuj kogoś!"
     },
     "notifications": {
-        "none": "Brak powiadomień.",
-        "new_follower": "zaobserwował(ała) Cię!"
+        "none": "Brak powiadomień."
     },
     "new_post": {
-        "new_post_text": "Nowy post",
-        "post_to": "Postuj do",
-        "text_hint": "Kliknij tutaj by zrobić post.",
+        "post_to": "Postuj do {{user}}",
         "swearing": "Post nie może zawierać obraźliwego języka."
     },
     "messages": {
