@@ -21,6 +21,7 @@
     "@neato/config": "^4.1.0",
     "@pretendonetwork/grpc": "^2.4.3",
     "@repo/grpc-client": "^0.0.0",
+    "@repo/frontend-common": "^0.0.0",
     "classnames": "^2.5.1",
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",

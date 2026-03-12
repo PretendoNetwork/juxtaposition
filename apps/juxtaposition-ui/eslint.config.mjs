@@ -5,20 +5,20 @@ import { defineConfig } from 'eslint/config';
 export default defineConfig([
 	...eslintConfig,
 	{
-		// Allow browser globals in webfiles
+		// Web specific rules
+		files: ['webfiles/web/**/*.js', 'webfiles/web/**/*.ts'],
+		rules: {
+			'no-restricted-imports': 'off' // Compile step currently doesn't support path aliases
+		},
 		languageOptions: {
 			globals: {
 				...globals.browser,
 				Pjax: false // loaded from pjax.min.js
 			}
-		},
-		rules: {
-			'no-restricted-imports': 'off' // It's a special compile step, we can't use path aliases
-		},
-		files: ['webfiles/**/*.js', 'webfiles/**/*.ts']
+		}
 	},
 	{
-		// Rules that apply to the 3DS (CTR) and Wii U (Portal) browsers
+		// Console specific rules
 		files: [
 			'webfiles/ctr/**/*.js',
 			'webfiles/ctr/**/*.ts',
@@ -26,7 +26,31 @@ export default defineConfig([
 			'webfiles/portal/**/*.ts'
 		],
 		rules: {
-			'no-var': 'off' // 3DS and Wii U browsers need to use var
+			'no-restricted-imports': 'off', // Compile step currently doesn't support path aliases
+			'no-var': 'off', // Consoles need to use var
+			'no-restricted-syntax': [
+				'error',
+				{
+					selector: 'VariableDeclaration[kind=\'let\']',
+					message: 'Consoles do not support let. Use var.'
+				},
+				{
+					selector: 'VariableDeclaration[kind=\'const\']',
+					message: 'Consoles do not support const. Use var.'
+				},
+				{
+					selector: 'ObjectPattern',
+					message: 'Consoles do not support Object destructuring.'
+				},
+				{
+					selector: 'ArrayPattern',
+					message: 'Consoles do not support Array destructuring.'
+				},
+				{
+					selector: 'Property[method=true]',
+					message: 'Consoles do not support Object method shorthand.'
+				}
+			]
 		},
 		languageOptions: {
 			globals: {
@@ -39,18 +63,57 @@ export default defineConfig([
 				wiiuDialog: 'readonly',
 				wiiu: 'readonly',
 				cave: 'readonly',
-				Olv: 'readonly'
+				Olv: 'readonly',
+				Pjax: false // loaded from pjax.min.js
 			}
 		}
 	},
 	{
-		// Add node.js globals to files outside of the webfiles directory
+		// NodeJS globals
 		languageOptions: {
 			globals: {
 				...globals.node,
 				...globals.builtin
 			}
 		},
-		ignores: ['webfiles/**/*.js', 'webfiles/**/*.ts']
+		ignores: ['src/**']
+	},
+
+	// Set typescript projects correctly
+	{
+		files: [
+			'webfiles/ctr/**'
+		],
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: 'webfiles/ctr/tsconfig.json'
+				}
+			}
+		}
+	},
+	{
+		files: [
+			'webfiles/portal/**'
+		],
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: 'webfiles/portal/tsconfig.json'
+				}
+			}
+		}
+	},
+	{
+		files: [
+			'webfiles/web/**'
+		],
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: 'webfiles/web/tsconfig.json'
+				}
+			}
+		}
 	}
 ]);

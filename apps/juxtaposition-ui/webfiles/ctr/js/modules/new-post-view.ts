@@ -1,15 +1,10 @@
+import { createModule } from '@repo/frontend-common';
 import { ctabOnShown } from './controls/ctabs';
 
-export function initNewPostView(): void {
-	var page = document.querySelector('#add-post-page');
-	if (!page) {
-		return;
-	}
-	var ctab = page.querySelector('[data-ctabs-control]')!;
-
+function initNewPostView(page: HTMLElement, ctab: Element): void {
 	// paintings
-	var memo_image = page.querySelector('img#memo-img-input')! as HTMLImageElement;
-	var memo_input = page.querySelector('input[name="painting"]')! as HTMLInputElement;
+	var memo_image = page.querySelector<HTMLImageElement>('img#memo-img-input')!;
+	var memo_input = page.querySelector<HTMLInputElement>('input[name="painting"]')!;
 	function memo(): void {
 		cave.memo_open();
 		if (!cave.memo_hasValidImage()) {
@@ -26,13 +21,11 @@ export function initNewPostView(): void {
 	}
 	memo_image.addEventListener('click', delayedMemo);
 	ctabOnShown(ctab, 'painting', delayedMemo);
-
-	initScreenshotControl(page, ctab);
 }
 
-function initScreenshotControl(page: Element, ctab: Element): void {
+function initScreenshotControl(page: HTMLElement, ctab: Element): void {
 	// screenshots
-	var shot_tab = page.querySelector('[data-shot-mode]') as HTMLElement | null;
+	var shot_tab = page.querySelector<HTMLElement>('[data-shot-mode]');
 	if (shot_tab === null) {
 		return;
 	}
@@ -44,12 +37,12 @@ function initScreenshotControl(page: Element, ctab: Element): void {
 	}
 
 	// input type file
-	var shotUpload = page.querySelector('[data-shot-upload]') as HTMLInputElement;
+	var shotUpload = page.querySelector<HTMLInputElement>('[data-shot-upload]')!;
 	// radios
-	var shots = page.querySelectorAll('[data-shot]') as NodeListOf<HTMLInputElement>;
-	var shotClear = page.querySelector('[data-shot-clear]') as HTMLInputElement;
+	var shots = page.querySelectorAll<HTMLInputElement>('[data-shot]');
+	var shotClear = page.querySelector<HTMLInputElement>('[data-shot-clear]')!;
 	// preview
-	var shotPreview = page.querySelector('[data-shot-preview]') as HTMLImageElement;
+	var shotPreview = page.querySelector<HTMLImageElement>('[data-shot-preview]')!;
 
 	// top/bottom screen picker
 	function pickShot(e: Event): void {
@@ -93,3 +86,13 @@ function initScreenshotControl(page: Element, ctab: Element): void {
 
 	ctabOnShown(ctab, 'shot', shot);
 }
+
+export var newPostViewModule = createModule({
+	id: 'newPostView',
+	selector: '#add-post-page',
+	hydrate: (ctx) => {
+		var ctab = ctx.el.querySelector('[data-ctabs-control]')!;
+		initNewPostView(ctx.el, ctab);
+		initScreenshotControl(ctx.el, ctab);
+	}
+});
