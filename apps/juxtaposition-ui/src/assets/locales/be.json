@@ -18,23 +18,15 @@
     },
     "all_communities": {
         "text": "Усе Суполкі",
-        "announcements": "Анонсы",
-        "ann_string": "Націсніце сюды каб паглядзець новыя анонсы!",
         "popular_places": "Папулярныя Месцы",
-        "new_communities": "Новыя Суполкі",
-        "show_all": "Усе",
-        "search": "Шукаць суполкі..."
+        "new_communities": "Новыя Суполкі"
     },
     "community": {
         "followers": "Падпісчыкі",
-        "follow": "Падпісацца да Суполкі",
         "posts": "Пасты",
         "tags": "Тэгі",
         "recent": "Новые Пасты",
-        "popular": "Папулярные Пасты",
-        "verified": "Правераныя Пасты",
-        "new": "Новыя Пасты",
-        "following": "Падпісаны"
+        "popular": "Папулярные Пасты"
     },
     "user_page": {
         "country": "Страна",
@@ -45,13 +37,7 @@
         "following": "Падпіскі",
         "followers": "Падпісчыкі",
         "follow_user": "Сачыць",
-        "following_user": "Далей",
-        "befriend": "Сябраваць",
-        "pending": "Дапытлівы",
-        "no_following": "",
-        "unfriend": "",
-        "no_followers": "",
-        "no_friends": ""
+        "following_user": "Далей"
     },
     "language": "Беларуская",
     "setup": {
@@ -82,11 +68,8 @@
             "second": "",
             "first": ""
         },
-        "guest_button": "",
         "done_button": "",
-        "guest": "",
         "ready": "",
-        "guest_text": "",
         "analytics": "",
         "rules": "",
         "welcome_text": "",
@@ -99,22 +82,16 @@
         "welcome": ""
     },
     "notifications": {
-        "none": "",
-        "new_follower": ""
+        "none": ""
     },
     "new_post": {
         "swearing": "",
-        "text_hint": "",
-        "new_post_text": "",
         "post_to": ""
     },
     "user_settings": {
         "show_game": "",
-        "show_comment": "",
         "show_birthday": "",
         "profile_settings": "",
-        "profile_comment": "",
-        "swearing": "",
         "show_country": ""
     },
     "activity_feed": {

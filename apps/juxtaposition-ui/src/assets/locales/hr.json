@@ -18,22 +18,14 @@
     },
     "all_communities": {
         "text": "Sve zajednice",
-        "announcements": "Najave",
-        "ann_string": "Pritisni ovdje za prikaz nedavnih najava!",
         "popular_places": "Popularna mjesta",
-        "new_communities": "Nove zajednice",
-        "show_all": "Pokaži sve",
-        "search": "Traži zajednice …"
+        "new_communities": "Nove zajednice"
     },
     "community": {
-        "follow": "Prati zajednicu",
         "tags": "Oznake",
         "posts": "Objave",
         "recent": "Nedavne objave",
         "popular": "Popularane objave",
-        "verified": "Potvrđene objave",
-        "new": "Nove objave",
-        "following": "Praćenje",
         "followers": "Sljedbenici"
     },
     "user_page": {
@@ -43,34 +35,22 @@
         "posts": "Objave",
         "friends": "Prijatelji",
         "follow_user": "Prati",
-        "unfriend": "Ukini prijateljstvo",
-        "no_friends": "Nema prijatelja",
         "following": "Praćenje",
         "following_user": "Praćenje",
-        "no_following": "Ne pratiš nikoga",
-        "followers": "Sljedbenici",
-        "no_followers": "Nema sljedbenika",
-        "befriend": "Sprijatelji se",
-        "pending": "Na čekanju"
+        "followers": "Sljedbenici"
     },
     "user_settings": {
         "profile_settings": "Postavke profila",
         "show_country": "Prikaži zemlju u profilu",
         "show_birthday": "Prikaži rođendan u profilu",
-        "show_game": "Prikaži iskustvo igranja u profilu",
-        "profile_comment": "Komentar profila",
-        "swearing": "Komentar profila ne smije sadržavati prostačke izraze.",
-        "show_comment": "Prikaži komentar u profilu"
+        "show_game": "Prikaži iskustvo igranja u profilu"
     },
     "notifications": {
-        "none": "Nema obavijesti.",
-        "new_follower": "te je pratio/la!"
+        "none": "Nema obavijesti."
     },
     "new_post": {
-        "new_post_text": "Nova objava",
         "post_to": "Objava za {{user}}",
-        "swearing": "Objava ne smije sadržavati prostačke izraze.",
-        "text_hint": "Dodirni ovdje za izradu objave."
+        "swearing": "Objava ne smije sadržavati prostačke izraze."
     },
     "messages": {
         "coming_soon": "Nema poruka"
@@ -114,9 +94,6 @@
         "ready_text": "Najprije pogledaj neke zajednice i vidi što ljudi iz cijelog svijeta objavljuju. Iskoristi ovu priliku da upoznaš Juxt. Možda ćeš otkriti nešto novo!",
         "done": "Uživaj u Juxtu!",
         "done_button": "Krenimo!",
-        "guest": "Modus gosta",
-        "guest_text": "Trenutačno ne možemo provjeriti tvoj račun, što vjerojatno znači da se trenutačno prijavljuješ na Nintendo Network račun. I dalje ćeš moći pregledavati Juxt, ali nećeš moći odgovoriti na objave s „Da!” ili izraditi objave dok se ne prijaviš s Pretendo Network računom. Pregledaj Discord server za više informacija.",
-        "guest_button": "Razumijem",
         "rules": "Juxt pravila"
     },
     "language": "Hrvatski",

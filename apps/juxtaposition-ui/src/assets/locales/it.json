@@ -19,23 +19,15 @@
     },
     "all_communities": {
         "text": "Tutti i gruppi",
-        "announcements": "Annunci",
-        "ann_string": "Clicca qui per vedere gli annunci più recenti!",
         "popular_places": "Luoghi popolari",
-        "new_communities": "Nuovi gruppi",
-        "show_all": "Mostra tutto",
-        "search": "Cerca gruppi..."
+        "new_communities": "Nuovi gruppi"
     },
     "community": {
-        "follow": "Segui gruppo",
-        "following": "Seguiti",
         "followers": "Seguaci",
         "posts": "Post",
         "tags": "Etichette",
         "recent": "Post recenti",
-        "popular": "Post popolari",
-        "verified": "Post verificati",
-        "new": "Nuovo post"
+        "popular": "Post popolari"
     },
     "user_page": {
         "country": "Paese",
@@ -46,34 +38,22 @@
         "following": "Seguiti",
         "followers": "Seguaci",
         "follow_user": "Segui",
-        "following_user": "Stai seguendo",
-        "befriend": "Chiedi amicizia",
-        "pending": "In attesa",
-        "unfriend": "Rimuovi amicizia",
-        "no_friends": "Nessun amico",
-        "no_following": "Non segui nessuno",
-        "no_followers": "Nessun seguace"
+        "following_user": "Stai seguendo"
     },
     "user_settings": {
         "profile_settings": "Impostazioni del profilo",
         "show_country": "Mostra Paese sul profilo",
         "show_birthday": "Mostra compleanno sul profilo",
-        "show_game": "Mostra esperienza di gioco sul profilo",
-        "show_comment": "Mostra commento sul profilo",
-        "profile_comment": "Commento sul profilo",
-        "swearing": "Il commento sul profilo non deve contenere linguaggio esplicito."
+        "show_game": "Mostra esperienza di gioco sul profilo"
     },
     "activity_feed": {
         "empty": "È vuoto qui. Prova a seguire qualcuno!"
     },
     "notifications": {
-        "none": "Nessuna notifica.",
-        "new_follower": "ti ha seguito!"
+        "none": "Nessuna notifica."
     },
     "new_post": {
-        "new_post_text": "Nuovo post",
         "post_to": "Posta su {{user}}",
-        "text_hint": "Tocca qui per fare un post.",
         "swearing": "Il post non deve contenere linguaggio esplicito."
     },
     "messages": {
@@ -118,9 +98,6 @@
         "ready": "Pronto a iniziare a usare Juxt",
         "ready_text": "Per prima cosa dai un'occhiata a qualche gruppo e scopri di cosa stanno parlando persone da tutto il mondo. Cogli questa opportunità per familiarizzarti con Juxt. Potresti fare nuove scoperte strada facendo!",
         "done": "Divertiti in Juxt!",
-        "done_button": "Andiamo!",
-        "guest": "Modalità ospite",
-        "guest_text": "Non è stato possibile verificare il tuo account; è probabile che tu stia tentando di accedere con un account Nintendo Network. Potrai comunque esplorare Juxt, ma non potrai aggiungere Sìì! ai post o postare tu stesso fino a quando non accederai con un account Pretendo Network. Per maggiori informazioni, controlla il server Discord.",
-        "guest_button": "Ho capito"
+        "done_button": "Andiamo!"
     }
 }

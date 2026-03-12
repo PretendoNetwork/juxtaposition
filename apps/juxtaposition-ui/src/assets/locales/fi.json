@@ -33,11 +33,8 @@
         },
         "analytics": "analytiikka",
         "done": "Pidä hauskaa Juxtissa!",
-        "guest": "Vierastila",
-        "guest_button": "Ymmärrän",
         "welcome_text": "Juxt on maailmanlaajuinen pelaajayhteisö joka käyttää Mii -hahmoja. Jaa pelikokemuksesi ja tapaa ihmisiä ympäri maapalloa Juxtin kautta.",
         "ready": "Valmiina Juxtin käyttöön",
-        "guest_text": "Emme voi varmistaa tiliäsi tällä hetkellä, joka todennäköisesti tarkoittaa että olet kirjautuneena Nintendo Network:in tilillesi. Voit jatkaa Juxtin selailua, muttet voi tykätä viesteistä tai kirjoittaa omia ennen kuin olet kirjautunut Pretendo Network:in tilillesi. Lisätietoja saat Pretendon Discordista.",
         "analytics_text": "Juxtaposition käyttää Cloudflare analytiikkaa seuratakseen miten käyttäjät käyttävät palveluamme. Kerätty tieto sisältää, mutta ei ole rajoitettu seuraaviin: käyntiaika, vieraillut sivut ja sivustolla vietetty aika. Cloudflare mukaan tietoa ei ole kytketty mitenkään sinuun ja sitä ei käytetä palvelumme tai Cloudflare tarjoamiin mainoksiin.",
         "ready_text": "Aluksi tutustu joihinkin yhteisöihin katsoaksesi mitä ihmiset ympäri maailman keskustelevat. Käytä tätä hyväksesi tutustuaksesi Juxtiin paremmin. Saatat jopa löytää uusia asioita tätä kautta!",
         "done_button": "Aloitetaan!",
@@ -63,61 +60,41 @@
     "language": "Suomi",
     "all_communities": {
         "text": "Kaikki yhteisöt",
-        "announcements": "Ilmoitukset",
-        "ann_string": "Klikkaa tästä nähdäksesi viimeisimmät ilmoitukset!",
         "popular_places": "Suositut paikat",
-        "new_communities": "Uudet yhteisöt",
-        "show_all": "Näytä kaikki",
-        "search": "Etsi yhteisöjä..."
+        "new_communities": "Uudet yhteisöt"
     },
     "user_page": {
-        "no_following": "Ei seurattavia",
         "birthday": "Syntymäpäivä",
         "game_experience": "Kokeneisuus pelaajana",
         "friends": "Ystävät",
         "following_user": "Seurattavat",
         "followers": "Seuraajani",
         "following": "Seuraamani",
-        "pending": "Odottaa",
-        "unfriend": "Poista ystävistä",
-        "no_friends": "Ei ystäviä",
         "country": "Maa",
         "follow_user": "Seuraa",
-        "befriend": "Pyydä ystäväksi",
-        "posts": "Aiheet",
-        "no_followers": "Ei seuraajia"
+        "posts": "Aiheet"
     },
     "community": {
-        "follow": "Seuraa yhteisöä",
-        "following": "Seurataan",
         "tags": "Tagit",
         "posts": "Viestit",
         "recent": "Viimeisimmät aiheet",
-        "new": "Uusi aihe",
         "followers": "Seuraajat",
-        "popular": "Suosituimmat aiheet",
-        "verified": "Todennetut aiheet"
+        "popular": "Suosituimmat aiheet"
     },
     "user_settings": {
         "profile_settings": "Profiilin asetukset",
         "show_country": "Näytä maa profiilissa",
         "show_birthday": "Näytä syntymäpäivä profiilissa",
-        "show_game": "Näytä kokeneisuus palaajana profiilissa",
-        "profile_comment": "Profiilikommentti",
-        "show_comment": "Näytä kommentti profiilissa",
-        "swearing": "Profiilikommentti ei saa sisältää rivoa kielenkäyttöä."
+        "show_game": "Näytä kokeneisuus palaajana profiilissa"
     },
     "notifications": {
-        "none": "Ei ilmoituksia.",
-        "new_follower": "seuraa sinua!"
+        "none": "Ei ilmoituksia."
     },
     "activity_feed": {
         "empty": "Tyhjää täynnä. Ala seuraamaan jotakuta!"
     },
     "new_post": {
-        "new_post_text": "Uusi aihe",
         "post_to": "Vastaa {{user}}",
-        "text_hint": "Napauta tästä aloittaaksesi kirjoittamisen.",
         "swearing": "Kirjoitus ei saa sisältää rivoa kielenkäyttöä."
     },
     "messages": {

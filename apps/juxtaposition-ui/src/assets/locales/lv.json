@@ -17,23 +17,15 @@
         "user_page": "Lietotāju Lapa"
     },
     "all_communities": {
-        "announcements": "Paziņojumi",
-        "ann_string": "Spied šeit, lai skatītu nesen sūtītos ziņojumus!",
         "new_communities": "Jaunas kopienas",
-        "show_all": "Rādīt visus",
         "text": "Visas kopienas",
-        "search": "Meklēt kopienas...",
         "popular_places": "Bieži apmeklētas vietas"
     },
     "community": {
-        "follow": "Sekot kopienai",
-        "following": "Seko līdzi",
         "followers": "Sekotāji",
         "posts": "Ziņojumi",
         "tags": "Birkas",
         "recent": "Nesen sūtītie ziņojumi",
-        "new": "Jauna ziņa",
-        "verified": "Apstiprinātās ziņas",
         "popular": "Bieži skatītie ziņojumi"
     },
     "user_page": {
@@ -43,36 +35,24 @@
         "following": "Seko",
         "follow_user": "Sekot",
         "following_user": "Seko",
-        "befriend": "Pievienot draugu sarakstam",
-        "pending": "Gaidošie",
-        "unfriend": "Noņemt no draugu saraksta",
-        "no_following": "Nevienam neseko",
         "country": "Valsts",
         "followers": "Sekotāji",
-        "no_friends": "Nav neviena drauga",
-        "no_followers": "Nav neviena sekotāja",
         "game_experience": "Spēles spēlēšanas pieredze"
     },
     "user_settings": {
         "profile_settings": "Profila iestatījumi",
         "show_country": "Rādīt valsti profilā",
         "show_birthday": "Rādīt dzimšanas dienu profilā",
-        "show_comment": "Radīt komentārus pie profila",
-        "profile_comment": "Profila komentāri",
-        "swearing": "Profila komentārs nedrīkst saturēt necenzētu valodu.",
         "show_game": "Rādīt spēļu pieredzi profilā"
     },
     "activity_feed": {
         "empty": "Te ir tukšs. Pamēģini kādam sekot!"
     },
     "notifications": {
-        "none": "Nav ziņojumi.",
-        "new_follower": "sāka tev sekot!"
+        "none": "Nav ziņojumi."
     },
     "new_post": {
         "post_to": "Nosūtīt uz {{user}}",
-        "new_post_text": "Jauns ziņojums",
-        "text_hint": "Spied šeit, lai rakstītu ziņojumu.",
         "swearing": "Ziņojums nedrīkst saturēt necenzētu valodu."
     },
     "setup": {
@@ -106,9 +86,6 @@
         "ready_text": "Vispirms apskati dažas kopienas un noskaidro par ko citi cilvēki raksta. Izmanto šo iespēju, lai iepazīstinātu sevi ar Juxt. Tu pa ceļam varētu veikt jaunus atklājumus!",
         "done": "Priecājies izmantojot Juxt servisu!",
         "done_button": "Aiziet!",
-        "guest": "Viesa režīms",
-        "guest_text": "Mēs pašlaik nevaram apstiprināt tavu kontu, kas visticamāk nozīmē, ka tu pašlaik esi ielogojies ar Nintendo Network kontu. Tu varēsi apskatīt Juxt, bet nevarēsi reaģēt uz ziņām vai rakstīt tās pats, līdz ielogosies ar Pretendo Network kontu. Lai iegūtu vairāk informāciju apskati mūsu Discord serveri.",
-        "guest_button": "Es saprotu",
         "beta_text": {
             "first": "Tu izmēģināsi pirmo Juxt publisko beta versiju. Tas nozīmē, ka daudz lietas vēl nav pabeigtas, un daudz, kas vēl tiks mainīts.",
             "third": "Mājaslapa, tās programmatūra un viss tajā atrodamais saturs tiek nodrošināts pēc \"tā, kā ir\" un \"kā pieejams\" principa. Pretendo Network nesniedz nekādas garantijas - ne tiešas, ne netiešas - par tīmekļa vietnes, tās programmatūras vai jebkāda tās satura piemērotību vai lietojamību.",

@@ -19,23 +19,15 @@
     "language": "Esperanto",
     "all_communities": {
         "text": "Ĉiuj Komunumoj",
-        "announcements": "Anoncoj",
-        "ann_string": "Klaku ĉi tie, por vidi lastatempajn anoncojn!",
         "new_communities": "Novaj Komunumoj",
-        "show_all": "Montri Ĉiun",
-        "search": "Serĉi Komunumojn...",
         "popular_places": "Popularaj Komunumoj"
     },
     "community": {
         "followers": "Abonantoj",
-        "following": "Abonanta",
-        "follow": "Aboni Komunumon",
         "posts": "Afiŝoj",
         "tags": "Etikedoj",
         "recent": "Lastatempaj Afiŝoj",
-        "popular": "Popularaj Afiŝoj",
-        "verified": "Kontrolitaj Afiŝoj",
-        "new": "Nova Afiŝo"
+        "popular": "Popularaj Afiŝoj"
     },
     "user_page": {
         "country": "Lando",
@@ -46,34 +38,22 @@
         "following": "Abonanta",
         "followers": "Abonantoj",
         "follow_user": "Aboni",
-        "following_user": "Abonanta",
-        "befriend": "Amikiĝi",
-        "pending": "Atendanta",
-        "unfriend": "Malamikiĝi",
-        "no_friends": "Neniuj Amikoj",
-        "no_following": "Ne Abonas Iun",
-        "no_followers": "Neniuj Abonantoj"
+        "following_user": "Abonanta"
     },
     "user_settings": {
         "profile_settings": "Profilagordoj",
-        "profile_comment": "Profilrimarko",
         "show_country": "Montri Landon en Profilo",
         "show_birthday": "Montri Naskiĝtagon en Profilo",
-        "show_game": "Montri Ludosperton en Profilo",
-        "swearing": "La profilrimarko ne povas enhavi maldecaĵojn.",
-        "show_comment": "Montri komenton en profilo"
+        "show_game": "Montri Ludosperton en Profilo"
     },
     "activity_feed": {
         "empty": "Malplenas ĉi tie. Provu aboni iun!"
     },
     "notifications": {
-        "none": "Neniuj avizoj.",
-        "new_follower": "abonis vin!"
+        "none": "Neniuj avizoj."
     },
     "new_post": {
-        "new_post_text": "Novo Afiŝo",
         "post_to": "Afiŝi al {{user}}",
-        "text_hint": "Tuŝu ĉi tie por afiŝi.",
         "swearing": "La afiŝo ne povas enhavi maldecaĵojn"
     },
     "messages": {
@@ -118,9 +98,6 @@
         "ready_text": "Komence, miru kelkajn komunumojn kaj vidu pri kio afiŝadas homoj de la tuta mondo. Profitu ĉi tiun ŝancon por kutimiĝi kun Juxt. Eble kutimiĝante vi malkovrus ion aŭ iojn!",
         "done": "Amuziĝu en Juxt!",
         "ready": "Preta por Uzi Juxt",
-        "done_button": "Ni Iru!",
-        "guest": "Gastmodo",
-        "guest_button": "Mi Komprenas",
-        "guest_text": "Ni ĉi-momente ne povas konfirmi vian konton. Tio verŝajne signifas ke vi enŝultadas per Nintendo Network-konto. Vi povos paĝumi Juxt-e, sed vi ne povos Jes-i afiŝojn aŭ fari viajn proprajn afiŝojn ĝis vi enŝultas per Pretendo Network-konto. Por pli da informoj vidu en la Discord-servilo."
+        "done_button": "Ni Iru!"
     }
 }

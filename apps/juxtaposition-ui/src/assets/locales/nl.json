@@ -19,23 +19,15 @@
     },
     "all_communities": {
         "text": "Alle Community's",
-        "announcements": "Aankondigingen",
-        "ann_string": "Klik hier om recente aankondigen te bekijken!",
         "popular_places": "Populaire Community's",
-        "new_communities": "Nieuwe Community's",
-        "show_all": "Alles weergeven",
-        "search": "Zoek community's..."
+        "new_communities": "Nieuwe Community's"
     },
     "community": {
-        "follow": "Volg Community",
-        "following": "Volgend",
         "followers": "Volgers",
         "posts": "Posts",
         "tags": "Tags",
         "recent": "Recente Posts",
-        "popular": "Populaire Posts",
-        "verified": "Geverifieerde Posts",
-        "new": "Nieuwe Post"
+        "popular": "Populaire Posts"
     },
     "user_page": {
         "country": "Land",
@@ -46,34 +38,22 @@
         "following": "Gevolgde gebruikers",
         "followers": "Volgers",
         "follow_user": "Volgen",
-        "following_user": "Volgend",
-        "befriend": "Bevriend",
-        "pending": "Wachtend",
-        "unfriend": "Ontvriend",
-        "no_friends": "Geen vrienden",
-        "no_following": "Volgt Niemand",
-        "no_followers": "Geen Volgers"
+        "following_user": "Volgend"
     },
     "user_settings": {
         "profile_settings": "Profielinstellingen",
         "show_country": "Geef Land op Profiel weer",
         "show_birthday": "Geef Verjaardag op Profiel weer",
-        "show_game": "Geef Game-ervaring op Profiel weer",
-        "show_comment": "Geef Omschrijving op Profiel weer",
-        "profile_comment": "Profielomschrijving",
-        "swearing": "Profielomschrijving kan geen expliciete tekst bevatten."
+        "show_game": "Geef Game-ervaring op Profiel weer"
     },
     "activity_feed": {
         "empty": "Het is eenzaam hier. Probeer iemand te volgen!"
     },
     "notifications": {
-        "none": "Geen meldingen.",
-        "new_follower": "volgt jou nu!"
+        "none": "Geen meldingen."
     },
     "new_post": {
-        "new_post_text": "Nieuwe Post",
         "post_to": "Post in {{user}}",
-        "text_hint": "Klik hier om een post te maken.",
         "swearing": "Post kan geen expliciete tekst bevatten."
     },
     "messages": {
@@ -118,9 +98,6 @@
         "ready": "Klaar om Juxt te Gebruiken",
         "ready_text": "Bekijk eerst wat community's en zie waar mensen van over de hele wereld over posten. Gebruik deze kans om je bekend te maken met Juxt. Misschien ontdek je iets nieuws op deze manier!",
         "done": "Veel plezier in Juxt!",
-        "done_button": "Laten We Beginnen!",
-        "guest": "Gastmodus",
-        "guest_text": "We kunnen momenteel jouw account niet verifiëren, dit betekent waarschijnlijk dat je probeert in te loggen met een Nintendo Network account. Je kan nog steeds Juxt bezoeken, maar je kan posts geen Ja! geven. Daarnaast kan je geen posts maken totdat je inlogt met een Pretendo Network account. Bezoek de Discord server voor meer informatie.",
-        "guest_button": "Begrepen"
+        "done_button": "Laten We Beginnen!"
     }
 }
