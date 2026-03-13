@@ -17,7 +17,7 @@ export function CtrErrorView(props: ErrorViewProps): ReactNode {
 					data-toolbar-active-button="0"
 				>
 					<h1 id="page-title">
-						<p><T k="error.heading" values={{ code: props.code, message: props.message }} /></p>
+						<span><T k="error.heading" values={{ code: props.code, message: props.message }} /></span>
 					</h1>
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">

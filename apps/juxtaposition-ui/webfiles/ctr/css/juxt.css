@@ -76,7 +76,9 @@ ul {
     line-height: 47px;
     font-size: 25px;
     white-space: nowrap;
-    display: inline;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding-left: 15px;
     width: 385px
 }
