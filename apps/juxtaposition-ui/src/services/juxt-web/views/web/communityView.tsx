@@ -85,7 +85,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 										data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 										data-url="/titles/follow"
 										data-community-id={community.olive_community_id}
-										data-text={props.isUserFollowing ? <T k="user_page.follow_user" /> : <T k="user_page.following_user" />}
+										data-text={props.isUserFollowing ? T.str('user_page.follow_user') : T.str('user_page.following_user')}
 									>
 										{props.isUserFollowing ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
 									</a>
