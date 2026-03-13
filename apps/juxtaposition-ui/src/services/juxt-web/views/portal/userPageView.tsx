@@ -88,7 +88,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 
 	return (
 		<PortalRoot title={pnidName}>
-			<PortalNavBar selection={-1} />
+			<PortalNavBar selection={isSelf ? 0 : -1} />
 			<PortalPageBody>
 				<header id="header">
 					{isSelf ? <a id="header-communities-button" className="user-page" href="/users/me/settings" data-pjax="#body">Settings</a> : null}
