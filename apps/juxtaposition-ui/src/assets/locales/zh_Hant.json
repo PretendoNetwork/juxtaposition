@@ -116,8 +116,8 @@
         "none": "沒有通知。",
         "new_follower/one": "<follower_one /> 已開始追蹤你！",
         "new_follower/two": "<follower_one />、<follower_two /> 已開始追蹤你！",
-        "new_follower/three": "<follower_one />、<follower_two />、和另外 {{count_other}} 人已開始追蹤你！",
-        "new_follower/multiple": "<follower_one />、<follower_two />、和另外 {{count_other}} 人已開始追蹤你！"
+        "new_follower/three": "<follower_one />、<follower_two /> 和另外 {{count_other}} 人已開始追蹤你！",
+        "new_follower/multiple": "<follower_one />、<follower_two /> 和另外 {{count_other}} 人已開始追蹤你！"
     },
     "new_post": {
         "swearing": "貼文不能包含露骨內容。",
@@ -139,14 +139,14 @@
         "forgot_password": "忘記密碼？",
         "no_account": "沒有帳號嗎？",
         "login_action": "登入",
-        "no_account_setup": "只有當您擁有連接的 Wii U 或 3DS 主機時，才能建立帳號。"
+        "no_account_setup": "只有當您擁有已連接的 Wii U 或 3DS 主機時，才能建立帳號。"
     },
     "error": {
         "title": "錯誤 {{code}}",
         "heading": "錯誤 {{code}}: {{message}}",
         "message": "糟糕！我們找不到您要找的頁面。<newline/>請檢查您的連結或稍後再試",
         "no_access": "您沒有存取此應用程式的權限（{{code}}）",
-        "message_web": "查看目前的<status>伺服器狀態</status>。<newline/>或者，<home>返回首頁</home>",
+        "message_web": "查看目前的 <status>伺服器狀態</status>。<newline/>或者，<home>返回首頁</home>",
         "error_details": "請求 ID：{{id}}"
     },
     "friend_requests": {
@@ -167,7 +167,7 @@
     "reporting": {
         "title": "檢舉貼文",
         "submit": "提交檢舉",
-        "description": "你即將舉報一篇違反《Juxtaposition 社群守則》的貼文。此舉報將發送給 Pretendo 的 Juxtaposition 管理員，而非此貼文的創作者。",
+        "description": "你即將檢舉一篇違反《Juxtaposition 社群守則》的貼文。此舉報將傳送給 Pretendo 的 Juxtaposition 管理員，而非此貼文的創作者。",
         "label": "原因：",
         "additional_info_placeholder": "輸入其他評論或資訊",
         "reason_spoiler": "劇透",
