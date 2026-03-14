@@ -1,10 +1,10 @@
-import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
 import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -101,18 +101,16 @@ export function CtrNotificationWrapperView(props: NotificationWrapperViewProps):
 					<h1 id="page-title"><T k="global.notifications_and_messages" /></h1>
 				</header>
 				<div className="body-content tab2-content" id="news-page">
-					<menu className="tab-header no-margin">
-						<li id="tab-header-my-news" className={cx('tab-button', { selected: props.selectedTab === 0 })} data-show-post-button="1">
-							<a href="/news/my_news" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-								<span className="new-post"><T k="global.updates" /></span>
-							</a>
-						</li>
-						<li id="tab-header-friend-request" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
-							<a href="/friend_messages" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
-								<span><T k="global.messages" /></span>
-							</a>
-						</li>
-					</menu>
+					<CtrNavTabs target=".tab-body">
+						<CtrNavTabsRow>
+							<CtrNavTab href="/news/my_news" selected={props.selectedTab === 0}>
+								<T k="global.updates" />
+							</CtrNavTab>
+							<CtrNavTab href="/friend_messages" selected={props.selectedTab === 1}>
+								<T k="global.messages" />
+							</CtrNavTab>
+						</CtrNavTabsRow>
+					</CtrNavTabs>
 					<div className="tab-body">
 						{props.children}
 					</div>

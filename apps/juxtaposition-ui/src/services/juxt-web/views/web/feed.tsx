@@ -33,10 +33,19 @@ export function WebFeedTabs(props: FeedTabsProps): ReactNode {
 					<T k="global.my_feed" />
 				</a>
 				<a
+					id="people-feed"
+					href="/feed/people"
+					className={cx({
+						selected: props.selected == 1
+					})}
+				>
+					<T k="global.people_feed" />
+				</a>
+				<a
 					id="all-feed"
 					href="/feed/all"
 					className={cx({
-						selected: props.selected == 1
+						selected: props.selected == 2
 					})}
 				>
 					<T k="global.global_feed" />
@@ -63,7 +72,7 @@ export function WebPersonalFeedView(props: FeedViewProps): ReactNode {
 	);
 }
 
-export function WebGlobalFeedView(props: FeedViewProps): ReactNode {
+export function WebPeopleFeedView(props: FeedViewProps): ReactNode {
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
@@ -73,6 +82,23 @@ export function WebGlobalFeedView(props: FeedViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebFeedTabs selected={1} />
+				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+			</WebWrapper>
+			<WebReportModalView />
+		</WebRoot>
+	);
+}
+
+export function WebGlobalFeedView(props: FeedViewProps): ReactNode {
+	return (
+		<WebRoot>
+			<h2 id="title" className="page-header">
+				<T k="global.activity_feed" />
+			</h2>
+			<WebNavBar selection={1} />
+			<div id="toast"></div>
+			<WebWrapper>
+				<WebFeedTabs selected={2} />
 				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
 			</WebWrapper>
 			<WebReportModalView />

@@ -1,0 +1,39 @@
+.nav-tabs {
+    margin: 0 20px 0 180px; /* this sucks, but match original for now */
+
+    /* Visuals */
+    padding: 15px !important; /* override conflicting body-content behaviour. TODO this also sucks! */
+    background: -webkit-linear-gradient(#6045af, #634ca8);
+    border-radius: 50px;
+}
+
+.nav-tabs-row {
+    /* Evenly size our children with Not Yet Flexbox 
+     * https://www.w3.org/TR/2009/WD-css3-flexbox-20090723/ */
+    display: -webkit-box;
+
+    /* Visuals */
+    background: #5e44aa;
+    box-shadow: inset 0 7px 10px -3px rgba(66,45,120,.75), inset 0 -3px 5px rgba(128,101,213,.5);
+    border-radius: 50px;
+
+}
+
+.nav-tab {
+    /* Similar to flex-basis: 100% flex-grow: 1. Only works if explicitly display block'd */
+    display: block;
+    width: 0;
+    -webkit-box-flex: 1;
+
+    /* Visuals */
+    text-align: center;
+    font-size: 24px;
+    padding: 8px;
+    color: #cabbf3;
+    border-radius: 50px;
+
+    &.selected {
+        background: -webkit-linear-gradient(#fff 30%, #fff5f5 80%);
+        color: #4d4d4d;
+    }
+}
