@@ -68,7 +68,12 @@ const schema = z.object({
 	redis: z.object({
 		host: z.string(),
 		port: z.coerce.number().default(6379)
-	})
+	}),
+	domains: z.object({
+		web: z.hostname().default('juxt.pretendo.network'),
+		ctr: z.hostname().default('ctr.olv.pretendo.cc'),
+		portal: z.hostname().default('portal.olv.pretendo.cc')
+	}).prefault({})
 });
 
 export const presets = {
