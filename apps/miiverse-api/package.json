@@ -21,7 +21,7 @@
 		"@repo/grpc-client": "^0.0.0",
 		"colors": "^1.4.0",
 		"crc": "^4.3.2",
-		"express": "^4.22.1",
+		"express": "^5.2.1",
 		"express-prom-bundle": "^7.0.2",
 		"express-rate-limit": "^8.2.1",
 		"moment": "^2.24.0",
