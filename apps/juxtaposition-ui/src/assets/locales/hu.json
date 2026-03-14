@@ -66,9 +66,9 @@
     "notifications": {
         "none": "Nincsennek értesítések.",
         "new_follower/one": "<follower_one /> bekövetett téged!",
-        "new_follower/two": "<follower_one />,<follower_two /> bekövetett téged!",
-        "new_follower/three": "<follower_one /><follower_two /> és {{count_other}} további felhasználó bekövetett téged!",
-        "new_follower/multiple": "<follower_one /><follower_two /> és {{count_other}} további felhasználó bekövetett téged!"
+        "new_follower/two": "<follower_one />, <follower_two /> bekövetett téged!",
+        "new_follower/three": "<follower_one />, <follower_two /> és {{count_other}} további felhasználó bekövetett téged!",
+        "new_follower/multiple": "<follower_one />, <follower_two /> és {{count_other}} további felhasználó bekövetett téged!"
     },
     "new_post": {
         "post_to": "Bejegyzés ehhez {{user}}",
