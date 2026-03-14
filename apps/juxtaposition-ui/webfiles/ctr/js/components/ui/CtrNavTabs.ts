@@ -3,6 +3,8 @@ import { pjaxPushHistory, pjaxRefresh } from '../../pjax';
 import { initMorePosts, initPosts } from '../../juxt';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {
+	/* Note: because we use ev.target here, the nav-tab can not have any HTML elements inside it.
+	 * Only text. */
 	var clicked = ev.target as HTMLElement;
 	if (!clicked.hasAttribute('data-nav-tab')) {
 		// Clicked the edge or something
