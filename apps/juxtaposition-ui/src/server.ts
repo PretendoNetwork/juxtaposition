@@ -2,7 +2,6 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { RedisStore } from 'connect-redis';
-import 'express-async-errors'; // See package docs
 import methodOverride from 'method-override';
 import { database } from '@/database';
 import { logger } from '@/logger';
@@ -108,7 +107,11 @@ async function main(): Promise<void> {
 	await redisClient.connect();
 	await initImageProcessing();
 
-	app.listen(port, '0.0.0.0', () => {
+	app.listen(port, '0.0.0.0', (err) => {
+		if (err) {
+			logger.error(err, `Failed to start server`);
+			throw err;
+		}
 		logger.success(`Server started on port ${port}`);
 	});
 

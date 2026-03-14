@@ -101,7 +101,11 @@ export function listenMetrics(metricsApp: Express): void {
 	}
 
 	const port = config.metrics.port;
-	metricsApp.listen(port, '0.0.0.0', () => {
+	metricsApp.listen(port, '0.0.0.0', (err) => {
+		if (err) {
+			logger.error(err, `Failed to start metrics server`);
+			throw err;
+		}
 		logger.success(`Metrics server started on port ${port}`);
 	});
 }
