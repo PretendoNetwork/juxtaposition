@@ -146,7 +146,8 @@
         "heading": "Erro {{code}}: {{message}}",
         "message": "Ops! Parece que nós não conseguimos achar a página que você está procurando..<newline/>Cheque seu link novamente ou tente de novo mais tarde",
         "no_access": "Você não tem autorização para acessar esta aplicação ({{code}})",
-        "message_web": "Veja o atual <status>status do servidors</status>.<newline/>Ou,<home>volte para a tela inicial</home>"
+        "message_web": "Veja o atual <status>status do servidors</status>.<newline/>Ou,<home>volte para a tela inicial</home>",
+        "error_details": "ID da Solicitação: {{id}}"
     },
     "friend_requests": {
         "none": "Nenhuma Solicitação de Amizade"
