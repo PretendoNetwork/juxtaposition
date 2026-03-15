@@ -7,6 +7,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
+import { abbreviateCount } from '@/services/juxt-web/views/common/utils/formatCount';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -225,7 +226,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 										</div>
 										<div>
 											<h4><T k="user_page.followers" /></h4>
-											<h4 id="user-page-followers-tab">{props.userContent.following_users.length}</h4>
+											<h4 id="user-page-followers-tab">{abbreviateCount(props.userContent.following_users.length)}</h4>
 										</div>
 										{isSelf
 											? (

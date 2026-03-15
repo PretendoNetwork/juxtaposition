@@ -7,6 +7,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
+import { abbreviateCount } from '@/services/juxt-web/views/common/utils/formatCount';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -133,7 +134,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												{' | '}
 												<PortalUIIcon name="followers" />
 												{' '}
-												<span id="followers">{props.userContent.following_users.length - 1}</span>
+												<span id="followers">{abbreviateCount(props.userContent.following_users.length - 1)}</span>
 											</span>
 											{props.userSettings.country_visibility
 												? (

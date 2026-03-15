@@ -4,6 +4,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
+import { abbreviateCount } from '@/services/juxt-web/views/common/utils/formatCount';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -63,7 +64,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 												<span className="sprite sp-follower-count inline-sprite"></span>
 												<span id="followers">
 													{' '}
-													{props.userContent.following_users.length - 1}
+													{abbreviateCount(props.userContent.following_users.length - 1)}
 												</span>
 											</span>
 										</span>
