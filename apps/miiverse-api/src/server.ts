@@ -81,22 +81,14 @@ async function main(): Promise<void> {
 	await connectDatabase();
 	await initImageProcessing();
 
-	app.listen(port, '0.0.0.0', (err) => {
-		if (err) {
-			logger.error(err, `Failed to start server`);
-			throw err;
-		}
+	app.listen(port, '0.0.0.0', () => {
 		logger.info(`Server started on port ${port}`);
 	});
 
 	await setupGrpc();
 
 	if (metricsEnabled) {
-		metrics.listen(metricsPort, (err) => {
-			if (err) {
-				logger.error(err, `Failed to start metrics server`);
-				throw err;
-			}
+		metrics.listen(metricsPort, () => {
 			logger.info(`Metrics server started on port ${metricsPort}`);
 		});
 	}

@@ -107,11 +107,7 @@ async function main(): Promise<void> {
 	await redisClient.connect();
 	await initImageProcessing();
 
-	app.listen(port, '0.0.0.0', (err) => {
-		if (err) {
-			logger.error(err, `Failed to start server`);
-			throw err;
-		}
+	app.listen(port, '0.0.0.0', () => {
 		logger.success(`Server started on port ${port}`);
 	});
 
