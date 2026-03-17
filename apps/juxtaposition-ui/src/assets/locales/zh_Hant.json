@@ -21,7 +21,10 @@
         "friend_requests": "好友請求",
         "updates": "更新",
         "notifications_and_messages": "通知和訊息",
-        "search": "搜尋..."
+        "search": "搜尋...",
+        "global_feed_short": "全球",
+        "people_feed": "追蹤中動態",
+        "people_feed_short": "追蹤中"
     },
     "all_communities": {
         "text": "所有社群",
@@ -101,7 +104,8 @@
         "game_experience_unknown": "未知",
         "settings": "設定",
         "deleted": "已刪除使用者",
-        "banned": "已禁止使用者"
+        "banned": "已禁止使用者",
+        "friend_requests": "請求"
     },
     "user_settings": {
         "show_country": "在個人檔案顯示國家/地區",
