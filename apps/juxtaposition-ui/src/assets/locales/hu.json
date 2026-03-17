@@ -20,7 +20,10 @@
         "updates": "Frissítések",
         "friend_requests": "Barát kérések",
         "notifications_and_messages": "Értesítések és üzenetek",
-        "search": "Keresés..."
+        "search": "Keresés...",
+        "global_feed_short": "Globális",
+        "people_feed": "Követett személyek",
+        "people_feed_short": "Követve"
     },
     "all_communities": {
         "popular_places": "Népszerű helyek",
@@ -52,7 +55,8 @@
         "game_experience_unknown": "Ismeretlen",
         "settings": "Beállítások",
         "deleted": "Törölt felhasználó",
-        "banned": "Bannolt felhasználó"
+        "banned": "Bannolt felhasználó",
+        "friend_requests": "Kérések"
     },
     "user_settings": {
         "show_country": "Ország megjelenítése a Profilon",
