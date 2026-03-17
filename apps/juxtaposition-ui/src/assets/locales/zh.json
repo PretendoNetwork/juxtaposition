@@ -21,7 +21,10 @@
         "friend_requests": "好友请求",
         "updates": "更新",
         "notifications_and_messages": "通知和消息",
-        "search": "搜索..."
+        "search": "搜索...",
+        "global_feed_short": "全球",
+        "people_feed": "关注中动态",
+        "people_feed_short": "关注中"
     },
     "all_communities": {
         "text": "所有社区",
@@ -53,7 +56,8 @@
         "game_experience_unknown": "未知",
         "settings": "设置",
         "deleted": "已删除用户",
-        "banned": "已禁止用户"
+        "banned": "已禁止用户",
+        "friend_requests": "请求"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
