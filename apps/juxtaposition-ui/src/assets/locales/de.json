@@ -21,7 +21,8 @@
         "friend_requests": "Freundschaftsanfragen",
         "updates": "Neuigkeiten",
         "notifications_and_messages": "Benachrichtigungen und Nachrichten",
-        "search": "Suche..."
+        "search": "Suche...",
+        "global_feed_short": "Global"
     },
     "all_communities": {
         "text": "Alle Communitys",
@@ -53,7 +54,8 @@
         "game_experience_unknown": "Unbekannt",
         "settings": "Einstellungen",
         "deleted": "Gelöschter Nutzer",
-        "banned": "Gesperrter Nutzer"
+        "banned": "Gesperrter Nutzer",
+        "friend_requests": "Anfragen"
     },
     "user_settings": {
         "profile_settings": "Profileinstellungen",
