@@ -7,7 +7,7 @@ import type { PostSchema } from '@/models/post';
 import type { PostDto } from '@/api/post';
 
 export type PostListViewProps = {
-	userContent: InferSchemaType<typeof ContentSchema>;
+	userContent: InferSchemaType<typeof ContentSchema> | null;
 	posts: InferSchemaType<typeof PostSchema>[] | PostDto[];
 	nextLink: string;
 };
