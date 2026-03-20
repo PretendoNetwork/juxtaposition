@@ -10,7 +10,7 @@ import { COMMUNITY, CommunityShotModes } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { humanDate, createLogEntry, getReasonMap, getUserAccountData, newNotification, updateCommunityHash } from '@/util';
-import { getUserMetrics } from '@/metrics';
+import { getPostMetrics, getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
 import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportListView';
@@ -121,9 +121,20 @@ adminRouter.get('/accounts', async function (req, res) {
 	})();
 
 	const userMetrics = await getUserMetrics();
+	const postMetrics = await getPostMetrics();
 
 	res.jsxForDirectory({
-		web: <WebUserListView users={users} page={page} search={search} userCount={userMetrics.totalUsers} activeCount={userMetrics.currentOnlineUsers} />
+		web: (
+			<WebUserListView
+				users={users}
+				page={page}
+				search={search}
+				userCount={userMetrics.totalUsers}
+				activeCount={userMetrics.currentOnlineUsers}
+				dailyPostCount={postMetrics.dailyPosts}
+				totalPostCount={postMetrics.totalPosts}
+			/>
+		)
 	});
 });
 
