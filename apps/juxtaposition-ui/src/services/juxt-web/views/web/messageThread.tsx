@@ -90,14 +90,16 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
 					{ props.banner
 						? (
-								<p>
-									<T
-										k="dmBannerText"
-										components={{
-											url: <a href={props.banner.url ?? '#'}>...</a>
-										}}
-									/>
-								</p>
+								<div className="dm-banner">
+									<p>
+										<T
+											k="dmBannerText"
+											components={{
+												url: <a href={props.banner.url ?? '#'}>...</a>
+											}}
+										/>
+									</p>
+								</div>
 							)
 						: null }
 				</div>

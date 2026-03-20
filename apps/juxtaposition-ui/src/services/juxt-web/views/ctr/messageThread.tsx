@@ -84,14 +84,16 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
 					{ props.banner
 						? (
-								<p>
-									<T
-										k="dmBannerText"
-										components={{
-											url: <span>...</span>
-										}}
-									/>
-								</p>
+								<div className="dm-banner post">
+									<p className="post-body">
+										<T
+											k="dmBannerText"
+											components={{
+												url: <span>...</span>
+											}}
+										/>
+									</p>
+								</div>
 							)
 						: null }
 				</div>
