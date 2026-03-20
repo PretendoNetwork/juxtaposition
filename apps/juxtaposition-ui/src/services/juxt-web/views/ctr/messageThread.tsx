@@ -54,6 +54,7 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 		throw new Error('Conversation does not have an ID');
 	}
 	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
+	const postable = !props.readonly;
 
 	return (
 		<CtrRoot
@@ -65,18 +66,34 @@ export function CtrMessageThreadView(props: MessageThreadViewProps): ReactNode {
 			<CtrPageBody>
 				<header id="header" className="buttons">
 					<h1 id="page-title">{otherUserName}</h1>
-					<a
-						id="header-post-button"
-						className="header-button left"
-						href={`/friend_messages/${props.conversation.id}/create`}
-						data-pjax="#body"
-					>
-						<T k="new_post.new_post_short" />
-						{' +'}
-					</a>
+					{postable
+						? (
+								<a
+									id="header-post-button"
+									className="header-button left"
+									href={`/friend_messages/${props.conversation.id}/create`}
+									data-pjax="#body"
+								>
+									<T k="new_post.new_post_short" />
+									{' +'}
+								</a>
+							)
+						: null}
 				</header>
 				<div className="body-content message-post-list" id="message-page">
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
+					{ props.banner
+						? (
+								<p>
+									<T
+										k="dmBannerText"
+										components={{
+											url: <span>...</span>
+										}}
+									/>
+								</p>
+							)
+						: null }
 				</div>
 			</CtrPageBody>
 		</CtrRoot>

@@ -68,7 +68,12 @@ const schema = z.object({
 	redis: z.object({
 		host: z.string(),
 		port: z.coerce.number().default(6379)
-	})
+	}),
+	dmBanner: z.object({
+		text: z.string().optional(), // Add `<url>content</url>` to insert the url
+		url: z.url().optional(),
+		readOnly: z.stringbool().default(false)
+	}).prefault({})
 });
 
 export const presets = {
