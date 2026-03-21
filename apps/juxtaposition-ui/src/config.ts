@@ -73,6 +73,11 @@ const schema = z.object({
 		web: z.hostname().default('juxt.pretendo.network'),
 		ctr: z.hostname().default('ctr.olv.pretendo.cc'),
 		portal: z.hostname().default('portal.olv.pretendo.cc')
+	}).prefault({}),
+	dmBanner: z.object({
+		text: z.string().optional(), // Add `<url>content</url>` to insert the url
+		url: z.url().optional(),
+		readOnly: z.stringbool().default(false)
 	}).prefault({})
 });
 

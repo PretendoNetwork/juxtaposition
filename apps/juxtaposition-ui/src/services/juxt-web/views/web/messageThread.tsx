@@ -19,6 +19,10 @@ export type MessageThreadViewProps = {
 	conversation: ConversationModel;
 	otherUser: ConversationUserModel;
 	messages: ConversationPost[];
+	readonly?: boolean;
+	banner?: {
+		url?: string;
+	};
 };
 
 export type MessageThreadItemProps = {
@@ -71,6 +75,7 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 	}
 	const cache = useCache();
 	const otherUserName = cache.getUserName(props.otherUser.pid) ?? '';
+	const postable = !props.readonly;
 
 	return (
 		<WebRoot>
@@ -81,50 +86,70 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 			<div id="toast" />
 			<div id="wrapper">
 				<div className="body-content message-post-list" id="message-page">
-					<button id="header-post-button" className="header-button" data-module-hide="message-page" data-module-show="add-post-page" data-header="true" data-menu="true">+</button>
+					{postable ? <button id="header-post-button" className="header-button" data-module-hide="message-page" data-module-show="add-post-page" data-header="true" data-menu="true">+</button> : null }
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
+					{ props.banner
+						? (
+								<div className="dm-banner">
+									<p>
+										<T
+											k="dmBannerText"
+											components={{
+												url: <a href={props.banner.url ?? '#'}>...</a>
+											}}
+										/>
+									</p>
+								</div>
+							)
+						: null }
 				</div>
-				<WebNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} shotMode="allow" />
-				<div id="painting-wrapper" className="painting-wrapper" style={{ display: 'none' }}>
-					<div id="painting-content">
-						<div className="tools">
-							<div>
-								<button className="clear" evt-click="clearCanvas()"></button>
-								<button className="undo"></button>
-							</div>
-							<div>
-								<ul className="buttons pencil">
-									<li>
-										<input evt-click="setPen(0)" type="radio" value="0" className="pencil small" name="tool" defaultChecked />
-									</li>
-									<li>
-										<input evt-click="setPen(1)" type="radio" value="1" className="pencil medium" name="tool" />
-									</li>
-									<li>
-										<input evt-click="setPen(2)" type="radio" value="2" className="pencil large" name="tool" />
-									</li>
-								</ul>
-								<ul className="buttons eraser">
-									<li>
-										<input evt-click="setEraser(0)" type="radio" value="0" className="eraser small" name="tool" />
-									</li>
-									<li>
-										<input evt-click="setEraser(1)" type="radio" value="1" className="eraser medium" name="tool" />
-									</li>
-									<li>
-										<input evt-click="setEraser(2)" type="radio" value="2" className="eraser large" name="tool" />
-									</li>
-								</ul>
-							</div>
-						</div>
-						<canvas width="320" height="120" id="painting" />
-						<div id="button-wrapper">
-							<button evt-click="closePainting(false)"><T k="new_post.painting_close" /></button>
-							<button className="primary" evt-click="closePainting(true)"><T k="new_post.painting_submit" /></button>
-						</div>
-					</div>
-					<script src="/assets/web/js/painting.global.js" />
-				</div>
+				{postable
+					? (
+							<>
+								<WebNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} shotMode="allow" />
+								<div id="painting-wrapper" className="painting-wrapper" style={{ display: 'none' }}>
+									<div id="painting-content">
+										<div className="tools">
+											<div>
+												<button className="clear" evt-click="clearCanvas()"></button>
+												<button className="undo"></button>
+											</div>
+											<div>
+												<ul className="buttons pencil">
+													<li>
+														<input evt-click="setPen(0)" type="radio" value="0" className="pencil small" name="tool" defaultChecked />
+													</li>
+													<li>
+														<input evt-click="setPen(1)" type="radio" value="1" className="pencil medium" name="tool" />
+													</li>
+													<li>
+														<input evt-click="setPen(2)" type="radio" value="2" className="pencil large" name="tool" />
+													</li>
+												</ul>
+												<ul className="buttons eraser">
+													<li>
+														<input evt-click="setEraser(0)" type="radio" value="0" className="eraser small" name="tool" />
+													</li>
+													<li>
+														<input evt-click="setEraser(1)" type="radio" value="1" className="eraser medium" name="tool" />
+													</li>
+													<li>
+														<input evt-click="setEraser(2)" type="radio" value="2" className="eraser large" name="tool" />
+													</li>
+												</ul>
+											</div>
+										</div>
+										<canvas width="320" height="120" id="painting" />
+										<div id="button-wrapper">
+											<button evt-click="closePainting(false)"><T k="new_post.painting_close" /></button>
+											<button className="primary" evt-click="closePainting(true)"><T k="new_post.painting_submit" /></button>
+										</div>
+									</div>
+									<script src="/assets/web/js/painting.global.js" />
+								</div>
+							</>
+						)
+					: null }
 			</div>
 			<WebReportModalView />
 		</WebRoot>

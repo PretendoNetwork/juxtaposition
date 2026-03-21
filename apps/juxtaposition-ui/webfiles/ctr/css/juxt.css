@@ -1,6 +1,7 @@
 @import 'sprites.css';
 @import './controls/ctabs.css';
 @import './controls/checkbox.css';
+@import './components/ui/CtrNavTabs.css';
 @import 'new-post-view.css';
 @import 'report-post-page.css';
 
@@ -62,11 +63,11 @@ ul {
     background: url(@/images/header.png);
     background-size: 400px;
     position: relative;
-    margin-bottom: 10px
-}
+    margin-bottom: 10px;
 
-#header.buttons {
-    margin-bottom: 35px
+    &.buttons {
+        margin-bottom: 40px;
+    }
 }
 
 #page-title {
@@ -301,7 +302,7 @@ menu.tab-header.user-page li:last-child {
 
 .post {
     background: #fff;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     border-radius: 5px;
     border: 1px solid #666
 }
@@ -336,7 +337,7 @@ menu.tab-header.user-page li:last-child {
 }
 
 .tab-body.post-list {
-    margin-top: 15px
+    margin-top: 10px;
 }
 
 .post header > a,
@@ -793,6 +794,22 @@ menu.tab-header.no-margin {
 
 .message-post-list .post header {
     color: #969696;
+}
+
+.message-post-list .dm-banner .post-body {
+  border: 2px solid #9d6ff3;
+  max-width: 100%;
+  width: auto;
+  min-height: auto;
+  padding: 5px 10px;
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  > span {
+    color: #5327a5;
+    text-decoration: underline;
+  }
 }
 
 .settings-list > li {

@@ -6,7 +6,7 @@
         "communities": "Communautés",
         "messages": "Messages privés",
         "notifications": "Notifications",
-        "go_back": "Retourner",
+        "go_back": "Retour",
         "back": "Précédent",
         "yeahs": "Ouais",
         "more": "Voir plus de publications",
@@ -15,7 +15,16 @@
         "close": "Fermer",
         "save": "Sauvegarder",
         "exit": "Quitter",
-        "next": "Suivant"
+        "next": "Suivant",
+        "my_feed": "Mes actualités",
+        "global_feed": "Actualités globales",
+        "global_feed_short": "Actualités",
+        "people_feed": "Actualités des abonnés",
+        "people_feed_short": "Abonnés",
+        "friend_requests": "Demmandes d'amis",
+        "notifications_and_messages": "Notifications et messages",
+        "updates": "Mises à jour",
+        "search": "Chercher..."
     },
     "all_communities": {
         "text": "Toutes les communautés",
@@ -27,7 +36,11 @@
         "posts": "Publications",
         "tags": "Tags",
         "recent": "Posts récents",
-        "popular": "Posts populaires"
+        "popular": "Posts populaires",
+        "followers_count": "{{count}} abonnés",
+        "tags_not_applicable": "Non appliquable",
+        "related": "Communautés associées",
+        "closed": "Cette communauté est fermée aux nouveaux posts."
     },
     "user_page": {
         "country": "Pays",
@@ -38,23 +51,40 @@
         "following": "Abonnements",
         "followers": "Abonnés",
         "follow_user": "Suivre",
-        "following_user": "Suivi(e)"
+        "following_user": "Suivi(e)",
+        "game_experience_unknown": "Inconnu",
+        "settings": "Paramètres",
+        "friend_requests": "Requêtes",
+        "deleted": "Utilisateur supprimmé",
+        "banned": "Utilisateur Banni"
     },
     "user_settings": {
         "profile_settings": "Paramètres du profil",
         "show_country": "Afficher mon pays sur le profil",
         "show_birthday": "Afficher mon anniversaire sur le profil",
-        "show_game": "Afficher mon expérience de joueur sur le profil"
+        "show_game": "Afficher mon expérience de joueur sur le profil",
+        "save_action": "Enregistrer les paramètres",
+        "gdpr_download": "Télécharger les données utilisateur",
+        "gdpr_download_action": "Télécharger"
     },
     "activity_feed": {
         "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
     },
     "notifications": {
-        "none": "Aucune notification."
+        "none": "Aucune notification.",
+        "new_follower/one": "<follower_one /> vous suit !",
+        "new_follower/two": "<follower_one /> et <follower_two /> vous suivent !",
+        "new_follower/three": "<follower_one />, <follower_two /> et {{count_other}} autre personne vous suivent !",
+        "new_follower/multiple": "<follower_one />, <follower_two /> et {{count_other}} autres personnes vous suivent !"
     },
     "new_post": {
-        "post_to": "Poster sur {{user}}",
-        "swearing": "Les publications ne peuvent pas contenir de language explicite."
+        "post_to": "Poster à {{user}}",
+        "swearing": "Les publications ne peuvent pas contenir de language explicite.",
+        "content_placeholder": "Partagez vos pensées dans une publication dans une communauté ou à vos abonnés.",
+        "screenshots_coming_soon": "Les captures d'écran ne sont pas encore disponibles. Revérifiez bientôt !",
+        "no_screenshot": "Pas de capture d'écran",
+        "painting_close": "Annuler",
+        "painting_submit": "Valider"
     },
     "messages": {
         "coming_soon": "Les messages ne sont pas encore disponibles. Revenez bientôt !"
@@ -93,11 +123,69 @@
             "intermediate": "Connaisseur",
             "expert": "Adepte"
         },
-        "analytics": "Analytics",
+        "analytics": "Analytiques",
         "analytics_text": "Juxtaposition utilise Cloudflare Web Analytics afin de savoir comment les visiteurs interagissent avec notre service. Les données recueillies comprennent, sans s'y limiter, l'heure de visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas rattachées à votre personne et ne seront pas utilisées à des fins publicitaires, ni par nous ni par Cloudflare.",
         "ready": "Prêt à Utiliser Juxt",
         "ready_text": "Commencez par consulter quelques communautés et voyez ce que les gens du monde entier publient. Profitez de cette occasion pour vous familiariser avec Juxt. Vous pourriez faire de nouvelles découvertes en cours de route !",
         "done": "Profitez bien de Juxt !",
-        "done_button": "C'est parti !"
+        "done_button": "C'est parti !",
+        "title": "Configuration de Juxtaposition"
+    },
+    "login": {
+        "title": "Connexion à Juxtaposition",
+        "heading": "Se connecter à Juxtaposition",
+        "sub_title": "Entrez les détails de votre compte ci-dessous",
+        "username": "Nom d'utilisateur",
+        "password": "Mot de passe",
+        "forgot_password": "Mot de passe oublié ?",
+        "no_account": "Vous n'avez pas de compte ?",
+        "login_action": "Se connecter",
+        "no_account_setup": "La création de compte est disponible uniquement quand vous avez une Wii U ou une 3ds associée."
+    },
+    "error": {
+        "title": "Erreur {{code}}",
+        "heading": "Erreur {{code}} : {{message}}",
+        "message": "oops ! la page que vous cherchez est introuvable.<newline/>Vérifiez votre lien ou essayez plus tard",
+        "no_access": "Vous n'êtes pas autorisé à acceder à cette application ({{code}})",
+        "message_web": "Voir le <status>statut actuel du serveur</status>.<newline/>Ou <home>retourner à la page d'accueil</home>",
+        "error_details": "ID de la requête : {{id}}"
+    },
+    "friend_requests": {
+        "none": "Pas de demandes d'ami"
+    },
+    "post": {
+        "title": "Publication de {{username}}",
+        "heading": "Publication",
+        "yeahs_count/one": "<count/> personne à mis un Ouais à ce post.",
+        "yeahs_count/multiple": "<count/> personnes ont mis un Ouais à ce post.",
+        "show_spoiler": "Afficher le spoiler",
+        "reply_post": "Répondre",
+        "report_post": "Signaler la publication",
+        "delete_post": "Supprimmer la publication",
+        "removed": "Le post à été supprimmé.",
+        "copy_link": "Copier le lien"
+    },
+    "reporting": {
+        "title": "Sigaler la publication",
+        "submit": "Envoyer le signalement",
+        "description": "Vous êtes sur le point de signaler une publication qui viole le Vode de Conduite de Juxtaposition. Ce signalement sera envoyé aux modérateurs Juxtaposition de Pretendo et pas au créateur du post.",
+        "label": "Raison :",
+        "additional_info_placeholder": "Entrez des commentaires ou des informations supplémentaires",
+        "reason_spoiler": "Spoiler",
+        "reason_personal_info": "Informations personnelles",
+        "reason_violence": "Contenu violent",
+        "reason_inappropiate": "Contenu inaproprié/nocif",
+        "reason_bullying": "Contenu haineux / intimidation",
+        "reason_advertising": "Publicité",
+        "reason_nsfw": "Sexe explicite",
+        "reason_piracy": "Piratage",
+        "reason_inappropiate_ingame": "Comportement inapproprié dans un jeu",
+        "reason_missing_images": "Images manquantes",
+        "reason_one": "autre",
+        "reason_many": "autres",
+        "reason_other": "autres"
+    },
+    "moderation": {
+        "title": "Modération"
     }
 }

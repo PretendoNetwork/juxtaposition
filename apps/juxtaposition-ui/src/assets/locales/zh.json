@@ -15,7 +15,16 @@
         "close": "关闭",
         "save": "保存",
         "exit": "退出",
-        "next": "继续"
+        "next": "继续",
+        "my_feed": "我的动态",
+        "global_feed": "全球动态",
+        "friend_requests": "好友请求",
+        "updates": "更新",
+        "notifications_and_messages": "通知和消息",
+        "search": "搜索...",
+        "global_feed_short": "全球",
+        "people_feed": "关注中动态",
+        "people_feed_short": "关注中"
     },
     "all_communities": {
         "text": "所有社区",
@@ -27,7 +36,12 @@
         "posts": "帖子",
         "tags": "标签",
         "recent": "最近帖子",
-        "popular": "热门帖子"
+        "popular": "热门帖子",
+        "followers_count": "{{count}} 关注者",
+        "tags_not_applicable": "N/A",
+        "related": "相关社区",
+        "related_to": "{{community}} 相关社区",
+        "closed": "本社区不再接受新帖子。"
     },
     "user_page": {
         "country": "国家/地区",
@@ -38,23 +52,42 @@
         "following": "正在关注",
         "followers": "关注者",
         "follow_user": "关注",
-        "following_user": "正在关注"
+        "following_user": "正在关注",
+        "game_experience_unknown": "未知",
+        "settings": "设置",
+        "deleted": "已删除用户",
+        "banned": "已禁止用户",
+        "friend_requests": "请求"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
         "show_country": "在个人资料显示国家/地区",
         "show_birthday": "在个人资料显示生日",
-        "show_game": "在个人资料显示游戏经验"
+        "show_game": "在个人资料显示游戏经验",
+        "save_action": "保存设置",
+        "gdpr_download": "下载用户数据",
+        "gdpr_download_action": "下载"
     },
     "activity_feed": {
         "empty": "这里是空的。尝试关注某人！"
     },
     "notifications": {
-        "none": "无通知。"
+        "none": "无通知。",
+        "new_follower/one": "<follower_one /> 已开始关注你！",
+        "new_follower/two": "<follower_one />、<follower_two /> 已开始关注你！",
+        "new_follower/three": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！",
+        "new_follower/multiple": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！"
     },
     "new_post": {
         "post_to": "发布到{{user}}",
-        "swearing": "帖子不能包含露骨语言。"
+        "swearing": "帖子不能包含露骨语言。",
+        "new_post_short": "帖子",
+        "content_placeholder": "在帖子中与社区或你的关注者分享你的想法。",
+        "screenshots_coming_soon": "截屏尚未准备就绪，请稍后再来查看！",
+        "no_screenshot": "没有截屏",
+        "spoiler_label": "剧透",
+        "painting_close": "取消",
+        "painting_submit": "确定"
     },
     "messages": {
         "coming_soon": "没有消息"
@@ -98,6 +131,64 @@
         "ready": "开始使用 Juxt",
         "ready_text": "首先看一看一些社区，看看大家都在发布什么。借此机会熟悉 Juxt。一路上你可能会有新发现！",
         "done": "在 Juxt 玩得开心！",
-        "done_button": "我们走吧！"
+        "done_button": "我们走吧！",
+        "title": "Juxtaposition 设置"
+    },
+    "login": {
+        "title": "Juxtaposition 登录",
+        "heading": "Juxtaposition 登录",
+        "sub_title": "在下方输入您的账号信息",
+        "username": "用户名",
+        "password": "密码",
+        "forgot_password": "忘记了密码？",
+        "no_account": "没有一个账号？",
+        "login_action": "登录",
+        "no_account_setup": "只有当您拥有已绑定的 Wii U 或 3DS 主机时，才能创建账号。"
+    },
+    "error": {
+        "title": "错误 {{code}}",
+        "heading": "错误 {{code}}: {{message}}",
+        "message": "糟糕！我们似乎找不到您要查找的页面。<newline/>请检查您的链接或稍后再试",
+        "no_access": "您没有权限访问此应用程序（{{code}}）",
+        "message_web": "查看当前的 <status>服务器状态</status>。<newline/>或者，<home>返回首页</home>",
+        "error_details": "请求 ID：{{id}}"
+    },
+    "friend_requests": {
+        "none": "没有好友请求"
+    },
+    "post": {
+        "title": "发布者：{{username}}",
+        "heading": "帖子",
+        "yeahs_count/one": "<count/> 人已同意此帖子。",
+        "yeahs_count/multiple": "<count/> 人已同意此帖子。",
+        "show_spoiler": "显示剧透",
+        "reply_post": "回复",
+        "report_post": "举报帖子",
+        "delete_post": "删除帖子",
+        "removed": "帖子已被删除。",
+        "copy_link": "复制链接"
+    },
+    "reporting": {
+        "title": "举报帖子",
+        "submit": "提交举报",
+        "description": "你即将举报一篇违反《Juxtaposition 行为准则》的帖子。此举报将发送给 Pretendo 的 Juxtaposition 管理员，而非此帖子的创建者。",
+        "label": "原因：",
+        "additional_info_placeholder": "输入其他评论或信息",
+        "reason_spoiler": "剧透",
+        "reason_personal_info": "个人信息",
+        "reason_violence": "暴力内容",
+        "reason_inappropiate": "不当/有害行为",
+        "reason_bullying": "仇恨/欺凌",
+        "reason_advertising": "宣传广告",
+        "reason_nsfw": "露骨的性描写",
+        "reason_piracy": "海盗行为",
+        "reason_inappropiate_ingame": "游戏中的不当行为",
+        "reason_missing_images": "缺少图像",
+        "reason_other": "其他"
+    },
+    "moderation": {
+        "title": "审核",
+        "silently_delete_post": "静默删除",
+        "moderate_user": "审核用户"
     }
 }

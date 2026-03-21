@@ -155,9 +155,9 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		})
 	});
 
-	const userSettings = await database.getUserSettings(auth().pid);
-	const userContent = await database.getUserContent(auth().pid);
-	if (!userContent || !userSettings) {
+	const userSettings = hasAuth() ? await database.getUserSettings(auth().pid) : null;
+	const userContent = hasAuth() ? await database.getUserContent(auth().pid) : null;
+	if (hasAuth() && (!userContent || !userSettings)) {
 		return res.redirect('/404');
 	}
 	const community = await database.getCommunityByID(params.communityID);
@@ -177,8 +177,8 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		};
 		await community.save();
 	}
-	const canPost = hasAuth() && userSettings !== null && isPostingAllowed(community, userSettings, null, auth().user);
-	const isUserFollowing = userContent.followed_communities.includes(community.olive_community_id);
+	const canPost = userSettings !== null && isPostingAllowed(community, userSettings, null, auth().user);
+	const isUserFollowing = userContent !== null && userContent.followed_communities.includes(community.olive_community_id);
 
 	const subCommunities = await database.getSubCommunities(community.olive_community_id);
 	let posts;
