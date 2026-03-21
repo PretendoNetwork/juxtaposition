@@ -26,8 +26,8 @@
         "followers": "Seguidores",
         "posts": "Publicaciones",
         "tags": "Distintivos de uso",
-        "recent": "Mensajes recientes",
-        "popular": "Mensajes populares"
+        "recent": "Recientes",
+        "popular": "Populares"
     },
     "user_page": {
         "country": "País",
