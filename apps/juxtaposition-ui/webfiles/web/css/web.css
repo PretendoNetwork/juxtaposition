@@ -1295,7 +1295,7 @@ summary::before {
   margin-left: -1em;
 }
 
-details[open] summary::before {
+details[open]>summary::before {
   content: "▼";
 }
 
@@ -1769,6 +1769,23 @@ button.report {
 	font-size: 20px;
 	color: #938a8a;
 	box-shadow: inset 2px 0 0#ddd
+}
+
+.message-post-list .dm-banner {
+  background: var(--background-alt);
+  border: 1px solid var(--btn);
+  border-radius: 20px;
+  padding: .5rem 1rem;
+  margin: 4rem 0 2rem 0;
+  text-align: center;
+
+  p {
+    color: var(--text-secondary);
+  }
+
+  a {
+    color: white;
+  }
 }
 
 .header-button {

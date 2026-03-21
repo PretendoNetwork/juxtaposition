@@ -15,7 +15,16 @@
         "next": "繼續",
         "no_posts": "沒有貼文",
         "close": "關閉",
-        "save": "儲存"
+        "save": "儲存",
+        "my_feed": "我的動態",
+        "global_feed": "全球動態",
+        "friend_requests": "好友請求",
+        "updates": "更新",
+        "notifications_and_messages": "通知和訊息",
+        "search": "搜尋...",
+        "global_feed_short": "全球",
+        "people_feed": "追蹤中動態",
+        "people_feed_short": "追蹤中"
     },
     "all_communities": {
         "text": "所有社群",
@@ -67,14 +76,20 @@
         "done": "祝您在 Juxt 玩得愉快！",
         "done_button": "走吧！",
         "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 來追蹤使用者如何使用我們的服務。收集的資料包括但不限於造訪時間、造訪頁面和在網站上停留的時間。這些資料不會以任何方式與您關聯，我們或 Cloudflare 也不會將其用於廣告用途。",
-        "ready_text": "先到社群頁面，觀摩來自全世界的投稿作品吧。還能趁機熟悉 Juxt 的介面。您也可能就此發現新世界！"
+        "ready_text": "先到社群頁面，觀摩來自全世界的投稿作品吧。還能趁機熟悉 Juxt 的介面。您也可能就此發現新世界！",
+        "title": "Juxtaposition 設定"
     },
     "community": {
         "recent": "最近貼文",
         "popular": "熱門貼文",
         "followers": "追蹤者",
         "posts": "貼文",
-        "tags": "標籤"
+        "tags": "標籤",
+        "followers_count": "{{count}} 追蹤者",
+        "tags_not_applicable": "N/A",
+        "related": "相關社群",
+        "related_to": "{{community}} 相關社群",
+        "closed": "此社群不再接受新貼文。"
     },
     "user_page": {
         "game_experience": "遊戲經驗",
@@ -85,19 +100,95 @@
         "follow_user": "追蹤",
         "country": "國家/地區",
         "birthday": "生日",
-        "following_user": "追蹤中"
+        "following_user": "追蹤中",
+        "game_experience_unknown": "未知",
+        "settings": "設定",
+        "deleted": "已刪除使用者",
+        "banned": "已禁止使用者",
+        "friend_requests": "請求"
     },
     "user_settings": {
         "show_country": "在個人檔案顯示國家/地區",
         "show_birthday": "在個人檔案顯示生日",
         "show_game": "在個人檔案顯示遊戲經驗",
-        "profile_settings": "個人檔案設定"
+        "profile_settings": "個人檔案設定",
+        "save_action": "儲存設定",
+        "gdpr_download": "下載使用者資料",
+        "gdpr_download_action": "下載"
     },
     "notifications": {
-        "none": "沒有通知。"
+        "none": "沒有通知。",
+        "new_follower/one": "<follower_one /> 已開始追蹤你！",
+        "new_follower/two": "<follower_one />、<follower_two /> 已開始追蹤你！",
+        "new_follower/three": "<follower_one />、<follower_two /> 和另外 {{count_other}} 人已開始追蹤你！",
+        "new_follower/multiple": "<follower_one />、<follower_two /> 和另外 {{count_other}} 人已開始追蹤你！"
     },
     "new_post": {
         "swearing": "貼文不能包含露骨內容。",
-        "post_to": "發佈至{{user}}"
+        "post_to": "發佈至{{user}}",
+        "new_post_short": "貼文",
+        "content_placeholder": "在貼文中與社群或你的追蹤者分享你的想法。",
+        "screenshots_coming_soon": "螢幕截圖尚未準備就緒，請稍後再來查看！",
+        "no_screenshot": "沒有螢幕截圖",
+        "spoiler_label": "劇透",
+        "painting_close": "取消",
+        "painting_submit": "確定"
+    },
+    "login": {
+        "title": "Juxtaposition 登入",
+        "heading": "Juxtaposition 登入",
+        "sub_title": "在下面輸入您的帳號資訊",
+        "username": "使用者名稱",
+        "password": "密碼",
+        "forgot_password": "忘記密碼？",
+        "no_account": "沒有帳號嗎？",
+        "login_action": "登入",
+        "no_account_setup": "只有當您擁有已連接的 Wii U 或 3DS 主機時，才能建立帳號。"
+    },
+    "error": {
+        "title": "錯誤 {{code}}",
+        "heading": "錯誤 {{code}}: {{message}}",
+        "message": "糟糕！我們找不到您要找的頁面。<newline/>請檢查您的連結或稍後再試",
+        "no_access": "您沒有存取此應用程式的權限（{{code}}）",
+        "message_web": "查看目前的 <status>伺服器狀態</status>。<newline/>或者，<home>返回首頁</home>",
+        "error_details": "請求 ID：{{id}}"
+    },
+    "friend_requests": {
+        "none": "沒有好友請求"
+    },
+    "post": {
+        "title": "發佈者：{{username}}",
+        "heading": "貼文",
+        "yeahs_count/one": "<count/> 人已讚同此貼文。",
+        "yeahs_count/multiple": "<count/> 人已讚同此貼文。",
+        "show_spoiler": "顯示劇透",
+        "reply_post": "回覆",
+        "report_post": "檢舉貼文",
+        "delete_post": "刪除貼文",
+        "removed": "此貼文已刪除。",
+        "copy_link": "複製連結"
+    },
+    "reporting": {
+        "title": "檢舉貼文",
+        "submit": "提交檢舉",
+        "description": "你即將檢舉一篇違反《Juxtaposition 社群守則》的貼文。此舉報將傳送給 Pretendo 的 Juxtaposition 管理員，而非此貼文的創作者。",
+        "label": "原因：",
+        "additional_info_placeholder": "輸入其他評論或資訊",
+        "reason_spoiler": "劇透",
+        "reason_personal_info": "個人資料",
+        "reason_violence": "暴力內容",
+        "reason_inappropiate": "不當/有害行為",
+        "reason_bullying": "仇恨/霸凌",
+        "reason_advertising": "宣傳廣告",
+        "reason_nsfw": "露骨的性愛描寫",
+        "reason_piracy": "海盜行為",
+        "reason_inappropiate_ingame": "遊戲中的不當行為",
+        "reason_missing_images": "缺少圖片",
+        "reason_other": "其他"
+    },
+    "moderation": {
+        "title": "審核",
+        "silently_delete_post": "靜默刪除",
+        "moderate_user": "審核此使用者"
     }
 }

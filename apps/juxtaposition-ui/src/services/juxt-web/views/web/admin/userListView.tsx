@@ -11,6 +11,8 @@ export type UserListViewProps = {
 	search?: string;
 	userCount: number;
 	activeCount: number;
+	dailyPostCount: number;
+	totalPostCount: number;
 	users: HydratedSettingsDocument[];
 	page: number;
 };
@@ -39,6 +41,15 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 					{ props.activeCount }
 					{' '}
 					online user(s)
+				</span>
+				<span style={{ marginTop: '16px' }}>
+					{ props.totalPostCount }
+					{' '}
+					total post(s),
+					{' '}
+					{ props.dailyPostCount }
+					{' '}
+					post(s) today
 				</span>
 				{props.users.length === 0 ? <p>No Users found</p> : null}
 				{props.users.length > 0

@@ -1,12 +1,12 @@
 import './polyfills';
 
-import { tabsModule } from '@/js/modules/tabs';
 import { morePostsModule } from '@/js/modules/more-posts';
 import { checkForUpdates, updatesModule } from '@/js/modules/updates';
 import { postsModule } from '@/js/modules/posts';
 import { spoilersModule } from '@/js/modules/spoilers';
 import { modules } from '@/js/module-container';
 import { pjaxModule } from '@/js/modules/pjax';
+import { tabsModule } from '@/js/components/ui/CtrNavTabs';
 import { checkboxModule } from './modules/controls/checkbox';
 import { ctabsModule } from './modules/controls/ctabs';
 import { newPostViewModule } from './modules/new-post-view';

@@ -1,0 +1,5 @@
+minifill.js v0.0.17 (https://thednp.github.io/minifill/)
+Copyright 2015-2021 © thednp
+Licensed under MIT (https://github.com/thednp/minifill/blob/master/LICENSE)
+
+Lightly reformatted to get past our linter and modified to remove conditionals we don't need (since we know the exact target browser).

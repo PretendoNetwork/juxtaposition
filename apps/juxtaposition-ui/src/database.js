@@ -304,13 +304,13 @@ async function getFollowedUsers(content) {
 	});
 }
 
-async function getNewsFeed(content, numberOfPosts) {
+async function getNewsFeed(content, numberOfPosts, includeCommunities) {
 	verifyConnected();
 	return POST.find({
 		$or: [
 			{ pid: content.followed_users },
 			{ pid: content.pid },
-			{ community_id: content.followed_communities }
+			{ community_id: includeCommunities ? content.followed_communities : [] }
 		],
 		parent: null,
 		message_to_pid: null,
@@ -318,13 +318,13 @@ async function getNewsFeed(content, numberOfPosts) {
 	}).limit(numberOfPosts).sort({ created_at: -1 });
 }
 
-async function getNewsFeedAfterTimestamp(content, numberOfPosts, post) {
+async function getNewsFeedAfterTimestamp(content, numberOfPosts, post, includeCommunities) {
 	verifyConnected();
 	return POST.find({
 		$or: [
 			{ pid: content.followed_users },
 			{ pid: content.pid },
-			{ community_id: content.followed_communities }
+			{ community_id: includeCommunities ? content.followed_communities : [] }
 		],
 		created_at: { $lt: post.created_at },
 		parent: null,
@@ -333,13 +333,13 @@ async function getNewsFeedAfterTimestamp(content, numberOfPosts, post) {
 	}).limit(numberOfPosts).sort({ created_at: -1 });
 }
 
-async function getNewsFeedOffset(content, limit, offset) {
+async function getNewsFeedOffset(content, limit, offset, includeCommunities) {
 	verifyConnected();
 	return POST.find({
 		$or: [
 			{ pid: content.followed_users },
 			{ pid: content.pid },
-			{ community_id: content.followed_communities }
+			{ community_id: includeCommunities ? content.followed_communities : [] }
 		],
 		parent: null,
 		message_to_pid: null,

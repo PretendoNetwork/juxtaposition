@@ -5,6 +5,7 @@ import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postL
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
+import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -84,28 +85,16 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 							</span>
 						</span>
 					</div>
-					<menu className="tab-header">
-						<li id="tab-header-post" className={cx('tab-button', { selected: props.feedType === 0 })}>
-							<a
-								href={`/titles/${community.olive_community_id}/new`}
-								data-sound="SE_WAVE_SELECT_TAB"
-							>
-								<span className="new-post">
-									<T k="community.recent" />
-								</span>
-							</a>
-						</li>
-						<li id="tab-header-hot-post" className={cx('tab-button', { selected: props.feedType === 1 })}>
-							<a
-								href={`/titles/${community.olive_community_id}/hot`}
-								data-sound="SE_WAVE_SELECT_TAB"
-							>
-								<span>
-									<T k="community.popular" />
-								</span>
-							</a>
-						</li>
-					</menu>
+					<PortalNavTabs target=".tab-body">
+						<PortalNavTabsRow>
+							<PortalNavTab href={`/titles/${community.olive_community_id}/new`} selected={props.feedType === 0}>
+								<T k="community.recent" />
+							</PortalNavTab>
+							<PortalNavTab href={`/titles/${community.olive_community_id}/hot`} selected={props.feedType === 1}>
+								<T k="community.popular" />
+							</PortalNavTab>
+						</PortalNavTabsRow>
+					</PortalNavTabs>
 					<div id="new-post-button-container" className="none">
 						<a href="#" className="button" data-offset="10">
 							<T k="global.more" />

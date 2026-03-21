@@ -2,7 +2,6 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { RedisStore } from 'connect-redis';
-import 'express-async-errors'; // See package docs
 import methodOverride from 'method-override';
 import { database } from '@/database';
 import { logger } from '@/logger';

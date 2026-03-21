@@ -1,7 +1,7 @@
 import express from 'express';
-import subdomain from 'express-subdomain';
-import { LOG_INFO } from '@/logger';
 import discoveryHandlers from '@/services/discovery/routes/discovery';
+import { restrictHostnames } from '@/middleware/hostLimit';
+import { config } from '@/config';
 
 // Main router for endpointsindex.js
 const router = express.Router();
@@ -10,10 +10,7 @@ const router = express.Router();
 const discovery = express.Router();
 
 // Create subdomains
-LOG_INFO('[MIIVERSE] Creating \'discovery\' subdomain');
-router.use(subdomain('discovery.olv', discovery));
-router.use(subdomain('discovery-test.olv', discovery));
-router.use(subdomain('discovery-dev.olv', discovery));
+router.use(restrictHostnames([config.domains.discovery], discovery));
 
 // Setup routes
 discovery.use('/v1/endpoint', discoveryHandlers);

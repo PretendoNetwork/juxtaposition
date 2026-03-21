@@ -38,6 +38,10 @@ messagesRouter.get('/', async function (req, res) {
 });
 
 messagesRouter.post('/new', upload.none(), async function (req, res) {
+	if (config.dmBanner.readOnly) {
+		throw new Error('DMs are readonly');
+	}
+
 	// TODO add body validation
 	const { auth } = parseReq(req);
 	const authCtx = auth();
@@ -192,6 +196,10 @@ messagesRouter.post('/new', upload.none(), async function (req, res) {
 });
 
 messagesRouter.get('/new/:pid', async function (req, res) {
+	if (config.dmBanner.readOnly) {
+		throw new Error('DMs are readonly');
+	}
+
 	const { auth } = parseReq(req);
 	const authCtx = auth();
 	const user2 = await getUserAccountData(parseInt(req.params.pid));
@@ -264,15 +272,26 @@ messagesRouter.get('/:message_id', async function (req, res) {
 	}
 	const messages = await database.getConversationMessages(conversation.id, 200, 0);
 
+	const readonly = config.dmBanner.readOnly;
+	const banner = config.dmBanner.text
+		? {
+				url: config.dmBanner.url
+			}
+		: undefined;
+
 	await conversation.markAsRead(authCtx.pid);
 	res.jsxForDirectory({
-		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />,
-		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />,
-		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} />
+		web: <WebMessageThreadView conversation={conversation} otherUser={user2} messages={messages} readonly={readonly} banner={banner} />,
+		portal: <PortalMessageThreadView conversation={conversation} otherUser={user2} messages={messages} readonly={readonly} banner={banner} />,
+		ctr: <CtrMessageThreadView conversation={conversation} otherUser={user2} messages={messages} readonly={readonly} banner={banner} />
 	});
 });
 
 messagesRouter.get('/:message_id/create', async function (req, res) {
+	if (config.dmBanner.readOnly) {
+		throw new Error('DMs are readonly');
+	}
+
 	const { params, auth } = parseReq(req, {
 		params: z.object({
 			message_id: z.string()

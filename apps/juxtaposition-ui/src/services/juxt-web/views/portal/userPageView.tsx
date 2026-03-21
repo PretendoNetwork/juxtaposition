@@ -6,6 +6,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
+import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -185,33 +186,25 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 					{isUserDataViewable
 						? (
 								<>
-									<menu className="tab-header user-page">
-										<li id="tab-header-post" className={cx('tab-button', { selected: props.selectedTab === 0 })}>
-											<a href={props.baseLink} data-sound="SE_WAVE_SELECT_TAB">
-												<span className="new-post"><T k="user_page.posts" /></span>
-											</a>
-										</li>
-										<li id="tab-header-friends" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
-											<a href={props.baseLink + 'friends'} data-sound="SE_WAVE_SELECT_TAB">
-												<span><T k="user_page.friends" /></span>
-											</a>
-										</li>
-										<li id="tab-header-following" className={cx('tab-button', { selected: props.selectedTab === 2 })}>
-											<a href={props.baseLink + 'following'} data-sound="SE_WAVE_SELECT_TAB">
-												<span><T k="user_page.following" /></span>
-											</a>
-										</li>
-										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3 })}>
-											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
-												<span><T k="user_page.followers" /></span>
-											</a>
-										</li>
-										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4 })}>
-											<a href={props.baseLink + 'yeahs'} data-sound="SE_WAVE_SELECT_TAB">
-												<span><T k="global.yeahs" /></span>
-											</a>
-										</li>
-									</menu>
+									<PortalNavTabs target=".tab-body">
+										<PortalNavTabsRow>
+											<PortalNavTab href={props.baseLink} selected={props.selectedTab === 0}>
+												<T k="user_page.posts" />
+											</PortalNavTab>
+											<PortalNavTab href={props.baseLink + 'friends'} selected={props.selectedTab === 1}>
+												<T k="user_page.friends" />
+											</PortalNavTab>
+											<PortalNavTab href={props.baseLink + 'following'} selected={props.selectedTab === 2}>
+												<T k="user_page.following" />
+											</PortalNavTab>
+											<PortalNavTab href={props.baseLink + 'followers'} selected={props.selectedTab === 3}>
+												<T k="user_page.followers" />
+											</PortalNavTab>
+											<PortalNavTab href={props.baseLink + 'yeahs'} selected={props.selectedTab === 4}>
+												<T k="global.yeahs" />
+											</PortalNavTab>
+										</PortalNavTabsRow>
+									</PortalNavTabs>
 									<div className="tab-body post-list">
 										{props.children}
 									</div>

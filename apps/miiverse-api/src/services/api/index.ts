@@ -1,7 +1,5 @@
 import express from 'express';
-import subdomain from 'express-subdomain';
 import { rateLimit } from 'express-rate-limit';
-import { LOG_INFO } from '@/logger';
 import postsHandlers from '@/services/api/routes/posts';
 import friendMessagesHandlers from '@/services/api/routes/friend_messages';
 import communitiesHandlers from '@/services/api/routes/communities';
@@ -9,6 +7,8 @@ import peopleHandlers from '@/services/api/routes/people';
 import topicsHandlers from '@/services/api/routes/topics';
 import usersHandlers from '@/services/api/routes/users';
 import statusHandlers from '@/services/api/routes/status';
+import { restrictHostnames } from '@/middleware/hostLimit';
+import { config } from '@/config';
 
 // Main router for endpointsindex.js
 const router = express.Router();
@@ -25,11 +25,7 @@ const limiter = rateLimit({
 });
 router.use(limiter);
 
-// Create subdomains
-LOG_INFO('[MIIVERSE] Creating \'api\' subdomain');
-router.use(subdomain('api.olv', api));
-router.use(subdomain('api-test.olv', api));
-router.use(subdomain('api-dev.olv', api));
+router.use(restrictHostnames([config.domains.api], api));
 
 // Setup routes
 api.use('/v1/posts', postsHandlers);

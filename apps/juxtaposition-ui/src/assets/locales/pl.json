@@ -8,14 +8,23 @@
         "messages": "Wiadomości",
         "notifications": "Powiadomienia",
         "go_back": "Wróć",
-        "yeahs": "Tak",
+        "yeahs": "Niezłe",
         "more": "Załaduj więcej postów",
         "no_posts": "Brak postów",
         "private": "Prywatny",
         "close": "Zamknij",
-        "save": "Zapisać",
+        "save": "Zapisz",
         "back": "Wróć",
-        "next": "Następne"
+        "next": "Dalej",
+        "my_feed": "Mój kanał",
+        "global_feed": "Kanał globalny",
+        "global_feed_short": "Globalny",
+        "people_feed": "Kanał obswerowanych",
+        "people_feed_short": "Obserwowani",
+        "friend_requests": "Prośby o przyjaźń",
+        "updates": "Aktualizacje",
+        "notifications_and_messages": "Powiadomienia i wiadomości",
+        "search": "Szukaj..."
     },
     "setup": {
         "beta_text": {
@@ -64,11 +73,16 @@
         "new_communities": "Nowe społeczności"
     },
     "community": {
-        "followers": "Obserwatorzy",
+        "followers": "Oberwujący",
         "posts": "Posty",
         "tags": "Tagi",
         "recent": "Nowe posty",
-        "popular": "Popularne posty"
+        "popular": "Popularne posty",
+        "followers_count": "{{count}} obserwujących",
+        "tags_not_applicable": "Niedostępne",
+        "related": "Powiązane społeczności",
+        "related_to": "Powiązane społeczności ze społecznością {{community}}",
+        "closed": "Ta społeczność ma zablokowane tworzenie nowych postów."
     },
     "user_page": {
         "country": "Kraj",
@@ -76,10 +90,12 @@
         "game_experience": "Doświadczenie gry",
         "posts": "Posty",
         "friends": "Znajomi",
-        "following": "Obserwujsz",
-        "followers": "Obserwatorzy",
+        "following": "Obserwujesz",
+        "followers": "Obserwujący",
         "follow_user": "Obserwuj",
-        "following_user": "Obserwuję"
+        "following_user": "Obserwujesz",
+        "game_experience_unknown": "Nieznane",
+        "settings": "Ustawienia"
     },
     "user_settings": {
         "profile_settings": "Ustawienia profilu",
@@ -99,5 +115,28 @@
     },
     "messages": {
         "coming_soon": "Wiadomości nie są jeszcze gotowe. Zajrzyj tu później!"
+    },
+    "login": {
+        "title": "Logowanie do Juxtaposition",
+        "heading": "Rejestracja do Juxtaposition",
+        "sub_title": "Poniżej wprowadź szczegóły swojego konta",
+        "username": "Nazwa użytkownika",
+        "password": "Hasło",
+        "forgot_password": "Zapomniałeś hasła?",
+        "no_account": "Nie masz jeszcze konta?",
+        "login_action": "Zaloguj się",
+        "no_account_setup": "Tworzenie konta jest tylko możliwe, jeżeli masz połączoną konsolę Wii U albo 3DS."
+    },
+    "error": {
+        "title": "Błąd {{code}}",
+        "heading": "Błąd {{code}}: {{message}}",
+        "message": "O rany! Wygląda na to, że nie mogliśmy znaleźć strony, której szukasz.<newline/>Sprawdź swój link lub spróbuj ponownie później",
+        "no_access": "Nie masz uprawnień do tej aplikacji ({{code}})",
+        "message_web": "Sprawdź obecny <status>stan serwerów</status>.<newline/>Lub, <home>wróć na stronę domową</home>",
+        "error_details": "Identyfikator prośby: {{id}}"
+    },
+    "post": {
+        "yeahs_count/one": "Osoby, które zareagowały \"Nieźle\": <count/>",
+        "yeahs_count/multiple": "Osoby, które zareagowały \"Nieźle\": <count/>"
     }
 }
