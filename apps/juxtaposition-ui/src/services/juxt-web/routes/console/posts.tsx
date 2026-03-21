@@ -21,16 +21,15 @@ import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
+import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import type { Request, Response } from 'express';
 import type { InferSchemaType } from 'mongoose';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
-import type { PostSchema } from '@/models/post';
-import type { CommunitySchema } from '@/models/communities';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
-const upload = multer({ dest: 'uploads/' });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 export const postsRouter = express.Router();
 
 const postLimit = rateLimit({
@@ -138,7 +137,7 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
-postsRouter.post('/new', postLimit, upload.none(), async function (req, res) {
+postsRouter.post('/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
 	await newPost(req, res);
 });
 
@@ -176,11 +175,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 	// increase limit for post replies since there's no pagination yet
 	const replies = (await getPostsByParentId(maybeTokens, post.id, 0, 500))?.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
-	const canPost = hasAuth() && (
-		(community.permissions.open && community.type < 2) ||
-		(community.admins && community.admins.indexOf(auth().pid) !== -1) ||
-		(auth().user.accessLevel >= community.permissions.minimum_new_comment_access_level)
-	) && userSettings?.account_status === 0;
+	const canPost = hasAuth() && userSettings !== null && isPostingAllowed(community, userSettings, post, auth().user);
 
 	const props: PostPageViewProps = {
 		community,
@@ -248,7 +243,7 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
-postsRouter.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
+postsRouter.post('/:post_id/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
 	await newPost(req, res);
 });
 
@@ -264,11 +259,20 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
+	const community = await database.getCommunityByID(parent.community_id);
+	if (!community) {
+		return res.sendStatus(404);
+	}
+
+	const shotMode = getShotMode(community, auth().paramPackData);
+
 	const props = {
 		id: parent.community_id,
 		pid: parent.pid,
 		url: `/posts/${parent.id}/new`,
-		show: 'post'
+		show: 'post',
+		shotMode,
+		community
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
@@ -332,34 +336,8 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 	return res.redirect(`/posts/${post.id}`);
 });
 
-function canPost(community: InferSchemaType<typeof CommunitySchema>, userSettings: HydratedSettingsDocument, parentPost: InferSchemaType<typeof PostSchema> | null, user: GetUserDataResponse): boolean {
-	const isReply = !!parentPost;
-	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
-	const isOpenCommunity = community.permissions.open;
-
-	const isCommunityAdmin = (community.admins ?? []).includes(user.pid);
-	const isUserLimitedFromPosting = userSettings.account_status !== 0;
-	const hasAccessLevelRequirement = isReply
-		? user.accessLevel >= community.permissions.minimum_new_comment_access_level
-		: user.accessLevel >= community.permissions.minimum_new_post_access_level;
-
-	if (isUserLimitedFromPosting) {
-		return false;
-	}
-
-	if (isCommunityAdmin) {
-		return true; // admins can always post (if not limited)
-	}
-
-	if (!hasAccessLevelRequirement) {
-		return false;
-	}
-
-	return isReply ? isOpenCommunity : isPublicPostableCommunity;
-}
-
 async function newPost(req: Request, res: Response): Promise<void> {
-	const { params, body, auth } = parseReq(req, {
+	const { params, body, files, auth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string().optional()
 		}),
@@ -374,7 +352,8 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			spoiler: z.stringbool().default(false),
 			is_app_jumpable: z.stringbool().default(false),
 			language_id: z.coerce.number().optional()
-		})
+		}),
+		files: ['shot']
 	});
 
 	const userSettings = await database.getUserSettings(auth().pid);
@@ -394,7 +373,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			}
 		}
 	}
-	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '')) {
+	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '' && files.shot.length == 0)) {
 		res.status(422);
 		return res.redirect('/posts/' + req.params.post_id.toString());
 	}
@@ -404,7 +383,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		return res.redirect('/titles/show');
 	}
 
-	if (!canPost(community, userSettings, parentPost, req.user)) {
+	if (!isPostingAllowed(community, userSettings, parentPost, req.user)) {
 		res.status(403);
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
@@ -428,8 +407,10 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}
 	}
 	let screenshots = null;
-	if (body.screenshot) {
+	if ((body.screenshot || files.shot.length === 1) &&
+		getShotMode(community, auth().paramPackData) !== 'block') {
 		screenshots = await uploadScreenshot({
+			buffer: files.shot[0]?.buffer,
 			blob: body.screenshot,
 			pid: auth().pid,
 			postId
@@ -465,14 +446,15 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			miiFace = 'normal_face.png';
 			break;
 	}
-	const postBody = req.body.body;
+	const postBody = body.body;
 	if (postBody && getInvalidPostRegex().test(postBody)) {
 		// TODO - Log this error
 		res.sendStatus(422);
 		return;
 	}
 
-	if (postBody && postBody.length > 280) {
+	/* Don't count \r\n as two */
+	if (postBody && postBody.replaceAll('\r\n', '\n').length > 280) {
 		// TODO - Log this error
 		res.sendStatus(422);
 		return;

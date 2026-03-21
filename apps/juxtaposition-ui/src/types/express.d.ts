@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports -- other methods of importing type dont work */
 
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { i18n } from 'i18next';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { UserTokens } from '@/types/juxt/tokens';
 
@@ -45,6 +46,21 @@ declare global {
 			 * Render error page
 			 */
 			renderError: (el: ErrorRenderArgs) => Response;
+
+			/**
+			 * Update language of current response
+			 */
+			changeLanguage: (lang: string | null) => Response;
+
+			/**
+			 * Language of current response
+			 */
+			readonly lang?: string | undefined;
+
+			/**
+			 * i18n instance of the current response
+			 */
+			i18n: i18n;
 		}
 	}
 }

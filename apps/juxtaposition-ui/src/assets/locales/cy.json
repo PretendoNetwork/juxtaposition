@@ -4,16 +4,10 @@
         "game_experience": "Profiad gem",
         "followers": "Dilynwyr",
         "following": "Dilynwch",
-        "pending": "Yn yr arfaeth",
-        "unfriend": "Ddim bod yn ffrind",
-        "no_friends": "Dim Ffrindiau",
-        "no_following": "Ddim yn dilynwch unrhyw",
         "posts": "Swyddi",
         "friends": "Ffrindiau",
         "follow_user": "Dilyn",
         "following_user": "Yn dilyn",
-        "befriend": "Bod yn ffrind",
-        "no_followers": "Ddim dilynwyr",
         "birthday": "Penblwydd"
     },
     "global": {
@@ -35,38 +29,25 @@
     },
     "language": "Cymraeg",
     "all_communities": {
-        "announcements": "Cyhoeddiad",
-        "ann_string": "Clicwch yma i spio cyhoeddiad newydd!",
-        "show_all": "Dangos Pob beth",
-        "search": "Chwilio Cymunedau...",
         "text": "Pob cymunedau",
         "popular_places": "Lleoedd Poblogaidd",
         "new_communities": "Gymunedau Newydd"
     },
     "community": {
         "followers": "Dilynwyr",
-        "follow": "Dilyn Cymuned",
         "popular": "Llwythyr poblogaidd",
-        "verified": "Swyddi gwirio",
-        "new": "Swydd newydd",
-        "following": "Dilynwch",
         "posts": "Llywythau",
         "tags": "Tagiau",
         "recent": "Llywthau diweddar"
     },
     "user_settings": {
-        "show_comment": "Ddangos sylwadau ar profil",
         "profile_settings": "Gosodiadau profil",
         "show_country": "Ddangos Gwlad Ar Profil",
         "show_birthday": "Ddangos Penblwydd Ar Profil",
-        "profile_comment": "Sylwadau profil",
-        "swearing": "Ni all gynnwys iaith eglur ar sylwadau profil.",
         "show_game": ""
     },
     "new_post": {
-        "new_post_text": "Llwyth newydd",
-        "post_to": "Llwyth I",
-        "text_hint": "Tapiwch yma i creu llwyth.",
+        "post_to": "Llwyth I {{user}}",
         "swearing": "Llwyth ddim gallu cynnwys iaith eglur."
     },
     "setup": {
@@ -88,8 +69,6 @@
         "ready": "Barod I i ddechrau defnyddio juxt",
         "done": "Cael Hwyl Yn Juxt!",
         "done_button": "Fynd!",
-        "guest": "Modd gwestai",
-        "guest_button": "Dwi'n Deall",
         "welcome": "Croeso I Jusxtaposition!",
         "rules": "Rheol Juxt",
         "info": "Beth ydy juxtaposition?",
@@ -104,7 +83,6 @@
             "intermediate": "",
             "beginner": ""
         },
-        "guest_text": "",
         "experience": "",
         "analytics": "",
         "welcome_text": "",
@@ -117,8 +95,7 @@
         "empty": "Maen wag yma. Ceishwch dilyn rhywun!"
     },
     "notifications": {
-        "none": "Ddim hysbysiadau.",
-        "new_follower": "Wedi dilynwch chdi!"
+        "none": "Ddim hysbysiadau."
     },
     "messages": {
         "coming_soon": "Nif yw negeseuon yn barod. eto gwiriwch yn ol yn fuan!"

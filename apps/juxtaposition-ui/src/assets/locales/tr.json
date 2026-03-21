@@ -17,10 +17,6 @@
         "exit": "Çık"
     },
     "user_page": {
-        "unfriend": "Arkadaşlıktan çıkar",
-        "no_friends": "Arkadaş yok",
-        "no_following": "Kimse takip edilmiyor",
-        "no_followers": "Takipçi yok",
         "posts": "Gönderiler",
         "following": "Takip edilenler",
         "followers": "Takipçiler",
@@ -29,30 +25,22 @@
         "friends": "Arkadaşlar",
         "following_user": "Takip ediliyor",
         "country": "Ülke",
-        "follow_user": "Takip et",
-        "befriend": "Arkadaş ol",
-        "pending": "Bekliyor"
+        "follow_user": "Takip et"
     },
     "user_settings": {
         "profile_settings": "Profil Ayarları",
         "show_country": "Profilde Ülkeyi göster",
         "show_birthday": "Profilde doğum gününü göster",
-        "show_game": "Profilde oyun deneyimini göster",
-        "profile_comment": "Profil Yorumu",
-        "swearing": "Profil yorumu açık bir dil içeremez.",
-        "show_comment": "Profilde yorumu göster"
+        "show_game": "Profilde oyun deneyimini göster"
     },
     "activity_feed": {
         "empty": "Burası bomboş. Birini takip etmeyi deneyin!"
     },
     "notifications": {
-        "none": "Bildirim yok.",
-        "new_follower": "seni takip etti!"
+        "none": "Bildirim yok."
     },
     "new_post": {
-        "post_to": "Şuraya gönder",
-        "text_hint": "Gönderi oluşturmak için buraya dokunun.",
-        "new_post_text": "Yeni Gönderi",
+        "post_to": "Şuraya gönder {{user}}",
         "swearing": "Gönderiler açık bir dil içeremez."
     },
     "messages": {
@@ -95,32 +83,21 @@
         "ready_text": "Önce bazı topluluklara göz atın ve dünyanın her yerinden insanların neler hakkında gönderiler paylaştığını görün. Juxt'u tanımak için bu fırsatı kullanın. Yol boyunca birçok yeni keşifler yapabilirsiniz!",
         "done": "Juxt'ta iyi eğlenceler!",
         "done_button": "Hadi gidelim!",
-        "guest": "Misafir Modu",
-        "guest_button": "Anlıyorum",
         "welcome_text": "Juxt, Mii karakterlerini kullanarak dünyanın her yerinden insanları birbirine bağlayan bir oyun topluluğudur. Oyun deneyimlerinizi paylaşmak ve dünyanın her yerinden insanlarla tanışmak için Juxt'u kullanın.",
         "analytics": "Analytics",
-        "analytics_text": "Juxtaposition, kullanıcıların hizmetimizi nasıl kullandığını izlemek için Cloudflare Web Analytics'i kullanır. Toplanan veriler, ziyaret süresi, ziyaret edilen sayfalar ve sitede geçirilen süreyi içerir ancak bunlarla sınırlı değildir. Bu veriler hiçbir şekilde size bağlı değildir ve biz veya Cloudflare tarafından reklamlar için kullanılmaz.",
-        "guest_text": "Şu anda hesabınızı doğrulayamıyoruz, bu da muhtemelen şu anda bir Nintendo Network hesabıyla giriş yaptığınız anlamına geliyor. Juxt'a göz atmaya devam edebilirsiniz, ancak bir Pretendo Network hesabıyla oturum açana kadar gönderileri Evet! leyemezsiniz veya kendi gönderilerinizi paylaşamazsınız. Daha fazla bilgi için Discord sunucusunu kontrol edin."
+        "analytics_text": "Juxtaposition, kullanıcıların hizmetimizi nasıl kullandığını izlemek için Cloudflare Web Analytics'i kullanır. Toplanan veriler, ziyaret süresi, ziyaret edilen sayfalar ve sitede geçirilen süreyi içerir ancak bunlarla sınırlı değildir. Bu veriler hiçbir şekilde size bağlı değildir ve biz veya Cloudflare tarafından reklamlar için kullanılmaz."
     },
     "language": "Türkçe",
     "all_communities": {
         "text": "Tüm topluluklar",
         "popular_places": "Popüler Yerler",
-        "search": "Toplulukları ara...",
-        "announcements": "Duyurular",
-        "ann_string": "Son duyuruları görüntülemek için buraya tıklayın!",
-        "new_communities": "Yeni Topluluklar",
-        "show_all": "Hepsini göster"
+        "new_communities": "Yeni Topluluklar"
     },
     "community": {
-        "following": "Takip ediliyor",
         "tags": "Etiketler",
         "recent": "Son Gönderiler",
-        "new": "Yeni Gönderi",
         "followers": "Takipçiler",
         "posts": "Gönderiler",
-        "follow": "Topluluğu takip et",
-        "popular": "Popüler Gönderiler",
-        "verified": "Onaylanmış Gönderiler"
+        "popular": "Popüler Gönderiler"
     }
 }

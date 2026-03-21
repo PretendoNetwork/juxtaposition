@@ -3,11 +3,11 @@ import './polyfills';
 import { initCheckboxes } from './controls/checkbox';
 import { initClientTabs } from './controls/ctabs';
 import { initNewPostView } from './new-post-view';
-import { pjaxBack, pjaxCanGoBack, pjaxHistory, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
+import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
 import { initPostPageView, initYeahButton } from './post';
 import { initToolbarConfigs } from './toolbar';
-import { classList } from './util';
 import { GET, POST } from './xhr';
+import { initNavTabs } from './components/ui/CtrNavTabs';
 
 setInterval(checkForUpdates, 30000);
 
@@ -32,7 +32,7 @@ cave.toolbar_setCallback(5, function () {
 });
 cave.toolbar_setCallback(8, function () { });
 
-function initMorePosts() {
+export function initMorePosts() {
 	var els = document.querySelectorAll('.load-more[data-href]');
 	if (!els) {
 		return;
@@ -47,6 +47,7 @@ function initMorePosts() {
 					el.parentElement.outerHTML = response;
 					initPosts();
 					initMorePosts();
+					pjaxRefresh();
 				} else {
 					el.parentElement.outerHTML = '';
 				}
@@ -54,7 +55,7 @@ function initMorePosts() {
 		});
 	}
 }
-function initPosts() {
+export function initPosts() {
 	var els = document.querySelectorAll('.post-content[data-href]');
 	if (!els) {
 		return;
@@ -76,51 +77,15 @@ function initSpoilers() {
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
-			classList.remove(
-				document.getElementById('post-' + el.getAttribute('data-post-id')),
-				'spoiler'
-			);
-			document.getElementById(
-				'spoiler-' + el.getAttribute('data-post-id')
-			).outerHTML = '';
+			var spoilerWrapper = document.getElementById('spoiler-' + el.getAttribute('data-post-id'));
+			var postEl = document.getElementById('post-' + el.getAttribute('data-post-id'));
+
+			postEl.classList.remove('spoiler');
+			spoilerWrapper.outerHTML = '';
 			cave.snd_playSe('SE_OLV_OK');
 		});
 	}
 }
-function initTabs() {
-	var els = document.querySelectorAll('.tab-button');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].onclick = tabs;
-	}
-	function tabs(e) {
-		e.preventDefault();
-		cave.transition_begin();
-		var el = e.currentTarget;
-		var child = el.children[0];
-
-		for (var i = 0; i < els.length; i++) {
-			if (classList.contains(els[i], 'selected')) {
-				classList.remove(els[i], 'selected');
-			}
-		}
-		classList.add(el, 'selected');
-
-		GET(child.getAttribute('href') + '?pjax=true', function a(data) {
-			var response = data.responseText;
-			if (response && data.status === 200) {
-				document.getElementsByClassName('tab-body')[0].innerHTML = response;
-				pjaxHistory.push(child.href);
-				initPosts();
-				initMorePosts();
-				cave.transition_end();
-			}
-		});
-	}
-}
-
 function back() {
 	if (!pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(0);
@@ -144,7 +109,7 @@ function initAll() {
 	initPosts();
 	initMorePosts();
 	initNewPostView();
-	initTabs();
+	initNavTabs();
 	initPostPageView();
 	initClientTabs();
 	initCheckboxes();
@@ -165,14 +130,13 @@ function checkForUpdates() {
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
 	var count = document.getElementById('followers');
+	var sprite = el.querySelector('.sprite.sp-yeah');
 	el.disabled = true;
 	var params = 'id=' + id;
-	if (classList.contains(el, 'selected')) {
-		classList.remove(el, 'selected');
-		cave.snd_playSe('SE_OLV_CANCEL');
-	} else {
-		classList.add(el, 'selected');
+	if (sprite.classList.toggle('selected')) {
 		cave.snd_playSe('SE_OLV_MII_ADD');
+	} else {
+		cave.snd_playSe('SE_OLV_CANCEL');
 	}
 
 	POST(el.getAttribute('data-url'), params, function a(data) {

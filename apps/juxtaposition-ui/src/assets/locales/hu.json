@@ -14,63 +14,76 @@
         "messages": "Üzenetek",
         "more": "Több bejegyzés betöltése",
         "save": "Mentés",
-        "notifications": "Értesítések"
+        "notifications": "Értesítések",
+        "global_feed": "Globális csatorna",
+        "my_feed": "Csatornám",
+        "updates": "Frissítések",
+        "friend_requests": "Barát kérések",
+        "notifications_and_messages": "Értesítések és üzenetek",
+        "search": "Keresés...",
+        "global_feed_short": "Globális",
+        "people_feed": "Követett személyek",
+        "people_feed_short": "Követve"
     },
     "all_communities": {
-        "ann_string": "Kattints ide a legfrissebb bejelentések megtekintéséhez!",
         "popular_places": "Népszerű helyek",
-        "show_all": "Mindet mutatja",
         "text": "Minden közösség",
-        "new_communities": "Új közösségek",
-        "announcements": "Bejelentések",
-        "search": "Közösségek keresése..."
+        "new_communities": "Új közösségek"
     },
     "community": {
-        "follow": "Közösség követése",
-        "following": "Követed",
-        "posts": "Bejegyzés",
+        "posts": "Bejegyzések",
         "tags": "Címke",
         "recent": "Legutolsó bejegyzések",
         "followers": "Követő",
         "popular": "Népszerű bejegyzések",
-        "verified": "Ellenőrzött bejegyzések",
-        "new": "Új bejegyzés"
+        "followers_count": "{{count}} követő",
+        "related": "Kapcsolódó közösségek",
+        "closed": "Ez a közösség már nem fogad új bejegyzést.",
+        "tags_not_applicable": "N/A",
+        "related_to": "{{community}} kapcsolódó közösségei"
     },
     "user_page": {
         "country": "Ország",
         "game_experience": "Játék tapasztalat",
         "posts": "Bejegyzések",
         "friends": "Barátok",
-        "followers": "Követő",
+        "followers": "Követők",
         "follow_user": "Követ",
         "following_user": "Követve",
-        "befriend": "Barátnak jelöl",
-        "pending": "Folyamatban",
-        "unfriend": "Barátok közül töröl",
-        "no_friends": "Nincsennek barátok",
-        "no_following": "Nem követ senkit",
-        "no_followers": "Nincsennek követők",
         "birthday": "Születésnap",
-        "following": "Követed"
+        "following": "Követed",
+        "game_experience_unknown": "Ismeretlen",
+        "settings": "Beállítások",
+        "deleted": "Törölt felhasználó",
+        "banned": "Bannolt felhasználó",
+        "friend_requests": "Kérések"
     },
     "user_settings": {
         "show_country": "Ország megjelenítése a Profilon",
         "show_birthday": "Születésnap megjelenítése a Profilon",
-        "profile_comment": "Profil megjegyzés",
         "profile_settings": "Profil beállítások",
         "show_game": "Játéktapasztalat megjelenítése a Profilon",
-        "show_comment": "Megjegyzés megjelenítése a Profilon",
-        "swearing": "A profil megjegyzés nem tartalmazhat csúnya beszédet."
+        "save_action": "Beállítások mentése",
+        "gdpr_download": "Felhasználó adat letöltése",
+        "gdpr_download_action": "Letöltés"
     },
     "notifications": {
         "none": "Nincsennek értesítések.",
-        "new_follower": "követ téged!"
+        "new_follower/one": "<follower_one /> bekövetett téged!",
+        "new_follower/two": "<follower_one />, <follower_two /> bekövetett téged!",
+        "new_follower/three": "<follower_one />, <follower_two /> és {{count_other}} további felhasználó bekövetett téged!",
+        "new_follower/multiple": "<follower_one />, <follower_two /> és {{count_other}} további felhasználó bekövetett téged!"
     },
     "new_post": {
-        "new_post_text": "Új bejegyzés",
-        "post_to": "Bejegyzés ehhez:",
+        "post_to": "Bejegyzés ehhez {{user}}",
         "swearing": "A bejegyzés nem tartalmazhat csúnya beszédet.",
-        "text_hint": "Koppints ide egy új bejegyzés létrehozásához."
+        "new_post_short": "Bejegyzés",
+        "painting_close": "Mégsem",
+        "no_screenshot": "Nincs képernyőkép",
+        "painting_submit": "OK",
+        "spoiler_label": "Spoiler",
+        "content_placeholder": "Oszd meg gondolataid egy bejegyzésben egy közösség vagy a követőid felé.",
+        "screenshots_coming_soon": "A képernyőképek még nincs kész. Nézd meg újra nemsokára!"
     },
     "messages": {
         "coming_soon": "Nincs üzenet"
@@ -113,14 +126,70 @@
         "ready_text": "Először nézz meg néhány közösséget, és nézd meg, miről posztolnak az emberek a világ minden tájáról. Használd ki az alkalmat, hogy megismerkedj a Juxttal. Útközben új felfedezéseket tehetsz!",
         "done": "Jó szórakozást a Juxt-ban!",
         "done_button": "Kezdjük!",
-        "guest": "Vendég mód",
-        "guest_text": "Jelenleg nem tudjuk ellenőrizni fiókod, ami valószínűleg azt jelenti, hogy egy Nintendo Network fiókkal vagy bejelentkezve. Továbbra is böngészhetsz a Juxtban, de nem fogsz tudni a Yeah! bejegyzéseket vagy saját bejegyzéseket készíteni, amíg be nem jelentkezel egy Pretendo Network fiókkal. További információkért nézd meg a Discord szervert.",
-        "guest_button": "Megértettem",
         "welcome_text": "A Juxt egy játék közösség, ami összeköti az embereket a világ minden tájáról Mii karakterek használatával. Használd a Juxt-ot, hogy megoszd játék tapasztalataid és találkozz emberekkel a világ minden tájáról.",
-        "analytics_text": "A Juxtaposition a Cloudflare Web Analytics szolgáltatást használja annak nyomon követésére, hogy a felhasználók hogyan használják szolgáltatásunkat. Az összegyűjtött adatok magukban foglalják, de nem kizárólagosan a látogatás idejét, a meglátogatott oldalakat és az oldalon töltött időt. Ezeket az adatokat semmilyen módon nem kapcsoljuk Önhöz, és sem mi, sem a Cloudflare nem használja fel hirdetésekhez."
+        "analytics_text": "A Juxtaposition a Cloudflare Web Analytics szolgáltatást használja annak nyomon követésére, hogy a felhasználók hogyan használják szolgáltatásunkat. Az összegyűjtött adatok magukban foglalják, de nem kizárólagosan a látogatás idejét, a meglátogatott oldalakat és az oldalon töltött időt. Ezeket az adatokat semmilyen módon nem kapcsoljuk Önhöz, és sem mi, sem a Cloudflare nem használja fel hirdetésekhez.",
+        "title": "Juxtaposition kezdeti beállítások"
     },
     "activity_feed": {
         "empty": "Nagyon üres itt. Próbálj meg valakit követni!"
     },
-    "language": "Magyar"
+    "language": "Magyar",
+    "post": {
+        "copy_link": "Link másolása",
+        "report_post": "Bejegyzés jelentése",
+        "delete_post": "Bejegyzés törlése",
+        "removed": "A bejegyzés törlésre került.",
+        "heading": "Bejegyzés",
+        "reply_post": "Válasz",
+        "show_spoiler": "Spoiler megjelenítése",
+        "title": "{{username}} bejegyzése",
+        "yeahs_count/one": "<count/> személy adott ennek a bejegyzésnek egy Yeah-t.",
+        "yeahs_count/multiple": "<count/> személy adott ennek a bejegyzésnek egy Yeah-t."
+    },
+    "login": {
+        "title": "Juxtaposition belépés",
+        "username": "Felhasználónév",
+        "password": "Jelszó",
+        "forgot_password": "Elfelejtett jelszó?",
+        "no_account": "Nincs még fiókod?",
+        "login_action": "Belépés",
+        "no_account_setup": "A fiók létrehozás akkor elérhető, ha van egy linkelt Wii U vagy 3DS konzolod.",
+        "heading": "Juxtaposition belépés",
+        "sub_title": "Add meg a fiók adataid alább"
+    },
+    "error": {
+        "no_access": "Nincs jogosultságod ennek az alkalmazásnak az elérésére ({{code}})",
+        "message_web": "Tekintsd meg az aktuális <status>szerver státuszt</status>.<newline/>vagy, <home>menj vissza a weboldalra</home>",
+        "error_details": "Kérelem ID: {{id}}",
+        "title": "Hiba {{code}}",
+        "heading": "Hiba {{code}}: {{message}}",
+        "message": "Hoppá! Úgy tűnik, nem találjuk az oldalt, amit keresel.<newline/>Ellenőrizd a linked még egyszer vagy próbáld újra később"
+    },
+    "friend_requests": {
+        "none": "Nincs barát kérés"
+    },
+    "reporting": {
+        "reason_spoiler": "Spoiler",
+        "title": "Bejegyzés jelentése",
+        "submit": "Jelentés beküldése",
+        "label": "Ok:",
+        "reason_piracy": "Kalózkodás",
+        "reason_advertising": "Reklámozás",
+        "reason_nsfw": "Szexuálisan explicit",
+        "reason_personal_info": "Személyes információ",
+        "reason_violence": "Erőszakos tartalom",
+        "reason_inappropiate": "Nem megfelelő/káros viselkedés",
+        "reason_bullying": "Gyűlölet/zaklatás",
+        "additional_info_placeholder": "Adj meg további megjegyzéseket vagy információt",
+        "description": "Jelenteni készülsz egy bejegyzést ami megsérti a Juxtaposition magatartási kódexét. Ez a bejelentés a Pretendo Juxtaposition adminisztrátorainak lesz elküldve, nem a bejegyzés létrehozójának.",
+        "reason_inappropiate_ingame": "Nem megfelelő viselkedés a játékban",
+        "reason_missing_images": "Hiányzó képek",
+        "reason_one": "Egyéb",
+        "reason_other": "Egyéb"
+    },
+    "moderation": {
+        "title": "Moderálás",
+        "silently_delete_post": "Törlés csendben",
+        "moderate_user": "Felhasználó moderálása"
+    }
 }

@@ -2,9 +2,9 @@
     "language": "简体中文",
     "global": {
         "user_page": "用户页面",
-        "activity_feed": "活动提要",
+        "activity_feed": "活动动态",
         "communities": "社区",
-        "messages": "通知",
+        "messages": "消息",
         "notifications": "通知",
         "go_back": "返回",
         "back": "返回",
@@ -15,27 +15,33 @@
         "close": "关闭",
         "save": "保存",
         "exit": "退出",
-        "next": "继续"
+        "next": "继续",
+        "my_feed": "我的动态",
+        "global_feed": "全球动态",
+        "friend_requests": "好友请求",
+        "updates": "更新",
+        "notifications_and_messages": "通知和消息",
+        "search": "搜索...",
+        "global_feed_short": "全球",
+        "people_feed": "关注中动态",
+        "people_feed_short": "关注中"
     },
     "all_communities": {
         "text": "所有社区",
-        "announcements": "公告",
-        "ann_string": "点击这里来查看最近的公告！",
         "popular_places": "热门地点",
-        "new_communities": "新建社区",
-        "show_all": "显示全部",
-        "search": "搜索社区......"
+        "new_communities": "新建社区"
     },
     "community": {
-        "follow": "关注社区",
-        "following": "正在关注",
         "followers": "关注者",
         "posts": "帖子",
         "tags": "标签",
-        "recent": "最近的帖子",
-        "popular": "热门的帖子",
-        "verified": "已被审核的帖子",
-        "new": "新建帖子"
+        "recent": "最近帖子",
+        "popular": "热门帖子",
+        "followers_count": "{{count}} 关注者",
+        "tags_not_applicable": "N/A",
+        "related": "相关社区",
+        "related_to": "{{community}} 相关社区",
+        "closed": "本社区不再接受新帖子。"
     },
     "user_page": {
         "country": "国家/地区",
@@ -47,37 +53,44 @@
         "followers": "关注者",
         "follow_user": "关注",
         "following_user": "正在关注",
-        "befriend": "添加好友",
-        "pending": "正在审核",
-        "unfriend": "删除好友",
-        "no_friends": "没有好友",
-        "no_following": "不在关注任何人",
-        "no_followers": "没有关注者"
+        "game_experience_unknown": "未知",
+        "settings": "设置",
+        "deleted": "已删除用户",
+        "banned": "已禁止用户",
+        "friend_requests": "请求"
     },
     "user_settings": {
-        "profile_settings": "用户设置",
-        "show_country": "在名牌上显示国家",
-        "show_birthday": "在名牌上显示生日",
-        "show_game": "在名牌上显示游戏经验",
-        "show_comment": "在名牌上显示评论",
-        "profile_comment": "用户评论",
-        "swearing": "名牌评论不能包含明确的语言。"
+        "profile_settings": "个人资料设置",
+        "show_country": "在个人资料显示国家/地区",
+        "show_birthday": "在个人资料显示生日",
+        "show_game": "在个人资料显示游戏经验",
+        "save_action": "保存设置",
+        "gdpr_download": "下载用户数据",
+        "gdpr_download_action": "下载"
     },
     "activity_feed": {
         "empty": "这里是空的。尝试关注某人！"
     },
     "notifications": {
         "none": "无通知。",
-        "new_follower": "关注了你！"
+        "new_follower/one": "<follower_one /> 已开始关注你！",
+        "new_follower/two": "<follower_one />、<follower_two /> 已开始关注你！",
+        "new_follower/three": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！",
+        "new_follower/multiple": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！"
     },
     "new_post": {
-        "new_post_text": "新建帖子",
-        "post_to": "发布到",
-        "text_hint": "点击此处发布帖子。",
-        "swearing": "请勿在帖子中包含露骨语言。"
+        "post_to": "发布到{{user}}",
+        "swearing": "帖子不能包含露骨语言。",
+        "new_post_short": "帖子",
+        "content_placeholder": "在帖子中与社区或你的关注者分享你的想法。",
+        "screenshots_coming_soon": "截屏尚未准备就绪，请稍后再来查看！",
+        "no_screenshot": "没有截屏",
+        "spoiler_label": "剧透",
+        "painting_close": "取消",
+        "painting_submit": "确定"
     },
     "messages": {
-        "coming_soon": "消息尚未准备好。稍后检查！"
+        "coming_soon": "没有消息"
     },
     "setup": {
         "welcome": "欢迎来到Juxtaposition！",
@@ -99,7 +112,7 @@
             "fifth": "为了让 Juxt 成为每个人都喜欢的地方，我们要求您体谅其他用户。不要发布任何冒犯性的内容，帮助我们保持 Juxt 的愉快体验。",
             "sixth": "不要发布您的或他人的个人信息",
             "seventh": "在 Juxt 中认识某人与在现实生活中认识不同。永远不要与 Juxt 上的任何人分享您的电子邮件地址、家庭住址、工作或学校名称或其他个人信息，也不要分享任何其他人的信息。此外，如果您在 Juxt 遇到的某个人邀请您在现实世界中与他或她见面，不要接受。 Juxt 是一个在线社区，不应用于安排现实世界的聚会。",
-            "eighth": "不要发剧透",
+            "eighth": "不要发布剧透内容",
             "ninth": "有些人来到 Juxt 是为了寻找游戏的提示和技巧，而另一些人则想自己发现游戏的秘密。揭示游戏秘密或其故事的帖子都被称为“剧透”。如果发布的游戏内容可能会剧透，请务必在发送帖子前勾选“剧透”框。这样，不想被剧透的人就不会看到你的帖子。",
             "tenth": "违反行为准则",
             "eleventh": "我们的目标是让 Juxt 对每个人都充满乐趣。如果有人违反 Juxt 的行为准则，我们将采取措施，包括阻止违规用户或硬件。",
@@ -113,14 +126,69 @@
             "intermediate": "中等",
             "expert": "高级"
         },
-        "analytics": "Analytics",
+        "analytics": "分析",
         "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 来跟踪用户如何使用我们的服务。收集的数据包括但不限于访问时间、访问的页面以及在网站上花费的时间。此数据不会以任何方式附加到您身上，也不会被我们或 Cloudflare 用于广告。",
         "ready": "开始使用 Juxt",
         "ready_text": "首先看一看一些社区，看看大家都在发布什么。借此机会熟悉 Juxt。一路上你可能会有新发现！",
         "done": "在 Juxt 玩得开心！",
         "done_button": "我们走吧！",
-        "guest": "访客模式",
-        "guest_text": "我们目前无法验证您的帐户，这可能意味着您目前正在使用 任天堂 Network 帐户登录。您仍然可以浏览 Juxt，但您将无发评论。在您使用 Pretendo Network 帐户登录之前，您可以发布或创建自己的帖子。有关更多信息，请查看 Discord。",
-        "guest_button": "同意"
+        "title": "Juxtaposition 设置"
+    },
+    "login": {
+        "title": "Juxtaposition 登录",
+        "heading": "Juxtaposition 登录",
+        "sub_title": "在下方输入您的账号信息",
+        "username": "用户名",
+        "password": "密码",
+        "forgot_password": "忘记了密码？",
+        "no_account": "没有一个账号？",
+        "login_action": "登录",
+        "no_account_setup": "只有当您拥有已绑定的 Wii U 或 3DS 主机时，才能创建账号。"
+    },
+    "error": {
+        "title": "错误 {{code}}",
+        "heading": "错误 {{code}}: {{message}}",
+        "message": "糟糕！我们似乎找不到您要查找的页面。<newline/>请检查您的链接或稍后再试",
+        "no_access": "您没有权限访问此应用程序（{{code}}）",
+        "message_web": "查看当前的 <status>服务器状态</status>。<newline/>或者，<home>返回首页</home>",
+        "error_details": "请求 ID：{{id}}"
+    },
+    "friend_requests": {
+        "none": "没有好友请求"
+    },
+    "post": {
+        "title": "发布者：{{username}}",
+        "heading": "帖子",
+        "yeahs_count/one": "<count/> 人已同意此帖子。",
+        "yeahs_count/multiple": "<count/> 人已同意此帖子。",
+        "show_spoiler": "显示剧透",
+        "reply_post": "回复",
+        "report_post": "举报帖子",
+        "delete_post": "删除帖子",
+        "removed": "帖子已被删除。",
+        "copy_link": "复制链接"
+    },
+    "reporting": {
+        "title": "举报帖子",
+        "submit": "提交举报",
+        "description": "你即将举报一篇违反《Juxtaposition 行为准则》的帖子。此举报将发送给 Pretendo 的 Juxtaposition 管理员，而非此帖子的创建者。",
+        "label": "原因：",
+        "additional_info_placeholder": "输入其他评论或信息",
+        "reason_spoiler": "剧透",
+        "reason_personal_info": "个人信息",
+        "reason_violence": "暴力内容",
+        "reason_inappropiate": "不当/有害行为",
+        "reason_bullying": "仇恨/欺凌",
+        "reason_advertising": "宣传广告",
+        "reason_nsfw": "露骨的性描写",
+        "reason_piracy": "海盗行为",
+        "reason_inappropiate_ingame": "游戏中的不当行为",
+        "reason_missing_images": "缺少图像",
+        "reason_other": "其他"
+    },
+    "moderation": {
+        "title": "审核",
+        "silently_delete_post": "静默删除",
+        "moderate_user": "审核用户"
     }
 }

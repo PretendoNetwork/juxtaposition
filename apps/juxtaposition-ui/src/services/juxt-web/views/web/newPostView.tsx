@@ -1,6 +1,9 @@
+import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
+import type { CommunitySchema, CommunityShotMode } from '@/models/communities';
 
 const empathies = [
 	{
@@ -49,10 +52,10 @@ export type NewPostViewProps = {
 	pid?: number;
 	url: string;
 	show: string;
+	// must provide messagePid OR community
 	messagePid?: number;
-	// ctr only
-	ctrBanner?: string;
-	ctrLegacy?: boolean;
+	community?: InferSchemaType<typeof CommunitySchema>;
+	shotMode: CommunityShotMode;
 };
 
 export function WebNewPostView(props: NewPostViewProps): ReactNode {
@@ -90,14 +93,14 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" disabled />
 							</li>
 						</menu>
-						<textarea id="new-post-text" name="body" className="textarea-text" value="" maxLength={280} placeholder="Enter text here..."></textarea>
+						<textarea id="new-post-text" name="body" className="textarea-text" value="" maxLength={280} placeholder={T.str('new_post.content_placeholder')}></textarea>
 						<div id="new-post-memo" className="textarea-memo trigger" data-sound="" evt-click="newPainting(false)" style={{ display: 'none' }}>
 							<img id="memo" className="textarea-memo-preview" src="" />
 							<input id="memo-value" type="hidden" name="painting" />
 						</div>
 					</div>
 					<label className="checkbox-container spoiler-button">
-						Spoilers
+						<T k="new_post.spoiler_label" />
 						<input type="checkbox" id="spoiler" name="spoiler" value="true" />
 						<span className="checkmark"></span>
 					</label>

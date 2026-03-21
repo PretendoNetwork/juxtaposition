@@ -153,7 +153,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 					>
 						<img className={cx('user-icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/web/images/bandwidthlost.png'} />
 						<h2 className="community-title">
-							{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
+							{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
 							{ isUserDataViewable
 								? (
 										<>
@@ -176,7 +176,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 											data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 											data-url="/users/follow"
 											data-community-id={props.user.pid}
-											data-text={isRequesterFollowingUser ? <T k="user_page.follow_user" /> : <T k="user_page.following_user" />}
+											data-text={isRequesterFollowingUser ? T.str('user_page.follow_user') : T.str('user_page.following_user')}
 										>
 											{isRequesterFollowingUser ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
 										</a>
@@ -218,7 +218,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 																		? (
 																				<><T k="setup.experience_text.expert" /></>
 																			)
-																		: <>N/A</>}
+																		: <><T k="user_page.game_experience_unknown" /></>}
 														</h4>
 													)
 												: <h4><T k="global.private" /></h4>}
@@ -230,15 +230,19 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 										{isSelf
 											? (
 													<div>
-														<h4>Download User Data</h4>
-														<h4 id="user-page-download-tab"><a href="/users/downloadUserData.json">Download</a></h4>
+														<h4><T k="user_settings.gdpr_download" /></h4>
+														<h4 id="user-page-download-tab">
+															<a href="/users/downloadUserData.json">
+																<T k="user_settings.gdpr_download_action" />
+															</a>
+														</h4>
 													</div>
 												)
 											: null}
 										{user.perms.moderator
 											? (
 													<div>
-														<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.user.pid}`}>Moderate User</a></h4>
+														<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.user.pid}`}><T k="moderation.moderate_user" /></a></h4>
 													</div>
 												)
 											: null}

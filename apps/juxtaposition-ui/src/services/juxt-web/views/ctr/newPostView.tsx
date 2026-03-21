@@ -1,5 +1,4 @@
 import cx from 'classnames';
-import { t } from 'i18next';
 import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/controls/ctabs';
 import { CtrCheckbox } from '@/services/juxt-web/views/ctr/controls/checkbox';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
@@ -42,29 +41,27 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
 	const cache = useCache();
-	const { ctrBanner, ctrLegacy } = props;
+	const { bannerUrl, legacy } = props.community ? url.ctrHeader(props.community) : {};
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header
 				id="header"
 				style={{
-					background: ctrBanner ? `url('${ctrBanner}')` : ''
+					background: bannerUrl ? `url('${bannerUrl}')` : ''
 				}}
 				className={cx(
-					{ 'header-legacy': ctrLegacy }
+					{ 'header-legacy': legacy }
 				)}
 
 				data-toolbar-mode="wide"
-				data-toolbar-message={t('new_post.post_to') + ' ' + name}
+				data-toolbar-message={T.str('new_post.post_to', { user: name })}
 			>
 				<h1 id="page-title">
-					<T k="new_post.post_to" />
-					{' '}
-					{name}
+					<T k="new_post.post_to" values={{ user: name ?? '' }} />
 				</h1>
 			</header>
-			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
+			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1" encType="multipart/form-data">
 				<input type="hidden" name="community_id" value={props.id} />
 				<input type="hidden" name="bmp" value="true" />
 				<div className="add-post-page-content">
@@ -90,18 +87,34 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 								id="body-text-input"
 								value=""
 								maxLength={280}
-								placeholder="Share your thoughts in a post to a community or to your followers."
+								placeholder={T.str('new_post.content_placeholder')}
 							/>
 						</CtrTabView>
-						<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input">
-							<div id="shot-msg">Screenshots are not ready yet. Check back soon!</div>
-						</CtrTabView>
+						{props.shotMode !== 'block'
+							? (
+									<CtrTabView name="_post_type" value="shot" sprite="sp-shot-input" data-shot-mode={props.shotMode}>
+										<div id="shot-preview" data-shot-preview="1"></div>
+
+										<div className="shot-picker">
+											<input type="radio" name="shot-type" className="shot top" data-shot="1" data-lls="shot-top" />
+											<input type="radio" name="shot-type" className="shot btm" data-shot="0" data-lls="shot-btm" />
+											<div id="shot-clear">
+												<div className="sprite sp-clear centred" />
+												<input type="radio" name="shot-type" data-shot-clear="1" />
+											</div>
+										</div>
+
+										<input type="file" name="shot" data-shot-upload="1" disabled />
+									</CtrTabView>
+								)
+							: null }
+
 						<CtrTabView name="_post_type" value="painting" sprite="sp-memo-input">
 							<img id="memo-img-input" src="" />
 							<input type="hidden" name="painting" />
 						</CtrTabView>
 						<div className="spoiler-checkbox">
-							<label htmlFor="cb-spoiler">Spoiler</label>
+							<label htmlFor="cb-spoiler"><T k="new_post.spoiler_label" /></label>
 							<CtrCheckbox id="cb-spoiler" name="spoiler" value="true" sprite="sp-spoiler" />
 						</div>
 					</CtrTabsView>
@@ -121,7 +134,7 @@ export function CtrNewPostPage(props: NewPostViewProps): ReactNode {
 	const cache = useCache();
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
-		<CtrRoot title={t('new_post.post_to') + ' ' + name}>
+		<CtrRoot title={T.str('new_post.post_to', { user: name })}>
 			<CtrPageBody>
 				<CtrNewPostView {...props} />
 			</CtrPageBody>

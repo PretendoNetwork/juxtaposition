@@ -4,6 +4,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
@@ -45,7 +46,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	if (post.removed) {
 		removedPostPart = (
 			<div className="post-body-content removed">
-				<h3>Post has been removed.</h3>
+				<h3><T k="post.removed" /></h3>
 			</div>
 		);
 	}
@@ -83,7 +84,9 @@ export function WebPostView(props: PostViewProps): ReactNode {
 			{ post.is_spoiler
 				? (
 						<div className="spoiler-overlay">
-							<button evt-click={`this.parentElement.style.display = 'none'; document.getElementById('post-content-${post.id}').style.display = 'block'`}>Click to Show Spoiler</button>
+							<button evt-click={`this.parentElement.style.display = 'none'; document.getElementById('post-content-${post.id}').style.display = 'block'`}>
+								<T k="post.show_spoiler" />
+							</button>
 						</div>
 					)
 				: null}
@@ -133,21 +136,21 @@ export function WebPostView(props: PostViewProps): ReactNode {
 						<li role="menuitem" data-action="report">
 							<WebUIIcon name="flag" />
 							{' '}
-							Report Post
+							<T k="post.report_post" />
 						</li>
 						{ isModerator || post.pid === user.pid
 							? (
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebUIIcon name="bin" />
 										{' '}
-										{isModerator ? 'Silently delete' : 'Delete Post'}
+										{isModerator ? <T k="moderation.silently_delete_post" /> : <T k="post.report_post" />}
 									</li>
 								)
 							: null}
 						<li role="menuitem" data-action="copy">
 							<WebUIIcon name="share" />
 							{' '}
-							Copy link
+							<T k="post.copy_link" />
 						</li>
 					</ul>
 				</span>

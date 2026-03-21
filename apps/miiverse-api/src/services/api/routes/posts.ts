@@ -23,8 +23,9 @@ import { uploadPainting, uploadScreenshot } from '@/images';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
-import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { CommunityShotMode, HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { ParamPack } from '@/types/common/param-pack';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
@@ -218,6 +219,20 @@ function canPost(community: HydratedCommunityDocument, userSettings: HydratedSet
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
+export function getShotMode(community: HydratedCommunityDocument, pack: ParamPack | null): CommunityShotMode {
+	if (pack === null) {
+		return 'block';
+	}
+
+	// Shots only on matching communities
+	if (!community.title_id.includes(pack.title_id) &&
+		!community.shot_extra_title_id?.includes(pack.title_id)) {
+		return 'block';
+	}
+
+	return community.shot_mode as CommunityShotMode; // type validated by database
+}
+
 async function newPost(request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
 
@@ -405,7 +420,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		post.painting_big = paintings.big;
 	}
 
-	if (screenshot) {
+	if (screenshot && getShotMode(community, request.paramPack) !== 'block') {
 		const screenshotUrls = await uploadScreenshot({
 			blob: screenshot,
 			pid: post.pid,

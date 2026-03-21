@@ -15,27 +15,31 @@
         "close": "Schließen",
         "save": "Speichern",
         "exit": "Verlassen",
-        "next": "Weiter"
+        "next": "Weiter",
+        "my_feed": "Mein Feed",
+        "global_feed": "Globaler Feed",
+        "friend_requests": "Freundschaftsanfragen",
+        "updates": "Neuigkeiten",
+        "notifications_and_messages": "Benachrichtigungen und Nachrichten",
+        "search": "Suche...",
+        "global_feed_short": "Global"
     },
     "all_communities": {
         "text": "Alle Communitys",
-        "announcements": "Ankündigungen",
-        "ann_string": "Klicke hier, um die neuesten Ankündigungen anzuzeigen!",
         "popular_places": "Beliebte Orte",
-        "new_communities": "Neue Communitys",
-        "show_all": "Alle anzeigen",
-        "search": "Communitys suchen..."
+        "new_communities": "Neue Communitys"
     },
     "community": {
-        "follow": "Community folgen",
-        "following": "Folge ich",
         "followers": "Abonnenten",
         "posts": "Beiträge",
         "tags": "Tags",
         "recent": "Neue Beiträge",
         "popular": "Beliebte Beiträge",
-        "verified": "Verifizierte Beiträge",
-        "new": "Neuer Beitrag"
+        "followers_count": "{{count}} Follower",
+        "tags_not_applicable": "nicht verfügbar",
+        "related": "Ähnliche Communities",
+        "related_to": "Ähnliche Communities wie {{community}}",
+        "closed": "In dieser Community können keine neuen Beiträge erstellt werden."
     },
     "user_page": {
         "country": "Land",
@@ -47,34 +51,41 @@
         "followers": "Follower",
         "follow_user": "Folgen",
         "following_user": "Folgt",
-        "befriend": "Befreunden",
-        "pending": "Ausstehend",
-        "unfriend": "Freund entfernen",
-        "no_friends": "Keine Freunde",
-        "no_following": "Folgt niemandem",
-        "no_followers": "Keine Follower"
+        "game_experience_unknown": "Unbekannt",
+        "settings": "Einstellungen",
+        "deleted": "Gelöschter Nutzer",
+        "banned": "Gesperrter Nutzer",
+        "friend_requests": "Anfragen"
     },
     "user_settings": {
         "profile_settings": "Profileinstellungen",
         "show_country": "Land im Profil anzeigen",
         "show_birthday": "Geburtstag im Profil anzeigen",
         "show_game": "Spielerfahrung im Profil anzeigen",
-        "show_comment": "Kommentar im Profil anzeigen",
-        "profile_comment": "Profilkommentar",
-        "swearing": "Profilkommentar darf keine explizite Sprache enthalten."
+        "save_action": "Einstellungen speichern",
+        "gdpr_download": "Nutzerdaten herunterladen",
+        "gdpr_download_action": "Herunterladen"
     },
     "activity_feed": {
         "empty": "Es ist ganz schön leer hier. Versuche, jemandem zu folgen!"
     },
     "notifications": {
         "none": "Keine Benachrichtigungen.",
-        "new_follower": "folgt dir!"
+        "new_follower/one": "<follower_one /> folgt dir jetzt!",
+        "new_follower/two": "<follower_one /> und <follower_two /> folgen dir jetzt!",
+        "new_follower/three": "<follower_one />, <follower_two /> und {{count_other}} weitere folgen dir jetzt!",
+        "new_follower/multiple": "<follower_one />, <follower_two /> und {{count_other}} weitere folgen dir jetzt!"
     },
     "new_post": {
-        "new_post_text": "Neuer Beitrag",
-        "post_to": "Beitrag posten bei",
-        "text_hint": "Tippe hier, um einen Beitrag zu erstellen.",
-        "swearing": "Beitrag darf keine explizite Sprache enthalten."
+        "post_to": "Beitrag posten bei {{user}}",
+        "swearing": "Beitrag darf keine explizite Sprache enthalten.",
+        "new_post_short": "Beitrag",
+        "content_placeholder": "Teile deine Gedanken in einem Beitrag für eine Community oder deine Follower.",
+        "screenshots_coming_soon": "Screenshots sind noch nicht bereit. Schau bald wieder vorbei!",
+        "no_screenshot": "Kein Screenshot",
+        "spoiler_label": "Spoiler",
+        "painting_close": "Abbrechen",
+        "painting_submit": "OK"
     },
     "messages": {
         "coming_soon": "Keine neuen Nachrichten"
@@ -119,8 +130,64 @@
         "ready_text": "Schaue dir zuerst einige Communitys an und sehe, worüber Menschen aus der ganzen Welt posten. Nutze diese Gelegenheit, um dich mit Juxt vertraut zu machen. Vielleicht machst du unterwegs neue Entdeckungen!",
         "done": "Viel Spaß mit Juxt!",
         "done_button": "Los geht's!",
-        "guest": "Gastmodus",
-        "guest_text": "Wir können dein Konto im Moment nicht verifizieren, was wahrscheinlich bedeutet, dass du dich derzeit mit einem Nintendo Network-Konto anmeldest. Du kannst zwar weiterhin auf Juxt stöbern, aber nicht in der Lage sein, Yeahs zu vergeben oder eigene Posts zu erstellen, bis du dich mit einem Pretendo Network-Konto anmeldest. Weitere Informationen findest du auf dem Discord-Server.",
-        "guest_button": "Verstanden"
+        "title": "Juxtaposition einrichten"
+    },
+    "login": {
+        "title": "Juxtaposition Einloggen",
+        "heading": "Juxtaposition Anmelden",
+        "sub_title": "Geben Sie unten Ihre Kontodaten ein",
+        "username": "Benutzername",
+        "password": "Passwort",
+        "forgot_password": "Passwort vergessen?",
+        "no_account": "Noch kein Konto?",
+        "login_action": "Anmelden",
+        "no_account_setup": "Die Kontoerstellung ist nur verfügbar, wenn Sie eine verknüpfte Wii U oder einen 3DS besitzen."
+    },
+    "error": {
+        "title": "Error {{code}}",
+        "heading": "Error {{code}}: {{message}}",
+        "message": "Hoppla! Die gesuchte Seite konnte leider nicht gefunden werden.<newline/>Überprüfe bitte deinen Link oder versuche es später noch einmal.",
+        "no_access": "Sie sind nicht berechtigt, auf diese Anwendung zuzugreifen ({{code}}).",
+        "message_web": "<status>Serverstatus</status> anzeigen.<newline/>Oder <home>zurück zur Startseite</home>.",
+        "error_details": "Anfrage-ID: {{id}}"
+    },
+    "friend_requests": {
+        "none": "Keine Freundschaftsanfragen"
+    },
+    "post": {
+        "title": "Beitrag von {{username}}",
+        "heading": "Beitrag",
+        "yeahs_count/one": "<count/> Person hat diesem Beitrag ein „Yeah“ gegeben.",
+        "yeahs_count/multiple": "<count/> Person hat diesem Beitrag ein „Yeah“ gegeben.",
+        "show_spoiler": "Spoiler anzeigen",
+        "reply_post": "Antworten",
+        "report_post": "Beitrag melden",
+        "delete_post": "Beitrag löschen",
+        "removed": "Beitrag wurde entfernt.",
+        "copy_link": "Link kopieren"
+    },
+    "reporting": {
+        "title": "Beitrag melden",
+        "submit": "Bericht senden",
+        "description": "Du bist dabei, einen Beitrag zu melden, dessen Inhalt gegen den Juxtaposition-Verhaltenskodex verstößt. Diese Meldung wird an die Juxtaposition-Administratoren von Pretendo gesendet und nicht an den Ersteller des Beitrags.",
+        "label": "Grund:",
+        "additional_info_placeholder": "Zusätzliche Kommentare oder Informationen eingeben",
+        "reason_spoiler": "Spoiler",
+        "reason_personal_info": "Persönliche Informationen",
+        "reason_violence": "Gewalttätige Inhalte",
+        "reason_inappropiate": "Unangemessenes oder schädliches Verhalten",
+        "reason_bullying": "Hassrede oder Mobbing",
+        "reason_advertising": "Werbung",
+        "reason_nsfw": "Sexuell explizit",
+        "reason_piracy": "Piraterie",
+        "reason_inappropiate_ingame": "Unangemessenes Verhalten im Spiel",
+        "reason_missing_images": "Fehlende Bilder",
+        "reason_one": "Anderer",
+        "reason_other": "Andere"
+    },
+    "moderation": {
+        "title": "Moderation",
+        "silently_delete_post": "Geräuschlos löschen",
+        "moderate_user": "Nutzer moderieren"
     }
 }

@@ -3,6 +3,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -22,7 +23,7 @@ export type PostPageViewProps = {
 function PostHead(props: PostPageViewProps): ReactNode {
 	const url = useUrl();
 	const post = props.post;
-	const pageTitle = `Post by ${post.screen_name}`;
+	const pageTitle = T.str('post.title', { username: post.screen_name });
 
 	if (post.removed) {
 		return (
@@ -71,7 +72,7 @@ function PostHead(props: PostPageViewProps): ReactNode {
 export function WebPostPageView(props: PostPageViewProps): ReactNode {
 	return (
 		<WebRoot head={<PostHead {...props} />}>
-			<h2 id="title" className="page-header">Post</h2>
+			<h2 id="title" className="page-header"><T k="post.heading" /></h2>
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
 			<div className="community-page-post-box" id="post">

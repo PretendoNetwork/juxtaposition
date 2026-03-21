@@ -1,14 +1,10 @@
 {
     "community": {
-        "following": "Sleduji",
         "followers": "Sledující",
         "tags": "Štítky",
-        "follow": "Sledovat komunitu",
         "posts": "Příspěvky",
         "recent": "Nedávné příspěvky",
-        "new": "Nový příspěvek",
-        "popular": "Populární příspěvky",
-        "verified": "Ověřené příspěvky"
+        "popular": "Populární příspěvky"
     },
     "global": {
         "user_page": "Uživatelská stránka",
@@ -28,12 +24,8 @@
         "exit": "Konec"
     },
     "all_communities": {
-        "show_all": "Zobrazit vše",
         "text": "Všechny komunity",
-        "search": "Vyhledat komunitu...",
         "new_communities": "Nové komunity",
-        "announcements": "Oznámení",
-        "ann_string": "Klikněte zde pro zobrazení nedávných oznámení!",
         "popular_places": "Populární místa"
     },
     "user_page": {
@@ -42,36 +34,24 @@
         "posts": "Příspěvky",
         "friends": "Přátelé",
         "follow_user": "Sledovat",
-        "no_friends": "Žádní přátelé",
-        "no_following": "Nikoho nesleduje",
         "game_experience": "Zkušenost s hrami",
-        "no_followers": "Žádní sledující",
-        "befriend": "Spřátelit se",
         "following_user": "Sleduji",
-        "pending": "Nevyřízené",
         "followers": "Sledující",
-        "unfriend": "Odebrat z přátel",
         "following": "Sleduji"
     },
     "user_settings": {
         "profile_settings": "Nastavení profilu",
         "show_birthday": "Zobrazit na profilu narozeniny",
         "show_game": "Zobrazit na profilu zkušenost s hrami",
-        "show_comment": "Zobrazit na profilu komentář",
-        "profile_comment": "Komentář profilu",
-        "swearing": "Komentář profilu nesmí obsahovat nevhodné výrazy.",
         "show_country": "Zobrazit na profilu zemi"
     },
     "language": "Čeština",
     "notifications": {
-        "new_follower": "vás začal(a) sledovat!",
         "none": "Žádná upozornění."
     },
     "new_post": {
-        "new_post_text": "Nový příspěvek",
         "swearing": "Příspěvky nesmí obsahovat nevhodné výrazy.",
-        "text_hint": "Klikněte sem pro vytvoření příspěvku.",
-        "post_to": "Přispět do"
+        "post_to": "Přispět do {{user}}"
     },
     "setup": {
         "rules_text": {
@@ -100,11 +80,8 @@
             "intermediate": "Středně pokročilý",
             "beginner": "Začátečník"
         },
-        "guest_button": "Rozumím",
         "done_button": "Jdeme na to!",
-        "guest": "Režim hosta",
         "ready": "Jste připraven(a) začít s Juxtem",
-        "guest_text": "Váš účet v tuto chvíli nemůžeme ověřit, což nejspíš znamená, že jste přihlášen(a) účtem Nintendo Network. Stále můžete prohlížet Juxt, ale nebudte moct Yeah!ovat příspěvky nebo přidávat své vlastní, dokud se nepřihlásíte s účtem Pretendo Network. Pro více informací nahlédněte do Discord serveru.",
         "experience": "Zkušenost s hrami",
         "analytics": "Analytické údaje",
         "rules": "Pravidla Juxtu",

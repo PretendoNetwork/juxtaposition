@@ -27,7 +27,6 @@
             "expert": "Expert"
         },
         "ready": "Redo att Börja Använda Juxt",
-        "guest": "Gäst Läge",
         "welcome": "Välkommen till Juxtaposition!",
         "beta": "Beta Varning",
         "welcome_text": "Juxt är en spelgemenskap som kopplar samman människor från runt hela världen genom att använda Mii karaktärer. Använd Juxt för att dela dina spelupplevelser och träffa personer från runt om i världen.",
@@ -38,8 +37,6 @@
         "done": "Ha kul i Juxt!",
         "analytics_text": "Juxtaposition använder Cloudflare Web Analytics för att spåra hur användare använder vår tjänst. Datan som samlas in omfattar men är inte begränsad till din tidpunkt av besök, sidor du besökt, och tid spenderad på sidan. Den är datan är inte knuten dig på något sätt, och är inte använd för annonser av oss eller Cloudflare.",
         "ready_text": "Kolla först in några samhällen och se vad personer från runt om världen gör inlägg om. Ta det här tillfället att göra dig bekant med Juxt. Du kanske gör några nya upptäckter längs vägen!",
-        "guest_text": "Vi kan inte verifiera ditt konto vid tillfället, vilket sannolikt betyder att du loggar för närvarande in med ett Nintendo Nätverk konto. Du kommer fortfarande att kunna bläddra Juxt, men du kommer inte att kunna Ja! inlägg eller göra egna inlägg tills du loggar in med ett Pretendo Nätverk konto. För mer information kolla Discord-servern.",
-        "guest_button": "Jag Förstår",
         "experience": "Spelupplevelse",
         "done_button": "Nu Kör Vi!"
     },
@@ -63,31 +60,20 @@
     },
     "all_communities": {
         "text": "Alla Gemenskap",
-        "announcements": "Uttalanden",
         "new_communities": "Nya gemenskap",
-        "search": "Sök gemenskap...",
-        "show_all": "Visa Allt",
-        "popular_places": "Populära Ställen",
-        "ann_string": "Klicka här för att visa de nyligen skapade uttalandena!"
+        "popular_places": "Populära Ställen"
     },
     "user_settings": {
-        "show_comment": "Visa kommentar på Profil",
         "show_game": "Visa spelupplevelse på Profil",
-        "profile_comment": "Profilkommentar",
         "profile_settings": "Profilinställningar",
         "show_birthday": "Visa Födelsedag på Profil",
-        "show_country": "Visa Land på Profil",
-        "swearing": "Profilkommentar kan inte innehålla olämpligt språk."
+        "show_country": "Visa Land på Profil"
     },
     "community": {
-        "following": "Följer",
         "tags": "Taggar",
-        "follow": "Följ gemenskap",
         "posts": "Inlägg",
         "followers": "Följare",
-        "verified": "Verifierade Inlägg",
         "popular": "Populära Inlägg",
-        "new": "Nytt Inlägg",
         "recent": "Nyligen Skapade Inlägg"
     },
     "user_page": {
@@ -99,23 +85,14 @@
         "following": "Följer",
         "followers": "Följare",
         "follow_user": "Följa",
-        "following_user": "Följer",
-        "befriend": "Bli vän med",
-        "unfriend": "Ta bort som vän",
-        "pending": "Väntande",
-        "no_following": "Följer Inte Någon",
-        "no_friends": "Inga Vänner",
-        "no_followers": "Inga Följare"
+        "following_user": "Följer"
     },
     "new_post": {
         "swearing": "Inlägg kan inte innehålla olämpligt språk.",
-        "new_post_text": "Nytt Inlägg",
-        "post_to": "Publicera inlägg till",
-        "text_hint": "Tryck här för att göra ett inlägg."
+        "post_to": "Publicera inlägg till {{user}}"
     },
     "notifications": {
-        "none": "Inga notifikationer.",
-        "new_follower": "följde dig!"
+        "none": "Inga notifikationer."
     },
     "activity_feed": {
         "empty": "Det är tomt här. Försök att följa någon!"

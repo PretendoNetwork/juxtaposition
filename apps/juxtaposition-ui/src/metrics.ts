@@ -4,6 +4,7 @@ import express from 'express';
 import { logger } from '@/logger';
 import { config } from '@/config';
 import { SETTINGS } from '@/models/settings';
+import { POST } from '@/models/post';
 import type { Express, NextFunction, Request, Response } from 'express';
 
 export const onlineNowGauge = new Gauge({
@@ -62,6 +63,68 @@ export async function getUserMetrics(): Promise<{ totalUsers: number; currentOnl
 	return {
 		totalUsers: (await totalUsersGauge.get()).values[0].value,
 		currentOnlineUsers: (await onlineNowGauge.get()).values[0].value
+	};
+}
+
+export const dailyPostGauge = new Gauge({
+	name: 'juxtaposition_post_count_daily',
+	help: 'New posts in the last 24 hours',
+	async collect(): Promise<void> {
+		const dailyRangeMs = 24 * 60 * 60 * 1000;
+		const cutoff = new Date(Date.now() - dailyRangeMs);
+		const [result] = await POST.aggregate<{ n: number } | undefined>([
+			{ $match: { created_at: { $gt: cutoff }, message_to_pid: null } },
+			{ $count: 'n' }
+		]);
+		this.set(result?.n ?? 0);
+	}
+});
+
+export const monthlyPostGauge = new Gauge({
+	name: 'juxtaposition_post_count_monthly',
+	help: 'New posts in the last 30 days',
+	async collect(): Promise<void> {
+		const monthyRangeMs = 30 * 24 * 60 * 60 * 1000;
+		const cutoff = new Date(Date.now() - monthyRangeMs);
+		const [result] = await POST.aggregate<{ n: number } | undefined>([
+			{ $match: { created_at: { $gt: cutoff }, message_to_pid: null } },
+			{ $count: 'n' }
+		]);
+		this.set(result?.n ?? 0);
+	}
+});
+
+export const yearlyPostGauge = new Gauge({
+	name: 'juxtaposition_post_count_yearly',
+	help: 'New posts in the last 365 days',
+	async collect(): Promise<void> {
+		const yearlyRangeMs = 365 * 24 * 60 * 60 * 1000;
+		const cutoff = new Date(Date.now() - yearlyRangeMs);
+		const [result] = await POST.aggregate<{ n: number } | undefined>([
+			{ $match: { created_at: { $gt: cutoff }, message_to_pid: null } },
+			{ $count: 'n' }
+		]);
+		this.set(result?.n ?? 0);
+	}
+});
+
+export const totalPostsGauge = new Gauge({
+	name: 'juxtaposition_post_count_total',
+	help: 'Total number of posts',
+	async collect(): Promise<void> {
+		const [result] = await POST.aggregate<{ n: number } | undefined>([
+			{ $match: { message_to_pid: null } },
+			{ $count: 'n' }
+		]);
+		this.set(result?.n ?? 0);
+	}
+});
+
+export async function getPostMetrics(): Promise<{ totalPosts: number; dailyPosts: number }> {
+	// This assumes that both gauges have no labels
+	return {
+		totalPosts: (await totalPostsGauge.get()).values[0].value,
+		dailyPosts: (await dailyPostGauge.get()).values[0].value
 	};
 }
 

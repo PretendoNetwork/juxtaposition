@@ -15,6 +15,7 @@ import { jsxRenderer } from '@/middleware/jsx';
 import { initImageProcessing } from '@/images';
 import { loginWall } from '@/middleware/webAuth';
 import { listenMetrics, registerMetrics } from '@/metrics';
+import { i18nMiddleware } from '@/middleware/i18n';
 import type { NextFunction, Request, Response } from 'express';
 import type { FetchError } from '@/fetch';
 
@@ -40,6 +41,7 @@ app.set('trust proxy', config.http.trustProxy);
 
 // Create router
 logger.info('Setting up Middleware');
+app.use(i18nMiddleware);
 app.use(jsxRenderer);
 app.use(loggerHttp);
 app.use(express.json());

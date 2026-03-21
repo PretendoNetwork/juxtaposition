@@ -17,24 +17,16 @@
         "next": "Suivant"
     },
     "all_communities": {
-        "announcements": "Annonces",
         "popular_places": "Communautés populaires",
         "new_communities": "Nouvelles communautés",
-        "show_all": "Tout afficher",
-        "search": "Rechercher des communautés...",
-        "text": "Toutes les communautés",
-        "ann_string": "Cliquez ici pour voir les dernières annonces!"
+        "text": "Toutes les communautés"
     },
     "community": {
-        "follow": "Suivre la communauté",
-        "following": "Suivie",
         "followers": "Abonnés",
         "tags": "Tags",
         "posts": "Publications",
         "recent": "Publi. récentes",
-        "popular": "Publi. populaires",
-        "verified": "Publi. vérifiées",
-        "new": "Publier"
+        "popular": "Publi. populaires"
     },
     "user_page": {
         "country": "Pays",
@@ -45,34 +37,22 @@
         "following": "Abonnements",
         "followers": "Abonnés",
         "follow_user": "Suivre",
-        "following_user": "Suivi(e)",
-        "befriend": "Demander en ami",
-        "pending": "En attente",
-        "unfriend": "Retirer des amis",
-        "no_friends": "Aucun ami",
-        "no_following": "Ne suit personne",
-        "no_followers": "Aucun abonné"
+        "following_user": "Suivi(e)"
     },
     "user_settings": {
         "profile_settings": "Paramètres du profil",
         "show_country": "Afficher mon pays sur le profil",
         "show_birthday": "Afficher mon anniversaire sur le profil",
-        "show_game": "Afficher mon expérience de joueur sur le profil",
-        "show_comment": "Rendre visible le commentaire de mon profil",
-        "profile_comment": "Commentaire du profil",
-        "swearing": "Le commentaire du profil ne peut pas contenir de vocabulaire explicite."
+        "show_game": "Afficher mon expérience de joueur sur le profil"
     },
     "activity_feed": {
         "empty": "C'est vide ici. Essaie de suivre quelqu'un!"
     },
     "notifications": {
-        "none": "Aucune notification.",
-        "new_follower": "vous suit!"
+        "none": "Aucune notification."
     },
     "new_post": {
-        "new_post_text": "Nouvelle publication",
-        "post_to": "Poster à",
-        "text_hint": "Entrez ici le texte que vous allez publier.",
+        "post_to": "Poster à {{user}}",
         "swearing": "La publication ne peut pas contenir du vocabulaire explicite."
     },
     "messages": {
@@ -117,9 +97,6 @@
         "ready_text": "Consultez d’abord certaines communautés et voyez ce que les gens du tout le monde entier publient. Profitez de cette occasion pour vous familiariser avec Juxt. Vous ferez peut-être de nouvelles découvertes en cours de route !",
         "done": "Amusez-vous dans Juxt!",
         "done_button": "Allons-y!",
-        "guest": "Mode Invité",
-        "guest_button": "Je Comprends",
-        "guest_text": "Nous ne pouvons pas vérifier votre compte pour le moment, ce qui signifie probablement que vous êtes connecté avec un compte Nintendo Network. Vous pourrez toujours parcourir Juxt, mais vous ne pourrez pas accéder à Yeah! des publiez ou créez vos propres publications jusqu'à ce que vous vous connectiez avec un compte Pretendo Network. Pour plus d'informations, consultez le serveur Discord.",
         "analytics_text": "Juxtaposition utilise Cloudflare Web Analytics afin de comprendre comment les utilisateurs utilisent notre service. Les données collectées incluent, sans toutefois s'y limiter, l'heure de visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas associées à vous et ne seront pas utilisées à des fins publicitaires, ni par nous ni par Cloudflare."
     },
     "language": "Français (Canada)"

@@ -15,27 +15,30 @@
         "save": "Salvar",
         "exit": "Sair",
         "next": "Próximo",
-        "no_posts": "Sem postagens"
+        "no_posts": "Sem postagens",
+        "my_feed": "Meu Feed",
+        "global_feed": "Feed Global",
+        "friend_requests": "Solicitações de Amizade",
+        "updates": "Atualizações",
+        "notifications_and_messages": "Notificações e Mensagens",
+        "search": "Pesquisar..."
     },
     "all_communities": {
         "text": "Todas as comunidades",
-        "announcements": "Comunicados",
-        "ann_string": "Clique aqui para ver os comunicados mais recentes!",
         "popular_places": "Comunidades Populares",
-        "new_communities": "Novas Comunidades",
-        "show_all": "Mostrar tudo",
-        "search": "Procurar comunidades..."
+        "new_communities": "Novas Comunidades"
     },
     "community": {
-        "follow": "Seguir Comunidade",
-        "following": "Seguindo",
         "followers": "Seguidores",
         "posts": "Postagens",
         "tags": "Tags",
         "recent": "Postagens mais Recentes",
         "popular": "Postagens Populares",
-        "verified": "Postagens Verificadas",
-        "new": "Nova Postagem"
+        "followers_count": "{{count}} seguidores",
+        "tags_not_applicable": "N/D",
+        "related": "Comunidades Relacionadas",
+        "related_to": "{{community}} Comunidades Relacionadas",
+        "closed": "Esta comunidade está fechada para novas postagens."
     },
     "user_page": {
         "country": "País",
@@ -47,34 +50,40 @@
         "followers": "Seguidores",
         "follow_user": "Seguir",
         "following_user": "Seguidores",
-        "befriend": "Fazer Amigo",
-        "pending": "Pendente",
-        "unfriend": "Excluir Amigo",
-        "no_friends": "Sem Amigos",
-        "no_following": "Não esta seguindo ninguém",
-        "no_followers": "Sem seguidores"
+        "game_experience_unknown": "Desconhecido",
+        "settings": "Configurações",
+        "deleted": "Usuário Deletado",
+        "banned": "Usuário Banido"
     },
     "user_settings": {
         "profile_settings": "Preferências",
         "show_country": "Mostrar país no perfil",
         "show_birthday": "Mostrar data de aniversário no perfil",
         "show_game": "Mostrar Experiência em Jogos no perfil",
-        "show_comment": "Mostrar comentário no perfil",
-        "profile_comment": "Comentário do Perfil",
-        "swearing": "A bio não pode ter linguagem imprópria."
+        "save_action": "Salvar Configurações",
+        "gdpr_download": "Fazer download dos Dados do Usuário",
+        "gdpr_download_action": "Download"
     },
     "activity_feed": {
         "empty": "Isto está muito vazio. Começe a seguir alguém!"
     },
     "notifications": {
         "none": "Sem notificações.",
-        "new_follower": "Te seguiu!"
+        "new_follower/one": "<follower_one /> seguiu você!",
+        "new_follower/two": "<follower_one />, <follower_two /> seguiram você!",
+        "new_follower/three": "<follower_one />, <follower_two />, e {{count_other}} outro seguiram você!",
+        "new_follower/multiple": "<follower_one />, <follower_two />, e {{count_other}} outros seguiram você!"
     },
     "new_post": {
-        "new_post_text": "Novo post",
-        "post_to": "Postar em",
-        "text_hint": "Clique aqui para fazer um post.",
-        "swearing": "O post não pode ter linguagem imprópria."
+        "post_to": "Postar em {{user}}",
+        "swearing": "O post não pode ter linguagem imprópria.",
+        "new_post_short": "Postagem",
+        "content_placeholder": "Compartilhe suas ideias em uma postagem à uma comunidade ou seguidores.",
+        "screenshots_coming_soon": "Capturas de tela não estão prontas ainda. Cheque de novo em breve!",
+        "no_screenshot": "Sem Captura de tela",
+        "spoiler_label": "Spoiler",
+        "painting_close": "Cancelar",
+        "painting_submit": "OK"
     },
     "messages": {
         "coming_soon": "A funcionalidade de mensagens ainda não está disponível. Volte em breve!"
@@ -119,8 +128,65 @@
         "ready_text": "Começe por explorar algumas comunidades e ver o que as pessoas de todo o mundo estão postando. Aproveite esta oportunidade para se familiarizar com o Juxt. Pode ser que você descubra algo novo pelo caminho!",
         "done": "Divirta-se com o Juxt!",
         "done_button": "Pronto!",
-        "guest": "Modo de convidado",
-        "guest_text": "Não foi possível verificar a sua conta de momento, o que provavelmente significa que você está usando uma conta da Nintendo Network. Você poderá usar o Juxt, mas não será possível marcar postagens com Joinha! ou fazer Postagens até entrar em uma conta da Pretendo Network. Para mais informações, visite o nosso servidor do Discord.",
-        "guest_button": "Compreendo"
+        "title": "Setup do Juxtaposition"
+    },
+    "login": {
+        "title": "Log In do Juxtaposition",
+        "heading": "Sign In do Juxtaposition",
+        "sub_title": "Coloque as informações de sua conta abaixo",
+        "username": "Nome de Usuário",
+        "password": "Senha",
+        "forgot_password": "Esqueceu sua senha?",
+        "no_account": "Não tem uma conta?",
+        "login_action": "Login",
+        "no_account_setup": "A Criação de Contas só é disponível quando você tem um 3DS ou Wii U conectado."
+    },
+    "error": {
+        "title": "Erro {{code}}",
+        "heading": "Erro {{code}}: {{message}}",
+        "message": "Ops! Parece que nós não conseguimos achar a página que você está procurando..<newline/>Cheque seu link novamente ou tente de novo mais tarde",
+        "no_access": "Você não tem autorização para acessar esta aplicação ({{code}})",
+        "message_web": "Veja o atual <status>status do servidors</status>.<newline/>Ou,<home>volte para a tela inicial</home>",
+        "error_details": "ID da Solicitação: {{id}}"
+    },
+    "friend_requests": {
+        "none": "Nenhuma Solicitação de Amizade"
+    },
+    "post": {
+        "title": "Postagem de {{username}}",
+        "heading": "Postagem",
+        "yeahs_count/one": "<count/> pessoa deu um Yeah à esta postagem.",
+        "yeahs_count/multiple": "<count/> pessoas deram um Yeah à esta postagem.",
+        "show_spoiler": "Mostrar Spoiler",
+        "reply_post": "Responder",
+        "report_post": "Reportar postagem",
+        "delete_post": "Deletar postagem",
+        "removed": "Postagem removida.",
+        "copy_link": "Copiar link"
+    },
+    "reporting": {
+        "title": "Reportar Postagem",
+        "submit": "Enviar Reportagem",
+        "description": "Você está prestes a reportat uma postagem com conteúdo que viola o Código de Conduta do Juxtaposition. Esta reportagem será enviada aos moderadores do Juxtaposition e não ao criador da postagem.",
+        "label": "Motivo:",
+        "additional_info_placeholder": "Comentários ou informações adicionais",
+        "reason_spoiler": "Spoiler",
+        "reason_personal_info": "Informações Pessoais",
+        "reason_violence": "Conteúdo Violento",
+        "reason_inappropiate": "Conduta Inapropriada/Prejudicial",
+        "reason_bullying": "Odioso/Bullying",
+        "reason_advertising": "Anúncio",
+        "reason_nsfw": "Sexualmente Explícito",
+        "reason_piracy": "Pirataria",
+        "reason_inappropiate_ingame": "Atitude Inapropriada no Jogo",
+        "reason_missing_images": "Imagens faltando",
+        "reason_one": "Singular",
+        "reason_many": "Plural",
+        "reason_other": "Outro"
+    },
+    "moderation": {
+        "title": "Moderação",
+        "silently_delete_post": "Deletar silenciosamente",
+        "moderate_user": "Moderar Usuário"
     }
 }
