@@ -2,7 +2,7 @@
 
 ARG app_dir="/home/node/app"
 
-FROM node:22-alpine
+FROM node:24-alpine
 ARG app_dir
 WORKDIR ${app_dir}
 
