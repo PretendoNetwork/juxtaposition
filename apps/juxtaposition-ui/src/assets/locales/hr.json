@@ -14,7 +14,16 @@
         "user_page": "Korisnička stranica",
         "communities": "Zajednice",
         "messages": "Poruke",
-        "notifications": "Obavijesti"
+        "notifications": "Obavijesti",
+        "my_feed": "Moj feed",
+        "global_feed": "Globalni feed",
+        "global_feed_short": "Globalni",
+        "people_feed": "Feed ljudi koje pratiš",
+        "people_feed_short": "Ljudi",
+        "friend_requests": "Zahtjevi za prijateljstvo",
+        "updates": "Novosti",
+        "notifications_and_messages": "Obavijesti i poruke",
+        "search": "Pretraga …"
     },
     "all_communities": {
         "text": "Sve zajednice",
@@ -26,7 +35,12 @@
         "posts": "Objave",
         "recent": "Nedavne objave",
         "popular": "Popularane objave",
-        "followers": "Sljedbenici"
+        "followers": "Pratitelji",
+        "followers_count": "Broj pratitelja: {{count}}",
+        "tags_not_applicable": "--",
+        "related": "Povezane zajednice",
+        "related_to": "Povezane zajednice s {{community}}",
+        "closed": "Ova je zajednica zatvorena za nove objave."
     },
     "user_page": {
         "country": "Zemlja",
@@ -37,20 +51,38 @@
         "follow_user": "Prati",
         "following": "Praćenje",
         "following_user": "Praćenje",
-        "followers": "Sljedbenici"
+        "followers": "Pratitelji",
+        "game_experience_unknown": "Nepoznato",
+        "settings": "Postavke",
+        "friend_requests": "Zahtjevi",
+        "deleted": "Izbrisani korisnik",
+        "banned": "Isključen korisnik"
     },
     "user_settings": {
         "profile_settings": "Postavke profila",
         "show_country": "Prikaži zemlju u profilu",
         "show_birthday": "Prikaži rođendan u profilu",
-        "show_game": "Prikaži iskustvo igranja u profilu"
+        "show_game": "Prikaži iskustvo igranja u profilu",
+        "save_action": "Spremi postavke",
+        "gdpr_download": "Preuzmi korisničke podatke",
+        "gdpr_download_action": "Preuzmi"
     },
     "notifications": {
-        "none": "Nema obavijesti."
+        "none": "Nema obavijesti.",
+        "new_follower/one": "<follower_one /> te je pratiol/la!",
+        "new_follower/two": "<follower_one />, <follower_two /> su te pratili!",
+        "new_follower/three": "<follower_one />, <follower_two /> i {{count_other}} druga pratitelja su te pratili!",
+        "new_follower/multiple": "<follower_one />, <follower_two /> i {{count_other}} drugih pratitelja su te pratili!"
     },
     "new_post": {
         "post_to": "Objava za {{user}}",
-        "swearing": "Objava ne smije sadržavati prostačke izraze."
+        "swearing": "Objava ne smije sadržavati prostačke izraze.",
+        "new_post_short": "Objava",
+        "no_screenshot": "Bez snimke ekrana",
+        "painting_close": "Odustani",
+        "painting_submit": "U redu",
+        "content_placeholder": "Dijeli svoje misli u objavi sa zajednicom ili sa svojim pratiteljima.",
+        "screenshots_coming_soon": "Snimke ekrana još nisu spremne. Navrati kasnije!"
     },
     "messages": {
         "coming_soon": "Nema poruka"
@@ -99,5 +131,31 @@
     "language": "Hrvatski",
     "activity_feed": {
         "empty": "Ovdje je prazno. Pokušaj nekoga pratiti!"
+    },
+    "login": {
+        "title": "Juxtaposition prijava",
+        "heading": "Juxtaposition prijava",
+        "sub_title": "Dolje unesi podatke o svom računu",
+        "username": "Korisničko ime",
+        "password": "Lozinka",
+        "forgot_password": "Ne sjećaš se lozinke?",
+        "no_account": "Nemaš račun?",
+        "login_action": "Prijava",
+        "no_account_setup": "Izrada računa je dostupna samo kada ima vezu s Wii U ili 3DS."
+    },
+    "error": {
+        "title": "Greška {{code}}",
+        "heading": "Greška {{code}}: {{message}}",
+        "error_details": "ID zahtjeva: {{id}}",
+        "message": "Ups! Čini da nismo mogli pronaći stranicu koju tražiš.<newline/>Provjeri svoju poveznicu ili pokušaj ponovo kasnije",
+        "no_access": "Nemaš ovlaštenje za pristup ovoj aplikaciji ({{code}})",
+        "message_web": "Pogledaj trenutačno <status>stanje servera</status>.<newline/>Ili se <home>vrati na početnu stranicu</home>"
+    },
+    "post": {
+        "heading": "Objava",
+        "title": "Objava od {{username}}"
+    },
+    "friend_requests": {
+        "none": "Nema zahtjeva za prijateljstvo"
     }
 }
