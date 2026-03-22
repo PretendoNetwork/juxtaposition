@@ -82,7 +82,8 @@
         "painting_close": "Odustani",
         "painting_submit": "U redu",
         "content_placeholder": "Dijeli svoje misli u objavi sa zajednicom ili sa svojim pratiteljima.",
-        "screenshots_coming_soon": "Snimke ekrana još nisu spremne. Navrati kasnije!"
+        "screenshots_coming_soon": "Snimke ekrana još nisu spremne. Navrati kasnije!",
+        "spoiler_label": "Spoiler"
     },
     "messages": {
         "coming_soon": "Nema poruka"
@@ -126,7 +127,8 @@
         "ready_text": "Najprije pogledaj neke zajednice i vidi što ljudi iz cijelog svijeta objavljuju. Iskoristi ovu priliku da upoznaš Juxt. Možda ćeš otkriti nešto novo!",
         "done": "Uživaj u Juxtu!",
         "done_button": "Krenimo!",
-        "rules": "Juxt pravila"
+        "rules": "Juxt pravila",
+        "title": "Postavljanje Juxtapositiona"
     },
     "language": "Hrvatski",
     "activity_feed": {
@@ -153,9 +155,42 @@
     },
     "post": {
         "heading": "Objava",
-        "title": "Objava od {{username}}"
+        "title": "Objava od {{username}}",
+        "yeahs_count/one": "<count/> osoba odobrava obu objavu.",
+        "yeahs_count/multiple": "<count/> ljudi odobravaju obu objavu.",
+        "reply_post": "Odgovori",
+        "report_post": "Prijavi objavu",
+        "delete_post": "Izbriši objavu",
+        "removed": "Objava je uklonjena.",
+        "copy_link": "Kopiraj poveznicu",
+        "show_spoiler": "Prikaži spoiler"
     },
     "friend_requests": {
         "none": "Nema zahtjeva za prijateljstvo"
+    },
+    "reporting": {
+        "title": "Prijavi objavu",
+        "submit": "Pošalji prijavu",
+        "description": "Prijavit ćeš objavu sa sadržajem koji krši kodeks ponašanja za Juxtaposition. Ova prijava će se poslati administratorima Juxtapositiona, a ne autoru objave.",
+        "label": "Razlog:",
+        "additional_info_placeholder": "Unesi dodatne komentare ili informacije",
+        "reason_personal_info": "Osobne informacije",
+        "reason_violence": "Nasilni sadržaj",
+        "reason_inappropiate": "Neprimjereno/štetno ponašanje",
+        "reason_bullying": "Govor mržnje/maltretiranje",
+        "reason_advertising": "Oglašavanje",
+        "reason_nsfw": "Eksplicitno seksualno",
+        "reason_piracy": "Piratstvo",
+        "reason_inappropiate_ingame": "Neprimjereno ponašanje u igri",
+        "reason_missing_images": "Nedostajuće slike",
+        "reason_one": "Drugi",
+        "reason_few": "Druga",
+        "reason_other": "Drugih",
+        "reason_spoiler": "Spoiler"
+    },
+    "moderation": {
+        "title": "Moderacija",
+        "silently_delete_post": "Tiho brisanje",
+        "moderate_user": "Moderiraj korisnika"
     }
 }
