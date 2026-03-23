@@ -104,10 +104,7 @@ export const CommunitySchema = new Schema({
 	},
 	ctr_header: { type: String },
 	wup_header: { type: String },
-	icon_paths: {
-		type: IconPathsSchema,
-		required: true
-	},
+	icon_paths: { type: IconPathsSchema },
 	title_ids: {
 		type: [String],
 		default: undefined
