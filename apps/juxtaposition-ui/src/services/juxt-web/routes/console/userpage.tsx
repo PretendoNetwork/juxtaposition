@@ -111,6 +111,7 @@ userPageRouter.get('/me/:type', async function (req, res) {
 userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 	const { body, auth } = parseReq(req, {
 		body: z.object({
+			profile: z.coerce.boolean(),
 			country: z.coerce.boolean(),
 			birthday: z.coerce.boolean(),
 			experience: z.coerce.boolean(),
@@ -122,6 +123,7 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 		return res.redirect('/users/me');
 	}
 
+	userSettings.profile_visibility = body.profile;
 	userSettings.country_visibility = body.country;
 	userSettings.birthday_visibility = body.birthday;
 	userSettings.game_skill_visibility = body.experience;
@@ -256,6 +258,10 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		return res.redirect('/404');
 	}
 
+	if (!hasAuth() && !userSettings.profile_visibility) {
+		return res.redirect(`/login?redirect=${req.originalUrl}`);
+	}
+
 	const posts = (await getPostsByPoster(req.tokens, userID, 0))?.items ?? [];
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
@@ -324,7 +330,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
 	const parentUserContent = await database.getUserContent(req.pid);
-	if (!pnid || !userSettings || !userContent) {
+	if (!pnid || !userSettings || !userContent || (hasAuth() && userSettings)) {
 		return res.redirect('/404');
 	}
 
