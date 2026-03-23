@@ -1,9 +1,7 @@
 {
     "new_post": {
         "swearing": "Opslag må ikke indeholde upassende sprog.",
-        "new_post_text": "Ny Post",
-        "post_to": "Post til",
-        "text_hint": "Tryk her for at lave et opslag."
+        "post_to": "Post til {{user}}"
     },
     "setup": {
         "welcome": "Velkommen til Juxtaposition!",
@@ -32,7 +30,6 @@
         },
         "beta": "Beta Ansvarsfralæggelse",
         "done_button": "Lad os komme i gang!",
-        "guest_button": "Jeg forstår",
         "experience": "Spilerfaring",
         "experience_text": {
             "info": "Fortæl os hvordan du ville forklare dit niveau af erfaring med spil. Du kan ændre denne indstilling senere.",
@@ -43,9 +40,7 @@
         "ready_text": "Først og fremmest check ud nogle af fællesskaberne for at se hvad folk rund om verdenen snakker om. Brug det øjeblik til at gøre dig mere bekendt med Juxt. Måske opstår der endda nogle nye opdagelser på vejen!",
         "done": "Mor dig i Juxt!",
         "info_text": "Juxt er et brugerdrevet spilfællesskab, hvor du kan kommunikere med folk\nfra hele verdenen. Du kan skrive eller tegne oplag i spilfælleskaber eller sende beskeder direkte til dine venner.",
-        "guest": "",
         "ready": "",
-        "guest_text": "",
         "analytics": "",
         "analytics_text": ""
     },
@@ -54,26 +49,17 @@
         "country": "Land",
         "birthday": "Fødselsdag",
         "friends": "Venner",
-        "pending": "Afventer",
-        "no_friends": "Ingen Venner",
-        "no_followers": "Ingen Følgere",
         "game_experience": "Spilerfaring",
         "posts": "Oplæg",
         "following": "Følger",
         "follow_user": "Følg",
-        "following_user": "Følger",
-        "befriend": "Bliv Venner",
-        "unfriend": "Afslut Venskab",
-        "no_following": "Følger Ikke Nogen"
+        "following_user": "Følger"
     },
     "user_settings": {
-        "swearing": "Kommentaren må ikke indeholde upassende sprog.",
         "profile_settings": "Profilindstillinger",
         "show_birthday": "Vis Fødselsdag på Profil",
         "show_country": "Vis Land på Profil",
-        "show_game": "Vis Spilerfaring på Profil",
-        "show_comment": "Vis Kommentar på Profil",
-        "profile_comment": "Profilkommentar"
+        "show_game": "Vis Spilerfaring på Profil"
     },
     "global": {
         "no_posts": "Ingen Opslag",
@@ -93,22 +79,14 @@
         "save": "Gem"
     },
     "all_communities": {
-        "announcements": "Meddelelser",
         "popular_places": "Populære Steder",
         "new_communities": "Nye Fællesskaber",
-        "search": "Søg efter fællesskaber...",
-        "text": "Alle Fællesskaber",
-        "ann_string": "Klik her for at se nye meddelelser!",
-        "show_all": "Vis Alle"
+        "text": "Alle Fællesskaber"
     },
     "community": {
-        "following": "Følger",
         "followers": "Følgere",
         "tags": "Etiketter",
-        "verified": "Verificerede Opslag",
         "popular": "Populære Opslag",
-        "new": "Nyt Opslag",
-        "follow": "Følg Fællesskab",
         "posts": "Opslag",
         "recent": "Nylige Opslag"
     },
@@ -116,8 +94,7 @@
         "empty": "Det ser tomt ud her. Prøv at følge nogen!"
     },
     "notifications": {
-        "none": "Ingen notifikationer.",
-        "new_follower": "følger dig!"
+        "none": "Ingen notifikationer."
     },
     "messages": {
         "coming_soon": "Beskeder er ikke klar endnu. Prøv igen senere!"

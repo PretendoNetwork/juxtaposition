@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import express from 'express';
 import { Snowflake as snowflake } from 'node-snowflake';
 import { z } from 'zod';
+import multer from 'multer';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
@@ -18,6 +19,10 @@ import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import type { PaintingUrls, ScreenshotUrls } from '@/images';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 export const messagesRouter = express.Router();
 
@@ -32,7 +37,7 @@ messagesRouter.get('/', async function (req, res) {
 	});
 });
 
-messagesRouter.post('/new', async function (req, res) {
+messagesRouter.post('/new', upload.none(), async function (req, res) {
 	// TODO add body validation
 	const { auth } = parseReq(req);
 	const authCtx = auth();
@@ -282,12 +287,13 @@ messagesRouter.get('/:message_id/create', async function (req, res) {
 	// Get the conversation member who *isn't* us
 	const partner = conversation.users[0].pid !== auth().pid ? conversation.users[0] : conversation.users[1];
 
-	const props = {
+	const props: NewPostViewProps = {
 		id: conversation.id,
 		pid: partner.pid,
 		messagePid: partner.pid,
 		url: `/friend_messages/new`,
-		show: 'message-page'
+		show: 'message-page',
+		shotMode: 'allow'
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,

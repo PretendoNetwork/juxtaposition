@@ -1,5 +1,4 @@
 import { config } from '@/config';
-import { getLanguage } from '@/i18n';
 import { logger } from '@/logger';
 import { getUserAccountData, getUserDataFromToken } from '@/util';
 import type { RequestHandler, Request, Response } from 'express';
@@ -25,7 +24,7 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 			response.clearCookie('refresh_token', { domain: cookieDomain, path: '/' });
 			response.clearCookie('token_type', { domain: cookieDomain, path: '/' });
 			if (request.path === '/login') {
-				response.locals.lang = getLanguage();
+				response.changeLanguage(null);
 				request.tokens = {};
 				request.paramPackData = null;
 				return next();

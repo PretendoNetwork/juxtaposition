@@ -21,6 +21,7 @@ import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { zodFallback } from '@/util';
 import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
+import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import type { InferSchemaType } from 'mongoose';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -116,7 +117,7 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID/create', async function (req, res) {
-	const { params } = parseReq(req, {
+	const { params, auth } = parseReq(req, {
 		params: z.object({
 			communityID: z.string()
 		})
@@ -127,11 +128,15 @@ communitiesRouter.get('/:communityID/create', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
+	const shotMode = getShotMode(community, auth().paramPackData);
+
 	const props = {
 		id: community.olive_community_id,
 		name: community.name,
 		url: `/posts/new`,
-		show: 'post'
+		show: 'post',
+		shotMode,
+		community
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
@@ -140,7 +145,7 @@ communitiesRouter.get('/:communityID/create', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID/:type', async function (req, res) {
-	const { query, params, auth } = parseReq(req, {
+	const { query, params, hasAuth, auth } = parseReq(req, {
 		params: z.object({
 			communityID: z.string(),
 			type: z.string()
@@ -165,18 +170,14 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 
 	if (!community.permissions) {
 		community.permissions = {
-			open: community.open,
+			open: !!community.open,
 			minimum_new_post_access_level: 0,
 			minimum_new_comment_access_level: 0,
 			minimum_new_community_access_level: 0
 		};
 		await community.save();
 	}
-	const canPost = (
-		(community.permissions.open && community.type < 2) ||
-		(community.admins && community.admins.indexOf(auth().pid) !== -1) ||
-		(auth().user.accessLevel >= community.permissions.minimum_new_post_access_level)
-	) && userSettings.account_status === 0;
+	const canPost = hasAuth() && userSettings !== null && isPostingAllowed(community, userSettings, null, auth().user);
 	const isUserFollowing = userContent.followed_communities.includes(community.olive_community_id);
 
 	const subCommunities = await database.getSubCommunities(community.olive_community_id);

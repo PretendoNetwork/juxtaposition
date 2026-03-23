@@ -134,6 +134,19 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 							<input className="form-check-input" type="checkbox" id="has_shop_page" name="has_shop_page" checked={community.has_shop_page === 1} />
 						</div>
 					</div>
+					<div className="col-md-3">
+						<label className="labels" htmlFor="shot_mode">Screenshot mode</label>
+						<select className="form-select" name="shot_mode" id="shot_mode">
+							<option value="allow" selected={community.shot_mode === 'allow'}>Allow this game only (Default)</option>
+							<option value="block" selected={community.shot_mode === 'block'}>Block all</option>
+							<option value="force" selected={community.shot_mode === 'force'}>Allow, even if game disallows</option>
+						</select>
+					</div>
+					<div className="col-md-9">
+						<label className="labels" htmlFor="shot_extra_title_id">Extra screenshot titles (comma separated list)</label>
+						<textarea rows={10} data-input-admin-title-ids="#shot-extra-title-ids"></textarea>
+						<input id="shot-extra-title-ids" name="shot_extra_title_id" type="hidden" value={community.shot_extra_title_id} />
+					</div>
 					<div className="col-md-3" style={{ justifyContent: 'center' }}>
 						<button className="btn btn-primary profile-button" type="submit">
 							Save Community

@@ -1,5 +1,5 @@
 // Element.prototype.classList by Remy Sharp
-// updated by thednp
+// updated by thednp, ashquarky
 
 var ClassLIST = function (elem) {
 	var classArr = (elem.getAttribute('class') || '').trim().split(/\s+/) || [];
@@ -23,8 +23,10 @@ var ClassLIST = function (elem) {
 	this.toggle = function (classNAME) {
 		if (this.contains(classNAME)) {
 			this.remove(classNAME);
+			return false;
 		} else {
 			this.add(classNAME);
+			return true;
 		}
 	};
 };

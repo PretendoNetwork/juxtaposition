@@ -32,6 +32,10 @@ function updateTitleIdControl(this: HTMLTextAreaElement, _ev: Event): void {
 				return null;
 			}
 
+			if (!isFinite(val)) {
+				return null;
+			}
+
 			return val;
 		})
 		.filter(v => v !== null);
@@ -42,7 +46,9 @@ function updateTitleIdControl(this: HTMLTextAreaElement, _ev: Event): void {
 export function initTitleIdControl(): void {
 	document.querySelectorAll('[data-input-admin-title-ids]').forEach((el) => {
 		const input = document.querySelector(el.getAttribute('data-input-admin-title-ids')!) as HTMLInputElement;
-		const tids = input.value.split(',').map(s => parseInt(s.trim(), 10));
+		const tids = input.value.split(',')
+			.map(s => parseInt(s.trim(), 10))
+			.filter(isFinite);
 
 		const hexTids = tids
 			.map(t => t.toString(16).padStart(16, '0').toUpperCase())

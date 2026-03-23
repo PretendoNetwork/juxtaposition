@@ -1,8 +1,8 @@
-import { t } from 'i18next';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalPostView } from '@/services/juxt-web/views/portal/post';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
@@ -12,7 +12,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 	const pageTitle = !post.removed ? post.screen_name : 'Removed Post';
 
 	return (
-		<PortalRoot title={t('global.activity_feed')}>
+		<PortalRoot title={T.str('global.activity_feed')}>
 			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<header id="header">
@@ -25,7 +25,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 									href={`/posts/${post.id}/create`}
 									data-pjax="#body"
 								>
-									Reply
+									<T k="post.reply_post" />
 								</a>
 							)
 						: null}
@@ -33,7 +33,9 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 						? (
 								post.pid === user.pid
 									? (
-											<a id="header-communities-button" className="delete" href="#" data-button-delete-post={post.id}>Delete Post</a>
+											<a id="header-communities-button" className="delete" href="#" data-button-delete-post={post.id}>
+												<T k="post.delete_post" />
+											</a>
 										)
 									: (
 											<a
@@ -42,7 +44,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 												href={`/posts/${post.id}/report`}
 												data-pjax="#body"
 											>
-												Report Post
+												<T k="post.report_post" />
 											</a>
 										)
 							)

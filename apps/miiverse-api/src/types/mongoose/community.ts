@@ -23,6 +23,9 @@ export interface ICommunityPermissions {
 	minimum_new_community_access_level: number;
 }
 
+export const CommunityShotModes = ['allow', 'block', 'force'] as const;
+export type CommunityShotMode = typeof CommunityShotModes[number];
+
 /* This type needs to reflect "reality" as it is in the DB
  * Thus, all the optionals, since some legacy documents are missing many fields
  */
@@ -44,6 +47,7 @@ export interface ICommunity {
 	ctr_header?: string;
 	wup_header?: string;
 	icon_paths?: IIconPaths;
+	/** @deprecated Does not actually exist on any community. Use title_id */
 	title_ids?: string[]; // Does not exist on any community
 	title_id: string[];
 	community_id: string;
@@ -52,6 +56,8 @@ export interface ICommunity {
 	app_data: string;
 	user_favorites?: number[];
 	permissions: ICommunityPermissions;
+	shot_mode?: CommunityShotMode;
+	shot_extra_title_id?: string[];
 }
 // Fields that have "default: " in the Mongoose schema should also be listed here to make them optional
 // on input but not output
@@ -71,7 +77,9 @@ type CommunityDefaultedFields =
 	'is_recommended' |
 	'app_data' |
 	'user_favorites' |
-	'permissions';
+	'permissions' |
+	'shot_mode' |
+	'shot_extra_title_id';
 export type ICommunityInput = Omit<ICommunity, CommunityDefaultedFields> & Partial<Pick<ICommunity, CommunityDefaultedFields>>;
 
 export interface ICommunityMethods {

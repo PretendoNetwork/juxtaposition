@@ -556,6 +556,7 @@ iframe {
 
 #news-list-content li .text .nick-name {
   font-weight: 700;
+  color: var(--text);
 }
 
 #news-list-content li .text .link {
@@ -1294,7 +1295,7 @@ summary::before {
   margin-left: -1em;
 }
 
-details[open] summary::before {
+details[open]>summary::before {
   content: "▼";
 }
 

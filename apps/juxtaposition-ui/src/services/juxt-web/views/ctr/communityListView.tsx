@@ -1,4 +1,3 @@
-import { t } from 'i18next';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
@@ -29,7 +28,7 @@ export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 
 export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
-		<CtrRoot title={t('all_communities.text')}>
+		<CtrRoot title={T.str('all_communities.text')}>
 			<CtrPageBody>
 				<header id="header">
 					<h1 id="page-title"><T k="all_communities.text" /></h1>
@@ -50,7 +49,7 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 
 export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): ReactNode {
 	return (
-		<CtrRoot title={t('global.communities')}>
+		<CtrRoot title={T.str('global.communities')}>
 			<CtrPageBody>
 				<header
 					id="header"

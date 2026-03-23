@@ -18,15 +18,11 @@
     },
     "language": "Srpski",
     "community": {
-        "verified": "Potvrđene objave",
-        "follow": "Zaprati zajednicu",
-        "following": "Praćenje",
         "followers": "Pratioci",
         "posts": "Knjiži",
         "tags": "Oznake",
         "recent": "Nedavne objave",
-        "popular": "Popularne objave",
-        "new": "Nova objava"
+        "popular": "Popularne objave"
     },
     "user_page": {
         "birthday": "Rođendan",
@@ -36,41 +32,25 @@
         "friends": "Prijatelji",
         "follow_user": "Zaprati",
         "followers": "Pratioci",
-        "pending": "U toku",
         "game_experience": "",
-        "no_following": "",
-        "befriend": "",
-        "unfriend": "",
-        "no_followers": "",
-        "no_friends": "",
         "following": ""
     },
     "all_communities": {
         "new_communities": "Nove zajednice",
         "text": "Sve zajednice",
-        "announcements": "Objave",
-        "popular_places": "Popularna mesta",
-        "search": "Pretraži zajednice...",
-        "show_all": "Prikaži sve",
-        "ann_string": "Klikni ovde da vidiš nedavne objave!"
+        "popular_places": "Popularna mesta"
     },
     "notifications": {
-        "new_follower": "Vas je zapratio!",
         "none": "Nema obaveštenja."
     },
     "user_settings": {
         "profile_settings": "Podešavanja profila",
         "show_country": "Prikaži zemlju na profilu",
         "show_birthday": "Prikaži rođendan na profilu",
-        "show_game": "",
-        "show_comment": "",
-        "profile_comment": "",
-        "swearing": ""
+        "show_game": ""
     },
     "new_post": {
-        "new_post_text": "Nova objava",
-        "post_to": "Objavi na",
-        "text_hint": "Dodirni ovde da napraviš objavu.",
+        "post_to": "Objavi na {{user}}",
         "swearing": ""
     },
     "activity_feed": {
@@ -113,9 +93,6 @@
         "done": "Uživajte u Juxt-u!",
         "done_button": "Krenimo!",
         "ready_text": "Prvo proverite zajednice i vidite o čemu ljudi objavljuju oko celog sveta. Iskoristite ovu priliku da se upoznate sa Juxt-om. Možda ćete napraviti zanimljiva otkrića!",
-        "guest_button": "",
-        "guest": "",
-        "guest_text": "",
         "rules": "",
         "welcome_text": "",
         "info": "",

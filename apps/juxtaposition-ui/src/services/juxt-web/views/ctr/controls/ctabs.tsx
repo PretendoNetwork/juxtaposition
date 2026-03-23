@@ -1,7 +1,9 @@
 import cx from 'classnames';
+import { useDatasetProps } from '@/services/juxt-web/views/common/hooks/useDataset';
 import type { ReactNode } from 'react';
+import type { DatasetProps } from '@/services/juxt-web/views/common/hooks/useDataset';
 
-export type CtrTabViewProps = {
+export type CtrTabViewProps = DatasetProps & {
 	// Shared name for all tabs.
 	name: string;
 	// Form value for this specific tab.
@@ -16,10 +18,11 @@ export type CtrTabViewProps = {
 
 // Client-side tab control
 export function CtrTabView(props: CtrTabViewProps): ReactNode {
+	const dataset = useDatasetProps(props);
 	const selected = { selected: props.default };
 	return (
 		<>
-			<li className={cx('ctab', selected)} data-ctab="1">
+			<li className={cx('ctab', selected)} data-ctab="1" {...dataset}>
 				<div className={cx('sprite', 'centred', props.sprite, selected)}></div>
 				<input
 					type="radio"

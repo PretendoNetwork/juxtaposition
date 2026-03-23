@@ -19,23 +19,15 @@
     },
     "all_communities": {
         "text": "모든 커뮤니티",
-        "announcements": "공지",
-        "ann_string": "여기를 클릭해서 최근 공지를 확인하세요!",
         "popular_places": "인기 커뮤니티",
-        "new_communities": "새 커뮤니티",
-        "show_all": "모두 보기",
-        "search": "커뮤니티 검색..."
+        "new_communities": "새 커뮤니티"
     },
     "community": {
-        "follow": "커뮤니티 팔로우하기",
-        "following": "팔로우 중",
         "followers": "팔로워",
         "posts": "게시물",
         "tags": "태그",
         "recent": "최근 게시물",
-        "popular": "인기 게시물",
-        "verified": "인증된 게시물",
-        "new": "새 게시물"
+        "popular": "인기 게시물"
     },
     "user_page": {
         "country": "국가",
@@ -46,34 +38,22 @@
         "following": "팔로우 중",
         "followers": "팔로워",
         "follow_user": "팔로우",
-        "following_user": "팔로우 중",
-        "befriend": "친구 추가하기",
-        "pending": "대기 중",
-        "unfriend": "친구 제거하기",
-        "no_friends": "친구 없음",
-        "no_following": "팔로우 중인 사람 없음",
-        "no_followers": "팔로워 없음"
+        "following_user": "팔로우 중"
     },
     "user_settings": {
         "profile_settings": "프로필 설정",
         "show_country": "프로필에 국가 표시",
         "show_birthday": "프로필에 생년월일 표시",
-        "show_game": "프로필에 게임 경험 표시",
-        "show_comment": "프로필에 메시지 표시",
-        "profile_comment": "프로필 메시지",
-        "swearing": "프로필 메시지는 비속어를 포함할 수 없습니다."
+        "show_game": "프로필에 게임 경험 표시"
     },
     "activity_feed": {
         "empty": "아무도 없네요. 누군가를 팔로우 해 보세요!"
     },
     "notifications": {
-        "none": "알림 없음.",
-        "new_follower": "(이)가 당신을 팔로우했어요!"
+        "none": "알림 없음."
     },
     "new_post": {
-        "new_post_text": "새 게시물",
-        "post_to": "여기로 게시하기",
-        "text_hint": "여기를 눌러 새 게시물을 작성하세요.",
+        "post_to": "여기로 게시하기 {{user}}",
         "swearing": "게시물에는 비속어를 사용 할 수 없습니다."
     },
     "messages": {
@@ -118,9 +98,6 @@
         "ready": "Juxt 사용 준비 완료",
         "ready_text": "먼저 유명한 커뮤니티부터 찾아보세요! 사람들이 뭘 올리는지 확인하고, 그리고 이번 기회에 사람들이 어떤 걸 하는지 찾아보세요. 새로운 발견이 될 수도 있으니까요!",
         "done": "Juxt에서 좋은 시간을 보내시기 바랍니다!",
-        "done_button": "가자!",
-        "guest": "게스트 모드",
-        "guest_text": "어라? 계정을 확인할 수 없네요. 닌텐도 네트워크로 로그인을 하신 걸 수도 있어요. Juxt를 둘러보실 수는 있지만, '당근이지!'를 게시물에 달거나 게시물을 만드는 것은 안되지만, Pretendo 네트워크로 로그인하면 Juxt의 모든 기능을 사용하실 수 있어요. 더 많은 정보는 디스코드 서버를 확인해주세요.",
-        "guest_button": "알겠어요"
+        "done_button": "가자!"
     }
 }

@@ -1,9 +1,11 @@
+import './polyfills';
 import Pjax from 'pjax';
 import { GET, POST } from './xhr';
 import { empathyPostById } from './api';
 import { initPostPageView } from './post';
+import { initNavTabs } from './components/ui/PortalNavTabs';
 
-var pjax;
+export var pjax;
 setInterval(checkForUpdates, 30000);
 setInterval(input, 100);
 
@@ -68,39 +70,7 @@ function initYeah() {
 		});
 	}
 }
-function initTabs() {
-	var els = document.querySelectorAll('.tab-button');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].removeEventListener('click', tabs);
-		els[i].addEventListener('click', tabs);
-	}
-	function tabs(e) {
-		e.preventDefault();
-		var el = e.currentTarget;
-		var child = el.children[0];
-
-		for (var i = 0; i < els.length; i++) {
-			if (els[i].classList.contains('selected')) {
-				els[i].classList.remove('selected');
-			}
-		}
-		el.classList.add('selected');
-
-		GET(child.getAttribute('href') + '?pjax=true', function a(data) {
-			var response = data.response;
-			if (response && data.status === 200) {
-				document.getElementsByClassName('tab-body')[0].innerHTML = data.response;
-				window.history.pushState({ url: child.href, title: '', scrollPos: [0, 0] }, '', child.href);
-				initPosts();
-				initMorePosts();
-			}
-		});
-	}
-}
-function initPosts() {
+export function initPosts() {
 	var els = document.querySelectorAll('.post-content[data-href]');
 	if (!els) {
 		return;
@@ -113,7 +83,7 @@ function initPosts() {
 	initYeah();
 	initSpoilers();
 }
-function initMorePosts() {
+export function initMorePosts() {
 	var els = document.querySelectorAll('.load-more[data-href]');
 	if (!els) {
 		return;
@@ -228,7 +198,7 @@ function initSpoilers() {
 
 function initAll() {
 	initNavBar();
-	initTabs();
+	initNavTabs();
 	initPosts();
 	initMorePosts();
 	initPostModules();

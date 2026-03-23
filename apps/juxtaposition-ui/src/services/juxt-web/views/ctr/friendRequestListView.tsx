@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { FriendRequestItemProps, FriendRequestListViewProps } from '@/services/juxt-web/views/web/friendRequestListView';
 
@@ -32,7 +33,7 @@ export function CtrFriendRequestListView(props: FriendRequestListViewProps): Rea
 	const cache = useCache();
 	return (
 		<ul className="list-content-with-icon-column arrow-list" id="news-list-content">
-			{props.requests.length === 0 ? <li><p>No Friend Requests</p></li> : null}
+			{props.requests.length === 0 ? <li><p><T k="friend_requests.none" /></p></li> : null}
 			{props.requests.map((req, i) => {
 				if (!cache.getUserName(req.sender)) {
 					return null;

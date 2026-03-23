@@ -3,6 +3,7 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -35,7 +36,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 								<img className="icon" src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/ctr/images/bandwidthlost.png'} />
 							</span>
 							<span className="community-name">
-								{ isUserBanned ? 'Banned User' : isUserDeleted ? 'Deleted User' : null}
+								{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
 								{ isUserDataViewable
 									? (
 											<>
@@ -70,11 +71,11 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 								: null }
 						</span>
 					</h1>
-					{isSelf ? <a id="header-communities-button" className="header-button left" href="/users/me/settings" data-pjax="#body">Settings</a> : null}
+					{isSelf ? <a id="header-communities-button" className="header-button left" href="/users/me/settings" data-pjax="#body"><T k="user_page.settings" /></a> : null}
 					{ canViewUser && !isSelf
 						? (
-								<button type="button" className={cx('small-button follow', { selected: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}>
-									<span className="sprite sp-yeah inline-sprite"></span>
+								<button type="button" className="small-button follow" evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}>
+									<span className={cx('sprite sp-yeah inline-sprite', { selected: isRequesterFollowingUser })}></span>
 								</button>
 							)
 						: null}
@@ -83,46 +84,34 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 					{isUserDataViewable
 						? (
 								<>
-									<menu className="tab-header user-page no-margin">
-										<li id="tab-header-post" className={cx('tab-button', { selected: props.selectedTab === 0 })}>
-											<a href={props.baseLink} data-sound="SE_WAVE_SELECT_TAB">
-												<span className="new-post"><T k="user_page.posts" /></span>
-											</a>
-										</li>
-										<li id="tab-header-friends" className={cx('tab-button', { selected: props.selectedTab === 1 })}>
-											<a href={props.baseLink + 'friends'} data-sound="SE_WAVE_SELECT_TAB">
-												<span><T k="user_page.friends" /></span>
-											</a>
-										</li>
-										<li id="tab-header-following" className={cx('tab-button', { selected: props.selectedTab === 2 })}>
-											<a href={props.baseLink + 'following'} data-sound="SE_WAVE_SELECT_TAB">
-												<span><T k="user_page.following" /></span>
-											</a>
-										</li>
-
-										{/* make it it wrap */}
-										<br />
-
-										<li id="tab-header-followers" className={cx('tab-button', { selected: props.selectedTab === 3, double: !isSelf })}>
-											<a href={props.baseLink + 'followers'} data-sound="SE_WAVE_SELECT_TAB">
-												<span><T k="user_page.followers" /></span>
-											</a>
-										</li>
-										<li id="tab-header-yeahs" className={cx('tab-button', { selected: props.selectedTab === 4, double: !isSelf })}>
-											<a href={props.baseLink + 'yeahs'} data-sound="SE_WAVE_SELECT_TAB">
-												<span><T k="global.yeahs" /></span>
-											</a>
-										</li>
-										{isSelf
-											? (
-													<li id="tab-header-requests" className="tab-button">
-														<a href="/news/friend_requests" data-sound="SE_WAVE_SELECT_TAB">
-															<span>Requests</span>
-														</a>
-													</li>
-												)
-											: null}
-									</menu>
+									<CtrNavTabs target=".tab-body">
+										<CtrNavTabsRow>
+											<CtrNavTab href={props.baseLink} selected={props.selectedTab === 0}>
+												<T k="user_page.posts" />
+											</CtrNavTab>
+											<CtrNavTab href={props.baseLink + 'friends'} selected={props.selectedTab === 1}>
+												<T k="user_page.friends" />
+											</CtrNavTab>
+											<CtrNavTab href={props.baseLink + 'following'} selected={props.selectedTab === 2}>
+												<T k="user_page.following" />
+											</CtrNavTab>
+										</CtrNavTabsRow>
+										<CtrNavTabsRow>
+											<CtrNavTab href={props.baseLink + 'followers'} selected={props.selectedTab === 3}>
+												<T k="user_page.followers" />
+											</CtrNavTab>
+											<CtrNavTab href={props.baseLink + 'yeahs'} selected={props.selectedTab === 4}>
+												<T k="global.yeahs" />
+											</CtrNavTab>
+											{isSelf
+												? (
+														<CtrNavTab href="/news/friend_requests">
+															<T k="user_page.friend_requests" />
+														</CtrNavTab>
+													)
+												: null }
+										</CtrNavTabsRow>
+									</CtrNavTabs>
 									<div className="tab-body post-list">
 										{props.children}
 									</div>

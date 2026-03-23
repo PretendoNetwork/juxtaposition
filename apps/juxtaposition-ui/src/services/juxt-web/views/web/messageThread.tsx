@@ -7,6 +7,7 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { ConversationModel, ConversationUserModel } from '@/services/juxt-web/views/web/messages';
@@ -83,7 +84,7 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 					<button id="header-post-button" className="header-button" data-module-hide="message-page" data-module-show="add-post-page" data-header="true" data-menu="true">+</button>
 					{props.messages.map(msg => <MessageThreadItem key={msg.id} message={msg} />)}
 				</div>
-				<WebNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} />
+				<WebNewPostView id={props.conversation.id} name={otherUserName} url="/friend_messages/new" show="message-page" messagePid={props.otherUser.pid} shotMode="allow" />
 				<div id="painting-wrapper" className="painting-wrapper" style={{ display: 'none' }}>
 					<div id="painting-content">
 						<div className="tools">
@@ -116,10 +117,10 @@ export function WebMessageThreadView(props: MessageThreadViewProps): ReactNode {
 								</ul>
 							</div>
 						</div>
-						<canvas width="320" height="120" id="painting">Your browser does not support the HTML canvas tag.</canvas>
+						<canvas width="320" height="120" id="painting" />
 						<div id="button-wrapper">
-							<button evt-click="closePainting(false)">Cancel</button>
-							<button className="primary" evt-click="closePainting(true)">OK</button>
+							<button evt-click="closePainting(false)"><T k="new_post.painting_close" /></button>
+							<button className="primary" evt-click="closePainting(true)"><T k="new_post.painting_submit" /></button>
 						</div>
 					</div>
 					<script src="/assets/web/js/painting.global.js" />
