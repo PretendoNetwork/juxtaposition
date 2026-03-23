@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import { Schema, model } from 'mongoose';
 import { MongoError } from 'mongodb';
 import type { CommunityData } from '@/types/miiverse/community';
-import type { ICommunity, ICommunityMethods, CommunityModel, ICommunityPermissions, HydratedCommunityDocument, ICommunityInput } from '@/types/mongoose/community';
+import type { ICommunity, ICommunityMethods, CommunityModel, ICommunityPermissions, HydratedCommunityDocument, ICommunityInput, IIconPaths } from '@/types/mongoose/community';
 
 const PermissionsSchema = new Schema<ICommunityPermissions>({
 	open: {
@@ -20,6 +20,29 @@ const PermissionsSchema = new Schema<ICommunityPermissions>({
 	minimum_new_community_access_level: {
 		type: Number,
 		default: 3
+	}
+});
+
+const IconPathsSchema = new Schema<IIconPaths>({
+	32: {
+		type: String,
+		required: true
+	},
+	48: {
+		type: String,
+		required: true
+	},
+	64: {
+		type: String,
+		required: true
+	},
+	96: {
+		type: String,
+		required: true
+	},
+	128: {
+		type: String,
+		required: true
 	}
 });
 
@@ -90,6 +113,7 @@ const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods
 	},
 	ctr_header: { type: String },
 	wup_header: { type: String },
+	icon_paths: { type: IconPathsSchema },
 	title_ids: {
 		type: [String],
 		default: undefined
