@@ -8,6 +8,14 @@ enum COMMUNITY_TYPE {
 	Private = 3
 }
 
+export interface IIconPaths {
+	32: string;
+	48: string;
+	64: string;
+	96: string;
+	128: string;
+}
+
 export interface ICommunityPermissions {
 	open: boolean;
 	minimum_new_post_access_level: number;
@@ -38,6 +46,7 @@ export interface ICommunity {
 	icon: string;
 	ctr_header?: string;
 	wup_header?: string;
+	icon_paths?: IIconPaths;
 	/** @deprecated Does not actually exist on any community. Use title_id */
 	title_ids?: string[]; // Does not exist on any community
 	title_id: string[];
@@ -99,6 +108,29 @@ export const PermissionsSchema = new Schema<ICommunityPermissions>({
 	minimum_new_community_access_level: {
 		type: Number,
 		default: 3
+	}
+});
+
+const IconPathsSchema = new Schema<IIconPaths>({
+	32: {
+		type: String,
+		required: true
+	},
+	48: {
+		type: String,
+		required: true
+	},
+	64: {
+		type: String,
+		required: true
+	},
+	96: {
+		type: String,
+		required: true
+	},
+	128: {
+		type: String,
+		required: true
 	}
 });
 
@@ -171,6 +203,7 @@ export const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunity
 	},
 	ctr_header: { type: String },
 	wup_header: { type: String },
+	icon_paths: { type: IconPathsSchema },
 	title_ids: {
 		type: [String],
 		default: undefined
