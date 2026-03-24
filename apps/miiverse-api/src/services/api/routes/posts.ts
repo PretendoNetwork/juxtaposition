@@ -29,9 +29,9 @@ import type { ParamPack } from '@/types/common/param-pack';
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
-	app_data: z.string().optional(),
-	painting: z.string().optional(),
-	screenshot: z.string().optional(),
+	app_data: z.string().base64().optional(),
+	painting: z.string().base64().optional(),
+	screenshot: z.string().base64().optional(),
 	body: z.string().optional(),
 	feeling_id: z.string(),
 	search_key: z.string().array().or(z.string()).optional(),
