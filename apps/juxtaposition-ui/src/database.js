@@ -117,8 +117,7 @@ async function getPostReplies(postID, number) {
 async function getDuplicatePosts(pid, post) {
 	verifyConnected();
 	return POST.findOne({
-		community_id: communityId,
-		olive_community_id: communityId,
+		community_id: community.olive_community_id,
 		pid: pid,
 		body: post.body,
 		painting: post.painting,
