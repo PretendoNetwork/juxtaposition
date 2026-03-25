@@ -102,6 +102,8 @@ export async function getDuplicatePosts(pid: number, post: IPostInput): Promise<
 	verifyConnected();
 
 	return Post.findOne({
+		community_id: communityId,
+		olive_community_id: communityId,
 		pid: pid,
 		body: post.body,
 		painting: post.painting,
