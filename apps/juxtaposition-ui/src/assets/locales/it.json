@@ -1,8 +1,8 @@
 {
     "language": "Italiano",
     "global": {
-        "user_page": "Pagina dell'utente",
-        "activity_feed": "Attività",
+        "user_page": "La mia pagina",
+        "activity_feed": "Riepilogo attività",
         "communities": "Gruppi",
         "messages": "Messaggi",
         "notifications": "Notifiche",
@@ -15,7 +15,16 @@
         "close": "Chiudi",
         "save": "Salva",
         "exit": "Esci",
-        "next": "Avanti"
+        "next": "Avanti",
+        "friend_requests": "Richieste di amicizia",
+        "updates": "Aggiornamenti",
+        "my_feed": "Le mie attività",
+        "global_feed": "Attività globali",
+        "global_feed_short": "Globale",
+        "people_feed": "Attività seguiti",
+        "people_feed_short": "Seguiti",
+        "search": "Cerca...",
+        "notifications_and_messages": "Notifiche e messaggi"
     },
     "all_communities": {
         "text": "Tutti i gruppi",
@@ -27,7 +36,12 @@
         "posts": "Post",
         "tags": "Etichette",
         "recent": "Post recenti",
-        "popular": "Post popolari"
+        "popular": "Post popolari",
+        "tags_not_applicable": "Non disponibile",
+        "related": "Gruppi correlati",
+        "related_to": "{{community}} Gruppi correlati",
+        "closed": "Non è possibile pubblicare nuovi post in questo gruppo.",
+        "followers_count": "{{count}} seguaci"
     },
     "user_page": {
         "country": "Paese",
@@ -38,23 +52,42 @@
         "following": "Seguiti",
         "followers": "Seguaci",
         "follow_user": "Segui",
-        "following_user": "Stai seguendo"
+        "following_user": "Stai seguendo",
+        "settings": "Impostazioni",
+        "deleted": "Utente eliminato",
+        "banned": "Utente bannato",
+        "game_experience_unknown": "Sconosciuta",
+        "friend_requests": "Richieste"
     },
     "user_settings": {
         "profile_settings": "Impostazioni del profilo",
-        "show_country": "Mostra Paese sul profilo",
-        "show_birthday": "Mostra compleanno sul profilo",
-        "show_game": "Mostra esperienza di gioco sul profilo"
+        "show_country": "Mostra Paese sul tuo profilo",
+        "show_birthday": "Mostra compleanno sul tuo profilo",
+        "show_game": "Mostra esperienza di gioco sul tuo profilo",
+        "save_action": "Salva impostazioni",
+        "gdpr_download": "Scarica dati utente",
+        "gdpr_download_action": "Scarica"
     },
     "activity_feed": {
-        "empty": "È vuoto qui. Prova a seguire qualcuno!"
+        "empty": "È vuoto. Prova a seguire qualcuno!"
     },
     "notifications": {
-        "none": "Nessuna notifica."
+        "none": "Nessuna notifica.",
+        "new_follower/one": "<follower_one /> ti segue!",
+        "new_follower/two": "<follower_one /> e <follower_two /> ti seguono!",
+        "new_follower/three": "<follower_one />, <follower_two /> e {{count_other}} altro ti seguono!",
+        "new_follower/multiple": "<follower_one />, <follower_two /> e altri {{count_other}} ti seguono!"
     },
     "new_post": {
         "post_to": "Posta su {{user}}",
-        "swearing": "Il post non deve contenere linguaggio esplicito."
+        "swearing": "Il post non deve contenere linguaggio esplicito.",
+        "new_post_short": "Pubblica",
+        "no_screenshot": "Nessuno screenshot",
+        "painting_close": "Annulla",
+        "spoiler_label": "Spoiler",
+        "content_placeholder": "Condividi il tuo pensiero con un post rivolto ad un gruppo o ai tuoi seguaci.",
+        "screenshots_coming_soon": "Gli screenshot non sono ancora pronti. Ricontrolla preso!",
+        "painting_submit": "OK"
     },
     "messages": {
         "coming_soon": "Nessun messaggio"
@@ -72,19 +105,19 @@
         "info_text": "Juxt è una comunità di gioco guidata dagli utenti dove puoi interagire con persone\n                da tutto il mondo. Puoi scrivere o disegnare post in un gruppo di un gioco o mandare messaggi direttamente ai tuoi amici.",
         "rules": "Regole di Juxt",
         "rules_text": {
-            "first": "Di seguito sono elencate delle linee guida importanti per rendere Juxt un'esperienza divertente e piacevole per tutti. Il codice di condotta di Juxt contiene informazioni dettagliate, quindi leggilo attentamente.",
+            "first": "Di seguito sono elencate delle linee guida importanti per rendere Juxt un'esperienza divertente e piacevole per tutti. Il Codice di Condotta di Juxt contiene informazioni dettagliate, quindi leggilo attentamente.",
             "second": "I post possono essere visualizzati da tutto il mondo",
-            "third": "Juxt contiene diversi gruppi di gioco dove persone da tutto il mondo possono condividere le loro opinioni. Quando posti in un gruppo, ricordati che chiunque può vedere il tuo post, quindi esprimiti in modo rispettoso verso tutti. Usa il buon senso e pensa prima di postare. Juxt è un servizio che è anche accessibile via Internet, quindi tieni a mente che i tuoi post potrebbero essere visualizzati anche da persone che non utilizzano Juxt. Inoltre, qualunque commento che scrivi su un post di un tuo amico potra essere visto non solo dai tuoi amici, ma anche da persone da tutto il mondo. Per favore, tieni questo a mente.",
+            "third": "Juxt contiene diversi gruppi di gioco dove persone da tutto il mondo possono condividere le loro opinioni. Quando pubblichi un post in un gruppo, ricordati che chiunque può vederlo, quindi esprimiti in modo rispettoso verso tutti. Usa il buon senso e pensa prima di postare. Juxt è un servizio accessibile anche via Internet, quindi sappi che i tuoi post potrebbero essere visualizzati anche da persone che non utilizzano Juxt. Inoltre tutti i commenti che scrivi sotto un post di un tuo amico potranno essere visti non solo dai tuoi amici, ma anche da persone da tutto il mondo. Tienilo a mente.",
             "fourth": "Sii gentile verso gli altri utenti",
             "fifth": "Affinché Juxt resti un luogo divertente per tutti, ti chiediamo di essere rispettoso degli altri utenti. Aiutaci a fare di Juxt un'esperienza picacevole e non postare niente di inappropriato o offensivo.",
-            "sixth": "Non postare informazioni personali - tue o di qualcun altro",
+            "sixth": "Non postare informazioni personali tue o di altre persone",
             "seventh": "Ricorda, conoscere qualcuno su Juxt non è come conoscerlo nella realtà. Non condividere con nessuno su Juxt il tuo indirizzo e-mail, di casa, nome della tua scuola o luogo di lavoro, o qualunque altra informazione personale, e lo stesso vale per le informazioni personali di qualcun altro. Inoltre, se qualcuno che conosci su Juxt ti offre di incontrarlo nel mondo reale, non accettare. Juxt è una comunità online e non deve essere usata per organizzare incontri nel mondo reale.",
             "eighth": "Non postare spoiler",
-            "ninth": "Alcune persone visitano Juxt per trovare suggerimenti e trucchi per i giochi, ma altre vogliono scoprire i segreti di un gioco da sole. Post che rivelano i segreti di un gioco o della sua storia sono detti \"spoiler\". Se stai postando qualcosa che potrebbe essere uno spoiler, assicurati di selezionare la casella Spoiler prima di inviare il tuo post. In questo modo il tuo post non sarà visibile agli utenti che non vogliono vedere spoiler.",
+            "ninth": "Alcune persone visitano Juxt per trovare suggerimenti e trucchi per i giochi, ma altre vogliono scoprire i segreti di un gioco da sole. I post che rivelano i segreti di un gioco o della sua storia sono detti \"spoiler\". Se stai postando qualcosa che potrebbe essere uno spoiler, assicurati di selezionare la casella Spoiler prima di inviare il tuo post. In questo modo il tuo post non sarà visibile agli utenti che non vogliono vedere spoiler.",
             "tenth": "Violazioni del Codice di Condotta",
             "eleventh": "Il nostro obiettivo è rendere Juxt divertente e piacevole per tutti. Nel caso in cui qualcuno violi il Codice di Condotta, prenderemo i provvedimenti opportuni, fino a bloccare l'utente o la console incriminati.",
             "twelfth": "Hai mai giocato a quel gioco?",
-            "thirteenth": "Se stai postando nel gruppo di un gioco a cui hai giocato, i tuoi post avranno un'icona per indicare che ci hai giocato."
+            "thirteenth": "Se crei un post nel gruppo di un gioco a cui hai giocato, i tuoi post avranno un'icona per indicare che ci hai giocato."
         },
         "experience": "Esperienza di gioco",
         "experience_text": {
@@ -93,11 +126,71 @@
             "intermediate": "Intermedio",
             "expert": "Esperto"
         },
-        "analytics": "Analytics",
+        "analytics": "Analisi",
         "analytics_text": "Juxtaposition utilizza Cloudflare Web Analytics per tracciare il modo in cui gli utenti utilizzano il nostro servizio. I dati raccolti includono ma non si limitano a: momento della visita, pagine visitate e tempo passato sul sito. Questi dati non sono ricollegabili a te in alcun modo, e non sono utilizzati per finalità pubblicitarie da noi o Cloudflare.",
         "ready": "Pronto a iniziare a usare Juxt",
         "ready_text": "Per prima cosa dai un'occhiata a qualche gruppo e scopri di cosa stanno parlando persone da tutto il mondo. Cogli questa opportunità per familiarizzarti con Juxt. Potresti fare nuove scoperte strada facendo!",
-        "done": "Divertiti in Juxt!",
-        "done_button": "Andiamo!"
+        "done": "Divertiti su Juxt!",
+        "done_button": "Andiamo!",
+        "title": "Configura Juxtaposition"
+    },
+    "login": {
+        "no_account": "Non hai un account?",
+        "login_action": "Accedi",
+        "username": "Nome utente",
+        "password": "Password",
+        "no_account_setup": "Puoi creare un account solo se hai una Wii U o un 3DS collegati.",
+        "heading": "Registrati su Juxtaposition",
+        "sub_title": "Inserisci le informazioni del tuo account qui sotto",
+        "forgot_password": "Hai dimenticato la password?",
+        "title": "Accedi a Juxtaposition"
+    },
+    "friend_requests": {
+        "none": "Nessuna richiesta di amicizia"
+    },
+    "post": {
+        "yeahs_count/one": "<count/> persona ha messo sìì al tuo post.",
+        "yeahs_count/multiple": "<count/> persone hanno messo sìì al tuo post.",
+        "show_spoiler": "Mostra Spoiler",
+        "reply_post": "Commenta",
+        "report_post": "Segnala post",
+        "title": "Post di {{username}}",
+        "heading": "Post",
+        "delete_post": "Elimina post",
+        "removed": "Il post è stato eliminato.",
+        "copy_link": "Copia link"
+    },
+    "reporting": {
+        "description": "Stai per segnalare un post il cui contenuto viola il Codice di Condotta di Juxtaposition. La segnalazione sarà inviata agli amministratori di Juxtaposition di Pretendo e non al creatore del post.",
+        "label": "Motivo:",
+        "additional_info_placeholder": "Commenti o informazioni aggiuntive",
+        "reason_spoiler": "Spoiler",
+        "reason_personal_info": "Informazioni personali",
+        "reason_violence": "Contenuto violento",
+        "reason_inappropiate": "Comportamento inappropriato/dannoso",
+        "reason_bullying": "Discriminazione/Minacce",
+        "reason_advertising": "Pubblicità",
+        "reason_nsfw": "Contenuti sessualmente espliciti",
+        "reason_piracy": "Pirateria",
+        "reason_inappropiate_ingame": "Comportamento scorretto nel gioco",
+        "reason_missing_images": "Immagini mancanti",
+        "title": "Segnala post",
+        "submit": "Invia segnalazione",
+        "reason_one": "altro",
+        "reason_many": "altri",
+        "reason_other": "altri"
+    },
+    "error": {
+        "title": "Errore {{code}}",
+        "heading": "Errore {{code}}: {{message}}",
+        "message_web": "Visualizza lo <status>stato del server</status>.<newline/>Oppure <home>torna al menù principale</home>",
+        "error_details": "ID richiesta: {{id}}",
+        "no_access": "Non hai l'autorizzazione per accedere a questa applicazione ({{code}})",
+        "message": "Ops! Sembra che la pagina che stai cercando non esista.<newline/>Controlla il link o riprova più tardi"
+    },
+    "moderation": {
+        "title": "Moderazione",
+        "silently_delete_post": "Elimina senza notifica",
+        "moderate_user": "Modera utente"
     }
 }
