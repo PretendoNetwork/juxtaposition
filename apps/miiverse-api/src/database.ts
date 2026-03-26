@@ -104,7 +104,6 @@ export async function getDuplicatePosts(pid: number, post: IPostInput): Promise<
 	return Post.findOne({
 		pid: pid,
 		body: post.body,
-		painting: post.painting,
 		screenshot: post.screenshot,
 		parent: null,
 		removed: false
