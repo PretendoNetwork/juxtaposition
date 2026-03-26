@@ -119,7 +119,6 @@ async function getDuplicatePosts(pid, post) {
 	return POST.findOne({
 		pid: pid,
 		body: post.body,
-		painting: post.painting,
 		screenshot: post.screenshot,
 		parent: null,
 		removed: false
