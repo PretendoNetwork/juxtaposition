@@ -393,7 +393,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		removed: false
 	};
 
-	const duplicatePost = await getDuplicatePosts(request.pid, document);
+	const maxDuplicatePostAgeMs = 5 * 60 * 1000;
+	const duplicatePost = await getDuplicatePosts(request.pid, document, maxDuplicatePostAgeMs);
 
 	if (duplicatePost) {
 		return badRequest(response, ApiErrorCode.NOT_ALLOWED_SPAM, 403);
