@@ -8,7 +8,7 @@
         "notifications": "알림",
         "go_back": "뒤로 가기",
         "back": "뒤로",
-        "yeahs": "당근이지",
+        "yeahs": "그렇지",
         "more": "게시물 더보기",
         "no_posts": "게시물 없음",
         "private": "비공개",
@@ -27,7 +27,10 @@
         "posts": "게시물",
         "tags": "태그",
         "recent": "최근 게시물",
-        "popular": "인기 게시물"
+        "popular": "인기 게시물",
+        "related": "관련된 커뮤니티",
+        "related_to": "{{community}}에 관련된 커뮤니티",
+        "closed": "이 커뮤니티는 더 이상 새로운 게시글을 받지 않습니다."
     },
     "user_page": {
         "country": "국가",
@@ -38,33 +41,52 @@
         "following": "팔로우 중",
         "followers": "팔로워",
         "follow_user": "팔로우",
-        "following_user": "팔로우 중"
+        "following_user": "팔로우 중",
+        "friend_requests": "요청",
+        "game_experience_unknown": "알 수 없음",
+        "settings": "설정",
+        "deleted": "삭제된 유저",
+        "banned": "정지된 유저"
     },
     "user_settings": {
         "profile_settings": "프로필 설정",
         "show_country": "프로필에 국가 표시",
         "show_birthday": "프로필에 생년월일 표시",
-        "show_game": "프로필에 게임 경험 표시"
+        "show_game": "프로필에 게임 경험 표시",
+        "save_action": "설정 저장",
+        "gdpr_download": "유저 데이터 다운로드",
+        "gdpr_download_action": "다운로드"
     },
     "activity_feed": {
         "empty": "아무도 없네요. 누군가를 팔로우 해 보세요!"
     },
     "notifications": {
-        "none": "알림 없음."
+        "none": "알림 없음.",
+        "new_follower/one": "<follower_one />이(가) 당신을 팔로우했어요!",
+        "new_follower/two": "<follower_one />, <follower_two />이(가) 당신을 팔로우했어요!",
+        "new_follower/three": "<follower_one />, <follower_two />, 그리고 {{count_other}}명이 당신을 팔로우했어요!",
+        "new_follower/multiple": "<follower_one />, <follower_two />, 그리고 {{count_other}}명이 당신을 팔로우했어요!"
     },
     "new_post": {
-        "post_to": "여기로 게시하기 {{user}}",
-        "swearing": "게시물에는 비속어를 사용 할 수 없습니다."
+        "post_to": "{{user}}에게 게시물 달기",
+        "swearing": "게시물에는 비속어를 사용 할 수 없습니다.",
+        "new_post_short": "게시물",
+        "content_placeholder": "당신의 팔로워들을 위해, 혹은 커뮤니티 게시물에 당신의 생각을 담아보세요.",
+        "screenshots_coming_soon": "스크린샷은 아직 지원되지 않습니다. 나중에 돌아와주세요!",
+        "no_screenshot": "스크린샷 없음",
+        "spoiler_label": "스포일러",
+        "painting_close": "취소",
+        "painting_submit": "확인"
     },
     "messages": {
-        "coming_soon": "응 아직 개발 안됨 ㅅㄱ 나중에 다시 와 보세요!"
+        "coming_soon": "메시지 없음"
     },
     "setup": {
         "welcome": "Juxtaposition에 오신 것을 환영합니다!",
         "welcome_text": "Juxt는 Mii 캐릭터를 사용하여 전 세계의 사람들을 잇는 게이밍 커뮤니티입니다. Juxt를 사용해서 게임 경험을 나누고, 전 세계의 사람들과 소통하세요.",
         "beta": "베타 테스트 주의",
         "beta_text": {
-            "first": "당신은 Juxt의 첫 공개 베타에 참가한다는 것을 잊지 마세요. 아직 버그들이 많을 것이며, 언제든지 모든 게 확 바뀔 수 있습니다.",
+            "first": "Pretendo Network 공개 베타에 오신 걸 환영합니다! 이미 첫 공개 베타로부터 상당히 바뀌었지만, Juxt는 아직 개발 중이고 많은 것들이 언제나 바뀔 수 있습니다.",
             "second": "베타 기간 중 혹은 종료 후에는 전체 데이터베이스가 삭제 될 수도 있습니다.",
             "third": "이 웹 사이트 및 그 소프트웨어, 그 외 모든 컨텐츠는 “있는 그대로” 및 “사용 가능한 상태로” 제공됩니다. Pretendo Network는 어떠한 웹사이트, 소프트웨어 또는 콘텐츠의 적합성 및 유용성에 대해 어떠한 명시적·묵시적 보증도 하지 않습니다."
         },
@@ -88,16 +110,49 @@
         },
         "experience": "게임 경험",
         "experience_text": {
-            "info": "당신의 게임에 관한 경험 레벨을 알려 주세요. 나중에도 이 설정은 변경할 수 있습니다.",
+            "info": "당신이 게임을 얼마나 경험했는지 알려 주세요. 나중에도 이 설정은 변경할 수 있습니다.",
             "beginner": "초급자",
             "intermediate": "중급자",
             "expert": "전문가"
         },
-        "analytics": "Analytics",
+        "analytics": "통계",
         "analytics_text": "Juxtaposition은 사용자들이 어떻게 저희의 서비스를 활용하고 있는지 트래킹하기 위해 Cloudflare Web Analytics를 사용합니다. 수집하고 있는 데이터는 방문 횟수, 방문 페이지, 사이트에서 보낸 시간 등을 포함합니다. 이 데이터는 당신과 어떠한 연결도 없으며, 저희나 Cloudflare의 광고에 쓰이지도 않습니다.",
         "ready": "Juxt 사용 준비 완료",
-        "ready_text": "먼저 유명한 커뮤니티부터 찾아보세요! 사람들이 뭘 올리는지 확인하고, 그리고 이번 기회에 사람들이 어떤 걸 하는지 찾아보세요. 새로운 발견이 될 수도 있으니까요!",
+        "ready_text": "처음엔 여러 커뮤니티를 돌아다니면서 전세계의 사람들이 어떠한 얘기를 하고 있는지 살펴보세요. 그리고 이 기회를 Juxt와 친해질 수 있는 기회로 삼으세요. 무언가 새로운 발견을 하실 수도 있어요!",
         "done": "Juxt에서 좋은 시간을 보내시기 바랍니다!",
-        "done_button": "가자!"
+        "done_button": "가자!",
+        "title": "Juxtaposition 첫 설정"
+    },
+    "friend_requests": {
+        "none": "친구 요청 없음"
+    },
+    "post": {
+        "title": "{{username}}이(가) 쓴 글",
+        "heading": "게시물",
+        "yeahs_count/one": "<count/>명의 사람들이 이 게시물에 그렇지를 보냈습니다.",
+        "yeahs_count/multiple": "<count/>명의 사람들이 이 게시물에 그렇지를 보냈습니다.",
+        "show_spoiler": "스포일러 보이기",
+        "reply_post": "댓글",
+        "report_post": "게시물 신고하기",
+        "delete_post": "게시물 삭제하기",
+        "removed": "게시물이 삭제되었습니다.",
+        "copy_link": "주소 복사"
+    },
+    "reporting": {
+        "title": "게시물 신고하기",
+        "submit": "신고 제출",
+        "description": "당신은 Juxtaposition의 규칙을 위반하는 게시물을 신고하고 계십니다. 이 신고는 게시물의 작성자가 아닌, Pretendo의 Juxtaposition 관리자들에게 보내집니다.",
+        "label": "이유:",
+        "additional_info_placeholder": "추가적인 정보를 적으세요",
+        "reason_spoiler": "스포일러",
+        "reason_personal_info": "개인정보",
+        "reason_violence": "잔혹한·폭력적인 컨텐츠",
+        "reason_inappropiate": "부적절하거나 피해를 일으키는 행위",
+        "reason_bullying": "혐오/차별",
+        "reason_advertising": "광고",
+        "reason_nsfw": "성적인 유해함",
+        "reason_piracy": "불법 복제",
+        "reason_inappropiate_ingame": "게임에서의 부적절한 행위",
+        "reason_missing_images": "이미지가 없음"
     }
 }
