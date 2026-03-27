@@ -488,7 +488,8 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		verified: res.locals.moderator,
 		parent: parentPost ? parentPost.id : null
 	};
-	const duplicatePost = await database.getDuplicatePosts(auth().pid, document);
+	const maxDuplicatePostAgeMs = 5 * 60 * 1000;
+	const duplicatePost = await database.getDuplicatePosts(auth().pid, document, maxDuplicatePostAgeMs);
 	if (duplicatePost && params.post_id) {
 		return res.redirect('/posts/' + params.post_id.toString());
 	}

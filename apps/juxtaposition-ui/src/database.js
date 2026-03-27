@@ -114,13 +114,16 @@ async function getPostReplies(postID, number) {
 	}).limit(number);
 }
 
-async function getDuplicatePosts(pid, post) {
+async function getDuplicatePosts(pid, post, olderThanMs) {
 	verifyConnected();
 	return POST.findOne({
 		pid: pid,
 		body: post.body,
-		painting: post.painting,
 		screenshot: post.screenshot,
+		painting: post.painting,
+		created_at: {
+			$gte: new Date(Date.now() - olderThanMs)
+		},
 		parent: null,
 		removed: false
 	});

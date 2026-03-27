@@ -98,14 +98,17 @@ export async function getPostReplies(postID: string, limit: number): Promise<Hyd
 	}).limit(limit);
 }
 
-export async function getDuplicatePosts(pid: number, post: IPostInput): Promise<HydratedPostDocument | null> {
+export async function getDuplicatePosts(pid: number, post: IPostInput, olderThanMs: number): Promise<HydratedPostDocument | null> {
 	verifyConnected();
 
 	return Post.findOne({
 		pid: pid,
 		body: post.body,
-		painting: post.painting,
 		screenshot: post.screenshot,
+		painting: post.painting,
+		created_at: {
+			$gte: new Date(Date.now() - olderThanMs)
+		},
 		parent: null,
 		removed: false
 	});
