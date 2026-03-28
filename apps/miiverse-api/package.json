@@ -47,7 +47,7 @@
 		"@types/newman": "^5.3.4",
 		"@types/pako": "^2.0.4",
 		"@types/supertest": "^7.2.0",
-		"axios": "^1.13.5",
+		"axios": "^1.13.6",
 		"eslint": "^9.39.4",
 		"newman": "^6.2.2",
 		"ora": "^9.3.0",
