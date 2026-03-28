@@ -27,11 +27,15 @@ import type { CommunityShotMode, HydratedCommunityDocument } from '@/types/mongo
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 import type { ParamPack } from '@/types/common/param-pack';
 
+// TODO - Is this the best place to put constants like these?
+const APP_DATA_MAX_SIZE = 0x400; // * Real name is `nn::olv::APP_DATA_MAX_SIZE`
+
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
-	app_data: z.string().optional(),
-	painting: z.string().optional(),
-	screenshot: z.string().optional(),
+	// TODO - This will trigger the generic `ApiErrorCode.BAD_PARAMS` error when the size check fails, is there a specific error code for this case?
+	app_data: z.string().base64().refine((appData: string) => Buffer.from(appData, 'base64').length <= APP_DATA_MAX_SIZE).optional(),
+	painting: z.string().base64().optional(),
+	screenshot: z.string().base64().optional(),
 	body: z.string().optional(),
 	feeling_id: z.string(),
 	search_key: z.string().array().or(z.string()).optional(),
