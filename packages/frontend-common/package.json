@@ -1,0 +1,21 @@
+{
+    "name": "@repo/frontend-common",
+    "private": true,
+    "version": "0.0.0",
+    "description": "Frontend code reused by all platforms",
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc -p tsconfig.json && npm run lint",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "preinstall": "npm run build"
+    },
+    "devDependencies": {
+        "@pretendonetwork/eslint-config": "^0.1.4",
+        "typescript": "^5.9.3",
+        "eslint": "^9.39.3",
+        "globals": "^17.4.0"
+    }
+}
