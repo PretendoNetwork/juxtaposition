@@ -20,6 +20,7 @@ import { Community } from '@/models/community';
 import { config } from '@/config';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import { uploadPainting, uploadScreenshot } from '@/images';
+import { cleanedBase64 } from '@/zodUtils';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
@@ -27,15 +28,13 @@ import type { CommunityShotMode, HydratedCommunityDocument } from '@/types/mongo
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 import type { ParamPack } from '@/types/common/param-pack';
 
-// TODO - Is this the best place to put constants like these?
-const APP_DATA_MAX_SIZE = 0x400; // * Real name is `nn::olv::APP_DATA_MAX_SIZE`
+const APP_DATA_MAX_SIZE = 1024; // * 0x400 - Real name is `nn::olv::APP_DATA_MAX_SIZE`
 
 const newPostSchema = z.object({
 	community_id: z.string().optional(),
-	// TODO - This will trigger the generic `ApiErrorCode.BAD_PARAMS` error when the size check fails, is there a specific error code for this case?
-	app_data: z.string().base64().refine((appData: string) => Buffer.from(appData, 'base64').length <= APP_DATA_MAX_SIZE).optional(),
-	painting: z.string().base64().optional(),
-	screenshot: z.string().base64().optional(),
+	app_data: cleanedBase64(APP_DATA_MAX_SIZE).optional(),
+	painting: cleanedBase64().optional(),
+	screenshot: cleanedBase64().optional(),
 	body: z.string().optional(),
 	feeling_id: z.string(),
 	search_key: z.string().array().or(z.string()).optional(),
@@ -261,9 +260,9 @@ async function newPost(request: express.Request, response: express.Response): Pr
 
 	const communityID = bodyCheck.data.community_id || '';
 	const messageBody = bodyCheck.data.body?.trim();
-	const painting = bodyCheck.data.painting?.replace(/\0/g, '').trim() || '';
-	const screenshot = bodyCheck.data.screenshot?.replace(/\0/g, '').trim() || '';
-	const appData = bodyCheck.data.app_data?.replace(/[^A-Za-z0-9+/=\s]/g, '').trim() || '';
+	const painting = bodyCheck.data.painting?.toString('base64') ?? '';
+	const screenshot = bodyCheck.data.screenshot?.toString('base64') ?? '';
+	const appData = bodyCheck.data.app_data?.toString('base64') ?? '';
 	const feelingID = parseInt(bodyCheck.data.feeling_id);
 	let searchKey = bodyCheck.data.search_key || [];
 	const topicTag = bodyCheck.data.topic_tag || '';
