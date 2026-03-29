@@ -14,6 +14,13 @@ export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode 
 					<form method="post" action="/users/me/settings" id="settings-form">
 						<div className="settings-list-content">
 							<ul className="settings-list">
+								<li data-name="profile_visibility" className="scroll">
+									<p className="settings-label"><T k="user_settings.show_profile" /></p>
+									<label className="checkbox-container">
+										<input type="checkbox" id="profile" name="profile" value="true" checked={!!props.userSettings?.profile_visibility} />
+										<span className="checkmark"></span>
+									</label>
+								</li>
 								<li data-name="profile_comment_visibility" className="scroll">
 									<p className="settings-label"><T k="user_settings.show_country" /></p>
 									<label className="checkbox-container">

@@ -20,6 +20,13 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 					<div className="tab-body">
 						<form method="post" action="/users/me/settings" id="settings-form">
 							<ul className="list-content-with-icon-column settings-list">
+								<li data-name="profile_visibility" className="scroll">
+									<label className="checkbox-container" htmlFor="country">
+										<p className="settings-label">{props.ctx.lang.user_settings.show_profile}</p>
+										<input type="checkbox" id="profile" name="profile" value="true" checked={!!props.userSettings?.profile_visibility} />
+										<span className="checkmark"></span>
+									</label>
+								</li>
 								<li data-name="profile_comment_visibility" className="scroll">
 									<label className="checkbox-container" htmlFor="country">
 										<p className="settings-label"><T k="user_settings.show_country" /></p>
