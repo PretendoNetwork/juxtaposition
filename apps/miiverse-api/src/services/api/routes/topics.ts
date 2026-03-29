@@ -16,6 +16,7 @@ const WARA_WARA_PLAZA_CACHE = new Cache<WWPResult>(ONE_HOUR);
 /* GET post titles. */
 router.get('/', async function (request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
+	response.set('Cache-Control', 'public, max-age=3600'); // * 1 hour
 
 	// * Commented out for now because we just don't
 	// * need this data here. WWP does not use the
