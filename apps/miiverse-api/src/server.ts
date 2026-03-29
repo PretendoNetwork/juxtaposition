@@ -70,7 +70,7 @@ app.use((error: unknown, request: express.Request, response: express.Response, n
 		return next(error);
 	}
 
-	request.log.error(request, 'Request failed!');
+	request.log.error(error, 'Request failed!');
 	return serverError(response, ApiErrorCode.UNKNOWN_ERROR);
 });
 
