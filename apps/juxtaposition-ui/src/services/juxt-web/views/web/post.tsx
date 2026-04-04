@@ -143,7 +143,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebUIIcon name="bin" />
 										{' '}
-										{isModerator ? <T k="moderation.silently_delete_post" /> : <T k="post.report_post" />}
+										{isModerator ? <T k="moderation.silently_delete_post" /> : <T k="post.delete_post" />}
 									</li>
 								)
 							: null}
