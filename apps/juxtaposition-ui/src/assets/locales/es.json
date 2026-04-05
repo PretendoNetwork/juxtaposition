@@ -40,7 +40,8 @@
         "followers_count": "{{count}} seguidores",
         "related": "Otras comunidades",
         "related_to": "Otras comunidades de {{community}}",
-        "closed": "Esta comunidad está cerrada a nuevos mensajes."
+        "closed": "Esta comunidad está cerrada a nuevos mensajes.",
+        "tags_not_applicable": "N/A"
     },
     "user_page": {
         "country": "País",
@@ -85,7 +86,8 @@
         "screenshots_coming_soon": "La función de capturas no está lista. ¡Vuelve más tarde!",
         "new_post_short": "Publicar",
         "content_placeholder": "Toca aquí para escribir un mensaje.",
-        "painting_submit": "Aceptar"
+        "painting_submit": "Aceptar",
+        "no_screenshot": "No hay capturas"
     },
     "messages": {
         "coming_soon": "No hay mensajes"
@@ -129,7 +131,8 @@
         "ready": "Listo para usar Juxt",
         "ready_text": "Primero, revisa algunas comunidades y mira las publicaciones de personas de todo el mundo. Aprovecha esta oportunidad para familiarizarte con Juxt. ¡Podrías hacer nuevos descubrimientos en el camino!",
         "done": "¡A disfrutar de Juxt!",
-        "done_button": "¡Vamos!"
+        "done_button": "¡Vamos!",
+        "title": "Configuración de Juxtaposition"
     },
     "error": {
         "message": "¡Vaya! Parece que no hemos podido encontrar lo que buscas.<newline/>Comprueba el enlace o intenta de nuevo más tarde",
@@ -148,7 +151,8 @@
         "show_spoiler": "Ver revelación",
         "removed": "El mensaje ha sido eliminado.",
         "heading": "Publicar",
-        "delete_post": "Eliminar"
+        "delete_post": "Eliminar",
+        "copy_link": "Copiar enlace"
     },
     "login": {
         "username": "Nombre de usuario",

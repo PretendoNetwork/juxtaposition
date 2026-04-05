@@ -99,5 +99,16 @@
     },
     "messages": {
         "coming_soon": "L'opció Missatges encara no està preparada. Torna-ho a comprovar aviat!"
+    },
+    "login": {
+        "username": "Nom d'usuari",
+        "password": "Contrasenya",
+        "forgot_password": "¿Has oblidat la teva contrasenya?",
+        "no_account": "¿No tens cap compte?",
+        "login_action": "Iniciar sessió",
+        "no_account_setup": "La creació de comptes només estarà disponible quan hagis vinculat una Wii U o 3DS."
+    },
+    "error": {
+        "title": "Codi d'error: {{code}}"
     }
 }
