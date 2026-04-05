@@ -166,7 +166,7 @@
         "sub_title": "Introduce tus datos de acceso"
     },
     "reporting": {
-        "description": "Estás a punto de denunciar un mensaje que viola el Código de conducta de Juxtaposition. La denuncia será enviada a los adminstradores de Juxtaposition de Pretendo y no al creador del mensaje.",
+        "description": "Estás a punto de denunciar un mensaje que viola el Código de conducta de Juxtaposition. La denuncia será enviada a los administradores de Juxtaposition de Pretendo y no al creador del mensaje.",
         "label": "Motivo:",
         "additional_info_placeholder": "Introduce comentarios o información adicionales",
         "reason_spoiler": "Revelación",
