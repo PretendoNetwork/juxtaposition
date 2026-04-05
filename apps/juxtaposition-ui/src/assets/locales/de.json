@@ -22,7 +22,9 @@
         "updates": "Neuigkeiten",
         "notifications_and_messages": "Benachrichtigungen und Nachrichten",
         "search": "Suche...",
-        "global_feed_short": "Global"
+        "global_feed_short": "Global",
+        "people_feed": "Nutzer-Feed",
+        "people_feed_short": "Folge ich"
     },
     "all_communities": {
         "text": "Alle Communitys",
