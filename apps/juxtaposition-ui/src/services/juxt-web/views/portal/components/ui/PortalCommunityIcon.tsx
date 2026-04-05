@@ -7,7 +7,7 @@ export function PortalCommunityIcon(props: CommunityIconProps): ReactNode {
 	const url = useUrl();
 	const imageId = props.community.parent ? props.community.parent : props.community.olive_community_id;
 	const iconUrl = props.community.icon_paths ? url.cdn(props.community.icon_paths[props.size]) : url.cdn(`/icons/${imageId}/${props.size}.png`);
-	const href = `/communities/${props.community.community_id}`;
+	const href = `/communities/${props.community.olive_community_id}`;
 
 	return (
 		<PortalIcon
