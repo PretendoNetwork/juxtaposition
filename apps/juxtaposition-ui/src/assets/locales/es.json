@@ -182,7 +182,7 @@
         "submit": "Enviar denuncia",
         "title": "Denunciar mensaje",
         "reason_one": "",
-        "reason_many": "",
+        "reason_many": "Otro",
         "reason_other": ""
     },
     "friend_requests": {
