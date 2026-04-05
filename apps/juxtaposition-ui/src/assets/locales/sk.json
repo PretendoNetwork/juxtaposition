@@ -2,38 +2,57 @@
     "language": "Slovenčina",
     "global": {
         "communities": "Komunity",
-        "notifications": "Pripomienky",
+        "notifications": "Upozornenia",
         "private": "Súkromné",
         "close": "Zavrieť",
         "save": "Uložiť",
         "exit": "Ukončiť",
-        "next": "Ďalší",
-        "no_posts": "Žiadne príspevky",
+        "next": "Ďalej",
+        "no_posts": "Žiadne Príspevky",
         "messages": "Správy",
-        "user_page": "Používateľská stránka",
-        "activity_feed": "Informačný kanál aktivity",
+        "user_page": "Uživateľská Stránka",
+        "activity_feed": "Prehľad Aktivity",
         "go_back": "Choď späť",
         "back": "Späť",
-        "more": "Načítať ďalšie príspevky",
-        "yeahs": ""
+        "more": "Načítať Ďalšie Príspevky",
+        "yeahs": "Yeahy",
+        "people_feed_short": "Ľudia",
+        "friend_requests": "Žiadosti o Priateľstvo",
+        "my_feed": "Moja Aktivita",
+        "global_feed": "Globálna Aktivita",
+        "global_feed_short": "Globálny",
+        "people_feed": "Aktivita Ľudí",
+        "updates": "Aktualizácie",
+        "notifications_and_messages": "Upozornenia a Správy",
+        "search": "Vyhľadávať..."
     },
     "community": {
-        "followers": "Odoberatelia",
+        "followers": "Sledujúci",
         "posts": "Príspevky",
-        "recent": "Čerstvé príspevky",
-        "popular": "Populárne príspevky",
-        "tags": "Tagy"
+        "recent": "Nedávne Príspevky",
+        "popular": "Populárne Príspevky",
+        "tags": "Štítky",
+        "followers_count": "{{count}} sledovateľov",
+        "tags_not_applicable": "Nie je k dispozícii",
+        "related": "Príbuzné Komunity",
+        "related_to": "{{community}} Príbuzných Komunít",
+        "closed": "Táto komunita je uzavretá pre nové príspevky."
     },
     "user_page": {
         "country": "Krajina",
         "friends": "Priatelia",
-        "following": "Odoberané",
-        "followers": "Odoberatelia",
-        "follow_user": "Odoberať",
-        "following_user": "Odoberané",
+        "following": "Sledované",
+        "followers": "Sledujúci",
+        "follow_user": "Sledovať",
+        "following_user": "Sledované",
         "posts": "Príspevky",
-        "birthday": "Dátum narodenia",
-        "game_experience": "Herný zážitok"
+        "birthday": "Narodeniny",
+        "game_experience": "Skúsenosť s Hrami",
+        "settings": "Nastavenia",
+        "game_experience_unknown": "Neznáme",
+        "friend_requests": "Žiadosti",
+        "deleted": "Vymazaný Uživateľ",
+        "banned": "Zakázaný Uživazeľ"
     },
     "all_communities": {
         "text": "Všetky komunity",
@@ -41,63 +60,137 @@
         "new_communities": "Nové komunity"
     },
     "user_settings": {
-        "profile_settings": "Nastavenia profilu",
-        "show_country": "Ukázať krajinu na profile",
-        "show_birthday": "Ukázať dátum narodenia na profile",
-        "show_game": "Zobraziť herný zážitok na profile"
+        "profile_settings": "Nastavenia Profilu",
+        "show_country": "Zobraziť Krajinu na Profile",
+        "show_birthday": "Zobraziť Dátum Narodenia na Profile",
+        "show_game": "Zobraziť Hernú Skúsenosť na Profile",
+        "save_action": "Uložiť Nastavenia",
+        "gdpr_download_action": "Stiahnuť",
+        "gdpr_download": "Stiahnť Uživateľské Údaje"
     },
     "notifications": {
-        "none": "Žiadne pripomienky."
+        "none": "Žiadne upozornenia.",
+        "new_follower/one": "<follower_one /> Vás začal/-a sledovať!",
+        "new_follower/two": "<follower_one />, <follower_two /> Vás začali sledovať!",
+        "new_follower/three": "<follower_one />, <follower_two />, a {{count_other}} ďalší Vás začali sledovať!",
+        "new_follower/multiple": "<follower_one />, <follower_two />, a {{count_other}} ďalších Vás začali sledovať!"
     },
     "new_post": {
-        "swearing": "Príspevok nemôže obsahovať nadávky.",
-        "post_to": "Uverejniť na {{user}}"
+        "swearing": "Príspevok nemôže obsahovať nevhodné výrazy.",
+        "post_to": "Uverejniť na {{user}}",
+        "no_screenshot": "Žiadna Snímka Obrazovky",
+        "painting_close": "Zrušiť",
+        "painting_submit": "OK",
+        "new_post_short": "Príspevok",
+        "content_placeholder": "Zdieľajte Vaše myšlienky v príspevku pre komunity alebo pre Vašich sledovateľov.",
+        "screenshots_coming_soon": "Snímky obrazovky ešte nie sú pripravené. Skúste to znova neskôr!",
+        "spoiler_label": "Spojler"
     },
     "setup": {
         "welcome": "Vitajte v Juxtaposition!",
         "info": "Čo je Juxtaposition?",
         "rules": "Pravidlá Juxta",
         "rules_text": {
-            "eighth": "Neposielajte spoilery",
+            "eighth": "Neposielajte Spojlery",
             "third": "Juxt obsahuje mnoho herných komunít, kde môžu ľudia z celého sveta zdieľať svoje myšlienky. Keď uverejňujete príspevok v komunite, pamätajte na to, že ho môže vidieť každý, preto sa prosím vyjadrite spôsobom, ktorý bude baviť každého. Použite zdravý rozum a premýšľajte skôr, ako uverejníte príspevok. Juxt je služba, ktorá je dostupná aj z internetu, takže majte na pamäti, že vaše príspevky môžu vidieť aj ľudia, ktorí nepoužívajú Juxt. Navyše, všetky komentáre, ktoré pridáte k príspevkom svojich priateľov, uvidia nielen vaši priatelia, ale aj ľudia na celom svete. Majte to prosím na pamäti.",
             "seventh": "Pamätajte, že poznať niekoho v Juxte nie je to isté ako poznať ho v skutočnom živote. Nikdy nezdieľajte svoju e-mailovú adresu, domácu adresu, meno do práce alebo školy ani iné osobné identifikačné údaje s nikým na Juxt a nikdy nezdieľajte informácie nikoho iného. Navyše, ak vás niekto, koho stretnete v Juxte, pozve, aby ste sa s ním stretli v skutočnom svete, neprijmite ho. Juxt je online komunita a nemala by sa používať na organizovanie stretnutí v reálnom svete.",
-            "ninth": "Niektorí ľudia prichádzajú do Juxtu hľadať tipy a triky pre hry, no iní chcú objaviť tajomstvá hry úplne sami. Príspevky, ktoré odhaľujú tajomstvá hry alebo jej príbeh, sa nazývajú „spoilery“. Ak uverejňujete niečo o hre, ktorá by mohla byť spoilerom, pred odoslaním príspevku nezabudnite zaškrtnúť políčko Spoilers. Týmto spôsobom ľudia, ktorí nechcú byť rozmaznaní, neuvidia váš príspevok.",
+            "ninth": "Niektorí ľudia prichádzajú do Juxtu hľadať tipy a triky pre hry, no iní chcú objaviť tajomstvá hry úplne sami. Príspevky, ktoré odhaľujú tajomstvá hry alebo jej príbeh, sa nazývajú „spojlery“. Ak uverejňujete niečo o hre, ktorá by mohla byť spojlerom, pred odoslaním príspevku nezabudnite zaškrtnúť políčko Spojlery. Týmto spôsobom ľudia, ktorí nechcú byť rozmaznaní, neuvidia váš príspevok.",
             "first": "Nasleduje niekoľko dôležitých pokynov na to, aby bol Juxt zábavný a príjemný pre každého. Etický kódex Juxt obsahuje podrobné informácie, preto si ho pozorne prečítajte.",
             "second": "Príspevky je možné prezerať po celom svete",
             "fourth": "Buďte k sebe milí",
             "fifth": "Aby bol Juxt zábavným miestom pre každého, žiadame vás, aby ste boli ohľaduplní k ostatným používateľom. Pomôžte nám udržať Juxt príjemný zážitok tým, že nebudete uverejňovať nič nevhodné alebo urážlivé.",
             "sixth": "Neuverejňujte osobné informácie – vaše alebo iných",
-            "tenth": "Porušenie kódexu správania",
-            "eleventh": "Naším cieľom je, aby bol Juxt zábavný a príjemný pre každého. V prípade, že niekto poruší Etický kódex Juxt, podnikneme príslušné kroky, vrátane zablokovania porušujúceho používateľa alebo konzoly.",
-            "twelfth": "Hrali ste túto hru?",
+            "tenth": "Porušenie Pravidiel",
+            "eleventh": "Naším cieľom je, aby bol Juxt zábavný a príjemný pre každého. V prípade, že niekto poruší Pravidlá Juxt, podnikneme príslušné kroky, vrátane zablokovania porušujúceho používateľa alebo konzoly.",
+            "twelfth": "Hrali Ste Túto Hru?",
             "thirteenth": "Ak uverejňujete príspevok v komunite pre hru, ktorú ste hrali, vaše príspevky budú mať ikonu označujúcu, že ste ju hrali."
         },
         "experience_text": {
             "beginner": "Začiatočník",
-            "expert": "Expert",
+            "expert": "Pokročilý",
             "info": "Povedzte nám, ako by ste opísali úroveň svojich skúseností s hrami. Toto nastavenie môžete neskôr zmeniť.",
             "intermediate": "Stredne pokročilý"
         },
-        "ready": "Pripavený začať používať Juxt",
-        "done_button": "Poďme do toho!",
+        "ready": "Pripavený Začať Používať Juxt",
+        "done_button": "Poďme Do Toho!",
         "beta_text": {
-            "first": "Chystáte sa vyskúšať prvú verejnú beta verziu Juxtu. To znamená, že veľa je stále vo vzduchu a veľa sa môže kedykoľvek zmeniť.",
+            "first": "Vytajte vo Verejnej Beta Sieti Pretendo! Napriek tomu ze sa veľa vecí zmenilo od prvej verejnej bety, Juxt je stále v procese vývoja a veľa sa môže kedykoľvek zmeniť.",
             "third": "Webová lokalita, jej softvér a všetok obsah, ktorý sa na nej nachádza, sú poskytované „tak ako sú“ a „ako sú dostupné“. Sieť Pretendo neposkytuje žiadne záruky, či už výslovné alebo predpokladané, pokiaľ ide o vhodnosť alebo použiteľnosť webovej stránky, jej softvéru alebo akéhokoľvek obsahu.",
-            "second": "To môže a môže zahŕňať úplné vymazanie databázy na konci alebo počas beta obdobia."
+            "second": "To môže zahŕňať úplné vymazanie databázy na konci alebo počas obdobia bety."
         },
         "welcome_text": "Juxt je herná komunita, ktorá spája ľudí z celého sveta pomocou postavičiek Mii. Pomocou Juxt môžete zdieľať svoje herné zážitky a stretnúť sa s ľuďmi z celého sveta.",
-        "beta": "Vyhlásenie beta verzie",
+        "beta": "Odmietnutie Zodpovednosti za Beta Verziu",
         "info_text": "Juxt je herná komunita riadená používateľmi, kde môžete komunikovať s ľuďmi\n                po celom svete. Môžete písať alebo kresliť príspevky v herných komunitách alebo posielať správy priamo svojim priateľom.",
         "ready_text": "Najprv si pozrite niektoré komunity a zistite, o čom píšu ľudia z celého sveta. Využite túto príležitosť a zoznámte sa s Juxtom. Na ceste môžete urobiť nejaké nové objavy!",
-        "experience": "Herný zážitok",
-        "analytics": "Analytics",
+        "experience": "Skúsenosť s hrami",
+        "analytics": "Analytické údaje",
         "analytics_text": "Juxtaposition používa Cloudflare Web Analytics na sledovanie toho, ako používatelia používajú našu službu. Zhromaždené údaje zahŕňajú, ale nie sú obmedzené na čas návštevy, navštívené stránky a čas strávený na stránke. Tieto údaje sa k vám žiadnym spôsobom nepripájajú a nepoužívajú sa ani my, ani spoločnosť Cloudflare.",
-        "done": "Bavte sa v Juxte!"
+        "done": "Užite si Juxt!",
+        "title": "Nastavenie Juxtaposition"
     },
     "activity_feed": {
-        "empty": "Je to tu prázdne. Skúste niekoho odoberať!"
+        "empty": "Je to tu prázdne. Skúste niekoho sledovať!"
     },
     "messages": {
-        "coming_soon": "Správy ešte nie sú pripravené. Vráťte sa sem čoskoro!"
+        "coming_soon": "Žiadne Správy"
+    },
+    "login": {
+        "password": "Heslo",
+        "title": "Prihlásenie Juxtaposition",
+        "heading": "Registrovanie Juxtaposition",
+        "sub_title": "Zadajte detaily Vášho účtu",
+        "username": "Uživateľské meno",
+        "forgot_password": "Zabudli ste heslo?",
+        "no_account": "Nemáte účet?",
+        "login_action": "Prihlásenie",
+        "no_account_setup": "Vytvorenie Účtu je dostupné iba ak máte pripojené Wii U alebo 3DS."
+    },
+    "error": {
+        "title": "Chyba {{code}}",
+        "heading": "Chyba {{code}}: {{message}}",
+        "message": "Ups! Vyzerá že sme nenašli stránku, ktorú hľadáte.<newline/>Skontrolujte či je odkaz správny alebo to skúste znova neskôr",
+        "no_access": "Nemáte oprávnenie na prístup k tejto aplikácii ({{code}})",
+        "message_web": "Zobraziť aktuálny <status>stav servera</status>.<newline/>Alebo <home>sa vráťte na domovskú stránku</home>",
+        "error_details": "ID žiadosti: {{id}}"
+    },
+    "post": {
+        "reply_post": "Odpovedať",
+        "report_post": "Nahlásiť príspevok",
+        "delete_post": "Odstrániť príspevok",
+        "removed": "Príspevok bol odstránený.",
+        "copy_link": "Kopírovať odkaz",
+        "title": "Príspevok od {{username}}",
+        "heading": "Príspevok",
+        "show_spoiler": "Zobraziť Spojler",
+        "yeahs_count/one": "<count/> človek dal tomuto pŕispevku yeah.",
+        "yeahs_count/multiple": "<count/> ľudí dalo tomuto pŕispevku yeah."
+    },
+    "reporting": {
+        "label": "Dôvod:",
+        "reason_personal_info": "Osobné Informácie",
+        "reason_violence": "Násilný Obsah",
+        "title": "Nahlásiť Príspevok",
+        "submit": "Podať Správu",
+        "description": "Chystáte sa nahlásiť príspevok s obsahom, ktorý porušuje Kódex Správania Juxtaposition. Toto nahlásenie bude odoslané administrátorom Juxstaposition z Pretenda, nie autorovi príspevku.",
+        "additional_info_placeholder": "Zadajte ďalšie komentáre alebo informácie",
+        "reason_spoiler": "Spojler",
+        "reason_inappropiate": "Nevhodné/Škodlivé Správanie",
+        "reason_bullying": "Nenávistný/Šikanujúci",
+        "reason_advertising": "Reklamný",
+        "reason_nsfw": "Sexuálne Explicitný",
+        "reason_piracy": "Pirátstvo",
+        "reason_inappropiate_ingame": "Nevhodné Správanie v Hre",
+        "reason_missing_images": "Chýbajúce Obrázky",
+        "reason_one": "Jeden",
+        "reason_few": "Viacero",
+        "reason_other": "Veľa"
+    },
+    "friend_requests": {
+        "none": "Žiadne Žiadosti o Priateľstvo"
+    },
+    "moderation": {
+        "title": "Moderovanie",
+        "silently_delete_post": "Ticho vymazať",
+        "moderate_user": "Moderovať Používateľa"
     }
 }

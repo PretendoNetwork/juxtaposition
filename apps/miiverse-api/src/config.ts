@@ -52,7 +52,11 @@ const schema = z.object({
 			port: z.coerce.number().default(8125),
 			apiKey: z.string()
 		})
-	})
+	}),
+	domains: z.object({
+		api: z.hostname().default('api.olv.pretendo.cc'),
+		discovery: z.hostname().default('discovery.olv.pretendo.cc')
+	}).prefault({})
 });
 
 export const presets: Record<string, any> = {

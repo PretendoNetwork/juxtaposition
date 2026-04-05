@@ -19,6 +19,7 @@ import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newComm
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
 import { zodCommaSeperatedList } from '@/services/juxt-web/routes/schemas';
+import type { ICommunityInput, IIconPaths } from '@/models/communities';
 import type { ReportWithPost } from '@/services/juxt-web/views/web/admin/reportListView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
@@ -463,8 +464,15 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		return res.sendStatus(422);
 	}
 
-	const document = {
-		platform_id: body.platform,
+	const iconPaths: IIconPaths = {
+		32: icons.icon32,
+		48: icons.icon48,
+		64: icons.icon64,
+		96: icons.icon96,
+		128: icons.icon128
+	};
+	const document: ICommunityInput = {
+		platform_id: Number(body.platform),
 		name: body.name,
 		description: body.description,
 		open: true,
@@ -479,6 +487,7 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		icon: icons.tgaBlob,
 		ctr_header: headers.ctr,
 		wup_header: headers.wup,
+		icon_paths: iconPaths,
 		title_id: body.title_ids,
 		community_id: communityId,
 		olive_community_id: communityId,
@@ -493,19 +502,19 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 
 	updateCommunityHash(newCommunity);
 
-	const communityType = getCommunityType(document.type);
-	const communityPlatform = getCommunityPlatform(document.platform_id);
+	const communityType = getCommunityType(newCommunity.type);
+	const communityPlatform = getCommunityPlatform(newCommunity.platform_id);
 	const changes = [];
 
-	changes.push(`Name set to "${document.name}"`);
-	changes.push(`Description set to "${document.description}"`);
+	changes.push(`Name set to "${newCommunity.name}"`);
+	changes.push(`Description set to "${newCommunity.description}"`);
 	changes.push(`Platform ID set to "${communityPlatform}"`);
 	changes.push(`Type set to "${communityType}"`);
-	changes.push(`Title IDs set to "${document.title_id.join(', ')}"`);
-	changes.push(`Parent set to "${document.parent}"`);
-	changes.push(`App data set to "${document.app_data}"`);
-	changes.push(`Is Recommended set to "${document.is_recommended}"`);
-	changes.push(`Has Shop Page set to "${document.has_shop_page}"`);
+	changes.push(`Title IDs set to "${newCommunity.title_id.join(', ')}"`);
+	changes.push(`Parent set to "${newCommunity.parent}"`);
+	changes.push(`App data set to "${newCommunity.app_data}"`);
+	changes.push(`Is Recommended set to "${newCommunity.is_recommended}"`);
+	changes.push(`Has Shop Page set to "${newCommunity.has_shop_page}"`);
 
 	const fields = [
 		'name',
@@ -613,11 +622,21 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		}
 	}
 
-	const document = {
+	const iconPaths: IIconPaths | undefined = icons
+		? {
+				32: icons.icon32,
+				48: icons.icon48,
+				64: icons.icon64,
+				96: icons.icon96,
+				128: icons.icon128
+			}
+		: undefined;
+	const document: Partial<ICommunityInput> = {
 		type: body.type,
 		has_shop_page: body.has_shop_page,
-		platform_id: body.platform,
+		platform_id: Number(body.platform),
 		icon: icons?.tgaBlob ?? oldCommunity.icon,
+		icon_paths: iconPaths,
 		ctr_header: headers?.ctr ?? oldCommunity.ctr_header,
 		wup_header: headers?.wup ?? oldCommunity.wup_header,
 		title_id: body.title_ids,

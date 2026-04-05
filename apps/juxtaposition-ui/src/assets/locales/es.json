@@ -15,7 +15,16 @@
         "close": "Cerrar",
         "save": "Guardar",
         "exit": "Salir",
-        "next": "Siguiente"
+        "next": "Siguiente",
+        "friend_requests": "Solicitudes de amistad",
+        "search": "Buscar...",
+        "notifications_and_messages": "Notificaciones y Mensajes",
+        "updates": "Novedades",
+        "people_feed_short": "Usuarios",
+        "people_feed": "Actividad de usuarios",
+        "global_feed_short": "Global",
+        "global_feed": "Actividad global",
+        "my_feed": "Mi actividad"
     },
     "all_communities": {
         "text": "Todas las comunidades",
@@ -27,7 +36,11 @@
         "posts": "Publicaciones",
         "tags": "Distintivos de uso",
         "recent": "Recientes",
-        "popular": "Populares"
+        "popular": "Populares",
+        "followers_count": "{{count}} seguidores",
+        "related": "Otras comunidades",
+        "related_to": "Otras comunidades de {{community}}",
+        "closed": "Esta comunidad está cerrada a nuevos mensajes."
     },
     "user_page": {
         "country": "País",
@@ -38,23 +51,41 @@
         "following": "Sigue a",
         "followers": "Seguidores",
         "follow_user": "Seguir",
-        "following_user": "Sigue a"
+        "following_user": "Sigue a",
+        "friend_requests": "Solicitudes",
+        "game_experience_unknown": "Desconocido",
+        "settings": "Ajustes",
+        "deleted": "Usuario eliminado",
+        "banned": "Usuario restringido"
     },
     "user_settings": {
-        "profile_settings": "Preferencias del perfil",
+        "profile_settings": "Ajustes del perfil",
         "show_country": "Mostrar el país en el perfil",
         "show_birthday": "Mostrar cumpleaños en el perfil",
-        "show_game": "Mostrar tu nivel como jugador en el perfil"
+        "show_game": "Mostrar tu nivel como jugador en el perfil",
+        "save_action": "Guardar ajustes",
+        "gdpr_download": "Descargar información de usuario",
+        "gdpr_download_action": "Descargar"
     },
     "activity_feed": {
         "empty": "No hay nada que ver. ¡Prueba a seguir a alguien!"
     },
     "notifications": {
-        "none": "Sin notificaciones."
+        "none": "Sin notificaciones.",
+        "new_follower/one": "¡<follower_one /> te ha seguido!",
+        "new_follower/two": "¡<follower_one /> y <follower_two /> te han seguido!",
+        "new_follower/three": "¡<follower_one />, <follower_two />, y {{count_other}} más te han seguido!",
+        "new_follower/multiple": "¡<follower_one />, <follower_two />, y otros {{count_other}} te han seguido!"
     },
     "new_post": {
-        "post_to": "Publicar en {{user}}",
-        "swearing": "No se puede incluir lenguaje inapropiado en las publicaciones."
+        "post_to": "Mensaje para \"{{user}}\"",
+        "swearing": "No se puede incluir lenguaje inapropiado en las publicaciones.",
+        "spoiler_label": "Revelaciones",
+        "painting_close": "Cancelar",
+        "screenshots_coming_soon": "La función de capturas no está lista. ¡Vuelve más tarde!",
+        "new_post_short": "Publicar",
+        "content_placeholder": "Toca aquí para escribir un mensaje.",
+        "painting_submit": "Aceptar"
     },
     "messages": {
         "coming_soon": "No hay mensajes"
@@ -99,5 +130,63 @@
         "ready_text": "Primero, revisa algunas comunidades y mira las publicaciones de personas de todo el mundo. Aprovecha esta oportunidad para familiarizarte con Juxt. ¡Podrías hacer nuevos descubrimientos en el camino!",
         "done": "¡A disfrutar de Juxt!",
         "done_button": "¡Vamos!"
+    },
+    "error": {
+        "message": "¡Vaya! Parece que no hemos podido encontrar lo que buscas.<newline/>Comprueba el enlace o intenta de nuevo más tarde",
+        "title": "Código de error: {{code}}",
+        "heading": "Código de error: {{code}}: {{message}}",
+        "no_access": "No tienes permiso para acceder a esta aplicación ({{code}})",
+        "error_details": "ID de solicitud: {{id}}",
+        "message_web": "Mira el <status>estado actual del servidor</status>.<newline/>O, <home>vuelve a la página principal</home>"
+    },
+    "post": {
+        "yeahs_count/one": "Le mola a <count/> persona.",
+        "yeahs_count/multiple": "A <count/> personas les mola.",
+        "reply_post": "Comentar",
+        "report_post": "Denunciar",
+        "title": "Mensaje de {{username}}",
+        "show_spoiler": "Ver revelación",
+        "removed": "El mensaje ha sido eliminado.",
+        "heading": "Publicar",
+        "delete_post": "Eliminar"
+    },
+    "login": {
+        "username": "Nombre de usuario",
+        "password": "Contraseña",
+        "forgot_password": "¿Has olvidado tu contraseña?",
+        "no_account": "¿No tienes una cuenta?",
+        "no_account_setup": "La creación de cuenta estará disponible cuando tengas vinculada una Wii U o una 3DS.",
+        "title": "Iniciar sesión en Juxtaposition",
+        "heading": "Registrarse en Juxtaposition",
+        "login_action": "Iniciar sesión",
+        "sub_title": "Introduce tus datos de acceso"
+    },
+    "reporting": {
+        "description": "Estás a punto de denunciar un mensaje que viola el Código de conducta de Juxtaposition. La denuncia será enviada a los adminstradores de Juxtaposition de Pretendo y no al creador del mensaje.",
+        "label": "Motivo:",
+        "additional_info_placeholder": "Introduce comentarios o información adicionales",
+        "reason_spoiler": "Revelación",
+        "reason_personal_info": "Información personal",
+        "reason_violence": "Contenido violento",
+        "reason_bullying": "Odio/Acoso",
+        "reason_advertising": "Publicidad",
+        "reason_piracy": "Piratería",
+        "reason_inappropiate_ingame": "Comportamiento inapropiado en el juego",
+        "reason_inappropiate": "Conducta inapropiada/Perjudicial",
+        "reason_nsfw": "Sexualmente explícito",
+        "reason_missing_images": "Imágenes faltantes",
+        "submit": "Enviar denuncia",
+        "title": "Denunciar mensaje",
+        "reason_one": "",
+        "reason_many": "",
+        "reason_other": ""
+    },
+    "friend_requests": {
+        "none": "No hay solicitudes de amistad"
+    },
+    "moderation": {
+        "moderate_user": "Moderar usuario",
+        "title": "Moderación",
+        "silently_delete_post": "Eliminar en silencio"
     }
 }

@@ -1,12 +1,12 @@
 import express from 'express';
-import subdomain from 'express-subdomain';
 import { webAuth } from '@/middleware/webAuth';
 import { consoleAuth } from '@/middleware/consoleAuth';
 import { checkBan } from '@/middleware/checkBan';
 import { detectVersion } from '@/middleware/detectVersion';
 import { checkDiscovery } from '@/middleware/discovery';
-import { logger } from '@/logger';
 import { routes } from '@/services/juxt-web/routes';
+import { restrictHostnames } from '@/middleware/hostLimit';
+import { config } from '@/config';
 
 export const router = express.Router();
 const consoleRouter = express.Router();
@@ -20,20 +20,8 @@ router.use(routes.ENTRYPOINT);
 router.use(checkDiscovery);
 
 // Create subdomains
-logger.info('[JUXT-WEB] Creating \'Web\' subdomain');
-router.use(subdomain('juxt', webRouter));
-router.use(subdomain('juxt-beta', webRouter));
-router.use(subdomain('juxt-dev', webRouter));
-
-logger.info('[JUXT-WEB] Creating \'Wii U\' subdomain');
-router.use(subdomain('portal.olv', consoleRouter));
-router.use(subdomain('portal-beta.olv', consoleRouter));
-router.use(subdomain('portal-dev.olv', consoleRouter));
-
-logger.info('[JUXT-WEB] Creating \'3DS\' subdomain');
-router.use(subdomain('ctr.olv', consoleRouter));
-router.use(subdomain('ctr-beta.olv', consoleRouter));
-router.use(subdomain('ctr-dev.olv', consoleRouter));
+router.use(restrictHostnames([config.domains.web], webRouter));
+router.use(restrictHostnames([config.domains.portal, config.domains.ctr], consoleRouter));
 
 // Setup routes for console
 consoleRouter.use(consoleAuth);

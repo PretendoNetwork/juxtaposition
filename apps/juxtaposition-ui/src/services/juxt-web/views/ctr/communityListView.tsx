@@ -1,16 +1,15 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
 export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
-	const url = useUrl();
 	const id = props.community.olive_community_id;
 	return (
 		<li id={id}>
 			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button">
-				<span className="icon-container"><img src={url.cdn(`/icons/${id}/64.png`)} className="icon" alt="" /></span>
+				<CtrCommunityIcon community={props.community} size="64"></CtrCommunityIcon>
 				<div className="body">
 					<div className="body-content">
 						<span className="community-name title">{props.community.name}</span>

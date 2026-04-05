@@ -3,18 +3,27 @@
         "user_page": "עמוד משתמש",
         "communities": "קהילות",
         "no_posts": "אין פוסטים",
-        "activity_feed": "עדכון פעילות",
-        "exit": "יְצִיאָה",
-        "next": "הַבָּא",
+        "activity_feed": "פיד פעילויות",
+        "exit": "יציאה",
+        "next": "הבא",
         "messages": "הודעות",
         "notifications": "התראות",
-        "go_back": "לַחֲזוֹר",
-        "back": "בְּחֲזָרָה",
-        "yeahs": "כן",
+        "go_back": "חזרה",
+        "back": "חזרה",
+        "yeahs": "",
         "more": "טען עוד פוסטים",
-        "private": "פְּרָטִי",
+        "private": "פרטי",
         "close": "לִסְגוֹר",
-        "save": "לְהַצִיל"
+        "save": "שמירה",
+        "my_feed": "הפיד שלי",
+        "global_feed": "פיד עולמי",
+        "global_feed_short": "עולמי",
+        "people_feed": "פיד אנשים",
+        "people_feed_short": "אנשים",
+        "friend_requests": "בקשות חברות",
+        "updates": "עדכונים",
+        "notifications_and_messages": "התראות והודעות",
+        "search": "חיפוש..."
     },
     "all_communities": {
         "text": "כל הקהילות",
@@ -25,79 +34,162 @@
         "posts": "פוסטים",
         "recent": "פוסטים אחרונים",
         "popular": "פוסטים פופולריים",
-        "tags": "",
-        "followers": ""
+        "tags": "תגיות",
+        "followers": "עוקבים",
+        "followers_count": "‏{{count}} עוקבים",
+        "related": "קהילות קשורות",
+        "related_to": "קהילות שקשורות ל{{community}}",
+        "closed": "הקהילה הזאת סגורה לפוסטים חדשים.",
+        "tags_not_applicable": "-"
     },
     "user_page": {
         "birthday": "יוֹם הוּלֶדֶת",
         "game_experience": "חווית משחק",
         "posts": "פוסטים",
         "friends": "חברים",
-        "following": "עוקבים",
-        "follow_user": "לַעֲקוֹב",
-        "following_user": "עוקבים",
-        "followers": "",
-        "country": ""
+        "following": "במעקב",
+        "follow_user": "לעקוב",
+        "following_user": "במעקב",
+        "followers": "עוקבים",
+        "country": "מדינה",
+        "game_experience_unknown": "לא ידוע",
+        "settings": "הגדרות",
+        "friend_requests": "בקשות",
+        "deleted": "משתמש מחוק",
+        "banned": "משתמש חסום"
     },
     "user_settings": {
         "profile_settings": "הגדרות פרופיל",
         "show_birthday": "הצג יום הולדת בפרופיל",
-        "show_game": "",
-        "show_country": ""
+        "show_game": "הצגת ניסיון משחקים בפרופיל",
+        "show_country": "הצגת המדינה בפרופיל",
+        "save_action": "שמירת הגדרות",
+        "gdpr_download": "הורדת נתוני משתמש",
+        "gdpr_download_action": "הורדה"
     },
     "setup": {
         "rules_text": {
-            "eleventh": "",
-            "tenth": "",
-            "third": "",
-            "thirteenth": "",
-            "fifth": "",
-            "ninth": "",
-            "fourth": "",
-            "second": "",
-            "sixth": "",
-            "first": "",
-            "eighth": "",
-            "seventh": "",
-            "twelfth": ""
+            "eleventh": "המטרה שלנן היא לשמור על Juxt מקום כיף ומהנה לכולם. במקרה שמישהו.י מפר.ה את קוד הההתנהגות של Juxt, אנחנו ננקוט בצעדים מתאימים, עד כדי חסימת המשתמש.ת או הקונסולה הפוגעים.",
+            "tenth": "הפרות קוד ההתנהגות",
+            "third": "‏Juxt מכילה הרבה קהילות גיימינג בהן אנשים מכל העולם יכולים לשתף את המחשבות שלהם. כשאתם מפרסמים בקהילה, זכרו שכולם יכולים לראות את זה, אז בבקשה בטאו את עצמכם בדרך שכולם יכולים להנות ממנה. השתמשו בהגיון בריא, וחשבו לפני שאתם מפרסמים. Juxt הוא שירות שנגיש גם מהאינטרנט, אז זכרו שגם אנשים שלא משתמשים ב Juxt עשויים לראות את הפוסטים שלכם. בנוסף, תגובות שאתם משאירים על פוסטים של חברים יכולות להיראות לא רק על ידי החברים, אלא גם על ידי אנשים ברחבי העולם. אנא זכרו גם את זה.",
+            "thirteenth": "אם אתם מפרסמים בקהילה של משחק ששיחקתם, לפוסטים שלכם יהיה אייקון שמעיד שייחקתם בו.",
+            "fifth": "כדי ש-Juxt יישאר מקום כיף לכולם, אנחנן מבקשים שתתחשבו אחד בשני. עזרו לנו לשמור על Juxt כחוויה מהנה ואל תפרסמו שום דבר לא ראוי או פוגעני.",
+            "ninth": "יש אנשים שבאים ל Juxt בשביל טיפים וטריקים למשחקים, אבל יש גם כאלה שרוצים לגלות סודות במשחקים לגמרי לבד. פוסטים שחושפים מידע על הסודות או על העלילה של משחק נקראים \"ספוילרים\". אם אתם מפרסמים משהו על משחק שעשוי להיות ספוילר, סמנו וי בתיבת \"ספוילרים\" לפני שאתם שולחים את הפוסט. כך, אנשים שלא מעוניינים בספוילרים לא יראו את הפוסט שלכם.",
+            "fourth": "תהיו נחמדים אחד לשני",
+            "second": "אפשר לצפות בפוסטים מרחבי העולם",
+            "sixth": "אל תפרסמו מידע אישי — שלכם או של אחרים",
+            "first": "להלן קווים מנחים חשובים כדי ש Juxt תהיה חוויה כיפית ומהנה לכולם. קוד ההתנהלות של Juxt מכיל מידע מפורט, אז בבקשה קראו אותו בעיון רב.",
+            "eighth": "אל תפרסמו ספוילרים",
+            "seventh": "זכרו, להכיר מישהו ב Juxt זה לא אותו דבר כמו בחיים האמיתיים. אף פעם אל תשתפו ב Juxt את כתובת האימייל שלכם, כתובת המגורים שלכם, שם העבודה או בית הספר, או כל מידע אישי מזהה אחר, וגם אל תפרסמו מידע של אנשים אחרים. בנוסף, אם אדם שהכרתם ב Juxt מציע.ה לכם להיפגש בחיים האמיתיים, אל תסכימו. Juxt היא קהילה מקוונת ולא אמורה לשמש למפגשים בעולם האמיתי.",
+            "twelfth": "האם שיחקת במשחק הזה?"
         },
         "beta_text": {
             "third": "",
-            "second": "",
-            "first": ""
+            "second": "זה יכול ועלול לכלול מחיקה כוללת של בסיס הנתונים בסיום או במהלך תקופת הבטא.",
+            "first": "ברוכים הבאים לבטא הציבורית של רשת Pretendo! למרות שהרבה השתנה מהבטא הציבורית הראשונה, Juxt עדיין עבודה בתהליך והרבה יכול להשתנות בכל זמן נתון."
         },
         "experience_text": {
-            "expert": "",
-            "info": "",
-            "intermediate": "",
-            "beginner": ""
+            "expert": "מומחה.ית",
+            "info": "אנא ספרו לנו איך הייתם מתארים את רמת הניסיון שלכם עם משחקים. אפשר לשנות את ההגדרה הזו מאוחר יותר.",
+            "intermediate": "בינוני.ת",
+            "beginner": "מתחיל.ה"
         },
-        "done_button": "",
-        "ready": "",
-        "experience": "",
-        "analytics": "",
-        "rules": "",
-        "welcome_text": "",
-        "analytics_text": "",
-        "info": "",
-        "info_text": "",
-        "ready_text": "",
-        "done": "",
-        "beta": "",
-        "welcome": ""
+        "done_button": "בואו נתחיל!",
+        "ready": "מוכנים להתחיל להשתמש ב Juxt",
+        "experience": "ניסיון משחקים",
+        "analytics": "אנליטיקות",
+        "rules": "חוקי Juxt",
+        "welcome_text": "‏Juxt היא קהילת גיימינג שמחברת אנשים מכל העולם בעזרת דמויות Mii. השתמשו ב-Juxt כדי לשתף את חוויות הגיימינג שלכם ולהכיר אנשים מרחבי העולם.",
+        "analytics_text": "‏Juxtaposition משתמש ב Cloudflare Web Analytics כדי לעקוב אחרי השימוש בשירןת שלנו. הנתונים שנאספים כוללים אך לא מוגבלים לשעת הביקור, דפים בהם ביקרתם, ומשך הזמן שביליתם באתר. נתונים אלה לא מוצמדים אליכם בשום אופן, ולא משומשים לפרסומות על ידינו או על ידי Cloudflare.",
+        "info": "מה זה Juxtaposition?",
+        "info_text": "‏Juxt היא קהילה מכוונת משתמשים שאפשר לתקשר בה עם אנשים\nברחבי העולם. אפשר לכתוב או לצייר פוסטים בקהילות משחקים או לשלוח הודעות ישירות לחברים שלכם.",
+        "ready_text": "קודם כל, תסתכלו על קהילות ותראו על מה אנשים מכל העולם מפרסמים. קחו את ההזדמנות להכיר את Juxt. אולי תגלו דברים חדשים לאורך הדרך!",
+        "done": "תהנו ב Juxt!",
+        "beta": "דיסקליימר בטא",
+        "welcome": "ברוכים הבאים ל-Juxtaposition!",
+        "title": "הכנת Juxtaposition"
     },
     "notifications": {
-        "none": ""
+        "none": "אין התראות.",
+        "new_follower/one": "‏<follower_one/> עקב אחריכם!",
+        "new_follower/two": "‏<follower_one/>,‏‏ <follower_two/> עקבו אחריכם!",
+        "new_follower/three": "‏<follower_one/>, ‏<follower_two/> ו-{{count_other}} נוסף עקבו אחריכם!",
+        "new_follower/multiple": "‏<follower_one/>, ‏<follower_two/> ו-{{count_other}} נוספים עקבו אחריכם!"
     },
     "new_post": {
-        "swearing": "",
-        "post_to": ""
+        "swearing": "הפוסט לא יכול להכיל שפה בוטה.",
+        "post_to": "שליחה ל{{user}}",
+        "new_post_short": "שליחה",
+        "content_placeholder": "שתפו את המחשבות שלכם בפוסט לקהילה או לעוקבים שלכם.",
+        "screenshots_coming_soon": "צילומי מסך לא מוכנים עדיין. בדקו שוב בקרוב!",
+        "no_screenshot": "אין צילום מסך",
+        "spoiler_label": "ספוילר",
+        "painting_close": "ביטול",
+        "painting_submit": "אישור"
     },
-    "language": "",
+    "language": "עברית",
     "activity_feed": {
-        "empty": ""
+        "empty": "קצת ריק פה. נסו לעקוב אחרי מישהו!"
     },
     "messages": {
-        "coming_soon": ""
+        "coming_soon": "אין הודעות"
+    },
+    "login": {
+        "title": "התחברות לJuxtaposition",
+        "heading": "כניסה לJuxtaposition",
+        "sub_title": "הכניסו את פרטי החשבון למטה",
+        "username": "שם משתמש",
+        "password": "סיסמה",
+        "forgot_password": "שכחתם סיסמה?",
+        "no_account": "אין לכם חשבון?",
+        "login_action": "כניסה",
+        "no_account_setup": "יצירת חשבון אפשרית רק כשיש לכם Wii U או 3DS מקושרים."
+    },
+    "error": {
+        "title": "שגיאה {{code}}",
+        "heading": "שגיאה {{code}}: {{message}}",
+        "message": "אופס! נראה שלא יכלנו למצוא את הדף שאתם מחפשים.<newline/>בדקו שוב את הקישור או נסו שנית מאוחר יותר",
+        "no_access": "אתם לא מורשים לגשת ליישום הזה ({{code}})",
+        "message_web": "צפו <status>בסטטוס השרת</status> הנוכחי.<newline/>או, <home>חזרו לדף הבית</home>",
+        "error_details": "מזהה בקשה: {{id}}"
+    },
+    "friend_requests": {
+        "none": "אין בקשות חברות"
+    },
+    "post": {
+        "title": "פוסט ע\"י {{username}}",
+        "yeahs_count/one": "אדם <count/> נתן לפוסט הזה Yeah.",
+        "yeahs_count/multiple": "‏<count/> אנשים נתנו לפוסט הזה Yeah.",
+        "show_spoiler": "הצג ספוילר",
+        "reply_post": "תגובה",
+        "report_post": "דיווח על פוסט",
+        "delete_post": "מחיקת פוסט",
+        "removed": "הפוסט הוסר.",
+        "copy_link": "העתקת קישור",
+        "heading": "פוסט"
+    },
+    "reporting": {
+        "title": "דווחו על פוסט",
+        "submit": "הגשת דיווח",
+        "description": "אתם עומדים לדווח על פוסט עם תוכן שמפר את קוד ההתנהגות של Juxtaposition. הדיווח הזה יישלח למנהלי Juxtaposition של Pretendo ולא ליוצר הפוסט.",
+        "label": "סיבה:",
+        "additional_info_placeholder": "הכניסו תגובות נוספות או מידע נוסף",
+        "reason_spoiler": "ספוילר",
+        "reason_personal_info": "מידע אישי",
+        "reason_violence": "תוכן אלים",
+        "reason_inappropiate": "התנהגות לא הולמת/פוגענית",
+        "reason_bullying": "שנאה/בריונות",
+        "reason_advertising": "פרסומת",
+        "reason_nsfw": "תוכן מיני",
+        "reason_piracy": "פיראטיות",
+        "reason_inappropiate_ingame": "התנהגות לא הולמת במשחק",
+        "reason_missing_images": "תמונות חסרות",
+        "reason_one": "אחר",
+        "reason_two": "אחרים",
+        "reason_other": "אחרים"
+    },
+    "moderation": {
+        "title": "ניהול",
+        "silently_delete_post": "מחיקה שקטה"
     }
 }

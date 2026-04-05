@@ -67,6 +67,7 @@ router.get('/', async function (request: express.Request, response: express.Resp
 		allowEmpty: true
 	});
 
+	response.set('Cache-Control', 'public, max-age=3600'); // * 1 hour
 	response.send(xml);
 });
 
