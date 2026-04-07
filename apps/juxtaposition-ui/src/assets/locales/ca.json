@@ -14,7 +14,9 @@
         "close": "Tanca",
         "user_page": "Pàgina d'usuari",
         "go_back": "Torna",
-        "yeahs": "Mola"
+        "yeahs": "Mola",
+        "notifications_and_messages": "Notificacions i Missatges",
+        "search": "Cerca..."
     },
     "notifications": {
         "none": "No hi ha notificacions."
