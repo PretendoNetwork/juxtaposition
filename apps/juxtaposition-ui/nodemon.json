@@ -8,7 +8,7 @@
   "ignore": [
     "webfiles/ctr/css/sprites.css",
     "webfiles/ctr/images/sprites.png",
-    "src/api/generated"
+    "src/api/generated/**/*"
   ],
   "env": {
     "NODE_ENV": "development"
