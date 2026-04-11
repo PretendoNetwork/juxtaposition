@@ -327,13 +327,13 @@ adminRouter.delete('/:reportID', async function (req, res) {
 	if (!report) {
 		return res.sendStatus(402);
 	}
-	const { data: post } = await req.api.getPostsPostId({ post_id: report.post_id });
+	const { data: post } = await req.api.getPostById({ post_id: report.post_id });
 	if (post === null) {
 		return res.sendStatus(404);
 	}
 	const reason = query.reason ?? 'Removed by moderator';
 
-	await req.api.deletePostsPostId({ post_id: post.id, reason });
+	await req.api.deletePostById({ post_id: post.id, reason });
 	await report.resolve(auth().pid, reason);
 
 	const postType = post.parent ? 'comment' : 'post';

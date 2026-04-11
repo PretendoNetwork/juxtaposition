@@ -14,6 +14,7 @@ export const postsRouter = createInternalApiRouter();
 
 postsRouter.get({
 	path: '/posts',
+	name: 'listPosts',
 	description: 'Get posts by topic tag, poster, or empathy',
 	guard: guards.guest,
 	schema: {
@@ -55,7 +56,7 @@ postsRouter.get({
 
 postsRouter.get({
 	path: '/posts/:post_id',
-	description: 'Get post by id',
+	name: 'getPostById',
 	guard: guards.guest,
 	schema: {
 		params: postIdObjSchema,
@@ -77,7 +78,7 @@ postsRouter.get({
 
 postsRouter.delete({
 	path: '/posts/:post_id',
-	description: 'Delete post by id',
+	name: 'deletePostById',
 	guard: guards.user,
 	schema: {
 		params: postIdObjSchema,
@@ -127,7 +128,8 @@ postsRouter.delete({
 
 postsRouter.post({
 	path: '/posts/:post_id/empathies',
-	description: 'Add or remove empathy',
+	name: 'changePostEmpathy',
+	description: 'Add or remove empathy for current user',
 	guard: guards.user,
 	schema: {
 		params: postIdObjSchema,

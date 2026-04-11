@@ -13,7 +13,8 @@ export type ZodRouteHandler<TContext extends ZodRouteContext, TResponse = any> =
 
 export type ZodRouteOptions<TSchema extends ZodRouteSchemaSchape = {}, TAuthCtx = unknown> = {
 	path: string;
-	description: string;
+	name: string;
+	description?: string;
 	guard: RequestHandler;
 	schema: TSchema;
 	handler: (ops: ZodRouteContext<TSchema, TAuthCtx>) => Promise<z.infer<TSchema['response']>>;
@@ -38,7 +39,8 @@ export function createZodRouter<TAuthCtx>(ops: CreateZodRouterOptions<TAuthCtx>)
 	const routerBuilder = (method: RouteMethods, route: ZodRouteOptions<ZodRouteSchemaSchape, TAuthCtx>): void => {
 		const routeSpec: RouteConfig = {
 			method,
-			path: route.path,
+			path: route.path.replaceAll(/:([a-zA-Z0-9-_]+)/g, '{$1}'),
+			operationId: route.name,
 			summary: route.description,
 			responses: {}
 		};
