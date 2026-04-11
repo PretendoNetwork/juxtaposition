@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process';
 import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
 import { raw } from 'esbuild-raw-plugin';
@@ -20,6 +21,13 @@ export default defineConfig([
 
 		outDir: 'dist',
 
+		plugins: [{
+			name: 'openapi',
+			async buildStart(): Promise<void> {
+				execSync('openapi-ts -f ./openapi.config.ts');
+				this.logger.info('openapi', 'Generated API client for miiverse-api');
+			}
+		}],
 		esbuildPlugins: [
 			fixImportsPlugin(),
 			raw({

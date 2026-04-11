@@ -1,7 +1,7 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-	input: './test.openapi.yaml',
+	input: '../miiverse-api/internal.openapi.json',
 	output: './src/api/generated',
 	plugins: [
 		{

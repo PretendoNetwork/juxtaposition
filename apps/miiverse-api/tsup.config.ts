@@ -1,4 +1,4 @@
-import { exec } from 'node:child_process';
+import { execSync } from 'node:child_process';
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
@@ -19,7 +19,11 @@ export default defineConfig({
 			};
 		}
 	},
-	async onSuccess() {
-		await exec('node dist/generate.js');
-	}
+	plugins: [{
+		name: 'openapi',
+		async buildEnd() {
+			execSync('node dist/generate.js');
+			this.logger.info('openapi', 'Generated openAPI schema');
+		}
+	}]
 });
