@@ -6,7 +6,7 @@ import { guards } from '@/services/internal/middleware/guards';
 import { mapPost, postSchema } from '@/services/internal/contract/post';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
-import { empathySchema, mapEmpathy } from '@/services/internal/contract/empathy';
+import { empathyActionSchema, empathySchema, mapEmpathy } from '@/services/internal/contract/empathy';
 import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 
@@ -132,7 +132,7 @@ postsRouter.post({
 	schema: {
 		params: postIdObjSchema,
 		body: z.object({
-			action: z.literal(['add', 'remove'])
+			action: empathyActionSchema
 		}),
 		response: empathySchema
 	},

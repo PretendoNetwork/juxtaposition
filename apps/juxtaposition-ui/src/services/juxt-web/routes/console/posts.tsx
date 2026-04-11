@@ -3,7 +3,6 @@ import express from 'express';
 import { rateLimit } from 'express-rate-limit';
 import multer from 'multer';
 import { z } from 'zod';
-import { deletePostById, getPostById, getPostsByParentId } from '@/api/post';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
@@ -12,7 +11,6 @@ import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
 import { createLogEntry, getInvalidPostRegex, getUserAccountData } from '@/util';
-import { addEmpathyById, removeEmpathyById } from '@/api/empathy';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
@@ -28,6 +26,7 @@ import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
+import type { EmpathyActionEnum } from '@/api/generated';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
@@ -63,14 +62,13 @@ const yeahLimit = rateLimit({
 });
 
 postsRouter.get('/:post_id/oembed.json', async function (req, res) {
-	const { params, auth, hasAuth } = parseReq(req, {
+	const { params } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
 		})
 	});
-	const maybeTokens = hasAuth() ? auth().tokens : {};
 
-	const post = await getPostById(maybeTokens, params.post_id);
+	const { data: post } = await req.api.getPostsPostId({ post_id: params.post_id });
 	if (!post) {
 		return res.sendStatus(404);
 	}
@@ -118,15 +116,14 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 		})
 	});
 
-	const post = await getPostById(auth().tokens, body.postID);
+	const { data: post } = await req.api.getPostsPostId({ post_id: body.postID });
 	if (!post) {
 		return res.sendStatus(404);
 	}
 
 	const existingEmpathy = post.yeahs.indexOf(auth().pid) !== -1;
-	const result = !existingEmpathy
-		? await addEmpathyById(auth().tokens, post.id)
-		: await removeEmpathyById(auth().tokens, post.id);
+	const action: EmpathyActionEnum = !existingEmpathy ? 'add' : 'remove';
+	const { data: result } = await req.api.postPostsPostIdEmpathies({ post_id: post.id, action });
 	if (result === null) {
 		res.send({ status: 423, id: post.id, count: post.empathy_count });
 		return;
@@ -147,7 +144,6 @@ postsRouter.get('/:post_id', async function (req, res) {
 			post_id: z.string()
 		})
 	});
-	const maybeTokens = hasAuth() ? auth().tokens : {};
 
 	let userSettings: HydratedSettingsDocument | null = null;
 	let userContent: InferSchemaType<typeof ContentSchema> | null = null;
@@ -156,12 +152,12 @@ postsRouter.get('/:post_id', async function (req, res) {
 		userContent = await database.getUserContent(auth().pid);
 	}
 
-	const post = await getPostById(maybeTokens, params.post_id);
+	const { data: post } = await req.api.getPostsPostId({ post_id: params.post_id });
 	if (!post) {
 		return res.redirect('/404');
 	}
 	if (post.parent) {
-		const parent = await getPostById(maybeTokens, post.parent);
+		const { data: parent } = await req.api.getPostsPostId({ post_id: post.parent });
 		if (!parent) {
 			return res.redirect('/404');
 		}
@@ -173,7 +169,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 	}
 
 	// increase limit for post replies since there's no pagination yet
-	const replies = (await getPostsByParentId(maybeTokens, post.id, 0, 500))?.items ?? [];
+	const replies = (await req.api.getPosts({ parent_id: post.id, include_replies: 'true' }))?.data.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
 	const canPost = hasAuth() && userSettings !== null && isPostingAllowed(community, userSettings, post, auth().user);
 
@@ -202,12 +198,12 @@ postsRouter.delete('/:post_id', async function (req, res) {
 		})
 	});
 
-	const post = await getPostById(auth().tokens, params.post_id);
+	const { data: post } = await req.api.getPostsPostId({ post_id: params.post_id });
 	if (!post) {
 		return res.sendStatus(404);
 	}
 
-	const result = await deletePostById(auth().tokens, post.id, query.reason);
+	const { data: result } = await req.api.deletePostsPostId({ post_id: post.id, reason: query.reason });
 	if (result === null) {
 		return res.sendStatus(404);
 	}
@@ -254,7 +250,7 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		})
 	});
 
-	const parent = await getPostById(auth().tokens, params.post_id);
+	const { data: parent } = await req.api.getPostsPostId({ post_id: params.post_id });
 	if (!parent) {
 		return res.sendStatus(404);
 	}
@@ -281,13 +277,13 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 });
 
 postsRouter.get('/:post_id/report', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
 		})
 	});
 
-	const post = await getPostById(auth().tokens, params.post_id);
+	const { data: post } = await req.api.getPostsPostId({ post_id: params.post_id });
 	if (!post) {
 		return res.redirect('/404');
 	}
@@ -311,7 +307,7 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 	});
 
 	const { reason, message, post_id } = body;
-	const post = await getPostById(auth().tokens, post_id);
+	const { data: post } = await req.api.getPostsPostId({ post_id });
 	if (!reason || !post_id || !post) {
 		return res.redirect('/404');
 	}

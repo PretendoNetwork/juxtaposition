@@ -2,7 +2,6 @@ import crypto from 'crypto';
 import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
-import { deletePostById, getPostById } from '@/api/post';
 import { database } from '@/database';
 import { uploadHeaders, uploadIcons } from '@/images';
 import { logger } from '@/logger';
@@ -328,12 +327,13 @@ adminRouter.delete('/:reportID', async function (req, res) {
 	if (!report) {
 		return res.sendStatus(402);
 	}
-	const post = await getPostById(auth().tokens, report.post_id);
+	const { data: post } = await req.api.getPostsPostId({ post_id: report.post_id });
 	if (post === null) {
 		return res.sendStatus(404);
 	}
 	const reason = query.reason ?? 'Removed by moderator';
-	await deletePostById(auth().tokens, post.id, reason);
+
+	await req.api.deletePostsPostId({ post_id: post.id, reason });
 	await report.resolve(auth().pid, reason);
 
 	const postType = post.parent ? 'comment' : 'post';
