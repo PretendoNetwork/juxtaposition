@@ -9,10 +9,10 @@ import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
-import type { PostDto } from '@/api/post';
+import type { Post } from '@/api/generated';
 
 export type PostScreenshotProps = {
-	post: InferSchemaType<typeof PostSchema> | PostDto;
+	post: InferSchemaType<typeof PostSchema> | Post;
 };
 
 export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
@@ -27,7 +27,7 @@ export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
 
 export type PostViewProps = {
 	userContent?: InferSchemaType<typeof ContentSchema> | null;
-	post: InferSchemaType<typeof PostSchema> | PostDto;
+	post: InferSchemaType<typeof PostSchema> | Post;
 	isReply?: boolean;
 	isMainPost?: boolean;
 };

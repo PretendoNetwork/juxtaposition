@@ -3,10 +3,10 @@ import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user
 import type { CommunitySchema, CommunityShotMode } from '@/models/communities';
 import type { PostSchema } from '@/models/post';
 import type { HydratedSettingsDocument } from '@/models/settings';
-import type { PostDto } from '@/api/post';
 import type { ParamPack } from '@/types/common/param-pack';
+import type { Post } from '@/api/generated';
 
-export function isPostingAllowed(community: InferSchemaType<typeof CommunitySchema>, userSettings: HydratedSettingsDocument, parentPost: InferSchemaType<typeof PostSchema> | PostDto | null, user: GetUserDataResponse): boolean {
+export function isPostingAllowed(community: InferSchemaType<typeof CommunitySchema>, userSettings: HydratedSettingsDocument, parentPost: InferSchemaType<typeof PostSchema> | Post | null, user: GetUserDataResponse): boolean {
 	const isReply = !!parentPost;
 	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
 	const isOpenCommunity = community.permissions.open;
