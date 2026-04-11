@@ -10,7 +10,7 @@ export function pageControlSchema(limit = 50) {
 export function pageDtoSchema<T extends z.ZodType>(item: T) {
 	return z.object({
 		items: z.array(item)
-	}).openapi('Page');
+	});
 }
 
 export type PageDto<T> = z.infer<ReturnType<typeof pageDtoSchema<z.ZodType<T>>>>;

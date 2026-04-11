@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import { z } from 'zod';
 import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
 import { deleteOptional, filterRemovedPosts } from '@/services/internal/utils';
@@ -9,6 +9,7 @@ import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { empathyActionSchema, empathySchema, mapEmpathy } from '@/services/internal/contract/empathy';
 import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
+import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 
 export const postsRouter = createInternalApiRouter();
 
@@ -24,7 +25,7 @@ postsRouter.get({
 			empathy_by: z.coerce.number().optional(),
 			parent_id: postIdSchema.optional(),
 			include_replies: z.stringbool().default(false),
-			sort: z.enum(['newest', 'oldest']).default('newest')
+			sort: standardSortSchema
 			// Increased page limit for replies
 		}).extend(pageControlSchema(500)),
 		response: pageDtoSchema(postSchema)
@@ -38,7 +39,6 @@ postsRouter.get({
 			throw new errors.unauthorized('Authentication token not provided');
 		}
 
-		const sortOrder = query.sort === 'newest' ? -1 : 1;
 		const posts = await Post.find(deleteOptional({
 			pid: query.posted_by,
 			topic_tag: query.topic_tag,
@@ -48,7 +48,7 @@ postsRouter.get({
 			message_to_pid: null, // messages aren't really posts
 			...query.include_replies ? {} : { parent: null },
 			...filterRemovedPosts(auth)
-		})).sort({ created_at: sortOrder }).skip(query.offset).limit(query.limit);
+		})).sort({ created_at: standardSortToDirection(query.sort) }).skip(query.offset).limit(query.limit);
 
 		return mapPage(posts.map(mapPost));
 	}

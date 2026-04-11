@@ -17,7 +17,7 @@ export type ZodRouteOptions<TSchema extends ZodRouteSchemaSchape = {}, TAuthCtx 
 	description?: string;
 	guard: RequestHandler;
 	schema: TSchema;
-	handler: (ops: ZodRouteContext<TSchema, TAuthCtx>) => Promise<z.infer<TSchema['response']>>;
+	handler: (ctx: ZodRouteContext<TSchema, TAuthCtx>) => Promise<z.infer<TSchema['response']>>;
 };
 
 export type RouteMethods = 'get' | 'post' | 'delete' | 'patch';
