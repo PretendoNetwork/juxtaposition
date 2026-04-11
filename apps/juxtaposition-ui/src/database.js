@@ -59,37 +59,6 @@ async function getCommunitiesFuzzySearch(search_key, limit, offset) {
 	}
 }
 
-async function getMostPopularCommunities(numberOfCommunities) {
-	verifyConnected();
-	return COMMUNITY.find({ parent: null, type: 0 }).sort({ followers: -1 }).limit(numberOfCommunities);
-}
-
-async function getNewCommunities(numberOfCommunities) {
-	verifyConnected();
-	return COMMUNITY.find({ parent: null, type: 0 }).sort([['created_at', -1]]).limit(numberOfCommunities);
-}
-
-async function getSubCommunities(communityID) {
-	verifyConnected();
-	return COMMUNITY.find({
-		parent: communityID
-	});
-}
-
-async function getCommunityByTitleID(title_id) {
-	verifyConnected();
-	return COMMUNITY.findOne({
-		title_id: title_id
-	});
-}
-
-async function getCommunityByID(community_id) {
-	verifyConnected();
-	return COMMUNITY.findOne({
-		olive_community_id: community_id
-	});
-}
-
 async function getTotalPostsByCommunity(community) {
 	verifyConnected();
 	return POST.find({
@@ -486,11 +455,6 @@ export const database = {
 	connect,
 	getCommunities,
 	getCommunitiesFuzzySearch,
-	getMostPopularCommunities,
-	getNewCommunities,
-	getSubCommunities,
-	getCommunityByTitleID,
-	getCommunityByID,
 	getTotalPostsByCommunity,
 	getPostsByCommunity,
 	getHotPostsByCommunity,

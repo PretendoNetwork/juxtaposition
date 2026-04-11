@@ -73,7 +73,7 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	const community = await database.getCommunityByID(post.community_id);
+	const { data: community } = await req.api.communities.get({ id: post.community_id });
 	const postPNID = await getUserAccountData(post.pid);
 
 	let img = {};
@@ -163,7 +163,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 		}
 		return res.redirect(`/posts/${parent.id}`);
 	}
-	const community = await database.getCommunityByID(post.community_id);
+	const { data: community } = await req.api.communities.get({ id: post.community_id });
 	if (!community) {
 		return res.redirect('/404');
 	}
@@ -255,7 +255,7 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	const community = await database.getCommunityByID(parent.community_id);
+	const { data: community } = await req.api.communities.get({ id: parent.community_id });
 	if (!community) {
 		return res.sendStatus(404);
 	}
@@ -355,14 +355,15 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	const userSettings = await database.getUserSettings(auth().pid);
 	let parentPost = null;
 	const postId = await generatePostUID(21);
-	let community = await database.getCommunityByID(body.community_id);
+	let { data: community } = await req.api.communities.get({ id: body.community_id });
 	if (params.post_id) {
 		parentPost = await database.getPostByID(params.post_id.toString());
 		if (!parentPost) {
 			res.sendStatus(403);
 			return;
 		} else {
-			community = await database.getCommunityByID(parentPost.community_id);
+			const { data: parentPostCommunity } = await req.api.communities.get({ id: parentPost.community_id ?? '' });
+			community = parentPostCommunity;
 			if (parentPost.removed) {
 				res.sendStatus(400);
 				return;
@@ -456,7 +457,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		return;
 	}
 	const document = {
-		title_id: community.title_id[0],
+		title_id: community.titleIds[0],
 		community_id: community.olive_community_id,
 		screen_name: userSettings.screen_name,
 		body: postBody,

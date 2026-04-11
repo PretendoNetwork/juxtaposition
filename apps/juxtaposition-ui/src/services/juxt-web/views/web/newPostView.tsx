@@ -1,9 +1,9 @@
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
-import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
-import type { CommunitySchema, CommunityShotMode } from '@/models/communities';
+import type { CommunityShotMode } from '@/models/communities';
+import type { Community } from '@/api/generated';
 
 const empathies = [
 	{
@@ -54,7 +54,7 @@ export type NewPostViewProps = {
 	show: string;
 	// must provide messagePid OR community
 	messagePid?: number;
-	community?: InferSchemaType<typeof CommunitySchema>;
+	community?: Community;
 	shotMode: CommunityShotMode;
 };
 

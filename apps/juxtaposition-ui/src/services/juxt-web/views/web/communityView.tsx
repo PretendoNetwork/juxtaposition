@@ -6,11 +6,10 @@ import { WebPostListClosedView } from '@/services/juxt-web/views/web/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { CommunitySchema } from '@/models/communities';
+import type { Community } from '@/api/generated';
 
 export type CommunityViewProps = {
-	community: InferSchemaType<typeof CommunitySchema>;
+	community: Community;
 	totalPosts: number;
 	canPost: boolean;
 	isUserFollowing: boolean;
@@ -56,10 +55,8 @@ export function WebCommunityHead(props: CommunityViewProps): ReactNode {
 export function WebCommunityView(props: CommunityViewProps): ReactNode {
 	const url = useUrl();
 	const community = props.community;
-	const imageId = community.parent ? community.parent : community.olive_community_id;
-	const bannerUrl = community.wup_header
-		? url.cdn(community.wup_header)
-		: url.cdn(`/headers/${imageId}/WiiU.png`);
+	const imageId = community.parentId ? community.parentId : community.olive_community_id;
+	const bannerUrl = url.cdn(community.wupHeaderImagePath);
 
 	return (
 		<WebRoot head={<WebCommunityHead {...props} />}>
@@ -97,7 +94,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 					<div className="info-boxes-wrapper">
 						<div>
 							<h4><T k="community.followers" /></h4>
-							<h4 className="community-page-table-text" id="followers">{community.followers}</h4>
+							<h4 className="community-page-table-text" id="followers">{community.followerCount}</h4>
 						</div>
 						<div>
 							<h4><T k="community.posts" /></h4>

@@ -1,19 +1,17 @@
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { CommunitySchema } from '@/models/communities';
+import type { Community } from '@/api/generated';
 
 export type CommunityIconProps = {
-	community: InferSchemaType<typeof CommunitySchema>;
-	size: '32' | '48' | '64' | '96' | '128';
+	community: Community;
+	size: `${keyof Community['iconImagePaths']}`;
 	className?: string;
 };
 
 export function WebCommunityIcon(props: CommunityIconProps): ReactNode {
 	const url = useUrl();
-	const imageId = props.community.parent ? props.community.parent : props.community.olive_community_id;
-	const iconUrl = props.community.icon_paths ? url.cdn(props.community.icon_paths[props.size]) : url.cdn(`/icons/${imageId}/${props.size}.png`);
+	const iconUrl = url.cdn(props.community.iconImagePaths[props.size]);
 	const href = `/communities/${props.community.olive_community_id}`;
 
 	return (

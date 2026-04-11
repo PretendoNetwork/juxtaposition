@@ -15,7 +15,7 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 				<div className="body-content">
 					<span className="community-name title">{props.community.name}</span>
 					<span className="text">
-						{props.community.followers}
+						{props.community.followerCount}
 						{' '}
 						<T k="community.followers" />
 					</span>
