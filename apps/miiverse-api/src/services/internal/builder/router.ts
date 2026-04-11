@@ -1,9 +1,9 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import { buildAuthContext } from '@/services/internal/builder/auth';
 import { createRouteContext } from '@/services/internal/builder/context';
 import { openapiRegistry } from '@/services/internal/builder/openapi';
 import type { Request, RequestHandler, Response } from 'express';
-import type { z } from 'zod';
 import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
 import type { RouteParameter } from '@asteasolutions/zod-to-openapi/dist/openapi-registry';
 import type { AuthContext } from '@/services/internal/builder/auth';
@@ -17,6 +17,7 @@ export type ZodRouteOptions<TSchema extends ZodRouteSchemaSchape = {}, TAuthCtx 
 	description?: string;
 	guard: RequestHandler;
 	schema: TSchema;
+	allowNotFound?: boolean;
 	handler: (ctx: ZodRouteContext<TSchema, TAuthCtx>) => Promise<z.infer<TSchema['response']>>;
 };
 
@@ -66,9 +67,14 @@ export function createZodRouter<TAuthCtx>(ops: CreateZodRouterOptions<TAuthCtx>)
 					description: 'Response',
 					content: {
 						'application/json': {
-							schema: route.schema.response
+							schema: route.allowNotFound ? z.union([route.schema.response, z.null()]) : route.schema.response
 						}
 					}
+				};
+			}
+			if (route.schema.response && route.allowNotFound) {
+				routeSpec.responses[404] = {
+					description: 'Resource could not be found'
 				};
 			}
 		}

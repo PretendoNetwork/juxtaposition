@@ -1,13 +1,14 @@
 import { writeFileSync } from 'node:fs';
 import {
 	OpenAPIRegistry,
-	OpenApiGeneratorV3
+	OpenApiGeneratorV31
 } from '@asteasolutions/zod-to-openapi';
+import type { z } from 'zod';
 
 export const openapiRegistry = new OpenAPIRegistry();
 
 export function generateOpenapi() {
-	const generator = new OpenApiGeneratorV3(openapiRegistry.definitions);
+	const generator = new OpenApiGeneratorV31(openapiRegistry.definitions);
 	const doc = generator.generateDocument({
 		openapi: '3.1.0',
 		info: {
@@ -26,6 +27,14 @@ export function generateOpenapi() {
 		}]
 	});
 	return doc;
+}
+
+// This method is only needed when schemas don't get properly parsed
+// See this issue: https://github.com/asteasolutions/zod-to-openapi/issues/258
+export function asOpenapi<T extends z.ZodType>(name: string, type: T): T {
+	const newType = type.openapi(name);
+	openapiRegistry.register(name, newType);
+	return newType;
 }
 
 export function writeOpenapiToFile() {

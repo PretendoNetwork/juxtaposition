@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { COMMUNITY_TYPE } from '@/types/mongoose/community';
+import { asOpenapi } from '@/services/internal/builder/openapi';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
 export const communityCategory = z.enum([
@@ -9,7 +10,7 @@ export const communityCategory = z.enum([
 ]).openapi('CommunityCategoryEnum');
 export type CommunityCategoryEnum = z.infer<typeof communityCategory>;
 
-export const communityShotSchema = z.enum(['allow', 'block', 'force']).openapi('CommunityShotMode');
+export const communityShotSchema = asOpenapi('CommunityShotMode', z.enum(['allow', 'block', 'force']));
 export type CommunityShotMode = z.infer<typeof communityShotSchema>;
 
 export const communityPermissionSchema = z.object({

@@ -58,6 +58,7 @@ postsRouter.get({
 	path: '/posts/:post_id',
 	name: 'posts.get',
 	guard: guards.guest,
+	allowNotFound: true,
 	schema: {
 		params: postIdObjSchema,
 		response: postSchema

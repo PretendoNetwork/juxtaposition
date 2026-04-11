@@ -11,14 +11,22 @@ export const customFetch: typeof globalThis.fetch = async (input, init) => {
 	const metadata = Metadata({
 		'X-API-Key': config.grpc.miiverse.apiKey
 	});
+	const method = req.method.toUpperCase();
 	const grpcResponse = await grpcClient.sendPacket({
 		path: url.pathname + url.search,
-		method: req.method.toUpperCase(),
+		method,
 		headers: JSON.stringify(Object.fromEntries(req.headers.entries())),
 		payload: req.body ? await new Response(req.body).text() : undefined
 	}, {
 		metadata
 	});
+
+	// Mask 404's as a succesfull `null` response
+	if (grpcResponse.status === 404 && req.method === 'GET') {
+		grpcResponse.status = 200;
+		grpcResponse.payload = JSON.stringify(null);
+	}
+
 	const response = new Response(Buffer.from(grpcResponse.payload), {
 		status: grpcResponse.status,
 		headers: {

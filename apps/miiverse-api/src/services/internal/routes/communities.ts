@@ -96,6 +96,7 @@ communitiesRouter.get({
 	path: '/communities/:id',
 	name: 'communities.get',
 	guard: guards.guest,
+	allowNotFound: true,
 	schema: {
 		params: z.object({
 			id: z.string().openapi({ description: 'A community ID or a title ID starting with `tid:`' })
