@@ -7,6 +7,7 @@ import { checkDiscovery } from '@/middleware/discovery';
 import { routes } from '@/services/juxt-web/routes';
 import { restrictHostnames } from '@/middleware/hostLimit';
 import { config } from '@/config';
+import { internalApiMiddleware } from '@/middleware/internalApi';
 
 export const router = express.Router();
 const consoleRouter = express.Router();
@@ -26,6 +27,7 @@ router.use(restrictHostnames([config.domains.portal, config.domains.ctr], consol
 // Setup routes for console
 consoleRouter.use(consoleAuth);
 consoleRouter.use(checkBan);
+consoleRouter.use(internalApiMiddleware);
 consoleRouter.use('/titles/show', routes.PORTAL_SHOW);
 consoleRouter.use('/titles', routes.PORTAL_COMMUNITIES);
 consoleRouter.use('/communities', routes.PORTAL_COMMUNITIES);
@@ -39,6 +41,7 @@ consoleRouter.use('/news', routes.PORTAL_NEWS);
 // Setup routes for web
 webRouter.use(webAuth);
 webRouter.use(checkBan);
+webRouter.use(internalApiMiddleware);
 webRouter.use('/titles/show', routes.PORTAL_SHOW);
 webRouter.use('/titles', routes.PORTAL_COMMUNITIES);
 webRouter.use('/communities', routes.PORTAL_COMMUNITIES);

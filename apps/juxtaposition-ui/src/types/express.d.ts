@@ -4,6 +4,7 @@ import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user
 import type { i18n } from 'i18next';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { UserTokens } from '@/types/juxt/tokens';
+import type { InternalApi } from '@/api/generated';
 
 declare global {
 	namespace Express {
@@ -11,6 +12,7 @@ declare global {
 
 		interface Request {
 			directory?: 'ctr' | 'portal' | 'web';
+			api: InternalApi;
 
 			paramPackData: ParamPack | null;
 			tokens: UserTokens;

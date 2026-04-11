@@ -35,7 +35,8 @@ export function createInternalApiClient(tokens: UserTokens): InternalApi {
 		headers: {
 			'x-service-token': tokens.serviceToken,
 			'x-oauth-token': tokens.oauthToken
-		}
+		},
+		throwOnError: true
 	});
 	return new InternalApi({
 		client
