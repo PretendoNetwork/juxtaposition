@@ -255,7 +255,7 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		return res.redirect('/404');
 	}
 
-	const posts = (await req.api.listPosts({ posted_by: userID }))?.data?.items ?? [];
+	const posts = (await req.api.posts.list({ posted_by: userID }))?.data?.items ?? [];
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
@@ -332,7 +332,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	let selection = 0;
 
 	if (params.type === 'yeahs') {
-		const posts = (await req.api.listPosts({ empathy_by: userID }))?.data.items ?? [];
+		const posts = (await req.api.posts.list({ empathy_by: userID }))?.data.items ?? [];
 		const postListProps: PostListViewProps = {
 			posts,
 			nextLink: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`,
@@ -441,7 +441,7 @@ async function morePosts(req: Request, res: Response, userID: number): Promise<a
 	const { offset } = query;
 
 	const userContent = await database.getUserContent(req.pid);
-	const posts = (await req.api.listPosts({ posted_by: userID, offset }))?.data.items ?? [];
+	const posts = (await req.api.posts.list({ posted_by: userID, offset }))?.data.items ?? [];
 
 	if (posts.length === 0 || !userContent) {
 		return res.sendStatus(204);
@@ -468,7 +468,7 @@ async function moreYeahPosts(req: Request, res: Response, userID: number): Promi
 	const { offset } = query;
 
 	const userContent = await database.getUserContent(userID);
-	const posts = (await req.api.listPosts({ empathy_by: userID, offset }))?.data.items ?? [];
+	const posts = (await req.api.posts.list({ empathy_by: userID, offset }))?.data.items ?? [];
 
 	if (posts.length === 0 || !userContent) {
 		return res.sendStatus(204);
