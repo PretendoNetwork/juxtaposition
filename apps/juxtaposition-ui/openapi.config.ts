@@ -5,10 +5,16 @@ export default defineConfig({
 	output: './src/api/generated',
 	plugins: [
 		{
+			name: '@hey-api/client-fetch',
+			throwOnError: true
+		},
+		{
 			name: '@hey-api/sdk',
+			paramsStructure: 'flat',
 			operations: {
 				strategy: 'single',
-				containerName: 'InternalApi'
+				containerName: 'InternalApi',
+				nesting: 'operationId'
 			}
 		}
 	]
