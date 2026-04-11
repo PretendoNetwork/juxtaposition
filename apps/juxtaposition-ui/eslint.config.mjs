@@ -52,5 +52,9 @@ export default defineConfig([
 			}
 		},
 		ignores: ['webfiles/**/*.js', 'webfiles/**/*.ts']
+	},
+	{
+		// Ignore generated code
+		ignores: ['src/api/generated']
 	}
 ]);
