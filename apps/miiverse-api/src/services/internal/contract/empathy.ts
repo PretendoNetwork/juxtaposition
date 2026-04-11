@@ -1,16 +1,15 @@
-/* !!! HEY
- * This type has a copy in apps/juxtaposition-ui/src/api/empathy.ts
- * Make sure to copy over any modifications! */
-
+import { z } from 'zod';
 import type { IPost } from '@/types/mongoose/post';
 
-export type EmpathyAction = 'add' | 'remove';
+export const empathyActionSchema = z.enum(['add', 'remove']);
+export type EmpathyAction = z.infer<typeof empathyActionSchema>;
 
-export type EmpathyDto = {
-	action: EmpathyAction;
-	post_id: string;
-	empathy_count: number;
-};
+export const empathySchema = z.object({
+	action: empathyActionSchema,
+	post_id: z.string(),
+	empathy_count: z.number()
+});
+export type EmpathyDto = z.infer<typeof empathySchema>;
 
 export function mapEmpathy(action: EmpathyAction, post: IPost): EmpathyDto {
 	return {

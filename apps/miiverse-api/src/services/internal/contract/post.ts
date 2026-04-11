@@ -1,61 +1,60 @@
+import { z } from 'zod';
 import type { IPost } from '@/types/mongoose/post';
 
-/* !!! HEY
- * This type has a copy in apps/juxtaposition-ui/src/api/post.ts
- * Make sure to copy over any modifications! */
+export const postSchema = z.object({
+	id: z.string(),
+	title_id: z.string().optional(), // number as string
+	screen_name: z.string(),
+	body: z.string(),
+	app_data: z.string().optional(), // nintendo base64
 
-/* This type is the contract for the frontend. If we make changes to the db, this shape should be kept. */
-export type PostDto = {
-	id: string;
-	title_id?: string; // number
-	screen_name: string;
-	body: string;
-	app_data?: string; // nintendo base64
+	painting: z.string().optional(), // base64 or '', undef for PMs
+	painting_img: z.string().optional(), // URL frag (leading /) or '', undef for PMs
+	painting_big: z.string().optional(), // URL frag (leading /) or '', undef for PMs
+	screenshot: z.string().optional(), // URL frag (leading /) or '', undef for PMs
+	screenshot_big: z.string().optional(), // URL frag (leading /) or '', undef for PMs/old posts
+	screenshot_thumb: z.string().optional(), // URL frag (leading /) or '', undef for PMs/old posts
+	screenshot_length: z.number().optional(),
+	screenshot_aspect: z.string().optional(), // '4:3' '5:3' '16:9'
 
-	painting?: string; // base64 or '', undef for PMs
-	painting_img?: string; // URL frag (leading /) or '', undef for PMs
-	painting_big?: string; // URL frag (leading /) or '', undef for PMs
-	screenshot?: string; // URL frag (leading /) or '', undef for PMs
-	screenshot_big?: string; // URL frag (leading /) or '', undef for PMs/old posts
-	screenshot_thumb?: string; // URL frag (leading /) or '', undef for PMs/old posts
-	screenshot_length?: number;
-	screenshot_aspect?: string; // '4:3' '5:3' '16:9'
+	search_key: z.array(z.string()).optional(),
+	topic_tag: z.string().optional(),
 
-	search_key?: string[]; // can be []
-	topic_tag?: string; // can be ''
+	community_id: z.string(), // number
+	created_at: z.string(), // ISO Z
+	feeling_id: z.number().optional(),
 
-	community_id: string; // number
-	created_at: string; // ISO Z
-	feeling_id?: number;
+	is_autopost: z.boolean(),
+	is_community_private_autopost: z.boolean(),
+	is_spoiler: z.boolean(),
+	is_app_jumpable: z.boolean(),
 
-	is_autopost: boolean;
-	is_community_private_autopost: boolean;
-	is_spoiler: boolean;
-	is_app_jumpable: boolean;
+	empathy_count: z.number(),
+	country_id: z.number(),
+	language_id: z.number(),
 
-	empathy_count: number;
-	country_id: number;
-	language_id: number;
+	mii: z.string(), // nintendo base64
+	mii_face_url: z.string(), // full URL (cdn., r2-cdn.)
 
-	mii: string; // nintendo base64
-	mii_face_url: string; // full URL (cdn., r2-cdn.)
+	pid: z.number(),
+	platform_id: z.number().optional(),
+	region_id: z.number().optional(),
+	parent: z.string().nullable(),
 
-	pid: number;
-	platform_id?: number;
-	region_id?: number;
-	parent: string | null;
+	reply_count: z.number(),
+	verified: z.boolean(),
 
-	reply_count: number;
-	verified: boolean;
+	message_to_pid: z.string().nullable(),
 
-	message_to_pid: string | null;
-	removed: boolean;
-	removed_by?: number;
-	removed_at?: string; // ISO Z
-	removed_reason?: string;
+	removed: z.boolean(),
+	removed_by: z.number().optional(),
+	removed_at: z.string().optional(), // ISO Z
+	removed_reason: z.string().optional(),
 
-	yeahs: number[];
-};
+	yeahs: z.array(z.number())
+});
+
+export type PostDto = z.infer<typeof postSchema>;
 
 /**
  * Maps a Post from the databse to the frontend contract post type.

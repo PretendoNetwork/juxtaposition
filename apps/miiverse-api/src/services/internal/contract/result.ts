@@ -1,12 +1,12 @@
-/* !!! HEY
- * This type has a copy in apps/juxtaposition-ui/src/api/result.ts
- * Make sure to copy over any modifications! */
+import { z } from 'zod';
 
-export type ResultStr = 'success' | 'scheduled';
+export const resultStrSchema = z.enum(['success', 'scheduled']);
+export type ResultStr = z.infer<typeof resultStrSchema>;
 
-export type ResultDto = {
-	status: ResultStr;
-};
+export const resultSchema = z.object({
+	status: resultStrSchema
+});
+export type ResultDto = z.infer<typeof resultSchema>;
 
 export function mapResult(status: ResultStr): ResultDto {
 	return {
