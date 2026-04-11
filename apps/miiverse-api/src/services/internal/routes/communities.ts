@@ -119,7 +119,7 @@ communitiesRouter.get({
 				};
 
 		const community = await Community.findOne(deleteOptional({
-			community_id: communityId,
+			olive_community_id: communityId,
 			title_id: titleId,
 			...typesToFilter
 		}));
