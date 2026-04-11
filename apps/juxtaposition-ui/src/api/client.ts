@@ -14,7 +14,7 @@ export const customFetch: typeof globalThis.fetch = async (input, init) => {
 	const grpcResponse = await grpcClient.sendPacket({
 		path: url.pathname + url.search,
 		method: req.method.toUpperCase(),
-		headers: JSON.stringify(req.headers),
+		headers: JSON.stringify(Object.fromEntries(req.headers.entries())),
 		payload: req.body ? await new Response(req.body).text() : undefined
 	}, {
 		metadata
@@ -31,7 +31,7 @@ export const customFetch: typeof globalThis.fetch = async (input, init) => {
 export function createInternalApiClient(tokens: UserTokens): InternalApi {
 	const client = createClient({
 		fetch: customFetch,
-		baseUrl: 'https://example.com', // Ignored by `customFetch`
+		baseUrl: 'https://example.com/api/v1', // Hostname is ignored by `customFetch`
 		headers: {
 			'x-service-token': tokens.serviceToken,
 			'x-oauth-token': tokens.oauthToken

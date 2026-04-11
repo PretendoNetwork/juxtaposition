@@ -14,7 +14,16 @@ export function generateOpenapi() {
 			title: 'miiverse-api internal API',
 			description: 'This API is internal and cannot be used externally',
 			version: '1.0.0'
-		}
+		},
+		servers: [{
+			url: '{server}/api/v1',
+			variables: {
+				server: {
+					default: 'localhost',
+					description: 'Localhost instance of miiverse-api'
+				}
+			}
+		}]
 	});
 	return doc;
 }
