@@ -16,7 +16,6 @@ import { loginWall } from '@/middleware/webAuth';
 import { listenMetrics, registerMetrics } from '@/metrics';
 import { i18nMiddleware } from '@/middleware/i18n';
 import type { NextFunction, Request, Response } from 'express';
-import type { FetchError } from '@/fetch';
 
 // TODO is this used anywhere?
 (BigInt as any).prototype['toJSON'] = function (): string {
@@ -77,7 +76,7 @@ app.use((req, res) => {
 
 // non-404 error handler
 logger.info('Creating non-404 status handler');
-app.use((error: Error | FetchError, req: Request, res: Response, next: NextFunction) => {
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
 	if (res.headersSent) {
 		return next(error);
 	}
@@ -87,7 +86,7 @@ app.use((error: Error | FetchError, req: Request, res: Response, next: NextFunct
 		return loginWall(req, res);
 	}
 
-	const status = 'status' in error ? error.status ?? 500 : 500;
+	const status = 500;
 	res.status(status);
 
 	req.log.error(error, 'Request failed!');
