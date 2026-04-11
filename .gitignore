@@ -13,3 +13,4 @@ uploads/
 apps/juxtaposition-ui/webfiles/ctr/css/sprites.css
 apps/juxtaposition-ui/webfiles/ctr/images/sprites.png
 apps/juxtaposition-ui/src/api/generated
+apps/miiverse-api/internal.openapi.json

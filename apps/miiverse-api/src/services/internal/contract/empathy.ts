@@ -8,7 +8,7 @@ export const empathySchema = z.object({
 	action: empathyActionSchema,
 	post_id: z.string(),
 	empathy_count: z.number()
-});
+}).openapi('EmpathyAction');
 export type EmpathyDto = z.infer<typeof empathySchema>;
 
 export function mapEmpathy(action: EmpathyAction, post: IPost): EmpathyDto {

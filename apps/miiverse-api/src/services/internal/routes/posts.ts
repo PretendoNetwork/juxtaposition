@@ -4,8 +4,7 @@ import { errors } from '@/services/internal/errors';
 import { deleteOptional, filterRemovedPosts } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPost, postSchema } from '@/services/internal/contract/post';
-import { mapPage, pageDtoSchema } from '@/services/internal/contract/page';
-import { pageSchema } from '@/services/internal/pagination';
+import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { empathySchema, mapEmpathy } from '@/services/internal/contract/empathy';
 import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
@@ -13,9 +12,9 @@ import { createInternalApiRouter } from '@/services/internal/builder/router';
 
 export const postsRouter = createInternalApiRouter();
 
-// Get posts by topic tag, poster, or empathy
 postsRouter.get({
 	path: '/posts',
+	description: 'Get posts by topic tag, poster, or empathy',
 	guard: guards.guest,
 	schema: {
 		query: z.object({
@@ -26,7 +25,7 @@ postsRouter.get({
 			include_replies: z.stringbool().default(false),
 			sort: z.enum(['newest', 'oldest']).default('newest')
 			// Increased page limit for replies
-		}).and(pageSchema(500)),
+		}).extend(pageControlSchema(500)),
 		response: pageDtoSchema(postSchema)
 	},
 	async handler({ query, auth }) {
@@ -54,9 +53,9 @@ postsRouter.get({
 	}
 });
 
-// Get post by id
 postsRouter.get({
 	path: '/posts/:post_id',
+	description: 'Get post by id',
 	guard: guards.guest,
 	schema: {
 		params: postIdObjSchema,
@@ -76,9 +75,9 @@ postsRouter.get({
 	}
 });
 
-// Delete post by id
 postsRouter.delete({
 	path: '/posts/:post_id',
+	description: 'Delete post by id',
 	guard: guards.user,
 	schema: {
 		params: postIdObjSchema,
@@ -126,9 +125,9 @@ postsRouter.delete({
 	}
 });
 
-// Add or remove empathy
 postsRouter.post({
 	path: '/posts/:post_id/empathies',
+	description: 'Add or remove empathy',
 	guard: guards.user,
 	schema: {
 		params: postIdObjSchema,

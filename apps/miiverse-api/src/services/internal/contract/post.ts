@@ -52,7 +52,7 @@ export const postSchema = z.object({
 	removed_reason: z.string().optional(),
 
 	yeahs: z.array(z.number())
-});
+}).openapi('Post');
 
 export type PostDto = z.infer<typeof postSchema>;
 

@@ -1,3 +1,4 @@
+import '@/extend-zod'; // Needs to be the first import
 import express from 'express';
 import expressMetrics from 'express-prom-bundle';
 import { connect as connectDatabase } from '@/database';
@@ -11,6 +12,7 @@ import { config } from '@/config';
 import { setupGrpc } from '@/services/internal/server';
 import { initImageProcessing } from '@/images';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
+import { writeOpenapiToFile } from '@/services/internal/builder/openapi';
 
 const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
 const metrics = express();
@@ -77,6 +79,7 @@ app.use((error: unknown, request: express.Request, response: express.Response, n
 async function main(): Promise<void> {
 	// Starts the server
 	logger.info('Starting server');
+	writeOpenapiToFile();
 
 	await connectDatabase();
 	await initImageProcessing();
@@ -100,4 +103,7 @@ process.on('uncaughtException', (err) => {
 	process.exit(1);
 });
 
-main();
+main().catch((err) => {
+	logger.fatal(err, 'Uncaught exception');
+	process.exit(1);
+});

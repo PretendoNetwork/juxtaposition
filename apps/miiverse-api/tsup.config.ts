@@ -1,7 +1,11 @@
+import { exec } from 'node:child_process';
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-	entry: ['src/server.ts'],
+	entry: {
+		server: 'src/server.entry.ts',
+		generate: 'src/generate.entry.ts'
+	},
 	sourcemap: true,
 	platform: 'node',
 	clean: true,
@@ -14,5 +18,8 @@ export default defineConfig({
 				js: `import { createRequire } from 'module'; const require = createRequire(import.meta.url);`
 			};
 		}
+	},
+	async onSuccess() {
+		await exec('node dist/generate.js');
 	}
 });
