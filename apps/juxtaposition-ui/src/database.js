@@ -34,10 +34,6 @@ function verifyConnected() {
 	}
 }
 
-export function notBanned() {
-	return { account_status: { $in: [0, 1] } };
-}
-
 async function getCommunitiesFuzzySearch(search_key, limit, offset) {
 	verifyConnected();
 	if (limit === -1) {
