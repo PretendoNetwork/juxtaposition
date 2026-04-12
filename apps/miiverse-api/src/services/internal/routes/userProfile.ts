@@ -24,7 +24,7 @@ userProfileRouter.get({
 		params: z.object({
 			id: z.coerce.number()
 		}),
-		query: z.object(pageControlSchema()),
+		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
 	async handler({ params, query }) {
@@ -63,7 +63,7 @@ userProfileRouter.get({
 		params: z.object({
 			id: z.coerce.number()
 		}),
-		query: z.object(pageControlSchema()),
+		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
 	async handler({ params, query }) {
