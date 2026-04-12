@@ -12,23 +12,32 @@ export const grpcApi = grpcFactory(APIDefinition);
 type GrpcConnection<T extends CompatServiceDefinition> = {
 	client(): Client<T>;
 	connect(ops: { host: string; port: string | number; apiKey: string }): void;
+	createHeaders(headersInit?: Record<string, string>): Metadata;
 };
 
 function grpcFactory<T extends CompatServiceDefinition>(definition: T): GrpcConnection<T> {
 	let client: Client<T> | null = null;
 	let connected = false;
+	let apiKey: string | null = null;
+
+	function createHeaders(headersInit?: Record<string, string>): Metadata {
+		const headers = new Metadata(headersInit);
+		if (apiKey) {
+			headers.append('X-API-Key', apiKey);
+		}
+		return headers;
+	}
 
 	return {
 		connect(ops) {
 			if (connected) {
 				throw new Error('Already connected');
 			}
+			apiKey = ops.apiKey;
 			const channel = createChannel(`${ops.host}:${ops.port}`);
 			client = createClient(definition, channel, {
 				'*': {
-					metadata: Metadata({
-						'X-API-Key': ops.apiKey
-					})
+					metadata: createHeaders()
 				}
 			});
 			connected = true;
@@ -38,7 +47,8 @@ function grpcFactory<T extends CompatServiceDefinition>(definition: T): GrpcConn
 				throw new Error('Client has not been connected yet');
 			}
 			return client;
-		}
+		},
+		createHeaders
 	};
 }
 

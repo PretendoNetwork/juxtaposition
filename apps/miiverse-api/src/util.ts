@@ -1,6 +1,5 @@
 import crypto from 'node:crypto';
 import { DeleteObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
-import { Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
 import { config } from '@/config';
 import { logger } from '@/logger';
@@ -186,7 +185,7 @@ export function getUserAccountData(pid: number): Promise<AccountGetUserDataRespo
 
 export function getUserDataFromToken(token: string): Promise<ApiGetUserDataResponse> {
 	return grpcApi.client().getUserData({}, {
-		metadata: Metadata({
+		metadata: grpcApi.createHeaders({
 			'X-Token': token
 		})
 	});
