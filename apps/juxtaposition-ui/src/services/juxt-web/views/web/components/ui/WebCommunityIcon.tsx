@@ -12,11 +12,9 @@ export type CommunityIconProps = {
 export function WebCommunityIcon(props: CommunityIconProps): ReactNode {
 	const url = useUrl();
 	const iconUrl = url.cdn(props.community.iconImagePaths[props.size]);
-	const href = `/communities/${props.community.olive_community_id}`;
 
 	return (
 		<WebIcon
-			href={href}
 			src={iconUrl}
 			type="icon"
 			className={props.className}

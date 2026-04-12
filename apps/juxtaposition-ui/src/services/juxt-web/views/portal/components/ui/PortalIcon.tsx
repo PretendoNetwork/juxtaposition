@@ -4,9 +4,25 @@ import type { IconProps } from '@/services/juxt-web/views/web/components/ui/WebI
 
 export function PortalIcon(props: IconProps): ReactNode {
 	const type = props.type ?? 'icon';
-	return (
-		<a href={props.href} className={cx(`${type}-container`, props.className)} data-pjax="#body">
-			<img src={props.src} className={type} />
-		</a>
-	);
+
+	const icon = <img src={props.src} className={type} />;
+	if (props.href) {
+		return (
+			<a
+				href={props.href}
+				className={cx(`${type}-container`, props.className)}
+				data-pjax="#body"
+			>
+				{icon}
+			</a>
+		);
+	} else {
+		return (
+			<div
+				className={cx(`${type}-container`, props.className)}
+			>
+				{icon}
+			</div>
+		);
+	}
 }

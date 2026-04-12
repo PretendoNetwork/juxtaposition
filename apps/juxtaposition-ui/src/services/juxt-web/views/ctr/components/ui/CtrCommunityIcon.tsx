@@ -6,11 +6,9 @@ import type { CommunityIconProps } from '@/services/juxt-web/views/web/component
 export function CtrCommunityIcon(props: CommunityIconProps): ReactNode {
 	const url = useUrl();
 	const iconUrl = url.cdn(props.community.iconImagePaths[props.size]);
-	const href = `/communities/${props.community.olive_community_id}`;
 
 	return (
 		<CtrIcon
-			href={href}
 			src={iconUrl}
 			type="icon"
 			className={props.className}
