@@ -1,6 +1,6 @@
 import { getPIDFromServiceToken, getUserAccountData, getUserDataFromToken, getValueFromHeaders } from '@/util';
 import { errors } from '@/services/internal/errors';
-import { getUserSettings } from '@/database';
+import { getUserContent, getUserSettings } from '@/database';
 import type express from 'express';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
@@ -28,10 +28,11 @@ export async function authPopulate(request: express.Request, response: express.R
 	if (pnid !== null) {
 		// Null here just means the initial setup isn't done
 		const settings = await getUserSettings(pnid.pid);
+		const content = await getUserContent(pnid.pid);
 
 		const moderator = accountIsModerator(pnid);
 
-		response.locals.account = { pnid, settings, moderator };
+		response.locals.account = { pnid, settings, moderator, content };
 	} else {
 		// Guest access
 		response.locals.account = null;
