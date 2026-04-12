@@ -113,9 +113,6 @@ function flatZodSchema<T extends z.ZodType>(schema: T): SchemaTransformer<z.infe
 }
 
 const shouldSkip = process.env.SKIP_CONFIG_VALIDATION === 'true';
-if (shouldSkip) {
-	process.env.PN_MIIVERSE_API_USE_PRESETS = 'dummy';
-}
 
 export const config = createConfig({
 	envPrefix: 'PN_MIIVERSE_API_',
@@ -124,7 +121,20 @@ export const config = createConfig({
 	loaders: [
 		loaders.environment(),
 		loaders.file('.env'),
-		loaders.file('config.json')
+		loaders.file('config.json'),
+		{
+			name: 'skipped-generation',
+			load(_ctx) {
+				if (!shouldSkip) {
+					return [];
+				}
+				const keys = {
+					log__format: 'pretty',
+					log__level: 'info'
+				};
+				return Object.entries(keys).map(v => ({ key: v[0], value: v[1] }));
+			}
+		}
 	],
 	schema: shouldSkip
 		? z.any() as any as SchemaTransformer<z.infer<typeof schema>>
