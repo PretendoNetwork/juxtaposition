@@ -6,10 +6,10 @@ import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/c
 import { Community } from '@/models/community';
 import { deleteOptional } from '@/services/internal/utils';
 import { COMMUNITY_TYPE } from '@/types/mongoose/community';
-import { categoryToCommunityTypes, communityCategory, communitySchema, mapCommunity } from '@/services/internal/contract/community';
+import { categoryToCommunityTypes, communityCategory, communitySchema, communityStatsSchema, mapCommunity, mapCommunityStats } from '@/services/internal/contract/community';
 import { errors } from '@/services/internal/errors';
 import { Post } from '@/models/post';
-import type { RootFilterQuery } from 'mongoose';
+import type { FilterQuery, RootFilterQuery } from 'mongoose';
 import type { ICommunity, HydratedCommunityDocument } from '@/types/mongoose/community';
 
 const popularRangeMs = 24 * 60 * 60 * 1000; // 24h
@@ -44,16 +44,18 @@ communitiesRouter.get({
 			typesToFilter.type = typeList;
 		}
 
+		const dbQuery: FilterQuery<ICommunity> = deleteOptional({
+			parent: query.parent_id,
+			...typesToFilter
+		});
 		const communities = await Community
-			.find(deleteOptional({
-				parent: query.parent_id,
-				...typesToFilter
-			}))
+			.find(dbQuery)
 			.sort({ created_at: standardSortToDirection(query.sort) })
 			.skip(query.offset)
 			.limit(query.limit);
+		const total = await Community.countDocuments(dbQuery);
 
-		return mapPage(communities.map(c => mapCommunity(c)));
+		return mapPage(total, communities.map(c => mapCommunity(c)));
 	}
 });
 
@@ -89,6 +91,44 @@ communitiesRouter.get({
 		]);
 
 		return popularCommunities.map(c => mapCommunity(c));
+	}
+});
+
+communitiesRouter.get({
+	path: '/communities/:id/stats',
+	name: 'communities.getStats',
+	guard: guards.guest,
+	allowNotFound: true,
+	schema: {
+		params: z.object({
+			id: z.string()
+		}),
+		response: communityStatsSchema
+	},
+	async handler({ params, auth }) {
+		const typesToFilter: RootFilterQuery<ICommunity> = auth?.moderator
+			? {}
+			: {
+					type: {
+						$neq: COMMUNITY_TYPE.Private
+					}
+				};
+
+		const community = await Community.findOne(deleteOptional({
+			olive_community_id: params.id,
+			...typesToFilter
+		}));
+		if (!community) {
+			throw new errors.notFound();
+		}
+
+		const totalPosts = await Post.find({
+			community_id: community.olive_community_id,
+			parent: null,
+			removed: false
+		}).countDocuments();
+
+		return mapCommunityStats(community, totalPosts);
 	}
 });
 

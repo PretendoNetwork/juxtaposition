@@ -3,7 +3,7 @@ import { Post } from '@/models/post';
 import { deleteOptional, filterRemovedPosts } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPost, postSchema } from '@/services/internal/contract/post';
-import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
+import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
@@ -17,7 +17,7 @@ activityFeedsRouter.get({
 	guard: guards.user,
 	schema: {
 		query: z.object(pageControlSchema(500)),
-		response: pageDtoSchema(postSchema)
+		response: feedPageDtoSchema(postSchema)
 	},
 	async handler({ query, auth }) {
 		const posts = await Post
@@ -30,7 +30,7 @@ activityFeedsRouter.get({
 			.skip(query.offset)
 			.limit(query.limit);
 
-		return mapPage(posts.map(mapPost));
+		return mapFeedPage(posts.map(mapPost));
 	}
 });
 
@@ -41,7 +41,7 @@ activityFeedsRouter.get({
 	guard: guards.user,
 	schema: {
 		query: z.object(pageControlSchema(500)),
-		response: pageDtoSchema(postSchema)
+		response: feedPageDtoSchema(postSchema)
 	},
 	async handler({ query, auth }) {
 		const { content, pnid } = auth!; // Auth guard protects it
@@ -64,7 +64,7 @@ activityFeedsRouter.get({
 			.skip(query.offset)
 			.limit(query.limit);
 
-		return mapPage(posts.map(mapPost));
+		return mapFeedPage(posts.map(mapPost));
 	}
 });
 
@@ -75,7 +75,7 @@ activityFeedsRouter.get({
 	guard: guards.user,
 	schema: {
 		query: z.object(pageControlSchema(500)),
-		response: pageDtoSchema(postSchema)
+		response: feedPageDtoSchema(postSchema)
 	},
 	async handler({ query, auth }) {
 		const { content, pnid } = auth!; // Auth guard protects it
@@ -99,6 +99,6 @@ activityFeedsRouter.get({
 			.skip(query.offset)
 			.limit(query.limit);
 
-		return mapPage(posts.map(mapPost));
+		return mapFeedPage(posts.map(mapPost));
 	}
 });

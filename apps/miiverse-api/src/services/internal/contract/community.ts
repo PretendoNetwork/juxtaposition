@@ -50,6 +50,14 @@ export const communitySchema = z.object({
 
 export type CommunityDto = z.infer<typeof communitySchema>;
 
+export const communityStatsSchema = z.object({
+	id: z.string(),
+	olive_community_id: z.string(),
+	totalPosts: z.number()
+}).openapi('CommunityStats');
+
+export type CommunityStatsDto = z.infer<typeof communityStatsSchema>;
+
 export function categoryToCommunityTypes(cat: CommunityCategoryEnum): number[] {
 	if (cat === 'private') {
 		return [COMMUNITY_TYPE.Private];
@@ -96,5 +104,13 @@ export function mapCommunity(comm: HydratedCommunityDocument): CommunityDto {
 			96: comm.icon_paths?.[96] ?? `/icons/${imageId}/96.png`,
 			128: comm.icon_paths?.[128] ?? `/icons/${imageId}/128.png`
 		}
+	};
+}
+
+export function mapCommunityStats(comm: HydratedCommunityDocument, totalPosts: number): CommunityStatsDto {
+	return {
+		id: comm.community_id,
+		olive_community_id: comm.olive_community_id,
+		totalPosts
 	};
 }
