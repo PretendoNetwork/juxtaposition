@@ -256,6 +256,7 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 	}
 
 	const { data: postPage } = await req.api.users.posts.list({ id: userID });
+	const totalPosts = await database.getTotalPostsByUserID(userID);
 
 	const friends = await getUserFriendPIDs(userID);
 
@@ -279,7 +280,7 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		friendPids: friends,
 		isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
 		selectedTab: 0,
-		totalPosts: postPage.total,
+		totalPosts,
 		user: pnid,
 		userContent: userContent,
 		userSettings: userSettings,
@@ -320,8 +321,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
 
-	const { data: userPostData } = await req.api.users.posts.list({ id: userID, limit: 1 });
-	const numPosts = userPostData.total;
+	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
 	const parentUserContent = await database.getUserContent(req.pid);
 	if (!pnid || !userSettings || !userContent) {
