@@ -378,7 +378,11 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	}
 
 	if (params.type === 'friends') {
-		followers = await SETTINGS.find({ pid: friends });
+		followers = (await SETTINGS.find({ pid: friends })).map(v => ({
+			pid: v.pid,
+			accountStatus: v.account_status,
+			miiName: v.screen_name
+		}));
 		selection = 1;
 	} else if (params.type === 'followers') {
 		const { data: page } = await req.api.users.listFollowers({ id: userID, limit: 100 });
