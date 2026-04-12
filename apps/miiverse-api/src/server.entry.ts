@@ -12,7 +12,8 @@ import { config } from '@/config';
 import { setupGrpc } from '@/services/internal/server';
 import { initImageProcessing } from '@/images';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
-import { writeOpenapiToFile } from '@/services/internal/builder/openapi';
+import { connectGrpc } from '@/grpc';
+import { setupS3 } from '@/s3';
 
 const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
 const metrics = express();
@@ -79,8 +80,9 @@ app.use((error: unknown, request: express.Request, response: express.Response, n
 async function main(): Promise<void> {
 	// Starts the server
 	logger.info('Starting server');
-	writeOpenapiToFile();
 
+	setupS3();
+	connectGrpc();
 	await connectDatabase();
 	await initImageProcessing();
 

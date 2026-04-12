@@ -1,14 +1,13 @@
 import crypto from 'node:crypto';
-import { DeleteObjectsCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { createChannel, createClient, Metadata } from 'nice-grpc';
+import { DeleteObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import { Metadata } from 'nice-grpc';
 import crc32 from 'crc/crc32';
-import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
-import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
+import { grpcAccount, grpcApi, grpcFriends } from '@/grpc';
+import { getS3 } from '@/s3';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
@@ -17,26 +16,6 @@ import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonet
 import type { ParsedQs } from 'qs';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { ServiceToken } from '@/types/common/service-token';
-
-// * nice-grpc doesn't export ChannelImplementation so this can't be typed
-const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
-const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
-
-const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
-const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
-
-const gRPCApiChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
-const gRPCApiClient = createClient(APIDefinition, gRPCApiChannel);
-
-const s3 = new S3Client({
-	endpoint: config.s3.endpoint,
-	forcePathStyle: true,
-	region: config.s3.region,
-	credentials: {
-		accessKeyId: config.s3.key,
-		secretAccessKey: config.s3.secret
-	}
-});
 
 // TODO - This doesn't really belong here
 export function getInvalidPostRegex(): RegExp {
@@ -152,7 +131,7 @@ export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCanne
 		ACL: acl
 	});
 	try {
-		await s3.send(awsPutParams);
+		await getS3().send(awsPutParams);
 		return true;
 	} catch (e) {
 		logger.error(e, 'Could not upload to CDN');
@@ -175,7 +154,7 @@ export async function bulkDeleteCDNAsset(keys: string[]): Promise<boolean> {
 		}
 	});
 	try {
-		await s3.send(awsDeleteParams);
+		await getS3().send(awsDeleteParams);
 		return true;
 	} catch (e) {
 		logger.error(e, 'Could not delete from CDN');
@@ -184,43 +163,30 @@ export async function bulkDeleteCDNAsset(keys: string[]): Promise<boolean> {
 }
 
 export async function getUserFriendPIDs(pid: number): Promise<number[]> {
-	const response = await gRPCFriendsClient.getUserFriendPIDs({
+	const response = await grpcFriends.client().getUserFriendPIDs({
 		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.apiKey
-		})
 	});
 
 	return response.pids;
 }
 
 export async function getUserFriendRequestsIncoming(pid: number): Promise<FriendRequest[]> {
-	const response = await gRPCFriendsClient.getUserFriendRequestsIncoming({
+	const response = await grpcFriends.client().getUserFriendRequestsIncoming({
 		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.apiKey
-		})
 	});
 
 	return response.friendRequests;
 }
 
 export function getUserAccountData(pid: number): Promise<AccountGetUserDataResponse> {
-	return gRPCAccountClient.getUserData({
+	return grpcAccount.client().getUserData({
 		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.account.apiKey
-		})
 	});
 }
 
 export function getUserDataFromToken(token: string): Promise<ApiGetUserDataResponse> {
-	return gRPCApiClient.getUserData({}, {
+	return grpcApi.client().getUserData({}, {
 		metadata: Metadata({
-			'X-API-Key': config.grpc.account.apiKey,
 			'X-Token': token
 		})
 	});

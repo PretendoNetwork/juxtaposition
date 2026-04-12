@@ -92,6 +92,12 @@ export const presets: Record<string, any> = {
 				apiKey: '12345678123456781234567812345678'
 			}
 		}
+	},
+	dummy: {
+		log: {
+			format: 'pretty',
+			level: 'info'
+		}
 	}
 };
 
@@ -106,6 +112,11 @@ function flatZodSchema<T extends z.ZodType>(schema: T): SchemaTransformer<z.infe
 	};
 }
 
+const shouldSkip = process.env.SKIP_CONFIG_VALIDATION === 'true';
+if (shouldSkip) {
+	process.env.PN_MIIVERSE_API_USE_PRESETS = 'dummy';
+}
+
 export const config = createConfig({
 	envPrefix: 'PN_MIIVERSE_API_',
 	presetKey: 'usePresets',
@@ -115,5 +126,7 @@ export const config = createConfig({
 		loaders.file('.env'),
 		loaders.file('config.json')
 	],
-	schema: flatZodSchema(schema)
+	schema: shouldSkip
+		? z.any() as any as SchemaTransformer<z.infer<typeof schema>>
+		: flatZodSchema(schema)
 });
