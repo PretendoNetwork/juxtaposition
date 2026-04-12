@@ -169,7 +169,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 	}
 
 	// increase limit for post replies since there's no pagination yet
-	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true' }))?.data.items ?? [];
+	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', limit: 500 }))?.data.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
 	const canPost = hasAuth() && userSettings !== null && isPostingAllowed(community, userSettings, post, auth().user);
 
