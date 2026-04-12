@@ -33,7 +33,7 @@ communitiesRouter.get({
 			? {}
 			: {
 					type: {
-						$neq: COMMUNITY_TYPE.Private
+						$ne: COMMUNITY_TYPE.Private
 					}
 				};
 		if (query.category) {

@@ -60,7 +60,7 @@ export function createInternalApiClient(tokens: UserTokens): InternalApi {
 
 	client.interceptors.error.use((err, response, _req, options) => {
 		if (!options.throwOnError) {
-			return response;
+			return err;
 		}
 
 		return new InternalApiError(response, err);
