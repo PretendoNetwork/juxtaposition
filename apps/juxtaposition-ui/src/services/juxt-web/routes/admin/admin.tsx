@@ -407,7 +407,7 @@ adminRouter.get('/communities', async function (req, res) {
 	const search = query.search;
 	const limit = 20;
 
-	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
+	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await COMMUNITY.find({ parent: null }).limit(limit).skip(page * limit);
 
 	res.jsxForDirectory({
 		web: <WebManageCommunityView hasNextPage={communities.length === limit} communities={communities} page={page} search={search} />
