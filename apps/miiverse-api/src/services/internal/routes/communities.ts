@@ -69,18 +69,18 @@ communitiesRouter.get({
 	},
 	async handler({ query }) {
 		// TODO add caching
-		const last24Hours = await calculateMostPopularCommunities(popularRangeMs);
+		const popularCommunityIds = await calculateMostPopularCommunities(popularRangeMs);
 		const popularCommunities = await Community.aggregate<HydratedCommunityDocument>([
 			{
 				$match: {
-					type: [COMMUNITY_TYPE.Main, COMMUNITY_TYPE.Announcement],
-					olive_community_id: { $in: last24Hours },
+					type: { $in: [COMMUNITY_TYPE.Main, COMMUNITY_TYPE.Announcement] },
+					olive_community_id: { $in: popularCommunityIds },
 					parent: null
 				}
 			},
 			{
 				$addFields: {
-					index: { $indexOfArray: [last24Hours, '$olive_community_id'] }
+					index: { $indexOfArray: [popularCommunityIds, '$olive_community_id'] }
 				}
 			},
 			{ $sort: { index: 1 } },
