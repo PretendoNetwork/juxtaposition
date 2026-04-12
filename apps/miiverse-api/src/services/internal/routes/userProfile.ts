@@ -134,7 +134,7 @@ userProfileRouter.post({
 
 userProfileRouter.delete({
 	path: '/users/:id/followers/@me',
-	name: 'users.followerUser',
+	name: 'users.unfollowUser',
 	guard: guards.user,
 	schema: {
 		params: z.object({

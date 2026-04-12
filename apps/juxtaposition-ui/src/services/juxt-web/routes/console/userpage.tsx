@@ -5,7 +5,7 @@ import { database } from '@/database';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { getCommunityHash, getUserAccountData, getUserFriendPIDs, newNotification } from '@/util';
+import { getCommunityHash, getUserAccountData, getUserFriendPIDs } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
@@ -189,22 +189,15 @@ userPageRouter.post('/follow', upload.none(), async function (req, res) {
 	}
 
 	const isFollowing = userContent.followed_users.includes(userToFollow.pid);
-	let newFollowerCount = userToFollow.following_users.length;
-	if (!isFollowing) {
-		// Follow
-		await (userToFollow as any).addToFollowers(userContent.pid);
-		await (userContent as any).addToUsers(userToFollow.pid);
-		newFollowerCount++;
-		const existingNotification = await database.getNotification(userToFollow.pid, 2, userContent.pid);
-		if (!existingNotification) {
-			await newNotification({ pid: userToFollow.pid, type: 'follow', objectID: auth().pid.toString(), link: `/users/${auth().pid}` });
-		}
+	const shouldFollow = !isFollowing;
+	if (shouldFollow) {
+		await req.api.users.followerUser({ id: userToFollow.pid });
 	} else {
-		// Unfollow
-		await (userToFollow as any).removeFromFollowers(userContent.pid);
-		await (userContent as any).removeFromUsers(userToFollow.pid);
-		newFollowerCount--;
+		await req.api.users.unfollowUser({ id: userToFollow.pid });
 	}
+
+	const changeNum = shouldFollow ? 1 : -1;
+	const newFollowerCount = userToFollow.following_users.length + changeNum;
 
 	// idk why, but it always subtracts one from the count before returning
 	res.send({ status: 200, id: userToFollow.pid, count: newFollowerCount - 1 });
