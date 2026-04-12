@@ -34,9 +34,12 @@ userProfileRouter.get({
 			return mapPage(0, []);
 		}
 
+		// User contents frequently have a `0` element in it
+		const targetPids = (targetUserContent?.following_users ?? []).filter(v => v !== 0);
+
 		const dbQuery: FilterQuery<ISettings> = deleteOptional({
 			pid: {
-				$in: targetUserContent?.following_users ?? []
+				$in: targetPids
 			},
 			...notBanned()
 		});
@@ -70,9 +73,12 @@ userProfileRouter.get({
 			return mapPage(0, []);
 		}
 
+		// User contents frequently have a `0` element in it
+		const targetPids = (targetUserContent?.followed_users ?? []).filter(v => v !== 0);
+
 		const dbQuery: FilterQuery<ISettings> = deleteOptional({
 			pid: {
-				$in: targetUserContent?.followed_users ?? []
+				$in: targetPids
 			},
 			...notBanned()
 		});
