@@ -19,6 +19,7 @@ import { zodFallback } from '@/util';
 import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
+import { Community } from '@/models/communities';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
@@ -287,14 +288,18 @@ communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 		res.send({ status: 423, id: community?.olive_community_id, count: community?.followerCount });
 		return;
 	}
+	const dbCommunity = await Community.findOne({ olive_community_id: community.olive_community_id });
+	if (!dbCommunity) {
+		throw new Error('Community gone after request');
+	}
 
 	// Pretty terrible use of `any` here, but database models aren't typed yet so I have to
 	const userFollowsCommunity = userContent.followed_communities.includes(community.olive_community_id);
 	if (!userFollowsCommunity) {
-		(community as any).upFollower();
+		dbCommunity.upFollower();
 		(userContent as any).addToCommunities(community.olive_community_id);
 	} else {
-		(community as any).downFollower();
+		dbCommunity.downFollower();
 		(userContent as any).removeFromCommunities(community.olive_community_id);
 	}
 
