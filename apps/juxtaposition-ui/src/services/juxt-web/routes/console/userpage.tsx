@@ -255,17 +255,16 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		return res.redirect('/404');
 	}
 
-	const posts = (await req.api.posts.list({ posted_by: userID }))?.data?.items ?? [];
+	const { data: postPage } = await req.api.users.posts.list({ id: userID });
 
-	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
 
 	const parentUserContent = await database.getUserContent(req.pid);
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
 	const postListProps: PostListViewProps = {
-		nextLink: `/users/${userID}/more?offset=${posts.length}&pjax=true`,
-		posts,
+		nextLink: `/users/${userID}/more?offset=${postPage.items.length}&pjax=true`,
+		posts: postPage.items,
 		userContent: parentUserContent ?? userContent
 	};
 	if (query.pjax) {
@@ -280,7 +279,7 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		friendPids: friends,
 		isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
 		selectedTab: 0,
-		totalPosts: numPosts,
+		totalPosts: postPage.total,
 		user: pnid,
 		userContent: userContent,
 		userSettings: userSettings,
@@ -320,7 +319,9 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	const userContent = await database.getUserContent(userID);
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
-	const numPosts = await database.getTotalPostsByUserID(userID);
+
+	const { data: userPostData } = await req.api.users.posts.list({ id: userID, limit: 1 });
+	const numPosts = userPostData.total;
 	const friends = await getUserFriendPIDs(userID);
 	const parentUserContent = await database.getUserContent(req.pid);
 	if (!pnid || !userSettings || !userContent) {
@@ -441,7 +442,7 @@ async function morePosts(req: Request, res: Response, userID: number): Promise<a
 	const { offset } = query;
 
 	const userContent = await database.getUserContent(req.pid);
-	const posts = (await req.api.posts.list({ posted_by: userID, offset }))?.data.items ?? [];
+	const posts = (await req.api.users.posts.list({ id: userID, offset }))?.data.items ?? [];
 
 	if (posts.length === 0 || !userContent) {
 		return res.sendStatus(204);

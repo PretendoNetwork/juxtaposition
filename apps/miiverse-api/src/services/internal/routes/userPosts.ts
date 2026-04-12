@@ -18,7 +18,7 @@ userPostsRouter.get({
 	guard: guards.guest,
 	schema: {
 		params: z.object({
-			id: z.string()
+			id: z.coerce.number()
 		}),
 		query: z.object({
 			sort: standardSortSchema
