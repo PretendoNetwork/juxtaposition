@@ -7,11 +7,11 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { ContentSchema } from '@/models/content';
-import type { PostSchema } from '@/models/post';
+import type { Post } from '@/api/generated';
 
 export type FeedViewProps = {
 	userContent: InferSchemaType<typeof ContentSchema>;
-	posts: InferSchemaType<typeof PostSchema>[];
+	posts: Post[];
 	nextLink: string;
 };
 
