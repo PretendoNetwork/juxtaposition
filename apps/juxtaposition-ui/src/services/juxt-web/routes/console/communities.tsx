@@ -24,6 +24,8 @@ import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
+import type { Post } from '@/api/generated';
+
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
 
@@ -165,26 +167,28 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 			message: 'Community not Found'
 		});
 	}
+	const { data: communityStats } = await req.api.communities.getStats({ id: community?.olive_community_id });
+	if (!communityStats) {
+		throw new Error('Community stats could not be found');
+	}
 
 	const canPost = userSettings !== null && isPostingAllowed(community, userSettings, null, auth().user);
 	const isUserFollowing = userContent !== null && userContent.followed_communities.includes(community.olive_community_id);
 
 	const { data: subCommunitiesList } = await req.api.communities.list({ category: 'sub', limit: 90, parent_id: community.olive_community_id });
 	const subCommunities = subCommunitiesList.items;
-	let posts;
-	let type;
+	let posts: Post[] = [];
+	let type: number = 0;
 
 	if (params.type === 'hot') {
-		posts = await database.getNumberPopularCommunityPostsByID(community, config.postLimit);
+		const pageResult = await req.api.communities.feed.getPopular({ id: community.olive_community_id, limit: config.postLimit });
+		posts = pageResult.data.items;
 		type = 1;
-	} else if (params.type === 'verified') {
-		posts = await database.getNumberVerifiedCommunityPostsByID(community, config.postLimit);
-		type = 2;
 	} else {
-		posts = await database.getNewPostsByCommunity(community, config.postLimit);
+		const pageResult = await req.api.communities.feed.getFresh({ id: community.olive_community_id, limit: config.postLimit });
+		posts = pageResult.data.items;
 		type = 0;
 	}
-	const numPosts = await database.getTotalPostsByCommunity(community);
 
 	const postListProps: PostListViewProps = {
 		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${posts.length}&pjax=true`,
@@ -204,7 +208,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		feedType: type,
 		community,
 		hasSubCommunities: subCommunities.length > 0,
-		totalPosts: numPosts,
+		totalPosts: communityStats.totalPosts,
 		canPost,
 		isUserFollowing
 	};
@@ -240,21 +244,18 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 
 	const offset = query.offset;
 	const userContent = await database.getUserContent(auth().pid);
-	let posts;
 	const { data: community } = await req.api.communities.get({ id: params.communityID });
 	if (!community || !userContent) {
 		return res.redirect('/404');
 	}
-	switch (params.type) {
-		case 'hot':
-			posts = await database.getNumberPopularCommunityPostsByID(community, config.postLimit, offset);
-			break;
-		case 'verified':
-			posts = await database.getNumberVerifiedCommunityPostsByID(community, config.postLimit, offset);
-			break;
-		default:
-			posts = await database.getNewPostsByCommunity(community, config.postLimit, offset);
-			break;
+
+	let posts: Post[] = [];
+	if (params.type === 'hot') {
+		const pageResult = await req.api.communities.feed.getPopular({ id: community.olive_community_id, limit: config.postLimit, offset });
+		posts = pageResult.data.items;
+	} else {
+		const pageResult = await req.api.communities.feed.getFresh({ id: community.olive_community_id, limit: config.postLimit, offset });
+		posts = pageResult.data.items;
 	}
 
 	const postListProps: PostListViewProps = {

@@ -47,15 +47,6 @@ async function getCommunitiesFuzzySearch(search_key, limit, offset) {
 	}
 }
 
-async function getTotalPostsByCommunity(community) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).countDocuments();
-}
-
 async function getPostByID(postID) {
 	verifyConnected();
 	return POST.findOne({
@@ -86,34 +77,6 @@ async function getTotalPostsByUserID(userID) {
 		message_to_pid: null,
 		removed: false
 	}).countDocuments();
-}
-
-async function getNumberPopularCommunityPostsByID(community, limit, offset) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).sort({ empathy_count: -1 }).skip(offset).limit(limit);
-}
-
-async function getNumberVerifiedCommunityPostsByID(community, limit, offset) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		verified: true,
-		parent: null,
-		removed: false
-	}).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
-async function getNewPostsByCommunity(community, limit, offset) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).sort({ created_at: -1 }).skip(offset).limit(limit);
 }
 
 async function getEndPoint(accessLevel) {
@@ -273,10 +236,6 @@ async function getLogsForTarget(targetPID, offset, limit) {
 export const database = {
 	connect,
 	getCommunitiesFuzzySearch,
-	getTotalPostsByCommunity,
-	getNumberPopularCommunityPostsByID,
-	getNumberVerifiedCommunityPostsByID,
-	getNewPostsByCommunity,
 	getTotalPostsByUserID,
 	getPostByID,
 	getDuplicatePosts,
