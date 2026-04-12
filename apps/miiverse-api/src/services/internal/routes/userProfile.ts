@@ -6,6 +6,9 @@ import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { Settings } from '@/models/settings';
 import { Content } from '@/models/content';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
+import { mapResult, resultSchema } from '@/services/internal/contract/result';
+import { errors } from '@/services/internal/errors';
+import { createNewFollowNotification } from '@/services/internal/utils/notifications';
 import type { FilterQuery } from 'mongoose';
 import type { ISettings } from '@/types/mongoose/settings';
 
@@ -90,5 +93,76 @@ userProfileRouter.get({
 		const total = await Settings.countDocuments(dbQuery);
 
 		return mapPage(total, items.map(mapShallowUser));
+	}
+});
+
+userProfileRouter.post({
+	path: '/users/:id/followers/@me',
+	name: 'users.followerUser',
+	guard: guards.user,
+	schema: {
+		params: z.object({
+			id: z.coerce.number()
+		}),
+		response: resultSchema
+	},
+	async handler({ params, auth }) {
+		const currentUser = auth!;
+		const currentUserPid = currentUser.pnid.pid;
+
+		const targetUserContent = await Content.findOne({ pid: params.id });
+		const currentUserContent = await Content.findOne({ pid: currentUserPid });
+		if (!targetUserContent || !currentUserContent) {
+			throw new errors.notFound();
+		}
+
+		const currentUserFollowedUsers = currentUserContent.followed_users;
+		const isFollowing = currentUserFollowedUsers.includes(targetUserContent.pid);
+		if (isFollowing) {
+			return mapResult('success');
+		}
+
+		targetUserContent.following_users.push(currentUserPid);
+		currentUserContent.followed_users.push(targetUserContent.pid);
+		await targetUserContent.save();
+		await currentUserContent.save();
+
+		await createNewFollowNotification({ currentUser: currentUserPid, userToFollow: targetUserContent.pid });
+		return mapResult('success');
+	}
+});
+
+userProfileRouter.delete({
+	path: '/users/:id/followers/@me',
+	name: 'users.followerUser',
+	guard: guards.user,
+	schema: {
+		params: z.object({
+			id: z.coerce.number()
+		}),
+		response: resultSchema
+	},
+	async handler({ params, auth }) {
+		const currentUser = auth!;
+		const currentUserPid = currentUser.pnid.pid;
+
+		const targetUserContent = await Content.findOne({ pid: params.id });
+		const currentUserContent = await Content.findOne({ pid: currentUserPid });
+		if (!targetUserContent || !currentUserContent) {
+			throw new errors.notFound();
+		}
+
+		const currentUserFollowedUsers = currentUserContent.followed_users;
+		const isFollowing = currentUserFollowedUsers.includes(targetUserContent.pid);
+		if (!isFollowing) {
+			return mapResult('success');
+		}
+
+		targetUserContent.following_users = targetUserContent.following_users.filter(pid => pid !== currentUserPid);
+		currentUserContent.followed_users = currentUserContent.followed_users.filter(pid => pid !== targetUserContent.pid);
+		await targetUserContent.save();
+		await currentUserContent.save();
+
+		return mapResult('success');
 	}
 });

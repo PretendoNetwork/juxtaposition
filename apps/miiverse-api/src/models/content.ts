@@ -5,7 +5,7 @@ const ContentSchema = new Schema<IContent, ContentModel>({
 	pid: Number,
 	followed_communities: {
 		type: [String],
-		default: [0]
+		default: ['0']
 	},
 	followed_users: {
 		type: [Number],
