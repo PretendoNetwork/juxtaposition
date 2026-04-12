@@ -13,7 +13,7 @@ export function CtrUserPageFollowingView(props: UserPageFollowingViewProps): Rea
 						<a href={`/users/show?pid=${user.pid}`} data-pjax="#body" className="scroll to-community-button full"></a>
 						<div className="body">
 							<div className="body-content">
-								<span className="community-name title">{user.screen_name}</span>
+								<span className="community-name title">{user.miiName}</span>
 							</div>
 						</div>
 					</li>

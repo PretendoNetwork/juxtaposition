@@ -23,8 +23,8 @@ import type { Request, Response } from 'express';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
-import type { HydratedSettingsDocument } from '@/models/settings';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
+import type { ShallowUser } from '@/api/generated';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
@@ -328,7 +328,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		return res.redirect('/404');
 	}
 
-	let followers: HydratedSettingsDocument[] = [];
+	let followers: ShallowUser[] = [];
 	let communities: string[] = [];
 	let selection = 0;
 
@@ -381,17 +381,19 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		followers = await SETTINGS.find({ pid: friends });
 		selection = 1;
 	} else if (params.type === 'followers') {
-		followers = await database.getFollowingUsers(userContent);
+		const { data: page } = await req.api.users.listFollowers({ id: userID, limit: 100 });
+		followers = page.items;
 		selection = 3;
 	} else {
-		followers = await database.getFollowedUsers(userContent);
+		const { data: page } = await req.api.users.listFollowing({ id: userID, limit: 100 });
+		followers = page.items;
 		communities = userContent?.followed_communities ?? [];
 		selection = 2;
 	}
 
 	const communityMap = getCommunityHash();
 	const listProps: UserPageFollowingViewProps = {
-		followers: followers.filter(v => v.pid !== 0),
+		followers,
 		communities: communities
 			.filter(v => v !== '0') // UserContent had a wrong default of [0], which means it needs to be filtered out before usage
 			.map(com => ({ id: com, name: communityMap.get(com) ?? com }))
