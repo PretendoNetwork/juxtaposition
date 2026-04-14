@@ -26,8 +26,11 @@ selfRouter.get({
 				userSettings.account_status = 0;
 			}
 
-			// Record activity
+			// Record activity & update metadata
 			userSettings.last_active = new Date();
+			if (auth.pnid.mii) {
+				userSettings.screen_name = auth.pnid.mii.name;
+			}
 
 			// Save changes to current auth state
 			await userSettings.save();

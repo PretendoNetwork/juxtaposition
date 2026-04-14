@@ -10,7 +10,8 @@ export const selfPermissionsSchema = z.object({
 	posting: z.boolean(),
 	moderator: z.boolean(),
 	tester: z.boolean(),
-	developer: z.boolean()
+	developer: z.boolean(),
+	accessLevel: z.number()
 }).openapi('SelfPermissions');
 
 export const selfBanStateSchema = asOpenapi('SelfBanState', z.object({
@@ -51,7 +52,8 @@ const baseSelf: SelfDto = {
 		moderator: false,
 		developer: false,
 		tester: false,
-		posting: false
+		posting: false,
+		accessLevel: 0
 	},
 	banState: null
 };
@@ -91,6 +93,7 @@ export function mapSelf(auth: AccountData): SelfDto {
 			moderator: auth.moderator,
 			tester: auth.pnid.accessLevel >= 1 && auth.pnid.accessLevel <= 3,
 			developer: auth.pnid.accessLevel === 3,
+			accessLevel: auth.pnid.accessLevel,
 
 			// 0 = normal, 1 = limited from posting, 2 = temp ban, 3 = perma ban
 			posting: auth.settings.account_status === 0
