@@ -1,7 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
 import { config } from '@/config';
-import { database } from '@/database';
 import { POST } from '@/models/post';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
@@ -14,7 +13,7 @@ import { CtrTopicTagView } from '@/services/juxt-web/views/ctr/topics';
 export const topicsRouter = express.Router();
 
 topicsRouter.get('/', async function (req, res) {
-	const { auth, query } = parseReq(req, {
+	const { auth, hasAuth, query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional(),
 			limit: z.coerce.number().min(1).max(config.postLimit).optional().default(config.postLimit),
@@ -22,10 +21,7 @@ topicsRouter.get('/', async function (req, res) {
 		})
 	});
 
-	const userContent = await database.getUserContent(auth().pid);
-	if (!userContent) {
-		return res.redirect('/404');
-	}
+	const userContent = hasAuth() ? auth().self.content : null;
 	const posts = await POST.find({ topic_tag: query.topic_tag }).sort({ created_at: -1 }).limit(query.limit);
 
 	const nextLink = `/topics/more?topic_tag=${query.topic_tag}&offset=${posts.length}&pjax=true`;
@@ -47,7 +43,7 @@ topicsRouter.get('/', async function (req, res) {
 });
 
 topicsRouter.get('/more', async function (req, res) {
-	const { auth, query } = parseReq(req, {
+	const { auth, hasAuth, query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional(),
 			limit: z.coerce.number().min(1).max(config.postLimit).optional().default(config.postLimit),
@@ -56,10 +52,7 @@ topicsRouter.get('/more', async function (req, res) {
 		})
 	});
 
-	const userContent = await database.getUserContent(auth().pid);
-	if (!userContent) {
-		return res.redirect('/404');
-	}
+	const userContent = hasAuth() ? auth().self.content : null;
 	const posts = await POST.find({ topic_tag: query.topic_tag }).sort({ created_at: -1 }).skip(query.offset).limit(query.limit);
 
 	const nextLink = `/topics/more?topic_tag=${query.topic_tag}&offset=${query.offset + posts.length}&pjax=true`;

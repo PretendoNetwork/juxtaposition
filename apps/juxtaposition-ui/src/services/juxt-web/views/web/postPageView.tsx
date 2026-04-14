@@ -5,14 +5,12 @@ import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { ContentSchema } from '@/models/content';
-import type { Community, Post } from '@/api/generated';
+import type { Community, Post, SelfContent } from '@/api/generated';
 
 export type PostPageViewProps = {
 	post: Post;
-	userContent: InferSchemaType<typeof ContentSchema> | null;
+	userContent: SelfContent | null;
 	postPNID: GetUserDataResponse;
 	community: Community;
 	replies: Post[];

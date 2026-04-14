@@ -12,6 +12,7 @@ import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { ContentSchema } from '@/models/content';
 import type { HydratedSettingsDocument } from '@/models/settings';
+import type { SelfContent } from '@/api/generated';
 
 export type UserPageViewProps = {
 	baseLink: string;
@@ -23,7 +24,7 @@ export type UserPageViewProps = {
 	userContent: InferSchemaType<typeof ContentSchema>;
 	userSettings: HydratedSettingsDocument;
 	isOnline: boolean;
-	requestUserContent: InferSchemaType<typeof ContentSchema> | null;
+	requestUserContent: SelfContent | null;
 };
 
 export function WebUserTier(props: { user: GetUserDataResponse }): ReactNode {

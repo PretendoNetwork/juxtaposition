@@ -182,8 +182,8 @@ userPageRouter.post('/follow', upload.none(), async function (req, res) {
 	});
 
 	const userToFollow = await database.getUserContent(body.id);
-	const userContent = await database.getUserContent(auth().pid);
-	if (!userToFollow || !userContent || !userToFollow.pid) {
+	const userContent = auth().self.content;
+	if (!userToFollow || !userToFollow.pid) {
 		// Invalid state, can't do a follow
 		return res.send({ status: 423, id: body.id, count: userToFollow?.following_users.length ?? 0 });
 	}
@@ -316,7 +316,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
-	const parentUserContent = await database.getUserContent(req.pid);
+	const parentUserContent = hasAuth() ? auth().self.content : null;
 	if (!pnid || !userSettings || !userContent) {
 		return res.redirect('/404');
 	}
@@ -433,14 +433,14 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 }
 
 async function morePosts(req: Request, res: Response, userID: number): Promise<any> {
-	const { query } = parseReq(req, {
+	const { query, auth, hasAuth } = parseReq(req, {
 		query: z.object({
 			offset: z.coerce.number().nonnegative().default(0)
 		})
 	});
 	const { offset } = query;
 
-	const userContent = await database.getUserContent(req.pid);
+	const userContent = hasAuth() ? auth().self.content : null;
 	const posts = (await req.api.users.posts.list({ id: userID, offset }))?.data.items ?? [];
 
 	if (posts.length === 0 || !userContent) {
