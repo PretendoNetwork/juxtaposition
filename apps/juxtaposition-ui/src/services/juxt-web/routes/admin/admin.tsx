@@ -15,7 +15,6 @@ import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newComm
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
 import { zodCommaSeperatedList } from '@/services/juxt-web/routes/schemas';
-import type { ReportWithPost } from '@/services/juxt-web/views/web/admin/reportListView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
@@ -27,36 +26,13 @@ const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v 
 const onOffBoolSchema = onOffSchema().transform(v => !!v);
 
 adminRouter.get('/posts', async function (req, res) {
-	if (!res.locals.moderator) {
-		return res.redirect('/titles/show');
-	}
 	const { auth } = parseReq(req);
 
-	// `any` is needed because database.js is not typed yet
-	const rawReports: HydratedReportDocument[] = await database.getAllOpenReports() as any;
+	const { data: reportPage } = await req.api.admin.reports.list({ resolved: 'false', limit: 150 });
 	const userContent = auth().self.content;
 
-	const postIds = rawReports.map(obj => obj.post_id);
-	const nonRemovedPosts = await POST.find(
-		{ id: { $in: postIds }, removed: false }
-	);
-	const postMap = new Map(nonRemovedPosts.map(p => [p.id, p]));
-	const reportsWithPost = rawReports.map(v => ({
-		report: v,
-		post: postMap.get(v.post_id)
-	}));
-	const reports: ReportWithPost[] = [];
-	reportsWithPost.forEach((v) => {
-		if (v.post) {
-			reports.push({
-				post: v.post,
-				report: v.report
-			});
-		}
-	});
-
 	res.jsxForDirectory({
-		web: <WebReportListView reasonMap={getReasonMap()} userContent={userContent} reports={reports} />
+		web: <WebReportListView reasonMap={getReasonMap()} userContent={userContent} reports={reportPage.items} />
 	});
 });
 
@@ -303,11 +279,7 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 });
 
 adminRouter.delete('/:reportID', async function (req, res) {
-	if (!res.locals.moderator) {
-		return res.sendStatus(401);
-	}
-
-	const { params, query, auth } = parseReq(req, {
+	const { params, query } = parseReq(req, {
 		params: z.object({
 			reportID: z.string()
 		}),
@@ -316,49 +288,12 @@ adminRouter.delete('/:reportID', async function (req, res) {
 		})
 	});
 
-	// `any` is needed because database.js is not typed yet
-	const report: HydratedReportDocument | null = await database.getReportById(params.reportID) as any;
-	if (!report) {
-		return res.sendStatus(402);
-	}
-	const { data: post } = await req.api.posts.get({ post_id: report.post_id });
-	if (post === null) {
-		return res.sendStatus(404);
-	}
-	const reason = query.reason ?? 'Removed by moderator';
-
-	await req.api.posts.delete({ post_id: post.id, reason });
-	await report.resolve(auth().pid, reason);
-
-	const postType = post.parent ? 'comment' : 'post';
-
-	await newNotification({
-		pid: post.pid,
-		type: 'notice',
-		text: `Your ${postType} "${post.id}" has been removed` +
-			(reason ? ` for the following reason: "${reason}". ` : '. ') +
-			`Click this message to view the Juxtaposition Code of Conduct. ` +
-			`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/juxt-mods/).`,
-		image: '/images/bandwidthalert.png',
-		link: '/titles/2551084080/new'
-	});
-
-	await createLogEntry(
-		auth().pid,
-		'REMOVE_POST',
-		post.id,
-		`Post ${post.id} removed for: "${reason}"`
-	);
-
+	await req.api.admin.reports.actions.removePost({ id: params.reportID, reason: query.reason });
 	return res.sendStatus(200);
 });
 
 adminRouter.put('/:reportID', async function (req, res) {
-	if (!res.locals.moderator) {
-		return res.sendStatus(401);
-	}
-
-	const { params, query, auth } = parseReq(req, {
+	const { params, query } = parseReq(req, {
 		params: z.object({
 			reportID: z.string()
 		}),
@@ -367,21 +302,7 @@ adminRouter.put('/:reportID', async function (req, res) {
 		})
 	});
 
-	// `any` is needed because database.js is not typed yet
-	const report: HydratedReportDocument | null = await database.getReportById(params.reportID) as any;
-	if (!report) {
-		return res.sendStatus(402);
-	}
-
-	await report.resolve(auth().pid, query.reason ?? null);
-
-	await createLogEntry(
-		auth().pid,
-		'IGNORE_REPORT',
-		report.id,
-		`Report ${report.id} ignored for: "${query.reason ?? 'No reason provided'}"`
-	);
-
+	await req.api.admin.reports.actions.ignoreReport({ id: params.reportID, reason: query.reason });
 	return res.sendStatus(200);
 });
 
