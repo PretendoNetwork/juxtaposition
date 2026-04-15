@@ -1,14 +1,11 @@
-import crypto from 'crypto';
 import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
 import { database } from '@/database';
-import { uploadHeaders, uploadIcons } from '@/images';
 import { logger } from '@/logger';
-import { COMMUNITY, CommunityShotModes } from '@/models/communities';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { humanDate, createLogEntry, getReasonMap, getUserAccountData, newNotification, updateCommunityHash } from '@/util';
+import { humanDate, createLogEntry, getReasonMap, getUserAccountData, newNotification, updateCommunityHashForAdminCommunity } from '@/util';
 import { getPostMetrics, getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
@@ -18,7 +15,6 @@ import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newComm
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
 import { zodCommaSeperatedList } from '@/services/juxt-web/routes/schemas';
-import type { ICommunityInput, IIconPaths } from '@/models/communities';
 import type { ReportWithPost } from '@/services/juxt-web/views/web/admin/reportListView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { HydratedReportDocument } from '@/models/report';
@@ -28,6 +24,7 @@ export const adminRouter = express.Router();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- Too difficult to type
 const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v === 'on' ? 1 : 0);
+const onOffBoolSchema = onOffSchema().transform(v => !!v);
 
 adminRouter.get('/posts', async function (req, res) {
 	if (!res.locals.moderator) {
@@ -389,10 +386,6 @@ adminRouter.put('/:reportID', async function (req, res) {
 });
 
 adminRouter.get('/communities', async function (req, res) {
-	if (!res.locals.developer) {
-		return res.redirect('/titles/show');
-	}
-
 	const { query } = parseReq(req, {
 		query: z.object({
 			page: z.coerce.number().default(0),
@@ -400,19 +393,23 @@ adminRouter.get('/communities', async function (req, res) {
 		})
 	});
 
-	const page = query.page;
-	const search = query.search;
+	const search = query.search ? query.search : undefined;
 	const limit = 20;
-
-	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await COMMUNITY.find({ parent: null }).limit(limit).skip(page * limit);
+	const offset = query.page * limit;
+	const { data: communityPage } = await req.api.admin.communities.list({
+		search,
+		limit,
+		offset
+	});
+	const hasNextPage = offset + communityPage.items.length < communityPage.total;
 
 	res.jsxForDirectory({
-		web: <WebManageCommunityView hasNextPage={communities.length === limit} communities={communities} page={page} search={search} />
+		web: <WebManageCommunityView hasNextPage={hasNextPage} communities={communityPage.items} page={query.page} search={search} />
 	});
 });
 
 adminRouter.get('/communities/new', async function (req, res) {
-	if (!res.locals.developer) {
+	if (!req.self?.permissions.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -422,133 +419,55 @@ adminRouter.get('/communities/new', async function (req, res) {
 });
 
 adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 1 }, { name: 'CTRbrowserHeader', maxCount: 1 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
-	if (!res.locals.developer) {
-		return res.redirect('/titles/show');
-	}
-
-	const { body, files, auth } = parseReq(req, {
+	const { body, files } = parseReq(req, {
 		body: z.object({
-			has_shop_page: onOffSchema(),
-			is_recommended: onOffSchema(),
+			has_shop_page: onOffBoolSchema,
+			is_recommended: onOffBoolSchema,
 			platform: z.string().trim(),
 			name: z.string().trim(),
 			description: z.string().trim(),
-			type: z.coerce.number().min(0).max(3),
+			type: z.coerce.number(),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
 			title_ids: zodCommaSeperatedList,
 			app_data: z.string().trim(),
-			shot_mode: z.enum(CommunityShotModes),
+			shot_mode: z.string(),
 			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
 
-	const communityId = await generateCommunityUID();
 	if (files.browserIcon.length === 0 || files.CTRbrowserHeader.length === 0 || files.WiiUbrowserHeader.length === 0) {
 		return res.sendStatus(422);
 	}
 
-	const icons = await uploadIcons({
-		icon: files.browserIcon[0].buffer,
-		communityId
-	});
-	const headers = await uploadHeaders({
-		ctr_header: files.CTRbrowserHeader[0].buffer,
-		wup_header: files.WiiUbrowserHeader[0].buffer,
-		communityId
-	});
-	if (icons === null || headers === null) {
-		return res.sendStatus(422);
-	}
-
-	const iconPaths: IIconPaths = {
-		32: icons.icon32,
-		48: icons.icon48,
-		64: icons.icon64,
-		96: icons.icon96,
-		128: icons.icon128
-	};
-	const document: ICommunityInput = {
-		platform_id: Number(body.platform),
+	const { data: outputCommunity } = await req.api.admin.communities.create({
+		hasShopPage: body.has_shop_page,
+		isRecommended: body.is_recommended,
+		platform: body.platform as any,
 		name: body.name,
 		description: body.description,
-		open: true,
-		allows_comments: true,
-		type: body.type,
+		type: body.type as any,
 		parent: body.parent,
-		owner: auth().pid,
-		created_at: new Date(),
-		empathy_count: 0,
-		followers: 0,
-		has_shop_page: body.has_shop_page,
-		icon: icons.tgaBlob,
-		ctr_header: headers.ctr,
-		wup_header: headers.wup,
-		icon_paths: iconPaths,
-		title_id: body.title_ids,
-		community_id: communityId,
-		olive_community_id: communityId,
-		is_recommended: body.is_recommended,
-		app_data: body.app_data,
-		shot_mode: body.shot_mode,
-		shot_extra_title_id: body.shot_extra_title_id
-	};
-	const newCommunity = new COMMUNITY(document);
-	await newCommunity.save();
-	res.redirect(`/admin/communities/${communityId}`);
-
-	updateCommunityHash(newCommunity);
-
-	const communityType = getCommunityType(newCommunity.type);
-	const communityPlatform = getCommunityPlatform(newCommunity.platform_id);
-	const changes = [];
-
-	changes.push(`Name set to "${newCommunity.name}"`);
-	changes.push(`Description set to "${newCommunity.description}"`);
-	changes.push(`Platform ID set to "${communityPlatform}"`);
-	changes.push(`Type set to "${communityType}"`);
-	changes.push(`Title IDs set to "${newCommunity.title_id.join(', ')}"`);
-	changes.push(`Parent set to "${newCommunity.parent}"`);
-	changes.push(`App data set to "${newCommunity.app_data}"`);
-	changes.push(`Is Recommended set to "${newCommunity.is_recommended}"`);
-	changes.push(`Has Shop Page set to "${newCommunity.has_shop_page}"`);
-
-	const fields = [
-		'name',
-		'description',
-		'platform_id',
-		'type',
-		'title_id',
-		'browserIcon',
-		'CTRbrowserHeader',
-		'WiiUbrowserHeader',
-		'parent',
-		'app_data',
-		'is_recommended',
-		'has_shop_page'
-	];
-	await createLogEntry(
-		auth().pid,
-		'MAKE_COMMUNITY',
-		communityId,
-		changes.join('\n'),
-		fields
-	);
+		titleIds: body.title_ids,
+		appData: body.app_data,
+		browserIcon: files.browserIcon[0].buffer.toString('base64'),
+		ctrBrowserHeader: files.CTRbrowserHeader[0].buffer.toString('base64'),
+		wiiuBrowserHeader: files.WiiUbrowserHeader[0].buffer.toString('base64'),
+		shotMode: body.shot_mode as any,
+		shotModeExtraTitleIds: body.shot_extra_title_id
+	});
+	updateCommunityHashForAdminCommunity(outputCommunity);
+	res.redirect(`/admin/communities/${outputCommunity.olive_community_id}`);
 });
 
 adminRouter.get('/communities/:community_id', async function (req, res) {
-	if (!res.locals.developer) {
-		return res.redirect('/titles/show');
-	}
-
 	const { params } = parseReq(req, {
 		params: z.object({
 			community_id: z.string()
 		})
 	});
 
-	const community = await COMMUNITY.findOne({ olive_community_id: params.community_id }).exec();
-
+	const { data: community } = await req.api.admin.communities.get({ id: params.community_id });
 	if (!community) {
 		return res.redirect('/titles/show');
 	}
@@ -562,197 +481,63 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 	name: 'CTRbrowserHeader',
 	maxCount: 1
 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
-	if (!res.locals.developer) {
-		return res.redirect('/titles/show');
-	}
-
-	const { body, params, files, auth } = parseReq(req, {
+	const { body, params, files } = parseReq(req, {
 		params: z.object({
 			id: z.string()
 		}),
 		body: z.object({
-			has_shop_page: onOffSchema(),
-			is_recommended: onOffSchema(),
+			has_shop_page: onOffBoolSchema,
+			is_recommended: onOffBoolSchema,
 			platform: z.string().trim(),
 			name: z.string().trim(),
 			description: z.string().trim(),
-			type: z.coerce.number().min(0).max(3),
+			type: z.coerce.number(),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
 			title_ids: zodCommaSeperatedList,
 			app_data: z.string().trim(),
-			shot_mode: z.enum(CommunityShotModes),
+			shot_mode: z.string(),
 			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
 	});
 
-	JSON.parse(JSON.stringify(files)); // wtf does this do?
-	const communityId = params.id;
+	const { data: outputCommunity } = await req.api.admin.communities.update({
+		id: params.id,
 
-	const oldCommunity = await COMMUNITY.findOne({ olive_community_id: communityId }).exec();
-
-	if (!oldCommunity) {
-		return res.redirect('/404');
-	}
-
-	// browser icon
-	let icons = null;
-	if (files.browserIcon.length > 0) {
-		icons = await uploadIcons({
-			icon: files.browserIcon[0].buffer,
-			communityId
-		});
-		if (icons === null) {
-			return res.sendStatus(422);
-		}
-	}
-	// 3DS / Wii U Header
-	let headers = null;
-	if (files.CTRbrowserHeader.length > 0 && files.WiiUbrowserHeader.length > 0) {
-		headers = await uploadHeaders({
-			ctr_header: files.CTRbrowserHeader[0].buffer,
-			wup_header: files.WiiUbrowserHeader[0].buffer,
-			communityId
-		});
-		if (headers === null) {
-			return res.sendStatus(422);
-		}
-	}
-
-	const iconPaths: IIconPaths | undefined = icons
-		? {
-				32: icons.icon32,
-				48: icons.icon48,
-				64: icons.icon64,
-				96: icons.icon96,
-				128: icons.icon128
-			}
-		: undefined;
-	const document: Partial<ICommunityInput> = {
-		type: body.type,
-		has_shop_page: body.has_shop_page,
-		platform_id: Number(body.platform),
-		icon: icons?.tgaBlob ?? oldCommunity.icon,
-		icon_paths: iconPaths,
-		ctr_header: headers?.ctr ?? oldCommunity.ctr_header,
-		wup_header: headers?.wup ?? oldCommunity.wup_header,
-		title_id: body.title_ids,
-		parent: body.parent,
-		app_data: body.app_data,
-		is_recommended: body.is_recommended,
+		hasShopPage: body.has_shop_page,
+		isRecommended: body.is_recommended,
+		platform: body.platform as any,
 		name: body.name,
 		description: body.description,
-		shot_mode: body.shot_mode,
-		shot_extra_title_id: body.shot_extra_title_id
-	};
-	const comm = await COMMUNITY.findOneAndUpdate({ olive_community_id: communityId }, { $set: document }, { upsert: true }).exec();
-	if (!comm) {
-		throw new Error('Can not find community after update');
-	}
+		type: body.type as any,
+		parent: body.parent,
+		titleIds: body.title_ids,
+		appData: body.app_data,
+		browserIcon: files.browserIcon[0]?.buffer.toString('base64'),
+		ctrBrowserHeader: files.CTRbrowserHeader[0]?.buffer.toString('base64'),
+		wiiuBrowserHeader: files.WiiUbrowserHeader[0]?.buffer.toString('base64'),
+		shotMode: body.shot_mode as any,
+		shotModeExtraTitleIds: body.shot_extra_title_id
+	});
 
-	res.redirect(`/admin/communities/${communityId}`);
-
-	updateCommunityHash(comm);
-
-	// determine the changes made to the community
-	const changes = [];
-	const fields = [];
-
-	if (oldCommunity.name !== comm.name) {
-		fields.push('name');
-		changes.push(`Name changed from "${oldCommunity.name}" to "${comm.name}"`);
-	}
-	if (oldCommunity.description !== comm.description) {
-		fields.push('description');
-		changes.push(`Description changed from "${oldCommunity.description}" to "${comm.description}"`);
-	}
-	if (oldCommunity.platform_id !== comm.platform_id) {
-		const oldCommunityPlatform = getCommunityPlatform(oldCommunity.platform_id);
-		const newCommunityPlatform = getCommunityPlatform(comm.platform_id);
-		fields.push('platform_id');
-		changes.push(`Platform ID changed from "${oldCommunityPlatform}" to "${newCommunityPlatform}"`);
-	}
-	if (oldCommunity.type !== comm.type) {
-		const oldCommunityType = getCommunityType(oldCommunity.type);
-		const newCommunityType = getCommunityType(comm.type);
-		fields.push('type');
-		changes.push(`Type changed from "${oldCommunityType}" to "${newCommunityType}"`);
-	}
-	if (oldCommunity.title_id.toString() !== comm.title_id.toString()) {
-		fields.push('title_id');
-		changes.push(`Title IDs changed from "${oldCommunity.title_id.join(', ')}" to "${comm.title_id.join(', ')}"`);
-	}
-	if (files.browserIcon.length > 0) {
-		fields.push('browserIcon');
-		changes.push('Icon changed');
-	}
-	if (files.CTRbrowserHeader.length > 0) {
-		fields.push('CTRbrowserHeader');
-		changes.push('3DS Banner changed');
-	}
-	if (files.WiiUbrowserHeader.length > 0) {
-		fields.push('WiiUbrowserHeader');
-		changes.push('Wii U Banner changed');
-	}
-	if (oldCommunity.parent !== comm.parent) {
-		fields.push('parent');
-		changes.push(`Parent changed from "${oldCommunity.parent}" to "${comm.parent}"`);
-	}
-	if (oldCommunity.app_data !== comm.app_data) {
-		fields.push('app_data');
-		changes.push(`App data changed from "${oldCommunity.app_data}" to "${comm.app_data}"`);
-	}
-	if (oldCommunity.is_recommended !== comm.is_recommended) {
-		fields.push('is_recommended');
-		changes.push(`Is Recommended changed from "${oldCommunity.is_recommended}" to "${comm.is_recommended}"`);
-	}
-	if (oldCommunity.has_shop_page !== comm.has_shop_page) {
-		fields.push('has_shop_page');
-		changes.push(`Has Shop Page changed from "${oldCommunity.has_shop_page}" to "${comm.has_shop_page}"`);
-	}
-
-	if (changes.length > 0) {
-		await createLogEntry(
-			auth().pid,
-			'UPDATE_COMMUNITY',
-			oldCommunity.olive_community_id,
-			changes.join('\n'),
-			fields
-		);
-	}
+	updateCommunityHashForAdminCommunity(outputCommunity);
+	res.redirect(`/admin/communities/${outputCommunity.olive_community_id}`);
 });
 
 adminRouter.delete('/communities/:id', async (req, res) => {
-	if (!res.locals.developer) {
-		return res.redirect('/titles/show');
-	}
-
-	const { params, auth } = parseReq(req, {
+	const { params } = parseReq(req, {
 		params: z.object({
 			id: z.string()
 		})
 	});
 
-	await COMMUNITY.findByIdAndDelete(params.id).exec();
-
+	await req.api.admin.communities.delete({
+		id: params.id
+	});
 	res.json({
 		error: false
 	});
-
-	await createLogEntry(
-		auth().pid,
-		'DELETE_COMMUNITY',
-		params.id,
-		`Community ${params.id} deleted`
-	);
 });
-
-async function generateCommunityUID(length?: number | undefined): Promise<string> {
-	let id = crypto.getRandomValues(new Uint32Array(1)).toString().substring(0, length);
-	const inuse = await COMMUNITY.findOne({ community_id: id });
-	id = (inuse ? await generateCommunityUID(length) : id);
-	return id;
-}
 
 function getAccountStatus(status: number): string {
 	switch (status) {
@@ -766,35 +551,5 @@ function getAccountStatus(status: number): string {
 			return 'Permanent Ban';
 		default:
 			return `Unknown (${status})`;
-	}
-}
-
-function getCommunityType(type: number | string): string {
-	const parsedType = Number(type);
-	switch (parsedType) {
-		case 0:
-			return 'Main';
-		case 1:
-			return 'Sub';
-		case 2:
-			return 'Announcement';
-		case 3:
-			return 'Private';
-		default:
-			return `Unknown (${parsedType})`;
-	}
-}
-
-function getCommunityPlatform(platform_id: number | string): string {
-	const parsedPlatformId = Number(platform_id);
-	switch (parsedPlatformId) {
-		case 0:
-			return 'Wii U';
-		case 1:
-			return '3DS';
-		case 2:
-			return 'Both';
-		default:
-			return `Unknown (${parsedPlatformId})`;
 	}
 }

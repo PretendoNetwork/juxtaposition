@@ -4,12 +4,11 @@ import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { CommunitySchema } from '@/models/communities';
+import type { AdminCommunity } from '@/api/generated';
 
 export type ManageCommunityViewProps = {
 	search?: string;
-	communities: InferSchemaType<typeof CommunitySchema>[];
+	communities: AdminCommunity[];
 	hasNextPage: boolean;
 	page: number;
 };
@@ -38,7 +37,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 							<>
 								<ul className="list-content-with-icon-and-text arrow-list accounts" id="news-list-content">
 									{props.communities.map(community => (
-										<li key={community.community_id}>
+										<li key={community.id}>
 											<div className="hover">
 												<a href={`/communities/${community.olive_community_id}`} className="icon-container notify">
 													<img src={url.cdn(`/icons/${community.olive_community_id}/128.png`)} className="icon" />
@@ -47,7 +46,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 													<span className="text"><span className="nick-name">{community.name}</span></span>
 												</a>
 											</div>
-											<button evt-click="this.children[0].click()"><a id={`account-${community.community_id}`} href={`/admin/communities/${community.olive_community_id}`}>Manage Community</a></button>
+											<button evt-click="this.children[0].click()"><a id={`account-${community.id}`} href={`/admin/communities/${community.olive_community_id}`}>Manage Community</a></button>
 										</li>
 									))}
 								</ul>

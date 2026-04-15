@@ -33,6 +33,7 @@ import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { CommunitySchema } from '@/models/communities';
 import type { NotificationSchema } from '@/models/notifications';
+import type { AdminCommunity } from '@/api/generated';
 
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
 const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
@@ -104,7 +105,7 @@ export function setName(pid: number, name: string): void {
 /**
  * Updates a community's info in the map.
  */
-export function updateCommunityHash(community: InferSchemaType<typeof CommunitySchema>): void {
+export function updateCommunityHash(community: Pick<InferSchemaType<typeof CommunitySchema>, 'title_id' | 'olive_community_id' | 'name'>): void {
 	if (community.title_id === undefined ||
 		community.olive_community_id === undefined ||
 		community.name === undefined
@@ -117,6 +118,13 @@ export function updateCommunityHash(community: InferSchemaType<typeof CommunityS
 		communityMap.set(title_id + '-id', community.olive_community_id);
 	}
 	communityMap.set(community.olive_community_id, community.name);
+}
+export function updateCommunityHashForAdminCommunity(community: AdminCommunity): void {
+	updateCommunityHash({
+		name: community.name,
+		olive_community_id: community.olive_community_id,
+		title_id: community.titleIds
+	});
 }
 
 // TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
