@@ -15,7 +15,6 @@ import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newComm
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
 import { zodCommaSeperatedList } from '@/services/juxt-web/routes/schemas';
-import type { HydratedSettingsDocument } from '@/models/settings';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
@@ -35,32 +34,7 @@ adminRouter.get('/posts', async function (req, res) {
 	});
 });
 
-async function tryGetSettingsFromPidString(pid_string: string): Promise<HydratedSettingsDocument | null> {
-	// Check the string is all digits
-	if (!/^\d+$/g.test(pid_string)) {
-		return null;
-	}
-
-	// Parse it
-	const pid = parseInt(pid_string, 10);
-	if (isNaN(pid)) {
-		return null;
-	}
-
-	// Get the user doc
-	const user = await database.getUserSettings(pid);
-	if (user === null) {
-		return null;
-	}
-
-	return user;
-}
-
 adminRouter.get('/accounts', async function (req, res) {
-	if (!res.locals.moderator) {
-		return res.redirect('/titles/show');
-	}
-
 	const { query } = parseReq(req, {
 		query: z.object({
 			page: z.coerce.number().default(0),
@@ -68,26 +42,14 @@ adminRouter.get('/accounts', async function (req, res) {
 		})
 	});
 
-	const page = query.page;
-	const search = query.search;
+	const search = query.search ? query.search : undefined;
 	const limit = 20;
-
-	const users = await (async (): Promise<HydratedSettingsDocument[]> => {
-		if (!search) {
-			return database.getUsersSettings(limit, page * limit);
-		}
-		const results = [];
-
-		const pid_user = await tryGetSettingsFromPidString(search);
-		if (pid_user !== null) {
-			results.push(pid_user);
-		}
-
-		const miis = await database.getUserSettingsFuzzySearch(search, limit, page * limit);
-		results.push(...miis);
-
-		return results;
-	})();
+	const offset = query.page * limit;
+	const { data: usersPage } = await req.api.admin.users.list({
+		search,
+		limit,
+		offset
+	});
 
 	const userMetrics = await getUserMetrics();
 	const postMetrics = await getPostMetrics();
@@ -95,10 +57,10 @@ adminRouter.get('/accounts', async function (req, res) {
 	res.jsxForDirectory({
 		web: (
 			<WebUserListView
-				users={users}
-				page={page}
+				users={usersPage.items}
+				page={query.page}
 				search={search}
-				userCount={userMetrics.totalUsers}
+				userCount={usersPage.total}
 				activeCount={userMetrics.currentOnlineUsers}
 				dailyPostCount={postMetrics.dailyPosts}
 				totalPostCount={postMetrics.totalPosts}

@@ -2,10 +2,9 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
 import type { ReactNode } from 'react';
-import type { HydratedSettingsDocument } from '@/models/settings';
+import type { ShallowUser } from '@/api/generated';
 
 export type UserListViewProps = {
 	search?: string;
@@ -13,13 +12,12 @@ export type UserListViewProps = {
 	activeCount: number;
 	dailyPostCount: number;
 	totalPostCount: number;
-	users: HydratedSettingsDocument[];
+	users: ShallowUser[];
 	page: number;
 };
 
 export function WebUserListView(props: UserListViewProps): ReactNode {
 	const url = useUrl();
-	const cache = useCache();
 	const prevUrl = url.url('/admin/accounts', { page: props.page - 1, search: props.search });
 	const nextUrl = url.url('/admin/accounts', { page: props.page + 1, search: props.search });
 
@@ -68,7 +66,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 															{user.pid}
 															:
 															{' '}
-															{cache.getUserName(user.pid)}
+															{user.miiName}
 														</span>
 													</span>
 												</a>
