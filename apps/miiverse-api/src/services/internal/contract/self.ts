@@ -92,7 +92,7 @@ export function mapSelf(auth: AccountData): SelfDto {
 		permissions: {
 			moderator: auth.moderator,
 			tester: auth.pnid.accessLevel >= 1 && auth.pnid.accessLevel <= 3,
-			developer: auth.pnid.accessLevel === 3,
+			developer: auth.developer,
 			accessLevel: auth.pnid.accessLevel,
 
 			// 0 = normal, 1 = limited from posting, 2 = temp ban, 3 = perma ban
