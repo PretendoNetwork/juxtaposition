@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
-import { mapShallowUser, shallowUserSchema, userProfileSchema } from '@/services/internal/contract/user';
+import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import { buildSearchQuery } from '@/services/internal/utils/search';
 import { Settings } from '@/models/settings';
 import { Post } from '@/models/post';
@@ -10,7 +10,7 @@ import { errors } from '@/services/internal/errors';
 import { getUserAccountData } from '@/util';
 import { Content } from '@/models/content';
 import { mapModerationProfile, moderationProfileSchema } from '@/services/internal/contract/admin/moderationProfile';
-import { mapAdminUserProfile } from '@/services/internal/contract/admin/adminUsers';
+import { adminUserProfileSchema, mapAdminUserProfile } from '@/services/internal/contract/admin/adminUsers';
 import type { FilterQuery } from 'mongoose';
 import type { ISettings } from '@/types/mongoose/settings';
 
@@ -48,7 +48,7 @@ adminUsersRouter.get({
 		params: z.object({
 			id: z.coerce.number()
 		}),
-		response: userProfileSchema
+		response: adminUserProfileSchema
 	},
 	async handler({ params }) {
 		const settings = await Settings.findOne({ pid: params.id });

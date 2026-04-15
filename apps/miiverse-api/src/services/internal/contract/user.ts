@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { asOpenapi } from '@/services/internal/builder/openapi';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 
@@ -22,7 +23,7 @@ export const shallowUserSchema = z.object({
 
 export type ShallowUserDto = z.infer<typeof shallowUserSchema>;
 
-export const userProfileSchema = z.object({
+export const userProfileSchema = asOpenapi('UserProfile', z.object({
 	pid: z.number(),
 	miiName: z.string(),
 	accountStatus: z.number(),
@@ -37,7 +38,7 @@ export const userProfileSchema = z.object({
 		gameSkill: z.number().nullable(),
 		comment: z.string().nullable()
 	})
-}).openapi('UserProfile');
+}));
 
 export type UserProfileDto = z.infer<typeof userProfileSchema>;
 

@@ -10,10 +10,10 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { auditLogSchema } from '@/models/logs';
-import type { ModerationProfile, Post, Report, UserProfile } from '@/api/generated';
+import type { AdminUserProfile, ModerationProfile, Post, Report } from '@/api/generated';
 
 export type ModerateUserViewProps = {
-	profile: UserProfile;
+	profile: AdminUserProfile;
 	modProfile: ModerationProfile;
 	removedPosts: Post[];
 	reports: Report[];
@@ -160,6 +160,10 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 					</div>
 					<div className="info-boxes-wrapper">
+						<div>
+							<h4>Account status</h4>
+							<h4>{profile.moderation.status}</h4>
+						</div>
 						<div>
 							<h4>User Profile Link</h4>
 							<h4><a href={`/users/${profile.pid}`}>User Profile Link</a></h4>
