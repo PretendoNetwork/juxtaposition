@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { FuzzySearch } from 'mongoose-fuzzy-search-next';
-import { COMMUNITY } from '@/models/communities';
 import { CONTENT } from '@/models/content';
 import { CONVERSATION } from '@/models/conversation';
 import { ENDPOINT } from '@/models/endpoint';
@@ -36,15 +35,6 @@ function verifyConnected() {
 
 export function notBanned() {
 	return { account_status: { $in: [0, 1] } };
-}
-
-async function getCommunitiesFuzzySearch(search_key, limit, offset) {
-	verifyConnected();
-	if (limit === -1) {
-		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset);
-	} else {
-		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset).limit(limit);
-	}
 }
 
 async function getPostByID(postID) {
@@ -185,32 +175,12 @@ async function getUnreadNotificationCount(pid) {
 	}).countDocuments();
 }
 
-async function getAllOpenReports(offset, limit) {
-	verifyConnected();
-	return REPORT.find({ resolved: false }).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
-async function getReportsByReporter(pid, offset, limit) {
-	verifyConnected();
-	return REPORT.find({ reported_by: pid }).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
-async function getReportsByOffender(pid, offset, limit) {
-	verifyConnected();
-	return REPORT.find({ pid: pid }).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
 async function getDuplicateReports(pid, postID) {
 	verifyConnected();
 	return REPORT.findOne({
 		reported_by: pid,
 		post_id: postID
 	});
-}
-
-async function getReportById(id) {
-	verifyConnected();
-	return REPORT.findById(id);
 }
 
 async function getLogsForTarget(targetPID, offset, limit) {
@@ -220,7 +190,6 @@ async function getLogsForTarget(targetPID, offset, limit) {
 
 export const database = {
 	connect,
-	getCommunitiesFuzzySearch,
 	getTotalPostsByUserID,
 	getPostByID,
 	getDuplicatePosts,
@@ -237,10 +206,6 @@ export const database = {
 	getNotifications,
 	getUnreadNotificationCount,
 	getNotification,
-	getAllOpenReports,
-	getReportsByReporter,
-	getReportsByOffender,
 	getDuplicateReports,
-	getReportById,
 	getLogsForTarget
 };
