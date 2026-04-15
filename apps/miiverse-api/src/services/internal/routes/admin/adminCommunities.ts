@@ -80,6 +80,7 @@ adminCommunitiesRouter.get({
 	path: '/admin/communities/:id',
 	name: 'admin.communities.get',
 	guard: guards.developer,
+	allowNotFound: true,
 	schema: {
 		params: z.object({
 			id: z.string()
