@@ -16,7 +16,6 @@ import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCo
 import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
 import { zodCommaSeperatedList } from '@/services/juxt-web/routes/schemas';
 import type { HydratedSettingsDocument } from '@/models/settings';
-import type { HydratedReportDocument } from '@/models/report';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
@@ -130,22 +129,8 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 		return res.redirect('/404');
 	}
 
-	// `any` is needed because database.js is not typed yet
-	const reports: HydratedReportDocument[] = await database.getReportsByOffender(reqPid, 0, 50) as any;
-	const submittedReports: HydratedReportDocument[] = await database.getReportsByReporter(reqPid, 0, 50) as any;
-	const postIDs = reports.concat(submittedReports).map(obj => obj.post_id);
-
-	const postsMap = await POST.aggregate([
-		{ $match: { id: { $in: postIDs } } },
-		{
-			$addFields: {
-				__order: { $indexOfArray: [postIDs, '$id'] }
-			}
-		},
-		{ $sort: { __order: 1 } },
-		{ $project: { index: 0, _id: 0 } }
-	]);
-
+	const { data: reportsPage } = await req.api.admin.reports.list({ offenderPid: reqPid, limit: 50 });
+	const { data: submittedReportsPage } = await req.api.admin.reports.list({ reporterPid: reqPid, limit: 50 });
 	const removedPosts = await POST.find({ pid: reqPid, removed: true }).sort({ removed_at: -1 }).limit(50);
 
 	const auditLog = await database.getLogsForTarget(reqPid, 0, 50);
@@ -159,11 +144,10 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 				pnid={pnid}
 				removedPosts={removedPosts}
 
-				reports={reports}
-				submittedReports={submittedReports}
+				reports={reportsPage.items}
+				submittedReports={submittedReportsPage.items}
 				auditLog={auditLog}
 
-				postsMap={postsMap}
 				reasonMap={getReasonMap()}
 			/>
 		)

@@ -12,21 +12,78 @@ import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretend
 import type { InferSchemaType } from 'mongoose';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
-import type { HydratedReportDocument } from '@/models/report';
 import type { PostSchema } from '@/models/post';
 import type { auditLogSchema } from '@/models/logs';
+import type { Report } from '@/api/generated';
 
 export type ModerateUserViewProps = {
 	pnid: AccountGetUserDataResponse;
 	userSettings: HydratedSettingsDocument;
 	userContent: InferSchemaType<typeof ContentSchema>;
 	removedPosts: InferSchemaType<typeof PostSchema>[];
-	reports: HydratedReportDocument[];
-	submittedReports: HydratedReportDocument[];
-	postsMap: InferSchemaType<typeof PostSchema>[];
+	reports: Report[];
+	submittedReports: Report[];
 	reasonMap: string[];
 	auditLog: InferSchemaType<typeof auditLogSchema>[];
 };
+
+type ModerateUserReportProps = {
+	report: Report;
+	reasonMap: string[];
+};
+
+function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
+	const { reporter, resolved } = props.report;
+	const createdAt = new Date(props.report.createdAt);
+	const cache = useCache();
+	const url = useUrl();
+
+	return (
+		<li key={props.report.id} className="reports">
+			<details>
+				<summary>
+					<div className="hover">
+						<a href={`/users/${reporter.pid}`} className="icon-container notify">
+							<img src={url.cdn(`/mii/${reporter.pid}/normal_face.png`)} className="icon" />
+						</a>
+						<span className="body messages report">
+							<span className="text">
+								<a href={`/users/${reporter.pid}`} className="nick-name">
+									Reported By:
+									{cache.getUserName(reporter.pid)}
+								</a>
+								<span title={moment(createdAt).toString()} className="timestamp">{moment(createdAt).fromNow()}</span>
+							</span>
+							<span className="text">
+								<h4>
+									{props.reasonMap[reporter.reasonId] ?? 'Unknown'}
+								</h4>
+								<p>
+									{reporter.message}
+								</p>
+							</span>
+							{ resolved.isResolved
+								? (
+										<>
+											<span className="text">
+												<span className="nick-name">
+													Resolved By:
+													{resolved.pid ? cache.getUserName(resolved.pid) : 'Nobody'}
+												</span>
+												<span title={moment(resolved.resolvedAt).toString()} className="timestamp">{moment(resolved.resolvedAt).fromNow()}</span>
+											</span>
+											<span className="text"><p>{resolved.reason}</p></span>
+										</>
+									)
+								: null}
+						</span>
+					</div>
+				</summary>
+				{ props.report.post ? <WebPostView post={props.report.post} isReply={false} /> : <p>Post could not be found</p> }
+			</details>
+		</li>
+	);
+}
 
 export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 	const url = useUrl();
@@ -190,54 +247,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 					</summary>
 					<ul className="list-content-with-icon-and-text arrow-list">
 						{props.reports.length === 0 ? <h4>There's nothing here...</h4> : null}
-						{props.reports.map((report) => {
-							const post = props.postsMap.find(post => post.id === report.post_id);
-							return (
-								<li key={report.id} className="reports">
-									<details>
-										<summary>
-											<div className="hover">
-												<a href={`/users/${report.reported_by}`} className="icon-container notify">
-													<img src={url.cdn(`/mii/${report.reported_by}/normal_face.png`)} className="icon" />
-												</a>
-												<span className="body messages report">
-													<span className="text">
-														<a href={`/users/${report.reported_by}`} className="nick-name">
-															Reported By:
-															{cache.getUserName(report.reported_by)}
-														</a>
-														<span title={moment(report.created_at).toString()} className="timestamp">{moment(report.created_at).fromNow()}</span>
-													</span>
-													<span className="text">
-														<h4>
-															{props.reasonMap[report.reason] ?? 'Unknown'}
-														</h4>
-														<p>
-															{report.message}
-														</p>
-													</span>
-													{ report.resolved
-														? (
-																<>
-																	<span className="text">
-																		<span className="nick-name">
-																			Resolved By:
-																			{report.resolved_by ? cache.getUserName(report.resolved_by) : 'Nobody'}
-																		</span>
-																		<span title={moment(report.resolved_at).toString()} className="timestamp">{moment(report.resolved_at).fromNow()}</span>
-																	</span>
-																	<span className="text"><p>{report.note}</p></span>
-																</>
-															)
-														: null}
-												</span>
-											</div>
-										</summary>
-										{ post ? <WebPostView post={post} isReply={false} /> : <p>Post could not be found</p> }
-									</details>
-								</li>
-							);
-						})}
+						{props.reports.map(report => <ModerateUserReportView key={report.id} report={report} reasonMap={props.reasonMap} />) }
 					</ul>
 				</details>
 				<details>
@@ -252,54 +262,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 					</summary>
 					<ul className="list-content-with-icon-and-text arrow-list">
 						{props.submittedReports.length === 0 ? <h4>There's nothing here...</h4> : null}
-						{props.submittedReports.map((report) => {
-							const post = props.postsMap.find(post => post.id === report.post_id);
-							return (
-								<li key={report.id} className="reports">
-									<details>
-										<summary>
-											<div className="hover">
-												<a href={`/users/${report.reported_by}`} className="icon-container notify">
-													<img src={url.cdn(`/mii/${report.reported_by}/normal_face.png`)} className="icon" />
-												</a>
-												<span className="body messages report">
-													<span className="text">
-														<a href={`/users/${report.reported_by}`} className="nick-name">
-															Reported By:
-															{cache.getUserName(report.reported_by)}
-														</a>
-														<span title={moment(report.created_at).toString()} className="timestamp">{moment(report.created_at).fromNow()}</span>
-													</span>
-													<span className="text">
-														<h4>
-															{props.reasonMap[report.reason] ?? 'Unknown'}
-														</h4>
-														<p>
-															{report.message}
-														</p>
-													</span>
-													{ report.resolved
-														? (
-																<>
-																	<span className="text">
-																		<span className="nick-name">
-																			Resolved By:
-																			{report.resolved_by ? cache.getUserName(report.resolved_by) : 'Nobody'}
-																		</span>
-																		<span title={moment(report.resolved_at).toString()} className="timestamp">{moment(report.resolved_at).fromNow()}</span>
-																	</span>
-																	<span className="text"><p>{report.note}</p></span>
-																</>
-															)
-														: null}
-												</span>
-											</div>
-										</summary>
-										{ post ? <WebPostView post={post} isReply={false} /> : <p>Post could not be found</p> }
-									</details>
-								</li>
-							);
-						})}
+						{props.submittedReports.map(report => <ModerateUserReportView key={report.id} report={report} reasonMap={props.reasonMap} />) }
 					</ul>
 				</details>
 
