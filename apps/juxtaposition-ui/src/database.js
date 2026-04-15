@@ -58,16 +58,6 @@ async function getDuplicatePosts(pid, post, olderThanMs) {
 	});
 }
 
-async function getTotalPostsByUserID(userID) {
-	verifyConnected();
-	return POST.find({
-		pid: userID,
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).countDocuments();
-}
-
 async function getEndPoint(accessLevel) {
 	verifyConnected();
 	return ENDPOINT.findOne({
@@ -171,7 +161,6 @@ async function getLogsForTarget(targetPID, offset, limit) {
 
 export const database = {
 	connect,
-	getTotalPostsByUserID,
 	getPostByID,
 	getDuplicatePosts,
 	getEndPoint,

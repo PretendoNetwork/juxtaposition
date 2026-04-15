@@ -9,30 +9,30 @@ import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/Por
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
+import type { UserProfile } from '@/api/generated';
 
-export function PortalUserTier(props: { user: UserPageViewProps['user'] }): ReactNode {
-	const tierName = props.user.tierName;
-	let tierPart: ReactNode = null;
-	let accessLevelPart: ReactNode = null;
+export function PortalUserTier(props: { profile: UserProfile }): ReactNode {
+	const flags = props.profile.flags;
+	const parts: ReactNode[] = [];
 
-	if (tierName === 'Mario') {
-		tierPart = (
+	if (flags.includes('support:mario')) {
+		parts.push(
 			<span className="supporter-star mario">
 				{' | '}
 				<PortalUIIcon name="star-badge" />
 			</span>
 		);
 	}
-	if (tierName === 'Super Mario') {
-		tierPart = (
+	if (flags.includes('support:super')) {
+		parts.push(
 			<span className="supporter-star super">
 				{' | '}
 				<PortalUIIcon name="star-badge" />
 			</span>
 		);
 	}
-	if (tierName === 'Mega Mushroom') {
-		tierPart = (
+	if (flags.includes('support:mega')) {
+		parts.push(
 			<span className="supporter-star mega">
 				{' | '}
 				<PortalUIIcon name="star-badge" />
@@ -40,24 +40,24 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		);
 	}
 
-	if (props.user.accessLevel === 3) {
-		accessLevelPart = (
+	if (flags.includes('al:dev')) {
+		parts.push(
 			<span className="supporter-star dev">
 				{' | '}
 				<PortalUIIcon name="dev-badge" />
 			</span>
 		);
 	}
-	if (props.user.accessLevel === 2) {
-		accessLevelPart = (
+	if (flags.includes('al:mod')) {
+		parts.push(
 			<span className="supporter-star mega">
 				{' | '}
 				<PortalUIIcon name="mod-badge" />
 			</span>
 		);
 	}
-	if (props.user.accessLevel === 1) {
-		accessLevelPart = (
+	if (flags.includes('al:tester')) {
+		parts.push(
 			<span className="supporter-star tester">
 				{' | '}
 				<PortalUIIcon name="tester-badge" />
@@ -65,27 +65,18 @@ export function PortalUserTier(props: { user: UserPageViewProps['user'] }): Reac
 		);
 	}
 
-	return (
-		<>
-			{tierPart}
-			{accessLevelPart}
-		</>
-	);
+	return parts;
 }
 
 export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
-	const pnidName = props.user.mii?.name ?? props.user.username;
+	const profile = props.profile;
+	const pnidName = profile.miiName;
+	const isSelf = user.pid === profile.pid;
 
-	const isUserBanned = (props.userSettings.account_status < 0 || props.userSettings.account_status > 1 || props.user.accessLevel < 0);
-	const isUserDeleted = props.user.deleted;
-	const isUserDataViewable = !isUserBanned && !isUserDeleted;
-	const canViewUser = isUserDataViewable || user.perms.moderator;
-	const isSelf = user.pid === props.user.pid;
-
-	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
-	const isUserFollowingRequester = props.userContent.followed_users.includes(user.pid);
+	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(profile.pid) ?? false;
+	const isUserFollowingRequester = props.isUserFollowingRequester;
 
 	return (
 		<PortalRoot title={pnidName}>
@@ -101,116 +92,103 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 					</div>
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
-							<img className={cx('icon', { verified: props.user.accessLevel > 2 })} src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/portal/images/bandwidthlost.png'} />
+							<img className={cx('icon', { verified: profile.flags.includes('verified') })} src={url.cdn(`/mii/${profile.pid}/normal_face.png`)} />
 						</span>
-						{canViewUser && !isSelf
+						{!isSelf
 							? (
 									<>
-										<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}></a>
-										{ isRequesterFollowingUser && isUserFollowingRequester ? <a href={`/friend_messages/new/${props.user.pid}`} className="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a> : null }
+										<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={profile.pid}></a>
+										{ isRequesterFollowingUser && isUserFollowingRequester ? <a href={`/friend_messages/new/${profile.pid}`} className="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a> : null }
 									</>
 								)
 							: null}
 						<span className="title">
-							{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
-							{ isUserDataViewable ? pnidName : null}
+							{pnidName}
 						</span>
 						<span className="text">
-							{canViewUser
+							<span>
+								@
+								{profile.username}
+							</span>
+							<span>
+								{' | '}
+								<PortalUIIcon name="posts" />
+								{' '}
+								{profile.posts}
+							</span>
+							<span>
+								{' | '}
+								<PortalUIIcon name="followers" />
+								{' '}
+								<span id="followers">{profile.followers}</span>
+							</span>
+							{profile.profileInfo.country
 								? (
-										<>
-											<span>
-												@
-												{props.user.username}
-											</span>
-											<span>
-												{' | '}
-												<PortalUIIcon name="posts" />
-												{' '}
-												{props.totalPosts}
-											</span>
-											<span>
-												{' | '}
-												<PortalUIIcon name="followers" />
-												{' '}
-												<span id="followers">{props.userContent.following_users.length - 1}</span>
-											</span>
-											{props.userSettings.country_visibility
-												? (
-														<span>
-															{' | '}
-															<PortalUIIcon name="country" />
-															{' '}
-															{props.user.country}
-														</span>
-													)
-												: null}
-											{props.userSettings.birthday_visibility
-												? (
-														<span>
-															{' | '}
-															<PortalUIIcon name="birthday" />
-															{' '}
-															{moment.utc(props.user.birthdate).format('MMM Do')}
-														</span>
-													)
-												: null}
-											{props.userSettings.game_skill_visibility
-												? (
-														<span>
-															{' | '}
-															<PortalUIIcon name="skill" />
-															{' '}
-															{props.userSettings.game_skill === 0
-																? (
-																		<><T k="setup.experience_text.beginner" /></>
-																	)
-																: props.userSettings.game_skill === 1
-																	? (
-																			<><T k="setup.experience_text.intermediate" /></>
-																		)
-																	: props.userSettings.game_skill === 2
-																		? (
-																				<><T k="setup.experience_text.expert" /></>
-																			)
-																		: <><T k="user_page.game_experience_unknown" /></>}
-														</span>
-													)
-												: null}
-											<PortalUserTier user={props.user} />
-										</>
+										<span>
+											{' | '}
+											<PortalUIIcon name="country" />
+											{' '}
+											{profile.profileInfo.country}
+										</span>
 									)
 								: null}
+							{profile.profileInfo.birthday
+								? (
+										<span>
+											{' | '}
+											<PortalUIIcon name="birthday" />
+											{' '}
+											{moment(profile.profileInfo.birthday).format('MMM Do')}
+										</span>
+									)
+								: null}
+							{profile.profileInfo.gameSkill
+								? (
+										<span>
+											{' | '}
+											<PortalUIIcon name="skill" />
+											{' '}
+											{profile.profileInfo.gameSkill === 0
+												? (
+														<><T k="setup.experience_text.beginner" /></>
+													)
+												: profile.profileInfo.gameSkill === 1
+													? (
+															<><T k="setup.experience_text.intermediate" /></>
+														)
+													: profile.profileInfo.gameSkill === 2
+														? (
+																<><T k="setup.experience_text.expert" /></>
+															)
+														: <><T k="user_page.game_experience_unknown" /></>}
+										</span>
+									)
+								: null}
+							<PortalUserTier profile={profile} />
 						</span>
 					</div>
-					{isUserDataViewable
-						? (
-								<>
-									<PortalNavTabs target=".tab-body">
-										<PortalNavTabsRow>
-											<PortalNavTab href={props.baseLink} selected={props.selectedTab === 0}>
-												<T k="user_page.posts" />
-											</PortalNavTab>
-											<PortalNavTab href={props.baseLink + 'friends'} selected={props.selectedTab === 1}>
-												<T k="user_page.friends" />
-											</PortalNavTab>
-											<PortalNavTab href={props.baseLink + 'following'} selected={props.selectedTab === 2}>
-												<T k="user_page.following" />
-											</PortalNavTab>
-											<PortalNavTab href={props.baseLink + 'followers'} selected={props.selectedTab === 3}>
-												<T k="user_page.followers" />
-											</PortalNavTab>
-											<PortalNavTab href={props.baseLink + 'yeahs'} selected={props.selectedTab === 4}>
-												<T k="global.yeahs" />
-											</PortalNavTab>
-										</PortalNavTabsRow>
-									</PortalNavTabs>
-									<div className="tab-body post-list">
-										{props.children}
-									</div>
-								</>
-							)
-						: null}
+					<PortalNavTabs target=".tab-body">
+						<PortalNavTabsRow>
+							<PortalNavTab href={props.baseLink} selected={props.selectedTab === 0}>
+								<T k="user_page.posts" />
+							</PortalNavTab>
+							<PortalNavTab href={props.baseLink + 'friends'} selected={props.selectedTab === 1}>
+								<T k="user_page.friends" />
+							</PortalNavTab>
+							<PortalNavTab href={props.baseLink + 'following'} selected={props.selectedTab === 2}>
+								<T k="user_page.following" />
+							</PortalNavTab>
+							<PortalNavTab href={props.baseLink + 'followers'} selected={props.selectedTab === 3}>
+								<T k="user_page.followers" />
+							</PortalNavTab>
+							<PortalNavTab href={props.baseLink + 'yeahs'} selected={props.selectedTab === 4}>
+								<T k="global.yeahs" />
+							</PortalNavTab>
+						</PortalNavTabsRow>
+					</PortalNavTabs>
+					<div className="tab-body post-list">
+						{props.children}
+					</div>
 				</div>
 			</PortalPageBody>
 		</PortalRoot>

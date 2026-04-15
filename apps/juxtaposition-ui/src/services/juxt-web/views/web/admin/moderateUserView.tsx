@@ -8,19 +8,14 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { InferSchemaType } from 'mongoose';
-import type { HydratedSettingsDocument } from '@/models/settings';
-import type { ContentSchema } from '@/models/content';
-import type { PostSchema } from '@/models/post';
 import type { auditLogSchema } from '@/models/logs';
-import type { Report } from '@/api/generated';
+import type { ModerationProfile, Post, Report, UserProfile } from '@/api/generated';
 
 export type ModerateUserViewProps = {
-	pnid: AccountGetUserDataResponse;
-	userSettings: HydratedSettingsDocument;
-	userContent: InferSchemaType<typeof ContentSchema>;
-	removedPosts: InferSchemaType<typeof PostSchema>[];
+	profile: UserProfile;
+	modProfile: ModerationProfile;
+	removedPosts: Post[];
 	reports: Report[];
 	submittedReports: Report[];
 	reasonMap: string[];
@@ -100,10 +95,11 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 	const url = useUrl();
 	const cache = useCache();
-	const pnidName = props.pnid.mii?.name ?? props.pnid.username;
+	const profile = props.profile;
+	const pnidName = profile.miiName;
 	const head = (
 		<>
-			<WebUserPageMeta user={props.pnid} userSettings={props.userSettings} withImage />
+			<WebUserPageMeta profile={props.profile} withImage />
 		</>
 	);
 
@@ -118,40 +114,40 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 				<div className="community-top">
 					<img className="banner" src="https://juxt-web-cdn.b-cdn.net/images/banner.png" alt="" />
 					<div className="community-info">
-						<img className={cx('user-icon', { verified: props.pnid.accessLevel > 2 })} src={url.cdn(`/mii/${props.userSettings.pid}/normal_face.png`)} />
+						<img className={cx('user-icon', { verified: profile.flags.includes('verified') })} src={url.cdn(`/mii/${profile.pid}/normal_face.png`)} />
 						<h2 className="community-title">
 							{pnidName}
 							{' '}
 							@
-							{props.pnid.username}
-							{props.pnid.accessLevel >= 2 ? <span className="verified-badge">✓</span> : null}
+							{profile.username}
+							{profile.flags.includes('verified') ? <span className="verified-badge">✓</span> : null}
 						</h2>
 					</div>
 					<h4 className="community-description">
-						{props.userSettings.profile_comment}
-						<WebUserTier user={props.pnid} />
+						{profile.profileInfo.comment}
+						<WebUserTier flags={profile.flags} />
 					</h4>
 					<div className="info-boxes-wrapper">
 						<div>
 							<h4><T k="user_page.country" /></h4>
-							<h4>{props.pnid.country}</h4>
+							<h4>{profile.profileInfo.country}</h4>
 						</div>
 						<div>
 							<h4><T k="user_page.birthday" /></h4>
-							<h4>{moment.utc(props.pnid.birthdate).format('MMM Do')}</h4>
+							<h4>{moment(profile.profileInfo.birthday).format('MMM Do')}</h4>
 						</div>
 						<div>
 							<h4><T k="user_page.game_experience" /></h4>
 							<h4>
-								{props.userSettings.game_skill === 0
+								{profile.profileInfo.gameSkill === 0
 									? (
 											<><T k="setup.experience_text.beginner" /></>
 										)
-									: props.userSettings.game_skill === 1
+									: profile.profileInfo.gameSkill === 1
 										? (
 												<><T k="setup.experience_text.intermediate" /></>
 											)
-										: props.userSettings.game_skill === 2
+										: profile.profileInfo.gameSkill === 2
 											? (
 													<><T k="setup.experience_text.expert" /></>
 												)
@@ -160,11 +156,13 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 						<div>
 							<h4><T k="user_page.followers" /></h4>
-							<h4 id="user-page-followers-tab">{props.userContent.following_users.length}</h4>
+							<h4 id="user-page-followers-tab">{profile.followers}</h4>
 						</div>
+					</div>
+					<div className="info-boxes-wrapper">
 						<div>
 							<h4>User Profile Link</h4>
-							<h4><a href={`/users/${props.userSettings.pid}`}>User Profile Link</a></h4>
+							<h4><a href={`/users/${profile.pid}`}>User Profile Link</a></h4>
 						</div>
 					</div>
 				</div>
@@ -176,16 +174,16 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						<div className="col">
 							<label htmlFor="account_status" className="labels">Account Status</label>
 							<select className="form-select" aria-label="Account Status" name="account_status" id="account_status">
-								<option value="0" selected={props.userSettings.account_status === 0}>Normal</option>
-								<option value="1" selected={props.userSettings.account_status === 1}>Limited from Posting</option>
-								<option value="2" selected={props.userSettings.account_status === 2}>Temp Ban</option>
-								<option value="3" selected={props.userSettings.account_status === 3}>Permanent Ban</option>
+								<option value="0" selected={props.modProfile.accountStatus === 0}>Normal</option>
+								<option value="1" selected={props.modProfile.accountStatus === 1}>Limited from Posting</option>
+								<option value="2" selected={props.modProfile.accountStatus === 2}>Temp Ban</option>
+								<option value="3" selected={props.modProfile.accountStatus === 3}>Permanent Ban</option>
 							</select>
 						</div>
 						<div className="col">
 							<label htmlFor="ban_lift_date_picker" className="labels">Banned Until:</label>
 							<input type="datetime-local" id="ban_lift_date_picker" name="ban_lift_date" />
-							<input type="hidden" id="ban_lift_date" value={props.userSettings.ban_lift_date?.toISOString()} />
+							<input type="hidden" id="ban_lift_date" value={props.modProfile.bannedUntil ?? undefined} />
 						</div>
 						<div className="col">
 							UTC:
@@ -199,11 +197,11 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 						<div className="col">
 							<label htmlFor="ban_reason" className="labels">Ban Reason</label>
-							<input id="ban_reason" type="text" className="form-control" placeholder="Ban reason" style={{ width: '100%' }} value={props.userSettings.ban_reason ?? undefined} />
+							<input id="ban_reason" type="text" className="form-control" placeholder="Ban reason" style={{ width: '100%' }} value={props.modProfile.banReason ?? undefined} />
 						</div>
 					</div>
 					<div className="mt-5 text-center">
-						<button className="btn btn-primary profile-button" type="button" data-button-admin-save-pnid={props.userSettings.pid}>Save User</button>
+						<button className="btn btn-primary profile-button" type="button" data-button-admin-save-pnid={profile.pid}>Save User</button>
 					</div>
 				</div>
 				<details open>

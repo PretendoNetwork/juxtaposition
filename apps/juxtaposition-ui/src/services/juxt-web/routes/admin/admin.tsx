@@ -2,10 +2,8 @@ import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
 import { database } from '@/database';
-import { logger } from '@/logger';
-import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { humanDate, createLogEntry, getReasonMap, getUserAccountData, newNotification, updateCommunityHashForAdminCommunity } from '@/util';
+import { humanDate, createLogEntry, getReasonMap, newNotification, updateCommunityHashForAdminCommunity } from '@/util';
 import { getPostMetrics, getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
@@ -82,34 +80,27 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 
 	const reqPid = params.pid;
 
-	const pnid = await getUserAccountData(reqPid).catch((e) => {
-		logger.error(e, `Could not fetch userdata for ${reqPid}`);
-	});
-	const userContent = await database.getUserContent(reqPid);
-	const userSettings = await database.getUserSettings(reqPid);
-	if (isNaN(reqPid) || !pnid || !userContent || !userSettings) {
+	const { data: profile } = await req.api.admin.users.getProfile({ id: reqPid });
+	const { data: modProfile } = await req.api.admin.users.getModProfile({ id: reqPid });
+	if (!profile || !modProfile) {
 		return res.redirect('/404');
 	}
 
 	const { data: reportsPage } = await req.api.admin.reports.list({ offenderPid: reqPid, limit: 50 });
 	const { data: submittedReportsPage } = await req.api.admin.reports.list({ reporterPid: reqPid, limit: 50 });
-	const removedPosts = await POST.find({ pid: reqPid, removed: true }).sort({ removed_at: -1 }).limit(50);
+	const { data: removedPostsPage } = await req.api.users.posts.list({ id: reqPid, sortBy: 'removedAt', removed: 'true', limit: 50 });
 
 	const auditLog = await database.getLogsForTarget(reqPid, 0, 50);
 
 	res.jsxForDirectory({
 		web: (
 			<WebModerateUserView
-
-				userSettings={userSettings}
-				userContent={userContent}
-				pnid={pnid}
-				removedPosts={removedPosts}
-
+				profile={profile}
+				modProfile={modProfile}
+				removedPosts={removedPostsPage.items}
 				reports={reportsPage.items}
 				submittedReports={submittedReportsPage.items}
 				auditLog={auditLog}
-
 				reasonMap={getReasonMap()}
 			/>
 		)
