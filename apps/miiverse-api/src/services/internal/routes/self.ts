@@ -19,10 +19,13 @@ selfRouter.get({
 			throw new errors.unauthorized('User is not logged in');
 		}
 
+		// TODO these updates should probably be done in a middleware
 		const userSettings = await Settings.findOne({ pid: auth.pnid.pid });
 		if (userSettings) {
 			// Clear ban lift date if neccesary
-			if (userSettings.ban_lift_date && new Date(userSettings.ban_lift_date) <= new Date()) {
+			const hasBan = userSettings.account_status !== 0;
+			const shouldClearBan = userSettings.ban_lift_date && new Date(userSettings.ban_lift_date) <= new Date();
+			if (hasBan && shouldClearBan) {
 				userSettings.account_status = 0;
 			}
 
@@ -39,7 +42,9 @@ selfRouter.get({
 
 		const accountStatus = auth.settings?.account_status ?? 0;
 		const isJuxtBanned = accountStatus < 0 || accountStatus > 1;
-		const isNetworkBanned = auth.pnid.accessLevel < 0;
+		const isNetworkBanned = auth.pnid.accessLevel < 0 ||
+			auth.pnid.permissions?.bannedAllPermanently === true ||
+			auth.pnid.permissions?.bannedAllTemporarily === true;
 
 		if (isNetworkBanned) {
 			return mapBannedSelf(auth, 'network_ban', null, null);
@@ -50,7 +55,9 @@ selfRouter.get({
 			if (accountStatus === 2) {
 				return mapBannedSelf(auth, 'temp_ban', endDate, reason);
 			}
-			return mapBannedSelf(auth, 'perma_ban', endDate, reason);
+
+			// Technically it has a endDate, but we don't want the frontend to know about it
+			return mapBannedSelf(auth, 'perma_ban', null, reason);
 		}
 
 		return mapSelf(auth);

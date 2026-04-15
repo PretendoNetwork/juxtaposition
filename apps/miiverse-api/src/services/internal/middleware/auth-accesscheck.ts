@@ -12,13 +12,15 @@ export async function authAccessCheck(request: express.Request, response: expres
 	}
 
 	if (account.pnid.deleted) {
-		throw new errors.unauthorized('Account does not exist');
+		response.locals.accountAuthError = new errors.unauthorized('Account does not exist');
+		return next();
 	}
 
 	if (account.pnid.accessLevel < 0 ||
 		account.pnid.permissions?.bannedAllPermanently === true ||
 		account.pnid.permissions?.bannedAllTemporarily === true) {
-		throw new errors.forbidden('Account has been banned');
+		response.locals.accountAuthError = new errors.forbidden('Account has been banned');
+		return next();
 	}
 
 	// TODO console linking check (needs account server support)
@@ -32,10 +34,9 @@ export async function authAccessCheck(request: express.Request, response: expres
 
 	// 0 = normal, 1 = limited from posting, 2 = temp ban, 3 = perma ban
 	if (account.settings.account_status !== 0 && account.settings.account_status !== 1) {
-		throw new errors.forbidden('Account has been banned from Juxtaposition');
+		response.locals.accountAuthError = new errors.forbidden('Account has been banned from Juxtaposition');
+		return next();
 	}
-
-	// TODO lift expired temporary bans and post limits (frontend's responsibility for now)
 
 	return next();
 }
