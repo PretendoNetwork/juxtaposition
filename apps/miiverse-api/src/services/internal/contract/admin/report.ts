@@ -16,15 +16,16 @@ export const reportSchema = z.object({
 		isResolved: z.boolean(),
 		resolvedAt: z.date().nullable(),
 		pid: z.number().nullable(),
+		note: z.string().nullable(),
 		reason: z.enum(['reportResolved', 'similarReportResolved']).nullable()
 	})
 }).openapi('Report');
 
 export type ReportDto = z.infer<typeof reportSchema>;
 
-export function mapReport(report: HydratedReportDocument, inputPost: HydratedPostDocument | null): ReportDto {
-	const post = inputPost && !inputPost.removed ? inputPost : null;
-	const isResolved = report.resolved || !post;
+export function mapReport(report: HydratedReportDocument, post: HydratedPostDocument | null): ReportDto {
+	const hasPost = post && !post.removed ? post : null;
+	const isResolved = report.resolved || !hasPost;
 	return {
 		id: report.id,
 		createdAt: report.created_at,
@@ -37,6 +38,7 @@ export function mapReport(report: HydratedReportDocument, inputPost: HydratedPos
 			resolvedAt: report.resolved_at ?? null,
 			pid: report.resolved_by ?? null,
 			isResolved: isResolved,
+			note: report.note ?? null,
 			reason: report.resolved ? 'reportResolved' : 'similarReportResolved'
 		},
 		post: post ? mapPost(post) : null

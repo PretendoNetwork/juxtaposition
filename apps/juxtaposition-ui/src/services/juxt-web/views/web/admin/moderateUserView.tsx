@@ -50,8 +50,10 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 							<span className="text">
 								<a href={`/users/${reporter.pid}`} className="nick-name">
 									Reported By:
+									{' '}
 									{cache.getUserName(reporter.pid)}
 								</a>
+								{'  '}
 								<span title={moment(createdAt).toString()} className="timestamp">{moment(createdAt).fromNow()}</span>
 							</span>
 							<span className="text">
@@ -62,20 +64,30 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 									{reporter.message}
 								</p>
 							</span>
-							{ resolved.isResolved
+							{ resolved.isResolved && resolved.reason === 'similarReportResolved'
 								? (
 										<>
 											<span className="text">
-												<span className="nick-name">
-													Resolved By:
-													{resolved.pid ? cache.getUserName(resolved.pid) : 'Nobody'}
-												</span>
-												<span title={moment(resolved.resolvedAt).toString()} className="timestamp">{moment(resolved.resolvedAt).fromNow()}</span>
+												Resolved by similar report
 											</span>
-											<span className="text"><p>{resolved.reason}</p></span>
 										</>
 									)
-								: null}
+								: resolved.isResolved
+									? (
+											<>
+												<span className="text">
+													<span className="nick-name">
+														Resolved By:
+														{' '}
+														{resolved.pid ? cache.getUserName(resolved.pid) : 'Nobody'}
+													</span>
+													{'  '}
+													<span title={moment(resolved.resolvedAt).toString()} className="timestamp">{moment(resolved.resolvedAt).fromNow()}</span>
+												</span>
+												<span className="text"><p>{resolved.note}</p></span>
+											</>
+										)
+									: null}
 						</span>
 					</div>
 				</summary>
