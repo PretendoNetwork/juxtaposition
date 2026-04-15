@@ -8,39 +8,55 @@ import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { createLogEntry } from '@/services/internal/utils/auditLogs';
 import { createNewPostDeletionNotification } from '@/services/internal/utils/notifications';
-import type { ReportDto } from '@/services/internal/contract/admin/report';
+import { deleteOptional } from '@/services/internal/utils';
+import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 
 export const adminReportsRouter = createInternalApiRouter();
 
 adminReportsRouter.get({
-	path: '/admin/reports/open',
-	name: 'admin.reports.listOpen',
+	path: '/admin/reports',
+	name: 'admin.reports.list',
 	guard: guards.moderator,
 	schema: {
-		response: z.array(reportSchema)
+		query: z.object({
+			resolved: z.stringbool().optional(),
+			offenderPid: z.coerce.number().optional(),
+			reporterPid: z.coerce.number().optional(),
+			sort: standardSortSchema
+		}).extend(pageControlSchema(150)),
+		response: feedPageDtoSchema(reportSchema)
 	},
-	async handler() {
+	async handler({ query }) {
+		if (query.resolved !== undefined && query.offset > 0) {
+			throw new errors.badRequest('Pagination is not possible when filtering for resolved states');
+		}
+
 		const rawReports = await Report
-			.find({ resolved: false })
-			.sort({ created_at: -1 });
+			.find(deleteOptional({
+				resolved: query.resolved,
+				pid: query.offenderPid,
+				reported_by: query.reporterPid
+			}))
+			.sort({ created_at: standardSortToDirection(query.sort) })
+			.limit(query.limit)
+			.skip(query.offset);
 		const postIds = rawReports.map(obj => obj.post_id);
-		const nonRemovedPosts = await Post.find(
-			{ id: { $in: postIds }, removed: false }
+		const posts = await Post.find(
+			{ id: { $in: postIds } }
 		);
+		const postMap = new Map(posts.map(p => [p.id, p]));
 
-		const postMap = new Map(nonRemovedPosts.map(p => [p.id, p]));
-		const reportsWithPost = rawReports.map(v => ({
-			report: v,
-			post: postMap.get(v.post_id)
-		}));
+		let reports = rawReports.map(v => mapReport(v, postMap.get(v.post_id) ?? null));
 
-		const reports: ReportDto[] = [];
-		reportsWithPost.forEach((v) => {
-			if (v.post) {
-				reports.push(mapReport(v.report, v.post));
-			}
-		});
-		return reports;
+		// Reports can be resolved by the original post being removed, this is not set in the DB
+		// This is why pagination is not possible when filtering for resolved states
+		if (query.resolved !== undefined) {
+			const resolvedFilter = query.resolved;
+			reports = reports.filter(v => v.resolved.isResolved === resolvedFilter);
+		}
+
+		return mapFeedPage(reports);
 	}
 });
 
@@ -60,7 +76,7 @@ adminReportsRouter.post({
 	async handler({ params, body, auth }) {
 		const account = auth!;
 
-		const report = await Report.findOne({ id: params.id });
+		const report = await Report.findOne({ _id: params.id });
 		if (!report) {
 			throw new errors.notFound('Not found');
 		}
@@ -81,7 +97,7 @@ adminReportsRouter.post({
 			});
 		}
 
-		await Report.findOneAndUpdate({
+		await Report.findOneAndUpdate({ _id: report.id }, {
 			$set: {
 				resolved: true,
 				resolved_by: account.pnid.pid,
@@ -121,12 +137,12 @@ adminReportsRouter.post({
 	async handler({ params, body, auth }) {
 		const account = auth!;
 
-		const report = await Report.findOne({ id: params.id });
+		const report = await Report.findOne({ _id: params.id });
 		if (!report) {
 			throw new errors.notFound('Not found');
 		}
 
-		await Report.findOneAndUpdate({
+		await Report.findOneAndUpdate({ _id: report.id }, {
 			$set: {
 				resolved: true,
 				resolved_by: account.pnid.pid,
