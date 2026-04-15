@@ -80,7 +80,7 @@ function refreshCache(): void {
 		}
 		logger.success('Created community index');
 
-		const users = await database.getUsersSettings(-1, 0);
+		const users = await SETTINGS.find({});
 
 		for (const user of users) {
 			if (user.pid === undefined || user.screen_name === undefined) {

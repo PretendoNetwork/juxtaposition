@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { FuzzySearch } from 'mongoose-fuzzy-search-next';
 import { CONTENT } from '@/models/content';
 import { CONVERSATION } from '@/models/conversation';
 import { ENDPOINT } from '@/models/endpoint';
@@ -74,24 +73,6 @@ async function getEndPoint(accessLevel) {
 	return ENDPOINT.findOne({
 		server_access_level: accessLevel
 	});
-}
-
-async function getUsersSettings(numberOfUsers, offset) {
-	verifyConnected();
-	if (numberOfUsers === -1) {
-		return SETTINGS.find({}).skip(offset);
-	} else {
-		return SETTINGS.find({}).skip(offset).limit(numberOfUsers);
-	}
-}
-
-async function getUserSettingsFuzzySearch(search_key, numberOfUsers, offset) {
-	verifyConnected();
-	if (numberOfUsers === -1) {
-		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset);
-	} else {
-		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset).limit(numberOfUsers);
-	}
 }
 
 async function getUserSettings(pid) {
@@ -199,9 +180,7 @@ export const database = {
 	getConversationByUsers,
 	getConversationMessages,
 	getUnreadConversationCount,
-	getUsersSettings,
 	getUserSettings,
-	getUserSettingsFuzzySearch,
 	getUserContent,
 	getNotifications,
 	getUnreadNotificationCount,
