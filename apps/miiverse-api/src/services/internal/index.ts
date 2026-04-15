@@ -8,6 +8,7 @@ import { userProfileRouter } from '@/services/internal/routes/userProfile';
 import { selfRouter } from '@/services/internal/routes/self';
 import { adminCommunitiesRouter } from '@/services/internal/routes/admin/adminCommunities';
 import { adminReportsRouter } from '@/services/internal/routes/admin/adminReports';
+import { adminUsersRouter } from '@/services/internal/routes/admin/adminUsers';
 
 export const internalApiRouter = express.Router();
 internalApiRouter.use('/api/v1', postsRouter.toRouter());
@@ -19,3 +20,4 @@ internalApiRouter.use('/api/v1', userProfileRouter.toRouter());
 internalApiRouter.use('/api/v1', selfRouter.toRouter());
 internalApiRouter.use('/api/v1', adminCommunitiesRouter.toRouter());
 internalApiRouter.use('/api/v1', adminReportsRouter.toRouter());
+internalApiRouter.use('/api/v1', adminUsersRouter.toRouter());
