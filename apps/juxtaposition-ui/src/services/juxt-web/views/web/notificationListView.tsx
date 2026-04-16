@@ -6,9 +6,8 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
-import type { NotificationSchema } from '@/models/notifications';
+import type { Notification } from '@/api/generated';
 
 export type NotificationWrapperViewProps = {
 	selectedTab: number;
@@ -16,11 +15,11 @@ export type NotificationWrapperViewProps = {
 };
 
 export type NotificationListViewProps = {
-	notifications: InferSchemaType<typeof NotificationSchema>[];
+	notifications: Notification[];
 };
 
 export type NotificationItemProps = {
-	notification: InferSchemaType<typeof NotificationSchema>;
+	notification: Notification;
 };
 
 function WebNotificationItem(props: NotificationItemProps): ReactNode {
@@ -43,8 +42,8 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 
 		return (
 			<div className="hover">
-				<a href={`/users/${notif.objectID}`} className="icon-container notify">
-					<img src={url.cdn(`/mii/${notif.objectID}/normal_face.png`)} className="icon" />
+				<a href={`/users/${notif.resourceId}`} className="icon-container notify">
+					<img src={url.cdn(`/mii/${notif.resourceId}/normal_face.png`)} className="icon" />
 				</a>
 				<a className="body" href={notif.link ?? '#'}>
 					<span className="text">
@@ -56,14 +55,14 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 									count_other: Math.max(0, notif.users.length - 2)
 								}}
 								components={{
-									follower_one: <NickName userId={notif.objectID} />,
-									follower_two: <NickName userId={notif.users[0]?.user} />
+									follower_one: <NickName userId={notif.resourceId} />,
+									follower_two: <NickName userId={notif.users[0]?.pid} />
 								}}
 							/>
 						</span>
 						<span className="timestamp">
 							{' '}
-							{moment(notif.lastUpdated).fromNow()}
+							{moment(notif.updatedAt).fromNow()}
 						</span>
 					</span>
 				</a>
@@ -75,14 +74,14 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 		return (
 			<div className="hover">
 				<a href={notif.link ?? '#'} className="icon-container notify">
-					<img src={notif.image ?? undefined} className="icon" />
+					<img src={notif.imageUrl ?? undefined} className="icon" />
 				</a>
 				<a className="body" href={notif.link ?? '#'}>
 					<span className="text">
-						{notif.text}
+						{notif.content}
 						<span className="timestamp">
 							{' '}
-							{moment(notif.lastUpdated).fromNow()}
+							{moment(notif.updatedAt).fromNow()}
 						</span>
 					</span>
 				</a>

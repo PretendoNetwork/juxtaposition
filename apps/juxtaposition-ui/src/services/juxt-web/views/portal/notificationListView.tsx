@@ -29,7 +29,7 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 
 		return (
 			<>
-				<PortalMiiIcon pid={Number(notif.objectID)} type="icon"></PortalMiiIcon>
+				<PortalMiiIcon pid={Number(notif.resourceId)} type="icon"></PortalMiiIcon>
 				<div className="body">
 					<p className="text">
 						<a className="link" href={notif.link ?? '#'}>
@@ -40,14 +40,14 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 									count_other: Math.max(0, notif.users.length - 2)
 								}}
 								components={{
-									follower_one: <NickName userId={notif.objectID} />,
-									follower_two: <NickName userId={notif.users[0]?.user} />
+									follower_one: <NickName userId={notif.resourceId} />,
+									follower_two: <NickName userId={notif.users[0]?.pid} />
 								}}
 							/>
 						</a>
 						<span className="timestamp">
 							{' '}
-							{humanFromNow(notif.lastUpdated)}
+							{humanFromNow(notif.updatedAt)}
 						</span>
 					</p>
 				</div>
@@ -58,14 +58,14 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<>
-				<PortalIcon href={notif.link ?? undefined} src={notif.image ?? ''}></PortalIcon>
+				<PortalIcon href={notif.link ?? undefined} src={notif.imageUrl ?? ''}></PortalIcon>
 				<div className="body">
 					<a href={notif.link ?? '#'}>
 						<span className="text">
-							{notif.text}
+							{notif.content}
 							<span className="timestamp">
 								{' '}
-								{humanFromNow(notif.lastUpdated)}
+								{humanFromNow(notif.updatedAt)}
 							</span>
 						</span>
 					</a>

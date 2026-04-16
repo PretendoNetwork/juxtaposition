@@ -12,11 +12,12 @@ export const notificationsRouter = createInternalApiRouter();
 
 notificationsRouter.get({
 	path: '/notifications',
-	name: 'notifications.count',
+	name: 'notifications.list',
 	guard: guards.user,
 	schema: {
 		query: z.object({
-			read: z.stringbool().optional()
+			read: z.stringbool().optional(),
+			markAsRead: z.stringbool().default(false)
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(notificationSchema)
 	},
@@ -32,6 +33,18 @@ notificationsRouter.get({
 			.limit(query.limit)
 			.skip(query.offset);
 		const total = await Notification.countDocuments(dbQuery);
+
+		if (query.markAsRead) {
+			await Notification.updateMany({
+				_id: {
+					$in: notifications.map(v => v._id)
+				}
+			}, {
+				$set: {
+					read: true
+				}
+			});
+		}
 
 		return mapPage(total, notifications.map(v => mapNotification(v)));
 	}

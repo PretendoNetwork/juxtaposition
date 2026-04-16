@@ -7,6 +7,7 @@ export type NotificationType = z.infer<typeof notificationTypeSchema>;
 
 export const notificationSchema = z.object({
 	toPid: z.number(),
+	resourceId: z.string(),
 	link: z.string().nullable(),
 	imageUrl: z.string(),
 	content: z.string(),
@@ -16,7 +17,7 @@ export const notificationSchema = z.object({
 	users: z.array(z.object({
 		pid: z.number(),
 		timestamp: z.date()
-	})).default([])
+	}))
 }).openapi('Notification');
 
 export type NotificationDto = z.infer<typeof notificationSchema>;
@@ -24,6 +25,7 @@ export type NotificationDto = z.infer<typeof notificationSchema>;
 export function mapNotification(notif: INotification): NotificationDto {
 	return {
 		toPid: Number(notif.pid),
+		resourceId: notif.objectID,
 		read: notif.read,
 		updatedAt: notif.lastUpdated,
 		link: notif.link,

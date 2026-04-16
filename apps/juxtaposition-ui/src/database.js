@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import { CONTENT } from '@/models/content';
 import { CONVERSATION } from '@/models/conversation';
 import { ENDPOINT } from '@/models/endpoint';
-import { NOTIFICATION } from '@/models/notifications';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { REPORT } from '@/models/report';
@@ -82,19 +81,6 @@ async function getConversations(pid) {
 	}).sort({ last_updated: -1 });
 }
 
-async function getUnreadConversationCount(pid) {
-	verifyConnected();
-	return CONVERSATION.find({
-		users: {
-			$elemMatch: {
-				pid: pid,
-				read: false
-			}
-		}
-
-	}).countDocuments();
-}
-
 async function getConversationByID(community_id) {
 	verifyConnected();
 	return CONVERSATION.findOne({
@@ -122,30 +108,6 @@ async function getConversationByUsers(pids) {
 	});
 }
 
-async function getNotifications(pid, limit, offset) {
-	verifyConnected();
-	return NOTIFICATION.find({
-		pid: pid
-	}).sort({ lastUpdated: -1 }).skip(offset).limit(limit);
-}
-
-async function getNotification(pid, type, reference_id) {
-	verifyConnected();
-	return NOTIFICATION.findOne({
-		pid: pid,
-		type: type,
-		reference_id: reference_id
-	});
-}
-
-async function getUnreadNotificationCount(pid) {
-	verifyConnected();
-	return NOTIFICATION.find({
-		pid: pid,
-		read: false
-	}).countDocuments();
-}
-
 async function getDuplicateReports(pid, postID) {
 	verifyConnected();
 	return REPORT.findOne({
@@ -168,12 +130,8 @@ export const database = {
 	getConversationByID,
 	getConversationByUsers,
 	getConversationMessages,
-	getUnreadConversationCount,
 	getUserSettings,
 	getUserContent,
-	getNotifications,
-	getUnreadNotificationCount,
-	getNotification,
 	getDuplicateReports,
 	getLogsForTarget
 };
