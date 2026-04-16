@@ -1,8 +1,9 @@
 import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { errors } from '@/services/internal/errors';
-import { mapBannedSelf, mapSelf, selfSchema } from '@/services/internal/contract/self';
+import { mapBannedSelf, mapSelf, mapSelfNotificationCount, selfNotificationCountSchema, selfSchema } from '@/services/internal/contract/self';
 import { Settings } from '@/models/settings';
+import { Notification } from '@/models/notification';
 
 export const selfRouter = createInternalApiRouter();
 
@@ -61,5 +62,25 @@ selfRouter.get({
 		}
 
 		return mapSelf(auth);
+	}
+});
+
+selfRouter.get({
+	path: '/self/notifications',
+	name: 'self.getNotifications',
+	description: 'Get notification counts for current user',
+	guard: guards.user,
+	schema: {
+		response: selfNotificationCountSchema
+	},
+	async handler({ auth }) {
+		const account = auth!;
+
+		const notificationCount = await Notification.countDocuments({
+			pid: account.pnid.pid,
+			read: false
+		});
+
+		return mapSelfNotificationCount(notificationCount);
 	}
 });

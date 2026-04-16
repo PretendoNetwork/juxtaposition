@@ -1,0 +1,38 @@
+import { z } from 'zod';
+import { guards } from '@/services/internal/middleware/guards';
+import { createInternalApiRouter } from '@/services/internal/builder/router';
+import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
+import { deleteOptional } from '@/services/internal/utils';
+import { Notification } from '@/models/notification';
+import { mapNotification, notificationSchema } from '@/services/internal/contract/notification';
+import type { RootFilterQuery } from 'mongoose';
+import type { INotification } from '@/types/mongoose/notification';
+
+export const notificationsRouter = createInternalApiRouter();
+
+notificationsRouter.get({
+	path: '/notifications',
+	name: 'notifications.count',
+	guard: guards.user,
+	schema: {
+		query: z.object({
+			read: z.stringbool().optional()
+		}).extend(pageControlSchema()),
+		response: pageDtoSchema(notificationSchema)
+	},
+	async handler({ query, auth }) {
+		const account = auth!;
+
+		const dbQuery: RootFilterQuery<INotification> = deleteOptional({
+			read: query.read,
+			pid: account.pnid.pid
+		});
+		const notifications = await Notification
+			.find(dbQuery)
+			.limit(query.limit)
+			.skip(query.offset);
+		const total = await Notification.countDocuments(dbQuery);
+
+		return mapPage(total, notifications.map(v => mapNotification(v)));
+	}
+});
