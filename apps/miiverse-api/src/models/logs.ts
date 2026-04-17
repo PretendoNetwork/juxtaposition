@@ -24,7 +24,7 @@ export type AuditLog = {
 	changed_fields: string[];
 } & Document;
 
-export type HydratedEndpointDocument = HydratedDocument<AuditLog>;
+export type HydratedAuditLogDocument = HydratedDocument<AuditLog>;
 
 export const auditLogSchema = new Schema<AuditLog>({
 	actor: {
