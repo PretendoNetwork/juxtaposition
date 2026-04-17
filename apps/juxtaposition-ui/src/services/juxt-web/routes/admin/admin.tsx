@@ -1,9 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
-import { database } from '@/database';
-import { SETTINGS } from '@/models/settings';
-import { humanDate, createLogEntry, getReasonMap, newNotification, updateCommunityHashForAdminCommunity } from '@/util';
+import { getReasonMap, updateCommunityHashForAdminCommunity } from '@/util';
 import { getPostMetrics, getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
@@ -110,11 +108,7 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 });
 
 adminRouter.post('/accounts/:pid', async (req, res) => {
-	if (!res.locals.moderator) {
-		return res.redirect('/titles/show');
-	}
-
-	const { params, body, auth } = parseReq(req, {
+	const { params, body } = parseReq(req, {
 		params: z.object({
 			pid: z.coerce.number()
 		}),
@@ -124,97 +118,19 @@ adminRouter.post('/accounts/:pid', async (req, res) => {
 				.pipe(z.iso.datetime().nullable()),
 			account_status: z.number(),
 			ban_reason: z.string().trim().nullable().transform(v => v === '' ? null : v)
-		}).transform((v) => {
-			if (v.account_status == 0) {
-				v.ban_lift_date = null; // If account status is normal, remove ban date
-			}
-			return v;
 		})
 	});
 
-	const pid = params.pid;
-	const oldUserSettings = await database.getUserSettings(pid);
-
-	if (!oldUserSettings) {
-		res.json({
-			error: true
-		});
-		return;
-	}
-
-	await SETTINGS.findOneAndUpdate({ pid: pid }, {
-		account_status: body.account_status,
-		ban_lift_date: body.ban_lift_date,
-		banned_by: req.pid,
-		ban_reason: body.ban_reason
+	await req.api.admin.users.updateModProfile({
+		id: params.pid,
+		accountStatus: body.account_status,
+		banLiftDate: body.ban_lift_date,
+		banReason: body.ban_reason
 	});
 
 	res.json({
 		error: false
 	});
-
-	if (body.account_status === 1) {
-		await newNotification({
-			pid: pid,
-			type: 'notice',
-			text: `You have been Limited from Posting until ${humanDate(body.ban_lift_date)}. ` +
-				(body.ban_reason ? `Reason: "${body.ban_reason}". ` : '') +
-				`Click this message to view the Juxtaposition Code of Conduct. ` +
-				`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`,
-			image: '/images/bandwidthalert.png',
-			link: '/titles/2551084080/new'
-		});
-	}
-
-	let action = 'UPDATE_USER';
-	const accountStatusChanged = oldUserSettings.account_status !== body.account_status;
-	const changes = [];
-	const fields = [];
-
-	if (accountStatusChanged) {
-		const oldStatus = getAccountStatus(oldUserSettings.account_status);
-		const newStatus = getAccountStatus(body.account_status);
-
-		switch (body.account_status) {
-			case 0:
-				action = 'UNBAN';
-				break;
-			case 1:
-				action = 'LIMIT_POSTING';
-				break;
-			case 2:
-				action = 'TEMP_BAN';
-				break;
-			case 3:
-				action = 'PERMA_BAN';
-				break;
-			default:
-				action = 'PERMA_BAN';
-				break;
-		}
-		fields.push('account_status');
-		changes.push(`Account Status changed from "${oldStatus}" to "${newStatus}"`);
-	}
-
-	if (accountStatusChanged || oldUserSettings.ban_lift_date !== body.ban_lift_date) {
-		fields.push('ban_lift_date');
-		changes.push(`User Ban Lift Date changed from "${humanDate(oldUserSettings.ban_lift_date)}" to "${humanDate(body.ban_lift_date)}"`);
-	}
-
-	if (accountStatusChanged || oldUserSettings.ban_reason !== body.ban_reason) {
-		fields.push('ban_reason');
-		changes.push(`Ban reason changed from "${oldUserSettings.ban_reason}" to "${body.ban_reason}"`);
-	}
-
-	if (changes.length > 0) {
-		await createLogEntry(
-			auth().pid,
-			action,
-			pid.toString(),
-			changes.join('\n'),
-			fields
-		);
-	}
 });
 
 adminRouter.delete('/:reportID', async function (req, res) {
@@ -398,18 +314,3 @@ adminRouter.delete('/communities/:id', async (req, res) => {
 		error: false
 	});
 });
-
-function getAccountStatus(status: number): string {
-	switch (status) {
-		case 0:
-			return 'Normal';
-		case 1:
-			return 'Limited from Posting';
-		case 2:
-			return 'Temporary Ban';
-		case 3:
-			return 'Permanent Ban';
-		default:
-			return `Unknown (${status})`;
-	}
-}

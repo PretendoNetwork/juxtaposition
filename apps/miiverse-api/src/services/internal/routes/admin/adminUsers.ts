@@ -123,9 +123,13 @@ adminUsersRouter.patch({
 			throw new errors.notFound('Not found');
 		}
 
+		let banLiftDate = body.banLiftDate;
+		if (body.accountStatus == 0) {
+			banLiftDate = null; // If account status is normal, remove ban date
+		}
 		const settings = await Settings.findOneAndUpdate({ pid: params.id }, deleteOptional({
 			account_status: body.accountStatus,
-			ban_lift_date: body.banLiftDate,
+			ban_lift_date: banLiftDate,
 			banned_by: account.pnid.pid,
 			ban_reason: body.banReason
 		}));
