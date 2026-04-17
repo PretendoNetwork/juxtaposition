@@ -89,8 +89,10 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 	const { data: reportsPage } = await req.api.admin.reports.list({ offenderPid: reqPid, limit: 50 });
 	const { data: submittedReportsPage } = await req.api.admin.reports.list({ reporterPid: reqPid, limit: 50 });
 	const { data: removedPostsPage } = await req.api.users.posts.list({ id: reqPid, sortBy: 'removedAt', removed: 'true', limit: 50 });
-
-	const auditLog = await database.getLogsForTarget(reqPid, 0, 50);
+	const { data: auditLogsPage } = await req.api.admin.auditLogs.list({
+		limit: 50,
+		targetId: reqPid.toString()
+	});
 
 	res.jsxForDirectory({
 		web: (
@@ -100,7 +102,7 @@ adminRouter.get('/accounts/:pid', async function (req, res) {
 				removedPosts={removedPostsPage.items}
 				reports={reportsPage.items}
 				submittedReports={submittedReportsPage.items}
-				auditLog={auditLog}
+				auditLogs={auditLogsPage.items}
 				reasonMap={getReasonMap()}
 			/>
 		)

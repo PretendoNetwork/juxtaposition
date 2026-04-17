@@ -8,9 +8,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { auditLogSchema } from '@/models/logs';
-import type { AdminUserProfile, ModerationProfile, Post, Report } from '@/api/generated';
+import type { AdminUserProfile, AuditLog, ModerationProfile, Post, Report } from '@/api/generated';
 
 export type ModerateUserViewProps = {
 	profile: AdminUserProfile;
@@ -19,7 +17,7 @@ export type ModerateUserViewProps = {
 	reports: Report[];
 	submittedReports: Report[];
 	reasonMap: string[];
-	auditLog: InferSchemaType<typeof auditLogSchema>[];
+	auditLogs: AuditLog[];
 };
 
 type ModerateUserReportProps = {
@@ -213,29 +211,29 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						<div className="mt-5">
 							<h4>
 								Recent Profile Actions (
-								{props.auditLog.length}
+								{props.auditLogs.length}
 								, limit 50 most recent)
 							</h4>
 						</div>
 					</summary>
 					<ul className="list-content-with-icon-and-text arrow-list">
-						{props.auditLog.length === 0 ? <h4>There's nothing here...</h4> : null}
-						{props.auditLog.map(log => (
+						{props.auditLogs.length === 0 ? <h4>There's nothing here...</h4> : null}
+						{props.auditLogs.map(log => (
 							<li className="reports">
 								<details>
 									<summary>
 										<div className="hover">
-											<a href={`/users/${log.actor}`} className="icon-container notify">
+											<a href={`/users/${log.actor.pid}`} className="icon-container notify">
 												<img src={url.cdn(`/mii/${log.actor}/normal_face.png`)} className="icon" style={{ width: '32px', height: '32px' }} />
 											</a>
 											<span className="body messages report">
 												<span className="text">
-													<a href={`/users/${log.actor}`} className="nick-name">{cache.getUserName(log.actor)}</a>
-													<span title={moment(log.timestamp).toString()} className="timestamp">
+													<a href={`/users/${log.actor}`} className="nick-name">{log.actor.miiName}</a>
+													<span title={moment(log.actionAt).toString()} className="timestamp">
 														:
 														{log.action}
 														{' '}
-														{moment(log.timestamp).fromNow()}
+														{moment(log.actionAt).fromNow()}
 													</span>
 												</span>
 											</span>

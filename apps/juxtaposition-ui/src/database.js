@@ -5,7 +5,6 @@ import { ENDPOINT } from '@/models/endpoint';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { REPORT } from '@/models/report';
-import { LOGS } from '@/models/logs';
 import { logger } from '@/logger';
 import { config } from '@/config';
 
@@ -116,11 +115,6 @@ async function getDuplicateReports(pid, postID) {
 	});
 }
 
-async function getLogsForTarget(targetPID, offset, limit) {
-	verifyConnected();
-	return LOGS.find({ target: targetPID }).sort({ timestamp: -1 }).skip(offset).limit(limit);
-}
-
 export const database = {
 	connect,
 	getPostByID,
@@ -132,6 +126,5 @@ export const database = {
 	getConversationMessages,
 	getUserSettings,
 	getUserContent,
-	getDuplicateReports,
-	getLogsForTarget
+	getDuplicateReports
 };
