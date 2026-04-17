@@ -12,11 +12,9 @@ import { DateTime } from 'luxon';
 import { z } from 'zod';
 import { database } from '@/database';
 import { COMMUNITY } from '@/models/communities';
-import { NOTIFICATION } from '@/models/notifications';
 import { logger } from '@/logger';
 import { CONTENT } from '@/models/content';
 import { SETTINGS } from '@/models/settings';
-import { LOGS } from '@/models/logs';
 import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
@@ -28,11 +26,9 @@ import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonet
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
 import type { GetUserFriendPIDsResponse } from '@pretendonetwork/grpc/friends/get_user_friend_pids_rpc';
-import type { NotificationCreateArgs } from '@/types/juxt/notification';
 import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { CommunitySchema } from '@/models/communities';
-import type { NotificationSchema } from '@/models/notifications';
 import type { AdminCommunity } from '@/api/generated';
 
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
@@ -291,92 +287,6 @@ export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCanne
 	}
 }
 
-export async function newNotification(notification: NotificationCreateArgs): Promise<InferSchemaType<typeof NotificationSchema> | null> {
-	const now = new Date();
-	if (notification.type === 'follow') {
-		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
-		let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID });
-		if (existingNotification) {
-			existingNotification.lastUpdated = now;
-			existingNotification.read = false;
-			return existingNotification.save();
-		}
-		const last60min = new Date(now.getTime() - 60 * 60 * 1000);
-		existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'follow', lastUpdated: { $gte: last60min } });
-		if (existingNotification) {
-			existingNotification.users.push({
-				user: notification.objectID,
-				timestamp: now
-			});
-			existingNotification.lastUpdated = now;
-			existingNotification.link = notification.link;
-			existingNotification.objectID = notification.objectID;
-			existingNotification.read = false;
-			return existingNotification.save();
-		} else {
-			const newNotification = new NOTIFICATION({
-				pid: notification.pid,
-				type: notification.type,
-				users: [{
-					user: notification.objectID,
-					timestamp: now
-				}],
-				link: notification.link,
-				objectID: notification.objectID,
-				read: false,
-				lastUpdated: now
-			});
-			return newNotification.save();
-		}
-	} else if (notification.type == 'notice') {
-		const newNotification = new NOTIFICATION({
-			pid: notification.pid,
-			type: notification.type,
-			text: notification.text,
-			image: notification.image,
-			link: notification.link,
-			read: false,
-			lastUpdated: now
-		});
-		return newNotification.save();
-	}
-	/* else if(notification.type === 'yeah') {
-		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
-		let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID })
-		if(existingNotification) {
-			existingNotification.lastUpdated = new Date();
-			return await existingNotification.save();
-		}
-		existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'yeah' });
-		if(existingNotification) {
-			existingNotification.users.push({
-				user: notification.objectID,
-				timeStamp: new Date()
-			});
-			existingNotification.lastUpdated = new Date();
-			existingNotification.link = notification.link;
-			existingNotification.objectID = notification.objectID;
-			return await existingNotification.save();
-		}
-		else {
-			let newNotification = new NOTIFICATION({
-				pid: notification.pid,
-				type: notification.type,
-				users: [{
-					user: notification.objectID,
-					timestamp: new Date()
-				}],
-				link: notification.link,
-				objectID: notification.objectID,
-				read: false,
-				lastUpdated: new Date()
-			});
-			await newNotification.save();
-		}
-	} */
-	return null;
-}
-
 export async function getUserFriendPIDs(pid: number): Promise<number[]> {
 	const response = await gRPCFriendsClient.getUserFriendPIDs({
 		pid: pid
@@ -445,17 +355,6 @@ export async function passwordLogin(username: string, password: string): Promise
 // 		})
 // 	});
 // }
-
-export async function createLogEntry(actor: number, action: string, target: string, context: string, fields?: string[]): Promise<void> {
-	const newLog = new LOGS({
-		actor: actor,
-		action: action,
-		target: target,
-		context: context,
-		changed_fields: fields ?? []
-	});
-	await newLog.save();
-}
 
 /**
  * Deletes undefined, but present, values. Useful for Mongoose queries.
