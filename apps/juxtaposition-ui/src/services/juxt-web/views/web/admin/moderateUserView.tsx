@@ -224,11 +224,11 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 									<summary>
 										<div className="hover">
 											<a href={`/users/${log.actor.pid}`} className="icon-container notify">
-												<img src={url.cdn(`/mii/${log.actor}/normal_face.png`)} className="icon" style={{ width: '32px', height: '32px' }} />
+												<img src={url.cdn(`/mii/${log.actor.pid}/normal_face.png`)} className="icon" style={{ width: '32px', height: '32px' }} />
 											</a>
 											<span className="body messages report">
 												<span className="text">
-													<a href={`/users/${log.actor}`} className="nick-name">{log.actor.miiName}</a>
+													<a href={`/users/${log.actor.pid}`} className="nick-name">{log.actor.miiName}</a>
 													<span title={moment(log.actionAt).toString()} className="timestamp">
 														:
 														{log.action}
