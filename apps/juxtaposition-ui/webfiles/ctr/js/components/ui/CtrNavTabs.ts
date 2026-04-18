@@ -1,6 +1,7 @@
-import { GET } from '../../xhr';
-import { pjaxPushHistory, pjaxRefresh } from '../../pjax';
-import { initMorePosts, initPosts } from '../../juxt';
+import { createModule } from '@repo/frontend-common';
+import { modules } from '@/js/module-container';
+import { pjaxPushHistory } from '@/js/pjax';
+import { GET } from '@/js/xhr';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {
 	/* Note: because we use ev.target here, the nav-tab can not have any HTML elements inside it.
@@ -19,7 +20,7 @@ function navTabsClick(this: HTMLElement, ev: Event): void {
 	clicked.classList.add('selected');
 
 	var targetSelector = this.getAttribute('data-nav-tabs')!;
-	var target = document.querySelector(targetSelector)!;
+	var target = document.querySelector<HTMLElement>(targetSelector)!;
 	var href = clicked.getAttribute('href')!;
 
 	GET(href + '?pjax=true', (xhr) => {
@@ -31,15 +32,15 @@ function navTabsClick(this: HTMLElement, ev: Event): void {
 
 		target.innerHTML = xhr.responseText;
 		pjaxPushHistory(href);
-		initPosts();
-		initMorePosts();
-		pjaxRefresh();
+		modules.loadPartial(target);
 		cave.transition_end();
 	});
 }
 
-export function initNavTabs(): void {
-	document.querySelectorAll('[data-nav-tabs]').forEach((component) => {
-		component.addEventListener('click', navTabsClick);
-	});
-}
+export var tabsModule = createModule({
+	id: 'tabs',
+	selector: '[data-nav-tabs]',
+	hydrate: (ctx) => {
+		ctx.el.addEventListener('click', navTabsClick);
+	}
+});

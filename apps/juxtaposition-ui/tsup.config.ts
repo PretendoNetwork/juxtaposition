@@ -43,7 +43,7 @@ export default defineConfig([
 	/* CTR/3DS webfiles (Chrome 4) */
 	{
 		entry: [
-			'webfiles/ctr/js/juxt.js',
+			'webfiles/ctr/js/juxt.ts',
 			'webfiles/ctr/js/debug.js',
 			'webfiles/ctr/js/firstrun.js',
 			'webfiles/ctr/css/juxt.css',

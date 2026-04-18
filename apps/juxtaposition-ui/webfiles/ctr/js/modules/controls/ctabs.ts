@@ -1,3 +1,5 @@
+import { createModule } from '@repo/frontend-common';
+
 // Client-side tab control from ctabs.tsx
 
 function updateComponent(component: Element): void {
@@ -18,14 +20,6 @@ function updateComponent(component: Element): void {
 	});
 }
 
-export function initClientTabs(): void {
-	document.querySelectorAll('[data-ctabs-control]').forEach((component) => {
-		component.querySelectorAll('[data-ctab] input[type="radio"]').forEach((input) => {
-			input.addEventListener('change', () => updateComponent(component));
-		});
-	});
-}
-
 export function ctabOnShown(component: Element, value: string, cb: EventListenerOrEventListenerObject): boolean {
 	var content = component.querySelector(`[data-ctab-content="${value}"]`);
 	if (!content) {
@@ -35,3 +29,13 @@ export function ctabOnShown(component: Element, value: string, cb: EventListener
 	content.addEventListener('ctab-shown', cb);
 	return true;
 }
+
+export var ctabsModule = createModule({
+	id: 'ctabs',
+	selector: '[data-ctabs-control]',
+	hydrate: (ctx) => {
+		ctx.el.querySelectorAll('[data-ctab] input[type="radio"]').forEach((input) => {
+			input.addEventListener('change', () => updateComponent(ctx.el));
+		});
+	}
+});
