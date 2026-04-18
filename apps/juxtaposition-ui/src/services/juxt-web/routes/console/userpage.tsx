@@ -47,10 +47,9 @@ userPageRouter.get('/me', async function (req, res) {
 userPageRouter.get('/notifications.json', async function (req, res) {
 	const { auth } = parseReq(req);
 	const notifications = await database.getUnreadNotificationCount(auth().pid);
-	const messagesCount = await database.getUnreadConversationCount(auth().pid);
 	res.send(
 		{
-			message_count: messagesCount,
+			message_count: 0,
 			notification_count: notifications
 		}
 	);
