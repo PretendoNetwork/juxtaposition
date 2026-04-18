@@ -69,9 +69,5 @@ export async function createI18n(): Promise<i18n> {
 
 	await i18n.use(initReactI18next).init();
 
-	if (config.dmBanner.text) {
-		i18n.addResource(fallbackLang, 'ns', 'dmBannerText', config.dmBanner.text);
-	}
-
 	return i18n;
 }
