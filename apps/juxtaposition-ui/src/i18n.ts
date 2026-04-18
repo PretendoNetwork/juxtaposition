@@ -3,7 +3,6 @@ import path from 'path';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { langsFolder } from '@/util';
-import { config } from '@/config';
 import type { i18n } from 'i18next';
 import type en from '@/assets/locales/en.json';
 import type { ParamPack } from '@/types/common/param-pack';
@@ -68,10 +67,6 @@ export async function createI18n(): Promise<i18n> {
 	});
 
 	await i18n.use(initReactI18next).init();
-
-	if (config.dmBanner.text) {
-		i18n.addResource(fallbackLang, 'ns', 'dmBannerText', config.dmBanner.text);
-	}
 
 	return i18n;
 }

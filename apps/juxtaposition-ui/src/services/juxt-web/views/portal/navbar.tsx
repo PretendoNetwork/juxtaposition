@@ -41,15 +41,12 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 				</a>
 			</li>
 			<li
-				id="nav-menu-message"
-				data-tab="message"
+				id="nav-menu-friends"
+				data-tab="friends"
 				className={selectedClasses(3)}
 			>
-				<a href="/friend_messages" data-pjax="#body" data-sound="SE_WAVE_MENU">
-					<T k="global.messages" />
-					<span id="message-badge" className="badge">
-						0
-					</span>
+				<a href="/news/friend_requests" data-pjax="#body" data-sound="SE_WAVE_MENU">
+					<T k="global.friend_requests" />
 				</a>
 			</li>
 			<li id="nav-menu-news" data-tab="news" className={selectedClasses(4)}>
