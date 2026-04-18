@@ -12,7 +12,7 @@
         "postinstall": "npm run build"
     },
     "devDependencies": {
-        "@bufbuild/buf": "^1.66.0",
+        "@bufbuild/buf": "^1.66.1",
         "nice-grpc-common": "^2.0.2",
         "ts-proto": "^2.11.5",
         "typescript": "^5.9.3"

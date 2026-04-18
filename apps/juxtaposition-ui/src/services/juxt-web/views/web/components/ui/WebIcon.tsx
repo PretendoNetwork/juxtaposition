@@ -11,9 +11,24 @@ export type IconProps = {
 
 export function WebIcon(props: IconProps): ReactNode {
 	const type = props.type ?? 'icon';
-	return (
-		<a href={props.href} className={cx(`${type}-container`, props.className)}>
-			<img src={props.src} className={type} />
-		</a>
-	);
+
+	const icon = <img src={props.src} className={type} />;
+	if (props.href) {
+		return (
+			<a
+				href={props.href}
+				className={cx(`${type}-container`, props.className)}
+			>
+				{icon}
+			</a>
+		);
+	} else {
+		return (
+			<div
+				className={cx(`${type}-container`, props.className)}
+			>
+				{icon}
+			</div>
+		);
+	}
 }
