@@ -5,7 +5,6 @@ import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/ui/PortalMiiIcon';
 import { PortalIcon } from '@/services/juxt-web/views/portal/components/ui/PortalIcon';
-import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -99,16 +98,6 @@ export function PortalNotificationWrapperView(props: NotificationWrapperViewProp
 					<h1 id="page-title"><T k="global.notifications" /></h1>
 				</header>
 				<div className="body-content tab2-content" id="news-page">
-					<PortalNavTabs target=".tab-body">
-						<PortalNavTabsRow>
-							<PortalNavTab href="/news/my_news" selected={props.selectedTab === 0}>
-								<T k="global.updates" />
-							</PortalNavTab>
-							<PortalNavTab href="/news/friend_requests" selected={props.selectedTab === 1}>
-								<T k="global.friend_requests" />
-							</PortalNavTab>
-						</PortalNavTabsRow>
-					</PortalNavTabs>
 					<div className="tab-body">
 						{props.children}
 					</div>
