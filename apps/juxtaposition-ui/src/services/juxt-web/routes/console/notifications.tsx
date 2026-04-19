@@ -6,8 +6,8 @@ import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebNotificationListView, WebNotificationWrapperView } from '@/services/juxt-web/views/web/notificationListView';
 import { PortalNotificationListView, PortalNotificationWrapperView } from '@/services/juxt-web/views/portal/notificationListView';
 import { CtrNotificationListView, CtrNotificationWrapperView } from '@/services/juxt-web/views/ctr/notificationListView';
-import { PortalFriendRequestListView } from '@/services/juxt-web/views/portal/friendRequestListView';
-import { CtrFriendRequestListView } from '@/services/juxt-web/views/ctr/friendRequestListView';
+import { PortalFriendRequestListView, PortalFriendRequestWrapperView } from '@/services/juxt-web/views/portal/friendRequestListView';
+import { CtrFriendRequestListView, CtrFriendRequestWrapperView } from '@/services/juxt-web/views/ctr/friendRequestListView';
 import type { NotificationListViewProps } from '@/services/juxt-web/views/web/notificationListView';
 import type { FriendRequestListViewProps } from '@/services/juxt-web/views/web/friendRequestListView';
 export const notificationRouter = express.Router();
@@ -39,17 +39,17 @@ notificationRouter.get('/my_news', async function (req, res) {
 
 	res.jsxForDirectory({
 		web: (
-			<WebNotificationWrapperView selectedTab={0}>
+			<WebNotificationWrapperView>
 				<WebNotificationListView {...props} />
 			</WebNotificationWrapperView>
 		),
 		portal: (
-			<PortalNotificationWrapperView selectedTab={0}>
+			<PortalNotificationWrapperView>
 				<PortalNotificationListView {...props} />
 			</PortalNotificationWrapperView>
 		),
 		ctr: (
-			<CtrNotificationWrapperView selectedTab={0}>
+			<CtrNotificationWrapperView>
 				<CtrNotificationListView {...props} />
 			</CtrNotificationWrapperView>
 		)
@@ -80,14 +80,14 @@ notificationRouter.get('/friend_requests', async function (req, res) {
 
 	res.jsxForDirectory({
 		portal: (
-			<PortalNotificationWrapperView selectedTab={1}>
+			<PortalFriendRequestWrapperView>
 				<PortalFriendRequestListView {...props} />
-			</PortalNotificationWrapperView>
+			</PortalFriendRequestWrapperView>
 		),
 		ctr: (
-			<CtrNotificationWrapperView selectedTab={1}>
+			<CtrFriendRequestWrapperView>
 				<CtrFriendRequestListView {...props} />
-			</CtrNotificationWrapperView>
+			</CtrFriendRequestWrapperView>
 		)
 	});
 });
