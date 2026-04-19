@@ -1,6 +1,5 @@
 import express from 'express';
 import { z } from 'zod';
-import { getUserFriendRequestsIncoming } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebNotificationListView, WebNotificationWrapperView } from '@/services/juxt-web/views/web/notificationListView';
 import { PortalNotificationListView, PortalNotificationWrapperView } from '@/services/juxt-web/views/portal/notificationListView';
@@ -54,18 +53,16 @@ notificationRouter.get('/my_news', async function (req, res) {
 });
 
 notificationRouter.get('/friend_requests', async function (req, res) {
-	const { query, auth } = parseReq(req, {
+	const { query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional()
 		})
 	});
 
-	const now = new Date();
-	const allRequests = (await getUserFriendRequestsIncoming(auth().pid)).reverse();
-	const validRequests = allRequests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
+	const { data: requests } = await req.api.self.getFriendRequests();
 
 	const props: FriendRequestListViewProps = {
-		requests: validRequests
+		requests
 	};
 
 	if (query.pjax) {

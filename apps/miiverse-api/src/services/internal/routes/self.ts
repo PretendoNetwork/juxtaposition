@@ -90,7 +90,7 @@ selfRouter.get({
 
 selfRouter.get({
 	path: '/self/friend-requests',
-	name: 'self.getFrienqRequests',
+	name: 'self.getFriendRequests',
 	description: 'Get friend requests for current user',
 	guard: guards.user,
 	schema: {
