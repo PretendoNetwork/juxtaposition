@@ -2,7 +2,6 @@ import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
 import { getReasonMap, updateCommunityHashForAdminCommunity } from '@/util';
-import { getPostMetrics, getUserMetrics } from '@/metrics';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
 import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportListView';
@@ -47,8 +46,7 @@ adminRouter.get('/accounts', async function (req, res) {
 		offset
 	});
 
-	const userMetrics = await getUserMetrics();
-	const postMetrics = await getPostMetrics();
+	const { data: stats } = await req.api.admin.getStats();
 
 	res.jsxForDirectory({
 		web: (
@@ -57,9 +55,9 @@ adminRouter.get('/accounts', async function (req, res) {
 				page={query.page}
 				search={search}
 				userCount={usersPage.total}
-				activeCount={userMetrics.currentOnlineUsers}
-				dailyPostCount={postMetrics.dailyPosts}
-				totalPostCount={postMetrics.totalPosts}
+				activeCount={stats.onlineUsers}
+				dailyPostCount={stats.dailyPosts}
+				totalPostCount={stats.totalPosts}
 			/>
 		)
 	});
