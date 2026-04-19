@@ -5,6 +5,7 @@ import { guards } from '@/services/internal/middleware/guards';
 import { mapPost, postSchema } from '@/services/internal/contract/post';
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
+import { Community } from '@/models/community';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -30,7 +31,10 @@ activityFeedsRouter.get({
 			.skip(query.offset)
 			.limit(query.limit);
 
-		return mapFeedPage(posts.map(mapPost));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		return mapFeedPage(posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
 	}
 });
 
@@ -64,7 +68,10 @@ activityFeedsRouter.get({
 			.skip(query.offset)
 			.limit(query.limit);
 
-		return mapFeedPage(posts.map(mapPost));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		return mapFeedPage(posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
 	}
 });
 
@@ -99,6 +106,9 @@ activityFeedsRouter.get({
 			.skip(query.offset)
 			.limit(query.limit);
 
-		return mapFeedPage(posts.map(mapPost));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		return mapFeedPage(posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
 	}
 });

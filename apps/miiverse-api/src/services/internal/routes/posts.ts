@@ -11,6 +11,7 @@ import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { createLogEntry } from '@/services/internal/utils/auditLogs';
+import { Community } from '@/models/community';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -60,7 +61,10 @@ postsRouter.get({
 			.limit(query.limit);
 		const total = await Post.countDocuments(dbQuery);
 
-		return mapPage(total, posts.map(mapPost));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		return mapPage(total, posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
 	}
 });
 
@@ -82,8 +86,9 @@ postsRouter.get({
 		if (!post) {
 			throw new errors.notFound('Post not found');
 		}
+		const community = await Community.findOne({ olive_community_id: post.community_id });
 
-		return mapPost(post);
+		return mapPost(post, community);
 	}
 });
 
