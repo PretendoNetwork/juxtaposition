@@ -6,6 +6,8 @@ import { mapBannedSelf, mapSelf, mapSelfFriendRequest, mapSelfNotificationCount,
 import { Settings } from '@/models/settings';
 import { Notification } from '@/models/notification';
 import { getUserFriendRequestsIncoming } from '@/util';
+import { Post } from '@/models/post';
+import { Content } from '@/models/content';
 import type { SelfFriendRequestDto } from '@/services/internal/contract/self';
 
 export const selfRouter = createInternalApiRouter();
@@ -114,5 +116,36 @@ selfRouter.get({
 
 			return acc;
 		}, []);
+	}
+});
+
+selfRouter.post({
+	path: '/self/export',
+	name: 'self.export',
+	description: 'Do a GDPR export for current user',
+	guard: guards.user,
+	schema: {
+		response: z.any()
+	},
+	async handler({ auth }) {
+		const account = auth!;
+		const rawPosts = await Post.find({ pid: account.pnid.pid });
+		const userSettings = await Settings.findOne({ pid: account.pnid.pid });
+		const userContent = await Content.findOne({ pid: account.pnid.pid });
+
+		// Clean non-user data
+		if (userSettings) {
+			userSettings.banned_by = null;
+		}
+		const postsJson = rawPosts.map(post => ({
+			...post.toJSON(),
+			removed_by: null
+		}));
+
+		return {
+			user_content: userContent,
+			user_settings: userSettings,
+			posts: postsJson
+		};
 	}
 });

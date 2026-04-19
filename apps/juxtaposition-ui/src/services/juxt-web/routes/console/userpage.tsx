@@ -2,7 +2,6 @@ import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
 import { database } from '@/database';
-import { POST } from '@/models/post';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
@@ -51,29 +50,11 @@ userPageRouter.get('/notifications.json', async function (req, res) {
 
 userPageRouter.get('/downloadUserData.json', async function (req, res) {
 	const { auth } = parseReq(req);
-	const rawPosts = await POST.find({ pid: auth().pid });
-	const userSettings = await database.getUserSettings(auth().pid);
-	const userContent = await database.getUserContent(auth().pid);
+	const { data } = await req.api.self.export();
 
-	if (!userContent || !userSettings) {
-		return res.redirect('/404');
-	}
-
-	// Clean non-user data
-	userSettings.banned_by = null;
-	const postsJson = rawPosts.map(post => ({
-		...post.toJSON(),
-		removed_by: null
-	}));
-
-	const doc = {
-		user_content: userContent,
-		user_settings: userSettings,
-		posts: postsJson
-	};
 	res.set('Content-Type', 'text/json');
 	res.set('Content-Disposition', `attachment; filename="${auth().pid}_user_data.json"`);
-	res.send(doc);
+	res.send(JSON.stringify(data, null, 2));
 });
 
 userPageRouter.get('/me/settings', async function (req, res) {

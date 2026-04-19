@@ -1,7 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
 import { config } from '@/config';
-import { POST } from '@/models/post';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
