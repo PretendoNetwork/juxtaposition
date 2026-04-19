@@ -12,8 +12,10 @@ import { adminUsersRouter } from '@/services/internal/routes/admin/adminUsers';
 import { notificationsRouter } from '@/services/internal/routes/notification';
 import { adminAuditLogs } from '@/services/internal/routes/admin/adminAuditLogs';
 import { adminStatsRouter } from '@/services/internal/routes/admin/adminStats';
+import { discoveryRouter } from '@/services/internal/routes/discovery';
 
 export const internalApiRouter = express.Router();
+internalApiRouter.use('/api/v1', discoveryRouter.toRouter());
 internalApiRouter.use('/api/v1', postsRouter.toRouter());
 internalApiRouter.use('/api/v1', communitiesRouter.toRouter());
 internalApiRouter.use('/api/v1', activityFeedsRouter.toRouter());
