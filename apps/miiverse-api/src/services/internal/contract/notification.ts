@@ -28,6 +28,30 @@ export type NotificationDto = z.infer<typeof notificationSchema>;
 
 export function mapNotification(notif: INotification, users: HydratedSettingsDocument[]): NotificationDto {
 	const toUser = users.find(u => u.pid === Number(notif.pid));
+	const type = notif.type as NotificationType;
+
+	const followUsers: NotificationDto['users'] = [];
+	if (type === 'follow') {
+		const pid = Number(notif.objectID);
+		const user = users.find(u => u.pid === pid);
+		followUsers.push({
+			pid,
+			timestamp: notif.lastUpdated, // Not actually correct, but whatever
+			user: user ? mapShallowUser(user) : null
+		});
+
+		const restUsers = notif.users.map((v) => {
+			const pid = Number(v.user);
+			const user = users.find(u => u.pid === pid);
+			return {
+				pid,
+				timestamp: v.timestamp,
+				user: user ? mapShallowUser(user) : null
+			};
+		});
+		followUsers.push(...restUsers);
+	}
+
 	return {
 		toPid: Number(notif.pid),
 		toUser: toUser ? mapShallowUser(toUser) : null,
@@ -35,15 +59,8 @@ export function mapNotification(notif: INotification, users: HydratedSettingsDoc
 		read: notif.read,
 		updatedAt: notif.lastUpdated,
 		link: notif.link,
-		type: notif.type as any,
-		users: notif.users.map((v) => {
-			const user = users.find(u => u.pid === Number(v.user));
-			return {
-				pid: Number(v.user),
-				timestamp: v.timestamp,
-				user: user ? mapShallowUser(user) : null
-			};
-		}),
+		type,
+		users: followUsers,
 		content: notif.text,
 		imageUrl: notif.image
 	};
