@@ -9,11 +9,9 @@
     "people_feed": "People Feed",
     "people_feed_short": "People",
     "communities": "Communities",
-    "messages": "Messages",
     "notifications": "Notifications",
     "friend_requests": "Friend Requests",
     "updates": "Updates",
-    "notifications_and_messages": "Notifications and Messages",
     "go_back": "Go Back",
     "back": "Back",
     "yeahs": "Yeahs",
@@ -122,9 +120,6 @@
     "delete_post": "Delete post",
     "removed": "Post has been removed.",
     "copy_link": "Copy link"
-  },
-  "messages": {
-    "coming_soon": "No Messages"
   },
   "setup": {
     "title": "Juxtaposition Setup",

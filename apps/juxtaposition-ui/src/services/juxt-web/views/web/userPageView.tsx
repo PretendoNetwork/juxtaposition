@@ -252,7 +252,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 							)
 						: null}
 				</div>
-				{ isUserDataViewable
+				{ canViewUser
 					? (
 							<>
 								<div className="buttons tabs">

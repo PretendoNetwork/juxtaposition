@@ -183,7 +183,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 								: null}
 						</span>
 					</div>
-					{isUserDataViewable
+					{canViewUser
 						? (
 								<>
 									<PortalNavTabs target=".tab-body">
