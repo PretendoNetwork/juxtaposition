@@ -8,7 +8,6 @@ import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
-import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
 import { getInvalidPostRegex, getUserAccountData } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
@@ -268,36 +267,24 @@ postsRouter.get('/:post_id/report', async function (req, res) {
 });
 
 postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
-	const { body, auth } = parseReq(req, {
+	const { body } = parseReq(req, {
 		body: z.object({
-			reason: z.string(),
-			message: z.string(),
+			reason: z.coerce.number(),
+			message: z.string().trim(),
 			post_id: z.string()
 		})
 	});
 
-	const { reason, message, post_id } = body;
-	const { data: post } = await req.api.posts.get({ post_id });
-	if (!reason || !post_id || !post) {
+	const { data: post } = await req.api.posts.get({ post_id: body.post_id });
+	if (!post) {
 		return res.redirect('/404');
 	}
 
-	const duplicate = await database.getDuplicateReports(auth().pid, post_id);
-	if (duplicate) {
-		return res.redirect(`/posts/${post.id}`);
-	}
-
-	const reportDoc = {
-		pid: post.pid,
-		reported_by: auth().pid,
-		post_id,
-		reason,
-		message,
-		created_at: new Date()
-	};
-
-	const reportObj = new REPORT(reportDoc);
-	await reportObj.save();
+	await req.api.posts.report({
+		post_id: post.id,
+		message: body.message,
+		reasonId: body.reason
+	});
 
 	return res.redirect(`/posts/${post.id}`);
 });
