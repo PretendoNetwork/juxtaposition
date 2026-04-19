@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import { FuzzySearch } from 'mongoose-fuzzy-search-next';
 import { COMMUNITY } from '@/models/communities';
 import { CONTENT } from '@/models/content';
-import { CONVERSATION } from '@/models/conversation';
 import { ENDPOINT } from '@/models/endpoint';
 import { NOTIFICATION } from '@/models/notifications';
 import { POST } from '@/models/post';
@@ -129,53 +128,6 @@ async function getFollowedUsers(content) {
 	});
 }
 
-async function getConversations(pid) {
-	verifyConnected();
-	return CONVERSATION.find({
-		'users.pid': pid
-	}).sort({ last_updated: -1 });
-}
-
-async function getUnreadConversationCount(pid) {
-	verifyConnected();
-	return CONVERSATION.find({
-		users: {
-			$elemMatch: {
-				pid: pid,
-				read: false
-			}
-		}
-
-	}).countDocuments();
-}
-
-async function getConversationByID(community_id) {
-	verifyConnected();
-	return CONVERSATION.findOne({
-		type: 3,
-		id: community_id
-	});
-}
-
-async function getConversationMessages(community_id, limit, offset) {
-	verifyConnected();
-	return POST.find({
-		community_id: community_id,
-		parent: null,
-		removed: false
-	}).sort({ created_at: 1 }).skip(offset).limit(limit);
-}
-
-async function getConversationByUsers(pids) {
-	verifyConnected();
-	return CONVERSATION.findOne({
-		$and: [
-			{ 'users.pid': pids[0] },
-			{ 'users.pid': pids[1] }
-		]
-	});
-}
-
 async function getNotifications(pid, limit, offset) {
 	verifyConnected();
 	return NOTIFICATION.find({
@@ -242,11 +194,6 @@ export const database = {
 	getEndPoint,
 	getFollowingUsers,
 	getFollowedUsers,
-	getConversations,
-	getConversationByID,
-	getConversationByUsers,
-	getConversationMessages,
-	getUnreadConversationCount,
 	getUsersSettings,
 	getUserSettings,
 	getUserSettingsFuzzySearch,

@@ -81,7 +81,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 						: null}
 				</header>
 				<div className="body-content tab2-content" id="community-post-list">
-					{isUserDataViewable
+					{canViewUser
 						? (
 								<>
 									<CtrNavTabs target=".tab-body">

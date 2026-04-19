@@ -113,10 +113,11 @@ export default defineConfig([
 		target: 'chrome20',
 		format: 'iife',
 
-		esbuildOptions(options): void {
-			options.external = ['/images/*', '/fonts/*'];
-			options.tsconfig = './webfiles/portal/tsconfig.json';
+		loader: {
+			'.inline.svg': 'dataurl'
 		},
+		external: ['/images/*', '/fonts/*'],
+		tsconfig: './webfiles/portal/tsconfig.json',
 		esbuildPlugins: [
 			copy({
 				resolveFrom: 'cwd',
