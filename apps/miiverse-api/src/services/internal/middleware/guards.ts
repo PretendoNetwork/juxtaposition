@@ -39,12 +39,7 @@ export async function moderator(request: express.Request, response: express.Resp
 	return guards.user(request, response, () => {
 		const account = response.locals.account;
 		if (account === null) {
-			// Guest access
 			throw new errors.unauthorized('Authentication token not provided');
-		}
-
-		if (account.settings === null) {
-			throw new errors.forbidden('Account setup not complete');
 		}
 
 		if (account.moderator !== true) {
@@ -55,8 +50,27 @@ export async function moderator(request: express.Request, response: express.Resp
 	});
 }
 
+/**
+ * Developers only
+ */
+export async function developer(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
+	return guards.user(request, response, () => {
+		const account = response.locals.account;
+		if (account === null) {
+			throw new errors.unauthorized('Authentication token not provided');
+		}
+
+		if (account.developer !== true) {
+			throw new errors.forbidden('You cannot access this endpoint');
+		}
+
+		return next();
+	});
+}
+
 export const guards = {
 	guest,
 	user,
-	moderator
+	moderator,
+	developer
 };

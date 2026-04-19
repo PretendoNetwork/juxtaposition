@@ -10,6 +10,7 @@ import { empathyActionSchema, empathySchema, mapEmpathy } from '@/services/inter
 import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import { createLogEntry } from '@/services/internal/utils/auditLogs';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -114,10 +115,16 @@ postsRouter.delete({
 		let reason = 'User requested removal';
 		if (post.pid !== account.pnid.pid) {
 			if (account.moderator) {
-			// If a moderator deletes someone else's post, they can provide a reason
+				// If a moderator deletes someone else's post, they can provide a reason
 				reason = query.reason ?? 'Removed by moderator';
+				await createLogEntry({
+					actorId: account.pnid.pid,
+					action: 'REMOVE_POST',
+					targetResourceId: post.pid.toString(),
+					context: `Post ${post.id} removed for: "${reason}"`
+				});
 			} else {
-			// Non-moderators can't delete other posts
+				// Non-moderators can't delete other posts
 				throw new errors.forbidden('Not allowed');
 			}
 		}

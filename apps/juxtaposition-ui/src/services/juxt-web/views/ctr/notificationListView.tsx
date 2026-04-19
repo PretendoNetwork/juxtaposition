@@ -27,7 +27,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 
 		return (
 			<>
-				<CtrMiiIcon pid={Number(notif.objectID)} type="icon"></CtrMiiIcon>
+				<CtrMiiIcon pid={Number(notif.resourceId)} type="icon"></CtrMiiIcon>
 				<div className="body">
 					<p>
 						<a className="link" href={notif.link ?? '#'} data-pjax="#body">
@@ -38,14 +38,14 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 									count_other: Math.max(0, notif.users.length - 2)
 								}}
 								components={{
-									follower_one: <NickName userId={notif.objectID} />,
-									follower_two: <NickName userId={notif.users[0]?.user} />
+									follower_one: <NickName userId={notif.resourceId} />,
+									follower_two: <NickName userId={notif.users[0]?.pid} />
 								}}
 							/>
 						</a>
 						<span className="timestamp">
 							{' '}
-							{humanFromNow(notif.lastUpdated)}
+							{humanFromNow(notif.updatedAt)}
 						</span>
 					</p>
 				</div>
@@ -56,14 +56,14 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<>
-				<CtrIcon href={notif.link ?? undefined} src={notif.image ?? ''}></CtrIcon>
+				<CtrIcon href={notif.link ?? undefined} src={notif.imageUrl ?? ''}></CtrIcon>
 				<div className="body">
 					<a href={notif.link ?? undefined} data-pjax="#body">
 						<p style={{ color: 'black' }}>
-							<span>{notif.text}</span>
+							<span>{notif.content}</span>
 							<span className="timestamp">
 								{' '}
-								{humanFromNow(notif.lastUpdated)}
+								{humanFromNow(notif.updatedAt)}
 							</span>
 						</p>
 					</a>

@@ -21,7 +21,9 @@ userPostsRouter.get({
 			id: z.coerce.number()
 		}),
 		query: z.object({
-			sort: standardSortSchema
+			removed: z.stringbool().optional(),
+			sort: standardSortSchema,
+			sortBy: z.enum(['createdAt', 'removedAt']).default('createdAt')
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(postSchema)
 	},
@@ -33,11 +35,15 @@ userPostsRouter.get({
 
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
 			pid: targetUser.pid,
+			removed: query.removed,
 			...filterRemovedPosts(auth)
 		});
+		const sortKey: keyof IPost = query.sortBy === 'removedAt' ? 'removed_at' : 'created_at';
 		const posts = await Post
 			.find(dbQuery)
-			.sort({ created_at: standardSortToDirection(query.sort) })
+			.sort({
+				[sortKey]: standardSortToDirection(query.sort)
+			})
 			.skip(query.offset)
 			.limit(query.limit);
 		const total = await Post.countDocuments(dbQuery);

@@ -6,62 +6,54 @@ import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { humanDate, humanFromNow } from '@/util';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { HydratedReportDocument } from '@/models/report';
-import type { PostSchema } from '@/models/post';
-import type { SelfContent } from '@/api/generated';
-
-export type ReportWithPost = {
-	report: HydratedReportDocument;
-	post: InferSchemaType<typeof PostSchema>;
-};
+import type { Report, SelfContent } from '@/api/generated';
 
 export type ReportListViewProps = {
 	reasonMap: string[];
 	userContent: SelfContent;
-	reports: ReportWithPost[];
+	reports: Report[];
 };
 
 export type ReportProps = {
 	reasonMap: string[];
 	userContent: SelfContent;
-	report: HydratedReportDocument;
-	post: InferSchemaType<typeof PostSchema>;
+	report: Report;
 };
 
 function Report(props: ReportProps): ReactNode {
 	const cache = useCache();
-	const reporter = props.report.reported_by;
+	const createdAt = new Date(props.report.createdAt);
+	const reporter = props.report.reporter;
 
 	return (
 		<li className="reports">
 			<details>
 				<summary>
 					<div className="hover">
-						<WebMiiIcon pid={reporter} type="icon" />
+						<WebMiiIcon pid={reporter.pid} type="icon" />
 						<span className="body messages report">
 							<span className="text">
-								<a className="nick-name" href={`/users/${reporter}`}>
-									{`Reported by ${cache.getUserName(reporter)}`}
+								<a className="nick-name" href={`/users/${reporter.pid}`}>
+									{`Reported by ${cache.getUserName(reporter.pid)}`}
 								</a>
 								{' - '}
-								<span className="pid-display">{reporter}</span>
+								<span className="pid-display">{reporter.pid}</span>
 								{' - '}
-								<abbr className="timestamp" title={humanDate(props.report.created_at)}>{humanFromNow(props.report.created_at)}</abbr>
+								<abbr className="timestamp" title={humanDate(createdAt)}>{humanFromNow(createdAt)}</abbr>
 							</span>
 							<span className="text">
-								<h4>{props.reasonMap[props.report.reason] ?? 'Unknown'}</h4>
+								<h4>{props.reasonMap[reporter.reasonId] ?? 'Unknown'}</h4>
 								<p>
-									{props.report.message}
+									{reporter.message}
 								</p>
 							</span>
 						</span>
 					</div>
 				</summary>
-				<WebPostView post={props.post} userContent={props.userContent} isReply={false} />
+				<WebPostView post={props.report.post} userContent={props.userContent} isReply={false} />
 				<div className="button-spacer">
-					<button data-button-admin-remove-report={props.report._id}>Remove Post</button>
-					<button data-button-admin-ignore-report={props.report._id}>Ignore Report</button>
+					<button data-button-admin-remove-report={props.report.id}>Remove Post</button>
+					<button data-button-admin-ignore-report={props.report.id}>Ignore Report</button>
 				</div>
 			</details>
 		</li>
@@ -74,7 +66,7 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 			<h2 id="title" className="page-header">
 				User Reports (
 				{props.reports.length}
-				)
+				/150)
 			</h2>
 			<WebNavBar selection={5} />
 			<div id="toast"></div>
@@ -92,8 +84,8 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 				{props.reports.length > 0
 					? (
 							<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
-								{props.reports.map(({ report, post }) => (
-									<Report key={report.id} userContent={props.userContent} reasonMap={props.reasonMap} post={post} report={report} />
+								{props.reports.map(report => (
+									<Report key={report.id} userContent={props.userContent} reasonMap={props.reasonMap} report={report} />
 								))}
 							</ul>
 						)

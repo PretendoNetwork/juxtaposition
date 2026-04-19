@@ -3,17 +3,15 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { CommunitySchema } from '@/models/communities';
+import type { AdminCommunity } from '@/api/generated';
 
 export type EditCommunityViewProps = {
-	community: InferSchemaType<typeof CommunitySchema>;
+	community: AdminCommunity;
 };
 
 export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 	const url = useUrl();
 	const community = props.community;
-	const imageId = community.parent ? community.parent : community.olive_community_id;
 	const head = (
 		<>
 			<title>
@@ -44,9 +42,9 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					<div className="col-md-3">
 						<label className="labels">Platform</label>
 						<select className="form-select" aria-label="Access Mode" name="platform" id="platform">
-							<option value="0" selected={community.platform_id === 0}>Wii U</option>
-							<option value="1" selected={community.platform_id === 1}>3DS</option>
-							<option value="2" selected={community.platform_id === 2}>Both</option>
+							<option value="0" selected={community.platformId === 0}>Wii U</option>
+							<option value="1" selected={community.platformId === 1}>3DS</option>
+							<option value="2" selected={community.platformId === 2}>Both</option>
 						</select>
 					</div>
 					<div className="col-md-3">
@@ -61,46 +59,28 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					<div className="col-md-9">
 						<label className="labels" htmlFor="title_ids">Title IDs (hex)</label>
 						<textarea rows={10} data-input-admin-title-ids="#title-ids"></textarea>
-						<input id="title-ids" name="title_ids" type="hidden" value={community.title_id} />
+						<input id="title-ids" name="title_ids" type="hidden" value={community.titleIds} />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="browserIcon">Browser Icon (128px x 128px)</label>
 						<input type="file" id="browserIcon" data-image-preview accept="image/jpg" name="browserIcon" />
 					</div>
 					<div className="col-md-3">
-						{community.icon_paths
-							? (
-									<img src={url.cdn(community.icon_paths['128'])} data-image-preview-for="browserIcon" id="browserIconPreview" />
-								)
-							: (
-									<img src={url.cdn(`/icons/${imageId}/128.png`)} data-image-preview-for="browserIcon" id="browserIconPreview" />
-								)}
+						<img src={url.cdn(community.iconImagePaths['128'])} data-image-preview-for="browserIcon" id="browserIconPreview" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="CTRbrowserHeader">3DS Browser Banner (400px x 220px)</label>
 						<input type="file" id="CTRbrowserHeader" data-image-preview accept="image/jpg" name="CTRbrowserHeader" />
 					</div>
 					<div className="col-md-3">
-						{community.ctr_header
-							? (
-									<img src={url.cdn(community.ctr_header)} data-image-preview-for="CTRbrowserHeader" id="CTRbrowserHeaderPreview" />
-								)
-							: (
-									<img src={url.cdn(`/headers/${imageId}/3DS.png`)} data-image-preview-for="CTRbrowserHeader" />
-								)}
+						<img src={url.cdn(community.ctrHeaderImagePath)} data-image-preview-for="CTRbrowserHeader" id="CTRbrowserHeaderPreview" />
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="WiiUbrowserHeader">Wii U Browser Banner (1280px x 180px)</label>
 						<input type="file" id="WiiUbrowserHeader" data-image-preview accept="image/jpg" name="WiiUbrowserHeader" />
 					</div>
 					<div className="col-md-3">
-						{community.wup_header
-							? (
-									<img src={url.cdn(community.wup_header)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
-								)
-							: (
-									<img src={url.cdn(`/headers/${imageId}/WiiU.png`)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
-								)}
+						<img src={url.cdn(community.wupHeaderImagePath)} data-image-preview-for="WiiUbrowserHeader" id="WiiUbrowserHeaderPreview" />
 					</div>
 					<div className="col-md-4">
 						<label className="labels" htmlFor="parent">Parent Community ID:</label>
@@ -109,7 +89,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 							id="parent"
 							name="parent"
 							className="form-control"
-							value={community.parent ?? ''}
+							value={community.parentId ?? ''}
 						/>
 					</div>
 					<div className="col-md-4">
@@ -119,33 +99,33 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 							id="app_data"
 							name="app_data"
 							className="form-control"
-							value={community.app_data}
+							value={community.appData}
 						/>
 					</div>
 					<div className="col-md-3">
 						<label className="form-check-label" htmlFor="is_recommended">Is Recommended?</label>
 						<div className="form-switch">
-							<input className="form-check-input" type="checkbox" id="is_recommended" name="is_recommended" checked={community.is_recommended === 1} />
+							<input className="form-check-input" type="checkbox" id="is_recommended" name="is_recommended" checked={community.isRecommended} />
 						</div>
 					</div>
 					<div className="col-md-3">
 						<label className="form-check-label" htmlFor="has_shop_page">Has Shop Page?</label>
 						<div className="form-switch">
-							<input className="form-check-input" type="checkbox" id="has_shop_page" name="has_shop_page" checked={community.has_shop_page === 1} />
+							<input className="form-check-input" type="checkbox" id="has_shop_page" name="has_shop_page" checked={community.hasShopPage} />
 						</div>
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="shot_mode">Screenshot mode</label>
 						<select className="form-select" name="shot_mode" id="shot_mode">
-							<option value="allow" selected={community.shot_mode === 'allow'}>Allow this game only (Default)</option>
-							<option value="block" selected={community.shot_mode === 'block'}>Block all</option>
-							<option value="force" selected={community.shot_mode === 'force'}>Allow, even if game disallows</option>
+							<option value="allow" selected={community.shotMode === 'allow'}>Allow this game only (Default)</option>
+							<option value="block" selected={community.shotMode === 'block'}>Block all</option>
+							<option value="force" selected={community.shotMode === 'force'}>Allow, even if game disallows</option>
 						</select>
 					</div>
 					<div className="col-md-9">
 						<label className="labels" htmlFor="shot_extra_title_id">Extra screenshot titles (comma separated list)</label>
 						<textarea rows={10} data-input-admin-title-ids="#shot-extra-title-ids"></textarea>
-						<input id="shot-extra-title-ids" name="shot_extra_title_id" type="hidden" value={community.shot_extra_title_id} />
+						<input id="shot-extra-title-ids" name="shot_extra_title_id" type="hidden" value={community.extraShotTitleIds} />
 					</div>
 					<div className="col-md-3" style={{ justifyContent: 'center' }}>
 						<button className="btn btn-primary profile-button" type="submit">
