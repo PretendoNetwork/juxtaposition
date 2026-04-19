@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import { CONTENT } from '@/models/content';
-import { ENDPOINT } from '@/models/endpoint';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { REPORT } from '@/models/report';
@@ -55,13 +54,6 @@ async function getDuplicatePosts(pid, post, olderThanMs) {
 	});
 }
 
-async function getEndPoint(accessLevel) {
-	verifyConnected();
-	return ENDPOINT.findOne({
-		server_access_level: accessLevel
-	});
-}
-
 async function getUserSettings(pid) {
 	verifyConnected();
 	return SETTINGS.findOne({ pid: pid });
@@ -84,7 +76,6 @@ export const database = {
 	connect,
 	getPostByID,
 	getDuplicatePosts,
-	getEndPoint,
 	getUserSettings,
 	getUserContent,
 	getDuplicateReports
