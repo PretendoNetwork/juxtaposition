@@ -5,13 +5,10 @@ import { createChannel, createClient, Metadata } from 'nice-grpc';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
-import HashMap from 'hashmap';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
 import { DateTime } from 'luxon';
 import { z } from 'zod';
-import { database } from '@/database';
-import { COMMUNITY } from '@/models/communities';
 import { logger } from '@/logger';
 import { CONTENT } from '@/models/content';
 import { SETTINGS } from '@/models/settings';
@@ -20,7 +17,6 @@ import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
 import type { ZodType } from 'zod';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
-import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
@@ -28,8 +24,6 @@ import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
 import type { GetUserFriendPIDsResponse } from '@pretendonetwork/grpc/friends/get_user_friend_pids_rpc';
 import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
-import type { CommunitySchema } from '@/models/communities';
-import type { AdminCommunity } from '@/api/generated';
 
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
 const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
@@ -49,79 +43,6 @@ const s3 = new S3Client({
 		secretAccessKey: config.s3.secret
 	}
 });
-
-const communityMap = new HashMap<string, string>();
-const userMap = new HashMap<number, string>();
-
-/**
- * Map from {olive_community_id, title_id} to name
- * and also title_id + '-id' to olive_community_id
- */
-export function getCommunityHash(): HashMap<string, string> {
-	return communityMap;
-}
-/**
- * Map from pid to screen_name (transformed)
- */
-export function getUserHash(): HashMap<number, string> {
-	return userMap;
-}
-
-refreshCache();
-
-function refreshCache(): void {
-	database.connect().then(async () => {
-		for await (const community of COMMUNITY.find()) {
-			updateCommunityHash(community);
-		}
-		logger.success('Created community index');
-
-		const users = await SETTINGS.find({});
-
-		for (const user of users) {
-			if (user.pid === undefined || user.screen_name === undefined) {
-				continue;
-			}
-
-			setName(user.pid, user.screen_name);
-		}
-		logger.success('Created user index of ' + users.length + ' users');
-	}).catch((error) => {
-		logger.error(error);
-	});
-}
-
-/**
- * Updates a user's name in the user map.
- */
-export function setName(pid: number, name: string): void {
-	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu, '').replace(/\u202e/g, ''));
-}
-
-/**
- * Updates a community's info in the map.
- */
-export function updateCommunityHash(community: Pick<InferSchemaType<typeof CommunitySchema>, 'title_id' | 'olive_community_id' | 'name'>): void {
-	if (community.title_id === undefined ||
-		community.olive_community_id === undefined ||
-		community.name === undefined
-	) {
-		return;
-	}
-
-	for (const title_id of community.title_id) {
-		communityMap.set(title_id, community.name);
-		communityMap.set(title_id + '-id', community.olive_community_id);
-	}
-	communityMap.set(community.olive_community_id, community.name);
-}
-export function updateCommunityHashForAdminCommunity(community: AdminCommunity): void {
-	updateCommunityHash({
-		name: community.name,
-		olive_community_id: community.olive_community_id,
-		title_id: community.titleIds
-	});
-}
 
 // TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
 export function getInvalidPostRegex(): RegExp {
@@ -150,8 +71,6 @@ export async function createUser(pid: number, experience: number, notifications:
 
 	const newContentObj = new CONTENT(newContent);
 	await newContentObj.save();
-
-	setName(pid, name);
 }
 
 export function decodeParamPack(paramPack: string): ParamPack {
