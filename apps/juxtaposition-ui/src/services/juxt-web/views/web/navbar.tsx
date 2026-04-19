@@ -38,11 +38,6 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 								<WebUIIcon name="users" />
 								<p><T k="global.communities" /></p>
 							</a>
-							<a href="/friend_messages" className={selectedClasses(3)}>
-								<WebUIIcon name="mail" />
-								<span id="message-badge" className="badge"></span>
-								<p><T k="global.messages" /></p>
-							</a>
 							<a href="/news/my_news" className={selectedClasses(4)}>
 								<WebUIIcon name="bell" />
 								<span id="news-badge" className="badge"></span>

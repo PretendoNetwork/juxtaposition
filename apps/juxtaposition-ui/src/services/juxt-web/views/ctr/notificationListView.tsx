@@ -4,7 +4,6 @@ import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
 import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
-import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -91,26 +90,16 @@ export function CtrNotificationListView(props: NotificationListViewProps): React
 
 export function CtrNotificationWrapperView(props: NotificationWrapperViewProps): ReactNode {
 	return (
-		<CtrRoot title={T.str('global.notifications_and_messages')}>
+		<CtrRoot title={T.str('global.notifications')}>
 			<CtrPageBody>
 				<header
 					id="header"
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="4"
 				>
-					<h1 id="page-title"><T k="global.notifications_and_messages" /></h1>
+					<h1 id="page-title"><T k="global.notifications" /></h1>
 				</header>
 				<div className="body-content tab2-content" id="news-page">
-					<CtrNavTabs target=".tab-body">
-						<CtrNavTabsRow>
-							<CtrNavTab href="/news/my_news" selected={props.selectedTab === 0}>
-								<T k="global.updates" />
-							</CtrNavTab>
-							<CtrNavTab href="/friend_messages" selected={props.selectedTab === 1}>
-								<T k="global.messages" />
-							</CtrNavTab>
-						</CtrNavTabsRow>
-					</CtrNavTabs>
 					<div className="tab-body">
 						{props.children}
 					</div>

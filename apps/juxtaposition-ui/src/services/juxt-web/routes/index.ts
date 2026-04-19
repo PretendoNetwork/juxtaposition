@@ -4,7 +4,6 @@ import { postsRouter } from '@/services/juxt-web/routes/console/posts';
 import { userPageRouter } from '@/services/juxt-web/routes/console/userpage';
 import { feedRouter } from '@/services/juxt-web/routes/console/feed';
 import { notificationRouter } from '@/services/juxt-web/routes/console/notifications';
-import { messagesRouter } from '@/services/juxt-web/routes/console/messages';
 import { topicsRouter } from '@/services/juxt-web/routes/console/topics';
 import { loginRouter } from '@/services/juxt-web/routes/web/login';
 import { adminRouter } from '@/services/juxt-web/routes/admin/admin';
@@ -18,7 +17,6 @@ export const routes = {
 	PORTAL_POST: postsRouter,
 	PORTAL_FEED: feedRouter,
 	PORTAL_NEWS: notificationRouter,
-	PORTAL_MESSAGES: messagesRouter,
 	PORTAL_TOPICS: topicsRouter,
 	WEB_LOGIN: loginRouter,
 	ADMIN: adminRouter,
