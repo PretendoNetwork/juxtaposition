@@ -5,6 +5,7 @@ import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/c
 import { deleteOptional } from '@/services/internal/utils';
 import { Notification } from '@/models/notification';
 import { mapNotification, notificationSchema } from '@/services/internal/contract/notification';
+import { Settings } from '@/models/settings';
 import type { RootFilterQuery } from 'mongoose';
 import type { INotification } from '@/types/mongoose/notification';
 
@@ -34,6 +35,13 @@ notificationsRouter.get({
 			.skip(query.offset);
 		const total = await Notification.countDocuments(dbQuery);
 
+		const relatedUserIds = notifications.reduce<number[]>((acc, v) => {
+			acc.push(Number(v.pid));
+			acc.push(...v.users.map(u => Number(u.user)));
+			return acc;
+		}, []);
+		const users = await Settings.find({ pid: { $in: relatedUserIds } });
+
 		if (query.markAsRead) {
 			await Notification.updateMany({
 				_id: {
@@ -46,6 +54,6 @@ notificationsRouter.get({
 			});
 		}
 
-		return mapPage(total, notifications.map(v => mapNotification(v)));
+		return mapPage(total, notifications.map(v => mapNotification(v, users)));
 	}
 });
