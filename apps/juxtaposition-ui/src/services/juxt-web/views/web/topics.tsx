@@ -4,14 +4,12 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { PostSchema } from '@/models/post';
-import type { SelfContent } from '@/api/generated';
+import type { Post, SelfContent } from '@/api/generated';
 
 export type TopicTagViewProps = {
 	title: string;
 	userContent: SelfContent | null;
-	posts: InferSchemaType<typeof PostSchema>[];
+	posts: Post[];
 	nextLink: string;
 };
 
