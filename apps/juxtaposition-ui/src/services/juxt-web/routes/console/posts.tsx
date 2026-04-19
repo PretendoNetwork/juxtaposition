@@ -24,6 +24,7 @@ import type { Request, Response } from 'express';
 import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 import type { EmpathyActionEnum } from '@/api/generated';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
@@ -231,9 +232,9 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 
 	const shotMode = getShotMode(community, auth().paramPackData);
 
-	const props = {
+	const props: NewPostViewProps = {
 		id: parent.community_id,
-		pid: parent.pid,
+		name: parent.screen_name,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
 		shotMode,
