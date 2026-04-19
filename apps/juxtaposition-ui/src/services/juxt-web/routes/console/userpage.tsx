@@ -44,7 +44,6 @@ userPageRouter.get('/notifications.json', async function (req, res) {
 	const { data: notificationCounts } = await req.api.self.getNotifications();
 	res.send(
 		{
-			message_count: 0, // Dms have been removed
 			notification_count: notificationCounts.unreadNotifications
 		}
 	);

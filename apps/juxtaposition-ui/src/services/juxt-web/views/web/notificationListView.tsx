@@ -10,7 +10,6 @@ import type { TranslationKey } from '@/services/juxt-web/views/common/components
 import type { Notification } from '@/api/generated';
 
 export type NotificationWrapperViewProps = {
-	selectedTab: number;
 	children?: ReactNode;
 };
 
