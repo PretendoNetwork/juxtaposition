@@ -1,17 +1,14 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
-import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
-import type { PostSchema } from '@/models/post';
 import type { Post, SelfContent } from '@/api/generated';
 
 export type PostScreenshotProps = {
-	post: InferSchemaType<typeof PostSchema> | Post;
+	post: Post;
 };
 
 export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
@@ -26,7 +23,7 @@ export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
 
 export type PostViewProps = {
 	userContent?: SelfContent | null;
-	post: InferSchemaType<typeof PostSchema> | Post;
+	post: Post;
 	isReply?: boolean;
 	isMainPost?: boolean;
 };
@@ -34,7 +31,6 @@ export type PostViewProps = {
 export function WebPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
-	const cache = useCache();
 	const post = props.post;
 	const isModerator = user.perms.moderator;
 	const canAccessContent = !post.removed || isModerator;
@@ -76,7 +72,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					<h4>
 						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
 						{' - '}
-						<a href={`/titles/${post.community_id}`}>{cache.getCommunityName(post.community_id ?? '')}</a>
+						<a href={`/titles/${post.community_id}`}>{post.community.name}</a>
 					</h4>
 				</div>
 			</div>
