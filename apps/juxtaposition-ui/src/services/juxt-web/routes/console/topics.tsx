@@ -1,7 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
 import { config } from '@/config';
-import { POST } from '@/models/post';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
@@ -22,7 +21,8 @@ topicsRouter.get('/', async function (req, res) {
 	});
 
 	const userContent = hasAuth() ? auth().self.content : null;
-	const posts = await POST.find({ topic_tag: query.topic_tag }).sort({ created_at: -1 }).limit(query.limit);
+	const { data: postsPage } = await req.api.posts.list({ topic_tag: query.topic_tag, limit: query.limit });
+	const posts = postsPage.items;
 
 	const nextLink = `/topics/more?topic_tag=${query.topic_tag}&offset=${posts.length}&pjax=true`;
 
@@ -53,7 +53,8 @@ topicsRouter.get('/more', async function (req, res) {
 	});
 
 	const userContent = hasAuth() ? auth().self.content : null;
-	const posts = await POST.find({ topic_tag: query.topic_tag }).sort({ created_at: -1 }).skip(query.offset).limit(query.limit);
+	const { data: postsPage } = await req.api.posts.list({ topic_tag: query.topic_tag, limit: query.limit, offset: query.offset });
+	const posts = postsPage.items;
 
 	const nextLink = `/topics/more?topic_tag=${query.topic_tag}&offset=${query.offset + posts.length}&pjax=true`;
 

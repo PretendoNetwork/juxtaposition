@@ -5,6 +5,11 @@ import { guards } from '@/services/internal/middleware/guards';
 import { mapPost, postSchema } from '@/services/internal/contract/post';
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
+import { Community } from '@/models/community';
+import { createNewPost, postCreateSchema } from '@/services/internal/utils/posts';
+import { errors } from '@/services/internal/errors';
+import { isPostingAllowed } from '@/services/internal/utils/communities';
+import { mapSelf } from '@/services/internal/contract/self';
 
 export const communityPostsRouter = createInternalApiRouter();
 
@@ -30,7 +35,10 @@ communityPostsRouter.get({
 			.skip(query.offset)
 			.limit(query.limit);
 
-		return mapFeedPage(posts.map(mapPost));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		return mapFeedPage(posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
 	}
 });
 
@@ -56,6 +64,49 @@ communityPostsRouter.get({
 			.skip(query.offset)
 			.limit(query.limit);
 
-		return mapFeedPage(posts.map(mapPost));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		return mapFeedPage(posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
+	}
+});
+
+communityPostsRouter.post({
+	path: '/communities/:id/posts',
+	name: 'communities.createPost',
+	guard: guards.user,
+	schema: {
+		params: z.object({
+			id: z.string()
+		}),
+		body: postCreateSchema,
+		response: postSchema
+	},
+	async handler({ body, params, auth }) {
+		const account = auth!;
+
+		const community = await Community.findOne({ olive_community_id: params.id });
+		if (!community) {
+			throw new errors.notFound('Community could not be found');
+		}
+
+		const self = mapSelf(account);
+		if (!isPostingAllowed(community, self, null)) {
+			throw new errors.forbidden('You can not post to this community');
+		}
+
+		const newPost = await createNewPost({
+			author: {
+				pid: account.pnid.pid,
+				miiData: account.pnid.mii?.data ?? '',
+				screenName: account.settings?.screen_name ?? '',
+				verified: self.permissions.moderator
+			},
+			body,
+			community,
+			parentPost: null
+		});
+
+		return mapPost(newPost, community);
 	}
 });

@@ -5,7 +5,6 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { WebUserPageMeta, WebUserTier } from '@/services/juxt-web/views/web/userPageView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { AdminUserProfile, AuditLog, ModerationProfile, Post, Report } from '@/api/generated';
@@ -28,7 +27,6 @@ type ModerateUserReportProps = {
 function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 	const { reporter, resolved } = props.report;
 	const createdAt = new Date(props.report.createdAt);
-	const cache = useCache();
 	const url = useUrl();
 
 	return (
@@ -44,7 +42,7 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 								<a href={`/users/${reporter.pid}`} className="nick-name">
 									Reported By:
 									{' '}
-									{cache.getUserName(reporter.pid)}
+									{reporter.user.miiName}
 								</a>
 								{'  '}
 								<span title={moment(createdAt).toString()} className="timestamp">{moment(createdAt).fromNow()}</span>
@@ -72,7 +70,7 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 													<span className="nick-name">
 														Resolved By:
 														{' '}
-														{resolved.pid ? cache.getUserName(resolved.pid) : 'Nobody'}
+														{resolved.user?.miiName ?? 'Nobody'}
 													</span>
 													{'  '}
 													<span title={moment(resolved.resolvedAt).toString()} className="timestamp">{moment(resolved.resolvedAt).fromNow()}</span>
@@ -92,7 +90,6 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 
 export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 	const url = useUrl();
-	const cache = useCache();
 	const profile = props.profile;
 	const pnidName = profile.miiName;
 	const head = (
@@ -302,7 +299,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 												<span className="text">
 													<a href={`/users/${post.removed_by}`} className="nick-name">
 														Removed By:
-														{post.removed_by ? cache.getUserName(post.removed_by) : 'Nobody'}
+														{post.removed_by ?? 'Nobody'}
 													</a>
 													<span title={moment(post.removed_at).toString()} className="timestamp">{moment(post.removed_at).fromNow()}</span>
 												</span>

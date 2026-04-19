@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
@@ -10,21 +9,20 @@ import type { NotificationWrapperViewProps } from '@/services/juxt-web/views/web
 
 function PortalFriendRequestItem(props: FriendRequestItemProps): ReactNode {
 	const url = useUrl();
-	const cache = useCache();
 
-	const senderId = props.request.sender;
+	const req = props.request;
 	return (
 		<li>
-			<a href={`/users/${senderId}`} data-pjax="#body" className="icon-container notify">
-				<img src={url.cdn(`/mii/${senderId}/normal_face.png`)} className="icon" />
+			<a href={`/users/${req.sender.pid}`} data-pjax="#body" className="icon-container notify">
+				<img src={url.cdn(`/mii/${req.sender.pid}/normal_face.png`)} className="icon" />
 			</a>
 			<div className="body">
 				<p className="text">
-					<span className="nick-name">{cache.getUserName(senderId)}</span>
-					<span>{props.request.message}</span>
+					<span className="nick-name">{req.sender.miiName}</span>
+					<span>{req.message}</span>
 					<span className="timestamp">
 						{' '}
-						{moment(Number(props.request.sent) * 1000).fromNow()}
+						{moment(req.sentAt).fromNow()}
 					</span>
 				</p>
 			</div>
@@ -33,14 +31,10 @@ function PortalFriendRequestItem(props: FriendRequestItemProps): ReactNode {
 }
 
 export function PortalFriendRequestListView(props: FriendRequestListViewProps): ReactNode {
-	const cache = useCache();
 	return (
 		<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
 			{props.requests.length === 0 ? <li><p><T k="friend_requests.none" /></p></li> : null}
 			{props.requests.map((req, i) => {
-				if (!cache.getUserName(req.sender)) {
-					return null;
-				}
 				return <PortalFriendRequestItem key={i} request={req} />;
 			})}
 		</ul>

@@ -7,6 +7,7 @@ import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/c
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { Settings } from '@/models/settings';
+import { Community } from '@/models/community';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -48,6 +49,9 @@ userPostsRouter.get({
 			.limit(query.limit);
 		const total = await Post.countDocuments(dbQuery);
 
-		return mapPage(total, posts.map(mapPost));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		return mapPage(total, posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
 	}
 });

@@ -1,16 +1,9 @@
-import crypto from 'crypto';
 import express from 'express';
 import { rateLimit } from 'express-rate-limit';
 import multer from 'multer';
 import { z } from 'zod';
-import { config } from '@/config';
-import { database } from '@/database';
-import { uploadPainting, uploadScreenshot } from '@/images';
-import { logger } from '@/logger';
-import { POST } from '@/models/post';
-import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { getInvalidPostRegex, getUserAccountData } from '@/util';
+import { getUserAccountData } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
@@ -21,9 +14,9 @@ import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPos
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import type { Request, Response } from 'express';
-import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
-import type { EmpathyActionEnum } from '@/api/generated';
+import type { EmpathyActionEnum, Post, PostCreateBody } from '@/api/generated';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
@@ -231,9 +224,9 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 
 	const shotMode = getShotMode(community, auth().paramPackData);
 
-	const props = {
+	const props: NewPostViewProps = {
 		id: parent.community_id,
-		pid: parent.pid,
+		name: parent.screen_name,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
 		shotMode,
@@ -267,42 +260,30 @@ postsRouter.get('/:post_id/report', async function (req, res) {
 });
 
 postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
-	const { body, auth } = parseReq(req, {
+	const { body } = parseReq(req, {
 		body: z.object({
-			reason: z.string(),
-			message: z.string(),
+			reason: z.coerce.number(),
+			message: z.string().trim(),
 			post_id: z.string()
 		})
 	});
 
-	const { reason, message, post_id } = body;
-	const { data: post } = await req.api.posts.get({ post_id });
-	if (!reason || !post_id || !post) {
+	const { data: post } = await req.api.posts.get({ post_id: body.post_id });
+	if (!post) {
 		return res.redirect('/404');
 	}
 
-	const duplicate = await database.getDuplicateReports(auth().pid, post_id);
-	if (duplicate) {
-		return res.redirect(`/posts/${post.id}`);
-	}
-
-	const reportDoc = {
-		pid: post.pid,
-		reported_by: auth().pid,
-		post_id,
-		reason,
-		message,
-		created_at: new Date()
-	};
-
-	const reportObj = new REPORT(reportDoc);
-	await reportObj.save();
+	await req.api.posts.report({
+		post_id: post.id,
+		message: body.message,
+		reasonId: body.reason
+	});
 
 	return res.redirect(`/posts/${post.id}`);
 });
 
 async function newPost(req: Request, res: Response): Promise<void> {
-	const { params, body, files, auth, hasAuth } = parseReq(req, {
+	const { params, body, files, auth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string().optional()
 		}),
@@ -320,169 +301,57 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}),
 		files: ['shot']
 	});
-	const self = hasAuth() ? auth().self : null;
 
-	let parentPost = null;
-	const postId = await generatePostUID(21);
-	let { data: community } = await req.api.communities.get({ id: body.community_id });
-	if (params.post_id) {
-		parentPost = await database.getPostByID(params.post_id.toString());
-		if (!parentPost) {
-			res.sendStatus(403);
-			return;
-		} else {
-			const { data: parentPostCommunity } = await req.api.communities.get({ id: parentPost.community_id ?? '' });
-			community = parentPostCommunity;
-			if (parentPost.removed) {
-				res.sendStatus(400);
-				return;
-			}
-		}
-	}
-	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '' && files.shot.length == 0)) {
-		res.status(422);
-		return res.redirect('/posts/' + req.params.post_id.toString());
-	}
-	if (!community || !self) {
-		res.status(403);
-		logger.error('Incoming post is missing data - rejecting');
-		return res.redirect('/titles/show');
-	}
-
-	if (!isPostingAllowed(community, self, parentPost)) {
-		res.status(403);
-		return res.redirect(`/titles/${community.olive_community_id}/new`);
-	}
-
-	let paintings: PaintingUrls | null = null;
-	if (body._post_type === 'painting' && body.painting) {
-		paintings = await uploadPainting({
-			blob: body.painting,
-			autodetectFormat: false,
-			isBmp: body.bmp,
-			pid: auth().pid,
-			postId
-		});
-		if (paintings === null) {
-			res.status(422);
-			res.renderError({
-				code: 422,
-				message: 'Upload failed. Please try again later.'
-			});
-			return;
-		}
-	}
-	let screenshots = null;
-	if ((body.screenshot || files.shot.length === 1) &&
-		getShotMode(community, auth().paramPackData) !== 'block') {
-		screenshots = await uploadScreenshot({
-			buffer: files.shot[0]?.buffer,
-			blob: body.screenshot,
-			pid: auth().pid,
-			postId
-		});
-		if (screenshots === null) {
-			res.status(422);
-			res.renderError({
-				code: 422,
-				message: 'Upload failed. Please try again later.'
-			});
-			return;
-		}
-	}
-
-	let miiFace;
-	switch (body.feeling_id) {
-		case 1:
-			miiFace = 'smile_open_mouth.png';
-			break;
-		case 2:
-			miiFace = 'wink_left.png';
-			break;
-		case 3:
-			miiFace = 'surprise_open_mouth.png';
-			break;
-		case 4:
-			miiFace = 'frustrated.png';
-			break;
-		case 5:
-			miiFace = 'sorrow.png';
-			break;
-		default:
-			miiFace = 'normal_face.png';
-			break;
-	}
-	const postBody = body.body;
-	if (postBody && getInvalidPostRegex().test(postBody)) {
-		// TODO - Log this error
-		res.sendStatus(422);
-		return;
-	}
-
-	/* Don't count \r\n as two */
-	if (postBody && postBody.replaceAll('\r\n', '\n').length > 280) {
-		// TODO - Log this error
-		res.sendStatus(422);
-		return;
-	}
-	const document = {
-		title_id: community.titleIds[0],
-		community_id: community.olive_community_id,
-		screen_name: self.miiName,
-		body: postBody,
-		painting: paintings?.blob ?? '',
-		painting_img: paintings?.img ?? '',
-		painting_big: paintings?.big ?? '',
-		screenshot: screenshots?.full ?? '',
-		screenshot_big: screenshots?.big ?? '',
-		screenshot_length: screenshots?.fullLength ?? 0,
-		screenshot_thumb: screenshots?.thumb ?? '',
-		screenshot_aspect: screenshots?.aspect ?? '',
-		country_id: auth().paramPackData?.country_id ?? 49,
-		created_at: new Date(),
-		feeling_id: body.feeling_id,
-		id: postId,
-		is_autopost: 0,
-		is_spoiler: (body.spoiler) ? 1 : 0,
-		is_app_jumpable: body.is_app_jumpable,
-		language_id: body.language_id,
-		mii: auth().user.mii?.data,
-		mii_face_url: `${config.cdnDomain}/mii/${auth().pid}/${miiFace}`,
-		pid: auth().pid,
-		platform_id: auth().paramPackData?.platform_id ?? 0,
-		region_id: auth().paramPackData?.region_id ?? 2,
-		verified: res.locals.moderator,
-		parent: parentPost ? parentPost.id : null
+	const postBody: PostCreateBody = {
+		feelingId: body.feeling_id,
+		body: body.body.length > 0 ? body.body : undefined,
+		isSpoiler: body.spoiler,
+		isAppJumpable: body.is_app_jumpable,
+		languageId: body.language_id
 	};
-	const maxDuplicatePostAgeMs = 5 * 60 * 1000;
-	const duplicatePost = await database.getDuplicatePosts(auth().pid, document, maxDuplicatePostAgeMs);
-	if (duplicatePost && params.post_id) {
-		return res.redirect('/posts/' + params.post_id.toString());
+	const paramPack = auth().paramPackData;
+	if (paramPack) {
+		postBody.platformId = Number(paramPack.platform_id);
+		postBody.regionId = Number(paramPack.region_id);
+		postBody.countryId = Number(paramPack.country_id);
 	}
-	if ((document.body === '' && document.painting === '' && document.screenshot === '') || duplicatePost) {
-		return res.redirect('/titles/' + community.olive_community_id + '/new');
+	if (body._post_type === 'painting' && body.painting) {
+		postBody.painting = {
+			file: body.painting.replace(/\0/g, '').trim(), // Remove nintendo jank
+			isBmp: body.bmp
+		};
 	}
-	const newPost = new POST(document);
-	newPost.save();
-	if (parentPost) {
-		parentPost.reply_count = parentPost.reply_count + 1;
-		parentPost.save();
-	}
-	if (parentPost) {
-		if (!params.post_id) {
-			throw new Error('Has parent post but no postId, this is impossible');
+	if (body.screenshot || files.shot.length === 1) {
+		const bufferFile = files.shot[0]?.buffer.toString('base64');
+		const base64File = body.screenshot.replace(/\0/g, '').trim(); // Remove nintendo jank
+		if (!paramPack) {
+			throw new Error('Must have parampack when uploading screenshot');
 		}
-		res.redirect('/posts/' + params.post_id.toString());
-		await redisRemove(`${parentPost.pid}_user_page_posts`);
-	} else {
-		res.redirect('/titles/' + community.olive_community_id + '/new');
-		await redisRemove(`${auth().pid}_user_page_posts`);
+		postBody.screenshot = {
+			file: bufferFile ?? base64File,
+			titleId: paramPack.title_id
+		};
 	}
-}
 
-async function generatePostUID(length: number): Promise<string> {
-	let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, '').substring(0, length);
-	const inuse = await POST.findOne({ id });
-	id = (inuse ? await generatePostUID(length) : id);
-	return id;
+	let newPost: Post;
+	if (params.post_id) {
+		const { data: resultPost } = await req.api.posts.reply({
+			...postBody,
+			post_id: params.post_id
+		});
+		newPost = resultPost;
+	} else {
+		const { data: resultPost } = await req.api.communities.createPost({
+			...postBody,
+			id: body.community_id
+		});
+		newPost = resultPost;
+	}
+
+	if (newPost.parent) {
+		res.redirect('/posts/' + newPost.parent.toString());
+		return;
+	}
+
+	res.redirect('/titles/' + newPost.community_id + '/new');
 }
