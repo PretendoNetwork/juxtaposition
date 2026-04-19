@@ -5,11 +5,12 @@ import { getInvalidPostRegex } from '@/util';
 import { config } from '@/config';
 import { getDuplicatePosts } from '@/database';
 import { Post } from '@/models/post';
+import { asOpenapi } from '@/services/internal/builder/openapi';
 import type { PaintingUrls } from '@/images';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
-export const postCreateSchema = z.object({
+export const postCreateSchema = asOpenapi('PostCreateBody', z.object({
 	body: z.string().optional(),
 	feelingId: z.number(),
 	isSpoiler: z.boolean().default(false),
@@ -26,7 +27,7 @@ export const postCreateSchema = z.object({
 	countryId: z.number().optional(),
 	platformId: z.number().optional(),
 	regionId: z.number().optional()
-});
+}));
 
 export type PostCreateBody = z.infer<typeof postCreateSchema>;
 
