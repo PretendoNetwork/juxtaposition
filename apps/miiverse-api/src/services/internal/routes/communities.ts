@@ -128,17 +128,6 @@ communitiesRouter.get({
 			throw new errors.notFound();
 		}
 
-		// Unsure why this exists, possible legacy data?
-		if (!community.permissions) {
-			community.permissions = {
-				open: !!community.open,
-				minimum_new_post_access_level: 0,
-				minimum_new_comment_access_level: 0,
-				minimum_new_community_access_level: 0
-			};
-			await community.save();
-		}
-
 		return mapCommunity(community);
 	}
 });
