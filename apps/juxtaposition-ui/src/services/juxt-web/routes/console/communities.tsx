@@ -33,7 +33,7 @@ communitiesRouter.get('/', async function (req, res) {
 
 	const props: CommunityOverviewViewProps = {
 		newCommunities: recent.data.items,
-		popularCommunities: popular.data
+		popularCommunities: popular.data.items
 	};
 	res.jsxForDirectory({
 		web: <WebCommunityOverviewView {...props} />,
