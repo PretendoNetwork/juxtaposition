@@ -78,7 +78,7 @@ communitiesRouter.get('/:communityID', async function (req, res) {
 		if (!tid) {
 			return res.redirect('/404');
 		}
-		const community = await database.getCommunityByTitleID(tid);
+		const { data: community } = await req.api.communities.get({ id: `tid:${tid}` });
 		if (!community) {
 			return res.redirect('/404');
 		}
