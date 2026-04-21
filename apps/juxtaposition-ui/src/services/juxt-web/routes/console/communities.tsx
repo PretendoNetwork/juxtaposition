@@ -59,7 +59,7 @@ communitiesRouter.get('/all', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID', async function (req, res) {
-	const { query, params } = parseReq(req, {
+	const { query, params, auth } = parseReq(req, {
 		query: z.object({
 			title_id: z.string().optional()
 		}),
@@ -70,6 +70,18 @@ communitiesRouter.get('/:communityID', async function (req, res) {
 
 	if (query.title_id) {
 		const community = await database.getCommunityByTitleID(query.title_id);
+		if (!community) {
+			return res.redirect('/404');
+		}
+		return res.redirect(`/titles/${community.olive_community_id}/new`);
+	}
+
+	if (params.communityID == '0') {
+		const tid = auth().paramPackData?.title_id;
+		if (!tid) {
+			return res.redirect('/404');
+		}
+		const community = await database.getCommunityByTitleID(tid);
 		if (!community) {
 			return res.redirect('/404');
 		}
