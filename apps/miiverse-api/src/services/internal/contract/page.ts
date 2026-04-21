@@ -1,12 +1,21 @@
-/* !!! HEY
- * This type has a copy in apps/juxtaposition-ui/src/api/page.ts
- * Make sure to copy over any modifications! */
+import { z } from 'zod';
 
-export type PageDto<T> = {
-	items: T[];
-};
+export function pageControlSchema(limit = 50) {
+	return {
+		limit: z.coerce.number().min(1).max(limit).default(10),
+		offset: z.coerce.number().min(0).default(0)
+	};
+}
 
-export function mapPages<T>(items: T[]): PageDto<T> {
+export function pageDtoSchema<T extends z.ZodType>(item: T) {
+	return z.object({
+		items: z.array(item)
+	});
+}
+
+export type PageDto<T> = z.infer<ReturnType<typeof pageDtoSchema<z.ZodType<T>>>>;
+
+export function mapPage<T>(items: T[]): PageDto<T> {
 	return {
 		items
 	};

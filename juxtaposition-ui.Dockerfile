@@ -9,9 +9,10 @@ WORKDIR ${app_dir}
 COPY . .
 RUN npm ci
 
-WORKDIR ${app_dir}/apps/juxtaposition-ui
+WORKDIR ${app_dir}/apps/miiverse-api
+RUN npm run build
 
-RUN mkdir -p uploads && chown node:node uploads
+WORKDIR ${app_dir}/apps/juxtaposition-ui
 RUN npm run build
 
 ENV NODE_ENV=production

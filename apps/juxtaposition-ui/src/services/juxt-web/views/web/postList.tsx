@@ -4,11 +4,11 @@ import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
 import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
-import type { PostDto } from '@/api/post';
+import type { Post } from '@/api/generated';
 
 export type PostListViewProps = {
 	userContent: InferSchemaType<typeof ContentSchema> | null;
-	posts: InferSchemaType<typeof PostSchema>[] | PostDto[];
+	posts: InferSchemaType<typeof PostSchema>[] | Post[];
 	nextLink: string;
 };
 

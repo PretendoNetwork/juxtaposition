@@ -8,15 +8,14 @@ import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { ContentSchema } from '@/models/content';
-import type { CommunitySchema } from '@/models/communities';
-import type { PostDto } from '@/api/post';
+import type { Community, Post } from '@/api/generated';
 
 export type PostPageViewProps = {
-	post: PostDto;
+	post: Post;
 	userContent: InferSchemaType<typeof ContentSchema> | null;
 	postPNID: GetUserDataResponse;
-	community: InferSchemaType<typeof CommunitySchema>;
-	replies: PostDto[];
+	community: Community;
+	replies: Post[];
 	canPost: boolean;
 };
 

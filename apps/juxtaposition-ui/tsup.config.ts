@@ -1,3 +1,5 @@
+import { execSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
 import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
 import { raw } from 'esbuild-raw-plugin';
@@ -20,6 +22,18 @@ export default defineConfig([
 
 		outDir: 'dist',
 
+		plugins: [{
+			name: 'openapi',
+			async buildStart(): Promise<void> {
+				if (!existsSync('../miiverse-api/internal.openapi.json')) {
+					this.logger.warn('openapi', 'Could not find miiverse-api openAPI schema. Please compile miiverse-api before compiling juxtaposition-ui');
+					this.logger.warn('openapi', 'Skipping openAPI client compilation, this will cause issues');
+					return;
+				}
+				execSync('openapi-ts -f ./openapi.config.ts');
+				this.logger.info('openapi', 'Generated API client for miiverse-api');
+			}
+		}],
 		esbuildPlugins: [
 			fixImportsPlugin(),
 			raw({

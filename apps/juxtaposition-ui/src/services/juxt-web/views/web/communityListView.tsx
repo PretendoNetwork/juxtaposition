@@ -3,20 +3,19 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { CommunitySchema } from '@/models/communities';
+import type { Community } from '@/api/generated';
 
 export type CommunityListViewProps = {
-	communities: InferSchemaType<typeof CommunitySchema>[];
+	communities: Community[];
 };
 
 export type CommunityOverviewViewProps = {
-	popularCommunities: InferSchemaType<typeof CommunitySchema>[];
-	newCommunities: InferSchemaType<typeof CommunitySchema>[];
+	popularCommunities: Community[];
+	newCommunities: Community[];
 };
 
 export type CommunityItemProps = {
-	community: InferSchemaType<typeof CommunitySchema>;
+	community: Community;
 };
 
 function WebCommunityItem(props: CommunityItemProps): ReactNode {
@@ -26,7 +25,7 @@ function WebCommunityItem(props: CommunityItemProps): ReactNode {
 			<img className="community-list-icon" src={url.cdn(`/icons/${props.community.olive_community_id}/128.png`)} />
 			<h2 className="community-list-title">{props.community.name}</h2>
 			<h4 className="community-list-followers">
-				<T k="community.followers_count" values={{ count: props.community.followers }} />
+				<T k="community.followers_count" values={{ count: props.community.followerCount }} />
 			</h4>
 		</a>
 	);

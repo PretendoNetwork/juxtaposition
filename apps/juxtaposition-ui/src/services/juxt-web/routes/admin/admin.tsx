@@ -2,7 +2,6 @@ import crypto from 'crypto';
 import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
-import { deletePostById, getPostById } from '@/api/post';
 import { database } from '@/database';
 import { uploadHeaders, uploadIcons } from '@/images';
 import { logger } from '@/logger';
@@ -328,12 +327,13 @@ adminRouter.delete('/:reportID', async function (req, res) {
 	if (!report) {
 		return res.sendStatus(402);
 	}
-	const post = await getPostById(auth().tokens, report.post_id);
+	const { data: post } = await req.api.posts.get({ post_id: report.post_id });
 	if (post === null) {
 		return res.sendStatus(404);
 	}
 	const reason = query.reason ?? 'Removed by moderator';
-	await deletePostById(auth().tokens, post.id, reason);
+
+	await req.api.posts.delete({ post_id: post.id, reason });
 	await report.resolve(auth().pid, reason);
 
 	const postType = post.parent ? 'comment' : 'post';
@@ -407,7 +407,7 @@ adminRouter.get('/communities', async function (req, res) {
 	const search = query.search;
 	const limit = 20;
 
-	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
+	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await COMMUNITY.find({ parent: null }).limit(limit).skip(page * limit);
 
 	res.jsxForDirectory({
 		web: <WebManageCommunityView hasNextPage={communities.length === limit} communities={communities} page={page} search={search} />

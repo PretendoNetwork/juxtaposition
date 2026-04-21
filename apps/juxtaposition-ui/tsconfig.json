@@ -7,8 +7,6 @@
 		"esModuleInterop": true,
 		"moduleResolution": "bundler",
 		"skipLibCheck": true,
-		"baseUrl": "src",
-		"outDir": "dist",
 		"allowJs": true,
 		"target": "es2022",
 		"jsx": "react-jsx",
@@ -16,9 +14,11 @@
 		"noImplicitAny": true,
 		"strictPropertyInitialization": true,
 		"verbatimModuleSyntax": true,
+		"rootDir": "./",
+		"outDir": "./dist",
 		"paths": {
 			"@/*": [
-				"./*"
+				"./src/*"
 			]
 		}
 	},
