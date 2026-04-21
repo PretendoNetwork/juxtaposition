@@ -9,6 +9,7 @@ import { COMMUNITY_TYPE } from '@/types/mongoose/community';
 import { categoryToCommunityTypes, communityCategory, communitySchema, communityStatsSchema, mapCommunity, mapCommunityStats } from '@/services/internal/contract/community';
 import { errors } from '@/services/internal/errors';
 import { Post } from '@/models/post';
+import { listDtoSchema, mapList } from '@/services/internal/contract/list';
 import type { FilterQuery, RootFilterQuery } from 'mongoose';
 import type { ICommunity, HydratedCommunityDocument } from '@/types/mongoose/community';
 
@@ -67,7 +68,7 @@ communitiesRouter.get({
 		query: z.object({
 			limit: z.coerce.number().max(32).default(9)
 		}),
-		response: z.array(communitySchema)
+		response: listDtoSchema(communitySchema)
 	},
 	async handler({ query }) {
 		// TODO add caching
@@ -90,7 +91,7 @@ communitiesRouter.get({
 			{ $project: { index: 0, _id: 0 } }
 		]);
 
-		return popularCommunities.map(c => mapCommunity(c));
+		return mapList(popularCommunities.map(c => mapCommunity(c)));
 	}
 });
 
@@ -166,17 +167,6 @@ communitiesRouter.get({
 		}));
 		if (!community) {
 			throw new errors.notFound();
-		}
-
-		// Unsure why this exists, possible legacy data?
-		if (!community.permissions) {
-			community.permissions = {
-				open: !!community.open,
-				minimum_new_post_access_level: 0,
-				minimum_new_comment_access_level: 0,
-				minimum_new_community_access_level: 0
-			};
-			await community.save();
 		}
 
 		return mapCommunity(community);
