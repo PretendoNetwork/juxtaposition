@@ -4,7 +4,6 @@
         "user_page": "사용자 페이지",
         "activity_feed": "활동 피드",
         "communities": "커뮤니티",
-        "messages": "메시지",
         "notifications": "알림",
         "go_back": "뒤로 가기",
         "back": "뒤로",
@@ -77,9 +76,6 @@
         "spoiler_label": "스포일러",
         "painting_close": "취소",
         "painting_submit": "확인"
-    },
-    "messages": {
-        "coming_soon": "메시지 없음"
     },
     "setup": {
         "welcome": "Juxtaposition에 오신 것을 환영합니다!",

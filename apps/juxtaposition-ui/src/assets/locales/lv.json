@@ -1,7 +1,6 @@
 {
     "global": {
         "activity_feed": "Aktivitātes saraksts",
-        "messages": "Ziņas",
         "notifications": "Paziņojumi",
         "go_back": "Doties Atpakaļ",
         "back": "Atpakaļ",
@@ -96,8 +95,5 @@
         "analytics_text": "Juxtaposition izmanto \"Cloudflare Web Analytics\", lai izsekotu, kā lietotāji izmanto mūsu pakalpojumus. Savāktie dati ietver, bet neaprobežojas ar apmeklējuma laiku, apmeklētajām lapām un vietnē pavadīto laiku. Šie dati nav nekādā veidā saistīti ar jums, un mēs vai Cloudflare tos neizmanto reklāmām.",
         "welcome_text": "Juxt ir spēlētāju kopiena, kas savieno cilvēkus no visas pasaules, izmantojot Mii varoņus. Izmanto Juxt, lai dalītos savā spēlēšanas pieredzē un satiktu cilvēkus no visas pasaules."
     },
-    "language": "Latviešu valoda",
-    "messages": {
-        "coming_soon": "Ziņas vēl nav gatavas. Apskati atkal pēc kāda laika!"
-    }
+    "language": "Latviešu valoda"
 }

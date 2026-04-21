@@ -2,7 +2,6 @@
     "global": {
         "go_back": "Geri dön",
         "back": "Geri",
-        "messages": "Mesajlar",
         "more": "Daha fazla gönderi yükle",
         "user_page": "Kullanıcı Sayfası",
         "activity_feed": "Etkinlik Akışı",
@@ -42,9 +41,6 @@
     "new_post": {
         "post_to": "Şuraya gönder {{user}}",
         "swearing": "Gönderiler açık bir dil içeremez."
-    },
-    "messages": {
-        "coming_soon": "Mesajlar henüz hazır değil. Daha sonra kontrol edin!"
     },
     "setup": {
         "welcome": "Juxtaposition'a hoşgeldiniz!",

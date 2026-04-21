@@ -4,7 +4,6 @@
         "user_page": "Página de usuario",
         "activity_feed": "Actividad",
         "communities": "Comunidades",
-        "messages": "Mensajes",
         "notifications": "Notificaciones",
         "go_back": "Volver",
         "back": "Atrás",
@@ -18,7 +17,6 @@
         "next": "Siguiente",
         "friend_requests": "Solicitudes de amistad",
         "search": "Buscar...",
-        "notifications_and_messages": "Notificaciones y Mensajes",
         "updates": "Novedades",
         "people_feed_short": "Usuarios",
         "people_feed": "Actividad de usuarios",
@@ -88,9 +86,6 @@
         "content_placeholder": "Toca aquí para escribir un mensaje.",
         "painting_submit": "Aceptar",
         "no_screenshot": "No hay capturas"
-    },
-    "messages": {
-        "coming_soon": "No hay mensajes"
     },
     "setup": {
         "welcome": "¡Estás en Juxtaposition!",

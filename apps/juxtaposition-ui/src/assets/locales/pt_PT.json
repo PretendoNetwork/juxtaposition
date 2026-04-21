@@ -4,7 +4,6 @@
         "user_page": "Perfil do Utilizador",
         "activity_feed": "Atividade",
         "communities": "Comunidades",
-        "messages": "Mensagens",
         "notifications": "Notificações",
         "go_back": "Voltar",
         "back": "Anterior",
@@ -96,8 +95,5 @@
     "new_post": {
         "post_to": "Publicar em {{user}}",
         "swearing": "A publicação não pode ter linguagem obscena."
-    },
-    "messages": {
-        "coming_soon": "A funcionalidade de mensagens ainda não está disponível. Volta em breve!"
     }
 }

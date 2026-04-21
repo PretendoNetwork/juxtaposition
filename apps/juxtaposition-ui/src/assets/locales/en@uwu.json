@@ -13,7 +13,6 @@
     },
     "global": {
         "communities": "kitteh klans",
-        "messages": "kitteh texts",
         "activity_feed": "kitteh parti",
         "go_back": "go bak",
         "back": "bak",
@@ -31,7 +30,6 @@
         "global_feed": "all da fwiends...",
         "friend_requests": "new friends owo",
         "updates": "u-updat!!",
-        "notifications_and_messages": "kitteh alerts :3",
         "search": "kitteh lookz…",
         "people_feed": "Buddies Pictuřes"
     },
@@ -103,9 +101,6 @@
     },
     "activity_feed": {
         "empty": ""
-    },
-    "messages": {
-        "coming_soon": ""
     },
     "login": {
         "title": "gimmeh ur passwrd :3c",

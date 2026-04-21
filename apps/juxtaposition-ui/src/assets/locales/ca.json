@@ -3,7 +3,6 @@
         "communities": "Comunitats",
         "more": "Carrega més publicacions",
         "next": "Següent",
-        "messages": "Missatges",
         "activity_feed": "Taxes d'activitat",
         "exit": "Sortir",
         "back": "Enrere",
@@ -15,7 +14,6 @@
         "user_page": "Pàgina d'usuari",
         "go_back": "Torna",
         "yeahs": "Mola",
-        "notifications_and_messages": "Notificacions i Missatges",
         "search": "Cerca..."
     },
     "notifications": {
@@ -98,9 +96,6 @@
         "ready_text": "En primer lloc, fes un cop d'ull a algunes comunitats i descobreix què publiquen persones de tot el món. Aprofita aquesta oportunitat per familiaritzar-te amb Juxt. Podeu fer alguns descobriments nous al llarg del camí!",
         "done": "Diverteix-te a Juxt!",
         "beta": "Exempció de responsabilitat sobre la beta"
-    },
-    "messages": {
-        "coming_soon": "L'opció Missatges encara no està preparada. Torna-ho a comprovar aviat!"
     },
     "login": {
         "username": "Nom d'usuari",

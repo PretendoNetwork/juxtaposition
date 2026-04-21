@@ -12,7 +12,6 @@
         "save": "Захаваць",
         "exit": "Выйсці",
         "next": "Наступны",
-        "messages": "Паведамленні",
         "go_back": "Назад",
         "close": "Закрыць"
     },
@@ -96,8 +95,5 @@
     },
     "activity_feed": {
         "empty": ""
-    },
-    "messages": {
-        "coming_soon": ""
     }
 }

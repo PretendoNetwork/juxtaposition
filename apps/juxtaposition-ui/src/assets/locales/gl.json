@@ -2,7 +2,6 @@
     "global": {
         "activity_feed": "Rexistro de actividades",
         "communities": "Comunidades",
-        "messages": "Mensaxes",
         "notifications": "Notificacións",
         "go_back": "Volver",
         "back": "De volta",
@@ -96,8 +95,5 @@
     },
     "notifications": {
         "none": "Sen notificacións."
-    },
-    "messages": {
-        "coming_soon": "Está función non está preparada. Volve a mirar pronto!"
     }
 }

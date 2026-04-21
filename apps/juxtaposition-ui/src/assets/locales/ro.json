@@ -1,6 +1,5 @@
 {
     "global": {
-        "messages": "Mesaje",
         "user_page": "Pagina utilizatorului",
         "activity_feed": "Fluxul de activități",
         "communities": "Comunități",
@@ -96,8 +95,5 @@
         "ready_text": "În primul rând, verificați câteva comunități și vedeți ce postează oameni din toată lumea. Profitați de această ocazie pentru a vă familiariza cu Juxt. S-ar putea să faceți noi descoperiri pe parcurs!",
         "done": "Distracție plăcută în Juxt!",
         "done_button": "Să mergem!"
-    },
-    "messages": {
-        "coming_soon": "Mesajele nu sunt gata încă. Reveniți mai târziu!"
     }
 }
