@@ -4,7 +4,6 @@
         "user_page": "Gebruikerspagina",
         "activity_feed": "Overzicht",
         "communities": "Community's",
-        "messages": "Berichten",
         "notifications": "Meldingen",
         "go_back": "Ga Terug",
         "back": "Terug",
@@ -55,9 +54,6 @@
     "new_post": {
         "post_to": "Post in {{user}}",
         "swearing": "Post kan geen expliciete tekst bevatten."
-    },
-    "messages": {
-        "coming_soon": "Berichten is nog niet klaar. Kom snel terug!"
     },
     "setup": {
         "welcome": "Welkom op Juxtaposition!",

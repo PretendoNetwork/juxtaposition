@@ -4,7 +4,6 @@
         "user_page": "Nutzermenü",
         "activity_feed": "Übersicht",
         "communities": "Communitys",
-        "messages": "Nachrichten",
         "notifications": "Mitteilungen",
         "go_back": "Zurück",
         "back": "Zurück",
@@ -20,7 +19,6 @@
         "global_feed": "Globaler Feed",
         "friend_requests": "Freundschaftsanfragen",
         "updates": "Neuigkeiten",
-        "notifications_and_messages": "Benachrichtigungen und Nachrichten",
         "search": "Suche...",
         "global_feed_short": "Global",
         "people_feed": "Nutzer-Feed",
@@ -88,9 +86,6 @@
         "spoiler_label": "Spoiler",
         "painting_close": "Abbrechen",
         "painting_submit": "OK"
-    },
-    "messages": {
-        "coming_soon": "Keine neuen Nachrichten"
     },
     "setup": {
         "welcome": "Willkommen bei Juxtaposition!",

@@ -9,7 +9,6 @@
         "exit": "Ukončiť",
         "next": "Ďalej",
         "no_posts": "Žiadne Príspevky",
-        "messages": "Správy",
         "user_page": "Uživateľská Stránka",
         "activity_feed": "Prehľad Aktivity",
         "go_back": "Choď späť",
@@ -23,7 +22,6 @@
         "global_feed_short": "Globálny",
         "people_feed": "Aktivita Ľudí",
         "updates": "Aktualizácie",
-        "notifications_and_messages": "Upozornenia a Správy",
         "search": "Vyhľadávať..."
     },
     "community": {
@@ -130,9 +128,6 @@
     },
     "activity_feed": {
         "empty": "Je to tu prázdne. Skúste niekoho sledovať!"
-    },
-    "messages": {
-        "coming_soon": "Žiadne Správy"
     },
     "login": {
         "password": "Heslo",

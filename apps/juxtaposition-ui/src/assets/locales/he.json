@@ -6,7 +6,6 @@
         "activity_feed": "פיד פעילויות",
         "exit": "יציאה",
         "next": "הבא",
-        "messages": "הודעות",
         "notifications": "התראות",
         "go_back": "חזרה",
         "back": "חזרה",
@@ -22,7 +21,6 @@
         "people_feed_short": "אנשים",
         "friend_requests": "בקשות חברות",
         "updates": "עדכונים",
-        "notifications_and_messages": "התראות והודעות",
         "search": "חיפוש..."
     },
     "all_communities": {
@@ -130,9 +128,6 @@
     "language": "עברית",
     "activity_feed": {
         "empty": "קצת ריק פה. נסו לעקוב אחרי מישהו!"
-    },
-    "messages": {
-        "coming_soon": "אין הודעות"
     },
     "login": {
         "title": "התחברות לJuxtaposition",

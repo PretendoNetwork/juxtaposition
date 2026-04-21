@@ -4,7 +4,6 @@
         "user_page": "Page de l'utilisateur",
         "activity_feed": "Suivi des activités",
         "communities": "Communautés",
-        "messages": "Messages privés",
         "notifications": "Notifications",
         "go_back": "Retour",
         "back": "Précédent",
@@ -22,7 +21,6 @@
         "people_feed": "Actualités des abonnés",
         "people_feed_short": "Abonnés",
         "friend_requests": "Demandes d'amis",
-        "notifications_and_messages": "Notifications et messages",
         "updates": "Mises à jour",
         "search": "Chercher..."
     },
@@ -88,9 +86,6 @@
         "painting_submit": "Valider",
         "new_post_short": "Publier",
         "spoiler_label": "Spoiler"
-    },
-    "messages": {
-        "coming_soon": "Les messages ne sont pas encore disponibles. Revenez bientôt !"
     },
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",

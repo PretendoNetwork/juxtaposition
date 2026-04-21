@@ -72,7 +72,6 @@
         "next": "Næste",
         "user_page": "Bruger Side",
         "activity_feed": "Aktivitetsside",
-        "messages": "Beskeder",
         "back": "Tilbage",
         "private": "Privat",
         "close": "Luk",
@@ -95,9 +94,6 @@
     },
     "notifications": {
         "none": "Ingen notifikationer."
-    },
-    "messages": {
-        "coming_soon": "Beskeder er ikke klar endnu. Prøv igen senere!"
     },
     "language": "Dansk"
 }

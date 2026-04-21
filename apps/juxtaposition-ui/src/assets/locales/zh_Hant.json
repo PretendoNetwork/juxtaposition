@@ -4,7 +4,6 @@
         "user_page": "個人檔案",
         "exit": "離開",
         "activity_feed": "動態消息",
-        "messages": "訊息",
         "notifications": "通知",
         "communities": "社群",
         "go_back": "返回",
@@ -20,7 +19,6 @@
         "global_feed": "全球動態",
         "friend_requests": "好友請求",
         "updates": "更新",
-        "notifications_and_messages": "通知和訊息",
         "search": "搜尋...",
         "global_feed_short": "全球",
         "people_feed": "追蹤中動態",
@@ -33,9 +31,6 @@
     },
     "activity_feed": {
         "empty": "這裡空空如也。先去追蹤其他人吧！"
-    },
-    "messages": {
-        "coming_soon": "沒有訊息"
     },
     "setup": {
         "welcome": "歡迎來到 Juxtaposition！",

@@ -23,7 +23,6 @@
         "user_page": "Tudalen Defnyddiwr",
         "activity_feed": "Porthiant gweithgaredd",
         "communities": "Cymunedau",
-        "messages": "Negeuseon",
         "notifications": "Hysbysiadau",
         "go_back": "Fynd Yn ôl"
     },
@@ -96,8 +95,5 @@
     },
     "notifications": {
         "none": "Ddim hysbysiadau."
-    },
-    "messages": {
-        "coming_soon": "Nif yw negeseuon yn barod. eto gwiriwch yn ol yn fuan!"
     }
 }

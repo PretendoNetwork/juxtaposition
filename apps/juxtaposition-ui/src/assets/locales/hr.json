@@ -13,7 +13,6 @@
         "activity_feed": "Kanal aktivnosti",
         "user_page": "Korisnička stranica",
         "communities": "Zajednice",
-        "messages": "Poruke",
         "notifications": "Obavijesti",
         "my_feed": "Moj feed",
         "global_feed": "Globalni feed",
@@ -22,7 +21,6 @@
         "people_feed_short": "Ljudi",
         "friend_requests": "Zahtjevi za prijateljstvo",
         "updates": "Novosti",
-        "notifications_and_messages": "Obavijesti i poruke",
         "search": "Pretraga …"
     },
     "all_communities": {
@@ -84,9 +82,6 @@
         "content_placeholder": "Dijeli svoje misli u objavi sa zajednicom ili sa svojim pratiteljima.",
         "screenshots_coming_soon": "Snimke ekrana još nisu spremne. Navrati kasnije!",
         "spoiler_label": "Spoiler"
-    },
-    "messages": {
-        "coming_soon": "Nema poruka"
     },
     "setup": {
         "welcome": "Dobro došli u Juxtaposition!",
