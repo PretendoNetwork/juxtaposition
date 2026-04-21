@@ -4,6 +4,7 @@ import { raw } from 'esbuild-raw-plugin';
 import { fixImportsPlugin } from 'esbuild-fix-imports-plugin';
 import { oxipng } from '@repo/esbuild-plugin-oxipng';
 import { spritesmith } from '@repo/esbuild-plugin-spritesmith';
+import { sassPlugin } from 'esbuild-sass-plugin';
 import browserslist from 'browserslist-to-esbuild';
 
 export default defineConfig([
@@ -46,7 +47,7 @@ export default defineConfig([
 			'webfiles/ctr/js/juxt.js',
 			'webfiles/ctr/js/debug.js',
 			'webfiles/ctr/js/firstrun.js',
-			'webfiles/ctr/css/juxt.css',
+			'webfiles/ctr/css/juxt.scss',
 			'webfiles/ctr/css/firstrun.css'
 		],
 		bundle: true,
@@ -64,6 +65,7 @@ export default defineConfig([
 			options.tsconfig = './webfiles/ctr/tsconfig.json';
 		},
 		esbuildPlugins: [
+			sassPlugin({ type: 'css' }),
 			oxipng({ loader: 'dataurl' }),
 			spritesmith({
 				input_folder: './webfiles/ctr/images/sprites/',

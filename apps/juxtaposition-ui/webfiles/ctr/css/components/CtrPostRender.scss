@@ -1,0 +1,73 @@
+@use "../theme.scss" as t;
+
+$padding: 15px;
+$radius: 15px;
+
+.post-header {
+    display: -webkit-box;
+    font-size: t.$text-normal;
+
+    .speech-bubble {
+        width: 34px;
+        position: relative;
+
+        .sprite {
+            display: block;
+            position: absolute;
+            top: 35px;
+            left: 20px;
+        }
+    }
+
+    .poster-icon-container {
+        .poster-icon {
+            display: block;
+            width: 48px;
+            height: 48px;
+        }
+    }
+
+    .info {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-box-pack: center;
+    }
+}
+
+.post-window {
+    * { box-sizing: border-box; }
+    overflow: hidden;
+    font-size: t.$text-normal;
+
+    border-radius: $radius;
+    border: 1px solid t.$root-light-600;
+    // doesn't work on hardware
+    // -webkit-box-shadow: 0 4px t.$root-light-600;
+    // margin-bottom: 4px;
+    
+    background: t.$bg-card;
+
+    .post-content {
+        padding: $padding;
+        word-wrap: break-word;
+    }
+
+    .buttons {
+        // todo: gradient image (colour depth)
+        padding: 0 15px;
+
+        .inner {
+            height: 42px;
+            border-top: 1px solid t.$root-light-600;
+
+            display: -webkit-box;
+            -webkit-box-align: center;
+            .yeah {
+                margin-right: $padding;
+            }
+            .spacer {
+                -webkit-box-flex: 1;
+            }
+        }
+    }
+}
