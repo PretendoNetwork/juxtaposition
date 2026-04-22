@@ -24,7 +24,7 @@ function getCtrHeader(cdnBaseUrl: string, community: Community): CtrHeader {
 	const imageId = community.parentId ? community.parentId : community.olive_community_id;
 	const bannerUrl = buildCdnUrl(cdnBaseUrl, community.ctrHeaderImagePath);
 
-	const legacy = !community.hasLegacyCtrHeader;
+	const legacy = community.hasLegacyCtrHeader;
 
 	return { bannerUrl, imageId, legacy };
 }
