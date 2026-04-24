@@ -36,8 +36,8 @@
         "welcome": "歡迎來到 Juxtaposition！",
         "beta": "《Beta 免責聲明》",
         "beta_text": {
-            "first": "歡迎來到 Pretendo Network 公開測試 Beta 版！雖然與第一個公開測試 Beta 版相比已經發生了許多變化，Juxt 仍處於開發階段，隨時都可能發生變化。",
-            "second": "這可能包括在 Beta 測試階段結束時或測試期間完全清除資料庫。",
+            "first": "歡迎來到 Pretendo Network 公開測試版！雖然與第一個公開測試版相比已經發生了許多變化，Juxt 仍處於開發階段，隨時都可能發生變化。",
+            "second": "這可能包括在測試階段結束時或測試期間完全清除資料庫。",
             "third": "本網站及其軟體與附屬內容，均基於「現況性」與「可提供性」為開展。Pretendo Network 絕不保證（無論其明示抑或暗示）本網站及其軟體與附屬內容之合用性或可用性。"
         },
         "info": "什麼是 Juxtaposition？",
