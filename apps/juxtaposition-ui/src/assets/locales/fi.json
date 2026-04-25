@@ -47,7 +47,6 @@
         "back": "Takaisin",
         "notifications": "Ilmoitukset",
         "go_back": "Palaa takaisin",
-        "messages": "Yksityisviestit",
         "more": "Lataa lisää viestejä",
         "no_posts": "Ei viestejä",
         "private": "Henkilökohtainen",
@@ -96,8 +95,5 @@
     "new_post": {
         "post_to": "Vastaa {{user}}",
         "swearing": "Kirjoitus ei saa sisältää rivoa kielenkäyttöä."
-    },
-    "messages": {
-        "coming_soon": "Viestitoiminto ei ole vielä valmiina. Kokeile pian uudelleen!"
     }
 }

@@ -4,7 +4,6 @@
         "user_page": "La mia pagina",
         "activity_feed": "Riepilogo attività",
         "communities": "Gruppi",
-        "messages": "Messaggi",
         "notifications": "Notifiche",
         "go_back": "Torna indietro",
         "back": "Indietro",
@@ -23,8 +22,7 @@
         "global_feed_short": "Globale",
         "people_feed": "Attività seguiti",
         "people_feed_short": "Seguiti",
-        "search": "Cerca...",
-        "notifications_and_messages": "Notifiche e messaggi"
+        "search": "Cerca..."
     },
     "all_communities": {
         "text": "Tutti i gruppi",
@@ -88,9 +86,6 @@
         "content_placeholder": "Condividi il tuo pensiero con un post rivolto ad un gruppo o ai tuoi seguaci.",
         "screenshots_coming_soon": "Gli screenshot non sono ancora pronti. Ricontrolla preso!",
         "painting_submit": "OK"
-    },
-    "messages": {
-        "coming_soon": "Nessun messaggio"
     },
     "setup": {
         "welcome": "Benvenuto/a su Juxtaposition!",

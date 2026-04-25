@@ -3,7 +3,6 @@
         "user_page": "Profil",
         "activity_feed": "Fil d'activité",
         "communities": "Communautés",
-        "messages": "Messages",
         "notifications": "Notifications",
         "go_back": "Revenir",
         "back": "Précédent",
@@ -54,9 +53,6 @@
     "new_post": {
         "post_to": "Poster à {{user}}",
         "swearing": "La publication ne peut pas contenir du vocabulaire explicite."
-    },
-    "messages": {
-        "coming_soon": "Les messages ne sont pas encore disponibles. Revenez bientôt!"
     },
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition!",

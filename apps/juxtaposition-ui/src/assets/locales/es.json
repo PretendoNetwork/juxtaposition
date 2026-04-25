@@ -4,7 +4,6 @@
         "user_page": "Página de usuario",
         "activity_feed": "Actividad",
         "communities": "Comunidades",
-        "messages": "Mensajes",
         "notifications": "Notificaciones",
         "go_back": "Volver",
         "back": "Atrás",
@@ -18,7 +17,6 @@
         "next": "Siguiente",
         "friend_requests": "Solicitudes de amistad",
         "search": "Buscar...",
-        "notifications_and_messages": "Notificaciones y Mensajes",
         "updates": "Novedades",
         "people_feed_short": "Usuarios",
         "people_feed": "Actividad de usuarios",
@@ -89,15 +87,12 @@
         "painting_submit": "Aceptar",
         "no_screenshot": "No hay capturas"
     },
-    "messages": {
-        "coming_soon": "No hay mensajes"
-    },
     "setup": {
         "welcome": "¡Estás en Juxtaposition!",
         "welcome_text": "Juxt es una comunidad de videojuegos para conectar a personas de todo el mundo usando personajes Mii. Juxt se puede usar para compartir tus experiencias de juego y conocer personas de todo el mundo.",
         "beta": "Información de la beta",
         "beta_text": {
-            "first": "Estás a punto de probar la primera beta pública de Juxt. Esto significa que todavía quedan muchas cosas en el aire, y pueden haber grandes cambios en cualquier momento.",
+            "first": "¡Estás en la beta pública de Pretendo Network! Aunque han cambiado muchas cosas desde la primera beta pública, Juxt sigue siendo un trabajo en marcha y pueden haber grandes cambios en cualquier momento.",
             "second": "Esto puede incluir que todos los datos que almacenamos sean completamente eliminados durante o al acabar el periodo de beta.",
             "third": "El sitio web, su software y todo el contenido que se encuentra en él se proporcionan 'tal cual' y 'según esté disponible'. Pretendo Network no ofrece ninguna garantía, ya sea expresa o implícita, en cuanto a la integridad o usabilidad del sitio web, su software o cualquiera de sus contenidos."
         },
@@ -166,7 +161,7 @@
         "sub_title": "Introduce tus datos de acceso"
     },
     "reporting": {
-        "description": "Estás a punto de denunciar un mensaje que viola el Código de conducta de Juxtaposition. La denuncia será enviada a los adminstradores de Juxtaposition de Pretendo y no al creador del mensaje.",
+        "description": "Estás a punto de denunciar un mensaje que viola el Código de conducta de Juxtaposition. La denuncia será enviada a los administradores de Juxtaposition de Pretendo y no al creador del mensaje.",
         "label": "Motivo:",
         "additional_info_placeholder": "Introduce comentarios o información adicionales",
         "reason_spoiler": "Revelación",
@@ -176,13 +171,13 @@
         "reason_advertising": "Publicidad",
         "reason_piracy": "Piratería",
         "reason_inappropiate_ingame": "Comportamiento inapropiado en el juego",
-        "reason_inappropiate": "Conducta inapropiada/Perjudicial",
-        "reason_nsfw": "Sexualmente explícito",
+        "reason_inappropiate": "Comportamiento inapropiado",
+        "reason_nsfw": "Contenido sexual",
         "reason_missing_images": "Imágenes faltantes",
         "submit": "Enviar denuncia",
         "title": "Denunciar mensaje",
         "reason_one": "",
-        "reason_many": "",
+        "reason_many": "Otro",
         "reason_other": ""
     },
     "friend_requests": {

@@ -45,7 +45,6 @@
         "user_page": "Användarsida",
         "activity_feed": "Aktivitetsflöde",
         "communities": "Samhällen",
-        "messages": "Meddelanden",
         "notifications": "Notifikationer",
         "back": "Tillbaka",
         "go_back": "Gå Tillbaka",
@@ -96,8 +95,5 @@
     },
     "activity_feed": {
         "empty": "Det är tomt här. Försök att följa någon!"
-    },
-    "messages": {
-        "coming_soon": "Meddelanden är inte redo ännu. Kom tillbaks senare!"
     }
 }

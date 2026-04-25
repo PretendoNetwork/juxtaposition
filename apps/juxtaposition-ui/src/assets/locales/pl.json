@@ -5,7 +5,6 @@
         "user_page": "Strona użytkownika",
         "activity_feed": "Kanał aktywności",
         "communities": "Społeczności",
-        "messages": "Wiadomości",
         "notifications": "Powiadomienia",
         "go_back": "Wróć",
         "yeahs": "Niezłe",
@@ -23,7 +22,6 @@
         "people_feed_short": "Obserwowani",
         "friend_requests": "Prośby o przyjaźń",
         "updates": "Aktualizacje",
-        "notifications_and_messages": "Powiadomienia i wiadomości",
         "search": "Szukaj..."
     },
     "setup": {
@@ -112,9 +110,6 @@
     "new_post": {
         "post_to": "Postuj do {{user}}",
         "swearing": "Post nie może zawierać obraźliwego języka."
-    },
-    "messages": {
-        "coming_soon": "Wiadomości nie są jeszcze gotowe. Zajrzyj tu później!"
     },
     "login": {
         "title": "Logowanie do Juxtaposition",

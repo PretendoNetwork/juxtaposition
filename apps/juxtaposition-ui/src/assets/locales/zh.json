@@ -4,7 +4,6 @@
         "user_page": "用户页面",
         "activity_feed": "活动动态",
         "communities": "社区",
-        "messages": "消息",
         "notifications": "通知",
         "go_back": "返回",
         "back": "返回",
@@ -20,7 +19,6 @@
         "global_feed": "全球动态",
         "friend_requests": "好友请求",
         "updates": "更新",
-        "notifications_and_messages": "通知和消息",
         "search": "搜索...",
         "global_feed_short": "全球",
         "people_feed": "关注中动态",
@@ -88,9 +86,6 @@
         "spoiler_label": "剧透",
         "painting_close": "取消",
         "painting_submit": "确定"
-    },
-    "messages": {
-        "coming_soon": "没有消息"
     },
     "setup": {
         "welcome": "欢迎来到Juxtaposition！",

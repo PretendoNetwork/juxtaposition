@@ -1,7 +1,6 @@
 {
     "global": {
         "communities": "Pobail",
-        "messages": "Teachtaireachtaí",
         "user_page": "Leathnach Úsáideora",
         "go_back": "Téigh Ar Ais",
         "activity_feed": "Fotha Gníomhaíochtaí",
@@ -96,8 +95,5 @@
         "ready_text": "",
         "done": ""
     },
-    "language": "Gaeilge",
-    "messages": {
-        "coming_soon": "Níl teachtaireachtaí réidh fós. Seiceáil ar ais go luath!"
-    }
+    "language": "Gaeilge"
 }
