@@ -133,7 +133,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 												{' | '}
 												<PortalUIIcon name="followers" />
 												{' '}
-												<span id="followers">{props.userContent.following_users.length - 1}</span>
+												<span id="followers">{props.userContent.following_users.length}</span>
 											</span>
 											{props.userSettings.country_visibility
 												? (
