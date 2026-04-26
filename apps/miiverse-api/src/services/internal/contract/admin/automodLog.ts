@@ -28,7 +28,7 @@ export function mapAutomodLog(log: HydratedAutomodLogDocument, rule: HydratedAut
 		rule: rule ? mapShallowAutomodRule(rule) : null,
 		action: log.action,
 		postAuthor: log.author,
-		postId: log.post_id,
+		postId: log.action === 'blocked' ? null : log.post_id,
 		postContent: {
 			body: log.post_content_body
 		}

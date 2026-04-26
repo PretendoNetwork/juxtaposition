@@ -2,6 +2,9 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { humanDate, humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { AutomodLog } from '@/api/generated';
 
@@ -17,11 +20,40 @@ export type AutomodLogListViewProps = {
 };
 
 function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
+	const cache = useCache();
+
 	return (
-		<li>
-			Log
-			{' '}
-			{log.id}
+		<li className="reports">
+			<div className="hover">
+				<WebMiiIcon pid={log.postAuthor} type="icon" />
+				<span className="body messages report">
+					<span className="text">
+						{`Post ${log.action} by `}
+						<a className="nick-name" href={`/users/${log.postAuthor}`}>
+							{cache.getUserName(log.postAuthor)}
+						</a>
+						{' - '}
+						<span className="pid-display">{log.postAuthor}</span>
+						{' - '}
+						<abbr className="timestamp" title={humanDate(log.createdAt)}>{humanFromNow(log.createdAt)}</abbr>
+					</span>
+					<span className="text">
+						<p>
+							<span className="pid-display">Triggered by </span>
+							<span>{log.rule.title}</span>
+						</p>
+					</span>
+					<span className="text">
+						<h4>Body:</h4>
+						<p>
+							{log.postContent?.body ?? 'NO BODY'}
+						</p>
+					</span>
+				</span>
+			</div>
+			<div className="button-spacer">
+				{ log.postId ? <a href={`/posts/${log.postId}`}>Go to post</a> : null }
+			</div>
 		</li>
 	);
 }
