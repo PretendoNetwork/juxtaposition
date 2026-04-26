@@ -16,7 +16,7 @@ export const automodLogSchema = z.object({
 	postContent: z.object({
 		body: z.string().nullable()
 	})
-}).openapi('AutomodRule');
+}).openapi('AutomodLog');
 
 export type AutomodLogDto = z.infer<typeof automodLogSchema>;
 

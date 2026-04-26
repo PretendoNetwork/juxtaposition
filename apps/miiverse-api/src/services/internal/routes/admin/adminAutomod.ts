@@ -139,7 +139,7 @@ adminAutomodRouter.get({
 	guard: guards.moderator,
 	schema: {
 		query: z.object({
-			action: z.enum(automodAction),
+			action: z.enum(automodAction).optional(),
 			sort: standardSortSchema
 		}).extend(pageControlSchema(150)),
 		response: pageDtoSchema(automodLogSchema)
