@@ -500,7 +500,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	const automodRules = await AutomodRule.find({ enabled: true });
 	const automodEval = evaluateAutomodRules(document, automodRules);
 	const automodResult = await performAutomodAction(document, automodEval);
-	if (automodResult.allowPost) {
+	if (!automodResult.allowPost) {
 		res.sendStatus(422);
 		return;
 	}

@@ -410,7 +410,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	const automodRules = await AutomodRule.find({ enabled: true });
 	const automodEval = evaluateAutomodRules(document, automodRules);
 	const automodResult = await performAutomodAction(document, automodEval);
-	if (automodResult.allowPost) {
+	if (!automodResult.allowPost) {
 		return badRequest(response, ApiErrorCode.BAD_WORDS_FILTER);
 	}
 
