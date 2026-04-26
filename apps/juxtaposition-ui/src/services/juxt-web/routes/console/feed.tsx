@@ -1,7 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
 import { database } from '@/database';
-import { POST } from '@/models/post';
 import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebGlobalFeedView, WebPeopleFeedView, WebPersonalFeedView } from '@/services/juxt-web/views/web/feed';
@@ -23,8 +22,9 @@ feedRouter.get('/', async function (req, res) {
 	if (!userContent) {
 		return res.redirect('/404');
 	}
-	const posts = await database.getNewsFeed(userContent, config.postLimit, true);
 
+	const postPage = await req.api.activityFeed.getFollowing({ limit: config.postLimit });
+	const posts = postPage.data.items;
 	const nextLink = `/feed/more?offset=${posts.length}&pjax=true`;
 
 	if (query.pjax) {
@@ -52,8 +52,9 @@ feedRouter.get('/people', async function (req, res) {
 	if (!userContent) {
 		return res.redirect('/404');
 	}
-	const posts = await database.getNewsFeed(userContent, config.postLimit, false);
 
+	const postPage = await req.api.activityFeed.getPeople({ limit: config.postLimit });
+	const posts = postPage.data.items;
 	const nextLink = `/feed/people/more?offset=${posts.length}&pjax=true`;
 
 	if (query.pjax) {
@@ -81,12 +82,9 @@ feedRouter.get('/all', async function (req, res) {
 	if (!userContent) {
 		return res.redirect('/404');
 	}
-	const posts = await POST.find({
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).limit(config.postLimit).sort({ created_at: -1 });
 
+	const postPage = await req.api.activityFeed.getFresh({ limit: config.postLimit });
+	const posts = postPage.data.items;
 	const nextLink = `/feed/all/more?offset=${posts.length}&pjax=true`;
 
 	if (query.pjax) {
@@ -115,8 +113,9 @@ feedRouter.get('/more', async function (req, res) {
 	if (!userContent) {
 		return res.redirect('/404');
 	}
-	const posts = await database.getNewsFeedOffset(userContent, config.postLimit, query.offset, true);
 
+	const postPage = await req.api.activityFeed.getFollowing({ limit: config.postLimit, offset: query.offset });
+	const posts = postPage.data.items;
 	const nextLink = `/feed/more?offset=${query.offset + posts.length}&pjax=true`;
 
 	if (posts.length === 0) {
@@ -141,8 +140,9 @@ feedRouter.get('/people/more', async function (req, res) {
 	if (!userContent) {
 		return res.redirect('/404');
 	}
-	const posts = await database.getNewsFeedOffset(userContent, config.postLimit, query.offset, false);
 
+	const postPage = await req.api.activityFeed.getPeople({ limit: config.postLimit, offset: query.offset });
+	const posts = postPage.data.items;
 	const nextLink = `/feed/people/more?offset=${query.offset + posts.length}&pjax=true`;
 
 	if (posts.length === 0) {
@@ -168,12 +168,8 @@ feedRouter.get('/all/more', async function (req, res) {
 		return res.redirect('/404');
 	}
 
-	const posts = await POST.find({
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).skip(query.offset).limit(config.postLimit).sort({ created_at: -1 });
-
+	const postPage = await req.api.activityFeed.getFresh({ limit: config.postLimit, offset: query.offset });
+	const posts = postPage.data.items;
 	const nextLink = `/feed/all/more?offset=${query.offset + posts.length}&pjax=true`;
 
 	if (posts.length === 0) {

@@ -10,6 +10,8 @@ import { empathyActionSchema, empathySchema, mapEmpathy } from '@/services/inter
 import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import type { FilterQuery } from 'mongoose';
+import type { IPost } from '@/types/mongoose/post';
 
 export const postsRouter = createInternalApiRouter();
 
@@ -39,7 +41,7 @@ postsRouter.get({
 			throw new errors.unauthorized('Authentication token not provided');
 		}
 
-		const posts = await Post.find(deleteOptional({
+		const dbQuery: FilterQuery<IPost> = deleteOptional({
 			pid: query.posted_by,
 			topic_tag: query.topic_tag,
 			yeahs: query.empathy_by,
@@ -48,9 +50,16 @@ postsRouter.get({
 			message_to_pid: null, // messages aren't really posts
 			...query.include_replies ? {} : { parent: null },
 			...filterRemovedPosts(auth)
-		})).sort({ created_at: standardSortToDirection(query.sort) }).skip(query.offset).limit(query.limit);
+		});
 
-		return mapPage(posts.map(mapPost));
+		const posts = await Post
+			.find(dbQuery)
+			.sort({ created_at: standardSortToDirection(query.sort) })
+			.skip(query.offset)
+			.limit(query.limit);
+		const total = await Post.countDocuments(dbQuery);
+
+		return mapPage(total, posts.map(mapPost));
 	}
 });
 
