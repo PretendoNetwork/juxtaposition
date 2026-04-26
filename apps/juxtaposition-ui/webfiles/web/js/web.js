@@ -108,6 +108,8 @@ function initMorePosts() {
 	for (let i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			const el = e.currentTarget;
+			// Prevent re-entering this handler. Can happen e.g. with macOS scroll events, see #349
+			el.disabled = true;
 			GET(el.getAttribute('data-href'), function a(data) {
 				const response = data.response;
 				if (response && data.status === 200) {

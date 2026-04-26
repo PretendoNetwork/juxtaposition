@@ -32,7 +32,6 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title"><T k="all_communities.text" /></h1>
-					<a id="header-communities-button" href="/titles/all" data-pjax="#body"><T k="all_communities.text" /></a>
 				</header>
 				<div className="body-content">
 					<div className="communities-list">
