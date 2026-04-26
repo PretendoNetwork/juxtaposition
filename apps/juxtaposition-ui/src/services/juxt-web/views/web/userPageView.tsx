@@ -142,7 +142,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 	return (
 		<WebRoot head={head}>
 			<h2 id="title" className="page-header"><T k="global.user_page" /></h2>
-			<WebNavBar selection={-1} />
+			<WebNavBar selection={isSelf ? 0 : -1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
 				<div className="community-top">
