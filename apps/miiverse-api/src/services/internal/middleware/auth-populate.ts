@@ -31,8 +31,9 @@ export async function authPopulate(request: express.Request, response: express.R
 		const content = await getUserContent(pnid.pid);
 
 		const moderator = accountIsModerator(pnid);
+		const developer = accountIsDeveloper(pnid);
 
-		response.locals.account = { pnid, settings, moderator, content };
+		response.locals.account = { pnid, settings, moderator, developer, content };
 	} else {
 		// Guest access
 		response.locals.account = null;
@@ -75,6 +76,14 @@ function accountIsModerator(pnid: GetUserDataResponse): boolean {
 
 	// Lower-level accounts can also have permission granted
 	if (pnid.permissions?.moderateMiiverse === true) {
+		return true;
+	}
+
+	return false;
+}
+
+function accountIsDeveloper(pnid: GetUserDataResponse): boolean {
+	if (pnid.accessLevel === 3) {
 		return true;
 	}
 

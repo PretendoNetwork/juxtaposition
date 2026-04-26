@@ -8,6 +8,7 @@ import type { AutomodRule } from '@/api/generated';
 
 export type AutomodRuleItemViewProps = {
 	rule: AutomodRule;
+	canEdit?: boolean;
 };
 
 export type AutomodRuleListViewProps = {
@@ -15,19 +16,13 @@ export type AutomodRuleListViewProps = {
 	items: AutomodRule[];
 	page: number;
 	hasNextPage: boolean;
+	canEdit?: boolean;
 };
 
-function AutomodRuleItem({ rule }: AutomodRuleItemViewProps): ReactNode {
-	return (
-		<li className="reports">
-			<span className="body messages report">
-				<h4 className="text" style={{ textDecoration: rule.enabled ? 'none' : 'line-through' }}>
-					{rule.title}
-					{' '}
-					<span className="pid-display">{`${rule.type} - ${rule.mode}`}</span>
-				</h4>
-				{rule.description ? <span>{rule.description}</span> : null}
-			</span>
+function AutomodRuleItem({ rule, canEdit }: AutomodRuleItemViewProps): ReactNode {
+	let editSection: ReactNode = null;
+	if (canEdit) {
+		editSection = (
 			<details className="community-create" style={{ marginTop: '1rem' }}>
 				<summary>Edit</summary>
 				<form action={`/admin/automod/rules/${rule.id}/update`} method="post">
@@ -74,6 +69,20 @@ function AutomodRuleItem({ rule }: AutomodRuleItemViewProps): ReactNode {
 					</div>
 				</form>
 			</details>
+		);
+	}
+
+	return (
+		<li className="reports" style={{ width: 500 }}>
+			<span className="body messages report">
+				<h4 className="text" style={{ textDecoration: rule.enabled ? 'none' : 'line-through' }}>
+					{rule.title}
+					{' '}
+					<span className="pid-display">{`${rule.type} - ${rule.mode}`}</span>
+				</h4>
+				{rule.description ? <span>{rule.description}</span> : null}
+			</span>
+			{editSection}
 		</li>
 	);
 }
@@ -92,9 +101,13 @@ export function WebAutomodRuleListView(props: AutomodRuleListViewProps): ReactNo
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="automod" />
-				<button style={{ marginTop: '1em' }}>
-					<a href="/admin/automod/rules/create" className="button">New rule</a>
-				</button>
+				{ props.canEdit
+					? (
+							<button style={{ marginTop: '1em' }}>
+								<a href="/admin/automod/rules/create" className="button">New rule</a>
+							</button>
+						)
+					: null}
 				{props.items.length === 0
 					? (
 							<p>
@@ -104,7 +117,7 @@ export function WebAutomodRuleListView(props: AutomodRuleListViewProps): ReactNo
 					: null }
 				<ul className="list-content-with-icon-and-text arrow-list accounts" id="news-list-content">
 					{props.items.map(rule => (
-						<AutomodRuleItem rule={rule} key={rule.id} />
+						<AutomodRuleItem rule={rule} key={rule.id} canEdit={props.canEdit} />
 					))}
 				</ul>
 				<div className="buttons tabs">

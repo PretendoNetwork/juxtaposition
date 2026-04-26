@@ -44,7 +44,7 @@ adminAutomodRouter.post({
 	path: '/admin/automod-rules',
 	name: 'admin.automodRules.create',
 	description: 'Create a initial start of a rule, use the update endpoint for the rest of the fields',
-	guard: guards.moderator,
+	guard: guards.developer,
 	schema: {
 		body: z.object({
 			title: z.string(),
@@ -69,7 +69,7 @@ adminAutomodRouter.post({
 adminAutomodRouter.patch({
 	path: '/admin/automod-rules/:id',
 	name: 'admin.automodRules.update',
-	guard: guards.moderator,
+	guard: guards.developer,
 	schema: {
 		params: z.object({
 			id: z.string()
@@ -116,7 +116,7 @@ adminAutomodRouter.patch({
 adminAutomodRouter.delete({
 	path: '/admin/automod-rules/:id',
 	name: 'admin.automodRules.delete',
-	guard: guards.moderator,
+	guard: guards.developer,
 	schema: {
 		params: z.object({
 			id: z.string()

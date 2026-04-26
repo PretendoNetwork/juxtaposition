@@ -67,7 +67,8 @@ adminAutomodRouter.get('/automod/rules', async function (req, res) {
 		items: rulePage.items,
 		total: rulePage.total,
 		page: query.page,
-		hasNextPage
+		hasNextPage,
+		canEdit: res.locals.developer
 	};
 
 	return res.jsxForDirectory({
@@ -76,7 +77,7 @@ adminAutomodRouter.get('/automod/rules', async function (req, res) {
 });
 
 adminAutomodRouter.get('/automod/rules/create', async function (req, res) {
-	if (!res.locals.moderator) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
