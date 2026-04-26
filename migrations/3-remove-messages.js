@@ -1,7 +1,7 @@
 // Messages have been removed from frontend, this script will remove all messages (not posts) from the database
 // ---
 // This script is intended to run in mongosh:
-// $ mongosh mongodb://localhost:27017/mydb 2-correct-screenshot-aspect.js
+// $ mongosh mongodb://localhost:27017/mydb 3-remove-messages.js
 
 print(`Removing messages`);
 const result = db.posts.deleteMany({
