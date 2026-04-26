@@ -10,7 +10,7 @@ import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, getInvalidPostRegex, getUserAccountData } from '@/util';
+import { createLogEntry, evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
@@ -20,6 +20,7 @@ import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView'
 import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
+import { AutomodRule } from '@/models/automodRules';
 import type { Request, Response } from 'express';
 import type { InferSchemaType } from 'mongoose';
 import type { PaintingUrls } from '@/images';
@@ -456,6 +457,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		res.sendStatus(422);
 		return;
 	}
+
 	const document = {
 		title_id: community.titleIds[0],
 		community_id: community.olive_community_id,
@@ -493,6 +495,17 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	if ((document.body === '' && document.painting === '' && document.screenshot === '') || duplicatePost) {
 		return res.redirect('/titles/' + community.olive_community_id + '/new');
 	}
+
+	// Automod
+	const automodRules = await AutomodRule.find({ enabled: true });
+	const automodEval = evaluateAutomodRules(document, automodRules);
+	const automodResult = await performAutomodAction(document, automodEval);
+	if (automodResult.allowPost) {
+		res.sendStatus(422);
+		return;
+	}
+
+	// Actual posting
 	const newPost = new POST(document);
 	newPost.save();
 	if (parentPost) {

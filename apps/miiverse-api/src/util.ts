@@ -7,14 +7,18 @@ import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
 import { grpcAccount, grpcApi, grpcFriends } from '@/grpc';
 import { getS3 } from '@/s3';
+import { AutomodLog } from '@/models/automodLog';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
+import type { AutomodAction } from '@/models/automodLog';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { ServiceToken } from '@/types/common/service-token';
+import type { IPostInput } from '@/types/mongoose/post';
+import type { HydratedAutomodRuleDocument } from '@/models/automodRules';
 
 // TODO - This doesn't really belong here
 export function getInvalidPostRegex(): RegExp {
@@ -218,4 +222,56 @@ export function getValueFromHeaders(headers: IncomingHttpHeaders, key: string): 
 	}
 
 	return value;
+}
+
+export type AutomodRuleEvaluation = {
+	violatedRule: HydratedAutomodRuleDocument;
+	action: AutomodAction;
+} | null;
+
+export function evaluateAutomodRules(post: IPostInput, rules: HydratedAutomodRuleDocument[]): AutomodRuleEvaluation {
+	const blockRules = rules.filter(v => v.mode === 'block');
+	const nonBlockRules = rules.filter(v => v.mode !== 'block');
+	const orderedRules = [...blockRules, ...nonBlockRules];
+
+	for (const rule of orderedRules) {
+		let hasMatched = false;
+		if (rule.type === 'keyword') {
+			const bodyNormalized = (post.body ?? '').toLowerCase();
+			const keywordsToCheck = rule.keyword_settings?.keywords ?? [];
+			const matchedKeywords = keywordsToCheck.filter(keyword => bodyNormalized.includes(keyword.toLowerCase()));
+			hasMatched = matchedKeywords.length > 0;
+		}
+
+		if (hasMatched) {
+			return {
+				action: rule.mode === 'block' ? 'blocked' : 'logged',
+				violatedRule: rule
+			};
+		}
+	}
+
+	return null; // No rules apply to this post
+}
+
+export async function performAutomodAction(post: IPostInput, evaluation: AutomodRuleEvaluation): Promise<{ allowPost: boolean }> {
+	if (!evaluation) {
+		return { allowPost: true };
+	}
+
+	if (evaluation.action === 'blocked' || evaluation.action === 'logged') {
+		const allowPost = evaluation.action === 'blocked' ? false : true;
+		await AutomodLog.create({
+			action: evaluation.action,
+			post_id: post.id,
+			post_content_body: post.body ?? '',
+			created_at: new Date(),
+			rule_id: evaluation.violatedRule.id
+		});
+		return {
+			allowPost
+		};
+	}
+
+	throw new Error('Invalid automod evaluation');
 }
