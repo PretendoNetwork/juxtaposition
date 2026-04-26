@@ -19,7 +19,7 @@ export type AutomodLogListViewProps = {
 function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
 	return (
 		<li>
-			Test
+			Log
 			{' '}
 			{log.id}
 		</li>
@@ -43,6 +43,9 @@ export function WebAutomodLogListView(props: AutomodLogListViewProps): ReactNode
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="automod" />
+				<button style={{ marginTop: '1em' }}>
+					<a href="/admin/automod/rules" className="button">View rules</a>
+				</button>
 				{props.items.length === 0
 					? (
 							<p>
