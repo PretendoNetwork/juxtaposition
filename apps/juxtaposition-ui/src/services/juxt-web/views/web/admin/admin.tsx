@@ -3,7 +3,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 
 export type ModerationTabsProps = {
-	selected: 'users' | 'reports' | 'communities';
+	selected: 'users' | 'reports' | 'automod' | 'communities';
 };
 
 export function WebModerationTabs(props: ModerationTabsProps): ReactNode {
@@ -19,6 +19,15 @@ export function WebModerationTabs(props: ModerationTabsProps): ReactNode {
 				href="/admin/posts"
 			>
 				Posts
+			</a>
+			<a
+				id="post-automod"
+				className={cx({
+					selected: props.selected === 'automod'
+				})}
+				href="/admin/posts/logs"
+			>
+				Automod
 			</a>
 			<a
 				id="account-reports"
