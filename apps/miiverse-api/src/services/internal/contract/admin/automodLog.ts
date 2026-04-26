@@ -12,6 +12,7 @@ export const automodLogSchema = z.object({
 	createdAt: z.date(),
 	rule: shallowAutomodRuleSchema.nullable(),
 	action: automodActionEnum,
+	postAuthor: z.number(),
 	postId: z.string().nullable(),
 	postContent: z.object({
 		body: z.string().nullable()
@@ -26,6 +27,7 @@ export function mapAutomodLog(log: HydratedAutomodLogDocument, rule: HydratedAut
 		createdAt: log.created_at,
 		rule: rule ? mapShallowAutomodRule(rule) : null,
 		action: log.action,
+		postAuthor: log.author,
 		postId: log.post_id,
 		postContent: {
 			body: log.post_content_body

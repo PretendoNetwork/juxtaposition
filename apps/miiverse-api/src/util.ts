@@ -263,6 +263,7 @@ export async function performAutomodAction(post: IPostInput, evaluation: Automod
 		const allowPost = evaluation.action === 'blocked' ? false : true;
 		await AutomodLog.create({
 			action: evaluation.action,
+			author: post.pid,
 			post_id: post.id,
 			post_content_body: post.body ?? '',
 			created_at: new Date(),
