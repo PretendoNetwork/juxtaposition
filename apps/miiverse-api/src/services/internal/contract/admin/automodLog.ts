@@ -10,7 +10,7 @@ export const automodActionEnum = asOpenapi('AutomodActionEnum', z.enum(automodAc
 export const automodLogSchema = z.object({
 	id: z.string(),
 	createdAt: z.date(),
-	rule: shallowAutomodRuleSchema,
+	rule: shallowAutomodRuleSchema.nullable(),
 	action: automodActionEnum,
 	postId: z.string().nullable(),
 	postContent: z.object({
@@ -20,11 +20,11 @@ export const automodLogSchema = z.object({
 
 export type AutomodLogDto = z.infer<typeof automodLogSchema>;
 
-export function mapAutomodLog(log: HydratedAutomodLogDocument, rule: HydratedAutomodRuleDocument): AutomodLogDto {
+export function mapAutomodLog(log: HydratedAutomodLogDocument, rule: HydratedAutomodRuleDocument | null): AutomodLogDto {
 	return {
 		id: log.id,
 		createdAt: log.created_at,
-		rule: mapShallowAutomodRule(rule),
+		rule: rule ? mapShallowAutomodRule(rule) : null,
 		action: log.action,
 		postId: log.post_id,
 		postContent: {
