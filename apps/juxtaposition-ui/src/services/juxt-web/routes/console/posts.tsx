@@ -28,6 +28,7 @@ import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageVi
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
 import type { EmpathyActionEnum } from '@/api/generated';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
@@ -245,9 +246,12 @@ postsRouter.post('/:post_id/new', postLimit, upload.fields([{ name: 'shot', maxC
 });
 
 postsRouter.get('/:post_id/create', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params, auth, query } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
+		}),
+		query: z.object({
+			'error-text': z.string().optional()
 		})
 	});
 
@@ -263,13 +267,14 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 
 	const shotMode = getShotMode(community, auth().paramPackData);
 
-	const props = {
+	const props: NewPostViewProps = {
 		id: parent.community_id,
 		pid: parent.pid,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
 		shotMode,
-		community
+		community,
+		errorText: query['error-text']
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
@@ -352,6 +357,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}),
 		files: ['shot']
 	});
+	const rejectReturnUrl = params.post_id ? `/posts/${params.post_id}/create` : `/titles/${body.community_id}/create`;
 
 	const userSettings = await database.getUserSettings(auth().pid);
 	let parentPost = null;
@@ -501,8 +507,9 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	const automodEval = evaluateAutomodRules(document, automodRules);
 	const automodResult = await performAutomodAction(document, automodEval);
 	if (!automodResult.allowPost) {
-		res.sendStatus(422);
-		return;
+		const params = new URLSearchParams();
+		params.append('error-text', res.i18n.t('new_post.automod_error'));
+		return res.redirect(rejectReturnUrl + '?' + params.toString());
 	}
 
 	// Actual posting
