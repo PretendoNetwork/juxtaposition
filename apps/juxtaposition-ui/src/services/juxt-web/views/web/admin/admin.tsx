@@ -25,7 +25,7 @@ export function WebModerationTabs(props: ModerationTabsProps): ReactNode {
 				className={cx({
 					selected: props.selected === 'automod'
 				})}
-				href="/admin/posts/logs"
+				href="/admin/automod"
 			>
 				Automod
 			</a>

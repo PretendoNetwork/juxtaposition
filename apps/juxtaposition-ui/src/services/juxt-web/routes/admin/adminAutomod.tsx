@@ -14,7 +14,7 @@ adminAutomodRouter.get('/automod', async function (req, res) {
 	const { query } = parseReq(req, {
 		query: z.object({
 			action: z.enum(['blocked', 'logged']).optional(),
-			page: z.coerce.number()
+			page: z.coerce.number().default(0)
 		})
 	});
 
@@ -25,7 +25,7 @@ adminAutomodRouter.get('/automod', async function (req, res) {
 		offset,
 		limit
 	});
-	const hasNextPage = offset + limit > logPage.total;
+	const hasNextPage = offset + limit < logPage.total;
 
 	const props: AutomodLogListViewProps = {
 		items: logPage.items,

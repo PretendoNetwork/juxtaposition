@@ -37,8 +37,7 @@ export function WebAutomodLogListView(props: AutomodLogListViewProps): ReactNode
 				Automod (
 				{props.total}
 				{' '}
-				logs
-				)
+				logs)
 			</h2>
 			<WebNavBar selection={5} />
 			<div id="toast"></div>
