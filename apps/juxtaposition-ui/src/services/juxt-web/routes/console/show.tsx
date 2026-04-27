@@ -28,7 +28,7 @@ showRouter.get('/', async function (req, res) {
 	}
 
 	if (query.topic_tag) {
-		res.redirect(`/topics?topic_tag=${query.topic_tag}`);
+		res.redirect(`/topics?${new URLSearchParams({ topic_tag: query.topic_tag })}`);
 	} else if (query.pid) {
 		res.redirect(`/users/${query.pid}`);
 	} else {
