@@ -25,6 +25,7 @@ import type { CommunityViewProps } from '@/services/juxt-web/views/web/community
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 import type { Post } from '@/api/generated';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
@@ -127,9 +128,12 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID/create', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params, query, auth } = parseReq(req, {
 		params: z.object({
 			communityID: z.string()
+		}),
+		query: z.object({
+			'error-text': z.string().optional()
 		})
 	});
 
@@ -140,13 +144,14 @@ communitiesRouter.get('/:communityID/create', async function (req, res) {
 
 	const shotMode = getShotMode(community, auth().paramPackData);
 
-	const props = {
+	const props: NewPostViewProps = {
 		id: community.olive_community_id,
 		name: community.name,
 		url: `/posts/new`,
 		show: 'post',
 		shotMode,
-		community
+		community,
+		errorText: query['error-text']
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
