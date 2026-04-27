@@ -7,4 +7,5 @@ export interface AccountData {
 	settings: HydratedSettingsDocument | null;
 	content: HydratedContentDocument | null;
 	moderator: boolean;
+	developer: boolean;
 }

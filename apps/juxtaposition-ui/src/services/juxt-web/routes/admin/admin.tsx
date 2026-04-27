@@ -27,7 +27,7 @@ const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- Too difficult to type
-const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v === 'on' ? 1 : 0);
+export const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v === 'on' ? 1 : 0);
 
 adminRouter.get('/posts', async function (req, res) {
 	if (!res.locals.moderator) {
