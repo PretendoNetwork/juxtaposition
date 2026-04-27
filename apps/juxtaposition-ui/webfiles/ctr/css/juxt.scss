@@ -1,9 +1,9 @@
-@import 'sprites.css';
-@import './controls/ctabs.css';
-@import './controls/checkbox.css';
-@import './components/ui/CtrNavTabs.css';
-@import 'new-post-view.css';
-@import 'report-post-page.css';
+@use 'sprites.css';
+@use './controls/ctabs.css';
+@use './controls/checkbox.css';
+@use './components/ui/CtrNavTabs.css';
+@use 'new-post-view.css';
+@use 'report-post-page.css';
 
 body {
     margin: 0;
