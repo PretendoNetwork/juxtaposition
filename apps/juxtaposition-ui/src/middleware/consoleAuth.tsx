@@ -1,3 +1,4 @@
+import { createInternalApiClient } from '@/api/client';
 import { config } from '@/config';
 import { getLanguage } from '@/i18n';
 import { logger } from '@/logger';
@@ -58,6 +59,15 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 			request.user = null;
 			request.pid = null;
 		}
+	}
+
+	request.self = null;
+	if (request.user) {
+		const selfResult = await createInternalApiClient(request.tokens).self.get({ throwOnError: false });
+		if (selfResult.error) {
+			logger.error(selfResult.error, 'Failed to get self from access token');
+		}
+		request.self = selfResult.error ? null : selfResult.data ?? null;
 	}
 
 	const mayBypassAuthChecks = request.user?.accessLevel === 3 || config.disableConsoleChecks;

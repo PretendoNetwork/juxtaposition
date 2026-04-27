@@ -17,9 +17,8 @@ showRouter.get('/', async function (req, res) {
 		})
 	});
 
-	const user = await database.getUserSettings(req.pid);
-	const content = await database.getUserContent(req.pid);
-	if (!user || !content) {
+	const self = hasAuth() ? auth().self : null;
+	if (!self?.hasDoneOnboarding) {
 		return res.jsxForDirectory({
 			web: <WebFirstRunView />,
 			portal: <PortalFirstRunView />,
@@ -35,16 +34,8 @@ showRouter.get('/', async function (req, res) {
 		res.redirect('/titles');
 	}
 
-	if (hasAuth()) {
-		const currentMii = auth().user.mii;
-		if (!currentMii || !user) {
-			return;
-		}
-		if (currentMii.name !== user.screen_name) {
-			setName(auth().pid, currentMii.name);
-			user.screen_name = currentMii.name;
-			await user.save();
-		}
+	if (self) {
+		setName(self.pid, self.miiName);
 	}
 });
 
@@ -57,20 +48,21 @@ showRouter.get('/first', async function (req, res) {
 });
 
 showRouter.post('/newUser', async function (req, res) {
-	const { auth, body } = parseReq(req, {
+	const { auth, hasAuth, body } = parseReq(req, {
 		body: z.object({
 			experience: z.number(),
 			notifications: z.boolean()
 		})
 	});
 
-	if (req.pid === null || !req.new_users || req.directory === 'web') {
+	const self = hasAuth() ? auth().self : null;
+
+	if (!self || !req.new_users || req.directory === 'web') {
 		return res.sendStatus(401);
 	}
 
-	const user = await database.getUserSettings(auth().pid);
-	if (user) {
-		return res.sendStatus(504); // User already exists
+	if (self.hasDoneOnboarding) {
+		return res.sendStatus(504); // Onboarding already finished
 	}
 
 	await createUser(auth().pid, body.experience, body.notifications);

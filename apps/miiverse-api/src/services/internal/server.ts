@@ -69,7 +69,7 @@ export async function setupGrpc(): Promise<void> {
 			const hasBody = methodsWithBody.includes(method as any);
 
 			let baseRequest = superRequest(app)[method](request.path).set(headers);
-			if (hasBody) {
+			if (hasBody && request.payload.length > 0) {
 				baseRequest = baseRequest.send(JSON.parse(request.payload));
 			}
 

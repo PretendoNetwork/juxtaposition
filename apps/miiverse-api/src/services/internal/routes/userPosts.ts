@@ -1,0 +1,47 @@
+import { z } from 'zod';
+import { Post } from '@/models/post';
+import { deleteOptional, filterRemovedPosts } from '@/services/internal/utils';
+import { guards } from '@/services/internal/middleware/guards';
+import { mapPost, postSchema } from '@/services/internal/contract/post';
+import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
+import { createInternalApiRouter } from '@/services/internal/builder/router';
+import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import { Settings } from '@/models/settings';
+import type { FilterQuery } from 'mongoose';
+import type { IPost } from '@/types/mongoose/post';
+
+export const userPostsRouter = createInternalApiRouter();
+
+userPostsRouter.get({
+	path: '/users/:id/posts',
+	name: 'users.posts.list',
+	guard: guards.guest,
+	schema: {
+		params: z.object({
+			id: z.coerce.number()
+		}),
+		query: z.object({
+			sort: standardSortSchema
+		}).extend(pageControlSchema()),
+		response: pageDtoSchema(postSchema)
+	},
+	async handler({ params, query, auth }) {
+		const targetUser = await Settings.findOne({ pid: params.id });
+		if (!targetUser) {
+			return mapPage(0, []);
+		}
+
+		const dbQuery: FilterQuery<IPost> = deleteOptional({
+			pid: targetUser.pid,
+			...filterRemovedPosts(auth)
+		});
+		const posts = await Post
+			.find(dbQuery)
+			.sort({ created_at: standardSortToDirection(query.sort) })
+			.skip(query.offset)
+			.limit(query.limit);
+		const total = await Post.countDocuments(dbQuery);
+
+		return mapPage(total, posts.map(mapPost));
+	}
+});

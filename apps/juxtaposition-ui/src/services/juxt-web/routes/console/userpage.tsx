@@ -5,7 +5,7 @@ import { database } from '@/database';
 import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import { getCommunityHash, getUserAccountData, getUserFriendPIDs, newNotification } from '@/util';
+import { getCommunityHash, getUserAccountData, getUserFriendPIDs } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
@@ -23,8 +23,8 @@ import type { Request, Response } from 'express';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
-import type { HydratedSettingsDocument } from '@/models/settings';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
+import type { ShallowUser } from '@/api/generated';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
@@ -180,29 +180,22 @@ userPageRouter.post('/follow', upload.none(), async function (req, res) {
 	});
 
 	const userToFollow = await database.getUserContent(body.id);
-	const userContent = await database.getUserContent(auth().pid);
-	if (!userToFollow || !userContent || !userToFollow.pid) {
+	const userContent = auth().self.content;
+	if (!userToFollow || !userToFollow.pid) {
 		// Invalid state, can't do a follow
 		return res.send({ status: 423, id: body.id, count: userToFollow?.following_users.length ?? 0 });
 	}
 
 	const isFollowing = userContent.followed_users.includes(userToFollow.pid);
-	let newFollowerCount = userToFollow.following_users.length;
-	if (!isFollowing) {
-		// Follow
-		await (userToFollow as any).addToFollowers(userContent.pid);
-		await (userContent as any).addToUsers(userToFollow.pid);
-		newFollowerCount++;
-		const existingNotification = await database.getNotification(userToFollow.pid, 2, userContent.pid);
-		if (!existingNotification) {
-			await newNotification({ pid: userToFollow.pid, type: 'follow', objectID: auth().pid.toString(), link: `/users/${auth().pid}` });
-		}
+	const shouldFollow = !isFollowing;
+	if (shouldFollow) {
+		await req.api.users.followerUser({ id: userToFollow.pid });
 	} else {
-		// Unfollow
-		await (userToFollow as any).removeFromFollowers(userContent.pid);
-		await (userContent as any).removeFromUsers(userToFollow.pid);
-		newFollowerCount--;
+		await req.api.users.unfollowUser({ id: userToFollow.pid });
 	}
+
+	const changeNum = shouldFollow ? 1 : -1;
+	const newFollowerCount = userToFollow.following_users.length + changeNum;
 
 	// idk why, but it always subtracts one from the count before returning
 	res.send({ status: 200, id: userToFollow.pid, count: newFollowerCount - 1 });
@@ -253,17 +246,17 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		return res.redirect('/404');
 	}
 
-	const posts = (await req.api.posts.list({ posted_by: userID }))?.data?.items ?? [];
+	const { data: postPage } = await req.api.users.posts.list({ id: userID });
+	const totalPosts = await database.getTotalPostsByUserID(userID);
 
-	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
 
 	const parentUserContent = await database.getUserContent(req.pid);
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
 	const postListProps: PostListViewProps = {
-		nextLink: `/users/${userID}/more?offset=${posts.length}&pjax=true`,
-		posts,
+		nextLink: `/users/${userID}/more?offset=${postPage.items.length}&pjax=true`,
+		posts: postPage.items,
 		userContent: parentUserContent ?? userContent
 	};
 	if (query.pjax) {
@@ -278,7 +271,7 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		friendPids: friends,
 		isOnline: userSettings.last_active ? isDateInRange(userSettings.last_active, 10) : false,
 		selectedTab: 0,
-		totalPosts: numPosts,
+		totalPosts,
 		user: pnid,
 		userContent: userContent,
 		userSettings: userSettings,
@@ -318,14 +311,15 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	const userContent = await database.getUserContent(userID);
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
+
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await getUserFriendPIDs(userID);
-	const parentUserContent = await database.getUserContent(req.pid);
+	const parentUserContent = hasAuth() ? auth().self.content : null;
 	if (!pnid || !userSettings || !userContent) {
 		return res.redirect('/404');
 	}
 
-	let followers: HydratedSettingsDocument[] = [];
+	let followers: ShallowUser[] = [];
 	let communities: string[] = [];
 	let selection = 0;
 
@@ -375,20 +369,26 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	}
 
 	if (params.type === 'friends') {
-		followers = await SETTINGS.find({ pid: friends });
+		followers = (await SETTINGS.find({ pid: friends })).map(v => ({
+			pid: v.pid,
+			accountStatus: v.account_status,
+			miiName: v.screen_name
+		}));
 		selection = 1;
 	} else if (params.type === 'followers') {
-		followers = await database.getFollowingUsers(userContent);
+		const { data: page } = await req.api.users.listFollowers({ id: userID, limit: 100 });
+		followers = page.items;
 		selection = 3;
 	} else {
-		followers = await database.getFollowedUsers(userContent);
+		const { data: page } = await req.api.users.listFollowing({ id: userID, limit: 100 });
+		followers = page.items;
 		communities = userContent?.followed_communities ?? [];
 		selection = 2;
 	}
 
 	const communityMap = getCommunityHash();
 	const listProps: UserPageFollowingViewProps = {
-		followers: followers.filter(v => v.pid !== 0),
+		followers,
 		communities: communities
 			.filter(v => v !== '0') // UserContent had a wrong default of [0], which means it needs to be filtered out before usage
 			.map(com => ({ id: com, name: communityMap.get(com) ?? com }))
@@ -431,15 +431,15 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 }
 
 async function morePosts(req: Request, res: Response, userID: number): Promise<any> {
-	const { query } = parseReq(req, {
+	const { query, auth, hasAuth } = parseReq(req, {
 		query: z.object({
 			offset: z.coerce.number().nonnegative().default(0)
 		})
 	});
 	const { offset } = query;
 
-	const userContent = await database.getUserContent(req.pid);
-	const posts = (await req.api.posts.list({ posted_by: userID, offset }))?.data.items ?? [];
+	const userContent = hasAuth() ? auth().self.content : null;
+	const posts = (await req.api.users.posts.list({ id: userID, offset }))?.data.items ?? [];
 
 	if (posts.length === 0 || !userContent) {
 		return res.sendStatus(204);
