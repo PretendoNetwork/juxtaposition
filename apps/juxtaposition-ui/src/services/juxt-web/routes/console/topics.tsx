@@ -28,7 +28,11 @@ topicsRouter.get('/', async function (req, res) {
 	}
 	const posts = await POST.find({ topic_tag: query.topic_tag }).sort({ created_at: -1 }).limit(query.limit);
 
-	const nextLink = `/topics/more?topic_tag=${query.topic_tag}&offset=${posts.length}&pjax=true`;
+	const nextLink = `/topics/more?${new URLSearchParams({
+		topic_tag: query.topic_tag,
+		offset: `${posts.length}`,
+		pjax: 'true'
+	})}`;
 
 	if (query.pjax) {
 		return res.jsxForDirectory({
