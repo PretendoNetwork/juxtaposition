@@ -348,11 +348,8 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}),
 		files: ['shot']
 	});
-<<<<<<< feat/port-user-datasource
 	const self = hasAuth() ? auth().self : null;
-=======
 	const rejectReturnUrl = params.post_id ? `/posts/${params.post_id}/create` : `/titles/${body.community_id}/create`;
->>>>>>> dev
 
 	let parentPost = null;
 	const postId = await generatePostUID(21);
