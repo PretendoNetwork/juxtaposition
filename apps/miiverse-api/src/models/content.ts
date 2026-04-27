@@ -5,11 +5,7 @@ const ContentSchema = new Schema<IContent, ContentModel>({
 	pid: Number,
 	followed_communities: {
 		type: [String],
-<<<<<<< feat/port-user-datasource
-		default: ['0']
-=======
 		default: []
->>>>>>> dev
 	},
 	followed_users: {
 		type: [Number],
