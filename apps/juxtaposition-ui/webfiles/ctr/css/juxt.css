@@ -7,7 +7,7 @@
 
 body {
     margin: 0;
-    font-family: Arial, serif;
+    font-family: nintendo_NTLG-DB_001,sans-serif;
     width: 400px;
     background: #00f
 }
@@ -15,7 +15,7 @@ body {
 #body,
 #header,
 body {
-    overflow-x: clip
+    overflow-x: clip; /* Doesn't work on CTR, but the CSS relies on it not working */
 }
 
 #body {
@@ -75,7 +75,7 @@ ul {
     bottom: 0;
     height: 52px;
     line-height: 47px;
-    font-size: 25px;
+    font-size: 18px;
     white-space: nowrap;
     display: inline;
     padding-left: 15px;

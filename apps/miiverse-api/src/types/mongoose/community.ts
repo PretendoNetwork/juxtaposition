@@ -1,7 +1,7 @@
 import type { Model, HydratedDocument } from 'mongoose';
 import type { CommunityData } from '@/types/miiverse/community';
 
-enum COMMUNITY_TYPE {
+export enum COMMUNITY_TYPE {
 	Main = 0,
 	Sub = 1,
 	Announcement = 2,

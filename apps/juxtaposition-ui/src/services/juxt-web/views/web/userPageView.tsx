@@ -132,7 +132,6 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 	const isSelf = user.pid === props.user.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(props.user.pid) ?? false;
-	const isUserFollowingRequester = props.userContent.followed_users.includes(user.pid);
 
 	let head: ReactNode = null;
 	if (isUserDataViewable) {
@@ -142,7 +141,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 	return (
 		<WebRoot head={head}>
 			<h2 id="title" className="page-header"><T k="global.user_page" /></h2>
-			<WebNavBar selection={-1} />
+			<WebNavBar selection={isSelf ? 0 : -1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
 				<div className="community-top">
@@ -180,7 +179,6 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 										>
 											{isRequesterFollowingUser ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
 										</a>
-										{ isRequesterFollowingUser && isUserFollowingRequester ? <a href={`/friend_messages/new/${props.user.pid}`} className="message-button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a> : null }
 									</>
 								)
 							: null }

@@ -15,7 +15,7 @@ export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 						<span className="community-name title">{props.community.name}</span>
 						<br />
 						<span className="text">
-							{props.community.followers}
+							{props.community.followerCount}
 							{' '}
 							<T k="community.followers" />
 						</span>

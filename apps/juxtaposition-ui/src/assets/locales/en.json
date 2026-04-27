@@ -99,6 +99,7 @@
     "none": "No Friend Requests"
   },
   "new_post": {
+    "automod_error": "Your post contains text that is not allowed on Juxtaposition. For more information, please visit https://preten.do/juxt-rules",
     "new_post_short": "Post",
     "post_to": "Post to {{user}}",
     "swearing": "Post cannot contain explicit language.",

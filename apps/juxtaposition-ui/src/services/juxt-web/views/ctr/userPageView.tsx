@@ -63,7 +63,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 												<span className="sprite sp-follower-count inline-sprite"></span>
 												<span id="followers">
 													{' '}
-													{props.userContent.following_users.length - 1}
+													{props.userContent.following_users.length}
 												</span>
 											</span>
 										</span>

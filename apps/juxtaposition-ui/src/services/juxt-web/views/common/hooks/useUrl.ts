@@ -1,6 +1,5 @@
 import { useRenderContext } from '@/services/juxt-web/views/common/components/RenderContext';
-import type { InferSchemaType } from 'mongoose';
-import type { CommunitySchema } from '@/models/communities';
+import type { Community } from '@/api/generated';
 
 export type CtrHeader = { bannerUrl: string; imageId: string; legacy: boolean };
 type Serializable = string | number | boolean | undefined | null;
@@ -21,19 +20,17 @@ function buildCdnUrl(cdnBaseUrl: string, path: string): string {
 	return cdnBaseUrl + withSlash;
 }
 
-function getCtrHeader(cdnBaseUrl: string, community: InferSchemaType<typeof CommunitySchema>): CtrHeader {
-	const imageId = community.parent ? community.parent : community.olive_community_id;
-	const bannerUrl = community.ctr_header
-		? buildCdnUrl(cdnBaseUrl, community.ctr_header)
-		: buildCdnUrl(cdnBaseUrl, `/headers/${imageId}/3DS.png`);
+function getCtrHeader(cdnBaseUrl: string, community: Community): CtrHeader {
+	const imageId = community.parentId ? community.parentId : community.olive_community_id;
+	const bannerUrl = buildCdnUrl(cdnBaseUrl, community.ctrHeaderImagePath);
 
-	const legacy = !community.ctr_header;
+	const legacy = community.hasLegacyCtrHeader;
 
 	return { bannerUrl, imageId, legacy };
 }
 
 export type UseUrlValue = {
-	ctrHeader: (com: InferSchemaType<typeof CommunitySchema>) => CtrHeader;
+	ctrHeader: (com: Community) => CtrHeader;
 	url: (u: string, query?: Record<string, Serializable>) => string;
 	cdn: (path: string) => string;
 	// TODO add util for building a mii image

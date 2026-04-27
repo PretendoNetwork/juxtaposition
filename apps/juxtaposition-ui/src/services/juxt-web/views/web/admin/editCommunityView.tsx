@@ -65,7 +65,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="browserIcon">Browser Icon (128px x 128px)</label>
-						<input type="file" id="browserIcon" data-image-preview accept="image/jpg" name="browserIcon" />
+						<input type="file" id="browserIcon" data-image-preview accept="image/png" name="browserIcon" />
 					</div>
 					<div className="col-md-3">
 						{community.icon_paths
@@ -78,7 +78,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="CTRbrowserHeader">3DS Browser Banner (400px x 220px)</label>
-						<input type="file" id="CTRbrowserHeader" data-image-preview accept="image/jpg" name="CTRbrowserHeader" />
+						<input type="file" id="CTRbrowserHeader" data-image-preview accept="image/png" name="CTRbrowserHeader" />
 					</div>
 					<div className="col-md-3">
 						{community.ctr_header
@@ -91,7 +91,7 @@ export function WebEditCommunityView(props: EditCommunityViewProps): ReactNode {
 					</div>
 					<div className="col-md-3">
 						<label className="labels" htmlFor="WiiUbrowserHeader">Wii U Browser Banner (1280px x 180px)</label>
-						<input type="file" id="WiiUbrowserHeader" data-image-preview accept="image/jpg" name="WiiUbrowserHeader" />
+						<input type="file" id="WiiUbrowserHeader" data-image-preview accept="image/png" name="WiiUbrowserHeader" />
 					</div>
 					<div className="col-md-3">
 						{community.wup_header

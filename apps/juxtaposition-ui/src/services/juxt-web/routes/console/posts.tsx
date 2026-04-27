@@ -3,7 +3,6 @@ import express from 'express';
 import { rateLimit } from 'express-rate-limit';
 import multer from 'multer';
 import { z } from 'zod';
-import { deletePostById, getPostById, getPostsByParentId } from '@/api/post';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
@@ -11,8 +10,7 @@ import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, getInvalidPostRegex, getUserAccountData } from '@/util';
-import { addEmpathyById, removeEmpathyById } from '@/api/empathy';
+import { createLogEntry, evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
@@ -22,12 +20,15 @@ import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView'
 import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
+import { AutomodRule } from '@/models/automodRules';
 import type { Request, Response } from 'express';
 import type { InferSchemaType } from 'mongoose';
 import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 import type { HydratedSettingsDocument } from '@/models/settings';
 import type { ContentSchema } from '@/models/content';
+import type { EmpathyActionEnum } from '@/api/generated';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
@@ -63,19 +64,18 @@ const yeahLimit = rateLimit({
 });
 
 postsRouter.get('/:post_id/oembed.json', async function (req, res) {
-	const { params, auth, hasAuth } = parseReq(req, {
+	const { params } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
 		})
 	});
-	const maybeTokens = hasAuth() ? auth().tokens : {};
 
-	const post = await getPostById(maybeTokens, params.post_id);
+	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
 	if (!post) {
 		return res.sendStatus(404);
 	}
 
-	const community = await database.getCommunityByID(post.community_id);
+	const { data: community } = await req.api.communities.get({ id: post.community_id });
 	const postPNID = await getUserAccountData(post.pid);
 
 	let img = {};
@@ -118,15 +118,14 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 		})
 	});
 
-	const post = await getPostById(auth().tokens, body.postID);
+	const { data: post } = await req.api.posts.get({ post_id: body.postID });
 	if (!post) {
 		return res.sendStatus(404);
 	}
 
 	const existingEmpathy = post.yeahs.indexOf(auth().pid) !== -1;
-	const result = !existingEmpathy
-		? await addEmpathyById(auth().tokens, post.id)
-		: await removeEmpathyById(auth().tokens, post.id);
+	const action: EmpathyActionEnum = !existingEmpathy ? 'add' : 'remove';
+	const { data: result } = await req.api.posts.changeEmpathy({ post_id: post.id, action });
 	if (result === null) {
 		res.send({ status: 423, id: post.id, count: post.empathy_count });
 		return;
@@ -147,7 +146,6 @@ postsRouter.get('/:post_id', async function (req, res) {
 			post_id: z.string()
 		})
 	});
-	const maybeTokens = hasAuth() ? auth().tokens : {};
 
 	let userSettings: HydratedSettingsDocument | null = null;
 	let userContent: InferSchemaType<typeof ContentSchema> | null = null;
@@ -156,24 +154,24 @@ postsRouter.get('/:post_id', async function (req, res) {
 		userContent = await database.getUserContent(auth().pid);
 	}
 
-	const post = await getPostById(maybeTokens, params.post_id);
+	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
 	if (!post) {
 		return res.redirect('/404');
 	}
 	if (post.parent) {
-		const parent = await getPostById(maybeTokens, post.parent);
+		const { data: parent } = await req.api.posts.get({ post_id: post.parent });
 		if (!parent) {
 			return res.redirect('/404');
 		}
 		return res.redirect(`/posts/${parent.id}`);
 	}
-	const community = await database.getCommunityByID(post.community_id);
+	const { data: community } = await req.api.communities.get({ id: post.community_id });
 	if (!community) {
 		return res.redirect('/404');
 	}
 
 	// increase limit for post replies since there's no pagination yet
-	const replies = (await getPostsByParentId(maybeTokens, post.id, 0, 500))?.items ?? [];
+	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort: 'oldest', limit: 500 }))?.data.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
 	const canPost = hasAuth() && userSettings !== null && isPostingAllowed(community, userSettings, post, auth().user);
 
@@ -202,12 +200,12 @@ postsRouter.delete('/:post_id', async function (req, res) {
 		})
 	});
 
-	const post = await getPostById(auth().tokens, params.post_id);
+	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
 	if (!post) {
 		return res.sendStatus(404);
 	}
 
-	const result = await deletePostById(auth().tokens, post.id, query.reason);
+	const { data: result } = await req.api.posts.delete({ post_id: post.id, reason: query.reason });
 	if (result === null) {
 		return res.sendStatus(404);
 	}
@@ -248,31 +246,35 @@ postsRouter.post('/:post_id/new', postLimit, upload.fields([{ name: 'shot', maxC
 });
 
 postsRouter.get('/:post_id/create', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params, auth, query } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
+		}),
+		query: z.object({
+			'error-text': z.string().optional()
 		})
 	});
 
-	const parent = await getPostById(auth().tokens, params.post_id);
+	const { data: parent } = await req.api.posts.get({ post_id: params.post_id });
 	if (!parent) {
 		return res.sendStatus(404);
 	}
 
-	const community = await database.getCommunityByID(parent.community_id);
+	const { data: community } = await req.api.communities.get({ id: parent.community_id });
 	if (!community) {
 		return res.sendStatus(404);
 	}
 
 	const shotMode = getShotMode(community, auth().paramPackData);
 
-	const props = {
+	const props: NewPostViewProps = {
 		id: parent.community_id,
 		pid: parent.pid,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
 		shotMode,
-		community
+		community,
+		errorText: query['error-text']
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
@@ -281,13 +283,13 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 });
 
 postsRouter.get('/:post_id/report', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
 		})
 	});
 
-	const post = await getPostById(auth().tokens, params.post_id);
+	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
 	if (!post) {
 		return res.redirect('/404');
 	}
@@ -311,7 +313,7 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 	});
 
 	const { reason, message, post_id } = body;
-	const post = await getPostById(auth().tokens, post_id);
+	const { data: post } = await req.api.posts.get({ post_id });
 	if (!reason || !post_id || !post) {
 		return res.redirect('/404');
 	}
@@ -355,18 +357,20 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}),
 		files: ['shot']
 	});
+	const rejectReturnUrl = params.post_id ? `/posts/${params.post_id}/create` : `/titles/${body.community_id}/create`;
 
 	const userSettings = await database.getUserSettings(auth().pid);
 	let parentPost = null;
 	const postId = await generatePostUID(21);
-	let community = await database.getCommunityByID(body.community_id);
+	let { data: community } = await req.api.communities.get({ id: body.community_id });
 	if (params.post_id) {
 		parentPost = await database.getPostByID(params.post_id.toString());
 		if (!parentPost) {
 			res.sendStatus(403);
 			return;
 		} else {
-			community = await database.getCommunityByID(parentPost.community_id);
+			const { data: parentPostCommunity } = await req.api.communities.get({ id: parentPost.community_id ?? '' });
+			community = parentPostCommunity;
 			if (parentPost.removed) {
 				res.sendStatus(400);
 				return;
@@ -459,8 +463,9 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		res.sendStatus(422);
 		return;
 	}
+
 	const document = {
-		title_id: community.title_id[0],
+		title_id: community.titleIds[0],
 		community_id: community.olive_community_id,
 		screen_name: userSettings.screen_name,
 		body: postBody,
@@ -496,6 +501,18 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	if ((document.body === '' && document.painting === '' && document.screenshot === '') || duplicatePost) {
 		return res.redirect('/titles/' + community.olive_community_id + '/new');
 	}
+
+	// Automod
+	const automodRules = await AutomodRule.find({ enabled: true });
+	const automodEval = evaluateAutomodRules(document, automodRules);
+	const automodResult = await performAutomodAction(document, automodEval);
+	if (!automodResult.allowPost) {
+		const params = new URLSearchParams();
+		params.append('error-text', res.i18n.t('new_post.automod_error'));
+		return res.redirect(rejectReturnUrl + '?' + params.toString());
+	}
+
+	// Actual posting
 	const newPost = new POST(document);
 	newPost.save();
 	if (parentPost) {

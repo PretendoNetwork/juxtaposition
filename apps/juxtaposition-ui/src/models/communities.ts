@@ -83,8 +83,6 @@ type CommunityDefaultedFields =
 export type ICommunityInput = Omit<ICommunity, CommunityDefaultedFields> & Partial<Pick<ICommunity, CommunityDefaultedFields>>;
 
 export interface ICommunityMethods {
-	upEmpathy(): Promise<void>;
-	downEmpathy(): Promise<void>;
 	upFollower(): Promise<void>;
 	downFollower(): Promise<void>;
 }
@@ -245,20 +243,6 @@ export const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunity
 		type: [String],
 		default: []
 	}
-});
-
-CommunitySchema.method<HydratedCommunityDocument>('upEmpathy', async function () {
-	const empathy = this.get('empathy_count');
-	this.set('empathy_count', empathy + 1);
-
-	await this.save();
-});
-
-CommunitySchema.method<HydratedCommunityDocument>('downEmpathy', async function () {
-	const empathy = this.get('empathy_count');
-	this.set('empathy_count', empathy - 1);
-
-	await this.save();
 });
 
 CommunitySchema.method<HydratedCommunityDocument>('upFollower', async function () {

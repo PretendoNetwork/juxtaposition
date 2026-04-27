@@ -1,0 +1,103 @@
+import { Router } from 'express';
+import { z } from 'zod';
+import { buildAuthContext } from '@/services/internal/builder/auth';
+import { createRouteContext } from '@/services/internal/builder/context';
+import { openapiRegistry } from '@/services/internal/builder/openapi';
+import type { Request, RequestHandler, Response } from 'express';
+import type { RouteConfig } from '@asteasolutions/zod-to-openapi';
+import type { RouteParameter } from '@asteasolutions/zod-to-openapi/dist/openapi-registry';
+import type { AuthContext } from '@/services/internal/builder/auth';
+import type { ZodRouteContext, ZodRouteSchemaSchape } from '@/services/internal/builder/context';
+
+export type ZodRouteHandler<TContext extends ZodRouteContext, TResponse = any> = (ops: TContext) => TResponse;
+
+export type ZodRouteOptions<TSchema extends ZodRouteSchemaSchape = {}, TAuthCtx = unknown> = {
+	path: string;
+	name: string;
+	description?: string;
+	guard: RequestHandler;
+	schema: TSchema;
+	allowNotFound?: boolean;
+	handler: (ctx: ZodRouteContext<TSchema, TAuthCtx>) => Promise<z.infer<TSchema['response']>>;
+};
+
+export type RouteMethods = 'get' | 'post' | 'delete' | 'patch';
+
+export type ZodRouter<TAuthCtx = unknown> = {
+	post<const TSchema extends ZodRouteSchemaSchape>(ops: ZodRouteOptions<TSchema, TAuthCtx>): void;
+	get<const TSchema extends ZodRouteSchemaSchape>(ops: ZodRouteOptions<TSchema, TAuthCtx>): void;
+	patch<const TSchema extends ZodRouteSchemaSchape>(ops: ZodRouteOptions<TSchema, TAuthCtx>): void;
+	delete<const TSchema extends ZodRouteSchemaSchape>(ops: ZodRouteOptions<TSchema, TAuthCtx>): void;
+	toRouter(): Router;
+};
+
+export type CreateZodRouterOptions<TAuthCtx> = {
+	createAuthCtx(req: Request, res: Response): TAuthCtx;
+};
+
+export function createZodRouter<TAuthCtx>(ops: CreateZodRouterOptions<TAuthCtx>): ZodRouter<TAuthCtx> {
+	const baseRouter = Router();
+	const routerBuilder = (method: RouteMethods, route: ZodRouteOptions<ZodRouteSchemaSchape, TAuthCtx>): void => {
+		const routeSpec: RouteConfig = {
+			method,
+			path: route.path.replaceAll(/:([a-zA-Z0-9-_]+)/g, '{$1}'),
+			operationId: route.name,
+			summary: route.description,
+			responses: {}
+		};
+		routeSpec.request = {};
+		if (route.schema.body) {
+			routeSpec.request.body = {
+				content: {
+					'application/json': {
+						schema: route.schema.body
+					}
+				}
+			};
+		}
+		if (route.schema.query) {
+			routeSpec.request.query = route.schema.query as RouteParameter;
+		}
+		if (route.schema.params) {
+			routeSpec.request.params = route.schema.params as RouteParameter;
+		}
+		if (routeSpec.request) {
+			if (route.schema.response) {
+				routeSpec.responses[200] = {
+					description: 'Response',
+					content: {
+						'application/json': {
+							schema: route.allowNotFound ? z.union([route.schema.response, z.null()]) : route.schema.response
+						}
+					}
+				};
+			}
+			if (route.schema.response && route.allowNotFound) {
+				routeSpec.responses[404] = {
+					description: 'Resource could not be found'
+				};
+			}
+		}
+		openapiRegistry.registerPath(routeSpec);
+		baseRouter[method](route.path, route.guard, async (req, res) => {
+			const authCtx = ops.createAuthCtx(req, res);
+			const ctx = createRouteContext(req, res, route.schema, authCtx);
+			const result = await route.handler(ctx);
+			res.json(result);
+		});
+	};
+
+	return {
+		get: route => routerBuilder('get', route),
+		post: route => routerBuilder('post', route),
+		delete: route => routerBuilder('delete', route),
+		patch: route => routerBuilder('patch', route),
+		toRouter: () => baseRouter
+	};
+}
+
+export function createInternalApiRouter(): ZodRouter<AuthContext> {
+	return createZodRouter({
+		createAuthCtx: buildAuthContext
+	});
+}

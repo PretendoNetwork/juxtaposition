@@ -9,8 +9,11 @@ WORKDIR ${app_dir}
 COPY . .
 RUN npm ci
 
-WORKDIR ${app_dir}/apps/juxtaposition-ui
+WORKDIR ${app_dir}/apps/miiverse-api
+RUN npm run build
 
+WORKDIR ${app_dir}/apps/juxtaposition-ui
+# Multer uses the uploads directory for temporary files
 RUN mkdir -p uploads && chown node:node uploads
 RUN npm run build
 

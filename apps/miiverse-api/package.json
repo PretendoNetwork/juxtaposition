@@ -14,12 +14,12 @@
 		"test": "ts-node test/test.ts"
 	},
 	"dependencies": {
+		"@asteasolutions/zod-to-openapi": "^8.5.0",
 		"@aws-sdk/client-s3": "^3.1004.0",
 		"@imagemagick/magick-wasm": "^0.0.38",
 		"@neato/config": "^4.1.0",
 		"@pretendonetwork/grpc": "^2.4.3",
 		"@repo/grpc-client": "^0.0.0",
-		"colors": "^1.4.0",
 		"crc": "^4.3.2",
 		"express": "^5.2.1",
 		"express-prom-bundle": "^7.0.2",
@@ -40,21 +40,12 @@
 	},
 	"devDependencies": {
 		"@pretendonetwork/eslint-config": "^0.1.4",
-		"@types/bmp-js": "^0.1.2",
 		"@types/express": "^4.17.17",
-		"@types/fs-extra": "^11.0.1",
 		"@types/multer": "^2.1.0",
-		"@types/newman": "^5.3.4",
 		"@types/pako": "^2.0.4",
 		"@types/supertest": "^7.2.0",
-		"axios": "^1.13.6",
 		"eslint": "^9.39.4",
-		"newman": "^6.2.2",
-		"ora": "^9.3.0",
-		"postman-collection": "^5.3.0",
-		"table": "^6.8.1",
 		"tsup": "^8.5.1",
-		"typescript": "^5.9.3",
-		"xmlbuilder2": "^4.0.3"
+		"typescript": "^5.9.3"
 	}
 }

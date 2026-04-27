@@ -13,10 +13,7 @@ import type { CommunityViewProps } from '@/services/juxt-web/views/web/community
 export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 	const url = useUrl();
 	const community = props.community;
-	const imageId = community.parent ? community.parent : community.olive_community_id;
-	const bannerUrl = community.wup_header
-		? url.cdn(community.wup_header)
-		: url.cdn(`/headers/${imageId}/WiiU.png`);
+	const bannerUrl = url.cdn(community.wupHeaderImagePath);
 
 	return (
 		<PortalRoot title={community.name}>
@@ -76,7 +73,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 								<PortalUIIcon name="followers" />
 								{' '}
 								<span id="followers">
-									{community.followers}
+									{community.followerCount}
 								</span>
 							</span>
 						</span>

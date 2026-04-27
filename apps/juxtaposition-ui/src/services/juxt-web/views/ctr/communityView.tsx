@@ -47,7 +47,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 									<span className="sprite sp-follower-count inline-sprite"></span>
 									<span id="followers">
 										{' '}
-										{community.followers}
+										{community.followerCount}
 									</span>
 								</span>
 							</span>

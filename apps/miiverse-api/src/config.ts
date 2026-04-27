@@ -92,6 +92,12 @@ export const presets: Record<string, any> = {
 				apiKey: '12345678123456781234567812345678'
 			}
 		}
+	},
+	dummy: {
+		log: {
+			format: 'pretty',
+			level: 'info'
+		}
 	}
 };
 
@@ -106,6 +112,8 @@ function flatZodSchema<T extends z.ZodType>(schema: T): SchemaTransformer<z.infe
 	};
 }
 
+const shouldSkip = process.env.SKIP_CONFIG_VALIDATION === 'true';
+
 export const config = createConfig({
 	envPrefix: 'PN_MIIVERSE_API_',
 	presetKey: 'usePresets',
@@ -113,7 +121,22 @@ export const config = createConfig({
 	loaders: [
 		loaders.environment(),
 		loaders.file('.env'),
-		loaders.file('config.json')
+		loaders.file('config.json'),
+		{
+			name: 'skipped-generation',
+			load(_ctx) {
+				if (!shouldSkip) {
+					return [];
+				}
+				const keys = {
+					log__format: 'pretty',
+					log__level: 'info'
+				};
+				return Object.entries(keys).map(v => ({ key: v[0], value: v[1] }));
+			}
+		}
 	],
-	schema: flatZodSchema(schema)
+	schema: shouldSkip
+		? z.any() as any as SchemaTransformer<z.infer<typeof schema>>
+		: flatZodSchema(schema)
 });

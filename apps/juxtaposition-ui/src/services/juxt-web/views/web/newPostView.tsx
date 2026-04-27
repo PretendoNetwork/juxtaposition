@@ -1,9 +1,9 @@
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
-import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
-import type { CommunitySchema, CommunityShotMode } from '@/models/communities';
+import type { CommunityShotMode } from '@/models/communities';
+import type { Community } from '@/api/generated';
 
 const empathies = [
 	{
@@ -54,8 +54,11 @@ export type NewPostViewProps = {
 	show: string;
 	// must provide messagePid OR community
 	messagePid?: number;
-	community?: InferSchemaType<typeof CommunitySchema>;
+	community?: Community;
 	shotMode: CommunityShotMode;
+
+	// Error feedback
+	errorText?: string;
 };
 
 export function WebNewPostView(props: NewPostViewProps): ReactNode {
@@ -64,6 +67,7 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
+				{props.errorText ? <p>{props.errorText}</p> : null}
 				<input type="hidden" name="community_id" value={props.id} />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">

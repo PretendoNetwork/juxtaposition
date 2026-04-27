@@ -3,9 +3,6 @@ import multer from 'multer';
 import { z } from 'zod';
 import { config } from '@/config';
 import { database } from '@/database';
-import { COMMUNITY } from '@/models/communities';
-import { POST } from '@/models/post';
-import { redisGet, redisRemove, redisSet } from '@/redisCache';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebCommunityListView, WebCommunityOverviewView } from '@/services/juxt-web/views/web/communityListView';
 import { PortalCommunityListView, PortalCommunityOverviewView } from '@/services/juxt-web/views/portal/communityListView';
@@ -22,21 +19,24 @@ import { zodFallback } from '@/util';
 import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
-import type { InferSchemaType } from 'mongoose';
+import { Community } from '@/models/communities';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
-import type { CommunitySchema } from '@/models/communities';
+import type { Post } from '@/api/generated';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
+
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
 
 communitiesRouter.get('/', async function (req, res) {
-	const communityStats = await getCommunityStats();
+	const popular = await req.api.communities.listPopular({ limit: 9 });
+	const recent = await req.api.communities.list({ category: 'listed', limit: 6, sort: 'newest' });
 
 	const props: CommunityOverviewViewProps = {
-		newCommunities: communityStats.new,
-		popularCommunities: communityStats.popular
+		newCommunities: recent.data.items,
+		popularCommunities: popular.data.items
 	};
 	res.jsxForDirectory({
 		web: <WebCommunityOverviewView {...props} />,
@@ -46,10 +46,10 @@ communitiesRouter.get('/', async function (req, res) {
 });
 
 communitiesRouter.get('/all', async function (req, res) {
-	const communities = await database.getCommunities(90);
+	const communities = await req.api.communities.list({ category: 'listed', limit: 90 });
 
 	const props: CommunityListViewProps = {
-		communities
+		communities: communities.data.items
 	};
 	res.jsxForDirectory({
 		web: <WebCommunityListView {...props} />,
@@ -59,7 +59,7 @@ communitiesRouter.get('/all', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID', async function (req, res) {
-	const { query, params } = parseReq(req, {
+	const { query, params, auth } = parseReq(req, {
 		query: z.object({
 			title_id: z.string().optional()
 		}),
@@ -69,7 +69,19 @@ communitiesRouter.get('/:communityID', async function (req, res) {
 	});
 
 	if (query.title_id) {
-		const community = await database.getCommunityByTitleID(query.title_id);
+		const { data: community } = await req.api.communities.get({ id: `tid:${query.title_id}` });
+		if (!community) {
+			return res.redirect('/404');
+		}
+		return res.redirect(`/titles/${community.olive_community_id}/new`);
+	}
+
+	if (params.communityID == '0') {
+		const tid = auth().paramPackData?.title_id;
+		if (!tid) {
+			return res.redirect('/404');
+		}
+		const { data: community } = await req.api.communities.get({ id: `tid:${tid}` });
 		if (!community) {
 			return res.redirect('/404');
 		}
@@ -94,14 +106,15 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 	if (!userContent || !userSettings) {
 		return res.redirect('/404');
 	}
-	const community = await database.getCommunityByID(params.communityID);
+	const { data: community } = await req.api.communities.get({ id: params.communityID });
 	if (!community) {
 		return res.renderError({
 			code: 404,
 			message: 'Community not Found'
 		});
 	}
-	const children = await database.getSubCommunities(community.olive_community_id);
+	const { data: subCommunities } = await req.api.communities.list({ category: 'sub', limit: 90, parent_id: community.olive_community_id });
+	const children = subCommunities.items;
 	if (!children) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
@@ -117,26 +130,30 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID/create', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params, query, auth } = parseReq(req, {
 		params: z.object({
 			communityID: z.string()
+		}),
+		query: z.object({
+			'error-text': z.string().optional()
 		})
 	});
 
-	const community = await database.getCommunityByID(params.communityID);
+	const { data: community } = await req.api.communities.get({ id: params.communityID });
 	if (!community) {
 		return res.sendStatus(404);
 	}
 
 	const shotMode = getShotMode(community, auth().paramPackData);
 
-	const props = {
+	const props: NewPostViewProps = {
 		id: community.olive_community_id,
 		name: community.name,
 		url: `/posts/new`,
 		show: 'post',
 		shotMode,
-		community
+		community,
+		errorText: query['error-text']
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
@@ -160,41 +177,35 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	if (hasAuth() && (!userContent || !userSettings)) {
 		return res.redirect('/404');
 	}
-	const community = await database.getCommunityByID(params.communityID);
+	const { data: community } = await req.api.communities.get({ id: params.communityID });
 	if (!community) {
 		return res.renderError({
 			code: 404,
 			message: 'Community not Found'
 		});
 	}
-
-	if (!community.permissions) {
-		community.permissions = {
-			open: !!community.open,
-			minimum_new_post_access_level: 0,
-			minimum_new_comment_access_level: 0,
-			minimum_new_community_access_level: 0
-		};
-		await community.save();
+	const { data: communityStats } = await req.api.communities.getStats({ id: community?.olive_community_id });
+	if (!communityStats) {
+		throw new Error('Community stats could not be found');
 	}
+
 	const canPost = userSettings !== null && isPostingAllowed(community, userSettings, null, auth().user);
 	const isUserFollowing = userContent !== null && userContent.followed_communities.includes(community.olive_community_id);
 
-	const subCommunities = await database.getSubCommunities(community.olive_community_id);
-	let posts;
-	let type;
+	const { data: subCommunitiesList } = await req.api.communities.list({ category: 'sub', limit: 90, parent_id: community.olive_community_id });
+	const subCommunities = subCommunitiesList.items;
+	let posts: Post[] = [];
+	let type: number = 0;
 
 	if (params.type === 'hot') {
-		posts = await database.getNumberPopularCommunityPostsByID(community, config.postLimit);
+		const pageResult = await req.api.communities.feed.getPopular({ id: community.olive_community_id, limit: config.postLimit });
+		posts = pageResult.data.items;
 		type = 1;
-	} else if (params.type === 'verified') {
-		posts = await database.getNumberVerifiedCommunityPostsByID(community, config.postLimit);
-		type = 2;
 	} else {
-		posts = await database.getNewPostsByCommunity(community, config.postLimit);
+		const pageResult = await req.api.communities.feed.getFresh({ id: community.olive_community_id, limit: config.postLimit });
+		posts = pageResult.data.items;
 		type = 0;
 	}
-	const numPosts = await database.getTotalPostsByCommunity(community);
 
 	const postListProps: PostListViewProps = {
 		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${posts.length}&pjax=true`,
@@ -214,7 +225,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		feedType: type,
 		community,
 		hasSubCommunities: subCommunities.length > 0,
-		totalPosts: numPosts,
+		totalPosts: communityStats.totalPosts,
 		canPost,
 		isUserFollowing
 	};
@@ -250,21 +261,18 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 
 	const offset = query.offset;
 	const userContent = await database.getUserContent(auth().pid);
-	let posts;
-	const community = await database.getCommunityByID(params.communityID);
+	const { data: community } = await req.api.communities.get({ id: params.communityID });
 	if (!community || !userContent) {
 		return res.redirect('/404');
 	}
-	switch (params.type) {
-		case 'hot':
-			posts = await database.getNumberPopularCommunityPostsByID(community, config.postLimit, offset);
-			break;
-		case 'verified':
-			posts = await database.getNumberVerifiedCommunityPostsByID(community, config.postLimit, offset);
-			break;
-		default:
-			posts = await database.getNewPostsByCommunity(community, config.postLimit, offset);
-			break;
+
+	let posts: Post[] = [];
+	if (params.type === 'hot') {
+		const pageResult = await req.api.communities.feed.getPopular({ id: community.olive_community_id, limit: config.postLimit, offset });
+		posts = pageResult.data.items;
+	} else {
+		const pageResult = await req.api.communities.feed.getFresh({ id: community.olive_community_id, limit: config.postLimit, offset });
+		posts = pageResult.data.items;
 	}
 
 	const postListProps: PostListViewProps = {
@@ -291,82 +299,27 @@ communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 		})
 	});
 
-	const community = await database.getCommunityByID(body.id);
+	const { data: community } = await req.api.communities.get({ id: body.id });
 	const userContent = await database.getUserContent(auth().pid);
 
 	if (!userContent || !community) {
-		res.send({ status: 423, id: community?.olive_community_id, count: community?.followers });
+		res.send({ status: 423, id: community?.olive_community_id, count: community?.followerCount });
 		return;
+	}
+	const dbCommunity = await Community.findOne({ olive_community_id: community.olive_community_id });
+	if (!dbCommunity) {
+		throw new Error('Community gone after request');
 	}
 
 	// Pretty terrible use of `any` here, but database models aren't typed yet so I have to
 	const userFollowsCommunity = userContent.followed_communities.includes(community.olive_community_id);
 	if (!userFollowsCommunity) {
-		(community as any).upFollower();
+		dbCommunity.upFollower();
 		(userContent as any).addToCommunities(community.olive_community_id);
 	} else {
-		(community as any).downFollower();
+		dbCommunity.downFollower();
 		(userContent as any).removeFromCommunities(community.olive_community_id);
 	}
 
-	await redisRemove('popularCommunities'); // Force cache to refresh
-	res.send({ status: 200, id: community.olive_community_id, count: community.followers });
+	res.send({ status: 200, id: community.olive_community_id, count: community.followerCount });
 });
-
-type CommunityStats = {
-	popular: InferSchemaType<typeof CommunitySchema>[];
-	new: InferSchemaType<typeof CommunitySchema>[];
-};
-
-async function getCommunityStats(): Promise<CommunityStats> {
-	const cachedRedisPopularCommunities = await redisGet('popularCommunities');
-	let popularCommunities: InferSchemaType<typeof CommunitySchema>[] | null = cachedRedisPopularCommunities ? JSON.parse(cachedRedisPopularCommunities) : null;
-	if (popularCommunities == null) {
-		const last24Hours = await calculateMostPopularCommunities();
-		popularCommunities = await COMMUNITY.aggregate([
-			{ $match: { olive_community_id: { $in: last24Hours }, parent: null } },
-			{
-				$addFields: {
-					index: { $indexOfArray: [last24Hours, '$olive_community_id'] }
-				}
-			},
-			{ $sort: { index: 1 } },
-			{ $limit: 9 },
-			{ $project: { index: 0, _id: 0 } }
-		]);
-		await redisSet('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
-	}
-
-	const cachedRedisNewCommunities = await redisGet('newCommunities');
-	let newCommunities: InferSchemaType<typeof CommunitySchema>[] = cachedRedisNewCommunities ? JSON.parse(cachedRedisNewCommunities) : null;
-	if (newCommunities == null) {
-		newCommunities = await database.getNewCommunities(6);
-		await redisSet('newCommunities', JSON.stringify(newCommunities), 60 * 60);
-	}
-
-	return {
-		popular: popularCommunities,
-		new: newCommunities
-	};
-}
-
-async function calculateMostPopularCommunities(): Promise<string[]> {
-	const now = new Date();
-	const last24Hours = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-
-	const posts = await POST.find({ created_at: { $gte: last24Hours }, message_to_pid: null }).lean();
-
-	const communityIds: Record<string, number> = {};
-	for (const post of posts) {
-		const communityId = post.community_id;
-		if (!communityId) {
-			continue;
-		}
-
-		communityIds[communityId] ??= 0;
-		communityIds[communityId] += 1;
-	}
-	return Object.entries(communityIds)
-		.sort((a, b) => b[1] - a[1])
-		.map(entry => entry[0]);
-}

@@ -119,6 +119,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 						</div>
 					</CtrTabsView>
 				</div>
+				{props.errorText ? <p>{props.errorText}</p> : null}
 				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
 				<input
 					type="submit"

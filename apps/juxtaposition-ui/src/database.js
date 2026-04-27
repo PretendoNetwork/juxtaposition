@@ -37,18 +37,6 @@ export function notBanned() {
 	return { account_status: { $in: [0, 1] } };
 }
 
-async function getCommunities(numberOfCommunities, offset) {
-	verifyConnected();
-	if (!offset) {
-		offset = 0;
-	}
-	if (numberOfCommunities === -1) {
-		return COMMUNITY.find({ parent: null, type: [0, 2] }).skip(offset);
-	} else {
-		return COMMUNITY.find({ parent: null, type: [0, 2] }).skip(offset).limit(numberOfCommunities);
-	}
-}
-
 async function getCommunitiesFuzzySearch(search_key, limit, offset) {
 	verifyConnected();
 	if (limit === -1) {
@@ -58,59 +46,11 @@ async function getCommunitiesFuzzySearch(search_key, limit, offset) {
 	}
 }
 
-async function getMostPopularCommunities(numberOfCommunities) {
-	verifyConnected();
-	return COMMUNITY.find({ parent: null, type: 0 }).sort({ followers: -1 }).limit(numberOfCommunities);
-}
-
-async function getNewCommunities(numberOfCommunities) {
-	verifyConnected();
-	return COMMUNITY.find({ parent: null, type: 0 }).sort([['created_at', -1]]).limit(numberOfCommunities);
-}
-
-async function getSubCommunities(communityID) {
-	verifyConnected();
-	return COMMUNITY.find({
-		parent: communityID
-	});
-}
-
-async function getCommunityByTitleID(title_id) {
-	verifyConnected();
-	return COMMUNITY.findOne({
-		title_id: title_id
-	});
-}
-
-async function getCommunityByID(community_id) {
-	verifyConnected();
-	return COMMUNITY.findOne({
-		olive_community_id: community_id
-	});
-}
-
-async function getTotalPostsByCommunity(community) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).countDocuments();
-}
-
 async function getPostByID(postID) {
 	verifyConnected();
 	return POST.findOne({
 		id: postID
 	});
-}
-
-async function getPostReplies(postID, number) {
-	verifyConnected();
-	return POST.find({
-		parent: postID,
-		removed: false
-	}).limit(number);
 }
 
 async function getDuplicatePosts(pid, post, olderThanMs) {
@@ -128,16 +68,6 @@ async function getDuplicatePosts(pid, post, olderThanMs) {
 	});
 }
 
-async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
-	verifyConnected();
-	return POST.find({
-		parent: post.pid,
-		created_at: { $lt: post.created_at },
-		message_to_pid: null,
-		removed: false
-	}).limit(numberOfPosts);
-}
-
 async function getTotalPostsByUserID(userID) {
 	verifyConnected();
 	return POST.find({
@@ -146,114 +76,6 @@ async function getTotalPostsByUserID(userID) {
 		message_to_pid: null,
 		removed: false
 	}).countDocuments();
-}
-
-async function getHotPostsByCommunity(community, numberOfPosts) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).sort({ empathy_count: -1 }).limit(numberOfPosts);
-}
-
-async function getNumberNewCommunityPostsByID(community, number) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).sort({ created_at: -1 }).limit(number);
-}
-
-async function getNumberPopularCommunityPostsByID(community, limit, offset) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).sort({ empathy_count: -1 }).skip(offset).limit(limit);
-}
-
-async function getNumberVerifiedCommunityPostsByID(community, limit, offset) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		verified: true,
-		parent: null,
-		removed: false
-	}).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
-async function getPostsByCommunity(community, numberOfPosts) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).limit(numberOfPosts);
-}
-
-async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		search_key: search_key,
-		parent: null,
-		removed: false
-	}).limit(numberOfPosts);
-}
-
-async function getNewPostsByCommunity(community, limit, offset) {
-	verifyConnected();
-	return POST.find({
-		community_id: community.olive_community_id,
-		parent: null,
-		removed: false
-	}).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
-async function getAllUserPosts(pid) {
-	verifyConnected();
-	return POST.find({
-		pid: pid,
-		message_to_pid: null
-	});
-}
-
-async function getRemovedUserPosts(pid) {
-	verifyConnected();
-	return POST.find({
-		pid: pid,
-		message_to_pid: null,
-		removed: true
-	});
-}
-
-async function getUserPostsAfterTimestamp(post, numberOfPosts) {
-	verifyConnected();
-	return POST.find({
-		pid: post.pid,
-		created_at: { $lt: post.created_at },
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).limit(numberOfPosts);
-}
-
-async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
-	verifyConnected();
-	return POST.find({
-		community_id: post.community_id,
-		created_at: { $lt: post.created_at },
-		parent: null,
-		removed: false
-	}).limit(numberOfPosts);
-}
-
-async function getEndpoints() {
-	verifyConnected();
-	return ENDPOINT.find({});
 }
 
 async function getEndPoint(accessLevel) {
@@ -306,49 +128,6 @@ async function getFollowedUsers(content) {
 	});
 }
 
-async function getNewsFeed(content, numberOfPosts, includeCommunities) {
-	verifyConnected();
-	return POST.find({
-		$or: [
-			{ pid: content.followed_users },
-			{ pid: content.pid },
-			{ community_id: includeCommunities ? content.followed_communities : [] }
-		],
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).limit(numberOfPosts).sort({ created_at: -1 });
-}
-
-async function getNewsFeedAfterTimestamp(content, numberOfPosts, post, includeCommunities) {
-	verifyConnected();
-	return POST.find({
-		$or: [
-			{ pid: content.followed_users },
-			{ pid: content.pid },
-			{ community_id: includeCommunities ? content.followed_communities : [] }
-		],
-		created_at: { $lt: post.created_at },
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).limit(numberOfPosts).sort({ created_at: -1 });
-}
-
-async function getNewsFeedOffset(content, limit, offset, includeCommunities) {
-	verifyConnected();
-	return POST.find({
-		$or: [
-			{ pid: content.followed_users },
-			{ pid: content.pid },
-			{ community_id: includeCommunities ? content.followed_communities : [] }
-		],
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).skip(offset).limit(limit).sort({ created_at: -1 });
-}
-
 async function getNotifications(pid, limit, offset) {
 	verifyConnected();
 	return NOTIFICATION.find({
@@ -365,24 +144,12 @@ async function getNotification(pid, type, reference_id) {
 	});
 }
 
-async function getLastNotification(pid) {
-	verifyConnected();
-	return NOTIFICATION.findOne({
-		pid: pid
-	}).sort({ lastUpdated: -1 }).limit(1);
-}
-
 async function getUnreadNotificationCount(pid) {
 	verifyConnected();
 	return NOTIFICATION.find({
 		pid: pid,
 		read: false
 	}).countDocuments();
-}
-
-async function getAllReports(offset, limit) {
-	verifyConnected();
-	return REPORT.find().sort({ created_at: -1 }).skip(offset).limit(limit);
 }
 
 async function getAllOpenReports(offset, limit) {
@@ -398,11 +165,6 @@ async function getReportsByReporter(pid, offset, limit) {
 async function getReportsByOffender(pid, offset, limit) {
 	verifyConnected();
 	return REPORT.find({ pid: pid }).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
-async function getReportsByPost(postID, offset, limit) {
-	verifyConnected();
-	return REPORT.find({ post_id: postID }).sort({ created_at: -1 }).skip(offset).limit(limit);
 }
 
 async function getDuplicateReports(pid, postID) {
@@ -425,33 +187,11 @@ async function getLogsForTarget(targetPID, offset, limit) {
 
 export const database = {
 	connect,
-	getCommunities,
 	getCommunitiesFuzzySearch,
-	getMostPopularCommunities,
-	getNewCommunities,
-	getSubCommunities,
-	getCommunityByTitleID,
-	getCommunityByID,
-	getTotalPostsByCommunity,
-	getPostsByCommunity,
-	getHotPostsByCommunity,
-	getNumberNewCommunityPostsByID,
-	getNumberPopularCommunityPostsByID,
-	getNumberVerifiedCommunityPostsByID,
-	getNewPostsByCommunity,
-	getPostsByCommunityKey,
-	getPostReplies,
-	getUserPostRepliesAfterTimestamp,
 	getTotalPostsByUserID,
 	getPostByID,
 	getDuplicatePosts,
-	getEndpoints,
 	getEndPoint,
-	getUserPostsAfterTimestamp,
-	getCommunityPostsAfterTimestamp,
-	getNewsFeed,
-	getNewsFeedAfterTimestamp,
-	getNewsFeedOffset,
 	getFollowingUsers,
 	getFollowedUsers,
 	getUsersSettings,
@@ -461,14 +201,9 @@ export const database = {
 	getNotifications,
 	getUnreadNotificationCount,
 	getNotification,
-	getLastNotification,
-	getAllUserPosts,
-	getRemovedUserPosts,
-	getAllReports,
 	getAllOpenReports,
 	getReportsByReporter,
 	getReportsByOffender,
-	getReportsByPost,
 	getDuplicateReports,
 	getReportById,
 	getLogsForTarget

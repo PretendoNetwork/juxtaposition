@@ -1,42 +1,24 @@
 import crypto from 'node:crypto';
-import { DeleteObjectsCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { createChannel, createClient, Metadata } from 'nice-grpc';
+import { DeleteObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
-import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
-import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
+import { grpcAccount, grpcApi, grpcFriends } from '@/grpc';
+import { getS3 } from '@/s3';
+import { AutomodLog } from '@/models/automodLog';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
+import type { AutomodAction } from '@/models/automodLog';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { ServiceToken } from '@/types/common/service-token';
-
-// * nice-grpc doesn't export ChannelImplementation so this can't be typed
-const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
-const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
-
-const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
-const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
-
-const gRPCApiChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
-const gRPCApiClient = createClient(APIDefinition, gRPCApiChannel);
-
-const s3 = new S3Client({
-	endpoint: config.s3.endpoint,
-	forcePathStyle: true,
-	region: config.s3.region,
-	credentials: {
-		accessKeyId: config.s3.key,
-		secretAccessKey: config.s3.secret
-	}
-});
+import type { IPostInput } from '@/types/mongoose/post';
+import type { HydratedAutomodRuleDocument } from '@/models/automodRules';
 
 // TODO - This doesn't really belong here
 export function getInvalidPostRegex(): RegExp {
@@ -152,7 +134,7 @@ export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCanne
 		ACL: acl
 	});
 	try {
-		await s3.send(awsPutParams);
+		await getS3().send(awsPutParams);
 		return true;
 	} catch (e) {
 		logger.error(e, 'Could not upload to CDN');
@@ -175,7 +157,7 @@ export async function bulkDeleteCDNAsset(keys: string[]): Promise<boolean> {
 		}
 	});
 	try {
-		await s3.send(awsDeleteParams);
+		await getS3().send(awsDeleteParams);
 		return true;
 	} catch (e) {
 		logger.error(e, 'Could not delete from CDN');
@@ -184,43 +166,30 @@ export async function bulkDeleteCDNAsset(keys: string[]): Promise<boolean> {
 }
 
 export async function getUserFriendPIDs(pid: number): Promise<number[]> {
-	const response = await gRPCFriendsClient.getUserFriendPIDs({
+	const response = await grpcFriends.client().getUserFriendPIDs({
 		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.apiKey
-		})
 	});
 
 	return response.pids;
 }
 
 export async function getUserFriendRequestsIncoming(pid: number): Promise<FriendRequest[]> {
-	const response = await gRPCFriendsClient.getUserFriendRequestsIncoming({
+	const response = await grpcFriends.client().getUserFriendRequestsIncoming({
 		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.apiKey
-		})
 	});
 
 	return response.friendRequests;
 }
 
 export function getUserAccountData(pid: number): Promise<AccountGetUserDataResponse> {
-	return gRPCAccountClient.getUserData({
+	return grpcAccount.client().getUserData({
 		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.account.apiKey
-		})
 	});
 }
 
 export function getUserDataFromToken(token: string): Promise<ApiGetUserDataResponse> {
-	return gRPCApiClient.getUserData({}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.account.apiKey,
+	return grpcApi.client().getUserData({}, {
+		metadata: grpcApi.createHeaders({
 			'X-Token': token
 		})
 	});
@@ -253,4 +222,57 @@ export function getValueFromHeaders(headers: IncomingHttpHeaders, key: string): 
 	}
 
 	return value;
+}
+
+export type AutomodRuleEvaluation = {
+	violatedRule: HydratedAutomodRuleDocument;
+	action: AutomodAction;
+} | null;
+
+export function evaluateAutomodRules(post: IPostInput, rules: HydratedAutomodRuleDocument[]): AutomodRuleEvaluation {
+	const blockRules = rules.filter(v => v.mode === 'block');
+	const nonBlockRules = rules.filter(v => v.mode !== 'block');
+	const orderedRules = [...blockRules, ...nonBlockRules];
+
+	for (const rule of orderedRules) {
+		let hasMatched = false;
+		if (rule.type === 'keyword') {
+			const bodyNormalized = (post.body ?? '').toLowerCase();
+			const keywordsToCheck = rule.keyword_settings?.keywords ?? [];
+			const matchedKeywords = keywordsToCheck.filter(keyword => bodyNormalized.includes(keyword.toLowerCase()));
+			hasMatched = matchedKeywords.length > 0;
+		}
+
+		if (hasMatched) {
+			return {
+				action: rule.mode === 'block' ? 'blocked' : 'logged',
+				violatedRule: rule
+			};
+		}
+	}
+
+	return null; // No rules apply to this post
+}
+
+export async function performAutomodAction(post: IPostInput, evaluation: AutomodRuleEvaluation): Promise<{ allowPost: boolean }> {
+	if (!evaluation) {
+		return { allowPost: true };
+	}
+
+	if (evaluation.action === 'blocked' || evaluation.action === 'logged') {
+		const allowPost = evaluation.action === 'blocked' ? false : true;
+		await AutomodLog.create({
+			action: evaluation.action,
+			author: post.pid,
+			post_id: post.id,
+			post_content_body: post.body ?? '',
+			created_at: new Date(),
+			rule_id: evaluation.violatedRule.id
+		});
+		return {
+			allowPost
+		};
+	}
+
+	throw new Error('Invalid automod evaluation');
 }
