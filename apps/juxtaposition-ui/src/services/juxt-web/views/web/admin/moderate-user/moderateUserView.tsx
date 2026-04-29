@@ -23,9 +23,9 @@ export function ModerateUserTabs(props: ModerateUserTabsProps): ReactNode {
 	const base = `/admin/accounts/${props.pid}`;
 	return (
 		<div className="buttons tabs" style={{ marginBottom: 25 }}>
+			<a className={cx({ selected: props.selected === 'posts' })} href={base + '/posts'}>Posts</a>
 			<a className={cx({ selected: props.selected === 'overview' })} href={base + '/'}>Overview</a>
 			<a className={cx({ selected: props.selected === 'removed' })} href={base + '/removed'}>Removed</a>
-			<a className={cx({ selected: props.selected === 'posts' })} href={base + '/posts'}>Posts</a>
 			<a className={cx({ selected: props.selected === 'reports' })} href={base + '/reports'}>Reports</a>
 		</div>
 	);
