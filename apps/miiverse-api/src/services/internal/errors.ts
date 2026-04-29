@@ -1,3 +1,6 @@
+import { z } from 'zod';
+import { asOpenapi } from '@/services/internal/builder/openapi';
+
 export class InternalAPIError extends Error {
 	status: number;
 	code: string;
@@ -30,8 +33,10 @@ const errorCodes = {
 	auth_account_network_banned: 403,
 	auth_onboarding_incomplete: 403
 } as const;
+const errorCodeKeys = Object.keys(errorCodes) as [keyof typeof errorCodes, ...Array<keyof typeof errorCodes>];
 
-export type InternalApiErrorCodes = keyof typeof errorCodes;
+export const errorCodesSchema = asOpenapi('ErrorCodes', z.enum(errorCodeKeys)); // Registerd to OpenAPI
+export type InternalApiErrorCodes = z.infer<typeof errorCodesSchema>;
 
 function errorBuilder() {
 	return {

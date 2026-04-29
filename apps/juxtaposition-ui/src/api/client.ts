@@ -3,18 +3,8 @@ import { InternalApi } from '@/api/generated';
 import { createClient } from '@/api/generated/client';
 import { config } from '@/config';
 import { grpcClient } from '@/grpc';
+import { InternalApiError } from '@/api/errors';
 import type { UserTokens } from '@/types/juxt/tokens';
-
-export class InternalApiError extends Error {
-	status: number;
-	response: any;
-
-	constructor(res: Response, body: any) {
-		super(`Interal API fetch call failed with status ${res.status}`);
-		this.status = res.status;
-		this.response = body;
-	}
-}
 
 export const customFetch: typeof globalThis.fetch = async (input, init) => {
 	const req = new Request(input, init);
