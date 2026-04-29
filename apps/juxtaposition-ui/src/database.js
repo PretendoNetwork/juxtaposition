@@ -113,21 +113,6 @@ async function getUserContent(pid) {
 	return CONTENT.findOne({ pid: pid });
 }
 
-async function getFollowingUsers(content) {
-	verifyConnected();
-	return SETTINGS.find({
-		pid: content.following_users,
-		...notBanned()
-	});
-}
-
-async function getFollowedUsers(content) {
-	verifyConnected();
-	return SETTINGS.find({
-		pid: content.followed_users
-	});
-}
-
 async function getNotifications(pid, limit, offset) {
 	verifyConnected();
 	return NOTIFICATION.find({
@@ -192,8 +177,6 @@ export const database = {
 	getPostByID,
 	getDuplicatePosts,
 	getEndPoint,
-	getFollowingUsers,
-	getFollowedUsers,
 	getUsersSettings,
 	getUserSettings,
 	getUserSettingsFuzzySearch,

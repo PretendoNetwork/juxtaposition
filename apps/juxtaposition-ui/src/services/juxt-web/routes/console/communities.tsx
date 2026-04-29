@@ -101,9 +101,7 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 		})
 	});
 
-	const userSettings = await database.getUserSettings(auth().pid);
-	const userContent = await database.getUserContent(auth().pid);
-	if (!userContent || !userSettings) {
+	if (!auth().self.hasDoneOnboarding) {
 		return res.redirect('/404');
 	}
 	const { data: community } = await req.api.communities.get({ id: params.communityID });
@@ -172,9 +170,8 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		})
 	});
 
-	const userSettings = hasAuth() ? await database.getUserSettings(auth().pid) : null;
-	const userContent = hasAuth() ? await database.getUserContent(auth().pid) : null;
-	if (hasAuth() && (!userContent || !userSettings)) {
+	const self = hasAuth() ? auth().self : null;
+	if (self && !self.hasDoneOnboarding) {
 		return res.redirect('/404');
 	}
 	const { data: community } = await req.api.communities.get({ id: params.communityID });
@@ -189,8 +186,8 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		throw new Error('Community stats could not be found');
 	}
 
-	const canPost = userSettings !== null && isPostingAllowed(community, userSettings, null, auth().user);
-	const isUserFollowing = userContent !== null && userContent.followed_communities.includes(community.olive_community_id);
+	const canPost = !!self && isPostingAllowed(community, self, null);
+	const isUserFollowing = !!self && self.content.followed_communities.includes(community.olive_community_id);
 
 	const { data: subCommunitiesList } = await req.api.communities.list({ category: 'sub', limit: 90, parent_id: community.olive_community_id });
 	const subCommunities = subCommunitiesList.items;
@@ -210,7 +207,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	const postListProps: PostListViewProps = {
 		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${posts.length}&pjax=true`,
 		posts,
-		userContent
+		userContent: self?.content ?? null
 	};
 
 	if (query.pjax) {
@@ -249,7 +246,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
-	const { query, params, auth } = parseReq(req, {
+	const { query, params, auth, hasAuth } = parseReq(req, {
 		params: z.object({
 			communityID: z.string(),
 			type: z.string()
@@ -260,7 +257,7 @@ communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
 	});
 
 	const offset = query.offset;
-	const userContent = await database.getUserContent(auth().pid);
+	const userContent = hasAuth() ? auth().self.content : null;
 	const { data: community } = await req.api.communities.get({ id: params.communityID });
 	if (!community || !userContent) {
 		return res.redirect('/404');

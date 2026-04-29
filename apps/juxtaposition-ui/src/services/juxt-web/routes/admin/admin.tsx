@@ -37,10 +37,7 @@ adminRouter.get('/posts', async function (req, res) {
 
 	// `any` is needed because database.js is not typed yet
 	const rawReports: HydratedReportDocument[] = await database.getAllOpenReports() as any;
-	const userContent = await database.getUserContent(auth().pid);
-	if (!userContent) {
-		throw new Error('User content is null');
-	}
+	const userContent = auth().self.content;
 
 	const postIds = rawReports.map(obj => obj.post_id);
 	const nonRemovedPosts = await POST.find(

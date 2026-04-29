@@ -3,10 +3,12 @@ import type { Request } from 'express';
 import type { z } from 'zod';
 import type { UserTokens } from '@/types/juxt/tokens';
 import type { ParamPack } from '@/types/common/param-pack';
+import type { Self } from '@/api/generated';
 
 type AnySchema = z.ZodObject | z.ZodPipe | undefined | null;
 
 export type AuthRequest<TReq extends Request = Request> = TReq & {
+	self: Self;
 	user: AccountGetUserDataResponse;
 	pid: number;
 	tokens: UserTokens;
@@ -14,6 +16,7 @@ export type AuthRequest<TReq extends Request = Request> = TReq & {
 };
 
 export type AuthContext = {
+	self: Self;
 	user: AccountGetUserDataResponse;
 	pid: number;
 	tokens: UserTokens;
@@ -37,7 +40,7 @@ export type ParsedRequest<TBody extends AnySchema, TQuery extends AnySchema, TPa
 };
 
 export function getAuthedRequest<TReq extends Request = Request>(req: TReq): AuthRequest<TReq> {
-	if (!(req as any).user) {
+	if (!(req as any).user || !(req as any).self) {
 		throw new Error('Trying to get authed request while not being authed');
 	}
 	return req as AuthRequest<TReq>;
@@ -83,6 +86,7 @@ export function parseReq<TBody extends AnySchema = undefined, TQuery extends Any
 	function getAuthContext(): AuthContext {
 		const authedReq = getAuthedRequest(req);
 		const result: AuthContext = {
+			self: authedReq.self,
 			pid: authedReq.pid,
 			user: authedReq.user,
 			tokens: authedReq.tokens,
@@ -92,7 +96,7 @@ export function parseReq<TBody extends AnySchema = undefined, TQuery extends Any
 	}
 
 	function hasAuth(): boolean {
-		if (!(req as any).user) {
+		if (!(req as any).user || !(req as any).self) {
 			return false;
 		}
 		return true;
