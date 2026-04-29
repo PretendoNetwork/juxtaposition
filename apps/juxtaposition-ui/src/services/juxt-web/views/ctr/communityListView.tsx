@@ -2,6 +2,7 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
 import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
@@ -63,7 +64,9 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 				>
 					<T k="global.communities" />
 				</CtrPageHeader>
-				{/* <a id="header-communities-button" className="right" href="/titles/all" data-pjax="#body"><T k="all_communities.text" /></a> */}
+				<CtrPageButtons>
+					<CtrPageButton type="right" href="/titles/all"><T k="all_communities.text" /></CtrPageButton>
+				</CtrPageButtons>
 				<div className="body-content">
 					<div className="communities-list">
 						<div className="headline">

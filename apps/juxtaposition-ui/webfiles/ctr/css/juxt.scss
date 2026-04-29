@@ -1,8 +1,9 @@
 @use 'sprites.css';
 @use './controls/ctabs.css';
 @use './controls/checkbox.css';
-@use './components/ui/CtrNavTabs.css';
+@use './components/ui/CtrNavTabs.scss';
 @use './components/ui/CtrIcon.scss';
+@use './components/CtrPageButtons.scss';
 @use './components/CtrPageHeader.scss';
 @use 'new-post-view.css';
 @use 'report-post-page.css';

@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostListClosedView } from '@/services/juxt-web/views/ctr/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
@@ -5,6 +6,7 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import { CtrPageHeader, CtrPageHeaderStat } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -35,47 +37,44 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						</CtrPageHeaderStat>
 					</div>
 				</CtrPageHeader>
-				{/*
+				<CtrPageButtons>
 					{props.canPost
 						? (
-								<a
-									id="header-post-button"
-									className="header-button left"
+								<CtrPageButton
+									type="left"
 									href={`/titles/${community.olive_community_id}/create`}
-									data-pjax="#body"
 								>
 									<T k="new_post.new_post_short" />
 									{' +'}
-								</a>
+								</CtrPageButton>
 							)
 						: null}
-					{props.hasSubCommunities
-						? (
-								<a id="header-communities-button" className="right" href={`/titles/${community.olive_community_id}/related`} data-pjax="#body"><T k="community.related" /></a>
-							)
-						: null}
+
 					{community.permissions.open
 						? (
-								<button
-									type="button"
-									className={cx('small-button follow', {
-										suggested: props.hasSubCommunities
-
+								<CtrPageButton
+									type="middle"
+									sprite={cx('sp-yeah', {
+										selected: props.isUserFollowing
 									})}
 									evt-click="follow(this)"
-									data-sound="SE_WAVE_CHECKBOX_UNCHECK"
 									data-url="/titles/follow"
 									data-community-id={community.olive_community_id}
 								>
-									<span className={cx('sprite sp-yeah inline-sprite', {
-										selected: props.isUserFollowing
-									})}
-									>
-									</span>
-								</button>
+								</CtrPageButton>
+							)
+						: null }
+					{props.hasSubCommunities
+						? (
+								<CtrPageButton
+									type="right"
+									href={`/titles/${community.olive_community_id}/related`}
+								>
+									<T k="community.related_short" />
+								</CtrPageButton>
 							)
 						: null}
-				</header> */}
+				</CtrPageButtons>
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="community-info info-content with-header-banner">
 					</div>

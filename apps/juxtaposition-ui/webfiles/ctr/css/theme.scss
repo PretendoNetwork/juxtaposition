@@ -1,5 +1,13 @@
 
+// Looks pretty bad on 16-bit colour...
+// $root-gradient: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#dfdfdf));
+$root-gradient-30px: url(@/images/gradient-30px.png);
 
 $root-light-500: #e8e8e8;
 
 $title-size: 18px;
+
+$component-border: 1px solid gray;
+$component-radius: 5px;
+
+$button-text: black;
