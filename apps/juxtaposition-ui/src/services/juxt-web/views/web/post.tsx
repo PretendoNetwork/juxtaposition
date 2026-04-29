@@ -132,12 +132,16 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				<span className="post-button post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
 					<WebUIIcon name="menu" />
 					<ul className="post-hamburger" role="menu" data-post={post.id}>
-						<li role="menuitem" data-action="report">
-							<WebUIIcon name="flag" />
-							{' '}
-							<T k="post.report_post" />
-						</li>
-						{ isModerator || post.pid === user.pid
+						{ !post.removed
+							? (
+									<li role="menuitem" data-action="report">
+										<WebUIIcon name="flag" />
+										{' '}
+										<T k="post.report_post" />
+									</li>
+								)
+							: null}
+						{ (isModerator || post.pid === user.pid) && !post.removed
 							? (
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebUIIcon name="bin" />
