@@ -43,7 +43,7 @@ userProfileRouter.get({
 			return null;
 		});
 		if (!settings || !content || !pnid) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		const isUserBanned = (settings.account_status < 0 || settings.account_status > 1 || pnid.accessLevel < 0);
@@ -52,7 +52,7 @@ userProfileRouter.get({
 
 		// TODO handle this better?
 		if (!isUserDataViewable) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		const followers = content.following_users.filter(v => v !== 0).length;
