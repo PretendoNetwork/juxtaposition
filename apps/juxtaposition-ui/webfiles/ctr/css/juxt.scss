@@ -18,7 +18,7 @@ body {
 
 #body,
 body {
-    overflow-x: hidden;
+    overflow-x: clip; /* Doesn't work on CTR, but the CSS relies on it not working */
 }
 
 #body {

@@ -27,7 +27,7 @@ const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- Too difficult to type
-const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v === 'on' ? 1 : 0);
+export const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v === 'on' ? 1 : 0);
 
 adminRouter.get('/posts', async function (req, res) {
 	if (!res.locals.moderator) {
@@ -37,10 +37,7 @@ adminRouter.get('/posts', async function (req, res) {
 
 	// `any` is needed because database.js is not typed yet
 	const rawReports: HydratedReportDocument[] = await database.getAllOpenReports() as any;
-	const userContent = await database.getUserContent(auth().pid);
-	if (!userContent) {
-		throw new Error('User content is null');
-	}
+	const userContent = auth().self.content;
 
 	const postIds = rawReports.map(obj => obj.post_id);
 	const nonRemovedPosts = await POST.find(

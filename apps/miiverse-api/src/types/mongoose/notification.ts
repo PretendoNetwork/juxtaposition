@@ -12,7 +12,7 @@ export interface INotification {
 	objectID: string;
 	users: Types.Array<NotificationUser>;
 	read: boolean;
-	lastUpdated: number;
+	lastUpdated: Date;
 }
 
 export type NotificationModel = Model<INotification>;

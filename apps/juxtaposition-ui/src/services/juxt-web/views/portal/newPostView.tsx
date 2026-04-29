@@ -123,6 +123,7 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 							</li>
 						</menu>
 					</div>
+					{props.errorText ? <p>{props.errorText}</p> : null}
 					<label className="checkbox-container spoiler-button">
 						<T k="new_post.spoiler_label" />
 						<input type="checkbox" id="spoiler" name="spoiler" value="true" />

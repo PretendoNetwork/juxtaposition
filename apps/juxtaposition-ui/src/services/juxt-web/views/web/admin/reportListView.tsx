@@ -7,9 +7,9 @@ import { humanDate, humanFromNow } from '@/util';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import type { ReactNode } from 'react';
 import type { InferSchemaType } from 'mongoose';
-import type { ContentSchema } from '@/models/content';
 import type { HydratedReportDocument } from '@/models/report';
 import type { PostSchema } from '@/models/post';
+import type { SelfContent } from '@/api/generated';
 
 export type ReportWithPost = {
 	report: HydratedReportDocument;
@@ -18,13 +18,13 @@ export type ReportWithPost = {
 
 export type ReportListViewProps = {
 	reasonMap: string[];
-	userContent: InferSchemaType<typeof ContentSchema>;
+	userContent: SelfContent;
 	reports: ReportWithPost[];
 };
 
 export type ReportProps = {
 	reasonMap: string[];
-	userContent: InferSchemaType<typeof ContentSchema>;
+	userContent: SelfContent;
 	report: HydratedReportDocument;
 	post: InferSchemaType<typeof PostSchema>;
 };

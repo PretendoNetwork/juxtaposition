@@ -18,9 +18,14 @@ export async function user(request: express.Request, response: express.Response,
 		throw new errors.unauthorized('Authentication token not provided');
 	}
 
+	const authError = response.locals.accountAuthError;
+	if (authError) {
+		// Auth access checks determined that this account can't access juxt
+		throw authError;
+	}
+
 	if (account.settings === null) {
 		// Most endpoints expect users to have completed the account setup flow
-		// TODO eventually this will need a carveout for the setup flow itself
 		throw new errors.forbidden('Account setup not complete');
 	}
 
@@ -31,25 +36,46 @@ export async function user(request: express.Request, response: express.Response,
  * Moderators only
  */
 export async function moderator(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
-	const account = response.locals.account;
-	if (account === null) {
-		// Guest access
-		throw new errors.unauthorized('Authentication token not provided');
-	}
+	return guards.user(request, response, () => {
+		const account = response.locals.account;
+		if (account === null) {
+			// Guest access
+			throw new errors.unauthorized('Authentication token not provided');
+		}
 
-	if (account.settings === null) {
-		throw new errors.forbidden('Account setup not complete');
-	}
+		if (account.settings === null) {
+			throw new errors.forbidden('Account setup not complete');
+		}
 
-	if (account.moderator !== true) {
-		throw new errors.forbidden('You cannot access this endpoint');
-	}
+		if (account.moderator !== true) {
+			throw new errors.forbidden('You cannot access this endpoint');
+		}
 
-	return next();
+		return next();
+	});
+}
+
+/**
+ * Developers only
+ */
+export async function developer(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
+	return guards.user(request, response, () => {
+		const account = response.locals.account;
+		if (account === null) {
+			throw new errors.unauthorized('Authentication token not provided');
+		}
+
+		if (account.developer !== true) {
+			throw new errors.forbidden('You cannot access this endpoint');
+		}
+
+		return next();
+	});
 }
 
 export const guards = {
 	guest,
 	user,
-	moderator
+	moderator,
+	developer
 };
