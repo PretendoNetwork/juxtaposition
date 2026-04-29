@@ -238,7 +238,7 @@ userProfileRouter.post({
 		const targetUserContent = await Content.findOne({ pid: params.id });
 		const currentUserContent = await Content.findOne({ pid: currentUserPid });
 		if (!targetUserContent || !currentUserContent) {
-			throw new errors.notFound();
+			throw errors.for('not_found');
 		}
 
 		const currentUserFollowedUsers = currentUserContent.followed_users;
@@ -274,7 +274,7 @@ userProfileRouter.delete({
 		const targetUserContent = await Content.findOne({ pid: params.id });
 		const currentUserContent = await Content.findOne({ pid: currentUserPid });
 		if (!targetUserContent || !currentUserContent) {
-			throw new errors.notFound();
+			throw errors.for('not_found');
 		}
 
 		const currentUserFollowedUsers = currentUserContent.followed_users;

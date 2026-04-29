@@ -28,7 +28,7 @@ app.use((err: Error, _request: express.Request, response: express.Response, next
 		return next(err);
 	}
 
-	response.status(err.status).json({ message: err.message });
+	response.status(err.status).json({ status: err.status, errorCode: err.code });
 });
 // Javascript error handler
 app.use((err: Error, _request: express.Request, response: express.Response, _next: express.NextFunction) => {

@@ -106,7 +106,7 @@ adminAutomodRouter.patch({
 		});
 
 		if (!rule) {
-			throw new errors.notFound('Resource could not be found');
+			throw errors.for('not_found');
 		}
 
 		return mapAutomodRule(rule);
@@ -126,7 +126,7 @@ adminAutomodRouter.delete({
 	async handler({ params }) {
 		const rule = await AutomodRule.findOneAndDelete({ _id: params.id });
 		if (!rule) {
-			throw new errors.notFound('Resource could not be found');
+			throw errors.for('not_found');
 		}
 
 		return mapResult('success');

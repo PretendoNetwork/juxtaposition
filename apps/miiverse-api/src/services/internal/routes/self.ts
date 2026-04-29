@@ -17,7 +17,7 @@ selfRouter.get({
 	},
 	async handler({ auth }) {
 		if (!auth) {
-			throw new errors.unauthorized('User is not logged in');
+			throw errors.for('unauthorized');
 		}
 
 		// TODO these updates should probably be done in a middleware
