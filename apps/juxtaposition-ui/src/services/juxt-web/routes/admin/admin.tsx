@@ -8,14 +8,13 @@ import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportLis
 import { WebManageCommunityView } from '@/services/juxt-web/views/web/admin/manageCommunityView';
 import { WebNewCommunityView } from '@/services/juxt-web/views/web/admin/newCommunityView';
 import { WebEditCommunityView } from '@/services/juxt-web/views/web/admin/editCommunityView';
-import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderateUserView';
 import { zodCommaSeperatedList } from '@/services/juxt-web/routes/schemas';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 export const adminRouter = express.Router();
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- Too difficult to type
-const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v === 'on' ? 1 : 0);
+export const onOffSchema = () => z.enum(['on', 'off']).default('off').transform(v => v === 'on' ? 1 : 0);
 const onOffBoolSchema = onOffSchema().transform(v => !!v);
 
 adminRouter.get('/posts', async function (req, res) {
@@ -60,74 +59,6 @@ adminRouter.get('/accounts', async function (req, res) {
 				totalPostCount={stats.totalPosts}
 			/>
 		)
-	});
-});
-
-adminRouter.get('/accounts/:pid', async function (req, res) {
-	if (!res.locals.moderator) {
-		return res.redirect('/titles/show');
-	}
-
-	const { params } = parseReq(req, {
-		params: z.object({
-			pid: z.coerce.number()
-		})
-	});
-
-	const reqPid = params.pid;
-
-	const { data: profile } = await req.api.admin.users.getProfile({ id: reqPid });
-	const { data: modProfile } = await req.api.admin.users.getModProfile({ id: reqPid });
-	if (!profile || !modProfile) {
-		return res.redirect('/404');
-	}
-
-	const { data: reportsPage } = await req.api.admin.reports.list({ offenderPid: reqPid, limit: 50 });
-	const { data: submittedReportsPage } = await req.api.admin.reports.list({ reporterPid: reqPid, limit: 50 });
-	const { data: removedPostsPage } = await req.api.users.posts.list({ id: reqPid, sortBy: 'removedAt', removed: 'true', limit: 50 });
-	const { data: auditLogsPage } = await req.api.admin.auditLogs.list({
-		limit: 50,
-		targetId: reqPid.toString()
-	});
-
-	res.jsxForDirectory({
-		web: (
-			<WebModerateUserView
-				profile={profile}
-				modProfile={modProfile}
-				removedPosts={removedPostsPage.items}
-				reports={reportsPage.items}
-				submittedReports={submittedReportsPage.items}
-				auditLogs={auditLogsPage.items}
-				reasonMap={getReasonMap()}
-			/>
-		)
-	});
-});
-
-adminRouter.post('/accounts/:pid', async (req, res) => {
-	const { params, body } = parseReq(req, {
-		params: z.object({
-			pid: z.coerce.number()
-		}),
-		body: z.object({
-			// Empty string counts as null
-			ban_lift_date: z.string().trim().nullable().transform(v => v === '' ? null : v)
-				.pipe(z.iso.datetime().nullable()),
-			account_status: z.number(),
-			ban_reason: z.string().trim().nullable().transform(v => v === '' ? null : v)
-		})
-	});
-
-	await req.api.admin.users.updateModProfile({
-		id: params.pid,
-		accountStatus: body.account_status,
-		banLiftDate: body.ban_lift_date,
-		banReason: body.ban_reason
-	});
-
-	res.json({
-		error: false
 	});
 });
 

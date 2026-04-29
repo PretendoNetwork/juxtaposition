@@ -153,7 +153,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 	}
 
 	// increase limit for post replies since there's no pagination yet
-	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', limit: 500 }))?.data.items ?? [];
+	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort: 'oldest', limit: 500 }))?.data.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
 	const canPost = !!self && isPostingAllowed(community, self, post);
 
@@ -206,9 +206,12 @@ postsRouter.post('/:post_id/new', postLimit, upload.fields([{ name: 'shot', maxC
 });
 
 postsRouter.get('/:post_id/create', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params, auth, query } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
+		}),
+		query: z.object({
+			'error-text': z.string().optional()
 		})
 	});
 
@@ -230,7 +233,8 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
 		shotMode,
-		community
+		community,
+		errorText: query['error-text']
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,

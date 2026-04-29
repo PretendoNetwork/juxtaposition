@@ -15,6 +15,7 @@ import { SETTINGS } from '@/models/settings';
 import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
+import { AutomodLog } from '@/models/automodLog';
 import type { ZodType } from 'zod';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -24,6 +25,8 @@ import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
 import type { GetUserFriendPIDsResponse } from '@pretendonetwork/grpc/friends/get_user_friend_pids_rpc';
 import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
+import type { AutomodAction } from '@/models/automodLog';
+import type { HydratedAutomodRuleDocument } from '@/models/automodRules';
 
 const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
 const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
@@ -274,6 +277,59 @@ export async function passwordLogin(username: string, password: string): Promise
 // 		})
 // 	});
 // }
+
+export type AutomodRuleEvaluation = {
+	violatedRule: HydratedAutomodRuleDocument;
+	action: AutomodAction;
+} | null;
+
+export function evaluateAutomodRules(post: any, rules: HydratedAutomodRuleDocument[]): AutomodRuleEvaluation {
+	const blockRules = rules.filter(v => v.mode === 'block');
+	const nonBlockRules = rules.filter(v => v.mode !== 'block');
+	const orderedRules = [...blockRules, ...nonBlockRules];
+
+	for (const rule of orderedRules) {
+		let hasMatched = false;
+		if (rule.type === 'keyword') {
+			const bodyNormalized = (post.body ?? '').toLowerCase();
+			const keywordsToCheck = rule.keyword_settings?.keywords ?? [];
+			const matchedKeywords = keywordsToCheck.filter(keyword => bodyNormalized.includes(keyword.toLowerCase()));
+			hasMatched = matchedKeywords.length > 0;
+		}
+
+		if (hasMatched) {
+			return {
+				action: rule.mode === 'block' ? 'blocked' : 'logged',
+				violatedRule: rule
+			};
+		}
+	}
+
+	return null; // No rules apply to this post
+}
+
+export async function performAutomodAction(post: any, evaluation: AutomodRuleEvaluation): Promise<{ allowPost: boolean }> {
+	if (!evaluation) {
+		return { allowPost: true };
+	}
+
+	if (evaluation.action === 'blocked' || evaluation.action === 'logged') {
+		const allowPost = evaluation.action === 'blocked' ? false : true;
+		await AutomodLog.create({
+			action: evaluation.action,
+			author: post.pid,
+			post_id: post.id,
+			post_content_body: post.body ?? '',
+			created_at: new Date(),
+			rule_id: evaluation.violatedRule.id
+		});
+		return {
+			allowPost
+		};
+	}
+
+	throw new Error('Invalid automod evaluation');
+}
 
 /**
  * Deletes undefined, but present, values. Useful for Mongoose queries.

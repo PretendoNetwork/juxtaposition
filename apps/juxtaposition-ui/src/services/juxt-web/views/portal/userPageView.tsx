@@ -8,8 +8,38 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
-import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
+import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserProfile } from '@/api/generated';
+
+export function PortalUserMissingPage(props: UserMissingPageViewProps): ReactNode {
+	let title = <T k="user_page.not_found" />;
+	if (props.isBanned) {
+		title = <T k="user_page.banned" />;
+	} else if (props.isDeleted) {
+		title = <T k="user_page.deleted" />;
+	}
+
+	return (
+		<PortalRoot title={T.str('user_page.not_found')}>
+			<PortalNavBar selection={-1} />
+			<PortalPageBody>
+				<div className="body-content tab2-content" id="community-post-list">
+					<div className="header-banner-container">
+						<img src="/assets/portal/images/banner.png" className="header-banner with-top-button" />
+					</div>
+					<div className="community-info info-content with-header-banner">
+						<span className="icon-container">
+							<img className="icon" src="/assets/web/images/bandwidthlost.png" />
+						</span>
+						<span className="title">
+							{title}
+						</span>
+					</div>
+				</div>
+			</PortalPageBody>
+		</PortalRoot>
+	);
+}
 
 export function PortalUserTier(props: { profile: UserProfile }): ReactNode {
 	const flags = props.profile.flags;
@@ -76,7 +106,6 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 	const isSelf = user.pid === profile.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(profile.pid) ?? false;
-	const isUserFollowingRequester = props.isUserFollowingRequester;
 
 	return (
 		<PortalRoot title={pnidName}>
@@ -96,10 +125,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 						</span>
 						{!isSelf
 							? (
-									<>
-										<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={profile.pid}></a>
-										{ isRequesterFollowingUser && isUserFollowingRequester ? <a href={`/friend_messages/new/${profile.pid}`} className="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a> : null }
-									</>
+									<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={profile.pid}></a>
 								)
 							: null}
 						<span className="title">

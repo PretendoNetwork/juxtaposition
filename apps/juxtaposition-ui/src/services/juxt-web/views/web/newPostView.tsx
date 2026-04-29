@@ -54,6 +54,9 @@ export type NewPostViewProps = {
 	messagePid?: number;
 	community?: Community;
 	shotMode: CommunityShotMode;
+
+	// Error feedback
+	errorText?: string;
 };
 
 export function WebNewPostView(props: NewPostViewProps): ReactNode {
@@ -62,6 +65,7 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
+				{props.errorText ? <p>{props.errorText}</p> : null}
 				<input type="hidden" name="community_id" value={props.id} />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">

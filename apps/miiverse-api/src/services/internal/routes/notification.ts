@@ -31,6 +31,7 @@ notificationsRouter.get({
 		});
 		const notifications = await Notification
 			.find(dbQuery)
+			.sort({ lastUpdated: -1 })
 			.limit(query.limit)
 			.skip(query.offset);
 		const total = await Notification.countDocuments(dbQuery);

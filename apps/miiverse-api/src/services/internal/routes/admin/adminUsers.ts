@@ -63,7 +63,7 @@ adminUsersRouter.get({
 			return null;
 		});
 		if (!settings || !content || !pnid) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		const followers = content.following_users.filter(v => v !== 0).length;
@@ -93,7 +93,7 @@ adminUsersRouter.get({
 	async handler({ params }) {
 		const settings = await Settings.findOne({ pid: params.id });
 		if (!settings) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		return mapModerationProfile(settings);
@@ -120,7 +120,7 @@ adminUsersRouter.patch({
 		const account = auth!;
 		const oldSettings = await Settings.findOne({ pid: params.id });
 		if (!oldSettings) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		let banLiftDate = body.banLiftDate;

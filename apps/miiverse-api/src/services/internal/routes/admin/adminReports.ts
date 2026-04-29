@@ -31,7 +31,7 @@ adminReportsRouter.get({
 	},
 	async handler({ query }) {
 		if (query.resolved !== undefined && query.offset > 0) {
-			throw new errors.badRequest('Pagination is not possible when filtering for resolved states');
+			throw errors.for('bad_request', 'Pagination is not possible when filtering for resolved states');
 		}
 
 		const rawReports = await Report
@@ -89,7 +89,7 @@ adminReportsRouter.post({
 
 		const report = await Report.findOne({ _id: params.id });
 		if (!report) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		const post = await Post.findOne({ id: report.post_id });
@@ -117,7 +117,7 @@ adminReportsRouter.post({
 			}
 		});
 		await createNewPostDeletionNotification({
-			postAuthor: post.id,
+			postAuthor: post.pid,
 			post: post,
 			reason
 		});
@@ -150,7 +150,7 @@ adminReportsRouter.post({
 
 		const report = await Report.findOne({ _id: params.id });
 		if (!report) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		await Report.findOneAndUpdate({ _id: report.id }, {

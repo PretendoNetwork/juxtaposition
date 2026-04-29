@@ -15,7 +15,7 @@ export async function user(request: express.Request, response: express.Response,
 	const account = response.locals.account;
 	if (account === null) {
 		// Guest access
-		throw new errors.unauthorized('Authentication token not provided');
+		throw errors.for('requires_auth');
 	}
 
 	const authError = response.locals.accountAuthError;
@@ -26,7 +26,7 @@ export async function user(request: express.Request, response: express.Response,
 
 	if (account.settings === null) {
 		// Most endpoints expect users to have completed the account setup flow
-		throw new errors.forbidden('Account setup not complete');
+		throw errors.for('auth_onboarding_incomplete');
 	}
 
 	return next();
@@ -39,11 +39,16 @@ export async function moderator(request: express.Request, response: express.Resp
 	return guards.user(request, response, () => {
 		const account = response.locals.account;
 		if (account === null) {
-			throw new errors.unauthorized('Authentication token not provided');
+			// Guest access
+			throw errors.for('requires_auth');
+		}
+
+		if (account.settings === null) {
+			throw errors.for('auth_onboarding_incomplete');
 		}
 
 		if (account.moderator !== true) {
-			throw new errors.forbidden('You cannot access this endpoint');
+			throw errors.for('forbidden');
 		}
 
 		return next();
@@ -57,11 +62,11 @@ export async function developer(request: express.Request, response: express.Resp
 	return guards.user(request, response, () => {
 		const account = response.locals.account;
 		if (account === null) {
-			throw new errors.unauthorized('Authentication token not provided');
+			throw errors.for('requires_auth');
 		}
 
 		if (account.developer !== true) {
-			throw new errors.forbidden('You cannot access this endpoint');
+			throw errors.for('forbidden');
 		}
 
 		return next();

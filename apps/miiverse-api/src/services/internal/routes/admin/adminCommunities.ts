@@ -90,7 +90,7 @@ adminCommunitiesRouter.get({
 	async handler({ params }) {
 		const community = await Community.findOne({ olive_community_id: params.id });
 		if (!community) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		return mapAdminCommunity(community);
@@ -119,7 +119,7 @@ adminCommunitiesRouter.post({
 			communityId
 		});
 		if (icons === null || headers === null) {
-			throw new errors.badRequest('Failed to parse/upload images');
+			throw errors.for('bad_request', 'Failed to parse/upload images');
 		}
 
 		const iconPaths: IIconPaths = {
@@ -210,7 +210,7 @@ adminCommunitiesRouter.patch({
 		const communityId = params.id;
 		const oldCommunity = await Community.findOne({ olive_community_id: params.id });
 		if (!oldCommunity) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		let icons: IconUrls | null = null;
@@ -220,7 +220,7 @@ adminCommunitiesRouter.patch({
 				communityId
 			});
 			if (icons === null) {
-				throw new errors.badRequest('Failed to parse/upload images');
+				throw errors.for('bad_request', 'Failed to parse/upload images');
 			}
 		}
 		let headers: HeaderUrls | null = null;
@@ -231,7 +231,7 @@ adminCommunitiesRouter.patch({
 				communityId
 			});
 			if (headers === null) {
-				throw new errors.badRequest('Failed to parse/upload images');
+				throw errors.for('bad_request', 'Failed to parse/upload images');
 			}
 		}
 
@@ -352,7 +352,7 @@ adminCommunitiesRouter.delete({
 		const pnid = auth!.pnid;
 		const result = await Community.deleteOne({ olive_community_id: params.id });
 		if (result.deletedCount === 0) {
-			throw new errors.notFound('Not found');
+			throw errors.for('not_found');
 		}
 
 		await createLogEntry({
