@@ -76,7 +76,6 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 	const isSelf = user.pid === profile.pid;
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(profile.pid) ?? false;
-	const isUserFollowingRequester = props.isUserFollowingRequester;
 
 	return (
 		<PortalRoot title={pnidName}>
@@ -96,10 +95,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 						</span>
 						{!isSelf
 							? (
-									<>
-										<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={profile.pid}></a>
-										{ isRequesterFollowingUser && isUserFollowingRequester ? <a href={`/friend_messages/new/${profile.pid}`} className="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a> : null }
-									</>
+									<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={profile.pid}></a>
 								)
 							: null}
 						<span className="title">

@@ -25,6 +25,7 @@ import type { CommunityViewProps } from '@/services/juxt-web/views/web/community
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 import type { Post } from '@/api/generated';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
@@ -35,7 +36,7 @@ communitiesRouter.get('/', async function (req, res) {
 
 	const props: CommunityOverviewViewProps = {
 		newCommunities: recent.data.items,
-		popularCommunities: popular.data
+		popularCommunities: popular.data.items
 	};
 	res.jsxForDirectory({
 		web: <WebCommunityOverviewView {...props} />,
@@ -58,7 +59,7 @@ communitiesRouter.get('/all', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID', async function (req, res) {
-	const { query, params } = parseReq(req, {
+	const { query, params, auth } = parseReq(req, {
 		query: z.object({
 			title_id: z.string().optional()
 		}),
@@ -69,6 +70,18 @@ communitiesRouter.get('/:communityID', async function (req, res) {
 
 	if (query.title_id) {
 		const { data: community } = await req.api.communities.get({ id: `tid:${query.title_id}` });
+		if (!community) {
+			return res.redirect('/404');
+		}
+		return res.redirect(`/titles/${community.olive_community_id}/new`);
+	}
+
+	if (params.communityID == '0') {
+		const tid = auth().paramPackData?.title_id;
+		if (!tid) {
+			return res.redirect('/404');
+		}
+		const { data: community } = await req.api.communities.get({ id: `tid:${tid}` });
 		if (!community) {
 			return res.redirect('/404');
 		}
@@ -115,9 +128,12 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 });
 
 communitiesRouter.get('/:communityID/create', async function (req, res) {
-	const { params, auth } = parseReq(req, {
+	const { params, query, auth } = parseReq(req, {
 		params: z.object({
 			communityID: z.string()
+		}),
+		query: z.object({
+			'error-text': z.string().optional()
 		})
 	});
 
@@ -128,13 +144,14 @@ communitiesRouter.get('/:communityID/create', async function (req, res) {
 
 	const shotMode = getShotMode(community, auth().paramPackData);
 
-	const props = {
+	const props: NewPostViewProps = {
 		id: community.olive_community_id,
 		name: community.name,
 		url: `/posts/new`,
 		show: 'post',
 		shotMode,
-		community
+		community,
+		errorText: query['error-text']
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,

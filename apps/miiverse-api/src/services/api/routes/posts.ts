@@ -4,7 +4,9 @@ import xmlbuilder from 'xmlbuilder';
 import * as z from 'zod';
 import {
 	getValueFromQueryString,
-	getInvalidPostRegex
+	getInvalidPostRegex,
+	evaluateAutomodRules,
+	performAutomodAction
 } from '@/util';
 import {
 	getPostByID,
@@ -21,6 +23,7 @@ import { config } from '@/config';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { cleanedBase64 } from '@/zodUtils';
+import { AutomodRule } from '@/models/automodRules';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
@@ -403,6 +406,15 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		return badRequest(response, ApiErrorCode.NOT_ALLOWED_SPAM, 403);
 	}
 
+	// Automod
+	const automodRules = await AutomodRule.find({ enabled: true });
+	const automodEval = evaluateAutomodRules(document, automodRules);
+	const automodResult = await performAutomodAction(document, automodEval);
+	if (!automodResult.allowPost) {
+		return badRequest(response, ApiErrorCode.BAD_WORDS_FILTER);
+	}
+
+	// Actual posting
 	const post = await Post.create(document);
 
 	if (painting) {
