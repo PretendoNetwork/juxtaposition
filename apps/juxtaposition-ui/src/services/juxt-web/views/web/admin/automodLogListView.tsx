@@ -86,6 +86,7 @@ function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
 				</span>
 			</div>
 			<div className="button-spacer">
+				{ log.parentPostId ? <a href={`/posts/${log.parentPostId}`}>Go to parent post</a> : null }
 				{ log.postId ? <a href={`/posts/${log.postId}`}>Go to post</a> : null }
 			</div>
 		</li>
