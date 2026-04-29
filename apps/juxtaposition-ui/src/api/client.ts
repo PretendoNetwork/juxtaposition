@@ -23,9 +23,18 @@ export const customFetch: typeof globalThis.fetch = async (input, init) => {
 	});
 
 	// Mask 404's as a succesfull `null` response
-	if (grpcResponse.status === 404 && req.method === 'GET') {
-		grpcResponse.status = 200;
-		grpcResponse.payload = JSON.stringify(null);
+	const notSuccessResponse = grpcResponse.status >= 400;
+	if (notSuccessResponse && req.method === 'GET') {
+		try {
+			const parsed = JSON.parse(grpcResponse.payload);
+			const error = new InternalApiError(grpcResponse.status, parsed);
+			if (error.isCode('not_found')) {
+				grpcResponse.status = 200;
+				grpcResponse.payload = JSON.stringify(null);
+			}
+		} catch {
+			// Ignore errors
+		}
 	}
 
 	const response = new Response(Buffer.from(grpcResponse.payload), {
@@ -53,7 +62,7 @@ export function createInternalApiClient(tokens: UserTokens): InternalApi {
 			return err;
 		}
 
-		return new InternalApiError(response, err);
+		return new InternalApiError(response.status, err);
 	});
 
 	return new InternalApi({

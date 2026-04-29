@@ -6,9 +6,9 @@ export class InternalApiError extends Error {
 	response: any;
 	code: ErrorCodes | undefined;
 
-	constructor(res: Response, body: any) {
-		super(`Interal API fetch call failed with status ${res.status}`);
-		this.status = res.status;
+	constructor(status: number, body: any) {
+		super(`Interal API fetch call failed with status ${status}`);
+		this.status = status;
 		this.response = body;
 
 		if ('code' in body) {
