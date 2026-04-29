@@ -11,8 +11,8 @@ export class InternalApiError extends Error {
 		this.status = status;
 		this.response = body;
 
-		if ('code' in body) {
-			this.code = body.code as ErrorCodes;
+		if (body?.errorCode) {
+			this.code = body.errorCode as ErrorCodes;
 		}
 	}
 
