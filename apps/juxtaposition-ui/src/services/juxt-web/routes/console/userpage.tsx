@@ -237,12 +237,6 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		return res.redirect('/404');
 	}
 
-	let isUserFollowingRequester = false;
-	if (self) {
-		const { data: followersList } = await req.api.users.listFollowing({ id: userID, followerId: self.pid });
-		isUserFollowingRequester = followersList.items.some(v => v.pid === self.pid);
-	}
-
 	const { data: postPage } = await req.api.users.posts.list({ id: userID });
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
@@ -262,7 +256,6 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		baseLink: link,
 		selectedTab: 0,
 		profile,
-		isUserFollowingRequester,
 		requestUserContent: self?.content ?? null
 	};
 	return res.jsxForDirectory({
@@ -301,12 +294,6 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		return res.redirect('/404');
 	}
 
-	let isUserFollowingRequester = false;
-	if (self) {
-		const { data: followersList } = await req.api.users.listFollowing({ id: userID, followerId: self.pid });
-		isUserFollowingRequester = followersList.items.some(v => v.pid === self.pid);
-	}
-
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
 	let followers: ShallowUser[] = [];
@@ -332,7 +319,6 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 			baseLink: link,
 			selectedTab: 4,
 			profile,
-			isUserFollowingRequester,
 			requestUserContent: self?.content ?? null
 		};
 		return res.jsxForDirectory({
@@ -385,7 +371,6 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		baseLink: link,
 		selectedTab: selection,
 		profile,
-		isUserFollowingRequester,
 		requestUserContent: self?.content ?? null
 	};
 	return res.jsxForDirectory({
