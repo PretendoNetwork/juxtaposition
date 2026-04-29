@@ -1,8 +1,9 @@
 @use "../theme.scss" as t;
+@use "sass:math";
 
 $title-area-height: 52px;
 $pad: 8px;
-$spad: $pad/2;
+$spad: math.div($pad, 2);
 
 .page-header {
     * {-webkit-box-sizing: border-box;}
