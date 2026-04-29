@@ -14,3 +14,4 @@ No svg support.
 - Gradients use legacy syntax; [`-webkit-gradient` described here](https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariCSSRef/Articles/Functions.html#//apple_ref/doc/uid/TP40007955). Note `-webkit-linear-gradient` and `-webkit-radial-gradient` are *not* supported.
 - `-webkit-border-radius` works but can give very terrible looking results above 2-3px, and doesn't clip the top-left corner properly. Verify design on hardware.
 - `-webkit-mask-image` and friends do not work at all despite working on contemporary Chrome. Mask image is just rendered as a normal image.
+- Flexbox exists in a limited form, named `display: -webkit-box`. Syntax is different and less capable, see [MDN for box- properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/box-flex). Remember to use `-webkit-box-*` versions.
