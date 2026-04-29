@@ -34,11 +34,11 @@ postsRouter.get({
 	},
 	async handler({ query, auth }) {
 		if (query.parent_id && !query.include_replies) {
-			throw new errors.badRequest('Please set include_replies=true to get replies to a parent');
+			throw errors.for('bad_request', 'Please set include_replies=true to get replies to a parent');
 		}
 		// guests can view userpages, but not feeds (no topic tags etc.)
 		if (auth === null && !query.posted_by && !query.empathy_by && !query.parent_id) {
-			throw new errors.unauthorized('Authentication token not provided');
+			throw errors.for('requires_auth');
 		}
 
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
@@ -79,7 +79,7 @@ postsRouter.get({
 			...filterRemovedPosts(auth)
 		});
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		return mapPost(post);
@@ -105,7 +105,7 @@ postsRouter.delete({
 			...filterRemovedPosts(auth)
 		});
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		// guards.user makes this safe
@@ -117,8 +117,8 @@ postsRouter.delete({
 			// If a moderator deletes someone else's post, they can provide a reason
 				reason = query.reason ?? 'Removed by moderator';
 			} else {
-			// Non-moderators can't delete other posts
-				throw new errors.forbidden('Not allowed');
+				// Non-moderators can't delete other posts
+				throw errors.for('forbidden', 'Not your post');
 			}
 		}
 
@@ -155,7 +155,7 @@ postsRouter.post({
 			...filterRemovedPosts(auth)
 		});
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		// guards.user makes this safe
@@ -182,7 +182,7 @@ postsRouter.post({
 			}, { new: true });
 		}
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		return mapEmpathy(body.action, post);

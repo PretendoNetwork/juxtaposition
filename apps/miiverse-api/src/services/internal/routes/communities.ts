@@ -120,7 +120,7 @@ communitiesRouter.get({
 			...typesToFilter
 		}));
 		if (!community) {
-			throw new errors.notFound();
+			throw errors.for('not_found');
 		}
 
 		const totalPosts = await Post.find({
@@ -166,7 +166,7 @@ communitiesRouter.get({
 			...typesToFilter
 		}));
 		if (!community) {
-			throw new errors.notFound();
+			throw errors.for('not_found');
 		}
 
 		return mapCommunity(community);
