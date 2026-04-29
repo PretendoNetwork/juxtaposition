@@ -87,12 +87,12 @@ communityPostsRouter.post({
 
 		const community = await Community.findOne({ olive_community_id: params.id });
 		if (!community) {
-			throw new errors.notFound('Community could not be found');
+			throw errors.for('not_found');
 		}
 
 		const self = mapSelf(account);
 		if (!isPostingAllowed(community, self, null)) {
-			throw new errors.forbidden('You can not post to this community');
+			throw errors.for('forbidden');
 		}
 
 		const newPost = await createNewPost({

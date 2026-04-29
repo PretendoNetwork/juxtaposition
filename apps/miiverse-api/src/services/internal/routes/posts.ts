@@ -228,7 +228,7 @@ postsRouter.post({
 			removed: false
 		});
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		const duplicateReport = await Report.findOne({
@@ -269,17 +269,17 @@ postsRouter.post({
 			removed: false
 		});
 		if (!parentPost) {
-			throw new errors.notFound('Community could not be found');
+			throw errors.for('not_found');
 		}
 
 		const community = await Community.findOne({ olive_community_id: parentPost.community_id });
 		if (!community) {
-			throw new errors.notFound('Community could not be found');
+			throw errors.for('not_found');
 		}
 
 		const self = mapSelf(account);
 		if (!isPostingAllowed(community, self, parentPost)) {
-			throw new errors.forbidden('You can not reply to this post');
+			throw errors.for('forbidden');
 		}
 
 		const newPost = await createNewPost({
