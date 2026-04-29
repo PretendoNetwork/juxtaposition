@@ -245,9 +245,19 @@ export function evaluateAutomodRules(post: IPostInput, rules: HydratedAutomodRul
 		if (rule.type === 'keyword') {
 			const bodyNormalized = (post.body ?? '').toLowerCase();
 			const keywordsToCheck = rule.keyword_settings?.keywords ?? [];
-			const matchedKeywords = keywordsToCheck.filter(keyword => bodyNormalized.includes(keyword.toLowerCase()));
-			hasMatched = matchedKeywords.length > 0;
-			// TODO add actual matching
+			keywordsToCheck.forEach((keywordUpper) => {
+				const keyword = keywordUpper.toLowerCase();
+				const index = bodyNormalized.indexOf(keyword);
+				if (index < 0) {
+					return;
+				}
+
+				hasMatched = true;
+				matches.push({
+					start: index,
+					end: index + keyword.length
+				});
+			});
 		}
 
 		if (hasMatched) {
