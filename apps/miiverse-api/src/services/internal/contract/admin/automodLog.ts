@@ -14,6 +14,12 @@ export const automodLogSchema = z.object({
 	action: automodActionEnum,
 	postAuthor: z.number(),
 	postId: z.string().nullable(),
+	parentPostId: z.string().nullable(),
+	communityId: z.string().nullable(),
+	matches: z.array(z.object({
+		start: z.number(),
+		end: z.number()
+	})),
 	postContent: z.object({
 		body: z.string().nullable()
 	})
@@ -29,6 +35,9 @@ export function mapAutomodLog(log: HydratedAutomodLogDocument, rule: HydratedAut
 		action: log.action,
 		postAuthor: log.author,
 		postId: log.action === 'blocked' ? null : log.post_id,
+		parentPostId: log.parent_post_id,
+		communityId: log.community_id,
+		matches: log.matches ?? [],
 		postContent: {
 			body: log.post_content_body
 		}
