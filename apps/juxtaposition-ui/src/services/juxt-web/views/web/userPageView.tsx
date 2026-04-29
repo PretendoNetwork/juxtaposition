@@ -27,6 +27,7 @@ export type UserPageViewProps = {
 export function WebUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 	const user = useUser();
 
+	const userExists = props.isBanned || props.isDeleted;
 	let title = <T k="user_page.not_found" />;
 	if (props.isBanned) {
 		title = <T k="user_page.banned" />;
@@ -46,16 +47,16 @@ export function WebUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 						<img className="user-icon" src="/assets/web/images/bandwidthlost.png" />
 						<h2 className="community-title">{title}</h2>
 					</div>
-				</div>
-				{user.perms.moderator
-					? (
-							<div className="info-boxes-wrapper">
-								<div>
-									<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.pid}`}><T k="moderation.moderate_user" /></a></h4>
+					{user.perms.moderator && userExists
+						? (
+								<div className="info-boxes-wrapper">
+									<div>
+										<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.pid}`}><T k="moderation.moderate_user" /></a></h4>
+									</div>
 								</div>
-							</div>
-						)
-					: null}
+							)
+						: null}
+				</div>
 			</WebWrapper>
 		</WebRoot>
 	);
