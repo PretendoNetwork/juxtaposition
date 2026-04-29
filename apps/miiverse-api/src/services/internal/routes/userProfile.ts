@@ -48,11 +48,11 @@ userProfileRouter.get({
 
 		const isUserBanned = (settings.account_status < 0 || settings.account_status > 1 || pnid.accessLevel < 0);
 		const isUserDeleted = pnid.deleted;
-		const isUserDataViewable = !isUserBanned && !isUserDeleted;
-
-		// TODO handle this better?
-		if (!isUserDataViewable) {
-			throw errors.for('not_found');
+		if (isUserBanned) {
+			throw errors.for('user_banned');
+		}
+		if (isUserDeleted) {
+			throw errors.for('user_deleted');
 		}
 
 		const followers = content.following_users.filter(v => v !== 0).length;
