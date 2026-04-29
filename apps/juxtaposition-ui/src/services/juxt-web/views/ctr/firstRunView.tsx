@@ -1,5 +1,6 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { FirstRunViewProps } from '@/services/juxt-web/views/web/firstRunView';
 
@@ -77,9 +78,9 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 	return (
 		<CtrRoot preventJsLoad title="First Run" onLoad="cave.snd_playBgm('BGM_CAVE_SYOKAI');cave.toolbar_setVisible(false);" head={head}>
 			<CtrPageBody>
-				<header id="header">
-					<h1 id="page-title"><T k="setup.title" /></h1>
-				</header>
+				<CtrPageHeader type="plain">
+					<T k="setup.title" />
+				</CtrPageHeader>
 				<div className="body-content">
 					<div className="communities-list">
 

@@ -1,18 +1,19 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { ReportPostViewProps } from '@/services/juxt-web/views/web/reportPostView';
 
 export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 	return (
 		<div id="report-post-page">
-			<header
-				id="header"
+			<CtrPageHeader
+				type="plain"
 				data-toolbar-mode="wide"
 				data-toolbar-message={T.str('reporting.submit')}
 			>
-				<h1 id="page-title"><T k="reporting.title" /></h1>
-			</header>
+				<T k="reporting.title" />
+			</CtrPageHeader>
 			<form method="post" action={`/posts/${props.id}/report`} className="report-form post" name="report">
 				<input type="hidden" name="post_id" id="report-post-id" value={props.id} />
 				<p><T k="reporting.description" /></p>

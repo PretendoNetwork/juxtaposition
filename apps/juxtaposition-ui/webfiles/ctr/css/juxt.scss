@@ -2,6 +2,8 @@
 @use './controls/ctabs.css';
 @use './controls/checkbox.css';
 @use './components/ui/CtrNavTabs.css';
+@use './components/ui/CtrIcon.scss';
+@use './components/CtrPageHeader.scss';
 @use 'new-post-view.css';
 @use 'report-post-page.css';
 
@@ -13,7 +15,6 @@ body {
 }
 
 #body,
-#header,
 body {
     overflow-x: hidden;
 }
@@ -56,20 +57,6 @@ ul {
     padding: 0
 }
 
-#header {
-    display: block;
-    width: 400px;
-    height: 220px;
-    background: url(@/images/header.png);
-    background-size: 400px;
-    position: relative;
-    margin-bottom: 10px;
-
-    &.buttons {
-        margin-bottom: 40px;
-    }
-}
-
 #page-title {
     position: absolute;
     bottom: 0;
@@ -80,36 +67,6 @@ ul {
     display: inline;
     padding-left: 15px;
     width: 385px
-}
-
-/* Communities with old style headers where we need to cover the bottom 52px */
-.header-legacy #page-title {
-    background: #fff;
-}
-
-#header > a {
-    position: absolute;
-    margin: 0;
-    bottom: -31px;
-    height: 13px;
-    line-height: 13px;
-    font-size: 13px;
-    padding: 8px;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), to(#e6e6e6)) 0 0;
-    color: #323232;
-    border: 1px solid #cecece
-}
-
-#header a.right {
-    right: 0;
-    padding-right: 45px;
-    border-bottom-left-radius: 10px
-}
-
-#header a.left {
-    left: 0;
-    padding-left: 45px;
-    border-bottom-right-radius: 10px
 }
 
 .headline > h2 {
@@ -341,8 +298,7 @@ menu.tab-header.user-page li:last-child {
 }
 
 .post header > a,
-.tags,
-header svg {
+.tags {
     display: inline-block;
     position: absolute
 }
@@ -355,8 +311,7 @@ header svg {
     top: 17px
 }
 
-.tags,
-header svg {
+.tags {
     color: #a362d8;
     font-size: 10px;
     line-height: 12px;
@@ -452,10 +407,6 @@ header svg {
 .inline-sprite {
     display: inline-block;
     border: 0;
-}
-
-#add-post-page > header {
-    margin-bottom: 0
 }
 
 .olv-modal-close-button,

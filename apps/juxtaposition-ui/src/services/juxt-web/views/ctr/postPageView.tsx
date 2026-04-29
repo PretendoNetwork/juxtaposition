@@ -1,34 +1,28 @@
-import cx from 'classnames';
 import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
 export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 	const url = useUrl();
-	const user = useUser();
 	const { post, community } = props;
-	const { bannerUrl, legacy } = url.ctrHeader(community);
+	const header = url.ctrHeader(community);
 
 	return (
 		<CtrRoot title={T.str('global.activity_feed')}>
 			<CtrPageBody>
-				<header
-					id="header"
-					style={{
-						background: `url('${bannerUrl}')`
-					}}
-					className={cx(
-						'buttons',
-						{ 'header-legacy': legacy }
-					)}
+				<CtrPageHeader
+					type="plain"
+					header={header}
 					data-toolbar-mode="normal"
 				>
-					<h1 id="page-title">{post.screen_name}</h1>
-					{props.canPost
+					{post.screen_name}
+				</CtrPageHeader>
+
+				{/* {props.canPost
 						? (
 								<a
 									id="header-post-button"
@@ -58,9 +52,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 										<T k="post.report_post" />
 									</a>
 								</>
-							)}
-				</header>
-
+							)} */}
 				<div className="body-content tab2-content" id="post">
 					<div className="post-wrapper parent">
 						<CtrPostView post={post} userContent={props.userContent} isMainPost />

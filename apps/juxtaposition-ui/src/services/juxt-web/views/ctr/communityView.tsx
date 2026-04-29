@@ -1,58 +1,41 @@
-import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostListClosedView } from '@/services/juxt-web/views/ctr/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
+import { CtrPageHeader, CtrPageHeaderStat } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
 export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 	const url = useUrl();
 	const community = props.community;
-	const { bannerUrl, legacy } = url.ctrHeader(community);
+	const header = url.ctrHeader(community);
 
 	return (
 		<CtrRoot title={community.name}>
 			<CtrPageBody>
-				<header
-					id="header"
-					style={{
-						background: `url('${bannerUrl}')`
-					}}
-					className={cx('buttons', {
-						'header-legacy': legacy
-					})}
-
+				<CtrPageHeader
+					type="icon-and-stats"
+					header={header}
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="3"
 				>
-					<h1 id="page-title" className="community">
-						<span>
-							<CtrCommunityIcon community={community} size="64"></CtrCommunityIcon>
-							<span className="community-name">
-								{community.name}
-							</span>
-							<span className="text">
-								<span>
-									<span className="sprite sp-post-count inline-sprite"></span>
-									<span id="post-count">
-										{' '}
-										{props.totalPosts}
-									</span>
-								</span>
-								<span>
-									{' | '}
-									<span className="sprite sp-follower-count inline-sprite"></span>
-									<span id="followers">
-										{' '}
-										{community.followerCount}
-									</span>
-								</span>
-							</span>
-						</span>
-					</h1>
+					<CtrCommunityIcon type="header-icon" community={community} size="64"></CtrCommunityIcon>
+					<div className="title">
+						<span>{community.name}</span>
+					</div>
+					<div className="stats">
+						<CtrPageHeaderStat sprite="sp-follower-count">
+							<div id="followers">{community.followerCount}</div>
+						</CtrPageHeaderStat>
+						<CtrPageHeaderStat sprite="sp-post-count">
+							<div id="post-count">{props.totalPosts}</div>
+						</CtrPageHeaderStat>
+					</div>
+				</CtrPageHeader>
+				{/*
 					{props.canPost
 						? (
 								<a
@@ -92,7 +75,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 								</button>
 							)
 						: null}
-				</header>
+				</header> */}
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="community-info info-content with-header-banner">
 					</div>
