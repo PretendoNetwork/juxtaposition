@@ -141,7 +141,7 @@ header > .selected svg {
   max-width: 1400px;
   margin: 0 auto;
   overflow: hidden;
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 .post-meta-wrapper {
@@ -328,10 +328,14 @@ header > .selected svg {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 99;
 
   /* trim off corners */
   border-radius: 0.75em;
-  overflow: hidden; 
+  overflow: hidden;
+
+  /* styling */
+  border: 1px solid var(--background-alt);
 }
 
 .post-hamburger {
@@ -345,11 +349,20 @@ header > .selected svg {
 .post-hamburger > li {
   width: 200px;
   padding: 0.5em 1em;
+  transition:
+    color ease-in-out 100ms,
+    background-color ease-in-out 100ms;
 
-  background: var(--background-alt);
+  color: var(--text-secondary-2);
+  background-color: var(--background-dark);
+  cursor: pointer;
 }
 .post-hamburger > li:hover {
-  background: var(--background-alt-alt);
+  background-color: var(--background);
+  color: var(--text);
+}
+.post-hamburger > li:active {
+  background-color: var(--background-alt);
 }
 
 /* Images in hamburger items should display inline */
