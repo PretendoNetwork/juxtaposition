@@ -8,8 +8,38 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
-import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
+import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserProfile } from '@/api/generated';
+
+export function PortalUserMissingPage(props: UserMissingPageViewProps): ReactNode {
+	let title = <T k="user_page.not_found" />;
+	if (props.isBanned) {
+		title = <T k="user_page.banned" />;
+	} else if (props.isDeleted) {
+		title = <T k="user_page.deleted" />;
+	}
+
+	return (
+		<PortalRoot title={T.str('user_page.not_found')}>
+			<PortalNavBar selection={-1} />
+			<PortalPageBody>
+				<div className="body-content tab2-content" id="community-post-list">
+					<div className="header-banner-container">
+						<img src="/assets/portal/images/banner.png" className="header-banner with-top-button" />
+					</div>
+					<div className="community-info info-content with-header-banner">
+						<span className="icon-container">
+							<img className="icon" src="/assets/web/images/bandwidthlost.png" />
+						</span>
+						<span className="title">
+							{title}
+						</span>
+					</div>
+				</div>
+			</PortalPageBody>
+		</PortalRoot>
+	);
+}
 
 export function PortalUserTier(props: { profile: UserProfile }): ReactNode {
 	const flags = props.profile.flags;

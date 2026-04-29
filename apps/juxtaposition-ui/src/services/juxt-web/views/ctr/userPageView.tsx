@@ -5,7 +5,40 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import type { ReactNode } from 'react';
-import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
+import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
+
+export function CtrUserMissingPage(props: UserMissingPageViewProps): ReactNode {
+	let title = <T k="user_page.not_found" />;
+	if (props.isBanned) {
+		title = <T k="user_page.banned" />;
+	} else if (props.isDeleted) {
+		title = <T k="user_page.deleted" />;
+	}
+
+	return (
+		<CtrRoot title={T.str('user_page.not_found')}>
+			<CtrPageBody>
+				<header
+					id="header"
+					className="buttons"
+
+					data-toolbar-mode="normal"
+				>
+					<h1 id="page-title" className="community">
+						<span>
+							<span className="icon-container">
+								<img className="icon" src="/assets/web/images/bandwidthlost.png" />
+							</span>
+							<span className="community-name">
+								{title}
+							</span>
+						</span>
+					</h1>
+				</header>
+			</CtrPageBody>
+		</CtrRoot>
+	);
+}
 
 export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 	const url = useUrl();

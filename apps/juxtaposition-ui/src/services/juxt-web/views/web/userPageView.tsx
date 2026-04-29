@@ -10,6 +10,12 @@ import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
 
+export type UserMissingPageViewProps = {
+	pid: number;
+	isBanned: boolean;
+	isDeleted: boolean;
+};
+
 export type UserPageViewProps = {
 	baseLink: string;
 	selectedTab: number;
@@ -17,6 +23,43 @@ export type UserPageViewProps = {
 	profile: UserProfile;
 	requestUserContent: SelfContent | null;
 };
+
+export function WebUserMissingPage(props: UserMissingPageViewProps): ReactNode {
+	const user = useUser();
+
+	let title = <T k="user_page.not_found" />;
+	if (props.isBanned) {
+		title = <T k="user_page.banned" />;
+	} else if (props.isDeleted) {
+		title = <T k="user_page.deleted" />;
+	}
+
+	return (
+		<WebRoot>
+			<h2 id="title" className="page-header"><T k="global.user_page" /></h2>
+			<WebNavBar selection={-1} />
+			<div id="toast"></div>
+			<WebWrapper className="community-page-post-box">
+				<div className="community-top">
+					<img className="banner" src="/assets/web/images/banner.png" alt="" />
+					<div className="community-info">
+						<img className="user-icon" src="/assets/web/images/bandwidthlost.png" />
+						<h2 className="community-title">{title}</h2>
+					</div>
+				</div>
+				{user.perms.moderator
+					? (
+							<div className="info-boxes-wrapper">
+								<div>
+									<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.pid}`}><T k="moderation.moderate_user" /></a></h4>
+								</div>
+							</div>
+						)
+					: null}
+			</WebWrapper>
+		</WebRoot>
+	);
+}
 
 export function WebUserTier(props: { flags: UserBadgeEnum[] }): ReactNode {
 	const parts: ReactNode[] = [];

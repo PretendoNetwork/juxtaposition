@@ -21,7 +21,7 @@ export class InternalApiError extends Error {
 	}
 }
 
-export async function wrapApi<T>(prom: Promise<RequestResult<T, any, true, 'fields'>>): Promise<{ error: null | InternalApiError; result: T | null }> {
+export async function wrapApi<T>(prom: RequestResult<{ data: T }>): Promise<{ error: null | InternalApiError; result: T | null }> {
 	try {
 		const result = await prom;
 		return { result: result.data as T, error: null };

@@ -74,7 +74,8 @@
     "settings": "Settings",
     "friend_requests": "Requests",
     "deleted": "Deleted User",
-    "banned": "Banned User"
+    "banned": "Banned User",
+    "not_found": "User doesn't exist"
   },
   "user_settings": {
     "profile_settings": "Profile Settings",

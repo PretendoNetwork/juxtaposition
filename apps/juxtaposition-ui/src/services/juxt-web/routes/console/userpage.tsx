@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { database } from '@/database';
 import { POST } from '@/models/post';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
+import { WebUserMissingPage, WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
@@ -14,12 +14,13 @@ import { CtrUserPageFollowingView } from '@/services/juxt-web/views/ctr/userPage
 import { CtrUserMenuView } from '@/services/juxt-web/views/ctr/userMenu';
 import { PortalUserSettingsView } from '@/services/juxt-web/views/portal/userSettingsView';
 import { CtrUserSettingsView } from '@/services/juxt-web/views/ctr/userSettingsView';
-import { PortalUserPageView } from '@/services/juxt-web/views/portal/userPageView';
-import { CtrUserPageView } from '@/services/juxt-web/views/ctr/userPageView';
+import { PortalUserMissingPage, PortalUserPageView } from '@/services/juxt-web/views/portal/userPageView';
+import { CtrUserMissingPage, CtrUserPageView } from '@/services/juxt-web/views/ctr/userPageView';
+import { wrapApi } from '@/api/errors';
 import type { Request, Response } from 'express';
 import type { CommunityViewData, UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
-import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
+import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
 import type { ShallowUser } from '@/api/generated';
 export const userPageRouter = express.Router();
@@ -232,9 +233,28 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 	const self = hasAuth() ? auth().self : null;
 	const isSelf = hasAuth() && userID === auth().pid;
 
-	const { data: profile } = await req.api.users.getProfile({ id: userID });
+	const { result: profile, error } = await wrapApi(req.api.users.getProfile({ id: userID }));
+	const missingPageProps: UserMissingPageViewProps = {
+		pid: userID,
+		isBanned: error?.isCode('user_banned') ?? false,
+		isDeleted: error?.isCode('user_deleted') ?? false
+	};
+	if (missingPageProps.isBanned || missingPageProps.isDeleted) {
+		return res.jsxForDirectory({
+			web: <WebUserMissingPage {...missingPageProps} />,
+			portal: <PortalUserMissingPage {...missingPageProps} />,
+			ctr: <CtrUserMissingPage {...missingPageProps} />
+		});
+	}
+	if (error) {
+		throw error;
+	}
 	if (!profile) {
-		return res.redirect('/404');
+		return res.jsxForDirectory({
+			web: <WebUserMissingPage {...missingPageProps} />,
+			portal: <PortalUserMissingPage {...missingPageProps} />,
+			ctr: <CtrUserMissingPage {...missingPageProps} />
+		});
 	}
 
 	const { data: postPage } = await req.api.users.posts.list({ id: userID });
@@ -289,9 +309,28 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	const self = hasAuth() ? auth().self : null;
 	const isSelf = hasAuth() && userID === auth().pid;
 
-	const { data: profile } = await req.api.users.getProfile({ id: userID });
+	const { result: profile, error } = await wrapApi(req.api.users.getProfile({ id: userID }));
+	const missingPageProps: UserMissingPageViewProps = {
+		pid: userID,
+		isBanned: error?.isCode('user_banned') ?? false,
+		isDeleted: error?.isCode('user_deleted') ?? false
+	};
+	if (missingPageProps.isBanned || missingPageProps.isDeleted) {
+		return res.jsxForDirectory({
+			web: <WebUserMissingPage {...missingPageProps} />,
+			portal: <PortalUserMissingPage {...missingPageProps} />,
+			ctr: <CtrUserMissingPage {...missingPageProps} />
+		});
+	}
+	if (error) {
+		throw error;
+	}
 	if (!profile) {
-		return res.redirect('/404');
+		return res.jsxForDirectory({
+			web: <WebUserMissingPage {...missingPageProps} />,
+			portal: <PortalUserMissingPage {...missingPageProps} />,
+			ctr: <CtrUserMissingPage {...missingPageProps} />
+		});
 	}
 
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
