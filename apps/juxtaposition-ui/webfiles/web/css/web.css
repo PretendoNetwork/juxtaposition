@@ -1,6 +1,7 @@
 :root {
   --background: #1b1f3b;
   --background-alt: #2a2f50;
+  --background-dark: #121527;
   --text: white;
   --text-secondary: #a1a8d9;
   --btn: #673db6;
@@ -454,6 +455,15 @@ iframe {
 
 .community-top {
   background: var(--background-alt);
+  margin-bottom: 1em;
+  padding: 1em;
+  border-radius: 1em;
+  width: 600px;
+  overflow: hidden;
+}
+
+.community-top.community-top-dark {
+  background: var(--background-dark);
   margin-bottom: 1em;
   padding: 1em;
   border-radius: 1em;
