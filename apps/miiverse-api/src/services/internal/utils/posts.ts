@@ -1,11 +1,13 @@
 import { z } from 'zod';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { getShotModeForTitleId } from '@/services/api/routes/posts';
-import { getInvalidPostRegex } from '@/util';
+import { evaluateAutomodRules, getInvalidPostRegex, performAutomodAction } from '@/util';
 import { config } from '@/config';
 import { getDuplicatePosts } from '@/database';
 import { Post } from '@/models/post';
 import { asOpenapi } from '@/services/internal/builder/openapi';
+import { AutomodRule } from '@/models/automodRules';
+import { errors } from '@/services/internal/errors';
 import type { PaintingUrls } from '@/images';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
@@ -139,6 +141,14 @@ export async function createNewPost(ops: PostCreateOptions): Promise<HydratedPos
 
 	if (document.body === '' && document.painting === '' && document.screenshot === '') {
 		throw new Error('No valid post content');
+	}
+
+	// Automod
+	const automodRules = await AutomodRule.find({ enabled: true });
+	const automodEval = evaluateAutomodRules(document, automodRules);
+	const automodResult = await performAutomodAction(document, automodEval);
+	if (!automodResult.allowPost) {
+		throw errors.for('automod_prevented');
 	}
 
 	const newPost = await Post.create(document);

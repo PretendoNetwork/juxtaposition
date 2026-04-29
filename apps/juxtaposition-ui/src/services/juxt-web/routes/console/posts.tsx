@@ -13,6 +13,7 @@ import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView'
 import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
+import { InternalApiError, wrapApi } from '@/api/errors';
 import type { Request, Response } from 'express';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 import type { EmpathyActionEnum, Post, PostCreateBody } from '@/api/generated';
@@ -306,6 +307,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		files: ['shot']
 	});
 
+	const rejectReturnUrl = params.post_id ? `/posts/${params.post_id}/create` : `/titles/${body.community_id}/create`;
 	const postBody: PostCreateBody = {
 		feelingId: body.feeling_id,
 		body: body.body.length > 0 ? body.body : undefined,
@@ -337,25 +339,37 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		};
 	}
 
-	let newPost: Post;
+	let newPostResult: Post | InternalApiError | null;
 	if (params.post_id) {
-		const { data: resultPost } = await req.api.posts.reply({
+		const out = await wrapApi(req.api.posts.reply({
 			...postBody,
 			post_id: params.post_id
-		});
-		newPost = resultPost;
+		}));
+		newPostResult = out.error ?? out.result ?? null;
 	} else {
-		const { data: resultPost } = await req.api.communities.createPost({
+		const out = await wrapApi(req.api.communities.createPost({
 			...postBody,
 			id: body.community_id
-		});
-		newPost = resultPost;
+		}));
+		newPostResult = out.error ?? out.result ?? null;
 	}
 
-	if (newPost.parent) {
-		res.redirect('/posts/' + newPost.parent.toString());
+	if (newPostResult instanceof InternalApiError) {
+		if (newPostResult.isCode('automod_prevented')) {
+			const params = new URLSearchParams();
+			params.append('error-text', res.i18n.t('new_post.automod_error'));
+			return res.redirect(rejectReturnUrl + '?' + params.toString());
+		}
+		throw newPostResult;
+	}
+	if (!newPostResult) {
+		throw new Error('Null newPostResult');
+	}
+
+	if (newPostResult.parent) {
+		res.redirect('/posts/' + newPostResult.parent.toString());
 		return;
 	}
 
-	res.redirect('/titles/' + newPost.community_id + '/new');
+	res.redirect('/titles/' + newPostResult.community_id + '/new');
 }
