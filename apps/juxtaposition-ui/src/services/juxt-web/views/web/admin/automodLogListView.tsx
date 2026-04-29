@@ -3,7 +3,6 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { humanDate, humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { AutomodLog } from '@/api/generated';
@@ -20,20 +19,18 @@ export type AutomodLogListViewProps = {
 };
 
 export function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
-	const cache = useCache();
-
 	return (
 		<li className="reports">
 			<div className="hover">
-				<WebMiiIcon pid={log.postAuthor} type="icon" />
+				<WebMiiIcon pid={log.postAuthor?.pid} type="icon" />
 				<span className="body messages report">
 					<span className="text">
 						{`Post ${log.action} by `}
-						<a className="nick-name" href={`/users/${log.postAuthor}`}>
-							{cache.getUserName(log.postAuthor)}
+						<a className="nick-name" href={`/users/${log.postAuthor?.pid}`}>
+							{log.postAuthor?.miiName}
 						</a>
 						{' - '}
-						<span className="pid-display">{log.postAuthor}</span>
+						<span className="pid-display">{log.postAuthor?.pid}</span>
 						{' - '}
 						<abbr className="timestamp" title={humanDate(log.createdAt)}>{humanFromNow(log.createdAt)}</abbr>
 					</span>

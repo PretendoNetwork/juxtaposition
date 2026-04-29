@@ -15,11 +15,11 @@ export const userBadgeSchema = z.enum([
 
 export type UserBadgeEnum = z.infer<typeof userBadgeSchema>;
 
-export const shallowUserSchema = z.object({
+export const shallowUserSchema = asOpenapi('ShallowUser', z.object({
 	pid: z.number(),
 	miiName: z.string(),
 	accountStatus: z.number()
-}).openapi('ShallowUser');
+}));
 
 export type ShallowUserDto = z.infer<typeof shallowUserSchema>;
 

@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { Post } from '@/api/generated';
@@ -10,7 +9,6 @@ export type ModerateUserRemovedPostsViewProps = {
 };
 
 export function ModerateUserRemovedPostView(props: ModerateUserRemovedPostsViewProps): ReactNode {
-	const cache = useCache();
 	const url = useUrl();
 
 	return (
@@ -34,7 +32,7 @@ export function ModerateUserRemovedPostView(props: ModerateUserRemovedPostsViewP
 										<span className="text">
 											<a href={`/users/${post.removed_by}`} className="nick-name">
 												Removed By:
-												{post.removed_by ? cache.getUserName(post.removed_by) : 'Nobody'}
+												{post.removed_by}
 											</a>
 											<span title={moment(post.removed_at).toString()} className="timestamp">{moment(post.removed_at).fromNow()}</span>
 										</span>

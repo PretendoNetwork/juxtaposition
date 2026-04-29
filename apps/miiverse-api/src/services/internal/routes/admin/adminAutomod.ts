@@ -10,6 +10,7 @@ import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { automodLogSchema, mapAutomodLog } from '@/services/internal/contract/admin/automodLog';
 import { automodAction, AutomodLog } from '@/models/automodLog';
+import { Settings } from '@/models/settings';
 import type { RootFilterQuery } from 'mongoose';
 
 export const adminAutomodRouter = createInternalApiRouter();
@@ -164,6 +165,19 @@ adminAutomodRouter.get({
 			}
 		});
 
-		return mapPage(total, logs.map(log => mapAutomodLog(log, rules.find(v => v.id === log.rule_id) ?? null)));
+		const userIds = logs.map(v => v.author);
+		const users = await Settings.find({
+			_id: {
+				$in: userIds
+			}
+		});
+
+		const mappedLogs = logs.map((log) => {
+			const rule = rules.find(v => v.id === log.rule_id) ?? null;
+			const user = users.find(v => v.pid === log.author) ?? null;
+
+			return mapAutomodLog(log, user, rule);
+		});
+		return mapPage(total, mappedLogs);
 	}
 });
