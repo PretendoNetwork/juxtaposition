@@ -19,6 +19,42 @@ export type AutomodLogListViewProps = {
 	hasNextPage: boolean;
 };
 
+// Potentially the most complex rendering logic I've written in a while
+function LogBodyWithMatches({ log }: AutomodLogItemViewProps): ReactNode {
+	const body = log.postContent?.body;
+	const matches = log.matches;
+	if (!body) {
+		return 'NO BODY';
+	}
+
+	const orderedMatches = [...matches].sort((a, b) => a.start - b.start);
+	const noOverlapMatches = orderedMatches.map((v, i, arr) => {
+		if (arr.length === i + 1) {
+			return v;
+		} // Skip last item
+		const nextItem = arr[i + 1];
+		v.end = Math.min(v.end, nextItem.start); // Never overlap
+		return v;
+	});
+
+	let lastSplitEndIndex = 0;
+	const parts: ReactNode[] = [];
+	for (const match of noOverlapMatches) {
+		if (match.start > lastSplitEndIndex) {
+			parts.push(body.slice(lastSplitEndIndex, match.start)); // Anything in front of the match
+		}
+
+		const str = body.slice(match.start, match.end);
+		lastSplitEndIndex = match.end;
+		parts.push(<mark>{str}</mark>);
+	}
+	if (lastSplitEndIndex < body.length) {
+		parts.push(body.slice(lastSplitEndIndex)); // Anything in after last match
+	}
+
+	return parts;
+}
+
 function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
 	const cache = useCache();
 
@@ -45,9 +81,7 @@ function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
 					</span>
 					<span className="text">
 						<h4>Body:</h4>
-						<p>
-							{log.postContent?.body ?? 'NO BODY'}
-						</p>
+						<p><LogBodyWithMatches log={log} /></p>
 					</span>
 				</span>
 			</div>
