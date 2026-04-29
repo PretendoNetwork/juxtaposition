@@ -158,7 +158,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	);
 
 	return (
-		<div className="posts-wrapper" id={post.id ?? undefined}>
+		<div className={cx('posts-wrapper', { 'posts-wrapper-removed': post.removed })} id={post.id ?? undefined}>
 			{removedPostPart}
 			{canAccessContent ? contentPart : null}
 		</div>
