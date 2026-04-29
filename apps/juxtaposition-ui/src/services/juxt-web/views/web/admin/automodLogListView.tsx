@@ -19,7 +19,7 @@ export type AutomodLogListViewProps = {
 	hasNextPage: boolean;
 };
 
-function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
+export function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
 	const cache = useCache();
 
 	return (

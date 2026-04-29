@@ -94,6 +94,7 @@ adminUserRouter.get('/accounts/:pid/reports', async function (req, res) {
 
 	const { data: reportsPage } = await req.api.admin.reports.list({ offenderPid: reqPid, limit: 50 });
 	const { data: submittedReportsPage } = await req.api.admin.reports.list({ reporterPid: reqPid, limit: 50 });
+	const { data: automodLogsPage } = await req.api.admin.automodLogs.list({ authorPid: reqPid, limit: 50 });
 
 	res.jsxForDirectory({
 		web: (
@@ -101,6 +102,7 @@ adminUserRouter.get('/accounts/:pid/reports', async function (req, res) {
 				<ModerateUserReportsListView
 					reports={reportsPage.items}
 					submittedReports={submittedReportsPage.items}
+					automodLogs={automodLogsPage.items}
 					reasonMap={getReasonMap()}
 				/>
 			</WebModerateUserView>

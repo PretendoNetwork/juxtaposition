@@ -2,12 +2,14 @@ import moment from 'moment';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
+import { AutomodLogItem } from '@/services/juxt-web/views/web/admin/automodLogListView';
 import type { ReactNode } from 'react';
-import type { Report } from '@/api/generated';
+import type { AutomodLog, Report } from '@/api/generated';
 
 export type ModerateUserReportsListViewProps = {
 	reports: Report[];
 	submittedReports: Report[];
+	automodLogs: AutomodLog[];
 	reasonMap: string[];
 };
 
@@ -112,6 +114,21 @@ export function ModerateUserReportsListView(props: ModerateUserReportsListViewPr
 				<ul className="list-content-with-icon-and-text arrow-list">
 					{props.submittedReports.length === 0 ? <h4>There's nothing here...</h4> : null}
 					{props.submittedReports.map(report => <ModerateUserReportView key={report.id} report={report} reasonMap={props.reasonMap} />) }
+				</ul>
+			</details>
+			<details>
+				<summary>
+					<div className="mt-5">
+						<h4>
+							Recent Automod Events (
+							{props.automodLogs.length}
+							, limit 50 most recent)
+						</h4>
+					</div>
+				</summary>
+				<ul className="list-content-with-icon-and-text arrow-list accounts">
+					{props.automodLogs.length === 0 ? <h4>There's nothing here...</h4> : null}
+					{props.automodLogs.map(log => <AutomodLogItem key={log.id} log={log} />) }
 				</ul>
 			</details>
 		</div>
