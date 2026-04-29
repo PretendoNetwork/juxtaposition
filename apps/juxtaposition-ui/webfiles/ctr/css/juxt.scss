@@ -7,6 +7,7 @@
 @use './components/CtrPageHeader.scss';
 @use 'new-post-view.css';
 @use 'report-post-page.css';
+@use 'theme.scss' as t;
 
 body {
     margin: 0;
@@ -468,24 +469,7 @@ menu.tab-header.no-margin {
     margin: 5px;
     border: 1px solid gray;
     border-radius: 8px;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), color-stop(.8, #f6f6f6), color-stop(.96, #f5f5f5), to(#bbb)) 0 0
-}
-
-.small-button.follow {
-    position: absolute;
-    bottom: -31px;
-    left: 185px;
-    margin: 0;
-    line-height: 15px;
-    font-size: 13px;
-    background: -webkit-gradient(linear,left top,left bottom,from(#fff),color-stop(.5,#fff),to(#e6e6e6))0 0;
-    color: #323232;
-    border: 1px solid #cecece;
-    border-radius: 0 0 8px 8px;
-
-    &.suggested {
-        left: 135px;
-    }
+    background: t.$root-gradient-30px;
 }
 
 .body.message .id-name {
