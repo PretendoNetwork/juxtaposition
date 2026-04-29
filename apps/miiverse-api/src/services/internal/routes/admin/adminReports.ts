@@ -106,7 +106,7 @@ adminReportsRouter.post({
 			}
 		});
 		await createNewPostDeletionNotification({
-			postAuthor: post.id,
+			postAuthor: post.pid,
 			post: post,
 			reason
 		});
