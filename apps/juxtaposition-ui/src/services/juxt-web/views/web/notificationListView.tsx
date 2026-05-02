@@ -73,7 +73,7 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 		return (
 			<div className="hover">
 				<a href={notif.link ?? '#'} className="icon-container notify">
-					<img src={notif.imageUrl ?? undefined} className="icon" />
+					<img src={notif.imageUrl} className="icon" />
 				</a>
 				<a className="body" href={notif.link ?? '#'}>
 					<span className="text">
