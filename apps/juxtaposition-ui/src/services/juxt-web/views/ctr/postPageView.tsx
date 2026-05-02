@@ -1,9 +1,10 @@
-import cx from 'classnames';
 import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 
@@ -11,56 +12,48 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
 	const { post, community } = props;
-	const { bannerUrl, legacy } = url.ctrHeader(community);
+	const header = url.ctrHeader(community);
 
 	return (
 		<CtrRoot title={T.str('global.activity_feed')}>
 			<CtrPageBody>
-				<header
-					id="header"
-					style={{
-						background: `url('${bannerUrl}')`
-					}}
-					className={cx(
-						'buttons',
-						{ 'header-legacy': legacy }
-					)}
+				<CtrPageHeader
+					type="plain"
+					header={header}
 					data-toolbar-mode="normal"
 				>
-					<h1 id="page-title">{post.screen_name}</h1>
+					{post.screen_name}
+				</CtrPageHeader>
+				<CtrPageButtons>
 					{props.canPost
 						? (
-								<a
-									id="header-post-button"
-									className="header-button left"
+								<CtrPageButton
+									type="left"
 									href={`/posts/${post.id}/create`}
-									data-pjax="#body"
 								>
 									<T k="post.reply_post" />
 									{' +'}
-								</a>
+								</CtrPageButton>
 							)
-						: null}
+						: null }
 					{post.pid === user.pid
 						? (
-								<a id="header-communities-button" className="delete header-button right" href="#" data-button-delete-post={post.id}>
+								<CtrPageButton
+									type="right"
+									data-button-delete-post={post.id}
+								>
 									<T k="post.delete_post" />
-								</a>
+								</CtrPageButton>
 							)
 						: (
-								<>
-									<a
-										id="header-communities-button"
-										className="report header-button right"
-										href={`/posts/${post.id}/report`}
-										data-pjax="#body"
-									>
-										<T k="post.report_post" />
-									</a>
-								</>
+								<CtrPageButton
+									type="right"
+									href={`/posts/${post.id}/report`}
+								>
+									<T k="post.report_post" />
+								</CtrPageButton>
 							)}
-				</header>
-
+				</CtrPageButtons>
 				<div className="body-content tab2-content" id="post">
 					<div className="post-wrapper parent">
 						<CtrPostView post={post} userContent={props.userContent} isMainPost />

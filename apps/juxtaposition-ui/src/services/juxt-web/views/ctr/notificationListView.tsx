@@ -4,6 +4,7 @@ import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
 import { humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -92,13 +93,13 @@ export function CtrNotificationWrapperView(props: NotificationWrapperViewProps):
 	return (
 		<CtrRoot title={T.str('global.notifications')}>
 			<CtrPageBody>
-				<header
-					id="header"
+				<CtrPageHeader
+					type="plain"
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="4"
 				>
-					<h1 id="page-title"><T k="global.notifications" /></h1>
-				</header>
+					<T k="global.notifications" />
+				</CtrPageHeader>
 				<div className="body-content tab2-content" id="news-page">
 					<div className="tab-body">
 						{props.children}

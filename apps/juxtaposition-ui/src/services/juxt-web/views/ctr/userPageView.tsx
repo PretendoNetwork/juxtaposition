@@ -1,14 +1,15 @@
 import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
+import { CtrPageHeader, CtrPageHeaderStat } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
+import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import type { ReactNode } from 'react';
 import type { UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
 export function CtrUserPageView(props: UserPageViewProps): ReactNode {
-	const url = useUrl();
 	const user = useUser();
 	const pnidName = props.user.mii?.name ?? props.user.username;
 
@@ -23,63 +24,63 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 	return (
 		<CtrRoot title={pnidName}>
 			<CtrPageBody>
-				<header
-					id="header"
-					className="buttons"
-
+				<CtrPageHeader
+					type="icon-and-stats"
 					data-toolbar-mode="normal"
 					data-toolbar-active-button={isSelf ? '5' : undefined}
 				>
-					<h1 id="page-title" className="community">
-						<span>
-							<span className="icon-container">
-								<img className="icon" src={isUserDataViewable ? url.cdn(`/mii/${props.user.pid}/normal_face.png`) : '/assets/ctr/images/bandwidthlost.png'} />
-							</span>
-							<span className="community-name">
-								{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
-								{ isUserDataViewable
-									? (
-											<>
-												{props.user.mii?.name ?? props.user.username}
-												{' '}
-												@
-												{props.user.username}
-											</>
-										)
-									: null}
-							</span>
-							{isUserDataViewable
-								? (
-										<span className="text">
-											<span>
-												<span className="sprite sp-post-count inline-sprite"></span>
-												<span id="post-count">
-													{' '}
-													{props.totalPosts}
-												</span>
-											</span>
-											<span>
-												{' | '}
-												<span className="sprite sp-follower-count inline-sprite"></span>
-												<span id="followers">
-													{' '}
-													{props.userContent.following_users.length}
-												</span>
-											</span>
-										</span>
-									)
-								: null }
-						</span>
-					</h1>
-					{isSelf ? <a id="header-communities-button" className="header-button left" href="/users/me/settings" data-pjax="#body"><T k="user_page.settings" /></a> : null}
-					{ canViewUser && !isSelf
+					<CtrMiiIcon type="header-icon" banned={!isUserDataViewable} pid={props.user.pid}></CtrMiiIcon>
+					<div className="title">
+						{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
+						{ isUserDataViewable
+							? (
+									<>
+										{props.user.mii?.name ?? props.user.username}
+										{' '}
+										@
+										{props.user.username}
+									</>
+								)
+							: null}
+					</div>
+					<div className="stats">
+						<CtrPageHeaderStat sprite="sp-follower-count">
+							<div id="followers">{props.userContent.following_users.length}</div>
+						</CtrPageHeaderStat>
+						<CtrPageHeaderStat sprite="sp-post-count">
+							<div id="post-count">{props.totalPosts}</div>
+						</CtrPageHeaderStat>
+					</div>
+				</CtrPageHeader>
+				<CtrPageButtons>
+					{isSelf
 						? (
-								<button type="button" className="small-button follow" evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={props.user.pid}>
-									<span className={cx('sprite sp-yeah inline-sprite', { selected: isRequesterFollowingUser })}></span>
-								</button>
+								<CtrPageButton
+									type="left"
+									href="/users/me/settings"
+								>
+									<T k="user_page.settings" />
+								</CtrPageButton>
 							)
 						: null}
-				</header>
+
+					{canViewUser && !isSelf
+						? (
+								<CtrPageButton
+									type="middle"
+									sprite={cx('sp-yeah', {
+										selected: isRequesterFollowingUser
+									})}
+
+									evt-click="follow(this)"
+									data-url="/users/follow"
+									data-community-id={props.user.pid}
+								>
+								</CtrPageButton>
+							)
+						: null}
+				</CtrPageButtons>
+
 				<div className="body-content tab2-content" id="community-post-list">
 					{canViewUser
 						? (

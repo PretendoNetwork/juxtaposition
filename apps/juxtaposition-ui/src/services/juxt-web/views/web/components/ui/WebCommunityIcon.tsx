@@ -7,6 +7,7 @@ export type CommunityIconProps = {
 	community: Community;
 	size: `${keyof Community['iconImagePaths']}`;
 	className?: string;
+	type?: 'header-icon' | 'icon';
 };
 
 export function WebCommunityIcon(props: CommunityIconProps): ReactNode {

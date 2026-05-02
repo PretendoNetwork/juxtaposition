@@ -1,6 +1,8 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
@@ -30,9 +32,13 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
 		<CtrRoot title={T.str('all_communities.text')}>
 			<CtrPageBody>
-				<header id="header">
-					<h1 id="page-title"><T k="all_communities.text" /></h1>
-				</header>
+				<CtrPageHeader
+					type="plain"
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="3"
+				>
+					<T k="all_communities.text" />
+				</CtrPageHeader>
 				<div className="body-content">
 					<div className="communities-list">
 						<ul className="list-content-with-icon-column" id="community-new-content">
@@ -51,16 +57,16 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 	return (
 		<CtrRoot title={T.str('global.communities')}>
 			<CtrPageBody>
-				<header
-					id="header"
-					className="buttons"
-
+				<CtrPageHeader
+					type="plain"
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="3"
 				>
-					<h1 id="page-title"><T k="global.communities" /></h1>
-					<a id="header-communities-button" className="right" href="/titles/all" data-pjax="#body"><T k="all_communities.text" /></a>
-				</header>
+					<T k="global.communities" />
+				</CtrPageHeader>
+				<CtrPageButtons>
+					<CtrPageButton type="right" href="/titles/all"><T k="all_communities.text" /></CtrPageButton>
+				</CtrPageButtons>
 				<div className="body-content">
 					<div className="communities-list">
 						<div className="headline">

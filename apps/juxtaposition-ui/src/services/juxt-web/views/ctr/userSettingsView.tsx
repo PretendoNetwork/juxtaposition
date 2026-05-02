@@ -1,5 +1,6 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
 
@@ -7,15 +8,14 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 	return (
 		<CtrRoot title="Whoops!">
 			<CtrPageBody>
-				<header
-					id="header"
-
+				<CtrPageHeader
+					type="plain"
 					data-toolbar-mode="wide"
 					data-toolbar-message={T.str('user_settings.save_action')}
 					data-toolbar-bgm="BGM_CAVE_SETTING"
 				>
-					<h1 id="page-title"><T k="user_settings.profile_settings" /></h1>
-				</header>
+					<T k="user_settings.profile_settings" />
+				</CtrPageHeader>
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="tab-body">
 						<form method="post" action="/users/me/settings" id="settings-form">

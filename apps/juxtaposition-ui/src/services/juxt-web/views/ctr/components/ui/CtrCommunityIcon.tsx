@@ -10,7 +10,7 @@ export function CtrCommunityIcon(props: CommunityIconProps): ReactNode {
 	return (
 		<CtrIcon
 			src={iconUrl}
-			type="icon"
+			type={props.type}
 			className={props.className}
 		>
 		</CtrIcon>

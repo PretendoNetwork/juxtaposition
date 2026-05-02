@@ -1,0 +1,57 @@
+@use "../theme.scss" as t;
+
+$height: 31px; // not 32 because top border missing
+$width: 32px;
+
+$page-gap: 10px;
+$padding: 5px;
+
+.page-buttons {
+    * { -webkit-box-sizing: border-box; }
+    -webkit-box-sizing: border-box;
+
+    display: block;
+    height: $height;
+    position: relative;
+
+    // for middle button
+    text-align: center;
+
+    margin-bottom: $page-gap;
+}
+
+.page-button {
+    height: $height;
+    line-height: $height;
+    min-width: $width;
+    padding: 0 $padding;
+
+    display: inline-block;
+    position: relative;
+
+    background: t.$root-gradient-30px;
+    border: t.$component-border;
+    border-top: 0;
+    border-radius: 0 0 t.$component-radius t.$component-radius;
+
+    color: t.$button-text;
+
+    &.left {
+        position: absolute;
+        left: 0;
+
+        // Left/right sides cropped off by bottom screen
+        padding-left: 40px + $padding;
+        border-left: 0;
+        border-bottom-left-radius: 0;
+    }
+    &.right {
+        position: absolute;
+        right: 0;
+
+        // Left/right sides cropped off by bottom screen
+        padding-right: 40px + $padding;
+        border-right: 0;
+        border-bottom-right-radius: 0;
+    }
+}

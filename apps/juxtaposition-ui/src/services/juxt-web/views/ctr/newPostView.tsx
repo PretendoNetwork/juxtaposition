@@ -1,4 +1,3 @@
-import cx from 'classnames';
 import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/controls/ctabs';
 import { CtrCheckbox } from '@/services/juxt-web/views/ctr/controls/checkbox';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
@@ -6,6 +5,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -41,26 +41,18 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
 	const cache = useCache();
-	const { bannerUrl, legacy } = props.community ? url.ctrHeader(props.community) : {};
+	const header = props.community ? url.ctrHeader(props.community) : undefined;
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
-			<header
-				id="header"
-				style={{
-					background: bannerUrl ? `url('${bannerUrl}')` : ''
-				}}
-				className={cx(
-					{ 'header-legacy': legacy }
-				)}
-
+			<CtrPageHeader
+				type="plain"
+				header={header}
 				data-toolbar-mode="wide"
 				data-toolbar-message={T.str('new_post.post_to', { user: name })}
 			>
-				<h1 id="page-title">
-					<T k="new_post.post_to" values={{ user: name ?? '' }} />
-				</h1>
-			</header>
+				<T k="new_post.post_to" values={{ user: name ?? '' }} />
+			</CtrPageHeader>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1" encType="multipart/form-data">
 				<input type="hidden" name="community_id" value={props.id} />
 				<input type="hidden" name="bmp" value="true" />

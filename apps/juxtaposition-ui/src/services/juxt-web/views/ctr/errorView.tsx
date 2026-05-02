@@ -1,6 +1,7 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { Inline } from '@/services/juxt-web/views/common/components/Inline';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { ErrorViewProps, FatalErrorViewProps } from '@/services/juxt-web/views/web/errorView';
 
@@ -10,16 +11,13 @@ export function CtrErrorView(props: ErrorViewProps): ReactNode {
 	return (
 		<CtrRoot title={title}>
 			<CtrPageBody>
-				<header
-					id="header"
-
+				<CtrPageHeader
+					type="plain"
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="0"
 				>
-					<h1 id="page-title">
-						<p><T k="error.heading" values={{ code: props.code, message: props.message }} /></p>
-					</h1>
-				</header>
+					<T k="error.heading" values={{ code: props.code, message: props.message }} />
+				</CtrPageHeader>
 				<div className="body-content tab2-content" id="community-post-list">
 					<p><T k="error.message" withNewline /></p>
 				</div>

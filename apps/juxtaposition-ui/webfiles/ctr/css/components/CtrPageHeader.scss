@@ -1,0 +1,85 @@
+@use "../theme.scss" as t;
+@use "sass:math";
+
+$title-area-height: 52px;
+$pad: 8px;
+$spad: math.div($pad, 2);
+
+.page-header {
+    * {-webkit-box-sizing: border-box;}
+    -webkit-box-sizing: border-box;
+
+    background: url(@/images/header.png);
+    background-size: contain;
+
+    width: 100%;
+    height: 220px;
+    position: relative;
+    z-index: 0;
+    display: block;
+    overflow: hidden;
+
+    &.plain .title-area {
+        // Add a little extra margin on the title
+        padding: 0 $pad;
+    }
+
+    .title-area {
+        width: 100%;
+        height: $title-area-height;
+
+        position: absolute;
+        bottom: 0;
+
+        display: -webkit-box;
+        -webkit-box-align: end;
+
+        .title, .stats {
+            height: 100%;
+            // Vertical center
+            display: -webkit-box;
+            -webkit-box-align: center;
+        }
+        .title {
+            -webkit-box-flex: 1;
+            margin: 0 $pad;
+            font-size: t.$title-size;
+
+            > span {
+                /* Ellipses for overflowing text */
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+        }
+        .header-icon-container {
+            margin-left: $pad;
+            margin-bottom: $pad;
+        }
+        .stats {
+            padding: $spad 0;
+            .stat {
+                border-left: 1px solid gray;
+                padding: 0 $spad;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-box-align: center;
+                -webkit-box-pack: center;
+                height: 100%;
+                min-width: 50px;
+
+                .icon {
+                    width: 20px;
+                    height: 20px;
+                    position: relative;
+                }
+            }
+        }
+    }
+}
+
+/* Communities with old style headers where we need to cover the bottom 52px */
+.header-legacy .title-area {
+    background: #fff;
+}
