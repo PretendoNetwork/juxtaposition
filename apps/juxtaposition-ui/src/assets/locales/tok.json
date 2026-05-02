@@ -45,7 +45,6 @@
         "more": "",
         "next": "",
         "yeahs": "",
-        "messages": "",
         "activity_feed": "",
         "exit": "",
         "back": "",
@@ -96,8 +95,5 @@
     "language": "",
     "activity_feed": {
         "empty": ""
-    },
-    "messages": {
-        "coming_soon": ""
     }
 }

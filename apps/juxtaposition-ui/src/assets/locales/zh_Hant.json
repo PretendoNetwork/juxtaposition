@@ -4,7 +4,6 @@
         "user_page": "個人檔案",
         "exit": "離開",
         "activity_feed": "動態消息",
-        "messages": "訊息",
         "notifications": "通知",
         "communities": "社群",
         "go_back": "返回",
@@ -20,7 +19,6 @@
         "global_feed": "全球動態",
         "friend_requests": "好友請求",
         "updates": "更新",
-        "notifications_and_messages": "通知和訊息",
         "search": "搜尋...",
         "global_feed_short": "全球",
         "people_feed": "追蹤中動態",
@@ -34,15 +32,12 @@
     "activity_feed": {
         "empty": "這裡空空如也。先去追蹤其他人吧！"
     },
-    "messages": {
-        "coming_soon": "沒有訊息"
-    },
     "setup": {
         "welcome": "歡迎來到 Juxtaposition！",
         "beta": "《Beta 免責聲明》",
         "beta_text": {
-            "first": "歡迎來到 Pretendo Network 公開測試 Beta 版！雖然與第一個公開測試 Beta 版相比已經發生了許多變化，Juxt 仍處於開發階段，隨時都可能發生變化。",
-            "second": "這可能包括在 Beta 測試階段結束時或測試期間完全清除資料庫。",
+            "first": "歡迎來到 Pretendo Network 公開測試版！雖然與第一個公開測試版相比已經發生了許多變化，Juxt 仍處於開發階段，隨時都可能發生變化。",
+            "second": "這可能包括在測試階段結束時或測試期間完全清除資料庫。",
             "third": "本網站及其軟體與附屬內容，均基於「現況性」與「可提供性」為開展。Pretendo Network 絕不保證（無論其明示抑或暗示）本網站及其軟體與附屬內容之合用性或可用性。"
         },
         "info": "什麼是 Juxtaposition？",

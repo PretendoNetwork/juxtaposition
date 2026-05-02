@@ -3,7 +3,6 @@
         "user_page": "Halaman Pengguna",
         "communities": "Komunitas",
         "activity_feed": "Halaman Aktivitas",
-        "messages": "Pesan-pesan",
         "notifications": "Notifikasi",
         "go_back": "Kembali",
         "back": "Kembali",
@@ -96,8 +95,5 @@
     "new_post": {
         "post_to": "Posting ke {{user}}",
         "swearing": "Postingan tidak boleh mengandung bahasa eksplisit."
-    },
-    "messages": {
-        "coming_soon": "Tidak ada Pesanan"
     }
 }

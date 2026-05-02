@@ -3,7 +3,6 @@
         "user_page": "Profilo",
         "activity_feed": "Novaĵoj",
         "communities": "Komunumoj",
-        "messages": "Mesaĝoj",
         "notifications": "Avizoj",
         "go_back": "Reiri",
         "back": "Reen",
@@ -55,9 +54,6 @@
     "new_post": {
         "post_to": "Afiŝi al {{user}}",
         "swearing": "La afiŝo ne povas enhavi maldecaĵojn"
-    },
-    "messages": {
-        "coming_soon": "Mesaĝoj ankoraŭ ne estas disponeblaj. Baldaŭ revenu!"
     },
     "setup": {
         "welcome": "Bonvenu en Juxtaposition!",

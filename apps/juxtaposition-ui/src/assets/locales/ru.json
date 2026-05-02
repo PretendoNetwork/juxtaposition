@@ -4,7 +4,6 @@
         "user_page": "Профиль пользователя",
         "activity_feed": "Лента активности",
         "communities": "Сообщества",
-        "messages": "Сообщения",
         "notifications": "Уведомления",
         "go_back": "Вернуться",
         "back": "Назад",
@@ -55,9 +54,6 @@
     "new_post": {
         "post_to": "Написать {{user}}",
         "swearing": "Сообщение не должно иметь нецензурную лексику."
-    },
-    "messages": {
-        "coming_soon": "Сообщения не готовы. Вернитесь попозже!"
     },
     "setup": {
         "welcome": "Добро пожаловать в Juxtaposition!",

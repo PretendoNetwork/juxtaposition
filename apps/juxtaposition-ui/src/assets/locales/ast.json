@@ -4,7 +4,6 @@
         "more": "Cargar más publicaciones",
         "next": "Próximo",
         "yeahs": "Sí",
-        "messages": "Mensajes",
         "activity_feed": "Fuente de actividades",
         "exit": "Salida",
         "back": "Atrás",
@@ -96,8 +95,5 @@
     },
     "activity_feed": {
         "empty": "Está vacío aquí. ¡Intenta seguir a alguien!"
-    },
-    "messages": {
-        "coming_soon": "Mensajes aún no está listo. ¡Vuelve pronto!"
     }
 }

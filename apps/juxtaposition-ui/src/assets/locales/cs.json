@@ -8,7 +8,6 @@
     },
     "global": {
         "user_page": "Uživatelská stránka",
-        "messages": "Zprávy",
         "back": "Zpět",
         "close": "Zavřít",
         "notifications": "Upozornění",
@@ -96,8 +95,5 @@
     },
     "activity_feed": {
         "empty": "Je tu prázdno. Zkuste někoho sledovat!"
-    },
-    "messages": {
-        "coming_soon": "Žádné zprávy"
     }
 }
