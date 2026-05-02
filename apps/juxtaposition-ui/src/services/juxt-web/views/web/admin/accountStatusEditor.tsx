@@ -5,48 +5,77 @@ export type AccountStatusEditorProps = {
 	userSettings: HydratedSettingsDocument;
 };
 
-export function WebAccountStatusEditor(props: AccountStatusEditorProps): ReactNode {
+function DatePickerWithPreview(props: { value?: Date; id: string; name: string; label: string }): ReactNode {
 	return (
-		<form data-pnid-save-form={props.userSettings.pid}>
-			<div className="mt-5 text-center">
-				<h4 className="text-right">Juxt User Settings</h4>
-			</div>
-			<div className="row mt-2">
+		<div className="col">
+			<label className="labels">{props.label}</label>
+			<input type="datetime-local" id={props.id} data-init-date-value={props.value} data-date-picker-preview name={props.name} required />
+			<div data-date-preview-for={props.id}>
 				<div className="col">
-					<label className="labels">Account Status</label>
-					<select className="form-select" data-account-status-editor aria-label="Account Status" name="account_status">
-						<option value="0" selected={props.userSettings.account_status === 0}>Normal</option>
-						<option value="1" selected={props.userSettings.account_status === 1}>Limited from Posting</option>
-						<option value="2" selected={props.userSettings.account_status === 2}>Temp Ban</option>
-						<option value="3" selected={props.userSettings.account_status === 3}>Permanent Ban</option>
-					</select>
-					<p data-show-when-status="0">Selected 0</p>
-					<p data-show-when-status="1">Selected 1</p>
-					<p data-show-when-status="2">Selected 2</p>
-					<p data-show-when-status="3">Selected 3</p>
+					{'UTC: '}
+					<span id="ban_lift_date_utc" data-date-preview-utc />
 				</div>
 				<div className="col">
-					<label className="labels">Banned Until:</label>
-					<input type="datetime-local" id="ban_lift_date" data-init-date-value={props.userSettings.ban_lift_date?.toISOString()} data-date-picker-preview name="ban_lift_date" />
-				</div>
-				<div data-date-preview-for="ban_lift_date">
-					<div className="col">
-						{'UTC: '}
-						<span id="ban_lift_date_utc" data-date-preview-utc />
-					</div>
-					<div className="col">
-						{'Remaining: '}
-						<span data-date-preview-until />
-					</div>
-				</div>
-				<div className="col">
-					<label className="labels">Ban Reason</label>
-					<input type="text" name="ban_reason" className="form-control" placeholder="Ban reason" style={{ width: '100%' }} value={props.userSettings.ban_reason ?? undefined} />
+					{'Remaining: '}
+					<span data-date-preview-until />
 				</div>
 			</div>
-			<div className="mt-5 text-center">
-				<button className="btn btn-primary profile-button" type="submit">Save User</button>
-			</div>
+		</div>
+	);
+}
+
+function AccountStatusTab(props: { pid: number; status: number; children?: ReactNode }): ReactNode {
+	return (
+		<form data-pnid-save-form={props.pid} data-show-when-status={props.status}>
+			<input type="hidden" name="account_status" value={props.status} />
+			{props.children}
+			<button className="btn btn-primary profile-button" type="submit">Save</button>
 		</form>
+	);
+}
+
+export function WebAccountStatusEditor(props: AccountStatusEditorProps): ReactNode {
+	const status = props.userSettings.account_status;
+	const pid = props.userSettings.pid;
+	const reason = props.userSettings.ban_reason ?? undefined;
+
+	return (
+		<div>
+			<div className="mt-5 text-center">
+				<h4>Juxt User Settings</h4>
+				<select className="form-select" data-account-status-editor>
+					<option value="0" selected={status === 0}>Normal</option>
+					<option value="1" selected={status === 1}>Limited from Posting</option>
+					<option value="2" selected={status === 2}>Temp Ban</option>
+					<option value="3" selected={status === 3}>Permanent Ban</option>
+				</select>
+			</div>
+			<AccountStatusTab pid={pid} status={0}>
+				<p>Normal status</p>
+			</AccountStatusTab>
+			<AccountStatusTab pid={pid} status={1}>
+				<p>Limit from posting</p>
+				<DatePickerWithPreview id="ban_lift_date_limitposting" name="ban_lift_date" label="Limited until:" />
+				<div className="col">
+					<label className="labels">Reason</label>
+					<input type="text" name="ban_reason" className="form-control" placeholder="Reason" style={{ width: '100%' }} value={reason} />
+				</div>
+			</AccountStatusTab>
+			<AccountStatusTab pid={pid} status={2}>
+				<p>Temporary ban</p>
+				<DatePickerWithPreview id="ban_lift_date_temp" name="ban_lift_date" label="Banned until:" />
+				<div className="col">
+					<label className="labels">Reason</label>
+					<input type="text" name="ban_reason" className="form-control" placeholder="Reason" style={{ width: '100%' }} value={reason} />
+				</div>
+			</AccountStatusTab>
+			<AccountStatusTab pid={pid} status={3}>
+				<p>Permanent ban</p>
+				<div className="col">
+					<label className="labels">Reason</label>
+					<input type="text" name="ban_reason" className="form-control" placeholder="Reason" style={{ width: '100%' }} value={reason} />
+				</div>
+			</AccountStatusTab>
+		</div>
 	);
 }
