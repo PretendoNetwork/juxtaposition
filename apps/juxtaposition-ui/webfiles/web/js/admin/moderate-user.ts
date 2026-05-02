@@ -40,6 +40,12 @@ export function initDatePreview(): void {
 				return;
 			}
 
+			if (!input.value) {
+				el.style.display = 'none';
+				return;
+			}
+
+			el.style.display = 'flex';
 			const datetime = DateTime.fromISO(input.value);
 			const utcEls = el.querySelectorAll<HTMLElement>('[data-date-preview-utc]');
 			const untilEls = el.querySelectorAll<HTMLElement>('[data-date-preview-until]');
