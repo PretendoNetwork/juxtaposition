@@ -46,8 +46,8 @@
 .account-status-editor {
     background: #161931;
     border: 1px solid var(--background-alt);
-    width: 600px;
-    max-width: 100%;
+    max-width: 600px;
+    width: 100vw;
     border-radius: 15px;
 
     .header {
