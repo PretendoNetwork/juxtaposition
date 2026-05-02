@@ -26,11 +26,11 @@ export function initAccountStatus(): void {
 
 export function initDatePreview(): void {
 	const previewElements = document.querySelectorAll<HTMLElement>('[data-date-preview-for]');
-	const datePickers = document.querySelectorAll<HTMLSelectElement>('input[data-date-picker-preview]');
+	const datePickers = document.querySelectorAll<HTMLInputElement>('input[data-date-picker-preview]');
 
 	function applyDatePreview(id: string): void {
 		previewElements.forEach((el) => {
-			if (el.getAttribute('data-preview-for') !== id) {
+			if (el.getAttribute('data-date-preview-for') !== id) {
 				return;
 			}
 
@@ -41,8 +41,6 @@ export function initDatePreview(): void {
 			}
 
 			const datetime = DateTime.fromISO(input.value);
-			input.value = datetime.toLocal().toISO({ includeOffset: false }) ?? '';
-
 			const utcEls = el.querySelectorAll<HTMLElement>('[data-date-preview-utc]');
 			const untilEls = el.querySelectorAll<HTMLElement>('[data-date-preview-until]');
 			utcEls.forEach(utcEl => utcEl.innerText = datetime.toUTC().toLocaleString(DateTime.DATETIME_MED));
@@ -58,6 +56,11 @@ export function initDatePreview(): void {
 		});
 
 		// Initial state
+		const initialDate = el.getAttribute('data-init-date-value');
+		if (initialDate) {
+			const parsedDate = DateTime.fromISO(initialDate);
+			el.value = parsedDate.toLocal().toISO({ includeOffset: false }) ?? '';
+		}
 		applyDatePreview(el.id);
 	});
 }
@@ -76,7 +79,7 @@ function savePNID(form: HTMLFormElement): void {
 		},
 		body: JSON.stringify({
 			account_status: account_status ? Number(account_status) : undefined,
-			ban_lift_date: ban_lift_date,
+			ban_lift_date: ban_lift_date ? new Date(ban_lift_date.toString()) : null,
 			ban_reason: ban_reason
 		})
 	})
@@ -90,7 +93,7 @@ function savePNID(form: HTMLFormElement): void {
 }
 
 export function initSavePnidButton(): void {
-	const els = document.querySelectorAll('form[data-pnid-save-form]');
+	const els = document.querySelectorAll<HTMLFormElement>('form[data-pnid-save-form]');
 
 	els.forEach((el) => {
 		el.addEventListener('submit', (evt) => {
