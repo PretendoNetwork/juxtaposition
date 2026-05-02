@@ -390,11 +390,11 @@ iframe {
 
 .community-list-title {
   margin: 0.5em 0-1em;
-  font-size: 2ch;
+  font-size: 18px;
 }
 
 .community-list-followers {
-  margin: 0.5em 0 0;
+  margin: 1em 0 0;
   font-size: 1.5ch;
 }
 
