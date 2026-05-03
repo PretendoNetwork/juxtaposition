@@ -148,7 +148,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 					</summary>
 					<ul className="list-content-with-icon-and-text arrow-list">
-						{props.auditLog.length === 0 ? <h4>There's nothing here...</h4> : null}
+						{props.auditLog.length === 0 ? <p>There's nothing here...</p> : null}
 						{props.auditLog.map(log => (
 							<li className="reports">
 								<details>
@@ -189,7 +189,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 					</summary>
 					<ul className="list-content-with-icon-and-text arrow-list">
-						{props.reports.length === 0 ? <h4>There's nothing here...</h4> : null}
+						{props.reports.length === 0 ? <p>There's nothing here...</p> : null}
 						{props.reports.map((report) => {
 							const post = props.postsMap.find(post => post.id === report.post_id);
 							return (
@@ -251,7 +251,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 					</summary>
 					<ul className="list-content-with-icon-and-text arrow-list">
-						{props.submittedReports.length === 0 ? <h4>There's nothing here...</h4> : null}
+						{props.submittedReports.length === 0 ? <p>There's nothing here...</p> : null}
 						{props.submittedReports.map((report) => {
 							const post = props.postsMap.find(post => post.id === report.post_id);
 							return (
@@ -314,7 +314,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 						</div>
 					</summary>
 					<ul className="list-content-with-icon-and-text arrow-list">
-						{props.removedPosts.length === 0 ? <h4>There's nothing here...</h4> : null}
+						{props.removedPosts.length === 0 ? <p>There's nothing here...</p> : null}
 						{props.removedPosts.map(post => (
 							<li className="reports">
 								<details>
