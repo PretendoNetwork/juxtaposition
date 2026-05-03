@@ -36,6 +36,8 @@ userPostsRouter.get({
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
 			pid: targetUser.pid,
 			removed: query.removed,
+			parent: null,
+			message_to_pid: null, // messages aren't really posts
 			...filterRemovedPosts(auth)
 		});
 		const sortKey: keyof IPost = query.sortBy === 'removedAt' ? 'removed_at' : 'created_at';

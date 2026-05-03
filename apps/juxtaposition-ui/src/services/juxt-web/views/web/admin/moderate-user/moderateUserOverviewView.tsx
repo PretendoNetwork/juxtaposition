@@ -57,7 +57,7 @@ export function ModerateUserOverviewView(props: ModerateUserOverviewViewProps): 
 				, limit 50 most recent)
 			</h4>
 			<ul className="list-content-with-icon-and-text arrow-list">
-				{props.auditLogs.length === 0 ? <h4>There's nothing here...</h4> : null}
+				{props.auditLogs.length === 0 ? <p>There's nothing here...</p> : null}
 				{props.auditLogs.map(log => (
 					<li className="reports">
 						<details>

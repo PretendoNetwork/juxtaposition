@@ -73,11 +73,11 @@ export function WebPostView(props: PostViewProps): ReactNode {
 							)
 						: null}
 
-					<h4>
+					<p className="extra-info">
 						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
 						{' - '}
 						<a href={`/titles/${post.community_id}`}>{cache.getCommunityName(post.community_id ?? '')}</a>
-					</h4>
+					</p>
 				</div>
 			</div>
 			{ post.is_spoiler
@@ -98,7 +98,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				}}
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
-				{post.body !== '' ? <h4>{post.body}</h4> : null}
+				{post.body !== '' ? <p>{post.body}</p> : null}
 				<WebPostScreenshot post={props.post}></WebPostScreenshot>
 				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}

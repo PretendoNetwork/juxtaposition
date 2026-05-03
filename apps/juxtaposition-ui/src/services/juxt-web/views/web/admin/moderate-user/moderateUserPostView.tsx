@@ -21,7 +21,7 @@ export function ModerateUserRemovedPostView(props: ModerateUserRemovedPostsViewP
 				, limit 50 most recent)
 			</h4>
 			<ul className="list-content-with-icon-and-text arrow-list">
-				{props.removedPosts.length === 0 ? <h4>There's nothing here...</h4> : null}
+				{props.removedPosts.length === 0 ? <p>There's nothing here...</p> : null}
 				{props.removedPosts.map(post => (
 					<li className="reports">
 						<details>
