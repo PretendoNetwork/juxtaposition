@@ -33,6 +33,8 @@ userPostsRouter.get({
 
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
 			pid: targetUser.pid,
+			parent: null,
+			message_to_pid: null, // messages aren't really posts
 			...filterRemovedPosts(auth)
 		});
 		const posts = await Post
