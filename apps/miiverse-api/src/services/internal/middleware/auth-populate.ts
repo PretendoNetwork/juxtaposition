@@ -15,7 +15,7 @@ export async function authPopulate(request: express.Request, response: express.R
 	const oAuthToken = getValueFromHeaders(request.headers, 'x-oauth-token');
 
 	if (serviceToken && oAuthToken) {
-		throw new errors.badRequest('Multiple authentication tokens provided');
+		throw errors.for('bad_request', 'Multiple authentication tokens provided');
 	}
 
 	let pnid: GetUserDataResponse | null = null;
@@ -45,7 +45,7 @@ export async function authPopulate(request: express.Request, response: express.R
 async function consoleAuth(_request: express.Request, serviceToken: string): Promise<GetUserDataResponse> {
 	const pid = getPIDFromServiceToken(serviceToken);
 	if (pid === null) {
-		throw new errors.unauthorized('Invalid service token');
+		throw errors.for('unauthorized', 'Invalid service token!');
 	}
 
 	// If the user has a valid token for an unknown PID, just let the exception bubble
@@ -60,7 +60,7 @@ async function webAuth(request: express.Request, oAuthToken: string): Promise<Ge
 	const pid = (await getUserDataFromToken(oAuthToken).catch((e) => {
 		// TODO should probably check the error type here in case of e.g. connection refused
 		request.log.error(e, 'Failed to get user data from OAuth token');
-		throw new errors.unauthorized('Invalid OAuth token!');
+		throw errors.for('unauthorized', 'Invalid OAuth token!');
 	})).pid;
 	// Ask the "backdoor" API, just use the above as a glorified token decryption.
 	const pnid = await getUserAccountData(pid);

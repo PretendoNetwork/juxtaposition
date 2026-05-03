@@ -73,11 +73,11 @@ export function WebPostView(props: PostViewProps): ReactNode {
 							)
 						: null}
 
-					<h4>
+					<p className="extra-info">
 						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
 						{' - '}
 						<a href={`/titles/${post.community_id}`}>{cache.getCommunityName(post.community_id ?? '')}</a>
-					</h4>
+					</p>
 				</div>
 			</div>
 			{ post.is_spoiler
@@ -98,7 +98,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				}}
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
-				{post.body !== '' ? <h4>{post.body}</h4> : null}
+				{post.body !== '' ? <p>{post.body}</p> : null}
 				<WebPostScreenshot post={props.post}></WebPostScreenshot>
 				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
@@ -132,12 +132,16 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				<span className="post-button post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
 					<WebUIIcon name="menu" />
 					<ul className="post-hamburger" role="menu" data-post={post.id}>
-						<li role="menuitem" data-action="report">
-							<WebUIIcon name="flag" />
-							{' '}
-							<T k="post.report_post" />
-						</li>
-						{ isModerator || post.pid === user.pid
+						{ !post.removed
+							? (
+									<li role="menuitem" data-action="report">
+										<WebUIIcon name="flag" />
+										{' '}
+										<T k="post.report_post" />
+									</li>
+								)
+							: null}
+						{ (isModerator || post.pid === user.pid) && !post.removed
 							? (
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebUIIcon name="bin" />
@@ -158,7 +162,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	);
 
 	return (
-		<div className="posts-wrapper" id={post.id ?? undefined}>
+		<div className={cx('posts-wrapper', { 'posts-wrapper-removed': post.removed })} id={post.id ?? undefined}>
 			{removedPostPart}
 			{canAccessContent ? contentPart : null}
 		</div>

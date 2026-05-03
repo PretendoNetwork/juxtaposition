@@ -10,7 +10,7 @@ import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
+import { evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
@@ -182,7 +182,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 });
 
 postsRouter.delete('/:post_id', async function (req, res) {
-	const { params, query, auth } = parseReq(req, {
+	const { params, query } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
 		}),
@@ -199,28 +199,6 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	const { data: result } = await req.api.posts.delete({ post_id: post.id, reason: query.reason });
 	if (result === null) {
 		return res.sendStatus(404);
-	}
-
-	// TODO move audit logging to backend
-	if (res.locals.moderator && auth().pid !== post.pid) {
-		const reason = query.reason ? query.reason : 'Removed by moderator';
-
-		// TODO Temporarily disabled, moderators need a way to delete without notification
-		// const postType = post.parent ? 'comment' : 'post';
-		// await newNotification({
-		// 	pid: post.pid,
-		// 	type: 'notice',
-		// 	text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
-		// 	image: '/images/bandwidthalert.png',
-		// 	link: '/titles/2551084080/new'
-		// });
-
-		await createLogEntry(
-			auth().pid,
-			'REMOVE_POST',
-			post.pid.toString(),
-			`Post ${post.id} removed for: "${reason}"`
-		);
 	}
 
 	res.statusCode = 200;

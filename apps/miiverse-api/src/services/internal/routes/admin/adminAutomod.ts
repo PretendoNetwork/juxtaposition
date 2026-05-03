@@ -106,7 +106,7 @@ adminAutomodRouter.patch({
 		});
 
 		if (!rule) {
-			throw new errors.notFound('Resource could not be found');
+			throw errors.for('not_found');
 		}
 
 		return mapAutomodRule(rule);
@@ -126,7 +126,7 @@ adminAutomodRouter.delete({
 	async handler({ params }) {
 		const rule = await AutomodRule.findOneAndDelete({ _id: params.id });
 		if (!rule) {
-			throw new errors.notFound('Resource could not be found');
+			throw errors.for('not_found');
 		}
 
 		return mapResult('success');
@@ -140,13 +140,15 @@ adminAutomodRouter.get({
 	schema: {
 		query: z.object({
 			action: z.enum(automodAction).optional(),
+			authorPid: z.coerce.number().optional(),
 			sort: standardSortSchema
 		}).extend(pageControlSchema(150)),
 		response: pageDtoSchema(automodLogSchema)
 	},
 	async handler({ query }) {
 		const dbQuery: RootFilterQuery<AutomodLog> = deleteOptional({
-			action: query.action
+			action: query.action,
+			author: query.authorPid
 		});
 		const logs = await AutomodLog
 			.find(dbQuery)

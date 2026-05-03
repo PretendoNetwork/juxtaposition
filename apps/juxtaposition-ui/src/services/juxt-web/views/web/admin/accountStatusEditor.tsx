@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import type { HydratedSettingsDocument } from '@/models/settings';
+import type { ModerationProfile } from '@/api/generated';
 
 export type AccountStatusEditorProps = {
-	userSettings: HydratedSettingsDocument;
+	modProfile: ModerationProfile;
 };
 
 function DatePickerWithPreview(props: { value?: Date; id: string; name: string; label: string }): ReactNode {
@@ -40,9 +40,9 @@ function AccountStatusTab(props: { pid: number; status: number; footerText?: str
 }
 
 export function WebAccountStatusEditor(props: AccountStatusEditorProps): ReactNode {
-	const status = props.userSettings.account_status;
-	const pid = props.userSettings.pid;
-	const reason = props.userSettings.ban_reason ?? undefined;
+	const status = props.modProfile.accountStatus;
+	const pid = props.modProfile.pid;
+	const reason = props.modProfile.banReason ?? undefined;
 
 	return (
 		<div className="account-status-editor">

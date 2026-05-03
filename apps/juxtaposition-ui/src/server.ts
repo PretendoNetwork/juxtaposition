@@ -15,7 +15,7 @@ import { initImageProcessing } from '@/images';
 import { loginWall } from '@/middleware/webAuth';
 import { listenMetrics, registerMetrics } from '@/metrics';
 import { i18nMiddleware } from '@/middleware/i18n';
-import { InternalApiError } from '@/api/client';
+import { InternalApiError } from '@/api/errors';
 import type { NextFunction, Request, Response } from 'express';
 
 // TODO is this used anywhere?
