@@ -1,13 +1,9 @@
 import mongoose from 'mongoose';
-import { FuzzySearch } from 'mongoose-fuzzy-search-next';
-import { COMMUNITY } from '@/models/communities';
 import { CONTENT } from '@/models/content';
 import { ENDPOINT } from '@/models/endpoint';
-import { NOTIFICATION } from '@/models/notifications';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import { REPORT } from '@/models/report';
-import { LOGS } from '@/models/logs';
 import { logger } from '@/logger';
 import { config } from '@/config';
 
@@ -37,15 +33,6 @@ export function notBanned() {
 	return { account_status: { $in: [0, 1] } };
 }
 
-async function getCommunitiesFuzzySearch(search_key, limit, offset) {
-	verifyConnected();
-	if (limit === -1) {
-		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset);
-	} else {
-		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset).limit(limit);
-	}
-}
-
 async function getPostByID(postID) {
 	verifyConnected();
 	return POST.findOne({
@@ -68,39 +55,11 @@ async function getDuplicatePosts(pid, post, olderThanMs) {
 	});
 }
 
-async function getTotalPostsByUserID(userID) {
-	verifyConnected();
-	return POST.find({
-		pid: userID,
-		parent: null,
-		message_to_pid: null,
-		removed: false
-	}).countDocuments();
-}
-
 async function getEndPoint(accessLevel) {
 	verifyConnected();
 	return ENDPOINT.findOne({
 		server_access_level: accessLevel
 	});
-}
-
-async function getUsersSettings(numberOfUsers, offset) {
-	verifyConnected();
-	if (numberOfUsers === -1) {
-		return SETTINGS.find({}).skip(offset);
-	} else {
-		return SETTINGS.find({}).skip(offset).limit(numberOfUsers);
-	}
-}
-
-async function getUserSettingsFuzzySearch(search_key, numberOfUsers, offset) {
-	verifyConnected();
-	if (numberOfUsers === -1) {
-		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset);
-	} else {
-		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset).limit(numberOfUsers);
-	}
 }
 
 async function getUserSettings(pid) {
@@ -113,45 +72,6 @@ async function getUserContent(pid) {
 	return CONTENT.findOne({ pid: pid });
 }
 
-async function getNotifications(pid, limit, offset) {
-	verifyConnected();
-	return NOTIFICATION.find({
-		pid: pid
-	}).sort({ lastUpdated: -1 }).skip(offset).limit(limit);
-}
-
-async function getNotification(pid, type, reference_id) {
-	verifyConnected();
-	return NOTIFICATION.findOne({
-		pid: pid,
-		type: type,
-		reference_id: reference_id
-	});
-}
-
-async function getUnreadNotificationCount(pid) {
-	verifyConnected();
-	return NOTIFICATION.find({
-		pid: pid,
-		read: false
-	}).countDocuments();
-}
-
-async function getAllOpenReports(offset, limit) {
-	verifyConnected();
-	return REPORT.find({ resolved: false }).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
-async function getReportsByReporter(pid, offset, limit) {
-	verifyConnected();
-	return REPORT.find({ reported_by: pid }).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
-async function getReportsByOffender(pid, offset, limit) {
-	verifyConnected();
-	return REPORT.find({ pid: pid }).sort({ created_at: -1 }).skip(offset).limit(limit);
-}
-
 async function getDuplicateReports(pid, postID) {
 	verifyConnected();
 	return REPORT.findOne({
@@ -160,34 +80,12 @@ async function getDuplicateReports(pid, postID) {
 	});
 }
 
-async function getReportById(id) {
-	verifyConnected();
-	return REPORT.findById(id);
-}
-
-async function getLogsForTarget(targetPID, offset, limit) {
-	verifyConnected();
-	return LOGS.find({ target: targetPID }).sort({ timestamp: -1 }).skip(offset).limit(limit);
-}
-
 export const database = {
 	connect,
-	getCommunitiesFuzzySearch,
-	getTotalPostsByUserID,
 	getPostByID,
 	getDuplicatePosts,
 	getEndPoint,
-	getUsersSettings,
 	getUserSettings,
-	getUserSettingsFuzzySearch,
 	getUserContent,
-	getNotifications,
-	getUnreadNotificationCount,
-	getNotification,
-	getAllOpenReports,
-	getReportsByReporter,
-	getReportsByOffender,
-	getDuplicateReports,
-	getReportById,
-	getLogsForTarget
+	getDuplicateReports
 };

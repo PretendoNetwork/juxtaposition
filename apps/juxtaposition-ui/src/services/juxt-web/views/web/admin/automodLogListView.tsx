@@ -55,7 +55,7 @@ function LogBodyWithMatches({ log }: AutomodLogItemViewProps): ReactNode {
 	return parts;
 }
 
-function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
+export function AutomodLogItem({ log }: AutomodLogItemViewProps): ReactNode {
 	const cache = useCache();
 
 	return (
