@@ -262,7 +262,7 @@ adminCommunitiesRouter.patch({
 				shot_mode: body.shotMode,
 				shot_extra_title_id: body.shotModeExtraTitleIds
 			})
-		});
+		}, { new: true });
 		if (!comm) {
 			throw new Error('Can not find community after update');
 		}
