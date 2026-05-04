@@ -3,7 +3,7 @@ import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { Settings } from '@/models/settings';
-import { standardSortSchema } from '@/services/internal/contract/utils';
+import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { auditLogActionSchema, auditLogSchema, mapAuditLog } from '@/services/internal/contract/admin/auditLogs';
 import { Logs } from '@/models/logs';
 import { deleteOptional } from '@/services/internal/utils';
@@ -31,6 +31,7 @@ adminAuditLogs.get({
 		});
 		const logs = await Logs
 			.find(dbQuery)
+			.sort({ timestamp: standardSortToDirection(query.sort) })
 			.limit(query.limit)
 			.skip(query.offset);
 		const total = await Logs.countDocuments(dbQuery);

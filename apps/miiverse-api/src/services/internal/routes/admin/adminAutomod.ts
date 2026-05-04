@@ -103,7 +103,7 @@ adminAutomodRouter.patch({
 						}
 					: undefined
 			})
-		});
+		}, { new: true });
 
 		if (!rule) {
 			throw errors.for('not_found');

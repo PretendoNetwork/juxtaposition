@@ -127,12 +127,14 @@ adminUsersRouter.patch({
 		if (body.accountStatus == 0) {
 			banLiftDate = null; // If account status is normal, remove ban date
 		}
-		const settings = await Settings.findOneAndUpdate({ pid: params.id }, deleteOptional({
-			account_status: body.accountStatus,
-			ban_lift_date: banLiftDate,
-			banned_by: account.pnid.pid,
-			ban_reason: body.banReason
-		}));
+		const settings = await Settings.findOneAndUpdate({ pid: params.id }, {
+			$set: deleteOptional({
+				account_status: body.accountStatus,
+				ban_lift_date: banLiftDate,
+				banned_by: account.pnid.pid,
+				ban_reason: body.banReason
+			})
+		}, { new: true });
 		if (!settings) {
 			throw new Error('Settings gone after save');
 		}
