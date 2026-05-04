@@ -34,8 +34,10 @@ export function ModerateUserRemovedPostView(props: ModerateUserRemovedPostsViewP
 										<span className="text">
 											<a href={`/users/${post.removed_by}`} className="nick-name">
 												Removed By:
+												{' '}
 												{post.removed_by ? cache.getUserName(post.removed_by) : 'Nobody'}
 											</a>
+											{' '}
 											<span title={moment(post.removed_at).toString()} className="timestamp">{moment(post.removed_at).fromNow()}</span>
 										</span>
 										<span className="text">
