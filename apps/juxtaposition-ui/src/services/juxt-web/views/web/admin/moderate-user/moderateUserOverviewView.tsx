@@ -71,6 +71,7 @@ export function ModerateUserOverviewView(props: ModerateUserOverviewViewProps): 
 											<a href={`/users/${log.actor.pid}`} className="nick-name">{log.actor.miiName}</a>
 											<span title={moment(log.actionAt).toString()} className="timestamp">
 												:
+												{' '}
 												{log.action}
 												{' '}
 												{moment(log.actionAt).fromNow()}
