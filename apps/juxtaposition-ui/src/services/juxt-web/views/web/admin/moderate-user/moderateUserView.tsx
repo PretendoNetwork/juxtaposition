@@ -98,11 +98,11 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 					</div>
 					<div className="info-boxes-wrapper">
 						<div>
-							<h4>Account status</h4>
+							<h4>Account Status</h4>
 							<h4>{profile.moderation.status}</h4>
 						</div>
 						<div>
-							<h4><a href={`/users/${profile.pid}`}>Go to profile</a></h4>
+							<h4><a href={`/users/${profile.pid}`}>Go to User Profile</a></h4>
 						</div>
 					</div>
 				</div>
