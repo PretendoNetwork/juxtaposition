@@ -86,7 +86,7 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 export function ModerateUserReportsListView(props: ModerateUserReportsListViewProps): ReactNode {
 	return (
 		<div>
-			<details open>
+			<details>
 				<summary>
 					<div className="mt-5">
 						<h4>
