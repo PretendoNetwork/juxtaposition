@@ -29,6 +29,7 @@ communityPostsRouter.get({
 			.find(deleteOptional({
 				community_id: params.id,
 				parent: null,
+				message_to_pid: null, // messages aren't really posts
 				...filterRemovedPosts(auth)
 			}))
 			.sort({ created_at: -1 })

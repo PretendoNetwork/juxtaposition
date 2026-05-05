@@ -128,14 +128,23 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		body: z.object({
 			has_shop_page: onOffBoolSchema,
 			is_recommended: onOffBoolSchema,
-			platform: z.string().trim(),
+			platform: z.coerce.number().pipe(z.enum({
+				wup: 0,
+				ctr: 1,
+				both: 2
+			})),
 			name: z.string().trim(),
 			description: z.string().trim(),
-			type: z.coerce.number(),
+			type: z.coerce.number().pipe(z.enum({
+				main: 0,
+				sub: 1,
+				announcement: 2,
+				private: 3
+			})),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
 			title_ids: zodCommaSeperatedList,
 			app_data: z.string().trim(),
-			shot_mode: z.string(),
+			shot_mode: z.enum(['allow', 'block', 'force']),
 			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
@@ -148,17 +157,17 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 	const { data: outputCommunity } = await req.api.admin.communities.create({
 		hasShopPage: body.has_shop_page,
 		isRecommended: body.is_recommended,
-		platform: body.platform as any,
+		platform: body.platform,
 		name: body.name,
 		description: body.description,
-		type: body.type as any,
+		type: body.type,
 		parent: body.parent,
 		titleIds: body.title_ids,
 		appData: body.app_data,
 		browserIcon: files.browserIcon[0].buffer.toString('base64'),
 		ctrBrowserHeader: files.CTRbrowserHeader[0].buffer.toString('base64'),
 		wiiuBrowserHeader: files.WiiUbrowserHeader[0].buffer.toString('base64'),
-		shotMode: body.shot_mode as any,
+		shotMode: body.shot_mode,
 		shotModeExtraTitleIds: body.shot_extra_title_id
 	});
 	res.redirect(`/admin/communities/${outputCommunity.olive_community_id}`);
@@ -192,14 +201,23 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		body: z.object({
 			has_shop_page: onOffBoolSchema,
 			is_recommended: onOffBoolSchema,
-			platform: z.string().trim(),
+			platform: z.coerce.number().pipe(z.enum({
+				wup: 0,
+				ctr: 1,
+				both: 2
+			})),
 			name: z.string().trim(),
 			description: z.string().trim(),
-			type: z.coerce.number(),
+			type: z.coerce.number().pipe(z.enum({
+				main: 0,
+				sub: 1,
+				announcement: 2,
+				private: 3
+			})),
 			parent: z.string().trim().nullable().transform(v => v === 'null' || v === '' ? null : v),
 			title_ids: zodCommaSeperatedList,
 			app_data: z.string().trim(),
-			shot_mode: z.string(),
+			shot_mode: z.enum(['allow', 'block', 'force']),
 			shot_extra_title_id: zodCommaSeperatedList
 		}),
 		files: ['browserIcon', 'CTRbrowserHeader', 'WiiUbrowserHeader']
@@ -210,17 +228,17 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 
 		hasShopPage: body.has_shop_page,
 		isRecommended: body.is_recommended,
-		platform: body.platform as any,
+		platform: body.platform,
 		name: body.name,
 		description: body.description,
-		type: body.type as any,
+		type: body.type,
 		parent: body.parent,
 		titleIds: body.title_ids,
 		appData: body.app_data,
 		browserIcon: files.browserIcon[0]?.buffer.toString('base64'),
 		ctrBrowserHeader: files.CTRbrowserHeader[0]?.buffer.toString('base64'),
 		wiiuBrowserHeader: files.WiiUbrowserHeader[0]?.buffer.toString('base64'),
-		shotMode: body.shot_mode as any,
+		shotMode: body.shot_mode,
 		shotModeExtraTitleIds: body.shot_extra_title_id
 	});
 

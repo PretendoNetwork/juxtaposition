@@ -278,8 +278,13 @@ export async function passwordLogin(username: string, password: string): Promise
 // 	});
 // }
 
+export type AutomodRuleEvaluationMatch = {
+	start: number;
+	end: number;
+};
 export type AutomodRuleEvaluation = {
 	violatedRule: HydratedAutomodRuleDocument;
+	matches: AutomodRuleEvaluationMatch[];
 	action: AutomodAction;
 } | null;
 
@@ -290,16 +295,29 @@ export function evaluateAutomodRules(post: any, rules: HydratedAutomodRuleDocume
 
 	for (const rule of orderedRules) {
 		let hasMatched = false;
+		const matches: AutomodRuleEvaluationMatch[] = [];
 		if (rule.type === 'keyword') {
-			const bodyNormalized = (post.body ?? '').toLowerCase();
+			const bodyNormalized: string = (post.body ?? '').toLowerCase();
 			const keywordsToCheck = rule.keyword_settings?.keywords ?? [];
-			const matchedKeywords = keywordsToCheck.filter(keyword => bodyNormalized.includes(keyword.toLowerCase()));
-			hasMatched = matchedKeywords.length > 0;
+			keywordsToCheck.forEach((keywordUpper) => {
+				const keyword = keywordUpper.toLowerCase();
+				const index = bodyNormalized.indexOf(keyword);
+				if (index < 0) {
+					return;
+				}
+
+				hasMatched = true;
+				matches.push({
+					start: index,
+					end: index + keyword.length
+				});
+			});
 		}
 
 		if (hasMatched) {
 			return {
 				action: rule.mode === 'block' ? 'blocked' : 'logged',
+				matches,
 				violatedRule: rule
 			};
 		}
@@ -321,7 +339,13 @@ export async function performAutomodAction(post: any, evaluation: AutomodRuleEva
 			post_id: post.id,
 			post_content_body: post.body ?? '',
 			created_at: new Date(),
-			rule_id: evaluation.violatedRule.id
+			rule_id: evaluation.violatedRule.id,
+			parent_post_id: post.parent ?? null,
+			community_id: post.community_id,
+			matches: evaluation.matches.map(match => ({
+				start: match.start,
+				end: match.end
+			}))
 		});
 		return {
 			allowPost

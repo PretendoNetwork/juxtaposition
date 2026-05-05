@@ -24,9 +24,9 @@ function WebCommunityItem(props: CommunityItemProps): ReactNode {
 		<a key={props.community.olive_community_id} className="community-list-wrapper" href={`/titles/${props.community.olive_community_id}/new`}>
 			<img className="community-list-icon" src={url.cdn(`/icons/${props.community.olive_community_id}/128.png`)} />
 			<h2 className="community-list-title">{props.community.name}</h2>
-			<h4 className="community-list-followers">
+			<p className="community-list-followers">
 				<T k="community.followers_count" values={{ count: props.community.followerCount }} />
-			</h4>
+			</p>
 		</a>
 	);
 }

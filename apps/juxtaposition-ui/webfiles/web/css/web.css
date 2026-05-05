@@ -14,6 +14,19 @@
   --background-alt-alt: #383f6b;
 }
 
+p {
+  margin: 0;
+}
+
+body, html {
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input {
+  font-family: inherit;
+}
+
 button,
 input[type="button"],
 input[type="submit"] {
@@ -73,7 +86,7 @@ button {
 body {
   background-color: var(--background);
   margin: 0;
-  font-family: Conv_Poppins-Light, sans-serif;
+  font-family: Poppins, sans-serif;
 }
 
 header {
@@ -163,7 +176,7 @@ header > .selected svg {
   text-decoration: underline;
 }
 
-.post-meta-wrapper > h4:last-child {
+.post-meta-wrapper > .extra-info {
   padding-left: 0.5em;
   color: var(--text-secondary);
 }
@@ -254,7 +267,7 @@ header > .selected svg {
   cursor: pointer;
 }
 
-.post-content > h4 {
+.post-content > p {
   margin-top: 0;
   margin-bottom: 0.5em;
   font-weight: 400;
@@ -427,11 +440,11 @@ iframe {
 
 .community-list-title {
   margin: 0.5em 0-1em;
-  font-size: 2ch;
+  font-size: 18px;
 }
 
 .community-list-followers {
-  margin: 0.5em 0 0;
+  margin: 1em 0 0;
   font-size: 1.5ch;
 }
 
@@ -505,6 +518,10 @@ iframe {
   border-radius: 1em;
   width: 600px;
   overflow: hidden;
+}
+
+.community-top h4 {
+  font-weight: normal;
 }
 
 .community-info {
@@ -614,6 +631,7 @@ iframe {
 .reports .report .text .pid-display {
   color: var(--text-light);
   white-space: nowrap;
+  font-weight: normal;
 }
 
 .hover {

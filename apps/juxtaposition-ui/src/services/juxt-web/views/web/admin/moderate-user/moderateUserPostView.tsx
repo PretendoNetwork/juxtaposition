@@ -19,7 +19,7 @@ export function ModerateUserRemovedPostView(props: ModerateUserRemovedPostsViewP
 				, limit 50 most recent)
 			</h4>
 			<ul className="list-content-with-icon-and-text arrow-list">
-				{props.removedPosts.length === 0 ? <h4>There's nothing here...</h4> : null}
+				{props.removedPosts.length === 0 ? <p>There's nothing here...</p> : null}
 				{props.removedPosts.map(post => (
 					<li className="reports">
 						<details>
@@ -32,8 +32,10 @@ export function ModerateUserRemovedPostView(props: ModerateUserRemovedPostsViewP
 										<span className="text">
 											<a href={`/users/${post.removed_by}`} className="nick-name">
 												Removed By:
-												{post.removed_by}
+												{' '}
+												{post.removed_by ? cache.getUserName(post.removed_by) : 'Nobody'}
 											</a>
+											{' '}
 											<span title={moment(post.removed_at).toString()} className="timestamp">{moment(post.removed_at).fromNow()}</span>
 										</span>
 										<span className="text">

@@ -55,7 +55,7 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<>
-				<CtrIcon href={notif.link ?? undefined} src={notif.imageUrl ?? ''}></CtrIcon>
+				<CtrIcon href={notif.link ?? undefined} src={notif.imageUrl}></CtrIcon>
 				<div className="body">
 					<a href={notif.link ?? undefined} data-pjax="#body">
 						<p style={{ color: 'black' }}>

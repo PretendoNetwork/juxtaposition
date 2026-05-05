@@ -84,7 +84,7 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 export function ModerateUserReportsListView(props: ModerateUserReportsListViewProps): ReactNode {
 	return (
 		<div>
-			<details open>
+			<details>
 				<summary>
 					<div className="mt-5">
 						<h4>
@@ -95,7 +95,7 @@ export function ModerateUserReportsListView(props: ModerateUserReportsListViewPr
 					</div>
 				</summary>
 				<ul className="list-content-with-icon-and-text arrow-list">
-					{props.reports.length === 0 ? <h4>There's nothing here...</h4> : null}
+					{props.reports.length === 0 ? <p>There's nothing here...</p> : null}
 					{props.reports.map(report => <ModerateUserReportView key={report.id} report={report} reasonMap={props.reasonMap} />) }
 				</ul>
 			</details>
@@ -110,7 +110,7 @@ export function ModerateUserReportsListView(props: ModerateUserReportsListViewPr
 					</div>
 				</summary>
 				<ul className="list-content-with-icon-and-text arrow-list">
-					{props.submittedReports.length === 0 ? <h4>There's nothing here...</h4> : null}
+					{props.submittedReports.length === 0 ? <p>There's nothing here...</p> : null}
 					{props.submittedReports.map(report => <ModerateUserReportView key={report.id} report={report} reasonMap={props.reasonMap} />) }
 				</ul>
 			</details>

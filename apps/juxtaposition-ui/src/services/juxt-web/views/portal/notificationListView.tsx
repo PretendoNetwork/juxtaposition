@@ -56,7 +56,7 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 	if (notif.type === 'notice') {
 		return (
 			<>
-				<PortalIcon href={notif.link ?? undefined} src={notif.imageUrl ?? ''}></PortalIcon>
+				<PortalIcon href={notif.link ?? undefined} src={notif.imageUrl}></PortalIcon>
 				<div className="body">
 					<a href={notif.link ?? '#'}>
 						<span className="text">

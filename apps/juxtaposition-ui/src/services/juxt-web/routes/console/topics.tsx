@@ -24,7 +24,11 @@ topicsRouter.get('/', async function (req, res) {
 	const { data: postsPage } = await req.api.posts.list({ topic_tag: query.topic_tag, limit: query.limit });
 	const posts = postsPage.items;
 
-	const nextLink = `/topics/more?topic_tag=${query.topic_tag}&offset=${posts.length}&pjax=true`;
+	const nextLink = `/topics/more?${new URLSearchParams({
+		topic_tag: query.topic_tag,
+		offset: `${posts.length}`,
+		pjax: 'true'
+	})}`;
 
 	if (query.pjax) {
 		return res.jsxForDirectory({
@@ -56,7 +60,11 @@ topicsRouter.get('/more', async function (req, res) {
 	const { data: postsPage } = await req.api.posts.list({ topic_tag: query.topic_tag, limit: query.limit, offset: query.offset });
 	const posts = postsPage.items;
 
-	const nextLink = `/topics/more?topic_tag=${query.topic_tag}&offset=${query.offset + posts.length}&pjax=true`;
+	const nextLink = `/topics/more?${new URLSearchParams({
+		topic_tag: query.topic_tag,
+		offset: (query.offset + posts.length).toString(),
+		pjax: 'true'
+	})}`;
 
 	if (posts.length === 0) {
 		return res.sendStatus(204);
