@@ -10,6 +10,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
 import { DateTime } from 'luxon';
 import { z } from 'zod';
+import { rateLimit } from 'express-rate-limit';
 import { database } from '@/database';
 import { COMMUNITY } from '@/models/communities';
 import { logger } from '@/logger';
@@ -19,6 +20,7 @@ import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
 import { AutomodLog } from '@/models/automodLog';
+import type { Options as RatelimitOptions } from 'express-rate-limit';
 import type { ZodType } from 'zod';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { InferSchemaType } from 'mongoose';
@@ -27,6 +29,8 @@ import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonet
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
 import type { GetUserFriendPIDsResponse } from '@pretendonetwork/grpc/friends/get_user_friend_pids_rpc';
+import type { RequestHandler } from 'express';
+import type { Config } from '@/config';
 import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { CommunitySchema } from '@/models/communities';
@@ -498,4 +502,14 @@ export const langsFolder = path.join(distFolder, 'assets/locales');
 
 export function zodFallback<T>(value: T): ZodType<T> {
 	return z.any().transform(() => value);
+}
+
+export function createRatelimit(key: keyof Config['ratelimit'], ops: Partial<RatelimitOptions>): RequestHandler {
+	const rate = rateLimit(ops);
+	return (req, res, next) => {
+		if (config.ratelimit[key] === true) {
+			return rate(req, res, next);
+		}
+		return next();
+	};
 }
