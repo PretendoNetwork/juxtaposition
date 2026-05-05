@@ -3,7 +3,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { FriendRequestItemProps, FriendRequestListViewProps } from '@/services/juxt-web/views/web/friendRequestListView';
 import type { NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -51,13 +51,12 @@ export function CtrFriendRequestWrapperView(props: NotificationWrapperViewProps)
 	return (
 		<CtrRoot title={T.str('global.friend_requests')}>
 			<CtrPageBody>
-				<CtrPageHeader
-					type="plain"
+				<CtrPageTitledHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="5"
 				>
 					<T k="global.friend_requests" />
-				</CtrPageHeader>
+				</CtrPageTitledHeader>
 				<div className="body-content tab2-content" id="news-page">
 					<div className="tab-body">
 						{props.children}

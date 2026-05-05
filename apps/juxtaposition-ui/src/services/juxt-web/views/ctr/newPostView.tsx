@@ -5,7 +5,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
-import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -45,14 +45,13 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
-			<CtrPageHeader
-				type="plain"
+			<CtrPageTitledHeader
 				header={header}
 				data-toolbar-mode="wide"
 				data-toolbar-message={T.str('new_post.post_to', { user: name })}
 			>
 				<T k="new_post.post_to" values={{ user: name ?? '' }} />
-			</CtrPageHeader>
+			</CtrPageTitledHeader>
 			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1" encType="multipart/form-data">
 				<input type="hidden" name="community_id" value={props.id} />
 				<input type="hidden" name="bmp" value="true" />

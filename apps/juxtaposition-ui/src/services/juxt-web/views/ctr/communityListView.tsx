@@ -1,7 +1,7 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
-import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
@@ -32,13 +32,12 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 	return (
 		<CtrRoot title={T.str('all_communities.text')}>
 			<CtrPageBody>
-				<CtrPageHeader
-					type="plain"
+				<CtrPageTitledHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="3"
 				>
 					<T k="all_communities.text" />
-				</CtrPageHeader>
+				</CtrPageTitledHeader>
 				<div className="body-content">
 					<div className="communities-list">
 						<ul className="list-content-with-icon-column" id="community-new-content">
@@ -57,13 +56,12 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 	return (
 		<CtrRoot title={T.str('global.communities')}>
 			<CtrPageBody>
-				<CtrPageHeader
-					type="plain"
+				<CtrPageTitledHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="3"
 				>
 					<T k="global.communities" />
-				</CtrPageHeader>
+				</CtrPageTitledHeader>
 				<CtrPageButtons>
 					<CtrPageButton type="right" href="/titles/all"><T k="all_communities.text" /></CtrPageButton>
 				</CtrPageButtons>

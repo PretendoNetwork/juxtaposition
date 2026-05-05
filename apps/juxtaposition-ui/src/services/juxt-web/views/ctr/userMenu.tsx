@@ -1,4 +1,4 @@
-import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import type { ReactNode } from 'react';
 
@@ -11,14 +11,12 @@ export function CtrUserMenuView(_props: UserMenuViewProps): ReactNode {
 			title="Whoops!"
 		>
 			<CtrPageBody>
-				<CtrPageHeader
-					type="plain"
-
+				<CtrPageTitledHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="5"
 				>
 					User Menu
-				</CtrPageHeader>
+				</CtrPageTitledHeader>
 				<div className="body-content tab2-content" id="community-post-list">
 					<p>Howdy! We're not quite done here yet.</p>
 					<p>Check back soon for updates!</p>

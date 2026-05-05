@@ -2,7 +2,7 @@ import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
-import { CtrPageHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
@@ -17,13 +17,12 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 	return (
 		<CtrRoot title={T.str('global.activity_feed')}>
 			<CtrPageBody>
-				<CtrPageHeader
-					type="plain"
+				<CtrPageTitledHeader
 					header={header}
 					data-toolbar-mode="normal"
 				>
 					{post.screen_name}
-				</CtrPageHeader>
+				</CtrPageTitledHeader>
 				<CtrPageButtons>
 					{props.canPost
 						? (

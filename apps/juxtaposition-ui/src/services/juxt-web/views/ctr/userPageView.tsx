@@ -3,7 +3,7 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
-import { CtrPageHeader, CtrPageHeaderStat } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageHeaderStat, CtrPageIconHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import type { ReactNode } from 'react';
@@ -24,24 +24,25 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 	return (
 		<CtrRoot title={pnidName}>
 			<CtrPageBody>
-				<CtrPageHeader
-					type="icon-and-stats"
+				<CtrPageIconHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button={isSelf ? '5' : undefined}
 				>
 					<CtrMiiIcon type="header-icon" banned={!isUserDataViewable} pid={props.user.pid}></CtrMiiIcon>
 					<div className="title">
-						{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
-						{ isUserDataViewable
-							? (
-									<>
-										{props.user.mii?.name ?? props.user.username}
-										{' '}
-										@
-										{props.user.username}
-									</>
-								)
-							: null}
+						<span>
+							{ isUserBanned ? <T k="user_page.banned" /> : isUserDeleted ? <T k="user_page.deleted" /> : null}
+							{ isUserDataViewable
+								? (
+										<>
+											{props.user.mii?.name ?? props.user.username}
+											{' '}
+											@
+											{props.user.username}
+										</>
+									)
+								: null}
+						</span>
 					</div>
 					<div className="stats">
 						<CtrPageHeaderStat sprite="sp-follower-count">
@@ -51,7 +52,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 							<div id="post-count">{props.totalPosts}</div>
 						</CtrPageHeaderStat>
 					</div>
-				</CtrPageHeader>
+				</CtrPageIconHeader>
 				<CtrPageButtons>
 					{isSelf
 						? (

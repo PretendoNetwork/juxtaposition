@@ -5,7 +5,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
-import { CtrPageHeader, CtrPageHeaderStat } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPageHeaderStat, CtrPageIconHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -18,13 +18,12 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 	return (
 		<CtrRoot title={community.name}>
 			<CtrPageBody>
-				<CtrPageHeader
-					type="icon-and-stats"
+				<CtrPageIconHeader
 					header={header}
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="3"
 				>
-					<CtrCommunityIcon type="header-icon" community={community} size="64"></CtrCommunityIcon>
+					<CtrCommunityIcon type="header-icon" community={community} size="64" />
 					<div className="title">
 						<span>{community.name}</span>
 					</div>
@@ -36,7 +35,7 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 							<div id="post-count">{props.totalPosts}</div>
 						</CtrPageHeaderStat>
 					</div>
-				</CtrPageHeader>
+				</CtrPageIconHeader>
 				<CtrPageButtons>
 					{props.canPost
 						? (

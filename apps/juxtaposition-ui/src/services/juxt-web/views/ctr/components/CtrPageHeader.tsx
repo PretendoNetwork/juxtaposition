@@ -5,33 +5,80 @@ import type { DatasetProps } from '@/services/juxt-web/views/common/hooks/useDat
 import type { CtrHeader } from '@/services/juxt-web/views/common/hooks/useUrl';
 
 export type CtrPageHeaderProps = DatasetProps & {
-	type: 'icon-and-stats' | 'plain';
 	header?: CtrHeader;
 
 	children: ReactNode | ReactNode[];
 };
 
-export function CtrPageHeader(props: CtrPageHeaderProps): ReactNode {
+/**
+ * CTR header with title text only. Provide text (or translation node) as child.
+ *
+ * @example
+ * <CtrPageTitledHeader
+ * 	data-toolbar-mode="normal"
+ * 	data-toolbar-active-button="1"
+ * >
+ * 	<T k="setup.title" />
+ * </CtrPageTitledHeader>
+ */
+export function CtrPageTitledHeader(props: CtrPageHeaderProps): ReactNode {
 	const dataset = useDatasetProps(props);
 	return (
 		<header
 			style={{
 				background: props.header ? `url('${props.header.bannerUrl}')` : ''
 			}}
-			className={cx('page-header', props.type, {
+			className={cx('page-header', 'plain', {
 				'header-legacy': props.header?.legacy
 			})}
 			{...dataset}
 		>
 			<div className="title-area">
-				{props.type === 'plain'
-					? (
-							<div className="title">
-								<span>{props.children}</span>
-							</div>
-						)
-					: props.children}
+				{/* Double-stacked span for vertical align + line-clamp trickery */}
+				<div className="title">
+					<span>{props.children}</span>
+				</div>
+			</div>
+		</header>
+	);
+}
 
+/**
+ * CTR header with icon, title and optional statistics.
+ * Children must be arranged a specific way for layout to work.
+ *
+ * @example
+ * <CtrPageIconHeader
+ * 	header={header}
+ * 	data-toolbar-mode="normal"
+ * 	data-toolbar-active-button="1"
+ * >
+ * 	<!-- CtrCommunityIcon, CtrMiiIcon, CtrIcon acceptable -->
+ * 	<CtrIcon src="image.png" type="header-icon" />
+ * 	<div className="title">
+ * 		<span>The extra span is needed for text wrapping to work</span>
+ * 	</div>
+ * 	<div className="stats">
+ * 		<CtrPageHeaderStat sprite="sp-post-count">
+ * 			<div>0</div>
+ * 		</CtrPageHeaderStat>
+ * 	</div>
+ * </CtrPageIconHeader>
+ */
+export function CtrPageIconHeader(props: CtrPageHeaderProps): ReactNode {
+	const dataset = useDatasetProps(props);
+	return (
+		<header
+			style={{
+				background: props.header ? `url('${props.header.bannerUrl}')` : ''
+			}}
+			className={cx('page-header', {
+				'header-legacy': props.header?.legacy
+			})}
+			{...dataset}
+		>
+			<div className="title-area">
+				{props.children}
 			</div>
 		</header>
 	);
