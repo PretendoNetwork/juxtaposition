@@ -1,55 +1,92 @@
 import { DateTime } from 'luxon';
-import type { DateTimeMaybeValid } from 'luxon';
 
-export function initBanLiftDate(): void {
-	// input type datetime-local
-	const picker = document.getElementById('ban_lift_date_picker') as HTMLInputElement;
-	if (!picker) {
-		return; // No date picker to init
+export function initAccountStatus(): void {
+	const hidableElements = document.querySelectorAll<HTMLElement>('[data-show-when-status]');
+	const statusPicker = document.querySelectorAll<HTMLSelectElement>('select[data-account-status-editor]');
+
+	function applyStatusView(status: string | null): void {
+		hidableElements.forEach((el) => {
+			if (status && el.getAttribute('data-show-when-status') === status) {
+				el.style.display = 'block';
+			} else {
+				el.style.display = 'none';
+			}
+		});
 	}
 
-	// input type hidden
-	const submission = document.getElementById('ban_lift_date') as HTMLInputElement;
-	// span
-	const utcDisplay = document.getElementById('ban_lift_date_utc')!;
-	// span
-	const durationDisplay = document.getElementById('ban_lift_date_duration')!;
+	statusPicker.forEach((el) => {
+		el.addEventListener('change', () => {
+			applyStatusView(el.value);
+		});
 
-	function updateElements(datetime: DateTimeMaybeValid): void {
-		picker.value = datetime.toLocal().toISO({ includeOffset: false }) ?? '';
-		submission.value = datetime.toUTC().toISO() ?? '';
-		utcDisplay.innerText = datetime.toUTC().toLocaleString(DateTime.DATETIME_MED);
-		durationDisplay.innerText = datetime.toRelative({
-			rounding: 'expand'
-		}) ?? '';
-	}
-
-	const initValue = submission.value;
-	if (initValue) {
-		const initDate = DateTime.fromISO(initValue);
-		updateElements(initDate);
-	}
-
-	picker.addEventListener('change', () => {
-		const newDate = DateTime.fromISO(picker.value);
-		updateElements(newDate);
+		// Initial state
+		applyStatusView(el.value);
 	});
 }
 
-function savePNID(this: HTMLButtonElement, _ev: Event): void {
-	const pid = this.getAttribute('data-button-admin-save-pnid')!;
-	const account_status = document.getElementById('account_status') as HTMLInputElement;
-	const ban_lift_date = document.getElementById('ban_lift_date') as HTMLInputElement;
-	const ban_reason = document.getElementById('ban_reason') as HTMLInputElement;
+export function initDatePreview(): void {
+	const previewElements = document.querySelectorAll<HTMLElement>('[data-date-preview-for]');
+	const datePickers = document.querySelectorAll<HTMLInputElement>('input[data-date-picker-preview]');
+
+	function applyDatePreview(id: string): void {
+		previewElements.forEach((el) => {
+			if (el.getAttribute('data-date-preview-for') !== id) {
+				return;
+			}
+
+			// Apply preview
+			const input = document.getElementById(id) as HTMLInputElement | null;
+			if (!input) {
+				return;
+			}
+
+			if (!input.value) {
+				el.style.display = 'none';
+				return;
+			}
+
+			el.style.display = 'flex';
+			const datetime = DateTime.fromISO(input.value);
+			const utcEls = el.querySelectorAll<HTMLElement>('[data-date-preview-utc]');
+			const untilEls = el.querySelectorAll<HTMLElement>('[data-date-preview-until]');
+			utcEls.forEach(utcEl => utcEl.innerText = datetime.toUTC().toLocaleString(DateTime.DATETIME_MED));
+			untilEls.forEach(untilEl => untilEl.innerText = datetime.toRelative({
+				rounding: 'expand'
+			}) ?? '');
+		});
+	}
+
+	datePickers.forEach((el) => {
+		el.addEventListener('change', () => {
+			applyDatePreview(el.id);
+		});
+
+		// Initial state
+		const initialDate = el.getAttribute('data-init-date-value');
+		if (initialDate) {
+			const parsedDate = DateTime.fromISO(initialDate);
+			el.value = parsedDate.toLocal().toISO({ includeOffset: false }) ?? '';
+		}
+		applyDatePreview(el.id);
+	});
+}
+
+function savePNID(form: HTMLFormElement): void {
+	const formData = new FormData(form);
+	const pid = form.getAttribute('data-pnid-save-form')!;
+
+	const account_status = formData.get('account_status');
+	const ban_lift_date = formData.get('ban_lift_date');
+	const ban_reason = formData.get('ban_reason');
 	fetch(`/admin/accounts/${pid}`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			account_status: Number(account_status.value),
-			ban_lift_date: ban_lift_date.value,
-			ban_reason: ban_reason.value
+			account_status: account_status ? Number(account_status) : undefined,
+			ban_lift_date: ban_lift_date ? new Date(ban_lift_date.toString()) : null,
+			ban_reason: ban_reason
 		})
 	})
 		.then(response => response.json())
@@ -62,7 +99,12 @@ function savePNID(this: HTMLButtonElement, _ev: Event): void {
 }
 
 export function initSavePnidButton(): void {
-	document.querySelectorAll('[data-button-admin-save-pnid]').forEach((el) => {
-		el.addEventListener('click', savePNID);
+	const els = document.querySelectorAll<HTMLFormElement>('form[data-pnid-save-form]');
+
+	els.forEach((el) => {
+		el.addEventListener('submit', (evt) => {
+			evt.preventDefault();
+			savePNID(el);
+		});
 	});
 }
