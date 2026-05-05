@@ -124,6 +124,19 @@ PostSchema.index({
 	removed: 1
 });
 
+// Index for post count on community page
+PostSchema.index({
+	community_id: 1,
+	removed: 1,
+	parent: 1
+});
+
+// Index for post metrics
+PostSchema.index({
+	message_to_pid: 1,
+	created_at: 1
+});
+
 PostSchema.method<HydratedPostDocument>('del', async function del(reason: string, pid: number) {
 	this.removed = true;
 	this.removed_by = pid;

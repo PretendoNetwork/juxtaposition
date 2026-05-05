@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
+import { mapShallowCommunity, shallowCommunitySchema } from '@/services/internal/contract/community';
 import type { IPost } from '@/types/mongoose/post';
+import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
 export const postSchema = asOpenapi('Post', z.object({
 	id: z.string(),
@@ -22,6 +24,7 @@ export const postSchema = asOpenapi('Post', z.object({
 	topic_tag: z.string().optional(),
 
 	community_id: z.string(), // number
+	community: shallowCommunitySchema.nullable(),
 	created_at: z.string(), // ISO Z
 	feeling_id: z.number().optional(),
 
@@ -63,7 +66,7 @@ export type PostDto = z.infer<typeof postSchema>;
  * @param post Database post type
  * @returns API/frontend post type
  */
-export function mapPost(post: IPost): PostDto {
+export function mapPost(post: IPost, comm: HydratedCommunityDocument | null): PostDto {
 	return {
 		id: post.id,
 		title_id: post.title_id,
@@ -84,6 +87,7 @@ export function mapPost(post: IPost): PostDto {
 		topic_tag: post.topic_tag,
 
 		community_id: post.community_id,
+		community: comm ? mapShallowCommunity(comm) : null,
 		created_at: post.created_at.toISOString(),
 		feeling_id: post.feeling_id,
 

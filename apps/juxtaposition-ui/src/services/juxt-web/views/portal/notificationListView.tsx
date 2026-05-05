@@ -1,19 +1,18 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
 import { humanFromNow } from '@/util';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/ui/PortalMiiIcon';
 import { PortalIcon } from '@/services/juxt-web/views/portal/components/ui/PortalIcon';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
+import type { ShallowUser } from '@/api/generated';
 
 function PortalNotificationItem(props: NotificationItemProps): ReactNode {
-	const cache = useCache();
 	const notif = props.notification;
 	if (notif.type === 'follow') {
-		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
+		const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? null}</span>;
 
 		let i18nKey: TranslationKey = 'notifications.new_follower/one';
 		if (notif.users.length === 2) {
@@ -39,8 +38,8 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 									count_other: Math.max(0, notif.users.length - 2)
 								}}
 								components={{
-									follower_one: <NickName userId={notif.resourceId} />,
-									follower_two: <NickName userId={notif.users[0]?.pid} />
+									follower_one: <NickName user={notif.users[0]?.user} />,
+									follower_two: <NickName user={notif.users[1]?.user} />
 								}}
 							/>
 						</a>

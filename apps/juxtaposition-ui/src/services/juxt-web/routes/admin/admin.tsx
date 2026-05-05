@@ -1,8 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
-import { getReasonMap, updateCommunityHashForAdminCommunity } from '@/util';
-import { getPostMetrics, getUserMetrics } from '@/metrics';
+import { getReasonMap } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserListView } from '@/services/juxt-web/views/web/admin/userListView';
 import { WebReportListView } from '@/services/juxt-web/views/web/admin/reportListView';
@@ -46,8 +45,7 @@ adminRouter.get('/accounts', async function (req, res) {
 		offset
 	});
 
-	const userMetrics = await getUserMetrics();
-	const postMetrics = await getPostMetrics();
+	const { data: stats } = await req.api.admin.getStats();
 
 	res.jsxForDirectory({
 		web: (
@@ -56,9 +54,9 @@ adminRouter.get('/accounts', async function (req, res) {
 				page={query.page}
 				search={search}
 				userCount={usersPage.total}
-				activeCount={userMetrics.currentOnlineUsers}
-				dailyPostCount={postMetrics.dailyPosts}
-				totalPostCount={postMetrics.totalPosts}
+				activeCount={stats.onlineUsers}
+				dailyPostCount={stats.dailyPosts}
+				totalPostCount={stats.totalPosts}
 			/>
 		)
 	});
@@ -172,7 +170,6 @@ adminRouter.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCo
 		shotMode: body.shot_mode,
 		shotModeExtraTitleIds: body.shot_extra_title_id
 	});
-	updateCommunityHashForAdminCommunity(outputCommunity);
 	res.redirect(`/admin/communities/${outputCommunity.olive_community_id}`);
 });
 
@@ -245,7 +242,6 @@ adminRouter.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCo
 		shotModeExtraTitleIds: body.shot_extra_title_id
 	});
 
-	updateCommunityHashForAdminCommunity(outputCommunity);
 	res.redirect(`/admin/communities/${outputCommunity.olive_community_id}`);
 });
 

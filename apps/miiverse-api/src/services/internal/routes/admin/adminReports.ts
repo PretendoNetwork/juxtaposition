@@ -11,6 +11,8 @@ import { createNewPostDeletionNotification } from '@/services/internal/utils/not
 import { deleteOptional } from '@/services/internal/utils';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
+import { Community } from '@/models/community';
+import { Settings } from '@/models/settings';
 
 export const adminReportsRouter = createInternalApiRouter();
 
@@ -45,9 +47,18 @@ adminReportsRouter.get({
 		const posts = await Post.find(
 			{ id: { $in: postIds } }
 		);
-		const postMap = new Map(posts.map(p => [p.id, p]));
 
-		let reports = rawReports.map(v => mapReport(v, postMap.get(v.post_id) ?? null));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		const relatedUserIds = rawReports.flatMap(v => [v.reported_by, v.resolved_by]).filter((v): v is number => !!v);
+		const users = await Settings.find({ pid: { $in: relatedUserIds } });
+
+		let reports = rawReports.map((report) => {
+			const post = posts.find(v => v.id === report.post_id) ?? null;
+			const community = post ? communities.find(v => v.olive_community_id === post.community_id) ?? null : null;
+			return mapReport(report, users, post, community);
+		});
 
 		// Reports can be resolved by the original post being removed, this is not set in the DB
 		// This is why pagination is not possible when filtering for resolved states

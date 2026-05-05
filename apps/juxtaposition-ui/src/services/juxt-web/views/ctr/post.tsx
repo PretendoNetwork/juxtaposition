@@ -1,7 +1,6 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { CtrButton } from '@/services/juxt-web/views/ctr/components/ui/CtrButton';
@@ -41,7 +40,6 @@ function CtrPostScreenshot(props: PostScreenshotProps): ReactNode {
 export function CtrPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
-	const cache = useCache();
 
 	const post = props.post;
 	const hasYeahed = post.yeahs && post.yeahs.indexOf(user.pid) !== -1;
@@ -88,7 +86,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 									<span className="title-icon-container" data-pjax="#body">
 										<img src={url.cdn(`/icons/${post.community_id}/32.png`)} className="title-icon" />
 									</span>
-									<span className="community-name">{cache.getCommunityName(post.community_id ?? '')}</span>
+									<span className="community-name">{post.community.name}</span>
 								</a>
 							)
 						: null}

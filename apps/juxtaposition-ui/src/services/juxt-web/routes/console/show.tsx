@@ -1,7 +1,7 @@
 import express from 'express';
 import { z } from 'zod';
 import { database } from '@/database';
-import { createUser, setName } from '@/util';
+import { createUser } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebFirstRunView } from '@/services/juxt-web/views/web/firstRunView';
 import { PortalFirstRunView } from '@/services/juxt-web/views/portal/firstRunView';
@@ -32,10 +32,6 @@ showRouter.get('/', async function (req, res) {
 		res.redirect(`/users/${query.pid}`);
 	} else {
 		res.redirect('/titles');
-	}
-
-	if (self) {
-		setName(self.pid, self.miiName);
 	}
 });
 

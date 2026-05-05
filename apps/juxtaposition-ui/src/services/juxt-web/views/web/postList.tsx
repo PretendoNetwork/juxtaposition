@@ -1,13 +1,11 @@
 import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { T } from '@/services/juxt-web/views/common/components/T';
-import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
-import type { PostSchema } from '@/models/post';
 import type { Post, SelfContent } from '@/api/generated';
 
 export type PostListViewProps = {
 	userContent: SelfContent | null;
-	posts: InferSchemaType<typeof PostSchema>[] | Post[];
+	posts: Post[];
 	nextLink: string;
 };
 

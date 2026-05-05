@@ -5,7 +5,6 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -40,9 +39,8 @@ const empathies = [
 export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
-	const cache = useCache();
 	const { bannerUrl, legacy } = props.community ? url.ctrHeader(props.community) : {};
-	const name = props.name ?? cache.getUserName(props.pid ?? 0);
+	const name = props.name;
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header
@@ -132,10 +130,8 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 }
 
 export function CtrNewPostPage(props: NewPostViewProps): ReactNode {
-	const cache = useCache();
-	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
-		<CtrRoot title={T.str('new_post.post_to', { user: name })}>
+		<CtrRoot title={T.str('new_post.post_to', { user: props.name })}>
 			<CtrPageBody>
 				<CtrNewPostView {...props} />
 			</CtrPageBody>
