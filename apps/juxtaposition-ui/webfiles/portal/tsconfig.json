@@ -18,7 +18,8 @@
 		"types": [
 			"@pretendonetwork/wiiu-browser-types",
 			"@pretendonetwork/wiiu-dialog-types",
-			"@pretendonetwork/wiiu-error-viewer-types"
+			"@pretendonetwork/wiiu-error-viewer-types",
+			"@pretendonetwork/wiiu-sound-types"
 		],
 		"paths": {
 			"@/*": [
