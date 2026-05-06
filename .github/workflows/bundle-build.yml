@@ -1,0 +1,40 @@
+name: Compile build analysis
+
+on:
+  pull_request:
+
+jobs:
+  compile:
+    name: Compile
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read # for checkout repository
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          # Fetch the commit SHA of the forked PR
+          ref: "${{ github.event.pull_request.merge_commit_sha }}"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build miiverse-api
+        run: npm run build
+        working-directory: ./apps/miiverse-api
+
+      - name: Build juxtaposition-ui with metafiles
+        run: npm run build:meta
+        working-directory: ./apps/juxtaposition-ui
+
+      - name: Upload metafiles artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-metafiles
+          path: apps/juxtaposition-ui/dist/webfiles/*/metafile-*.json

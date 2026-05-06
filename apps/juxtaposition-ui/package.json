@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsup && tsc --noEmit",
+    "build:meta": "tsup --metafile && tsc --noEmit",
     "start": "node --enable-source-maps dist/server.js"
   },
   "dependencies": {
