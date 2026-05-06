@@ -1,4 +1,4 @@
-name: Build analysis
+name: Bundle analysis
 
 # This is intentionall split into two parts:
 #  - bundle-build (builds untrusted code securely and stores metafiles)
@@ -7,7 +7,7 @@ name: Build analysis
 
 on:
   workflow_run:
-    workflows: ["Compile build analysis"]
+    workflows: ["Compile bundle analysis"]
     types:
       - completed
 
@@ -24,7 +24,7 @@ jobs:
       github.event.workflow_run.event == 'pull_request'
     steps:
       - name: Download artifact from build workflow
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: bundle-metafiles
           path: metafiles

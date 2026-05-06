@@ -1,4 +1,4 @@
-name: Compile build analysis
+name: Compile bundle analysis
 
 on:
   pull_request:
@@ -34,7 +34,7 @@ jobs:
         working-directory: ./apps/juxtaposition-ui
 
       - name: Upload metafiles artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: bundle-metafiles
           path: apps/juxtaposition-ui/dist/webfiles/*/metafile-*.json
