@@ -65,6 +65,10 @@ const schema = z.object({
 			apiKey: z.string()
 		})
 	}),
+	ratelimit: z.object({
+		yeahs: z.stringbool().default(true),
+		posts: z.stringbool().default(true)
+	}).prefault({}),
 	redis: z.object({
 		host: z.string(),
 		port: z.coerce.number().default(6379)
@@ -142,3 +146,5 @@ export const config = createConfig({
 	],
 	schema: flatZodSchema(schema)
 });
+
+export type Config = typeof config;

@@ -1,6 +1,5 @@
 import crypto from 'crypto';
 import express from 'express';
-import { rateLimit } from 'express-rate-limit';
 import multer from 'multer';
 import { z } from 'zod';
 import { config } from '@/config';
@@ -10,7 +9,7 @@ import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
+import { createRatelimit, evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
@@ -30,7 +29,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
 
-const postLimit = rateLimit({
+const postLimit = createRatelimit('posts', {
 	windowMs: 15 * 1000, // 30 seconds
 	max: 10, // Limit each IP to 1 request per `window`
 	standardHeaders: true,
@@ -50,7 +49,7 @@ const postLimit = rateLimit({
 	}
 });
 
-const yeahLimit = rateLimit({
+const yeahLimit = createRatelimit('yeahs', {
 	windowMs: 60 * 1000, // 1 minute
 	max: 60, // Limit each IP to 60 requests per `window`
 	standardHeaders: true,
