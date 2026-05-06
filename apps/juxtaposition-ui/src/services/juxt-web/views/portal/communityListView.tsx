@@ -1,5 +1,5 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
-import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalCommunityIcon } from '@/services/juxt-web/views/portal/components/ui/PortalCommunityIcon';
 import type { ReactNode } from 'react';

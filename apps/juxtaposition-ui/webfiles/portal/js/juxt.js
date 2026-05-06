@@ -4,7 +4,8 @@ import { GET, POST } from './xhr';
 import { empathyPostById } from './api';
 import { initPostPageView } from './post';
 import { initNavTabs } from './components/ui/PortalNavTabs';
-import { initNavBar, back } from './components/ui/PortalNavBar';
+import { initNavBar } from './components/PortalNavBar';
+import { back } from './nav';
 
 export var pjax;
 setInterval(checkForUpdates, 30000);
@@ -140,6 +141,9 @@ function initPostEmotion() {
 		});
 	}
 }
+function playSound(e) {
+	wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
+}
 function initSounds() {
 	var els = document.querySelectorAll('[data-sound]');
 	if (!els) {
@@ -147,9 +151,6 @@ function initSounds() {
 	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', playSound);
-	}
-	function playSound(e) {
-		wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
 	}
 }
 function initScreenShots() {

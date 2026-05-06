@@ -14,8 +14,13 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 		id === props.selection ? 'selected' : '';
 
 	return (
-		<menu id="nav-menu">
-			<li id="nav-menu-me" data-tab="me" className={selectedClasses(0)}>
+		<menu id="nav-menu" data-navbar>
+			{/* Selectable tabs */}
+			<li
+				id="nav-menu-me"
+				data-navbar-tab="me"
+				className={selectedClasses(0)}
+			>
 				<a href="/users/me" data-pjax="#body" data-sound="SE_WAVE_MENU">
 					<span className="mii-icon">
 						<img
@@ -26,14 +31,18 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 					<span><T k="global.user_page" /></span>
 				</a>
 			</li>
-			<li id="nav-menu-feed" data-tab="feed" className={selectedClasses(1)}>
+			<li
+				id="nav-menu-feed"
+				data-navbar-tab="feed"
+				className={selectedClasses(1)}
+			>
 				<a href="/feed" data-pjax="#body" data-sound="SE_WAVE_MENU">
 					<T k="global.activity_feed" />
 				</a>
 			</li>
 			<li
 				id="nav-menu-community"
-				data-tab="titles"
+				data-navbar-tab="titles"
 				className={selectedClasses(2)}
 			>
 				<a href="/titles" data-pjax="#body" data-sound="SE_WAVE_MENU">
@@ -42,14 +51,18 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 			</li>
 			<li
 				id="nav-menu-friends"
-				data-tab="friends"
+				data-navbar-tab="friends"
 				className={selectedClasses(3)}
 			>
 				<a href="/news/friend_requests" data-pjax="#body" data-sound="SE_WAVE_MENU">
 					<T k="global.friend_requests" />
 				</a>
 			</li>
-			<li id="nav-menu-news" data-tab="news" className={selectedClasses(4)}>
+			<li
+				id="nav-menu-news"
+				data-navbar-tab="news"
+				className={selectedClasses(4)}
+			>
 				<a href="/news/my_news" data-pjax="#body" data-sound="SE_WAVE_MENU">
 					<T k="global.notifications" />
 					<span id="news-badge" className="badge">
@@ -57,13 +70,16 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 					</span>
 				</a>
 			</li>
+			{/* Oneshot buttons */}
 			<li id="nav-menu-exit">
-				<a role="button" data-sound="SE_WAVE_EXIT" data-nav-exit>
+				{/* Sound is handled in exit() callback */}
+				<a role="button" data-navbar-exit>
 					<T k="global.close" />
 				</a>
 			</li>
 			<li id="nav-menu-back" className="none">
-				<a role="button" data-sound="SE_WAVE_BACK" data-nav-back>
+				{/* Sound is handled in back() callback */}
+				<a role="button" data-navbar-back>
 					<T k="global.go_back" />
 				</a>
 			</li>

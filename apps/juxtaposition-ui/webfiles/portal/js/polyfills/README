@@ -3,3 +3,6 @@ Copyright 2015-2021 © thednp
 Licensed under MIT (https://github.com/thednp/minifill/blob/master/LICENSE)
 
 Lightly reformatted to get past our linter and modified to remove conditionals we don't need (since we know the exact target browser).
+
+https://www.npmjs.com/package/element-closest-polyfill
+Copyright idmadj, licensed under ISC

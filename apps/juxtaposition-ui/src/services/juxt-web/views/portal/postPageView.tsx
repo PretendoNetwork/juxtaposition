@@ -1,4 +1,4 @@
-import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalPostView } from '@/services/juxt-web/views/portal/post';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
