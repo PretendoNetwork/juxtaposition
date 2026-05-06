@@ -25,11 +25,11 @@ export function initNavBar(): void {
 			el.addEventListener('click', select);
 		});
 
-		var navExit = navbar.querySelector('[data-navbar-exit]') as HTMLAnchorElement;
+		var navExit = navbar.querySelector<HTMLAnchorElement>('[data-navbar-exit]')!;
 		navExit.href = '#';
 		navExit.addEventListener('click', exitButton);
 
-		var navBack = navbar.querySelector('[data-navbar-back]') as HTMLAnchorElement;
+		var navBack = navbar.querySelector<HTMLAnchorElement>('[data-navbar-back]')!;
 		navBack.href = '#';
 		navBack.addEventListener('click', backButton);
 	});

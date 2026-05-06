@@ -17,5 +17,5 @@ export function back(): void {
 	// @ts-expect-error wrong upstream types
 	wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
 	history.back();
-	(document.querySelector('[data-navbar]') as HTMLElement).style.display = 'block';
+	document.querySelector<HTMLElement>('[data-navbar]')!.style.display = 'block';
 }
