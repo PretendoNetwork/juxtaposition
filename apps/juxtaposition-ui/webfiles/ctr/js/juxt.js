@@ -11,6 +11,11 @@ import { initNavTabs } from './components/ui/CtrNavTabs';
 
 setInterval(checkForUpdates, 30000);
 
+function hello_world() {
+	console.log('hello world');
+}
+window.hello_world = hello_world;
+
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);
 cave.toolbar_setCallback(2, function () {
