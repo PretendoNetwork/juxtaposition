@@ -12,7 +12,7 @@ import { initNavTabs } from './components/ui/CtrNavTabs';
 setInterval(checkForUpdates, 30000);
 
 function hello_world() {
-	console.log('hello world');
+	console.log('hello world with different name');
 }
 window.hello_world = hello_world;
 
