@@ -29,6 +29,7 @@ jobs:
           name: bundle-metafiles
           path: metafiles
           run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Analyze esbuild bundle size
         uses: exoego/esbuild-bundle-analyzer@v1
