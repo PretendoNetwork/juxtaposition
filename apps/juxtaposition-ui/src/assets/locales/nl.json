@@ -6,7 +6,7 @@
         "communities": "Community's",
         "notifications": "Meldingen",
         "go_back": "Ga Terug",
-        "back": "Terug",
+        "back": "Rug",
         "yeahs": "Ja's",
         "more": "Laad Meer Posts",
         "no_posts": "Geen Posts",
@@ -14,7 +14,15 @@
         "close": "Sluiten",
         "save": "Opslaan",
         "exit": "Afsluiten",
-        "next": "Volgende"
+        "next": "Volgende",
+        "my_feed": "Mijn Overzicht",
+        "global_feed": "Algemeen Overzicht",
+        "global_feed_short": "Algemeen",
+        "people_feed": "Mensen Overzicht",
+        "people_feed_short": "Mensen",
+        "friend_requests": "Vriend Uitnodigingen",
+        "updates": "Updates",
+        "search": "Zoeken..."
     },
     "all_communities": {
         "text": "Alle Community's",
@@ -26,7 +34,12 @@
         "posts": "Posts",
         "tags": "Tags",
         "recent": "Recente Posts",
-        "popular": "Populaire Posts"
+        "popular": "Populaire Posts",
+        "followers_count": "{{count}} volgers",
+        "tags_not_applicable": "N/A",
+        "related": "Relateer Communities",
+        "related_to": "{{community}} Relateerde Community",
+        "closed": "Deze community is gesloten voor nieuwe berichten."
     },
     "user_page": {
         "country": "Land",
@@ -37,23 +50,42 @@
         "following": "Gevolgde gebruikers",
         "followers": "Volgers",
         "follow_user": "Volgen",
-        "following_user": "Volgend"
+        "following_user": "Volgend",
+        "game_experience_unknown": "Onbekend",
+        "settings": "Instellingen",
+        "friend_requests": "Aanvragen",
+        "deleted": "Verwijderde gebruiker",
+        "banned": "Verbannen gebruiker"
     },
     "user_settings": {
         "profile_settings": "Profielinstellingen",
         "show_country": "Geef Land op Profiel weer",
         "show_birthday": "Geef Verjaardag op Profiel weer",
-        "show_game": "Geef Game-ervaring op Profiel weer"
+        "show_game": "Geef Game-ervaring op Profiel weer",
+        "save_action": "Instellingen opslaan",
+        "gdpr_download": "Download gebruiker data",
+        "gdpr_download_action": "Download"
     },
     "activity_feed": {
         "empty": "Het is eenzaam hier. Probeer iemand te volgen!"
     },
     "notifications": {
-        "none": "Geen meldingen."
+        "none": "Geen meldingen.",
+        "new_follower/one": "<follower_one /> volgt jou!",
+        "new_follower/two": "<follower_one />, <follower_two /> volgen jou!",
+        "new_follower/three": "<follower_one />, <follower_two />, and {{count_other}} volgen jou!",
+        "new_follower/multiple": "<follower_one />, <follower_two />, en {{count_other}} volgen jou!"
     },
     "new_post": {
         "post_to": "Post in {{user}}",
-        "swearing": "Post kan geen expliciete tekst bevatten."
+        "swearing": "Post kan geen expliciete tekst bevatten.",
+        "new_post_short": "Bericht",
+        "content_placeholder": "Deel je gedachten in een bericht op een community of naar je volgers.",
+        "screenshots_coming_soon": "Schermafbeeldingen zijn nog niet klaar. Kom later terug!",
+        "no_screenshot": "Geen schermafbeelding",
+        "spoiler_label": "Spoiler",
+        "painting_close": "Weigeren",
+        "painting_submit": "OKE"
     },
     "setup": {
         "welcome": "Welkom op Juxtaposition!",
@@ -84,7 +116,7 @@
         },
         "experience": "Game-ervaring",
         "experience_text": {
-            "info": "Vertel ons alstublieft hoe u uw ervaringsniveau met games zou omschrijven. U kunt deze instelling later wijzigen.",
+            "info": "Vertel ons alstublieft hoe je je ervaringsniveau met games zou omschrijven. Je kan deze instelling later wijzigen.",
             "beginner": "Beginner",
             "intermediate": "Gemiddeld",
             "expert": "Expert"
@@ -94,6 +126,65 @@
         "ready": "Klaar om Juxt te Gebruiken",
         "ready_text": "Bekijk eerst wat community's en zie waar mensen van over de hele wereld over posten. Gebruik deze kans om je bekend te maken met Juxt. Misschien ontdek je iets nieuws op deze manier!",
         "done": "Veel plezier in Juxt!",
-        "done_button": "Laten We Beginnen!"
+        "done_button": "Laten We Beginnen!",
+        "title": "Juxtaposition Instellen"
+    },
+    "login": {
+        "title": "Juxtposition Inloggen",
+        "heading": "Juxtposition Aanmelden",
+        "sub_title": "Voer je account gevens hier onder in",
+        "username": "Gebruikersnaam",
+        "password": "Wachtwoord",
+        "forgot_password": "Wachtwoord vergeten?",
+        "login_action": "Inloggen",
+        "no_account_setup": "Account aanmaken is alleen mogelijk wanneer je een gelinkte Wii U of 3DS hebt.",
+        "no_account": "Geen Account?"
+    },
+    "error": {
+        "title": "Error {{code}}",
+        "heading": "Error {{code}}: {{message}}",
+        "message": "Oeps! Het lijkt erop dat we de pagina niet konden vinden voor..<newline/>Dubbel-check je link of probeer opnieuw",
+        "no_access": "Je hebt geen toegang voor dit programma ({{code}})",
+        "message_web": "Bekijk onze huidige <status>server status</status>.<newline/>Of,<home>om terug te gaan naar de homepagina</home>",
+        "error_details": "Aanvraag ID: {{id}}"
+    },
+    "friend_requests": {
+        "none": "Geen vriend aanvragen"
+    },
+    "post": {
+        "title": "Verzonden door {{username}}",
+        "heading": "Bericht",
+        "yeahs_count/one": "<count/> person(en) gaven je post een yeah.",
+        "yeahs_count/multiple": "<count/> gaven je persoon een yeah.",
+        "show_spoiler": "Spoiler weergeven",
+        "reply_post": "Reageer",
+        "report_post": "Bericht rapporteren",
+        "delete_post": "Bericht verwijderen",
+        "removed": "Je bericht is verwijderd.",
+        "copy_link": "Kopieer link"
+    },
+    "reporting": {
+        "title": "Bericht reporteren",
+        "submit": "Bericht indienen",
+        "description": "Je staat op het punt een bericht te rapporteren waarvan de inhoud in strijd is met de gedragscode van Juxtaposition. Deze melding wordt doorgestuurd naar de Juxtaposition-beheerders van Pretendo en niet naar de maker van het bericht.",
+        "label": "Reden:",
+        "additional_info_placeholder": "Voer aanvullende opmerkingen of informatie in",
+        "reason_spoiler": "Spoiler",
+        "reason_personal_info": "Persoonlijke Informatie",
+        "reason_violence": "Gewelddadige inhoud",
+        "reason_inappropiate": "Ongepast/schadelijk gedrag",
+        "reason_bullying": "Haatdragend/Pestgedrag",
+        "reason_advertising": "Adverteren",
+        "reason_nsfw": "Seksueel expliciet",
+        "reason_piracy": "Piraterij",
+        "reason_inappropiate_ingame": "Ongepast gedrag in het spel",
+        "reason_missing_images": "Missende afbeeldingen",
+        "reason_one": "1",
+        "reason_other": "0,20, 2, 3, 4, 5, 6, 7, 8, 9, 10"
+    },
+    "moderation": {
+        "title": "Moderatie",
+        "silently_delete_post": "Stilzwijgend verwijderen",
+        "moderate_user": "Gemiddelde gebruiker"
     }
 }
