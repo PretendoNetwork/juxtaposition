@@ -23,8 +23,8 @@ export async function getAllFromList<TResponse extends { data: PagedResponse<any
 		const page = data ?? { items: [], total: 0 }; // cb() is expected to throw on error, the fallback here should technically be unused
 
 		items.push(...page.items);
-		offset += limit;
 		hasNextPage = offset + limit < page.total;
+		offset += limit;
 	} while (hasNextPage);
 
 	return items;
