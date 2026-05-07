@@ -37,7 +37,12 @@ export function CtrRoot(props: HtmlProps): ReactNode {
 				<title>{props.title}</title>
 				{props.head}
 			</head>
-			<body evt-load={props.onLoad ?? ''}>{props.children}</body>
+			<body evt-load={props.onLoad ?? ''}>
+				{props.children}
+				{/* Frame for PJAX-API comms. Must be here so it never gets unloaded,
+					since unloading it *crashes the applet* */}
+				<iframe name="pjax-submit" src="/blank" data-pjax-formframe />
+			</body>
 		</html>
 	);
 }

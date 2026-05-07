@@ -102,6 +102,12 @@
   },
   "new_post": {
     "automod_error": "Your post contains text that is not allowed on Juxtaposition. For more information, please visit https://preten.do/juxt-rules",
+    "empty_post": "Post is empty. Please try again.",
+    "invalid_content": "Post contains invalid characters. Please try again.",
+    "invalid_data": "Post data is invalid.",
+    "permission_denied": "Posting is not allowed here.",
+    "upload_failed": "Upload failed - please try again later.",
+    "post_too_long": "Post is too long. Please try again.",
     "new_post_short": "Post",
     "post_to": "Post to {{user}}",
     "swearing": "Post cannot contain explicit language.",

@@ -6,6 +6,7 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPjaxForm } from '@/services/juxt-web/views/ctr/components/ui/CtrPjaxForm';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -52,7 +53,10 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 			>
 				<T k="new_post.post_to" values={{ user: name ?? '' }} />
 			</CtrPageTitledHeader>
-			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1" encType="multipart/form-data">
+			<CtrPjaxForm
+				action={props.url}
+				id="posts-form"
+			>
 				<input type="hidden" name="community_id" value={props.id} />
 				<input type="hidden" name="bmp" value="true" />
 				<div className="add-post-page-content">
@@ -112,12 +116,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				</div>
 				{props.errorText ? <p>{props.errorText}</p> : null}
 				<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
-				<input
-					type="submit"
-					id="submit"
-					className="post-button"
-				/>
-			</form>
+			</CtrPjaxForm>
 		</div>
 	);
 }
