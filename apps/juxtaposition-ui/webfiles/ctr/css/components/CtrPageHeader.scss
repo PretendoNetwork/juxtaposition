@@ -36,6 +36,7 @@ $spad: math.div($pad, 2);
 
         .title, .stats {
             height: 100%;
+            color: t.$heading-text;
             // Vertical center
             display: -webkit-box;
             -webkit-box-align: center;

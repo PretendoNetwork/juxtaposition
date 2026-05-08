@@ -70,7 +70,8 @@ ul {
 #body > .body-content {
     width: 322px;
     margin-left: 39px;
-    min-height: 175px
+    min-height: 175px;
+    margin-top: 10px;
 }
 
 .headline,
@@ -123,7 +124,7 @@ menu.tab-header {
     font-size: 12px;
     position: relative;
     top: -5px;
-    left: 0
+    left: 0;
 }
 
 .scroll.to-community-button {
