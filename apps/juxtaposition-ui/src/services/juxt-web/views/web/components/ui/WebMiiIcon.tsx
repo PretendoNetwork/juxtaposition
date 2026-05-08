@@ -5,7 +5,6 @@ import type { ReactNode } from 'react';
 export type MiiIconProps = {
 	pid: number;
 	face_url?: string;
-	banned?: boolean;
 
 	type?: 'mii-icon' | 'icon' | 'header-icon'; // default ".mii-icon"
 	className?: string; // extra classes
