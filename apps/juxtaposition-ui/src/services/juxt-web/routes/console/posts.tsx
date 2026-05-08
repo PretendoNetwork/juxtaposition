@@ -271,23 +271,49 @@ postsRouter.get('/:post_id/report', async function (req, res) {
 });
 
 postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
-	const { body, auth } = parseReq(req, {
+	const { body, query, auth } = parseReq(req, {
 		body: z.object({
 			reason: z.string(),
 			message: z.string(),
 			post_id: z.string()
+		}),
+		query: z.object({
+			pjax_api: z.stringbool().default(false)
 		})
 	});
 
+	const reject = (reason: string): void => {
+		if (query.pjax_api) {
+			const doc = { status: 400, message: reason, href: '#back' };
+			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
+			return;
+		}
+
+		res.renderError({
+			code: 400,
+			message: reason
+		});
+	};
+
 	const { reason, message, post_id } = body;
 	const { data: post } = await req.api.posts.get({ post_id });
-	if (!reason || !post_id || !post) {
-		return res.redirect('/404');
+	if (!post_id || !post) {
+		return reject(res.i18n.t('reporting.invalid_post'));
 	}
+
+	const accept = (message: string): void => {
+		const acceptNextUrl = `/titles/${post.community_id}/new`;
+		if (query.pjax_api) {
+			const doc = { status: 200, message, href: acceptNextUrl };
+			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
+			return;
+		}
+		return res.redirect(acceptNextUrl);
+	};
 
 	const duplicate = await database.getDuplicateReports(auth().pid, post_id);
 	if (duplicate) {
-		return res.redirect(`/posts/${post.id}`);
+		return reject(res.i18n.t('reporting.invalid_dupe'));
 	}
 
 	const reportDoc = {
@@ -302,7 +328,7 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 	const reportObj = new REPORT(reportDoc);
 	await reportObj.save();
 
-	return res.redirect(`/posts/${post.id}`);
+	return accept(res.i18n.t('reporting.submitted'));
 });
 
 async function newPost(req: Request, res: Response): Promise<void> {
@@ -338,7 +364,6 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		if (query.pjax_api) {
 			const doc = { status: 400, href: url };
 			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
-			// res.jsx(<textarea dangerouslySetInnerHTML={{ __html: JSON.stringify(doc) }} />, false);
 			return;
 		}
 		return res.redirect(url);
@@ -348,7 +373,6 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		if (query.pjax_api) {
 			const doc = { status: 200, href: acceptNextUrl };
 			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
-			// res.jsx(<textarea dangerouslySetInnerHTML={{ __html: JSON.stringify(doc) }} />, false);
 			return;
 		}
 		return res.redirect(acceptNextUrl);

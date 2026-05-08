@@ -188,7 +188,10 @@
     "reason_piracy": "Piracy",
     "reason_inappropiate_ingame": "Inappropriate Behavior in Game",
     "reason_missing_images": "Missing Images",
-    "reason_other": "Other"
+    "reason_other": "Other",
+    "invalid_post": "Post not found or was deleted.",
+    "invalid_dupe": "You have already reported this post. If you have extra information or questions, please contact us on https://preten.do/juxt-mods.",
+    "submitted": "Your report has been received and will be reviewed shortly. Thank you for help keeping Juxtaposition safe!"
   },
   "moderation": {
     "title": "Moderation",

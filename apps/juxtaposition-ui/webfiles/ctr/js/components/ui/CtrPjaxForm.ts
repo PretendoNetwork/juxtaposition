@@ -12,7 +12,15 @@ function message(ev: MessageEvent): void {
 		setTimeout(() => document.dispatchEvent(PjaxError), 0);
 	}
 
-	pjaxLoadUrl(response.href, true, true);
+	if (response.message) {
+		alert(response.message);
+	}
+
+	if (response.href === '#back') {
+		back();
+	} else {
+		pjaxLoadUrl(response.href, true, true);
+	}
 }
 
 function submit(): void {
