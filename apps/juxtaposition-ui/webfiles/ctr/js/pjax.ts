@@ -16,7 +16,7 @@ export type PjaxOptions = {
 export function pjaxInit(init: PjaxOptions): void {
 	elements = init.elements;
 	selectors = init.selectors;
-	href = document.location.href;
+	href = document.location.pathname;
 
 	PjaxRequest.initEvent('PjaxRequest', true, true);
 	PjaxDone.initEvent('PjaxDone', true, true);
@@ -46,7 +46,7 @@ export function pjaxLoadUrl(url: string, pushHistory: boolean, skipDispatch?: bo
 
 	GET(url, xhr => pjaxParseDom(xhr, url), () => document.dispatchEvent(PjaxError));
 
-	if (pushHistory && href.indexOf(url) === -1) {
+	if (pushHistory && href !== url) {
 		pjaxHistory.push(href);
 	}
 }
@@ -91,7 +91,7 @@ export function pjaxBack(): void {
 }
 
 export function pjaxPushHistory(url: string): void {
-	if (href.indexOf(url) === -1) {
+	if (href !== url) {
 		pjaxHistory.push(href);
 	}
 	href = url;
