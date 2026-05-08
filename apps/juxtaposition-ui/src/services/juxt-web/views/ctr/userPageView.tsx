@@ -24,7 +24,7 @@ export function CtrUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 				<CtrPageIconHeader
 					data-toolbar-mode="normal"
 				>
-					<CtrIcon type="header-icon" src="/assets/ctr/images/bandwidthlost.png" />
+					<CtrIcon type="header-icon" src="/assets/ctr/images/bandwidthlost-64.png" />
 					<div className="title">
 						<span>
 							{title}
