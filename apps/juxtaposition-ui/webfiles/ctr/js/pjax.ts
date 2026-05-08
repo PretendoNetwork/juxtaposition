@@ -4,9 +4,9 @@ var elements: string = '';
 var selectors: string[] = [];
 var href: string = '';
 var pjaxHistory: string[] = [];
-export var PjaxRequest = document.createEvent('Event');
-export var PjaxDone = document.createEvent('Event');
-export var PjaxError = document.createEvent('Event');
+var PjaxRequest = document.createEvent('Event');
+var PjaxDone = document.createEvent('Event');
+var PjaxError = document.createEvent('Event');
 
 export type PjaxOptions = {
 	elements: string;
@@ -44,7 +44,7 @@ export function pjaxLoadUrl(url: string, pushHistory: boolean, skipDispatch?: bo
 		document.dispatchEvent(PjaxRequest);
 	}
 
-	GET(url, xhr => pjaxParseDom(xhr, url));
+	GET(url, xhr => pjaxParseDom(xhr, url), () => document.dispatchEvent(PjaxError));
 
 	if (pushHistory && href.indexOf(url) === -1) {
 		pjaxHistory.push(href);
@@ -54,6 +54,7 @@ export function pjaxLoadUrl(url: string, pushHistory: boolean, skipDispatch?: bo
 function pjaxParseDom(xhr: XMLHttpRequest, url: string): void {
 	var response = xhr.responseText;
 	if (!response) {
+		document.dispatchEvent(PjaxError);
 		return;
 	}
 

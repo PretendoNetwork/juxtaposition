@@ -1,4 +1,4 @@
-import { pjaxLoadUrl, PjaxRequest, PjaxError } from '../../pjax';
+import { pjaxLoadUrl, pjaxBack } from '../../pjax';
 
 function message(ev: MessageEvent): void {
 	var response: any;
@@ -9,7 +9,8 @@ function message(ev: MessageEvent): void {
 			5980031,
 			'An error occurred. Please try again later.'
 		);
-		setTimeout(() => document.dispatchEvent(PjaxError), 0);
+		cave.transition_end();
+		return;
 	}
 
 	if (response.message) {
@@ -17,14 +18,14 @@ function message(ev: MessageEvent): void {
 	}
 
 	if (response.href === '#back') {
-		back();
+		pjaxBack();
 	} else {
 		pjaxLoadUrl(response.href, true, true);
 	}
 }
 
 function submit(): void {
-	document.dispatchEvent(PjaxRequest);
+	cave.transition_begin();
 }
 
 export function initPjaxForms(): void {

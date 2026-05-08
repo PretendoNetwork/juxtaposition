@@ -177,6 +177,7 @@ document.addEventListener('PjaxRequest', function () {
 	cave.transition_begin();
 });
 document.addEventListener('PjaxError', function () {
+	cave.error_callErrorViewer(15_5000);
 	cave.requestGc();
 	cave.transition_end();
 });
