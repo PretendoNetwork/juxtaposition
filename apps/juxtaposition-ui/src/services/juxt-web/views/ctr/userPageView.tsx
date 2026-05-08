@@ -45,7 +45,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(profile.pid) ?? false;
 
 	return (
-		<CtrRoot title={T.str('user_page.not_found')}>
+		<CtrRoot title={pnidName}>
 			<CtrPageBody>
 				<CtrPageIconHeader
 					data-toolbar-mode="normal"
