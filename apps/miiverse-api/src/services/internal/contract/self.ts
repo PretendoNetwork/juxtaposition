@@ -38,6 +38,12 @@ export const selfSchema = z.object({
 
 export type SelfDto = z.infer<typeof selfSchema>;
 
+export const selfNotificationCountSchema = z.object({
+	unreadNotifications: z.number()
+}).openapi('SelfNotificationCount');
+
+export type SelfNotificationCountDto = z.infer<typeof selfNotificationCountSchema>;
+
 const baseSelf: SelfDto = {
 	pid: 0,
 	username: '',
@@ -92,12 +98,18 @@ export function mapSelf(auth: AccountData): SelfDto {
 		permissions: {
 			moderator: auth.moderator,
 			tester: auth.pnid.accessLevel >= 1 && auth.pnid.accessLevel <= 3,
-			developer: auth.pnid.accessLevel === 3,
+			developer: auth.developer,
 			accessLevel: auth.pnid.accessLevel,
 
 			// 0 = normal, 1 = limited from posting, 2 = temp ban, 3 = perma ban
 			posting: auth.settings.account_status === 0
 		},
 		banState: null
+	};
+}
+
+export function mapSelfNotificationCount(unreadNotifications: number): SelfNotificationCountDto {
+	return {
+		unreadNotifications
 	};
 }

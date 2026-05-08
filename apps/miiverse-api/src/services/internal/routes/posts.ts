@@ -10,6 +10,7 @@ import { empathyActionSchema, empathySchema, mapEmpathy } from '@/services/inter
 import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import { createLogEntry } from '@/services/internal/utils/auditLogs';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -34,11 +35,11 @@ postsRouter.get({
 	},
 	async handler({ query, auth }) {
 		if (query.parent_id && !query.include_replies) {
-			throw new errors.badRequest('Please set include_replies=true to get replies to a parent');
+			throw errors.for('bad_request', 'Please set include_replies=true to get replies to a parent');
 		}
 		// guests can view userpages, but not feeds (no topic tags etc.)
 		if (auth === null && !query.posted_by && !query.empathy_by && !query.parent_id) {
-			throw new errors.unauthorized('Authentication token not provided');
+			throw errors.for('requires_auth');
 		}
 
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
@@ -79,7 +80,7 @@ postsRouter.get({
 			...filterRemovedPosts(auth)
 		});
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		return mapPost(post);
@@ -105,7 +106,7 @@ postsRouter.delete({
 			...filterRemovedPosts(auth)
 		});
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		// guards.user makes this safe
@@ -114,11 +115,17 @@ postsRouter.delete({
 		let reason = 'User requested removal';
 		if (post.pid !== account.pnid.pid) {
 			if (account.moderator) {
-			// If a moderator deletes someone else's post, they can provide a reason
+				// If a moderator deletes someone else's post, they can provide a reason
 				reason = query.reason ?? 'Removed by moderator';
+				await createLogEntry({
+					actorId: account.pnid.pid,
+					action: 'REMOVE_POST',
+					targetResourceId: post.pid.toString(),
+					context: `Post ${post.id} removed for: "${reason}"`
+				});
 			} else {
-			// Non-moderators can't delete other posts
-				throw new errors.forbidden('Not allowed');
+				// Non-moderators can't delete other posts
+				throw errors.for('forbidden', 'Not your post');
 			}
 		}
 
@@ -155,7 +162,7 @@ postsRouter.post({
 			...filterRemovedPosts(auth)
 		});
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		// guards.user makes this safe
@@ -182,7 +189,7 @@ postsRouter.post({
 			}, { new: true });
 		}
 		if (!post) {
-			throw new errors.notFound('Post not found');
+			throw errors.for('not_found');
 		}
 
 		return mapEmpathy(body.action, post);

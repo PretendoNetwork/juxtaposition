@@ -1,6 +1,5 @@
 import express from 'express';
 import { z } from 'zod';
-import { database } from '@/database';
 import { getUserFriendRequestsIncoming } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebNotificationListView, WebNotificationWrapperView } from '@/services/juxt-web/views/web/notificationListView';
@@ -13,20 +12,18 @@ import type { FriendRequestListViewProps } from '@/services/juxt-web/views/web/f
 export const notificationRouter = express.Router();
 
 notificationRouter.get('/my_news', async function (req, res) {
-	const { query, auth } = parseReq(req, {
+	const { query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional()
 		})
 	});
 
-	const notifications = await database.getNotifications(auth().pid, 25, 0);
-	for (const notif of notifications.filter(noti => noti.read === false)) {
-		// Pretty terrible use of `any` here, but database models aren't typed yet so I have to
-		await (notif as any).markRead();
-	}
-
+	const { data: notificationsPage } = await req.api.notifications.list({
+		markAsRead: 'true',
+		limit: 25
+	});
 	const props: NotificationListViewProps = {
-		notifications
+		notifications: notificationsPage.items
 	};
 
 	if (query.pjax) {

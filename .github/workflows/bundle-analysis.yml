@@ -1,0 +1,37 @@
+name: Bundle analysis
+
+# This is intentionall split into two parts:
+#  - bundle-build (builds untrusted code securely and stores metafiles)
+#  - bundle-analysis (reads metafiles and comments, no untrusted code)
+# This is to prevent untrusted code being ran with a token that has write access to PRs
+
+on:
+  workflow_run:
+    workflows: ["Compile bundle analysis"]
+    types:
+      - completed
+
+jobs:
+  analyze:
+    name: Analyze bundle
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: write
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    steps:
+      - name: Download artifact from build workflow
+        uses: actions/download-artifact@v7
+        with:
+          name: bundle-metafiles
+          path: metafiles
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Analyze esbuild bundle size
+        uses: exoego/esbuild-bundle-analyzer@v1
+        with:
+          metafiles: "metafiles/**/metafile-*.json"

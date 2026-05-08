@@ -16,7 +16,9 @@ import type { CallContext, ServerMiddlewareCall } from 'nice-grpc';
 // API server
 
 const app = express();
-app.use(express.json());
+app.use(express.json({
+	limit: '10mb' // File uploading
+}));
 app.use(loggerHttp);
 app.use(authPopulate);
 app.use(authAccessCheck);
@@ -28,11 +30,12 @@ app.use((err: Error, _request: express.Request, response: express.Response, next
 		return next(err);
 	}
 
-	response.status(err.status).json({ message: err.message });
+	response.status(err.status).json({ status: err.status, errorCode: err.code });
 });
 // Javascript error handler
 app.use((err: Error, _request: express.Request, response: express.Response, _next: express.NextFunction) => {
 	response.err = err; // For Pino
+	console.error(err);
 	response.status(500).json({ message: 'Internal server error' });
 });
 
