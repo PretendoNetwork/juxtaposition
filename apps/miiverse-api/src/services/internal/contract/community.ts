@@ -28,7 +28,7 @@ export const communityIconsSchema = z.object({
 	128: z.string()
 }).openapi('CommunityIcons');
 
-export const communitySchema = z.object({
+export const communitySchema = asOpenapi('Community', z.object({
 	id: z.string(),
 	olive_community_id: z.string(),
 	parentId: z.string().nullable(),
@@ -46,7 +46,7 @@ export const communitySchema = z.object({
 	iconImagePaths: communityIconsSchema,
 	shotMode: communityShotSchema.nullable(),
 	extraShotTitleIds: z.array(z.string())
-}).openapi('Community');
+}));
 
 export type CommunityDto = z.infer<typeof communitySchema>;
 

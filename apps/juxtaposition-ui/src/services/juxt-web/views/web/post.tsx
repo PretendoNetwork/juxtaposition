@@ -7,9 +7,8 @@ import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
-import type { ContentSchema } from '@/models/content';
 import type { PostSchema } from '@/models/post';
-import type { Post } from '@/api/generated';
+import type { Post, SelfContent } from '@/api/generated';
 
 export type PostScreenshotProps = {
 	post: InferSchemaType<typeof PostSchema> | Post;
@@ -26,7 +25,7 @@ export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
 }
 
 export type PostViewProps = {
-	userContent?: InferSchemaType<typeof ContentSchema> | null;
+	userContent?: SelfContent | null;
 	post: InferSchemaType<typeof PostSchema> | Post;
 	isReply?: boolean;
 	isMainPost?: boolean;
@@ -74,11 +73,11 @@ export function WebPostView(props: PostViewProps): ReactNode {
 							)
 						: null}
 
-					<h4>
+					<p className="extra-info">
 						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
 						{' - '}
 						<a href={`/titles/${post.community_id}`}>{cache.getCommunityName(post.community_id ?? '')}</a>
-					</h4>
+					</p>
 				</div>
 			</div>
 			{ post.is_spoiler
@@ -99,7 +98,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				}}
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
-				{post.body !== '' ? <h4>{post.body}</h4> : null}
+				{post.body !== '' ? <p>{post.body}</p> : null}
 				<WebPostScreenshot post={props.post}></WebPostScreenshot>
 				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
@@ -133,12 +132,16 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				<span className="post-button post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
 					<WebUIIcon name="menu" />
 					<ul className="post-hamburger" role="menu" data-post={post.id}>
-						<li role="menuitem" data-action="report">
-							<WebUIIcon name="flag" />
-							{' '}
-							<T k="post.report_post" />
-						</li>
-						{ isModerator || post.pid === user.pid
+						{ !post.removed
+							? (
+									<li role="menuitem" data-action="report">
+										<WebUIIcon name="flag" />
+										{' '}
+										<T k="post.report_post" />
+									</li>
+								)
+							: null}
+						{ (isModerator || post.pid === user.pid) && !post.removed
 							? (
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebUIIcon name="bin" />
@@ -159,7 +162,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	);
 
 	return (
-		<div className="posts-wrapper" id={post.id ?? undefined}>
+		<div className={cx('posts-wrapper', { 'posts-wrapper-removed': post.removed })} id={post.id ?? undefined}>
 			{removedPostPart}
 			{canAccessContent ? contentPart : null}
 		</div>

@@ -1,3 +1,4 @@
+import { createInternalApiClient } from '@/api/client';
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { getUserAccountData, getUserDataFromToken } from '@/util';
@@ -33,6 +34,15 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 	}
 
 	request.tokens = { oauthToken: request.cookies.access_token };
+
+	request.self = null;
+	if (request.user) {
+		const selfResult = await createInternalApiClient(request.tokens).self.get({ throwOnError: false });
+		if (selfResult.error) {
+			logger.error(selfResult.error, 'Failed to get self from access token');
+		}
+		request.self = selfResult.error ? null : selfResult.data ?? null;
+	}
 
 	// Handle guest access pages
 	if (!request.pid) {

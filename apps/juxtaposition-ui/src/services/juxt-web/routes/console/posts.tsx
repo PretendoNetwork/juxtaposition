@@ -1,6 +1,5 @@
 import crypto from 'crypto';
 import express from 'express';
-import { rateLimit } from 'express-rate-limit';
 import multer from 'multer';
 import { z } from 'zod';
 import { config } from '@/config';
@@ -10,7 +9,7 @@ import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
-import { createLogEntry, evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
+import { createRatelimit, evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
@@ -22,18 +21,15 @@ import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView'
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import { AutomodRule } from '@/models/automodRules';
 import type { Request, Response } from 'express';
-import type { InferSchemaType } from 'mongoose';
 import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
-import type { HydratedSettingsDocument } from '@/models/settings';
-import type { ContentSchema } from '@/models/content';
 import type { EmpathyActionEnum } from '@/api/generated';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
 
-const postLimit = rateLimit({
+const postLimit = createRatelimit('posts', {
 	windowMs: 15 * 1000, // 30 seconds
 	max: 10, // Limit each IP to 1 request per `window`
 	standardHeaders: true,
@@ -53,7 +49,7 @@ const postLimit = rateLimit({
 	}
 });
 
-const yeahLimit = rateLimit({
+const yeahLimit = createRatelimit('yeahs', {
 	windowMs: 60 * 1000, // 1 minute
 	max: 60, // Limit each IP to 60 requests per `window`
 	standardHeaders: true,
@@ -146,13 +142,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 			post_id: z.string()
 		})
 	});
-
-	let userSettings: HydratedSettingsDocument | null = null;
-	let userContent: InferSchemaType<typeof ContentSchema> | null = null;
-	if (hasAuth()) {
-		userSettings = await database.getUserSettings(auth().pid);
-		userContent = await database.getUserContent(auth().pid);
-	}
+	const self = hasAuth() ? auth().self : null;
 
 	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
 	if (!post) {
@@ -173,7 +163,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 	// increase limit for post replies since there's no pagination yet
 	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort: 'oldest', limit: 500 }))?.data.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
-	const canPost = hasAuth() && userSettings !== null && isPostingAllowed(community, userSettings, post, auth().user);
+	const canPost = !!self && isPostingAllowed(community, self, post);
 
 	const props: PostPageViewProps = {
 		community,
@@ -181,7 +171,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 		postPNID,
 		replies,
 		canPost,
-		userContent
+		userContent: self?.content ?? null
 	};
 	res.jsxForDirectory({
 		web: <WebPostPageView {...props} />,
@@ -191,7 +181,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 });
 
 postsRouter.delete('/:post_id', async function (req, res) {
-	const { params, query, auth } = parseReq(req, {
+	const { params, query } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
 		}),
@@ -208,28 +198,6 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	const { data: result } = await req.api.posts.delete({ post_id: post.id, reason: query.reason });
 	if (result === null) {
 		return res.sendStatus(404);
-	}
-
-	// TODO move audit logging to backend
-	if (res.locals.moderator && auth().pid !== post.pid) {
-		const reason = query.reason ? query.reason : 'Removed by moderator';
-
-		// TODO Temporarily disabled, moderators need a way to delete without notification
-		// const postType = post.parent ? 'comment' : 'post';
-		// await newNotification({
-		// 	pid: post.pid,
-		// 	type: 'notice',
-		// 	text: `Your ${postType} "${post.id}" has been removed for the following reason: "${reason}"`,
-		// 	image: '/images/bandwidthalert.png',
-		// 	link: '/titles/2551084080/new'
-		// });
-
-		await createLogEntry(
-			auth().pid,
-			'REMOVE_POST',
-			post.pid.toString(),
-			`Post ${post.id} removed for: "${reason}"`
-		);
 	}
 
 	res.statusCode = 200;
@@ -339,7 +307,7 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 });
 
 async function newPost(req: Request, res: Response): Promise<void> {
-	const { params, body, files, auth } = parseReq(req, {
+	const { params, body, files, auth, hasAuth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string().optional()
 		}),
@@ -357,9 +325,9 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}),
 		files: ['shot']
 	});
+	const self = hasAuth() ? auth().self : null;
 	const rejectReturnUrl = params.post_id ? `/posts/${params.post_id}/create` : `/titles/${body.community_id}/create`;
 
-	const userSettings = await database.getUserSettings(auth().pid);
 	let parentPost = null;
 	const postId = await generatePostUID(21);
 	let { data: community } = await req.api.communities.get({ id: body.community_id });
@@ -381,13 +349,13 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		res.status(422);
 		return res.redirect('/posts/' + req.params.post_id.toString());
 	}
-	if (!community || !userSettings || !req.user) {
+	if (!community || !self) {
 		res.status(403);
 		logger.error('Incoming post is missing data - rejecting');
 		return res.redirect('/titles/show');
 	}
 
-	if (!isPostingAllowed(community, userSettings, parentPost, req.user)) {
+	if (!isPostingAllowed(community, self, parentPost)) {
 		res.status(403);
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
@@ -467,7 +435,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	const document = {
 		title_id: community.titleIds[0],
 		community_id: community.olive_community_id,
-		screen_name: userSettings.screen_name,
+		screen_name: self.miiName,
 		body: postBody,
 		painting: paintings?.blob ?? '',
 		painting_img: paintings?.img ?? '',

@@ -1,11 +1,12 @@
 import './web.js';
-import { initBanLiftDate, initSavePnidButton } from './admin/moderate-user.js';
+import { initDatePreview, initAccountStatus, initSavePnidButton } from './admin/moderate-user.js';
 import { initReportButtons } from './admin/reports.js';
 import { initTitleIdControl, initUploadPreview } from './admin/edit-community.js';
 
 document.addEventListener('DOMContentLoaded', function () {
 	// user page
-	initBanLiftDate();
+	initDatePreview();
+	initAccountStatus();
 	initSavePnidButton();
 
 	// report list

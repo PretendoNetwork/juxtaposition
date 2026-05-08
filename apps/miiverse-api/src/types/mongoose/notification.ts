@@ -2,17 +2,19 @@ import type { Model, Types, HydratedDocument } from 'mongoose';
 
 export type NotificationUser = {
 	user: string;
-	timestamp: number;
+	timestamp: Date;
 };
 
 export interface INotification {
 	pid: string;
 	type: string;
 	link: string;
+	image: string;
+	text: string;
 	objectID: string;
 	users: Types.Array<NotificationUser>;
 	read: boolean;
-	lastUpdated: number;
+	lastUpdated: Date;
 }
 
 export type NotificationModel = Model<INotification>;

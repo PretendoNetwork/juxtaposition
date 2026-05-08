@@ -1,6 +1,5 @@
 import express from 'express';
 import { z } from 'zod';
-import { database } from '@/database';
 import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebGlobalFeedView, WebPeopleFeedView, WebPersonalFeedView } from '@/services/juxt-web/views/web/feed';
@@ -13,12 +12,12 @@ import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 export const feedRouter = express.Router();
 
 feedRouter.get('/', async function (req, res) {
-	const { auth, query } = parseReq(req, {
+	const { auth, hasAuth, query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional()
 		})
 	});
-	const userContent = await database.getUserContent(auth().pid);
+	const userContent = hasAuth() ? auth().self.content : null;
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -43,12 +42,12 @@ feedRouter.get('/', async function (req, res) {
 });
 
 feedRouter.get('/people', async function (req, res) {
-	const { auth, query } = parseReq(req, {
+	const { auth, hasAuth, query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional()
 		})
 	});
-	const userContent = await database.getUserContent(auth().pid);
+	const userContent = hasAuth() ? auth().self.content : null;
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -73,12 +72,12 @@ feedRouter.get('/people', async function (req, res) {
 });
 
 feedRouter.get('/all', async function (req, res) {
-	const { auth, query } = parseReq(req, {
+	const { auth, hasAuth, query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional()
 		})
 	});
-	const userContent = await database.getUserContent(auth().pid);
+	const userContent = hasAuth() ? auth().self.content : null;
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -103,13 +102,13 @@ feedRouter.get('/all', async function (req, res) {
 });
 
 feedRouter.get('/more', async function (req, res) {
-	const { auth, query } = parseReq(req, {
+	const { auth, hasAuth, query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional(),
 			offset: z.coerce.number().nonnegative().default(0)
 		})
 	});
-	const userContent = await database.getUserContent(auth().pid);
+	const userContent = hasAuth() ? auth().self.content : null;
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -130,13 +129,13 @@ feedRouter.get('/more', async function (req, res) {
 });
 
 feedRouter.get('/people/more', async function (req, res) {
-	const { auth, query } = parseReq(req, {
+	const { auth, hasAuth, query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional(),
 			offset: z.coerce.number().nonnegative().default(0)
 		})
 	});
-	const userContent = await database.getUserContent(auth().pid);
+	const userContent = hasAuth() ? auth().self.content : null;
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -157,13 +156,13 @@ feedRouter.get('/people/more', async function (req, res) {
 });
 
 feedRouter.get('/all/more', async function (req, res) {
-	const { auth, query } = parseReq(req, {
+	const { auth, hasAuth, query } = parseReq(req, {
 		query: z.object({
 			pjax: z.stringbool().optional(),
 			offset: z.coerce.number().nonnegative().default(0)
 		})
 	});
-	const userContent = await database.getUserContent(auth().pid);
+	const userContent = hasAuth() ? auth().self.content : null;
 	if (!userContent) {
 		return res.redirect('/404');
 	}

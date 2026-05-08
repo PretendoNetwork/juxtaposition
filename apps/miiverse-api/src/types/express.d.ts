@@ -17,6 +17,7 @@ declare global {
 		// Locals used in internal/grpc
 		interface Locals {
 			account: AccountData | null;
+			accountAuthError: Error | null; // Set when authentication fails
 		}
 	}
 }

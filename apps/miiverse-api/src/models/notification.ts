@@ -5,6 +5,8 @@ const NotificationSchema = new Schema<INotification, NotificationModel>({
 	pid: String,
 	type: String,
 	link: String,
+	image: String,
+	text: String,
 	objectID: String,
 	users: [{
 		user: String,

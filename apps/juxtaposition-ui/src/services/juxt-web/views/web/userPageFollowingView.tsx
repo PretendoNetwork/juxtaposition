@@ -1,6 +1,6 @@
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
-import type { HydratedSettingsDocument } from '@/models/settings';
+import type { ShallowUser } from '@/api/generated';
 
 export type CommunityViewData = {
 	id: string;
@@ -8,7 +8,7 @@ export type CommunityViewData = {
 };
 
 export type UserPageFollowingViewProps = {
-	followers: HydratedSettingsDocument[];
+	followers: ShallowUser[];
 	communities: CommunityViewData[];
 };
 
@@ -23,7 +23,7 @@ export function WebUserPageFollowingView(props: UserPageFollowingViewProps): Rea
 							<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} className="icon" />
 						</a>
 						<a className="body" href={`/users/${user.pid}`}>
-							<span className="text"><span className="nick-name">{user.screen_name}</span></span>
+							<span className="text"><span className="nick-name">{user.miiName}</span></span>
 						</a>
 					</div>
 				</li>

@@ -4,28 +4,13 @@ import { GET, POST } from './xhr';
 import { empathyPostById } from './api';
 import { initPostPageView } from './post';
 import { initNavTabs } from './components/ui/PortalNavTabs';
+import { initNavBar } from './components/PortalNavBar';
+import { back } from './nav';
 
 export var pjax;
 setInterval(checkForUpdates, 30000);
 setInterval(input, 100);
 
-function initNavBar() {
-	var els = document.querySelectorAll('#nav-menu > li[data-tab]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			for (var i = 0; i < els.length; i++) {
-				if (els[i].classList.contains('selected')) {
-					els[i].classList.remove('selected');
-				}
-			}
-			el.classList.add('selected');
-		});
-	}
-}
 function initYeah() {
 	var els = document.querySelectorAll('button[data-post].yeah-button');
 	if (!els) {
@@ -156,6 +141,9 @@ function initPostEmotion() {
 		});
 	}
 }
+function playSound(e) {
+	wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
+}
 function initSounds() {
 	var els = document.querySelectorAll('[data-sound]');
 	if (!els) {
@@ -163,9 +151,6 @@ function initSounds() {
 	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', playSound);
-	}
-	function playSound(e) {
-		wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
 	}
 }
 function initScreenShots() {
@@ -325,18 +310,6 @@ function stopLoading() {
 }
 window.stopLoading = stopLoading;
 
-function exit() {
-	wiiu.gamepad.update();
-
-	if (wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960) {
-		alert('Debug Menu');
-	} else {
-		wiiuSound.playSoundByName('SE_WAVE_EXIT', 1);
-		wiiuBrowser.closeApplication();
-	}
-}
-window.exit = exit;
-
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
 	var button = document.getElementById('report-launcher');
@@ -371,16 +344,6 @@ function checkForUpdates() {
 		}
 	});
 }
-
-function back() {
-	if (wiiuBrowser.canHistoryBack()) {
-		document.getElementById('nav-menu-back').classList.add('selected');
-		wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
-		history.back();
-		document.getElementById('nav-menu').style.display = 'block';
-	}
-}
-window.back = back;
 
 function input() {
 	wiiu.gamepad.update();

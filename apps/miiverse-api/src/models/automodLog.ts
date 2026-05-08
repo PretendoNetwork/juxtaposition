@@ -4,16 +4,35 @@ import type { HydratedDocument } from 'mongoose';
 export const automodAction = ['blocked', 'logged'] as const;
 export type AutomodAction = (typeof automodAction)[number];
 
+export type AutomodLogMatch = {
+	start: number;
+	end: number;
+} & Document;
+
 export type AutomodLog = {
 	rule_id: string;
 	created_at: Date;
 	author: number;
 	action: AutomodAction;
 	post_id: string | null;
+	parent_post_id: string | null;
+	community_id: string | null;
+	matches: AutomodLogMatch[] | null;
 	post_content_body: string | null;
 } & Document;
 
 export type HydratedAutomodLogDocument = HydratedDocument<AutomodLog>;
+
+export const automodLogMatchSchema = new Schema<AutomodLogMatch>({
+	start: {
+		type: Number,
+		required: true
+	},
+	end: {
+		type: Number,
+		required: true
+	}
+});
 
 export const automodLogSchema = new Schema<AutomodLog>({
 	rule_id: {
@@ -35,6 +54,18 @@ export const automodLogSchema = new Schema<AutomodLog>({
 	},
 	post_id: {
 		type: String,
+		required: false
+	},
+	parent_post_id: {
+		type: String,
+		required: false
+	},
+	community_id: {
+		type: String,
+		required: false
+	},
+	matches: {
+		type: [automodLogMatchSchema],
 		required: false
 	},
 	post_content_body: {

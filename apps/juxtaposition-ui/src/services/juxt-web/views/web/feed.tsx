@@ -5,12 +5,10 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { ContentSchema } from '@/models/content';
-import type { Post } from '@/api/generated';
+import type { Post, SelfContent } from '@/api/generated';
 
 export type FeedViewProps = {
-	userContent: InferSchemaType<typeof ContentSchema>;
+	userContent: SelfContent | null;
 	posts: Post[];
 	nextLink: string;
 };

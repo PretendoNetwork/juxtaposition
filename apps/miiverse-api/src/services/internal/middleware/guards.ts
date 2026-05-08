@@ -15,13 +15,18 @@ export async function user(request: express.Request, response: express.Response,
 	const account = response.locals.account;
 	if (account === null) {
 		// Guest access
-		throw new errors.unauthorized('Authentication token not provided');
+		throw errors.for('requires_auth');
+	}
+
+	const authError = response.locals.accountAuthError;
+	if (authError) {
+		// Auth access checks determined that this account can't access juxt
+		throw authError;
 	}
 
 	if (account.settings === null) {
 		// Most endpoints expect users to have completed the account setup flow
-		// TODO eventually this will need a carveout for the setup flow itself
-		throw new errors.forbidden('Account setup not complete');
+		throw errors.for('auth_onboarding_incomplete');
 	}
 
 	return next();
@@ -31,21 +36,23 @@ export async function user(request: express.Request, response: express.Response,
  * Moderators only
  */
 export async function moderator(request: express.Request, response: express.Response, next: express.NextFunction): Promise<void> {
-	const account = response.locals.account;
-	if (account === null) {
-		// Guest access
-		throw new errors.unauthorized('Authentication token not provided');
-	}
+	return guards.user(request, response, () => {
+		const account = response.locals.account;
+		if (account === null) {
+			// Guest access
+			throw errors.for('requires_auth');
+		}
 
-	if (account.settings === null) {
-		throw new errors.forbidden('Account setup not complete');
-	}
+		if (account.settings === null) {
+			throw errors.for('auth_onboarding_incomplete');
+		}
 
-	if (account.moderator !== true) {
-		throw new errors.forbidden('You cannot access this endpoint');
-	}
+		if (account.moderator !== true) {
+			throw errors.for('forbidden');
+		}
 
-	return next();
+		return next();
+	});
 }
 
 /**
@@ -55,11 +62,11 @@ export async function developer(request: express.Request, response: express.Resp
 	return guards.user(request, response, () => {
 		const account = response.locals.account;
 		if (account === null) {
-			throw new errors.unauthorized('Authentication token not provided');
+			throw errors.for('requires_auth');
 		}
 
 		if (account.developer !== true) {
-			throw new errors.forbidden('You cannot access this endpoint');
+			throw errors.for('forbidden');
 		}
 
 		return next();

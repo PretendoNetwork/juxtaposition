@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { asOpenapi } from '@/services/internal/builder/openapi';
 import type { IPost } from '@/types/mongoose/post';
 
-export const postSchema = z.object({
+export const postSchema = asOpenapi('Post', z.object({
 	id: z.string(),
 	title_id: z.string().optional(), // number as string
 	screen_name: z.string(),
@@ -52,7 +53,7 @@ export const postSchema = z.object({
 	removed_reason: z.string().optional(),
 
 	yeahs: z.array(z.number())
-}).openapi('Post');
+}));
 
 export type PostDto = z.infer<typeof postSchema>;
 
