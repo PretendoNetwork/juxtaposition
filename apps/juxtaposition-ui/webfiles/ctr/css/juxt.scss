@@ -25,6 +25,9 @@ body {
     background-image: url(@/images/background.png);
     background-repeat: repeat;
     padding-bottom: 28px; /* Toolbar location */
+
+    -webkit-box-sizing: border-box;
+    min-height: 460px; /* Never show the blue background! */
 }
 
 a {
