@@ -20,6 +20,7 @@ import { CtrNewPostPage } from '@/services/juxt-web/views/ctr/newPostView';
 import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import { Community } from '@/models/communities';
+import { getAllFromList } from '@/api/helpers';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
@@ -46,10 +47,10 @@ communitiesRouter.get('/', async function (req, res) {
 });
 
 communitiesRouter.get('/all', async function (req, res) {
-	const communities = await req.api.communities.list({ category: 'listed', limit: 90 });
+	const communities = await getAllFromList(page => req.api.communities.list({ ...page, category: 'listed' }), { limit: 90 });
 
 	const props: CommunityListViewProps = {
-		communities: communities.data.items
+		communities: communities
 	};
 	res.jsxForDirectory({
 		web: <WebCommunityListView {...props} />,
