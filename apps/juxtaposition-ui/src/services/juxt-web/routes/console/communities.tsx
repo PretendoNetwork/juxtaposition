@@ -311,11 +311,11 @@ communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 	// Pretty terrible use of `any` here, but database models aren't typed yet so I have to
 	const userFollowsCommunity = userContent.followed_communities.includes(community.olive_community_id);
 	if (!userFollowsCommunity) {
-		dbCommunity.upFollower();
-		(userContent as any).addToCommunities(community.olive_community_id);
+		await dbCommunity.upFollower();
+		await (userContent as any).addToCommunities(community.olive_community_id);
 	} else {
-		dbCommunity.downFollower();
-		(userContent as any).removeFromCommunities(community.olive_community_id);
+		await dbCommunity.downFollower();
+		await (userContent as any).removeFromCommunities(community.olive_community_id);
 	}
 
 	res.send({ status: 200, id: community.olive_community_id, count: community.followerCount });
