@@ -17,7 +17,7 @@ export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode 
 								<li data-name="profile_visibility" className="scroll">
 									<p className="settings-label"><T k="user_settings.show_profile" /></p>
 									<label className="checkbox-container">
-										<input type="checkbox" id="profile" name="profile" value="true" checked={!!props.userSettings?.profile_visibility} />
+										<input type="checkbox" id="profile" name="profile" value="true" checked={props.userSettings?.profile_visibility !== 'users_only'} />
 										<span className="checkmark"></span>
 									</label>
 								</li>

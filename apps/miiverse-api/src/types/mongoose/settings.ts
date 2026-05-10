@@ -19,7 +19,7 @@ export interface ISettings {
 	relationship_visibility: boolean;
 	country_visibility: boolean;
 	profile_favorite_community_visibility: boolean;
-	profile_visibility?: boolean;
+	profile_visibility?: string;
 	receive_notifications: boolean;
 	created_at?: Date;
 	last_active?: Date;

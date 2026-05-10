@@ -117,7 +117,7 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 		return res.redirect('/users/me');
 	}
 
-	userSettings.profile_visibility = body.profile;
+	userSettings.profile_visibility = body.profile ? 'public' : 'users_only';
 	userSettings.country_visibility = body.country;
 	userSettings.birthday_visibility = body.birthday;
 	userSettings.game_skill_visibility = body.experience;

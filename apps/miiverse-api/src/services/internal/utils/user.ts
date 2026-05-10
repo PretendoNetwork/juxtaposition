@@ -28,7 +28,7 @@ export async function tryGetUserData(auth: AccountData | null, targetPid: number
 	}
 
 	// Profiles are only private to guests
-	const isUserPrivate = settings.profile_visibility === false && auth === null;
+	const isUserPrivate = settings.profile_visibility === 'users_only' && auth === null;
 	if (isUserPrivate) {
 		// Lie for privacy
 		throw errors.for('not_found');

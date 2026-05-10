@@ -22,7 +22,7 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 								<li data-name="profile_visibility" className="scroll">
 									<label className="checkbox-container" htmlFor="country">
 										<p className="settings-label"><T k="user_settings.show_profile" /></p>
-										<input type="checkbox" id="profile" name="profile" value="true" checked={!!props.userSettings?.profile_visibility} />
+										<input type="checkbox" id="profile" name="profile" value="true" checked={props.userSettings?.profile_visibility !== 'users_only'} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
