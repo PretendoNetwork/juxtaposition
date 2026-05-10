@@ -2,6 +2,7 @@ import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
+import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { FeedTabsProps, FeedViewProps } from '@/services/juxt-web/views/web/feed';
 
@@ -28,13 +29,12 @@ export function CtrPersonalFeedView(props: FeedViewProps): ReactNode {
 	return (
 		<CtrRoot title={title}>
 			<CtrPageBody>
-				<header
-					id="header"
+				<CtrPageTitledHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="2"
 				>
-					<h1 id="page-title">{title}</h1>
-				</header>
+					{title}
+				</CtrPageTitledHeader>
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrFeedTabs selected={0} />
 					<div className="tab-body post-list">
@@ -51,13 +51,12 @@ export function CtrPeopleFeedView(props: FeedViewProps): ReactNode {
 	return (
 		<CtrRoot title={title}>
 			<CtrPageBody>
-				<header
-					id="header"
+				<CtrPageTitledHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="2"
 				>
-					<h1 id="page-title">{title}</h1>
-				</header>
+					{title}
+				</CtrPageTitledHeader>
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrFeedTabs selected={1} />
 					<div className="tab-body post-list">
@@ -74,13 +73,12 @@ export function CtrGlobalFeedView(props: FeedViewProps): ReactNode {
 	return (
 		<CtrRoot title={title}>
 			<CtrPageBody>
-				<header
-					id="header"
+				<CtrPageTitledHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button="2"
 				>
-					<h1 id="page-title">{title}</h1>
-				</header>
+					{title}
+				</CtrPageTitledHeader>
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrFeedTabs selected={2} />
 					<div className="tab-body post-list">

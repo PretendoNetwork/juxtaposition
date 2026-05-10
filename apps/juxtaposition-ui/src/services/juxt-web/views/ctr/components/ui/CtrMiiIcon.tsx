@@ -11,7 +11,7 @@ export function CtrMiiIcon(props: MiiIconProps): ReactNode {
 
 	return (
 		<CtrIcon
-			href={href}
+			href={props.type !== 'header-icon' ? href : undefined}
 			src={miiUrl}
 			type={type}
 			className={props.className}

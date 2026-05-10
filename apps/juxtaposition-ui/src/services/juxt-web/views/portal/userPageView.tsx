@@ -29,7 +29,7 @@ export function PortalUserMissingPage(props: UserMissingPageViewProps): ReactNod
 					</div>
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
-							<img className="icon" src="/assets/web/images/bandwidthlost.png" />
+							<img className="icon" src="/assets/portal/images/bandwidthlost-96.png" />
 						</span>
 						<span className="title">
 							{title}

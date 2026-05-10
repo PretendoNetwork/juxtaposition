@@ -1,0 +1,25 @@
+@use "../../theme.scss" as t;
+
+$radius: 5px;
+$padding: 4px;
+
+.header-icon-container {
+    padding: $padding;
+    position: relative;
+
+    .header-icon {
+        width: 64px;
+        height: 64px;
+        display: block;
+        background: #fff;
+    }
+
+    .icon-frame {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 64px + $padding + $padding;
+        height: 64px + $padding + $padding;
+        background: url(@/images/frame.png);
+    }
+}
