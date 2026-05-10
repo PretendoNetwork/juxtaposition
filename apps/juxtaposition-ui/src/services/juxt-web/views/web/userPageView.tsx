@@ -44,7 +44,7 @@ export function WebUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 				<div className="community-top">
 					<img className="banner" src="/assets/web/images/banner.png" alt="" />
 					<div className="community-info">
-						<img className="user-icon" src="/assets/web/images/bandwidthlost.png" />
+						<img className="user-icon" src="/assets/web/images/bandwidthlost-128.png" />
 						<h2 className="community-title">{title}</h2>
 					</div>
 					{user.perms.moderator && userExists
