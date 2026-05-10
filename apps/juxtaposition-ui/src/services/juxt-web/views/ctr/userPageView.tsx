@@ -1,9 +1,12 @@
 import cx from 'classnames';
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
-import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
+import { CtrPageHeaderStat, CtrPageIconHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
+import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
+import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
 import type { ReactNode } from 'react';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -18,30 +21,22 @@ export function CtrUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 	return (
 		<CtrRoot title={T.str('user_page.not_found')}>
 			<CtrPageBody>
-				<header
-					id="header"
-					className="buttons"
-
+				<CtrPageIconHeader
 					data-toolbar-mode="normal"
 				>
-					<h1 id="page-title" className="community">
+					<CtrIcon type="header-icon" src="/assets/ctr/images/bandwidthlost-64.png" />
+					<div className="title">
 						<span>
-							<span className="icon-container">
-								<img className="icon" src="/assets/web/images/bandwidthlost.png" />
-							</span>
-							<span className="community-name">
-								{title}
-							</span>
+							{title}
 						</span>
-					</h1>
-				</header>
+					</div>
+				</CtrPageIconHeader>
 			</CtrPageBody>
 		</CtrRoot>
 	);
 }
 
 export function CtrUserPageView(props: UserPageViewProps): ReactNode {
-	const url = useUrl();
 	const user = useUser();
 	const profile = props.profile;
 	const pnidName = profile.miiName;
@@ -52,52 +47,58 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 	return (
 		<CtrRoot title={pnidName}>
 			<CtrPageBody>
-				<header
-					id="header"
-					className="buttons"
-
+				<CtrPageIconHeader
 					data-toolbar-mode="normal"
 					data-toolbar-active-button={isSelf ? '5' : undefined}
 				>
-					<h1 id="page-title" className="community">
+					<CtrMiiIcon type="header-icon" pid={profile.pid} />
+					<div className="title">
 						<span>
-							<span className="icon-container">
-								<img className="icon" src={url.cdn(`/mii/${profile.pid}/normal_face.png`)} />
-							</span>
-							<span className="community-name">
-								{pnidName}
-								{' '}
-								@
-								{profile.username}
-							</span>
-							<span className="text">
-								<span>
-									<span className="sprite sp-post-count inline-sprite"></span>
-									<span id="post-count">
-										{' '}
-										{profile.posts}
-									</span>
-								</span>
-								<span>
-									{' | '}
-									<span className="sprite sp-follower-count inline-sprite"></span>
-									<span id="followers">
-										{' '}
-										{profile.followers}
-									</span>
-								</span>
-							</span>
+							{pnidName}
+							{' '}
+							@
+							{profile.username}
 						</span>
-					</h1>
-					{isSelf ? <a id="header-communities-button" className="header-button left" href="/users/me/settings" data-pjax="#body"><T k="user_page.settings" /></a> : null}
-					{ !isSelf
+					</div>
+					<div className="stats">
+						<CtrPageHeaderStat sprite="sp-follower-count">
+							<div id="followers">{profile.followers}</div>
+						</CtrPageHeaderStat>
+						<CtrPageHeaderStat sprite="sp-post-count">
+							<div id="post-count">{profile.posts}</div>
+						</CtrPageHeaderStat>
+					</div>
+				</CtrPageIconHeader>
+
+				<CtrPageButtons>
+					{isSelf
 						? (
-								<button type="button" className="small-button follow" evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={profile.pid}>
-									<span className={cx('sprite sp-yeah inline-sprite', { selected: isRequesterFollowingUser })}></span>
-								</button>
+								<CtrPageButton
+									type="left"
+									href="/users/me/settings"
+								>
+									<T k="user_page.settings" />
+								</CtrPageButton>
 							)
 						: null}
-				</header>
+
+					{!isSelf
+						? (
+								<CtrPageButton
+									type="middle"
+									sprite={cx('sp-yeah', {
+										selected: isRequesterFollowingUser
+									})}
+
+									evt-click="follow(this)"
+									data-url="/users/follow"
+									data-community-id={profile.pid}
+								>
+								</CtrPageButton>
+							)
+						: null}
+				</CtrPageButtons>
+
 				<div className="body-content tab2-content" id="community-post-list">
 					<CtrNavTabs target=".tab-body">
 						<CtrNavTabsRow>

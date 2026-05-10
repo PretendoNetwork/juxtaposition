@@ -5,7 +5,7 @@ export type IconProps = {
 	src: string;
 	href?: string;
 
-	type?: 'icon' | 'mii-icon'; // default ".icon"
+	type?: 'icon' | 'mii-icon' | 'header-icon'; // default ".icon"
 	className?: string; // extra classes
 };
 

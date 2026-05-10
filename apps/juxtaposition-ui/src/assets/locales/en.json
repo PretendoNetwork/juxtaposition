@@ -57,6 +57,7 @@
     "recent": "Recent Posts",
     "popular": "Popular Posts",
     "related": "Related Communities",
+    "related_short": "Related",
     "related_to": "{{community}} Related Communities",
     "closed": "This community is closed to new posts."
   },
