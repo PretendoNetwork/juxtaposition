@@ -19,6 +19,7 @@ export interface ISettings {
 	relationship_visibility: boolean;
 	country_visibility: boolean;
 	profile_favorite_community_visibility: boolean;
+	profile_visibility?: boolean;
 	receive_notifications: boolean;
 	created_at?: Date;
 	last_active?: Date;
@@ -38,6 +39,7 @@ type SettingsDefaultedFields =
 	'relationship_visibility' |
 	'country_visibility' |
 	'profile_favorite_community_visibility' |
+	'profile_visibility' |
 	'receive_notifications' |
 	'created_at' |
 	'last_active';

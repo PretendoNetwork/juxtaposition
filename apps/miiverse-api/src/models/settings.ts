@@ -53,6 +53,10 @@ const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMethods>({
 		type: Boolean,
 		default: true
 	},
+	profile_visibility: {
+		type: Boolean,
+		default: true
+	},
 	receive_notifications: {
 		type: Boolean,
 		default: true

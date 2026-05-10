@@ -19,6 +19,7 @@ export interface ISettings {
 	relationship_visibility: boolean;
 	country_visibility: boolean;
 	profile_favorite_community_visibility: boolean;
+	profile_visibility?: boolean;
 	receive_notifications: boolean;
 	created_at?: Date;
 	last_active?: Date;
@@ -38,6 +39,7 @@ type SettingsDefaultedFields =
 	'relationship_visibility' |
 	'country_visibility' |
 	'profile_favorite_community_visibility' |
+	'profile_visibility' |
 	'receive_notifications' |
 	'created_at' |
 	'last_active';
@@ -45,13 +47,6 @@ export type ISettingsInput = Omit<ISettings, SettingsDefaultedFields> & Partial<
 
 export interface ISettingsMethods {
 	updateComment(comment: string | null): Promise<void>;
-	updateSkill(skill: number): Promise<void>;
-	commentVisible(active: boolean): Promise<void>;
-	skillVisible(active: boolean): Promise<void>;
-	birthdayVisible(active: boolean): Promise<void>;
-	relationshipVisible(active: boolean): Promise<void>;
-	countryVisible(active: boolean): Promise<void>;
-	favCommunityVisible(active: boolean): Promise<void>;
 }
 
 export type SettingsModel = Model<ISettings, {}, ISettingsMethods>;
@@ -109,6 +104,10 @@ export const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMeth
 		type: Boolean,
 		default: true
 	},
+	profile_visibility: {
+		type: Boolean,
+		default: true
+	},
 	receive_notifications: {
 		type: Boolean,
 		default: true
@@ -126,41 +125,6 @@ export const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMeth
 
 SettingsSchema.method<HydratedSettingsDocument>('updateComment', async function (comment) {
 	this.set('profile_comment', comment);
-	await this.save();
-});
-
-SettingsSchema.method<HydratedSettingsDocument>('updateSkill', async function (skill) {
-	this.set('game_skill', skill);
-	await this.save();
-});
-
-SettingsSchema.method<HydratedSettingsDocument>('commentVisible', async function (active) {
-	this.set('profile_comment_visibility', active);
-	await this.save();
-});
-
-SettingsSchema.method<HydratedSettingsDocument>('skillVisible', async function (active) {
-	this.set('game_skill_visibility', active);
-	await this.save();
-});
-
-SettingsSchema.method<HydratedSettingsDocument>('birthdayVisible', async function (active) {
-	this.set('birthday_visibility', active);
-	await this.save();
-});
-
-SettingsSchema.method<HydratedSettingsDocument>('relationshipVisible', async function (active) {
-	this.set('relationship_visibility', active);
-	await this.save();
-});
-
-SettingsSchema.method<HydratedSettingsDocument>('countryVisible', async function (active) {
-	this.set('country_visibility', active);
-	await this.save();
-});
-
-SettingsSchema.method<HydratedSettingsDocument>('favCommunityVisible', async function (active) {
-	this.set('profile_favorite_community_visibility', active);
 	await this.save();
 });
 
