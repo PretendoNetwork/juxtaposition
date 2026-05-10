@@ -54,7 +54,8 @@
         "settings": "Postavke",
         "friend_requests": "Zahtjevi",
         "deleted": "Izbrisani korisnik",
-        "banned": "Isključen korisnik"
+        "banned": "Isključen korisnik",
+        "not_found": "Korisnik ne postoji"
     },
     "user_settings": {
         "profile_settings": "Postavke profila",
@@ -81,7 +82,8 @@
         "painting_submit": "U redu",
         "content_placeholder": "Dijeli svoje misli u objavi sa zajednicom ili sa svojim pratiteljima.",
         "screenshots_coming_soon": "Snimke ekrana još nisu spremne. Navrati kasnije!",
-        "spoiler_label": "Spoiler"
+        "spoiler_label": "Spoiler",
+        "automod_error": "Tvoja objava sadrži tekst koji nije dopušten na Juxtapositionu. Za više informacija posjeti https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "Dobro došli u Juxtaposition!",
