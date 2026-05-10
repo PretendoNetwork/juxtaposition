@@ -68,7 +68,7 @@ async function webAuth(request: express.Request, oAuthToken: string): Promise<Ge
 	return pnid;
 }
 
-function accountIsModerator(pnid: GetUserDataResponse): boolean {
+export function accountIsModerator(pnid: GetUserDataResponse): boolean {
 	// AL2 can always moderate...
 	if (pnid.accessLevel >= 2) {
 		return true;
@@ -82,7 +82,7 @@ function accountIsModerator(pnid: GetUserDataResponse): boolean {
 	return false;
 }
 
-function accountIsDeveloper(pnid: GetUserDataResponse): boolean {
+export function accountIsDeveloper(pnid: GetUserDataResponse): boolean {
 	if (pnid.accessLevel === 3) {
 		return true;
 	}

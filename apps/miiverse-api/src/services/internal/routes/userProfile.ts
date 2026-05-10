@@ -4,16 +4,16 @@ import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { Settings } from '@/models/settings';
-import { Content } from '@/models/content';
 import { mapShallowUser, mapUserProfile, shallowUserSchema, userProfileSchema } from '@/services/internal/contract/user';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { errors } from '@/services/internal/errors';
 import { createNewFollowNotification } from '@/services/internal/utils/notifications';
-import { getUserAccountData, getUserFriendPIDs } from '@/util';
+import { getUserFriendPIDs } from '@/util';
 import { Post } from '@/models/post';
 import { communitySchema, mapCommunity } from '@/services/internal/contract/community';
 import { COMMUNITY_TYPE } from '@/types/mongoose/community';
 import { Community } from '@/models/community';
+import { tryGetUserData } from '@/services/internal/utils/user';
 import type { FilterQuery } from 'mongoose';
 import type { ICommunity } from '@/types/mongoose/community';
 import type { ISettings } from '@/types/mongoose/settings';
@@ -36,24 +36,8 @@ userProfileRouter.get({
 		}),
 		response: userProfileSchema
 	},
-	async handler({ params }) {
-		const settings = await Settings.findOne({ pid: params.id });
-		const content = await Content.findOne({ pid: params.id });
-		const pnid = await getUserAccountData(params.id).catch(() => {
-			return null;
-		});
-		if (!settings || !content || !pnid) {
-			throw errors.for('not_found');
-		}
-
-		const isUserBanned = (settings.account_status < 0 || settings.account_status > 1 || pnid.accessLevel < 0);
-		const isUserDeleted = pnid.deleted;
-		if (isUserBanned) {
-			throw errors.for('user_banned');
-		}
-		if (isUserDeleted) {
-			throw errors.for('user_deleted');
-		}
+	async handler({ params, auth }) {
+		const { settings, content, pnid } = await tryGetUserData(auth, params.id);
 
 		const followers = content.following_users.filter(v => v !== 0).length;
 		const totalPosts = await Post.find({
@@ -78,8 +62,9 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query }) {
-		const targetPids = await getUserFriendPIDs(params.id);
+	async handler({ params, query, auth }) {
+		const { pnid } = await tryGetUserData(auth, params.id);
+		const targetPids = await getUserFriendPIDs(pnid.pid);
 		const dbQuery: FilterQuery<ISettings> = deleteOptional({
 			pid: {
 				$in: targetPids
@@ -109,15 +94,14 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query }) {
-		const targetUser = await Settings.findOne({ pid: params.id });
-		const targetUserContent = await Content.findOne({ pid: params.id });
+	async handler({ params, query, auth }) {
+		const targetUser = await tryGetUserData(auth, params.id).catch(() => null);
 		if (!targetUser) {
 			return mapPage(0, []);
 		}
 
 		// User contents frequently have a `0` element in it
-		const targetPids = (targetUserContent?.following_users ?? []).filter(v => v !== 0);
+		const targetPids = (targetUser.content.following_users ?? []).filter(v => v !== 0);
 
 		const dbQuery: FilterQuery<ISettings> = deleteOptional({
 			pid: {
@@ -148,15 +132,14 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(communitySchema)
 	},
-	async handler({ params, query }) {
-		const targetUser = await Settings.findOne({ pid: params.id });
-		const targetUserContent = await Content.findOne({ pid: params.id });
+	async handler({ params, query, auth }) {
+		const targetUser = await tryGetUserData(auth, params.id).catch(() => null);
 		if (!targetUser) {
 			return mapPage(0, []);
 		}
 
 		// User contents frequently have a `0` element in it
-		const targetCommunities = (targetUserContent?.followed_communities ?? []).filter(v => v !== '0');
+		const targetCommunities = (targetUser.content.followed_communities ?? []).filter(v => v !== '0');
 
 		const dbQuery: FilterQuery<ICommunity> = deleteOptional({
 			olive_community_id: {
@@ -191,15 +174,14 @@ userProfileRouter.get({
 		}).extend(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query }) {
-		const targetUser = await Settings.findOne({ pid: params.id });
-		const targetUserContent = await Content.findOne({ pid: params.id });
+	async handler({ params, query, auth }) {
+		const targetUser = await tryGetUserData(auth, params.id).catch(() => null);
 		if (!targetUser) {
 			return mapPage(0, []);
 		}
 
 		// User contents frequently have a `0` element in it
-		let targetPids = (targetUserContent?.followed_users ?? []).filter(v => v !== 0);
+		let targetPids = (targetUser.content.followed_users ?? []).filter(v => v !== 0);
 		if (query.followerId) {
 			targetPids = targetPids.filter(v => v === query.followerId);
 		}
@@ -232,27 +214,26 @@ userProfileRouter.post({
 		response: resultSchema
 	},
 	async handler({ params, auth }) {
+		const targetUser = await tryGetUserData(auth, params.id);
+		const targetUserPid = targetUser.pnid.pid;
 		const currentUser = auth!;
 		const currentUserPid = currentUser.pnid.pid;
-
-		const targetUserContent = await Content.findOne({ pid: params.id });
-		const currentUserContent = await Content.findOne({ pid: currentUserPid });
-		if (!targetUserContent || !currentUserContent) {
+		if (!currentUser.content) {
 			throw errors.for('not_found');
 		}
 
-		const currentUserFollowedUsers = currentUserContent.followed_users;
-		const isFollowing = currentUserFollowedUsers.includes(targetUserContent.pid);
+		const currentUserFollowedUsers = currentUser.content.followed_users;
+		const isFollowing = currentUserFollowedUsers.includes(targetUserPid);
 		if (isFollowing) {
 			return mapResult('success');
 		}
 
-		targetUserContent.following_users.push(currentUserPid);
-		currentUserContent.followed_users.push(targetUserContent.pid);
-		await targetUserContent.save();
-		await currentUserContent.save();
+		targetUser.content.following_users.push(currentUserPid);
+		currentUser.content.followed_users.push(targetUserPid);
+		await targetUser.content.save();
+		await currentUser.content.save();
 
-		await createNewFollowNotification({ currentUser: currentUserPid, userToFollow: targetUserContent.pid });
+		await createNewFollowNotification({ currentUser: currentUserPid, userToFollow: targetUserPid });
 		return mapResult('success');
 	}
 });
@@ -268,25 +249,24 @@ userProfileRouter.delete({
 		response: resultSchema
 	},
 	async handler({ params, auth }) {
+		const targetUser = await tryGetUserData(auth, params.id);
+		const targetUserPid = targetUser.pnid.pid;
 		const currentUser = auth!;
 		const currentUserPid = currentUser.pnid.pid;
-
-		const targetUserContent = await Content.findOne({ pid: params.id });
-		const currentUserContent = await Content.findOne({ pid: currentUserPid });
-		if (!targetUserContent || !currentUserContent) {
+		if (!currentUser.content) {
 			throw errors.for('not_found');
 		}
 
-		const currentUserFollowedUsers = currentUserContent.followed_users;
-		const isFollowing = currentUserFollowedUsers.includes(targetUserContent.pid);
+		const currentUserFollowedUsers = currentUser.content.followed_users;
+		const isFollowing = currentUserFollowedUsers.includes(targetUserPid);
 		if (!isFollowing) {
 			return mapResult('success');
 		}
 
-		targetUserContent.following_users = targetUserContent.following_users.filter(pid => pid !== currentUserPid);
-		currentUserContent.followed_users = currentUserContent.followed_users.filter(pid => pid !== targetUserContent.pid);
-		await targetUserContent.save();
-		await currentUserContent.save();
+		targetUser.content.following_users = targetUser.content.following_users.filter(pid => pid !== currentUserPid);
+		currentUser.content.followed_users = currentUser.content.followed_users.filter(pid => pid !== targetUserPid);
+		await targetUser.content.save();
+		await currentUser.content.save();
 
 		return mapResult('success');
 	}

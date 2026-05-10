@@ -11,6 +11,7 @@ import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { createLogEntry } from '@/services/internal/utils/auditLogs';
+import { tryGetUserData } from '@/services/internal/utils/user';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -40,6 +41,14 @@ postsRouter.get({
 		// guests can view userpages, but not feeds (no topic tags etc.)
 		if (auth === null && !query.posted_by && !query.empathy_by && !query.parent_id) {
 			throw errors.for('requires_auth');
+		}
+		// Extra checks for user posts
+		if (query.posted_by) {
+			const targetUser = await tryGetUserData(auth, query.posted_by).catch(() => null);
+			// We can't see this user for some reason (doesn't exist, permission, etc)
+			if (targetUser === null) {
+				return mapPage(0, []);
+			}
 		}
 
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
@@ -82,6 +91,9 @@ postsRouter.get({
 		if (!post) {
 			throw errors.for('not_found');
 		}
+
+		// Throws if user isn't visible for some reason
+		await tryGetUserData(auth, post.pid);
 
 		return mapPost(post);
 	}
