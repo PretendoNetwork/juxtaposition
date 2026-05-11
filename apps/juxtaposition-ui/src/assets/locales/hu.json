@@ -38,7 +38,8 @@
         "related": "Kapcsolódó közösségek",
         "closed": "Ez a közösség már nem fogad új bejegyzést.",
         "tags_not_applicable": "N/A",
-        "related_to": "{{community}} kapcsolódó közösségei"
+        "related_to": "{{community}} kapcsolódó közösségei",
+        "related_short": "Kapcsolódó"
     },
     "user_page": {
         "country": "Ország",
@@ -180,7 +181,8 @@
         "additional_info_placeholder": "Adj meg további megjegyzéseket vagy információt",
         "description": "Jelenteni készülsz egy bejegyzést ami megsérti a Juxtaposition magatartási kódexét. Ez a bejelentés a Pretendo Juxtaposition adminisztrátorainak lesz elküldve, nem a bejegyzés létrehozójának.",
         "reason_inappropiate_ingame": "Nem megfelelő viselkedés a játékban",
-        "reason_missing_images": "Hiányzó képek"
+        "reason_missing_images": "Hiányzó képek",
+        "reason_others": "Egyéb"
     },
     "moderation": {
         "title": "Moderálás",
