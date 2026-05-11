@@ -4,7 +4,6 @@
         "user_page": "Perfil do usuário",
         "activity_feed": "Feed de atividade",
         "communities": "Comunidades",
-        "messages": "Mensagens",
         "notifications": "Notificações",
         "go_back": "Voltar",
         "back": "Anterior",
@@ -20,7 +19,6 @@
         "global_feed": "Feed Global",
         "friend_requests": "Solicitações de Amizade",
         "updates": "Atualizações",
-        "notifications_and_messages": "Notificações e Mensagens",
         "search": "Pesquisar..."
     },
     "all_communities": {
@@ -84,9 +82,6 @@
         "spoiler_label": "Spoiler",
         "painting_close": "Cancelar",
         "painting_submit": "OK"
-    },
-    "messages": {
-        "coming_soon": "A funcionalidade de mensagens ainda não está disponível. Volte em breve!"
     },
     "setup": {
         "welcome": "Bem-vindo a Juxt!",

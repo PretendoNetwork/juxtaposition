@@ -4,7 +4,6 @@
         "user_page": "Page de l'utilisateur",
         "activity_feed": "Suivi des activités",
         "communities": "Communautés",
-        "messages": "Messages privés",
         "notifications": "Notifications",
         "go_back": "Retour",
         "back": "Précédent",
@@ -21,8 +20,7 @@
         "global_feed_short": "Actualités",
         "people_feed": "Actualités des abonnés",
         "people_feed_short": "Abonnés",
-        "friend_requests": "Demmandes d'amis",
-        "notifications_and_messages": "Notifications et messages",
+        "friend_requests": "Demandes d'amis",
         "updates": "Mises à jour",
         "search": "Chercher..."
     },
@@ -40,7 +38,8 @@
         "followers_count": "{{count}} abonnés",
         "tags_not_applicable": "Non appliquable",
         "related": "Communautés associées",
-        "closed": "Cette communauté est fermée aux nouveaux posts."
+        "closed": "Cette communauté est fermée aux nouveaux posts.",
+        "related_to": "Communautés liées à {{community}}"
     },
     "user_page": {
         "country": "Pays",
@@ -80,14 +79,13 @@
     "new_post": {
         "post_to": "Poster à {{user}}",
         "swearing": "Les publications ne peuvent pas contenir de language explicite.",
-        "content_placeholder": "Partagez vos pensées dans une publication dans une communauté ou à vos abonnés.",
+        "content_placeholder": "Partagez vos pensées en postant sur une communauté, ou à vos abonnés.",
         "screenshots_coming_soon": "Les captures d'écran ne sont pas encore disponibles. Revérifiez bientôt !",
         "no_screenshot": "Pas de capture d'écran",
         "painting_close": "Annuler",
-        "painting_submit": "Valider"
-    },
-    "messages": {
-        "coming_soon": "Les messages ne sont pas encore disponibles. Revenez bientôt !"
+        "painting_submit": "Valider",
+        "new_post_short": "Publier",
+        "spoiler_label": "Spoiler"
     },
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",
@@ -186,6 +184,8 @@
         "reason_other": "autres"
     },
     "moderation": {
-        "title": "Modération"
+        "title": "Modération",
+        "silently_delete_post": "Supprimer discrètement",
+        "moderate_user": "Modérer l'utilisateur"
     }
 }
