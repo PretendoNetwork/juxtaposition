@@ -70,24 +70,24 @@ export function WebUserTier(props: { flags: UserBadgeEnum[] }): ReactNode {
 	if (props.flags.includes('support:mario')) {
 		parts.push(
 			<span className="supporter-star mario">
-				|
-				<WebUIIcon name="star-badge" />
+				{' | '}
+				<WebUIIcon name="star-badge" title={T.str('user_page.supporter_tag')} />
 			</span>
 		);
 	}
 	if (props.flags.includes('support:super')) {
 		parts.push(
 			<span className="supporter-star super">
-				|
-				<WebUIIcon name="star-badge" />
+				{' | '}
+				<WebUIIcon name="star-badge" title={T.str('user_page.supporter_tag')} />
 			</span>
 		);
 	}
 	if (props.flags.includes('support:mega')) {
 		parts.push(
 			<span className="supporter-star mega">
-				|
-				<WebUIIcon name="star-badge" />
+				{' | '}
+				<WebUIIcon name="star-badge" title={T.str('user_page.supporter_tag')} />
 			</span>
 		);
 	}
@@ -95,24 +95,24 @@ export function WebUserTier(props: { flags: UserBadgeEnum[] }): ReactNode {
 	if (props.flags.includes('al:dev')) {
 		parts.push(
 			<span className="supporter-star dev">
-				|
-				<WebUIIcon name="dev-badge" />
+				{' | '}
+				<WebUIIcon name="dev-badge" title={T.str('user_page.developer_tag')} />
 			</span>
 		);
 	}
 	if (props.flags.includes('al:mod')) {
 		parts.push(
 			<span className="supporter-star mega">
-				|
-				<WebUIIcon name="mod-badge" />
+				{' | '}
+				<WebUIIcon name="mod-badge" title={T.str('user_page.moderator_tag')} />
 			</span>
 		);
 	}
 	if (props.flags.includes('al:tester')) {
 		parts.push(
 			<span className="supporter-star tester">
-				|
-				<WebUIIcon name="tester-badge" />
+				{' | '}
+				<WebUIIcon name="tester-badge" title={T.str('user_page.tester_tag')} />
 			</span>
 		);
 	}

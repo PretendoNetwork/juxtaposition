@@ -42,6 +42,7 @@ type WebUIIcon = keyof typeof icons;
 
 export type WebUIIconProps = {
 	name: WebUIIcon;
+	title?: string;
 };
 
 export function WebUIIcon(props: WebUIIconProps): ReactNode {
@@ -50,6 +51,7 @@ export function WebUIIcon(props: WebUIIconProps): ReactNode {
 		<span
 			className="ui-icon"
 			role="img"
+			title={props.title}
 			aria-label={`${props.name} icon`}
 			style={{ lineHeight: '0.7' }}
 			dangerouslySetInnerHTML={{ __html: iconHtml }}

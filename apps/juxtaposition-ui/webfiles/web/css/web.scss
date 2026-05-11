@@ -1146,6 +1146,10 @@ input[type="radio"] {
 .feeling-button-puzzled:checked {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23ce80ff' stroke='%23fff' viewBox='0 0 256 256'%3E%3Ccircle cx='128' cy='128' r='96' fill='23ce80ff' stroke='%23ce80ff' stroke-miterlimit='10' stroke-width='16'/%3E%3Cpolyline points='80 172 96 152 112 172 128 152 144 172 160 152 176 172' fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3E%3Ccircle cx='92' cy='108' r='12' fill='%23fff'/%3E%3Ccircle cx='164' cy='108' r='12' fill='%23fff'/%3E%3C/svg%3E") !important;
 }
+.supporter-star .ui-icon {
+  display: inline-block;
+  vertical-align: center;
+}
 .supporter-star.mario svg {
 	fill:rgba(255,132,132,.2);
 	color:#ff8484
