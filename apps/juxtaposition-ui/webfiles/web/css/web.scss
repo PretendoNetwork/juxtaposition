@@ -1,3 +1,5 @@
+@use './theme.scss' as t;
+
 :root {
   --background: #1b1f3b;
   --background-alt: #2a2f50;
@@ -1445,7 +1447,7 @@ li.reports .button-spacer {
 	border: 3px solid white;
   }
 
-@media screen and (max-width: 1400px) {
+@include t.media(">=tablet", "<desktop") {
   .communities-wrapper {
     max-width: 600px;
     grid-template-columns: auto auto;
@@ -1466,7 +1468,7 @@ li.reports .button-spacer {
   }
 }
 
-@media screen and (max-width: 1000px) {
+@include t.media(">=phone", "<tablet") {
   #main {
     width: 100%;
     margin-bottom: 60px;
@@ -1866,7 +1868,7 @@ button.report {
 	z-index: 100;
   }
 
-@media screen and (max-width: 1400px) {
+@include t.media(">=tablet", "<desktop") {
 	.communities-wrapper {
 		max-width: 600px;
 		grid-template-columns: auto auto;
@@ -1887,7 +1889,7 @@ button.report {
 	}
 }
 
-@media screen and (max-width: 1000px) {
+@include t.media(">=phone", "<tablet") {
 	#main {
 		width: 100%;
 		margin-bottom: 60px
