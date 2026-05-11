@@ -180,9 +180,6 @@
         "reason_piracy": "Piratstvo",
         "reason_inappropiate_ingame": "Neprimjereno ponašanje u igri",
         "reason_missing_images": "Nedostajuće slike",
-        "reason_one": "Drugi",
-        "reason_few": "Druga",
-        "reason_other": "Drugih",
         "reason_spoiler": "Spoiler"
     },
     "moderation": {

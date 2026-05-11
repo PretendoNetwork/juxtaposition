@@ -181,7 +181,7 @@
         "reason_piracy": "海盗行为",
         "reason_inappropiate_ingame": "游戏中的不当行为",
         "reason_missing_images": "缺少图像",
-        "reason_other": "其他"
+        "reason_others": "其他"
     },
     "moderation": {
         "title": "审核",

@@ -178,10 +178,7 @@
         "reason_nsfw": "Sexe explicite",
         "reason_piracy": "Piratage",
         "reason_inappropiate_ingame": "Comportement inapproprié dans un jeu",
-        "reason_missing_images": "Images manquantes",
-        "reason_one": "autre",
-        "reason_many": "autres",
-        "reason_other": "autres"
+        "reason_missing_images": "Images manquantes"
     },
     "moderation": {
         "title": "Modération",

@@ -180,9 +180,7 @@
         "additional_info_placeholder": "Adj meg további megjegyzéseket vagy információt",
         "description": "Jelenteni készülsz egy bejegyzést ami megsérti a Juxtaposition magatartási kódexét. Ez a bejelentés a Pretendo Juxtaposition adminisztrátorainak lesz elküldve, nem a bejegyzés létrehozójának.",
         "reason_inappropiate_ingame": "Nem megfelelő viselkedés a játékban",
-        "reason_missing_images": "Hiányzó képek",
-        "reason_one": "Egyéb",
-        "reason_other": "Egyéb"
+        "reason_missing_images": "Hiányzó képek"
     },
     "moderation": {
         "title": "Moderálás",

@@ -178,9 +178,7 @@
         "reason_nsfw": "Seksueel expliciet",
         "reason_piracy": "Piraterij",
         "reason_inappropiate_ingame": "Ongepast gedrag in het spel",
-        "reason_missing_images": "Missende afbeeldingen",
-        "reason_one": "",
-        "reason_other": ""
+        "reason_missing_images": "Missende afbeeldingen"
     },
     "moderation": {
         "title": "Moderatie",

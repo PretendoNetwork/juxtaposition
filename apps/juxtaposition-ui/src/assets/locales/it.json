@@ -170,10 +170,7 @@
         "reason_inappropiate_ingame": "Comportamento scorretto nel gioco",
         "reason_missing_images": "Immagini mancanti",
         "title": "Segnala post",
-        "submit": "Invia segnalazione",
-        "reason_one": "altro",
-        "reason_many": "altri",
-        "reason_other": "altri"
+        "submit": "Invia segnalazione"
     },
     "error": {
         "title": "Errore {{code}}",

@@ -178,9 +178,7 @@
         "reason_nsfw": "Sexuell explizit",
         "reason_piracy": "Piraterie",
         "reason_inappropiate_ingame": "Unangemessenes Verhalten im Spiel",
-        "reason_missing_images": "Fehlende Bilder",
-        "reason_one": "Anderer",
-        "reason_other": "Andere"
+        "reason_missing_images": "Fehlende Bilder"
     },
     "moderation": {
         "title": "Moderation",
