@@ -28,7 +28,7 @@ $icon-size: 64px;
         z-index: -1;
 
         width: 100%;
-        mask-image: linear-gradient(#ffff 75%, #fff0);
+        mask-image: linear-gradient(#ffff 70%, 90%, #fff0);
     }
 
     .banner-content {
@@ -84,15 +84,28 @@ $icon-size: 64px;
     }
 
     .stat-boxes {
-        display: flex;
+        text-wrap: nowrap;
+        display: grid;
+        row-gap: 0.5em;
+        &.cols-3 {
+            // todo: media query this for a single-column mode
+            grid-template-columns: repeat(3, minmax(160px, 1fr));
+            > :nth-child(3n) {
+                border-right: 0;
+            }
+        }
+        
+        &.cols-2 {
+            // "Game Experience" is sliiightly too big for 150px
+            grid-template-columns: repeat(2, minmax(160px, 1fr));
+            > :nth-child(2n) {
+                border-right: 0;
+            }
+        }
 
         > div {
-            flex: 1;
             text-align: center;
             border-right: 2px solid var(--border);
-            &:last-of-type {
-                border: 0;
-            }
 
             .value {
                 font-weight: bold;

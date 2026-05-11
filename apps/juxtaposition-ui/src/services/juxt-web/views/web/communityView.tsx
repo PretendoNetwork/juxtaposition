@@ -5,8 +5,9 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { WebPostListClosedView } from '@/services/juxt-web/views/web/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
-import { WebInfobox, WebInfoboxButton, WebInfoboxButtons } from '@/services/juxt-web/views/web/components/WebInfobox';
+import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
 import type { ReactNode } from 'react';
 import type { Community } from '@/api/generated';
 
@@ -58,7 +59,6 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
 	const community = props.community;
-	const imageId = community.parentId ? community.parentId : community.olive_community_id;
 	const bannerUrl = url.cdn(community.wupHeaderImagePath);
 
 	return (
@@ -69,18 +69,20 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
-				<WebInfobox
-					bannerUrl={bannerUrl}
-					iconUrl={url.cdn(`/icons/${imageId}/128.png`)}
-					title={community.name}
-					followType="title"
-					followId={community.olive_community_id}
-					isFollowing={props.isUserFollowing}
-				>
+				<WebInfobox	bannerUrl={bannerUrl}>
+					<div className="title-line">
+						<WebCommunityIcon community={community} size="128" type="header-icon" />
+						<div className="title">{community.name}</div>
+						<WebInfoboxFollowButton
+							followType="title"
+							followId={community.olive_community_id}
+							isFollowing={props.isUserFollowing}
+						/>
+					</div>
 					<div className="description">
 						{community.description}
 					</div>
-					<div className="stat-boxes">
+					<WebInfoboxStatBoxes>
 						<div>
 							<div className="value" id="followers">{community.followerCount}</div>
 							<div className="name"><T k="community.followers" /></div>
@@ -93,7 +95,7 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 							<div className="value"><T k="community.tags_not_applicable" /></div>
 							<div className="name"><T k="community.tags" /></div>
 						</div>
-					</div>
+					</WebInfoboxStatBoxes>
 				</WebInfobox>
 				<WebInfoboxButtons>
 					<WebInfoboxButton href={`/titles/${community.olive_community_id}/related`}>
