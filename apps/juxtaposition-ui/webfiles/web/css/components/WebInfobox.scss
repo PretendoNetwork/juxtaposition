@@ -48,6 +48,26 @@ $icon-size: 64px;
             height: $icon-size + 10px;
             display: block;
         }
+        .verified > .header-icon {
+            border: 5px solid var(--btn);
+        }
+        .online {
+            position: relative;
+            &::before {
+                content: "";
+                background: #23a55a;
+                border: 3px solid white;
+                border-radius: 100%;
+
+                display: block;
+                width: 15px;
+                height: 15px;
+                
+                position: absolute;
+                bottom: -5px;
+                right: -5px;
+            }
+        }
         .title {
             align-self: center;
             flex: 1;
