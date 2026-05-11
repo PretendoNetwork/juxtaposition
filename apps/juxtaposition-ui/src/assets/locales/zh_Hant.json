@@ -100,7 +100,8 @@
         "settings": "設定",
         "deleted": "已刪除使用者",
         "banned": "已禁止使用者",
-        "friend_requests": "請求"
+        "friend_requests": "請求",
+        "not_found": "使用者不存在"
     },
     "user_settings": {
         "show_country": "在個人檔案顯示國家/地區",
@@ -127,7 +128,8 @@
         "no_screenshot": "沒有螢幕截圖",
         "spoiler_label": "劇透",
         "painting_close": "取消",
-        "painting_submit": "確定"
+        "painting_submit": "確定",
+        "automod_error": "您的貼文包含 Juxtaposition 不允許使用的文字。若要了解更多資訊，請造訪 https://preten.do/juxt-rules"
     },
     "login": {
         "title": "Juxtaposition 登入",
