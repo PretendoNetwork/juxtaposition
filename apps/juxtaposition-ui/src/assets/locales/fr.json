@@ -39,7 +39,8 @@
         "tags_not_applicable": "Non appliquable",
         "related": "Communautés associées",
         "closed": "Cette communauté est fermée aux nouveaux posts.",
-        "related_to": "Communautés liées à {{community}}"
+        "related_to": "Communautés liées à {{community}}",
+        "related_short": "En lien"
     },
     "user_page": {
         "country": "Pays",
@@ -55,7 +56,8 @@
         "settings": "Paramètres",
         "friend_requests": "Requêtes",
         "deleted": "Utilisateur supprimmé",
-        "banned": "Utilisateur Banni"
+        "banned": "Utilisateur Banni",
+        "not_found": "Cet utilisateur n'existe pas"
     },
     "user_settings": {
         "profile_settings": "Paramètres du profil",
@@ -85,7 +87,8 @@
         "painting_close": "Annuler",
         "painting_submit": "Valider",
         "new_post_short": "Publier",
-        "spoiler_label": "Spoiler"
+        "spoiler_label": "Spoiler",
+        "automod_error": "Votre post contient du texte qui n'est pas autorisé sur Juxtaposition. pour plus d'information, consultez le lien : https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",
@@ -178,7 +181,8 @@
         "reason_nsfw": "Sexe explicite",
         "reason_piracy": "Piratage",
         "reason_inappropiate_ingame": "Comportement inapproprié dans un jeu",
-        "reason_missing_images": "Images manquantes"
+        "reason_missing_images": "Images manquantes",
+        "reason_others": "Autre"
     },
     "moderation": {
         "title": "Modération",
