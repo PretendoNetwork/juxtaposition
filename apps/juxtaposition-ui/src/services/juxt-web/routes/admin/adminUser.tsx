@@ -62,7 +62,7 @@ adminUserRouter.get('/accounts/:pid/removed', async function (req, res) {
 	if (!profile) {
 		return res.redirect('/404');
 	}
-	const { data: removedPostsPage } = await req.api.users.posts.list({ id: reqPid, sortBy: 'removedAt', removed: 'true', limit: 50 });
+	const { data: removedPostsPage } = await req.api.users.posts.list({ id: reqPid, type: 'all', sortBy: 'removedAt', removed: 'true', limit: 50 });
 
 	res.jsxForDirectory({
 		web: (
