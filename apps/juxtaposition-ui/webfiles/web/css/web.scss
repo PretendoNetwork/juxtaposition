@@ -506,6 +506,28 @@ iframe {
   background-color: var(--btn);
 }
 
+.community-top {
+  background: var(--background-alt);
+  margin-bottom: 1em;
+  padding: 1em;
+  border-radius: 1em;
+  width: 600px;
+  overflow: hidden;
+}
+
+.community-top.community-top-dark {
+  background: var(--background-dark);
+  margin-bottom: 1em;
+  padding: 1em;
+  border-radius: 1em;
+  width: 600px;
+  overflow: hidden;
+}
+
+.community-top h4 {
+  font-weight: normal;
+}
+
 .community-info {
   display: flex;
 }
