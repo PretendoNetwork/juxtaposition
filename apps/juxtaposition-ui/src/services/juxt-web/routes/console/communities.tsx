@@ -21,6 +21,7 @@ import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView'
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import { Community } from '@/models/communities';
 import { getAllFromList } from '@/api/helpers';
+import { WebSubCommunityView } from '@/services/juxt-web/views/web/subCommunityView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
@@ -123,6 +124,7 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 		subcommunities: children
 	};
 	res.jsxForDirectory({
+		web: <WebSubCommunityView {...props} />,
 		portal: <PortalSubCommunityView {...props} />,
 		ctr: <CtrSubCommunityView {...props} />
 	});

@@ -98,9 +98,13 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 					</WebInfoboxStatBoxes>
 				</WebInfobox>
 				<WebInfoboxButtons>
-					<WebInfoboxButton href={`/titles/${community.olive_community_id}/related`}>
-						<T k="community.related" />
-					</WebInfoboxButton>
+					{props.hasSubCommunities
+						? (
+								<WebInfoboxButton href={`/titles/${community.olive_community_id}/related`}>
+									<T k="community.related" />
+								</WebInfoboxButton>
+							)
+						: null}
 					{user.perms.developer
 						? (
 								<WebInfoboxButton href={`/admin/communities/${community.olive_community_id}`}>

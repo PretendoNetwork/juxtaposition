@@ -18,7 +18,7 @@ export type CommunityItemProps = {
 	community: Community;
 };
 
-function WebCommunityItem(props: CommunityItemProps): ReactNode {
+export function WebCommunityItem(props: CommunityItemProps): ReactNode {
 	const url = useUrl();
 	return (
 		<a key={props.community.olive_community_id} className="community-list-wrapper" href={`/titles/${props.community.olive_community_id}/new`}>
