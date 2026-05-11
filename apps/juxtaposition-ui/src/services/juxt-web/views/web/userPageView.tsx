@@ -9,6 +9,7 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
+import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
 
@@ -43,22 +44,24 @@ export function WebUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
-				<div className="community-top">
-					<img className="banner" src="/assets/web/images/banner.png" alt="" />
-					<div className="community-info">
-						<img className="user-icon" src="/assets/web/images/bandwidthlost.png" />
-						<h2 className="community-title">{title}</h2>
+				<WebInfobox>
+					<div className="title-line">
+						<WebIcon
+							src="/assets/web/images/bandwidthlost.png"
+							type="header-icon"
+						/>
+						<div className="title">{title}</div>
 					</div>
+				</WebInfobox>
+				<WebInfoboxButtons>
 					{user.perms.moderator && userExists
 						? (
-								<div className="info-boxes-wrapper">
-									<div>
-										<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.pid}`}><T k="moderation.moderate_user" /></a></h4>
-									</div>
-								</div>
+								<WebInfoboxButton href={`/admin/accounts/${props.pid}`}>
+									<T k="moderation.moderate_user" />
+								</WebInfoboxButton>
 							)
 						: null}
-				</div>
+				</WebInfoboxButtons>
 			</WebWrapper>
 		</WebRoot>
 	);
