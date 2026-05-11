@@ -1,4 +1,5 @@
 @use './theme.scss' as t;
+@use './components/WebInfobox.scss';
 
 :root {
   --background: #1b1f3b;
@@ -233,6 +234,7 @@ header > .selected svg {
   height: 64px;
   border-radius: 0.5em;
   background: var(--text-secondary);
+  display: block;
 }
 
 .user-icon.verified {
@@ -504,28 +506,6 @@ iframe {
   background-color: var(--btn);
 }
 
-.community-top {
-  background: var(--background-alt);
-  margin-bottom: 1em;
-  padding: 1em;
-  border-radius: 1em;
-  width: 600px;
-  overflow: hidden;
-}
-
-.community-top.community-top-dark {
-  background: var(--background-dark);
-  margin-bottom: 1em;
-  padding: 1em;
-  border-radius: 1em;
-  width: 600px;
-  overflow: hidden;
-}
-
-.community-top h4 {
-  font-weight: normal;
-}
-
 .community-info {
   display: flex;
 }
@@ -563,11 +543,6 @@ iframe {
   padding-left: 0.5em;
   font-size: larger;
   padding-top: 0.5em;
-}
-
-.banner {
-  width: 110%;
-  margin: -1em;
 }
 
 .community-page-follow-button-wrapper {
@@ -1431,7 +1406,7 @@ li.reports .button-spacer {
 }
 
 .community-page-post-box .buttons.tabs {
-  margin-bottom: 1em;
+  margin: 1em 0;
 }
 
 .community-info.active::before {

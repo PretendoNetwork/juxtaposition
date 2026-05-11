@@ -187,28 +187,34 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function follow(el) {
+	if (el.disabled) {
+		return;
+	}
+
 	const id = el.getAttribute('data-community-id');
 	const count = document.getElementById('followers');
-	const oldtext = el.innerText;
-	const newtext = el.getAttribute('data-text');
-	el.disabled = true;
 	const params = 'id=' + id;
-	if (el.classList.contains('checked')) {
-		el.classList.remove('checked');
-	} else {
-		el.classList.add('checked');
-	}
-	el.setAttribute('data-text', oldtext);
-	el.innerText = newtext;
-	POST(el.getAttribute('data-url'), params, function a(data) {
-		const element = JSON.parse(data.response);
-		if (!element || element.status !== 200) {
+
+	el.disabled = true;
+	el.classList.toggle('selected');
+	el.ariaPressed = !el.ariaPressed;
+
+	POST(el.getAttribute('data-url'), params, (data) => {
+		const response = JSON.parse(data.response);
+		if (!response || response.status !== 200) {
 			// Apparently there was an actual error code for not being able to yeah a post, who knew!
 			// TODO: Find more of these
 			return Toast('Unable to follow. Please try again later.');
 		}
 		el.disabled = false;
-		count.innerText = element.count;
+		count.innerText = response.count;
+		if (response.follows) {
+			el.classList.add('selected');
+			el.ariaPressed = true;
+		} else {
+			el.classList.remove('selected');
+			el.ariaPressed = false;
+		}
 	});
 }
 window.follow = follow;

@@ -319,5 +319,5 @@ communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 		await (userContent as any).removeFromCommunities(community.olive_community_id);
 	}
 
-	res.send({ status: 200, id: community.olive_community_id, count: community.followerCount });
+	res.send({ status: 200, id: community.olive_community_id, count: dbCommunity.followers, follows: !userFollowsCommunity });
 });
