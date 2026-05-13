@@ -2,6 +2,7 @@ import { initDebugToolbar, caveFuncs } from './debug_toolbar';
 
 if (typeof cave === 'undefined') {
 	initDebugToolbar();
+	window.isDebugCave = true;
 	window.cave = {
 		/**
          * Enables or disabled the back button on the toolbar
