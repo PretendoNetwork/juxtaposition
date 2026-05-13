@@ -1,0 +1,22 @@
+@use '../../theme.scss' as t;
+// Load more button (spoiler button eventually)
+
+$width: 200px;
+$height: 30px;
+
+.load-more {
+    display: block;
+    -webkit-box-sizing: content-box;
+    width: $width;
+    height: $height;
+    margin: auto;
+
+    background: t.$root-gradient-30px;
+    border: t.$component-border;
+    border-radius: t.$component-radius;
+
+    color: t.$button-text;
+    font-size: t.$button-font-size;
+    text-align: center;
+    line-height: $height;
+}
