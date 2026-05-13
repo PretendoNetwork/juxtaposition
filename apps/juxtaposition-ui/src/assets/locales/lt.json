@@ -3,7 +3,6 @@
         "back": "Atgal",
         "notifications": "Pranešimai",
         "communities": "Bendruomenės",
-        "messages": "Žinutės",
         "go_back": "Grįžti",
         "exit": "Išeiti",
         "user_page": "Vartotojo puslapis",
@@ -39,9 +38,6 @@
         "following_user": "Sekama",
         "follow_user": "Sekti",
         "friends": "Draugai"
-    },
-    "messages": {
-        "coming_soon": "Žinutės dar neparuoštos. Prašome sugryšti vėliau!"
     },
     "user_settings": {
         "profile_settings": "Profilio nustatymai",

@@ -7,7 +7,6 @@
         "user_page": "Пайдаланушы беті",
         "activity_feed": "Белсенділік арнасы",
         "communities": "Қауымдастықтар",
-        "messages": "Хабарламалар",
         "notifications": "Хабарландырулар",
         "back": "Артқа",
         "no_posts": "Посттар жоқ",
@@ -96,8 +95,5 @@
     },
     "activity_feed": {
         "empty": ""
-    },
-    "messages": {
-        "coming_soon": ""
     }
 }

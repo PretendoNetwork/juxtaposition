@@ -9,7 +9,6 @@
         "exit": "Ukončiť",
         "next": "Ďalej",
         "no_posts": "Žiadne Príspevky",
-        "messages": "Správy",
         "user_page": "Uživateľská Stránka",
         "activity_feed": "Prehľad Aktivity",
         "go_back": "Choď späť",
@@ -23,7 +22,6 @@
         "global_feed_short": "Globálny",
         "people_feed": "Aktivita Ľudí",
         "updates": "Aktualizácie",
-        "notifications_and_messages": "Upozornenia a Správy",
         "search": "Vyhľadávať..."
     },
     "community": {
@@ -131,9 +129,6 @@
     "activity_feed": {
         "empty": "Je to tu prázdne. Skúste niekoho sledovať!"
     },
-    "messages": {
-        "coming_soon": "Žiadne Správy"
-    },
     "login": {
         "password": "Heslo",
         "title": "Prihlásenie Juxtaposition",
@@ -180,10 +175,7 @@
         "reason_nsfw": "Sexuálne Explicitný",
         "reason_piracy": "Pirátstvo",
         "reason_inappropiate_ingame": "Nevhodné Správanie v Hre",
-        "reason_missing_images": "Chýbajúce Obrázky",
-        "reason_one": "Jeden",
-        "reason_few": "Viacero",
-        "reason_other": "Veľa"
+        "reason_missing_images": "Chýbajúce Obrázky"
     },
     "friend_requests": {
         "none": "Žiadne Žiadosti o Priateľstvo"
