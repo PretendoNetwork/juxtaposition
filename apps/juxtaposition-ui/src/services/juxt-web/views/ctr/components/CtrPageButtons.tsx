@@ -27,7 +27,7 @@ export type CtrPageButtonProps = DatasetProps & EventProps & {
 };
 
 export function CtrPageButton(props: CtrPageButtonProps): ReactNode {
-	const href = props.href ? { 'href': props.href, 'data-pjax': '#body' } : { tabIndex: 0 };
+	const href = props.href ? { 'href': props.href, 'data-pjax': '#body' } : { href: '#' };
 	const dataset = useDatasetProps(props);
 	const events = useEventProps(props);
 
