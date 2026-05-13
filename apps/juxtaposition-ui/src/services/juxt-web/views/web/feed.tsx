@@ -2,15 +2,11 @@ import cx from 'classnames';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { Post, SelfContent } from '@/api/generated';
 
 export type FeedViewProps = {
-	userContent: SelfContent | null;
-	posts: Post[];
-	nextLink: string;
+	children: ReactNode | ReactNode[];
 };
 
 export type FeedTabsProps = {
@@ -63,7 +59,7 @@ export function WebPersonalFeedView(props: FeedViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebFeedTabs selected={0} />
-				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+				{props.children}
 			</WebWrapper>
 			<WebReportModalView />
 		</WebRoot>
@@ -80,7 +76,7 @@ export function WebPeopleFeedView(props: FeedViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebFeedTabs selected={1} />
-				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+				{props.children}
 			</WebWrapper>
 			<WebReportModalView />
 		</WebRoot>
@@ -97,7 +93,7 @@ export function WebGlobalFeedView(props: FeedViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebFeedTabs selected={2} />
-				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+				{props.children}
 			</WebWrapper>
 			<WebReportModalView />
 		</WebRoot>

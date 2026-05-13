@@ -33,29 +33,6 @@ cave.toolbar_setCallback(5, function () {
 });
 cave.toolbar_setCallback(8, function () { });
 
-export function initMorePosts() {
-	var els = document.querySelectorAll('.load-more[data-href]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			cave.snd_playSe('SE_OLV_OK');
-			GET(el.getAttribute('data-href'), function a(data) {
-				var response = data.responseText;
-				if (response && data.status === 200) {
-					el.parentElement.outerHTML = response;
-					initPosts();
-					initMorePosts();
-					pjaxRefresh();
-				} else {
-					el.parentElement.outerHTML = '';
-				}
-			});
-		});
-	}
-}
 export function initPosts() {
 	var els = document.querySelectorAll('.post-content[data-href]');
 	if (!els) {
@@ -108,7 +85,6 @@ window.stopLoading = stopLoading;
 
 function initAll() {
 	initPosts();
-	initMorePosts();
 	initNewPostView();
 	initNavTabs();
 	initPostPageView();
