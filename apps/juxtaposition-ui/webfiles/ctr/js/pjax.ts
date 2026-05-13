@@ -2,7 +2,9 @@ import { GET } from './xhr';
 
 var elements: string = '';
 var selectors: string[] = [];
+// The page we are *currently* on.
 var href: string = '';
+// List of historical pages (not including current one).
 var pjaxHistory: string[] = [];
 var PjaxRequest = document.createEvent('Event');
 var PjaxDone = document.createEvent('Event');
@@ -44,14 +46,17 @@ export function pjaxLoadUrl(url: string, pushHistory: boolean, skipDispatch?: bo
 		document.dispatchEvent(PjaxRequest);
 	}
 
-	GET(url, xhr => pjaxParseDom(xhr, url), () => document.dispatchEvent(PjaxError));
-
-	if (pushHistory && href !== url) {
-		pjaxHistory.push(href);
-	}
+	GET(url, (xhr) => {
+		// update history state with new page
+		pjaxSetUrl(url, pushHistory);
+		// parse new page in
+		pjaxParseDom(xhr);
+		// Delay to next tick so replaceChild can finish
+		setTimeout(() => document.dispatchEvent(PjaxDone), 0);
+	}, () => document.dispatchEvent(PjaxError));
 }
 
-function pjaxParseDom(xhr: XMLHttpRequest, url: string): void {
+function pjaxParseDom(xhr: XMLHttpRequest): void {
 	var response = xhr.responseText;
 	if (!response) {
 		document.dispatchEvent(PjaxError);
@@ -73,9 +78,6 @@ function pjaxParseDom(xhr: XMLHttpRequest, url: string): void {
 	}
 
 	pjaxRefresh();
-	href = url;
-	// Delay to next tick so replaceChild can finish
-	setTimeout(() => document.dispatchEvent(PjaxDone), 0);
 }
 
 export function pjaxCanGoBack(): boolean {
@@ -90,9 +92,14 @@ export function pjaxBack(): void {
 	pjaxLoadUrl(url, false);
 }
 
-export function pjaxPushHistory(url: string): void {
-	if (href !== url) {
+export function pjaxSetUrl(url: string, pushHistory: boolean): void {
+	if (pushHistory && href !== url) {
 		pjaxHistory.push(href);
 	}
+
 	href = url;
+	if (window.isDebugCave) {
+		// for browser debugging. this doesn't work on console
+		window.location.hash = url;
+	}
 }
