@@ -106,6 +106,7 @@ export const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMeth
 	},
 	profile_visibility: {
 		type: String,
+		enum: ['public', 'users_only'],
 		default: 'public'
 	},
 	receive_notifications: {

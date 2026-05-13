@@ -122,7 +122,7 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 	userSettings.birthday_visibility = body.birthday;
 	userSettings.game_skill_visibility = body.experience;
 	userSettings.profile_comment_visibility = !!body.comment;
-	userSettings.updateComment(body.comment ?? '');
+	await userSettings.updateComment(body.comment ?? '');
 
 	res.redirect('/users/me');
 });
