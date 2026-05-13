@@ -1,5 +1,4 @@
 import cx from 'classnames';
-import { Children } from 'react';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
