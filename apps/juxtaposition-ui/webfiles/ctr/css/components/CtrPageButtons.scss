@@ -35,6 +35,7 @@ $padding: 8px;
     border-radius: 0 0 t.$component-radius t.$component-radius;
 
     color: t.$button-text;
+    font-size: t.$button-font-size;
 
     &.left {
         position: absolute;
