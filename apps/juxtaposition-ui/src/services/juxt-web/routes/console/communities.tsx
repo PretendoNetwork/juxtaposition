@@ -12,7 +12,7 @@ import { CtrSubCommunityView } from '@/services/juxt-web/views/ctr/subCommunityV
 import { WebCommunityView } from '@/services/juxt-web/views/web/communityView';
 import { PortalCommunityView } from '@/services/juxt-web/views/portal/communityView';
 import { CtrCommunityView } from '@/services/juxt-web/views/ctr/communityView';
-import { WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { zodFallback } from '@/util';
@@ -167,10 +167,12 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 			type: z.string()
 		}),
 		query: z.object({
-			pjax: z.stringbool().optional()
+			pjax: z.stringbool().optional(),
+			offset: z.coerce.number().optional().default(0)
 		})
 	});
 
+	const offset = query.offset;
 	const self = hasAuth() ? auth().self : null;
 	if (self && !self.hasDoneOnboarding) {
 		return res.redirect('/404');
@@ -196,17 +198,19 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	let type: number = 0;
 
 	if (params.type === 'hot') {
-		const pageResult = await req.api.communities.feed.getPopular({ id: community.olive_community_id, limit: config.postLimit });
+		const pageResult = await req.api.communities.feed.getPopular({ id: community.olive_community_id, limit: config.postLimit, offset });
 		posts = pageResult.data.items;
 		type = 1;
 	} else {
-		const pageResult = await req.api.communities.feed.getFresh({ id: community.olive_community_id, limit: config.postLimit });
+		const pageResult = await req.api.communities.feed.getFresh({ id: community.olive_community_id, limit: config.postLimit, offset });
 		posts = pageResult.data.items;
 		type = 0;
 	}
 
+	const link = `/titles/${params.communityID}/${params.type}`;
+
 	const postListProps: PostListViewProps = {
-		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${posts.length}&pjax=true`,
+		...buildPostListLinks(link, offset, posts.length),
 		posts,
 		userContent: self?.content ?? null
 	};
@@ -243,50 +247,6 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 				<CtrPostListView {...postListProps} />
 			</CtrCommunityView>
 		)
-	});
-});
-
-communitiesRouter.get('/:communityID/:type/more', async function (req, res) {
-	const { query, params, auth, hasAuth } = parseReq(req, {
-		params: z.object({
-			communityID: z.string(),
-			type: z.string()
-		}),
-		query: z.object({
-			offset: z.coerce.number().optional().default(0)
-		})
-	});
-
-	const offset = query.offset;
-	const userContent = hasAuth() ? auth().self.content : null;
-	const { data: community } = await req.api.communities.get({ id: params.communityID });
-	if (!community || !userContent) {
-		return res.redirect('/404');
-	}
-
-	let posts: Post[] = [];
-	if (params.type === 'hot') {
-		const pageResult = await req.api.communities.feed.getPopular({ id: community.olive_community_id, limit: config.postLimit, offset });
-		posts = pageResult.data.items;
-	} else {
-		const pageResult = await req.api.communities.feed.getFresh({ id: community.olive_community_id, limit: config.postLimit, offset });
-		posts = pageResult.data.items;
-	}
-
-	const postListProps: PostListViewProps = {
-		nextLink: `/titles/${params.communityID}/${params.type}/more?offset=${offset + posts.length}&pjax=true`,
-		posts,
-		userContent
-	};
-
-	if (posts.length === 0) {
-		return res.sendStatus(204);
-	}
-
-	return res.jsxForDirectory({
-		web: <WebPostListView {...postListProps} />,
-		portal: <PortalPostListView {...postListProps} />,
-		ctr: <CtrPostListView {...postListProps} />
 	});
 });
 
