@@ -25,7 +25,11 @@ topicsRouter.get('/', async function (req, res) {
 
 	const offset = query.offset;
 	const userContent = hasAuth() ? auth().self.content : null;
-	const posts = await POST.find({ topic_tag: query.topic_tag }).sort({ created_at: -1 }).skip(offset).limit(query.limit);
+	const posts = await POST.find({
+		topic_tag: query.topic_tag,
+		parent: null,
+		removed: false
+	}).sort({ created_at: -1 }).skip(offset).limit(query.limit);
 
 	const link = `/topics?${new URLSearchParams({
 		topic_tag: query.topic_tag

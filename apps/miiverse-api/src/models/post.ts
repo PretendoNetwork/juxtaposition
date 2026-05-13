@@ -124,6 +124,35 @@ PostSchema.index({
 	removed: 1
 });
 
+// posts.list
+PostSchema.index({
+	pid: 1,
+	message_to_pid: 1,
+	parent: 1,
+	removed: 1,
+	created_at: -1
+});
+PostSchema.index({
+	topic_tag: 1,
+	message_to_pid: 1,
+	parent: 1,
+	removed: 1,
+	created_at: -1
+});
+PostSchema.index({
+	yeahs: 1,
+	message_to_pid: 1,
+	parent: 1,
+	removed: 1,
+	created_at: -1
+});
+PostSchema.index({
+	parent: 1,
+	message_to_pid: 1,
+	removed: 1,
+	created_at: -1
+});
+
 PostSchema.method<HydratedPostDocument>('del', async function del(reason: string, pid: number) {
 	this.removed = true;
 	this.removed_by = pid;
