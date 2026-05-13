@@ -4,7 +4,6 @@
         "user_page": "用户页面",
         "activity_feed": "活动动态",
         "communities": "社区",
-        "messages": "消息",
         "notifications": "通知",
         "go_back": "返回",
         "back": "返回",
@@ -20,7 +19,6 @@
         "global_feed": "全球动态",
         "friend_requests": "好友请求",
         "updates": "更新",
-        "notifications_and_messages": "通知和消息",
         "search": "搜索...",
         "global_feed_short": "全球",
         "people_feed": "关注中动态",
@@ -57,7 +55,8 @@
         "settings": "设置",
         "deleted": "已删除用户",
         "banned": "已禁止用户",
-        "friend_requests": "请求"
+        "friend_requests": "请求",
+        "not_found": "用户不存在"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
@@ -87,10 +86,8 @@
         "no_screenshot": "没有截屏",
         "spoiler_label": "剧透",
         "painting_close": "取消",
-        "painting_submit": "确定"
-    },
-    "messages": {
-        "coming_soon": "没有消息"
+        "painting_submit": "确定",
+        "automod_error": "您的帖子包含 Juxtaposition 不允许使用的文本。了解更多信息，请访问 https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "欢迎来到Juxtaposition！",
@@ -184,7 +181,7 @@
         "reason_piracy": "海盗行为",
         "reason_inappropiate_ingame": "游戏中的不当行为",
         "reason_missing_images": "缺少图像",
-        "reason_other": "其他"
+        "reason_others": "其他"
     },
     "moderation": {
         "title": "审核",

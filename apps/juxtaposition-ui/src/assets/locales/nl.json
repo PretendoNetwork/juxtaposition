@@ -4,18 +4,25 @@
         "user_page": "Gebruikerspagina",
         "activity_feed": "Overzicht",
         "communities": "Community's",
-        "messages": "Berichten",
         "notifications": "Meldingen",
-        "go_back": "Ga Terug",
-        "back": "Terug",
+        "go_back": "Teruggaan",
+        "back": "Rug",
         "yeahs": "Ja's",
-        "more": "Laad Meer Posts",
+        "more": "Meer Posts Laden",
         "no_posts": "Geen Posts",
         "private": "Privé",
         "close": "Sluiten",
         "save": "Opslaan",
         "exit": "Afsluiten",
-        "next": "Volgende"
+        "next": "Volgende",
+        "my_feed": "Mijn Overzicht",
+        "global_feed": "Algemeen Overzicht",
+        "global_feed_short": "Algemeen",
+        "people_feed": "Mensen Overzicht",
+        "people_feed_short": "Mensen",
+        "friend_requests": "Vriend Uitnodigingen",
+        "updates": "Updates",
+        "search": "Zoeken..."
     },
     "all_communities": {
         "text": "Alle Community's",
@@ -27,7 +34,12 @@
         "posts": "Posts",
         "tags": "Tags",
         "recent": "Recente Posts",
-        "popular": "Populaire Posts"
+        "popular": "Populaire Posts",
+        "followers_count": "{{count}} volgers",
+        "tags_not_applicable": "N/A",
+        "related": "Relateer Communities",
+        "related_to": "{{community}} Relateerde Community",
+        "closed": "Deze community is gesloten voor nieuwe berichten."
     },
     "user_page": {
         "country": "Land",
@@ -38,57 +50,73 @@
         "following": "Gevolgde gebruikers",
         "followers": "Volgers",
         "follow_user": "Volgen",
-        "following_user": "Volgend"
+        "following_user": "Volgend",
+        "game_experience_unknown": "Onbekend",
+        "settings": "Instellingen",
+        "friend_requests": "Aanvragen",
+        "deleted": "Verwijderde gebruiker",
+        "banned": "Verbannen gebruiker"
     },
     "user_settings": {
         "profile_settings": "Profielinstellingen",
         "show_country": "Geef Land op Profiel weer",
         "show_birthday": "Geef Verjaardag op Profiel weer",
-        "show_game": "Geef Game-ervaring op Profiel weer"
+        "show_game": "Geef Game-ervaring op Profiel weer",
+        "save_action": "Instellingen opslaan",
+        "gdpr_download": "Download gebruiker data",
+        "gdpr_download_action": "Download"
     },
     "activity_feed": {
         "empty": "Het is eenzaam hier. Probeer iemand te volgen!"
     },
     "notifications": {
-        "none": "Geen meldingen."
+        "none": "Geen meldingen.",
+        "new_follower/one": "<follower_one /> volgt jou!",
+        "new_follower/two": "<follower_one />, <follower_two /> volgen jou!",
+        "new_follower/three": "<follower_one />, <follower_two />, and {{count_other}} volgen jou!",
+        "new_follower/multiple": "<follower_one />, <follower_two />, en {{count_other}} volgen jou!"
     },
     "new_post": {
         "post_to": "Post in {{user}}",
-        "swearing": "Post kan geen expliciete tekst bevatten."
-    },
-    "messages": {
-        "coming_soon": "Berichten is nog niet klaar. Kom snel terug!"
+        "swearing": "Post mag geen expliciete tekst bevatten.",
+        "new_post_short": "Bericht",
+        "content_placeholder": "Deel je gedachten in een bericht op een community of naar je volgers.",
+        "screenshots_coming_soon": "Schermafbeeldingen zijn nog niet klaar. Kom later terug!",
+        "no_screenshot": "Geen schermafbeelding",
+        "spoiler_label": "Spoiler",
+        "painting_close": "Weigeren",
+        "painting_submit": "OKE"
     },
     "setup": {
         "welcome": "Welkom op Juxtaposition!",
-        "welcome_text": "Juxt is een gaming community welk mensen van over de hele wereld verbind door middel van Mii karakters. Gebruik Juxt om jouw ervaringen tijdens het gamen te delen en mensen te ontmoeten over de hele wereld.",
+        "welcome_text": "Juxt is een gaming community die mensen van over de hele wereld verbind doormiddel van Mii karakters. Gebruik Juxt om jouw ervaringen tijdens het gamen te delen en mensen over de hele wereld te leren kennen.",
         "beta": "Beta-disclaimer",
         "beta_text": {
             "first": "Je staat op het punt de eerste publieke beta van Juxt te gebruiken. Dit betekent dat veel onzeker is en ook van alles kan veranderen.",
-            "second": "Dit kan mogelijk een volledige reset van de database aan het einde van of tijdens de beta periode omvatten.",
-            "third": "De website, de software die het bevat, alsook alle content die te vinden is op deze website, worden geleverd op een \"as is\" en \"as available\" basis. Pretendo Network geeft geen garantstellingen, noch expliciet noch impliciet, met betrekking tot de geschiktheid of bruikbaarheid van de website, de software die het bevat of de content op de website."
+            "second": "Dit kan mogelijk een volledige reset van de database aan het einde van of tijdens de beta-periode omvatten.",
+            "third": "De website, de software die het bevat, alsook alle content die te vinden is op deze website, worden geleverd op een \"as is\" en \"as available\" basis. Pretendo Network geeft noch expliciete noch impliciete garantstellingen, met betrekking tot de geschiktheid of bruikbaarheid van de website, de software die het bevat of de content op de website."
         },
         "info": "Wat is Juxtaposition?",
-        "info_text": "Juxt is een gebruikers-gedreven gaming community waar je kan communiceren met mensen\n                over de hele wereld. Je kan posts schrijven of tekenen in game communities of berichten rechtstreeks naar je vrienden sturen.",
+        "info_text": "Juxt is een gebruikers-gedreven gaming community waar je met mensen\n                over de hele wereld kan communiceren . Je kan posts schrijven of tekenen in game communities of berichten rechtstreeks naar je vrienden sturen.",
         "rules": "Juxt Regels",
         "rules_text": {
             "first": "De volgende tekst bevat belangrijke richtlijnen om Juxt een leuke en gezellige omgeving voor iedereen te maken. De Juxt gedragscode bevat belangrijke gedetailleerde informatie, dus lees het aandachtig door.",
             "second": "Posts Kunnen Overal Ter Wereld Bekeken Worden",
             "third": "Juxt bevat vele gaming community's waar mensen over de hele wereld hun gedachten kunnen delen. Als je in een community post, onthoud dan dat iedereen dit kan zien, dus uit je alsjeblieft op een manier die voor iedereen prettig is. Gebruik je gezonde verstand en denk eerst na voor je iets post. Juxt is daarnaast ook een dienst die bereikbaar is via het internet, dus houd rekening met het feit dat mensen die Juxt niet gebruiken ook je posts mogelijk kunnen zien. Daarnaast zijn reacties die je maakt op posts van je vrienden niet alleen zichtbaar voor je vrienden, maar ook voor mensen over de hele wereld. Houd hier rekening mee.",
             "fourth": "Wees Aardig Tegen Elkaar",
-            "fifth": "Om Juxt een leuke omgeving voor iedereen te houden vragen wij van jou om rekening te houden met anderen. Help ons om Juxt zo leuk mogelijk te houden door niets ongepasts of beledigend te posten.",
-            "sixth": "Post Geen Persoonlijke Gegevens—Die van Jezelf of van Anderen",
-            "seventh": "Onthoud, iemand in Juxt kennen is niet hetzelfde als iemand in het echt kennen. Deel nooit je e-mail adres, huisadres, de naam van je school of werk of wat voor een persoonlijke identificeerbare informatie dan ook met een ander en deel zulke gegevens van iemand anders niet. Daarnaast, als iemand die je ontmoet hebt op Juxt je vraagt om diegene in het echt te ontmoeten, accepteer dit niet. Juxt is een online community en moet niet gebruikt worden om ontmoetingen in het echt te faciliteren.",
+            "fifth": "Om Juxt een leuke omgeving voor iedereen te houden vragen we je om met anderen rekening te houden. Help ons om Juxt zo leuk mogelijk te houden door niets ongepasts of beledigend te posten.",
+            "sixth": "Post Geen Persoonlijke Gegevens—noch van Jezelf noch van Anderen",
+            "seventh": "Onthoud, iemand in Juxt kennen is niet hetzelfde als iemand in het echt kennen. Deel nooit je e-mail adres, huisadres, de naam van je school of werk of wat voor een persoonlijke identificeerbare informatie dan ook met een ander en deel zulke gegevens van iemand anders ook niet. Daarnaast, als iemand die je ontmoet hebt op Juxt je vraagt om diegene in het echt te ontmoeten, accepteer dit niet. Juxt is een online community en moet niet gebruikt worden om ontmoetingen in het echt te faciliteren.",
             "eighth": "Post Geen Spoilers",
             "ninth": "Sommige mensen komen naar Juxt voor tips en trucs voor games, anderen willen zelf de geheimen van een game ontdekken. Berichten die geheimen van een game of het verhaal ervan onthullen, worden 'spoilers' genoemd. Als je iets post over een game dat een spoiler zou kunnen zijn, zorg er dan voor dat je het vakje Spoilers aanvinkt voordat je je post verstuurt. Zo zien mensen die geen spoilers willen zien je bericht niet.",
-            "tenth": "Gedragscode overtredingen",
+            "tenth": "Overtredingen van de Gedragscode",
             "eleventh": "Ons doel is om Juxt leuk en gezellig voor iedereen te houden. Mocht iemand de Juxt Gedragscode overtreden, dan zullen wij gepaste maatregelen nemen. Deze maatregelen omvatten onder andere het blokkeren van toegang voor het account of de console van de gebruiker die de gedragscode overtreedt.",
             "twelfth": "Heb Je Dat Spel Gespeeld?",
-            "thirteenth": "Als je post in een community voor een game welk je hebt gespeeld, bevat je post een icoontje dat aangeeft dat je deze game hebt gespeeld."
+            "thirteenth": "Als je post in een community voor een game dat je hebt gespeeld, bevat je post een icoontje dat aangeeft dat je deze game hebt gespeeld."
         },
         "experience": "Game-ervaring",
         "experience_text": {
-            "info": "Vertel ons alstublieft hoe u uw ervaringsniveau met games zou omschrijven. U kunt deze instelling later wijzigen.",
+            "info": "Vertel ons alstublieft hoe je je ervaringsniveau met games zou omschrijven. Je kan deze instelling later wijzigen.",
             "beginner": "Beginner",
             "intermediate": "Gemiddeld",
             "expert": "Expert"
@@ -96,8 +124,65 @@
         "analytics": "Analytics",
         "analytics_text": "Juxtaposition gebruikt Cloudflare Web Analytics om bij te houden hoe gebruikers onze dienst gebruiken. De data die we verzamelen bevat onder andere tijd van bezoek, bezochte pagina's en hoe lang het bezoek duurde. Deze data is op geen enkele manier gekoppeld aan jou en wordt niet gebruikt door Cloudflare of ons om advertenties aan jou te tonen.",
         "ready": "Klaar om Juxt te Gebruiken",
-        "ready_text": "Bekijk eerst wat community's en zie waar mensen van over de hele wereld over posten. Gebruik deze kans om je bekend te maken met Juxt. Misschien ontdek je iets nieuws op deze manier!",
+        "ready_text": "Bekijk eerst wat community's en zie waar mensen van over de hele wereld over posten. Gebruik deze kans om je bekend te maken met Juxt. Misschien ontdek je zo iets nieuws!",
         "done": "Veel plezier in Juxt!",
-        "done_button": "Laten We Beginnen!"
+        "done_button": "Laten We Beginnen!",
+        "title": "Juxtaposition Instellen"
+    },
+    "login": {
+        "title": "Juxtposition Inloggen",
+        "heading": "Juxtposition Aanmelden",
+        "sub_title": "Voer je account gevens hier onder in",
+        "username": "Gebruikersnaam",
+        "password": "Wachtwoord",
+        "forgot_password": "Wachtwoord vergeten?",
+        "login_action": "Inloggen",
+        "no_account_setup": "Account aanmaken is alleen mogelijk wanneer je een gelinkte Wii U of 3DS hebt.",
+        "no_account": "Geen Account?"
+    },
+    "error": {
+        "title": "Error {{code}}",
+        "heading": "Error {{code}}: {{message}}",
+        "message": "Oeps! Het lijkt erop dat we de pagina niet konden vinden voor..<newline/>Dubbel-check je link of probeer opnieuw",
+        "no_access": "Je hebt geen toegang voor dit programma ({{code}})",
+        "message_web": "Bekijk onze huidige <status>server status</status>.<newline/>Of,<home>om terug te gaan naar de homepagina</home>",
+        "error_details": "Aanvraag ID: {{id}}"
+    },
+    "friend_requests": {
+        "none": "Geen vriend aanvragen"
+    },
+    "post": {
+        "title": "Verzonden door {{username}}",
+        "heading": "Bericht",
+        "yeahs_count/one": "<count/> person(en) gaven je post een yeah.",
+        "yeahs_count/multiple": "<count/> gaven je persoon een yeah.",
+        "show_spoiler": "Spoiler weergeven",
+        "reply_post": "Reageer",
+        "report_post": "Bericht rapporteren",
+        "delete_post": "Bericht verwijderen",
+        "removed": "Je bericht is verwijderd.",
+        "copy_link": "Kopieer link"
+    },
+    "reporting": {
+        "title": "Bericht reporteren",
+        "submit": "Bericht indienen",
+        "description": "Je staat op het punt een bericht te rapporteren waarvan de inhoud in strijd is met de gedragscode van Juxtaposition. Deze melding wordt doorgestuurd naar de Juxtaposition-beheerders van Pretendo en niet naar de maker van het bericht.",
+        "label": "Reden:",
+        "additional_info_placeholder": "Voer aanvullende opmerkingen of informatie in",
+        "reason_spoiler": "Spoiler",
+        "reason_personal_info": "Persoonlijke Informatie",
+        "reason_violence": "Gewelddadige inhoud",
+        "reason_inappropiate": "Ongepast/schadelijk gedrag",
+        "reason_bullying": "Haatdragend/Pestgedrag",
+        "reason_advertising": "Adverteren",
+        "reason_nsfw": "Seksueel expliciet",
+        "reason_piracy": "Piraterij",
+        "reason_inappropiate_ingame": "Ongepast gedrag in het spel",
+        "reason_missing_images": "Missende afbeeldingen"
+    },
+    "moderation": {
+        "title": "Moderatie",
+        "silently_delete_post": "Stilzwijgend verwijderen",
+        "moderate_user": "Gemiddelde gebruiker"
     }
 }
