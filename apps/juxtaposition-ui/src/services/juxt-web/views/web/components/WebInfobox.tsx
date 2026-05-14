@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 
 export type WebInfoboxProps = {
 	bannerUrl?: string;
-	children: ReactNode | ReactNode[];
+	children: ReactNode;
 };
 
 export function WebInfobox(props: WebInfoboxProps): ReactNode {
@@ -45,7 +45,7 @@ export function WebInfoboxFollowButton(props: WebInfoboxFollowButtonProps): Reac
 }
 
 export type WebInfoboxButtonsProps = {
-	children: ReactNode | ReactNode[];
+	children: ReactNode;
 };
 
 export function WebInfoboxButtons(props: WebInfoboxButtonsProps): ReactNode {
@@ -63,7 +63,7 @@ export function WebInfoboxButtons(props: WebInfoboxButtonsProps): ReactNode {
 
 export type WebInfoboxButtonProps = {
 	href?: string;
-	children: ReactNode | ReactNode[];
+	children: ReactNode;
 };
 
 export function WebInfoboxButton(props: WebInfoboxButtonProps): ReactNode {
@@ -76,7 +76,7 @@ export function WebInfoboxButton(props: WebInfoboxButtonProps): ReactNode {
 }
 
 export type WebInfoboxStatBoxesProps = {
-	children: ReactNode | ReactNode[];
+	children: ReactNode;
 };
 
 export function WebInfoboxStatBoxes(props: WebInfoboxStatBoxesProps): ReactNode {
