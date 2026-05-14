@@ -12,6 +12,9 @@ services:
     image: mongo:8.0
     restart: unless-stopped
     command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    environment:
+      # https://jira.mongodb.org/browse/SERVER-121912
+      - GLIBC_TUNABLES=glibc.pthread.rseq=1
     ports:
       - 27017:27017
     extra_hosts:
@@ -66,12 +69,13 @@ services:
     entrypoint: "/etc/minio/create-buckets.sh"
 
   proxy:
-    image: mitmproxy/mitmproxy
+    # 12.2.3 has some OpenSSL error when using old TLS versions
+    image: mitmproxy/mitmproxy:12.2.2
     command: > 
       mitmweb -v --mode regular@8888
       -s /data/mitmproxy-local.py
       --web-host 0.0.0.0 --set web_password=letmein
-      -k --set tls_version_client_min=UNBOUNDED --set tls_version_server_min=UNBOUNDED 
+      -k --set tls_version_client_min=TLS1 --set tls_version_server_min=TLS1
       --set key_size=1024
     ports:
       - 8888:8888
