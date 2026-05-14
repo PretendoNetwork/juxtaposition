@@ -45,7 +45,7 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 	}
 
 	// Handle guest access pages
-	if (!request.pid) {
+	if (!request.pid || !request.user || !request.self) {
 		if (!requestOkForGuest(request)) {
 			return loginWall(request, response);
 		}
