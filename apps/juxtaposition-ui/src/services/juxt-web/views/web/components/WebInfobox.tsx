@@ -49,11 +49,6 @@ export type WebInfoboxButtonsProps = {
 };
 
 export function WebInfoboxButtons(props: WebInfoboxButtonsProps): ReactNode {
-	if (props.children === null || (Array.isArray(props.children) && props.children.every(v => v === null))) {
-		// Can happen if all the buttons are conditional
-		return <></>;
-	}
-
 	return (
 		<div className="page-infobox-buttons">
 			{props.children}

@@ -15,8 +15,8 @@ $icon-size: 64px;
     background: var(--background-alt);
     border: 5px solid var(--background-alt);
     border-radius: t.$component-radius;
-    overflow: clip;
-    &:has(+ .page-infobox-buttons) {
+    overflow: hidden;
+    &:has(+ .page-infobox-buttons:not(:empty)) {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
     }
@@ -152,6 +152,10 @@ $icon-size: 64px;
     border: 5px solid var(--background-alt-alt);
     border-radius: 0 0 t.$component-radius t.$component-radius;
     padding: 0 1em;
+
+    &:empty {
+        display: none;
+    }
 
     .button {
         padding: 0.75em 0;
