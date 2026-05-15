@@ -202,13 +202,11 @@ function follow(el) {
 	POST(el.getAttribute('data-url'), params, (data) => {
 		const response = JSON.parse(data.response);
 		if (!response || response.status !== 200) {
-			// Apparently there was an actual error code for not being able to yeah a post, who knew!
-			// TODO: Find more of these
 			return Toast('Unable to follow. Please try again later.');
 		}
 		el.disabled = false;
-		count.innerText = response.count;
-		if (response.follows) {
+		count.innerText = response.follower_count;
+		if (response.action === 'follow') {
 			el.classList.add('selected');
 			el.ariaPressed = true;
 		} else {
