@@ -11,7 +11,8 @@ import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { createLogEntry } from '@/services/internal/utils/auditLogs';
-import { tryGetUserData } from '@/services/internal/utils/user';
+import { Settings } from '@/models/settings';
+import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -44,9 +45,9 @@ postsRouter.get({
 		}
 		// Extra checks for user posts
 		if (query.posted_by) {
-			const targetUser = await tryGetUserData(auth, query.posted_by).catch(() => null);
+			const user = await Settings.findOne({ pid: query.posted_by });
 			// We can't see this user for some reason (doesn't exist, permission, etc)
-			if (targetUser === null) {
+			if (!user || !canAccessUser(auth, user)) {
 				return mapPage(0, []);
 			}
 		}
@@ -92,8 +93,12 @@ postsRouter.get({
 			throw errors.for('not_found');
 		}
 
+		const poster = await Settings.findOne({ pid: post.pid });
+		if (!poster) {
+			throw errors.for('not_found');
+		}
 		// Throws if user isn't visible for some reason
-		await tryGetUserData(auth, post.pid);
+		assertCanAccessUser(auth, poster);
 
 		return mapPost(post);
 	}

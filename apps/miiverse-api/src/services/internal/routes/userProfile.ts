@@ -8,12 +8,13 @@ import { mapShallowUser, mapUserProfile, shallowUserSchema, userProfileSchema } 
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { errors } from '@/services/internal/errors';
 import { createNewFollowNotification } from '@/services/internal/utils/notifications';
-import { getUserFriendPIDs } from '@/util';
+import { getUserAccountData, getUserFriendPIDs } from '@/util';
 import { Post } from '@/models/post';
 import { communitySchema, mapCommunity } from '@/services/internal/contract/community';
 import { COMMUNITY_TYPE } from '@/types/mongoose/community';
 import { Community } from '@/models/community';
-import { tryGetUserData } from '@/services/internal/utils/user';
+import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
+import { Content } from '@/models/content';
 import type { FilterQuery } from 'mongoose';
 import type { ICommunity } from '@/types/mongoose/community';
 import type { ISettings } from '@/types/mongoose/settings';
@@ -37,7 +38,18 @@ userProfileRouter.get({
 		response: userProfileSchema
 	},
 	async handler({ params, auth }) {
-		const { settings, content, pnid } = await tryGetUserData(auth, params.id);
+		const pid = params.id;
+		const user = await Settings.findOne({ pid });
+		const content = await Content.findOne({ pid });
+		const pnid = await getUserAccountData(pid);
+		if (!user || !content || !pnid || pnid.deleted) {
+			throw errors.for('not_found');
+		}
+
+		assertCanAccessUser(auth, user);
+		if (pnid.accessLevel < 0) {
+			throw errors.for('user_banned');
+		}
 
 		const followers = content.following_users.filter(v => v !== 0).length;
 		const totalPosts = await Post.find({
@@ -47,7 +59,7 @@ userProfileRouter.get({
 			removed: false
 		}).countDocuments();
 
-		return mapUserProfile(settings, pnid, followers, totalPosts);
+		return mapUserProfile(user, pnid, followers, totalPosts);
 	}
 });
 
@@ -63,8 +75,15 @@ userProfileRouter.get({
 		response: pageDtoSchema(shallowUserSchema)
 	},
 	async handler({ params, query, auth }) {
-		const { pnid } = await tryGetUserData(auth, params.id);
-		const targetPids = await getUserFriendPIDs(pnid.pid);
+		const pid = params.id;
+		const user = await Settings.findOne({ pid });
+		if (!user) {
+			throw errors.for('not_found');
+		}
+
+		assertCanAccessUser(auth, user);
+
+		const targetPids = await getUserFriendPIDs(pid);
 		const dbQuery: FilterQuery<ISettings> = deleteOptional({
 			pid: {
 				$in: targetPids
@@ -95,13 +114,15 @@ userProfileRouter.get({
 		response: pageDtoSchema(shallowUserSchema)
 	},
 	async handler({ params, query, auth }) {
-		const targetUser = await tryGetUserData(auth, params.id).catch(() => null);
-		if (!targetUser) {
+		const pid = params.id;
+		const user = await Settings.findOne({ pid });
+		const content = await Content.findOne({ pid });
+		if (!user || !content || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
 		}
 
 		// User contents frequently have a `0` element in it
-		const targetPids = (targetUser.content.following_users ?? []).filter(v => v !== 0);
+		const targetPids = (content.following_users ?? []).filter(v => v !== 0);
 
 		const dbQuery: FilterQuery<ISettings> = deleteOptional({
 			pid: {
@@ -133,13 +154,15 @@ userProfileRouter.get({
 		response: pageDtoSchema(communitySchema)
 	},
 	async handler({ params, query, auth }) {
-		const targetUser = await tryGetUserData(auth, params.id).catch(() => null);
-		if (!targetUser) {
+		const pid = params.id;
+		const user = await Settings.findOne({ pid });
+		const content = await Content.findOne({ pid });
+		if (!user || !content || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
 		}
 
 		// User contents frequently have a `0` element in it
-		const targetCommunities = (targetUser.content.followed_communities ?? []).filter(v => v !== '0');
+		const targetCommunities = (content.followed_communities ?? []).filter(v => v !== '0');
 
 		const dbQuery: FilterQuery<ICommunity> = deleteOptional({
 			olive_community_id: {
@@ -175,13 +198,15 @@ userProfileRouter.get({
 		response: pageDtoSchema(shallowUserSchema)
 	},
 	async handler({ params, query, auth }) {
-		const targetUser = await tryGetUserData(auth, params.id).catch(() => null);
-		if (!targetUser) {
+		const pid = params.id;
+		const user = await Settings.findOne({ pid });
+		const content = await Content.findOne({ pid });
+		if (!user || !content || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
 		}
 
 		// User contents frequently have a `0` element in it
-		let targetPids = (targetUser.content.followed_users ?? []).filter(v => v !== 0);
+		let targetPids = (content.followed_users ?? []).filter(v => v !== 0);
 		if (query.followerId) {
 			targetPids = targetPids.filter(v => v === query.followerId);
 		}
@@ -214,8 +239,15 @@ userProfileRouter.post({
 		response: resultSchema
 	},
 	async handler({ params, auth }) {
-		const targetUser = await tryGetUserData(auth, params.id);
-		const targetUserPid = targetUser.pnid.pid;
+		const targetUserPid = params.id;
+		const targetUser = await Settings.findOne({ targetUserPid });
+		const targetUserContent = await Content.findOne({ targetUserPid });
+		if (!targetUser || !targetUserContent) {
+			throw errors.for('not_found');
+		}
+
+		assertCanAccessUser(auth, targetUser);
+
 		const currentUser = auth!;
 		const currentUserPid = currentUser.pnid.pid;
 		if (!currentUser.content) {
@@ -228,9 +260,9 @@ userProfileRouter.post({
 			return mapResult('success');
 		}
 
-		targetUser.content.following_users.push(currentUserPid);
+		targetUserContent.following_users.push(currentUserPid);
 		currentUser.content.followed_users.push(targetUserPid);
-		await targetUser.content.save();
+		await targetUserContent.save();
 		await currentUser.content.save();
 
 		await createNewFollowNotification({ currentUser: currentUserPid, userToFollow: targetUserPid });
@@ -249,8 +281,14 @@ userProfileRouter.delete({
 		response: resultSchema
 	},
 	async handler({ params, auth }) {
-		const targetUser = await tryGetUserData(auth, params.id);
-		const targetUserPid = targetUser.pnid.pid;
+		const targetUserPid = params.id;
+		const targetUser = await Settings.findOne({ targetUserPid });
+		const targetUserContent = await Content.findOne({ targetUserPid });
+		if (!targetUser || !targetUserContent) {
+			throw errors.for('not_found');
+		}
+
+		assertCanAccessUser(auth, targetUser);
 		const currentUser = auth!;
 		const currentUserPid = currentUser.pnid.pid;
 		if (!currentUser.content) {
@@ -263,9 +301,9 @@ userProfileRouter.delete({
 			return mapResult('success');
 		}
 
-		targetUser.content.following_users = targetUser.content.following_users.filter(pid => pid !== currentUserPid);
+		targetUserContent.following_users = targetUserContent.following_users.filter(pid => pid !== currentUserPid);
 		currentUser.content.followed_users = currentUser.content.followed_users.filter(pid => pid !== targetUserPid);
-		await targetUser.content.save();
+		await targetUserContent.save();
 		await currentUser.content.save();
 
 		return mapResult('success');

@@ -9,8 +9,3 @@ export interface AccountData {
 	moderator: boolean;
 	developer: boolean;
 }
-
-type NonNullableFields<T> = {
-	[P in keyof T]: NonNullable<T[P]>;
-};
-export type ActiveAccountData = NonNullableFields<AccountData>;
