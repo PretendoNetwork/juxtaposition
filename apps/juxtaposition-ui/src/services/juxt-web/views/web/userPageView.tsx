@@ -192,7 +192,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						{!isSelf
 							? (
 									<WebInfoboxFollowButton
-										followType="title"
+										followType="user"
 										followId={props.profile.pid}
 										isFollowing={isRequesterFollowingUser}
 									/>

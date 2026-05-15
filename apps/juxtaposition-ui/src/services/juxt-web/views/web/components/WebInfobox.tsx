@@ -36,7 +36,7 @@ export function WebInfoboxFollowButton(props: WebInfoboxFollowButtonProps): Reac
 			})}
 			evt-click="follow(this)"
 			data-url={props.followType === 'title' ? '/titles/follow' : '/users/follow'}
-			data-community-id={props.followId}
+			data-community-id={`${props.followId}`}
 			title={T.str('user_page.follow_user')}
 		>
 			<WebUIIcon name="heart" />
