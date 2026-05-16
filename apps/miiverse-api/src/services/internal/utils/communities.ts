@@ -1,4 +1,7 @@
 import { Community } from '@/models/community';
+import type { SelfDto } from '@/services/internal/contract/self';
+import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { HydratedPostDocument } from '@/types/mongoose/post';
 
 export async function generateCommunityId(length?: number | undefined): Promise<string> {
 	let id = crypto.getRandomValues(new Uint32Array(1)).toString().substring(0, length);
@@ -26,3 +29,29 @@ export const communityPlatformDisplayMap: Record<number, string> = {
 	1: '3DS',
 	2: 'Both'
 };
+
+export function isPostingAllowed(community: HydratedCommunityDocument, user: SelfDto, parentPost: HydratedPostDocument | null): boolean {
+	const isReply = !!parentPost;
+	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
+	const isOpenCommunity = community.permissions.open;
+
+	const isCommunityAdmin = community.admins?.includes(user.pid) ?? false;
+	const isUserLimitedFromPosting = !user.permissions.posting;
+	const hasAccessLevelRequirement = isReply
+		? user.permissions.accessLevel >= community.permissions.minimum_new_comment_access_level
+		: user.permissions.accessLevel >= community.permissions.minimum_new_post_access_level;
+
+	if (isUserLimitedFromPosting) {
+		return false;
+	}
+
+	if (isCommunityAdmin) {
+		return true; // admins can always post (if not limited)
+	}
+
+	if (!hasAccessLevelRequirement) {
+		return false;
+	}
+
+	return isReply ? isOpenCommunity : isPublicPostableCommunity;
+}

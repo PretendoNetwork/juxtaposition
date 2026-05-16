@@ -1,7 +1,6 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -40,7 +39,6 @@ function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
 
 export function PortalPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
-	const cache = useCache();
 	const user = useUser();
 	const post = props.post;
 	const hasYeahed = post.yeahs && post.yeahs.indexOf(user.pid) !== -1;
@@ -89,7 +87,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 									<span className="title-icon-container" data-pjax="#body">
 										<img src={url.cdn(`/icons/${post.community_id}/64.png`)} className="title-icon" />
 									</span>
-									<span className="community-name">{cache.getCommunityName(post.community_id ?? '')}</span>
+									<span className="community-name">{post.community.name}</span>
 								</a>
 							)
 						: null}

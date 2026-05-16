@@ -1,9 +1,14 @@
+import { z } from 'zod';
 import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { errors } from '@/services/internal/errors';
-import { mapBannedSelf, mapSelf, mapSelfNotificationCount, selfNotificationCountSchema, selfSchema } from '@/services/internal/contract/self';
+import { mapBannedSelf, mapSelf, mapSelfFriendRequest, mapSelfNotificationCount, selfFriendRequestSchema, selfNotificationCountSchema, selfSchema } from '@/services/internal/contract/self';
 import { Settings } from '@/models/settings';
 import { Notification } from '@/models/notification';
+import { getUserFriendRequestsIncoming } from '@/util';
+import { Post } from '@/models/post';
+import { Content } from '@/models/content';
+import type { SelfFriendRequestDto } from '@/services/internal/contract/self';
 
 export const selfRouter = createInternalApiRouter();
 
@@ -82,5 +87,65 @@ selfRouter.get({
 		});
 
 		return mapSelfNotificationCount(notificationCount);
+	}
+});
+
+selfRouter.get({
+	path: '/self/friend-requests',
+	name: 'self.getFriendRequests',
+	description: 'Get friend requests for current user',
+	guard: guards.user,
+	schema: {
+		response: z.array(selfFriendRequestSchema)
+	},
+	async handler({ auth }) {
+		const account = auth!;
+
+		const now = new Date();
+		const allRequests = (await getUserFriendRequestsIncoming(account.pnid.pid)).reverse();
+		const validRequests = allRequests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
+
+		const senders = validRequests.map(v => v.sender);
+		const relatedUsers = await Settings.find({ pid: { $in: senders } });
+
+		return validRequests.reduce<SelfFriendRequestDto[]>((acc, req) => {
+			const user = relatedUsers.find(v => v.pid === req.sender);
+			if (user) {
+				acc.push(mapSelfFriendRequest(req, user));
+			}
+
+			return acc;
+		}, []);
+	}
+});
+
+selfRouter.post({
+	path: '/self/export',
+	name: 'self.export',
+	description: 'Do a GDPR export for current user',
+	guard: guards.user,
+	schema: {
+		response: z.any()
+	},
+	async handler({ auth }) {
+		const account = auth!;
+		const rawPosts = await Post.find({ pid: account.pnid.pid });
+		const userSettings = await Settings.findOne({ pid: account.pnid.pid });
+		const userContent = await Content.findOne({ pid: account.pnid.pid });
+
+		// Clean non-user data
+		if (userSettings) {
+			userSettings.banned_by = null;
+		}
+		const postsJson = rawPosts.map(post => ({
+			...post.toJSON(),
+			removed_by: null
+		}));
+
+		return {
+			user_content: userContent,
+			user_settings: userSettings,
+			posts: postsJson
+		};
 	}
 });

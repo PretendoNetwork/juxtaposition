@@ -1,5 +1,4 @@
 import moment from 'moment';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
 import { AutomodLogItem } from '@/services/juxt-web/views/web/admin/automodLogListView';
@@ -21,7 +20,6 @@ type ModerateUserReportProps = {
 function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 	const { reporter, resolved } = props.report;
 	const createdAt = new Date(props.report.createdAt);
-	const cache = useCache();
 	const url = useUrl();
 
 	return (
@@ -37,7 +35,7 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 								<a href={`/users/${reporter.pid}`} className="nick-name">
 									Reported By:
 									{' '}
-									{cache.getUserName(reporter.pid)}
+									{reporter.user?.miiName ?? 'Unknown'}
 								</a>
 								{'  '}
 								<span title={moment(createdAt).toString()} className="timestamp">{moment(createdAt).fromNow()}</span>
@@ -65,7 +63,7 @@ function ModerateUserReportView(props: ModerateUserReportProps): ReactNode {
 													<span className="nick-name">
 														Resolved By:
 														{' '}
-														{resolved.pid ? cache.getUserName(resolved.pid) : 'Nobody'}
+														{resolved.pid ? resolved.user?.miiName : 'Nobody'}
 													</span>
 													{'  '}
 													<span title={moment(resolved.resolvedAt).toString()} className="timestamp">{moment(resolved.resolvedAt).fromNow()}</span>

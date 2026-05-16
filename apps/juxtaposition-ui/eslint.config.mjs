@@ -5,6 +5,11 @@ import { defineConfig } from 'eslint/config';
 export default defineConfig([
 	...eslintConfig,
 	{
+		rules: {
+			'@stylistic/jsx-one-expression-per-line': 'off'
+		}
+	},
+	{
 		// Allow browser globals in webfiles
 		languageOptions: {
 			globals: {

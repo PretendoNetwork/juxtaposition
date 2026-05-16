@@ -1,6 +1,5 @@
 import moment from 'moment';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
 import type { Post } from '@/api/generated';
@@ -10,7 +9,6 @@ export type ModerateUserRemovedPostsViewProps = {
 };
 
 export function ModerateUserRemovedPostView(props: ModerateUserRemovedPostsViewProps): ReactNode {
-	const cache = useCache();
 	const url = useUrl();
 
 	return (

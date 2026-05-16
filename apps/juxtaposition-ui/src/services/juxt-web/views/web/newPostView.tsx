@@ -47,9 +47,7 @@ const empathies = [
 
 export type NewPostViewProps = {
 	id: string;
-	// must provide name OR pid
-	name?: string;
-	pid?: number;
+	name: string; // Username or community name
 	url: string;
 	show: string;
 	// must provide messagePid OR community
