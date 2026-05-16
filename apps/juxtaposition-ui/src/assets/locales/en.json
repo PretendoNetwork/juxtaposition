@@ -57,6 +57,7 @@
     "recent": "Recent Posts",
     "popular": "Popular Posts",
     "related": "Related Communities",
+    "related_short": "Related",
     "related_to": "{{community}} Related Communities",
     "closed": "This community is closed to new posts."
   },
@@ -181,7 +182,7 @@
     "reason_piracy": "Piracy",
     "reason_inappropiate_ingame": "Inappropriate Behavior in Game",
     "reason_missing_images": "Missing Images",
-    "reason_other": "Other"
+    "reason_others": "Other"
   },
   "moderation": {
     "title": "Moderation",

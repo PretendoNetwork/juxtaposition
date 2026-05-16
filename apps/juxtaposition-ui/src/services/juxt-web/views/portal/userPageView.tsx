@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
-import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -29,7 +29,7 @@ export function PortalUserMissingPage(props: UserMissingPageViewProps): ReactNod
 					</div>
 					<div className="community-info info-content with-header-banner">
 						<span className="icon-container">
-							<img className="icon" src="/assets/web/images/bandwidthlost.png" />
+							<img className="icon" src="/assets/portal/images/bandwidthlost-96.png" />
 						</span>
 						<span className="title">
 							{title}

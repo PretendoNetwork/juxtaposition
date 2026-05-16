@@ -1,5 +1,5 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
-import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { ReportPostViewProps } from '@/services/juxt-web/views/web/reportPostView';
@@ -27,7 +27,7 @@ export function PortalReportPostView(props: ReportPostViewProps): ReactNode {
 							<option value="7"><T k="reporting.reason_piracy" /></option>
 							<option value="8"><T k="reporting.reason_inappropiate_ingame" /></option>
 							<option value="10"><T k="reporting.reason_missing_images" /></option>
-							<option value="9"><T k="reporting.reason_other" /></option>
+							<option value="9"><T k="reporting.reason_others" /></option>
 						</select>
 					</div>
 					<textarea name="message" className="textarea-text" value="" maxLength={280} placeholder={T.str('reporting.additional_info_placeholder')}></textarea>

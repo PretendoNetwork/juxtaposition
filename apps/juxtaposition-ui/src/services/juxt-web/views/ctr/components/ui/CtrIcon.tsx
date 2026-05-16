@@ -4,6 +4,7 @@ import type { IconProps } from '@/services/juxt-web/views/web/components/ui/WebI
 
 export function CtrIcon(props: IconProps): ReactNode {
 	const type = props.type ?? 'icon';
+	const frame = props.type == 'header-icon' ? <div className="icon-frame"></div> : null;
 
 	const icon = <img src={props.src} className={type} />;
 	if (props.href) {
@@ -14,6 +15,7 @@ export function CtrIcon(props: IconProps): ReactNode {
 				data-pjax="#body"
 			>
 				{icon}
+				{frame}
 			</a>
 		);
 	} else {
@@ -22,6 +24,7 @@ export function CtrIcon(props: IconProps): ReactNode {
 				className={cx(`${type}-container`, props.className)}
 			>
 				{icon}
+				{frame}
 			</div>
 		);
 	}

@@ -5,7 +5,7 @@ import { guards } from '@/services/internal/middleware/guards';
 import { mapPost, postSchema } from '@/services/internal/contract/post';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
-import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import { getPostTypeFilter, postTypeFilter, standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { Settings } from '@/models/settings';
 import { Community } from '@/models/community';
 import type { FilterQuery } from 'mongoose';
@@ -23,6 +23,7 @@ userPostsRouter.get({
 		}),
 		query: z.object({
 			removed: z.stringbool().optional(),
+			type: postTypeFilter.default('post'),
 			sort: standardSortSchema,
 			sortBy: z.enum(['createdAt', 'removedAt']).default('createdAt')
 		}).extend(pageControlSchema()),
@@ -37,8 +38,8 @@ userPostsRouter.get({
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
 			pid: targetUser.pid,
 			removed: query.removed,
-			parent: null,
 			message_to_pid: null, // messages aren't really posts
+			...getPostTypeFilter(query.type),
 			...filterRemovedPosts(auth)
 		});
 		const sortKey: keyof IPost = query.sortBy === 'removedAt' ? 'removed_at' : 'created_at';

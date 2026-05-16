@@ -1,0 +1,483 @@
+@use 'sprites.css';
+@use './controls/ctabs.css';
+@use './controls/checkbox.css';
+@use './components/ui/CtrNavTabs.scss';
+@use './components/ui/CtrIcon.scss';
+@use './components/ui/CtrBigButton.scss';
+@use './components/CtrPageButtons.scss';
+@use './components/CtrPageHeader.scss';
+@use 'new-post-view.css';
+@use 'report-post-page.css';
+@use 'theme.scss' as t;
+
+body {
+    margin: 0;
+    font-family: nintendo_NTLG-DB_001,sans-serif;
+    width: 400px;
+    background: #00f
+}
+
+#body,
+body {
+    overflow-x: clip; /* Doesn't work on CTR, but the CSS relies on it not working */
+}
+
+#body {
+    background-image: url(@/images/background.png);
+    background-repeat: repeat;
+    padding-bottom: 28px; /* Toolbar location */
+
+    -webkit-box-sizing: border-box;
+    min-height: 460px; /* Never show the blue background! */
+}
+
+a {
+    text-decoration: none
+}
+
+li,
+menu,
+ol,
+ul {
+    list-style: none
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+menu,
+ol,
+p,
+table,
+td,
+th,
+tr,
+ul {
+    font-size: 100%;
+    font-weight: 400;
+    margin: 0;
+    padding: 0
+}
+
+.headline > h2 {
+    font-size: 18px;
+    padding: 0 10px
+}
+
+#body > .body-content {
+    width: 322px;
+    margin-left: 39px;
+    min-height: 175px;
+    margin-top: 10px;
+}
+
+.headline,
+menu.tab-header {
+    white-space: nowrap;
+    width: 300px
+}
+
+.headline {
+    line-height: 2;
+    color: #fff;
+    background: url(@/images/headline.png) 0 0 no-repeat;
+    margin: 6px 10px;
+    background-size: 100% !important
+}
+
+.headline.headline-green {
+    background: url(@/images/headline-green.png) 0 0 no-repeat;
+    border-color: #59c9a5
+}
+
+.icon-container > .icon {
+    width: 64px;
+    height: 64px;
+    background: #e6eaf1
+}
+
+.list-content-with-icon-column > li {
+    display: table;
+    width: 300px;
+    border-bottom: 3px dotted #d2b0e1;
+    margin: 6px 10px
+}
+
+.icon-container {
+    display: table-cell;
+    width: 60px;
+    height: 60px
+}
+
+.list-content-with-icon-column .body {
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 10px
+}
+
+.list-content-with-icon-column .body-content .text {
+    color: #969696;
+    font-size: 12px;
+    position: relative;
+    top: -5px;
+    left: 0;
+}
+
+.scroll.to-community-button {
+    display: block
+}
+
+.community-name.title {
+    font-size: 15px;
+    color: #323232
+}
+
+.text {
+    font-size: 16px;
+    position: absolute;
+    right: 10px;
+    top: 2px;
+}
+.text > span > span {
+    vertical-align: middle;
+}
+
+menu.tab-header {
+    display: inline-block;
+    text-align: center;
+    padding: 5px 0;
+    margin-top: 30px;
+    margin-left: 10px;
+    border: 1px solid #5e44aa;
+    background: -webkit-gradient(linear, left top, left bottom, from(#6045af), to(#634ca8)) 0 0 !important;
+    border-radius: 2px
+}
+
+menu.tab-header li {
+    display: inline-block;
+    width: 144px;
+    background: url(@/images/tab.png);
+}
+
+menu.tab-header li:first-child {
+    margin-left: 7px;
+    margin-right: -5px
+}
+
+menu.tab-header li:last-child {
+    margin-left: 0;
+    margin-right: 7px
+}
+
+menu.tab-header a {
+    color: #cabbf3;
+    width: 145px
+}
+
+menu.tab-header li.selected a {
+    display: inline-block;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.3, #fff), color-stop(.8, #fff5f5), color-stop(.96, #fff5f5), to(#fff5f5)) 0 0;
+    color: #4d4d4d
+}
+
+menu.tab-header.user-page a,
+menu.tab-header.user-page li {
+    width: 97px;
+    margin: -4px
+}
+
+menu.tab-header.user-page li:first-child {
+    margin-left: 6px
+}
+
+menu.tab-header.user-page li.double,
+menu.tab-header.user-page li.double > a {
+    width: 146px
+}
+
+menu.tab-header.user-page li.double {
+    margin-top: 5px
+}
+
+menu.tab-header.user-page li:last-child {
+    margin-left: -5px
+}
+
+.mii-icon-container img {
+    width: 35px;
+    height: 35px;
+    background: #fff
+}
+
+.mii-icon-container {
+    display: block;
+    height: 35px;
+    position: relative;
+    float: left;
+    border: 1px solid gray;
+    margin: 5px 10px 0 5px
+}
+
+.post {
+    background: #fff;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #666
+}
+
+.post-memo,
+.post-screenshot {
+    width: 320px
+}
+
+.post-memo {
+    height: 120px
+}
+
+.post-screenshot {
+    height: 178px;
+}
+
+.post-screenshot-16\3A 9 {
+    height: 180px;
+}
+
+.post-screenshot-5\3A 3 {
+    height: 192px;
+}
+
+.post-screenshot-4\3A 3 {
+    height: 240px;
+}
+
+.post-list .post .timestamp {
+    color: #969696
+}
+
+.tab-body.post-list {
+    margin-top: 10px;
+}
+
+.post header > a,
+.tags {
+    display: inline-block;
+    position: absolute
+}
+
+.post header > a {
+    width: 258px;
+    vertical-align: middle;
+    overflow: clip;
+    left: 0;
+    top: 17px
+}
+
+.tags {
+    color: #a362d8;
+    font-size: 10px;
+    line-height: 12px;
+    margin-top: 1px;
+    margin-left: 0
+}
+
+.post-content-text {
+    padding: 5px;
+    font-size: 15px;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+}
+
+.post header {
+    margin-top: 7px;
+    font-size: 12px;
+    position: relative
+}
+
+.community-banner {
+    display: inline-block;
+    width: 100%
+}
+
+.post .community-banner .community-name {
+    padding: 0 5px;
+    display: inline-block;
+    font-size: 11px;
+    color: #969696;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    top: 8px;
+    position: absolute;
+    overflow: clip
+}
+
+.post .community-banner,
+.title-icon-container {
+    display: inline-block;
+    width: 20px;
+    height: 20px
+}
+
+.title-icon {
+    width: 20px;
+    height: 20px
+}
+
+.post .community-banner {
+    background-color: #e5e5e5;
+    color: #323232;
+    position: relative;
+    z-index: 2;
+    border-radius: 2px;
+    padding: 5px;
+    width: 299px;
+    margin: 5px
+}
+
+.spoiler .post-content {
+    display: none
+}
+
+.spoiler-wrapper {
+    width: 100%;
+    display: inline-block
+}
+
+.spoiler-wrapper > button {
+    position: relative;
+    z-index: 2;
+    font-size: 12px;
+    border-radius: 5px;
+    min-width: 200px;
+    height: 35px;
+    padding: 0;
+    margin: 0 auto;
+    display: block;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), to(#e6e6e6)) 0 0;
+    border: 1px solid #cecece;
+    cursor: pointer
+}
+
+.yeah-list {
+    display: inline-block;
+    max-height: 85px;
+    overflow: clip
+}
+
+.inline-sprite {
+    display: inline-block;
+    border: 0;
+}
+
+.olv-modal-close-button,
+.post-button {
+    display: none
+}
+
+.yeah-count,
+.reply-count {
+    padding-left: 5px;
+    color: #646464;
+}
+
+.to-permalink-button span {
+    vertical-align: middle;
+}
+
+.to-permalink-button {
+    float: right;
+    margin-right: 10px;
+    margin-top: 2px;
+    padding-top: 10px;
+}
+
+div.button-wrapper.center {
+    width: 100%;
+    padding: unset;
+    margin-bottom: 15px
+}
+
+#news-list-content li .body .timestamp {
+    color: #969696;
+    white-space: nowrap
+}
+
+#news-list-content li .body .link {
+    color: #673db6
+}
+
+menu.tab-header.no-margin {
+    margin-top: 0
+}
+
+.scroll.to-community-button.full {
+    position: absolute;
+    width: 298px;
+    height: 66px;
+    left: 52px
+}
+
+.checkbox-container.spoiler-button {
+    width: 100%;
+    position: relative;
+    vertical-align: middle;
+    display: inline-block
+}
+
+.checkbox-container span {
+    margin: 4px auto;
+    display: block;
+    width: 100px;
+}
+
+.checkbox-container label {
+    font-size: 16px;
+}
+
+.yeah-text {
+    margin-left: 5px;
+}
+
+.small-button {
+    position: relative;
+    padding: 0;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 5px;
+    border: 1px solid gray;
+    border-radius: 8px;
+    background: t.$root-gradient-30px;
+}
+
+.body.message .id-name {
+    margin-left: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: #969696;
+}
+.body.message span {
+    font-size: 10px;
+    color: #646464;
+}
+.body.message .nick-name {
+    font-size: 14px;
+    color: #000;
+}
+.body .nick-name {
+    color: #000;
+}
+
+.settings-list > li {
+    display: inline-block;
+}
+
+p.settings-label {
+	float: left;
+	width: 275px;
+}

@@ -1,6 +1,6 @@
 import cx from 'classnames';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
-import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { PortalPostListClosedView } from '@/services/juxt-web/views/portal/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';

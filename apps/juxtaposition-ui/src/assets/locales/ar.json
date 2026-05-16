@@ -2,7 +2,6 @@
     "global": {
         "activity_feed": "موجز النشاط",
         "communities": "مجتمعات",
-        "messages": "رسائل",
         "notifications": "إشعارات",
         "user_page": "صفحة المستخدم",
         "go_back": "العودة",
@@ -96,8 +95,5 @@
     "new_post": {
         "swearing": "لا يمكن أن تحتوي المشاركة على لغة صريحة.",
         "post_to": "انشر إلى {{user}}"
-    },
-    "messages": {
-        "coming_soon": "الرسائل ليست جاهزة بعد. تحقق مرة أخرى قريبا!"
     }
 }

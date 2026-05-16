@@ -1,6 +1,5 @@
 {
     "global": {
-        "messages": "Poruke",
         "communities": "Zajednice",
         "notifications": "Obaveštenja",
         "back": "Nazad",
@@ -55,9 +54,6 @@
     },
     "activity_feed": {
         "empty": "Ovde je prazno. Pokušaj da pratiš nekoga!"
-    },
-    "messages": {
-        "coming_soon": "Poruke još uvek nisu spremne. Proveri ponovo uskoro!"
     },
     "setup": {
         "rules_text": {

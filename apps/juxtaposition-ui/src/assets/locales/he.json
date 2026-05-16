@@ -6,7 +6,6 @@
         "activity_feed": "פיד פעילויות",
         "exit": "יציאה",
         "next": "הבא",
-        "messages": "הודעות",
         "notifications": "התראות",
         "go_back": "חזרה",
         "back": "חזרה",
@@ -22,7 +21,6 @@
         "people_feed_short": "אנשים",
         "friend_requests": "בקשות חברות",
         "updates": "עדכונים",
-        "notifications_and_messages": "התראות והודעות",
         "search": "חיפוש..."
     },
     "all_communities": {
@@ -131,9 +129,6 @@
     "activity_feed": {
         "empty": "קצת ריק פה. נסו לעקוב אחרי מישהו!"
     },
-    "messages": {
-        "coming_soon": "אין הודעות"
-    },
     "login": {
         "title": "התחברות לJuxtaposition",
         "heading": "כניסה לJuxtaposition",
@@ -183,10 +178,7 @@
         "reason_nsfw": "תוכן מיני",
         "reason_piracy": "פיראטיות",
         "reason_inappropiate_ingame": "התנהגות לא הולמת במשחק",
-        "reason_missing_images": "תמונות חסרות",
-        "reason_one": "אחר",
-        "reason_two": "אחרים",
-        "reason_other": "אחרים"
+        "reason_missing_images": "תמונות חסרות"
     },
     "moderation": {
         "title": "ניהול",

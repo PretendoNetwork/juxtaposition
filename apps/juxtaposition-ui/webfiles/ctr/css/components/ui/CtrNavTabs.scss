@@ -1,3 +1,5 @@
+$page-gap: 10px;
+
 .nav-tabs {
     /* 1px l-r border to give us 320px padding box (not 322px) */
     border: 0 solid transparent;
@@ -5,6 +7,7 @@
 
     /* Visuals */
     padding: 5px;
+    margin-top: $page-gap;
 
     background: -webkit-gradient(linear, left top, left bottom, from(#6045af), to(#634ca8)) 0 0;
     border-radius: 2px;

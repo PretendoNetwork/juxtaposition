@@ -6,7 +6,7 @@ export type MiiIconProps = {
 	pid: number;
 	face_url?: string;
 
-	type?: 'mii-icon' | 'icon'; // default ".mii-icon"
+	type?: 'mii-icon' | 'icon' | 'header-icon'; // default ".mii-icon"
 	className?: string; // extra classes
 };
 

@@ -12,6 +12,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "build": "tsup && tsc --noEmit",
+    "build:meta": "tsup --metafile && tsc --noEmit",
     "start": "node --enable-source-maps dist/server.js"
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
     "crc": "^4.3.2",
+    "esbuild-sass-plugin": "^3.7.0",
     "express": "^5.2.1",
     "express-prom-bundle": "^7.0.2",
     "express-rate-limit": "^8.2.1",
@@ -57,6 +59,7 @@
     "@pretendonetwork/wiiu-browser-types": "^1.0.0",
     "@pretendonetwork/wiiu-dialog-types": "^1.0.0",
     "@pretendonetwork/wiiu-error-viewer-types": "^1.0.0",
+    "@pretendonetwork/wiiu-sound-types": "^1.0.0",
     "@repo/esbuild-plugin-oxipng": "^0.0.0",
     "@repo/esbuild-plugin-spritesmith": "^0.0.0",
     "@types/cookie-parser": "^1.4.10",

@@ -1,6 +1,5 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
-import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { TopicTagViewProps } from '@/services/juxt-web/views/web/topics';
@@ -19,7 +18,7 @@ export function PortalTopicTagView(props: TopicTagViewProps): ReactNode {
 				</div>
 				<div className="body-content" id="activity-feed">
 					<div className="tab-body post-list">
-						<PortalPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						{props.children}
 					</div>
 				</div>
 			</PortalPageBody>

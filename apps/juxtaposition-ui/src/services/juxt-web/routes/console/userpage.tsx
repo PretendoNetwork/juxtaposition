@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { database } from '@/database';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserMissingPage, WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
-import { WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { WebUserPageFollowingView } from '@/services/juxt-web/views/web/userPageFollowingView';
@@ -119,26 +119,6 @@ userPageRouter.get('/show', async function (req, res) {
 	res.redirect(`/users/${query.pid}`);
 });
 
-userPageRouter.get('/:pid/more', async function (req, res) {
-	const { params } = parseReq(req, {
-		params: z.object({
-			pid: z.coerce.number()
-		})
-	});
-
-	await morePosts(req, res, params.pid);
-});
-
-userPageRouter.get('/:pid/yeahs/more', async function (req, res) {
-	const { params } = parseReq(req, {
-		params: z.object({
-			pid: z.coerce.number()
-		})
-	});
-
-	await moreYeahPosts(req, res, params.pid);
-});
-
 userPageRouter.get('/:pid/:type', async function (req, res) {
 	const { params } = parseReq(req, {
 		params: z.object({
@@ -208,9 +188,11 @@ userPageRouter.get('/:pid/:type', async function (req, res) {
 async function userPage(req: Request, res: Response, userID: number): Promise<any> {
 	const { query, auth, hasAuth } = parseReq(req, {
 		query: z.object({
-			pjax: z.string().optional()
+			pjax: z.string().optional(),
+			offset: z.coerce.number().optional().default(0)
 		})
 	});
+	const offset = query.offset;
 	const self = hasAuth() ? auth().self : null;
 	const isSelf = hasAuth() && userID === auth().pid;
 
@@ -238,11 +220,11 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		});
 	}
 
-	const { data: postPage } = await req.api.users.posts.list({ id: userID });
+	const { data: postPage } = await req.api.users.posts.list({ id: userID, offset });
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
 	const postListProps: PostListViewProps = {
-		nextLink: `/users/${userID}/more?offset=${postPage.items.length}&pjax=true`,
+		...buildPostListLinks(link, offset, postPage.items.length),
 		posts: postPage.items,
 		userContent: self?.content ?? null
 	};
@@ -284,9 +266,11 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 			type: z.string()
 		}),
 		query: z.object({
-			pjax: z.string().optional()
+			pjax: z.string().optional(),
+			offset: z.coerce.number().optional().default(0)
 		})
 	});
+	const offset = query.offset;
 	const self = hasAuth() ? auth().self : null;
 	const isSelf = hasAuth() && userID === auth().pid;
 
@@ -321,10 +305,10 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	let selection = 0;
 
 	if (params.type === 'yeahs') {
-		const posts = (await req.api.posts.list({ empathy_by: userID }))?.data.items ?? [];
+		const posts = (await req.api.posts.list({ empathy_by: userID, offset }))?.data.items ?? [];
 		const postListProps: PostListViewProps = {
+			...buildPostListLinks(link + 'yeahs', offset, posts.length),
 			posts,
-			nextLink: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`,
 			userContent: self?.content ?? null
 		};
 		if (query.pjax) {
@@ -361,16 +345,16 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	}
 
 	if (params.type === 'friends') {
-		const { data: page } = await req.api.users.listFriends({ id: userID, limit: 100 });
+		const { data: page } = await req.api.users.listFriends({ id: userID, limit: 100, offset });
 		followers = page.items;
 		selection = 1;
 	} else if (params.type === 'followers') {
-		const { data: page } = await req.api.users.listFollowers({ id: userID, limit: 100 });
+		const { data: page } = await req.api.users.listFollowers({ id: userID, limit: 100, offset });
 		followers = page.items;
 		selection = 3;
 	} else {
-		const { data: page } = await req.api.users.listFollowing({ id: userID, limit: 100 });
-		const { data: communityPage } = await req.api.users.listFollowedCommunities({ id: userID, limit: 100 });
+		const { data: page } = await req.api.users.listFollowing({ id: userID, limit: 100, offset });
+		const { data: communityPage } = await req.api.users.listFollowedCommunities({ id: userID, limit: 100, offset });
 		followers = page.items;
 		communities = communityPage.items.map(com => ({ id: com.olive_community_id, name: com.name }));
 		selection = 2;
@@ -409,59 +393,5 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 				<CtrUserPageFollowingView {...listProps} />
 			</CtrUserPageView>
 		)
-	});
-}
-
-async function morePosts(req: Request, res: Response, userID: number): Promise<any> {
-	const { query, auth, hasAuth } = parseReq(req, {
-		query: z.object({
-			offset: z.coerce.number().nonnegative().default(0)
-		})
-	});
-	const { offset } = query;
-
-	const userContent = hasAuth() ? auth().self.content : null;
-	const posts = (await req.api.users.posts.list({ id: userID, offset }))?.data.items ?? [];
-
-	if (posts.length === 0 || !userContent) {
-		return res.sendStatus(204);
-	}
-
-	const props: PostListViewProps = {
-		posts,
-		nextLink: `/users/${userID}/more?offset=${offset + posts.length}&pjax=true`,
-		userContent: userContent
-	};
-	return res.jsxForDirectory({
-		web: <WebPostListView {...props} />,
-		portal: <PortalPostListView {...props} />,
-		ctr: <CtrPostListView {...props} />
-	});
-}
-
-async function moreYeahPosts(req: Request, res: Response, userID: number): Promise<any> {
-	const { query, hasAuth, auth } = parseReq(req, {
-		query: z.object({
-			offset: z.coerce.number().nonnegative().default(0)
-		})
-	});
-	const { offset } = query;
-
-	const userContent = hasAuth() ? auth().self.content : null;
-	const posts = (await req.api.posts.list({ empathy_by: userID, offset }))?.data.items ?? [];
-
-	if (posts.length === 0) {
-		return res.sendStatus(204);
-	}
-
-	const props: PostListViewProps = {
-		posts,
-		nextLink: `/users/${userID}/yeahs/more?offset=${offset + posts.length}&pjax=true`,
-		userContent
-	};
-	return res.jsxForDirectory({
-		web: <WebPostListView {...props} />,
-		portal: <PortalPostListView {...props} />,
-		ctr: <CtrPostListView {...props} />
 	});
 }

@@ -2,12 +2,13 @@ import express from 'express';
 import { z } from 'zod';
 import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { PortalTopicTagView } from '@/services/juxt-web/views/portal/topics';
 import { WebTopicTagView } from '@/services/juxt-web/views/web/topics';
 import { CtrTopicTagView } from '@/services/juxt-web/views/ctr/topics';
+import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
 export const topicsRouter = express.Router();
 
@@ -16,63 +17,50 @@ topicsRouter.get('/', async function (req, res) {
 		query: z.object({
 			pjax: z.stringbool().optional(),
 			limit: z.coerce.number().min(1).max(config.postLimit).optional().default(config.postLimit),
-			topic_tag: z.string()
+			topic_tag: z.string(),
+			offset: z.coerce.number().optional().default(0)
 		})
 	});
 
+	const offset = query.offset;
 	const userContent = hasAuth() ? auth().self.content : null;
 	const { data: postsPage } = await req.api.posts.list({ topic_tag: query.topic_tag, limit: query.limit });
 	const posts = postsPage.items;
 
-	const nextLink = `/topics/more?${new URLSearchParams({
-		topic_tag: query.topic_tag,
-		offset: `${posts.length}`,
-		pjax: 'true'
+	const link = `/topics?${new URLSearchParams({
+		topic_tag: query.topic_tag
 	})}`;
+
+	const postListProps: PostListViewProps = {
+		...buildPostListLinks(link, offset, posts.length),
+		posts,
+		userContent
+	};
 
 	if (query.pjax) {
 		return res.jsxForDirectory({
-			web: <WebPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
-			portal: <PortalPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
-			ctr: <CtrPostListView nextLink={nextLink} posts={posts} userContent={userContent} />
+			web: <WebPostListView {...postListProps} />,
+			portal: <PortalPostListView {...postListProps} />,
+			ctr: <CtrPostListView {...postListProps} />
 		});
 	}
 
 	const title = query.topic_tag;
 	return res.jsxForDirectory({
-		web: <WebTopicTagView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalTopicTagView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrTopicTagView title={title} nextLink={nextLink} posts={posts} userContent={userContent} />
-	});
-});
-
-topicsRouter.get('/more', async function (req, res) {
-	const { auth, hasAuth, query } = parseReq(req, {
-		query: z.object({
-			pjax: z.stringbool().optional(),
-			limit: z.coerce.number().min(1).max(config.postLimit).optional().default(config.postLimit),
-			offset: z.coerce.number(),
-			topic_tag: z.string()
-		})
-	});
-
-	const userContent = hasAuth() ? auth().self.content : null;
-	const { data: postsPage } = await req.api.posts.list({ topic_tag: query.topic_tag, limit: query.limit, offset: query.offset });
-	const posts = postsPage.items;
-
-	const nextLink = `/topics/more?${new URLSearchParams({
-		topic_tag: query.topic_tag,
-		offset: (query.offset + posts.length).toString(),
-		pjax: 'true'
-	})}`;
-
-	if (posts.length === 0) {
-		return res.sendStatus(204);
-	}
-
-	return res.jsxForDirectory({
-		web: <WebPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
-		portal: <PortalPostListView nextLink={nextLink} posts={posts} userContent={userContent} />,
-		ctr: <CtrPostListView nextLink={nextLink} posts={posts} userContent={userContent} />
+		web: (
+			<WebTopicTagView title={title}>
+				<WebPostListView {...postListProps} />
+			</WebTopicTagView>
+		),
+		portal: (
+			<PortalTopicTagView title={title}>
+				<PortalPostListView {...postListProps} />
+			</PortalTopicTagView>
+		),
+		ctr: (
+			<CtrTopicTagView title={title}>
+				<CtrPostListView {...postListProps} />
+			</CtrTopicTagView>
+		)
 	});
 });

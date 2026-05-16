@@ -9,7 +9,7 @@ function DatePickerWithPreview(props: { value?: Date; id: string; name: string; 
 	return (
 		<div className="field">
 			<label>{props.label}</label>
-			<input type="datetime-local" id={props.id} data-init-date-value={props.value} data-date-picker-preview name={props.name} required />
+			<input type="datetime-local" id={props.id} data-init-date-value={props.value?.toISOString()} data-date-picker-preview name={props.name} required />
 			<div className="date-preview" data-date-preview-for={props.id}>
 				<div className="segment">
 					<p className="segment-label">UTC</p>
@@ -43,6 +43,7 @@ export function WebAccountStatusEditor(props: AccountStatusEditorProps): ReactNo
 	const status = props.modProfile.accountStatus;
 	const pid = props.modProfile.pid;
 	const reason = props.modProfile.banReason ?? undefined;
+	const until = props.modProfile.bannedUntil ? new Date(props.modProfile.bannedUntil) : undefined;
 
 	return (
 		<div className="account-status-editor">
@@ -62,14 +63,14 @@ export function WebAccountStatusEditor(props: AccountStatusEditorProps): ReactNo
 				</div>
 			</AccountStatusTab>
 			<AccountStatusTab pid={pid} status={1} footerText="Limit account from posting">
-				<DatePickerWithPreview id="ban_lift_date_limitposting" name="ban_lift_date" label="Limit account until" />
+				<DatePickerWithPreview id="ban_lift_date_limitposting" value={until} name="ban_lift_date" label="Limit account until" />
 				<div className="field">
 					<label>Reason</label>
 					<input type="text" name="ban_reason" placeholder="Reason" value={reason} />
 				</div>
 			</AccountStatusTab>
 			<AccountStatusTab pid={pid} status={2} footerText="Issue temporary ban to account">
-				<DatePickerWithPreview id="ban_lift_date_temp" name="ban_lift_date" label="Ban until" />
+				<DatePickerWithPreview id="ban_lift_date_temp" value={until} name="ban_lift_date" label="Ban until" />
 				<div className="field">
 					<label>Reason</label>
 					<input type="text" name="ban_reason" placeholder="Reason" value={reason} />

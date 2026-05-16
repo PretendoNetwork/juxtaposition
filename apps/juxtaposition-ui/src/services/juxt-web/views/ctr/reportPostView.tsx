@@ -1,18 +1,18 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { ReactNode } from 'react';
 import type { ReportPostViewProps } from '@/services/juxt-web/views/web/reportPostView';
 
 export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 	return (
 		<div id="report-post-page">
-			<header
-				id="header"
+			<CtrPageTitledHeader
 				data-toolbar-mode="wide"
 				data-toolbar-message={T.str('reporting.submit')}
 			>
-				<h1 id="page-title"><T k="reporting.title" /></h1>
-			</header>
+				<T k="reporting.title" />
+			</CtrPageTitledHeader>
 			<form method="post" action={`/posts/${props.id}/report`} className="report-form post" name="report">
 				<input type="hidden" name="post_id" id="report-post-id" value={props.id} />
 				<p><T k="reporting.description" /></p>
@@ -32,7 +32,7 @@ export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 						<option value="7"><T k="reporting.reason_piracy" /></option>
 						<option value="8"><T k="reporting.reason_inappropiate_ingame" /></option>
 						<option value="10"><T k="reporting.reason_missing_images" /></option>
-						<option value="9"><T k="reporting.reason_other" /></option>
+						<option value="9"><T k="reporting.reason_others" /></option>
 					</select>
 				</div>
 				<textarea

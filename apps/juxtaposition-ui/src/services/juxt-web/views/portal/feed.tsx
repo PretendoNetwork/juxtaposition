@@ -1,6 +1,5 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
-import { PortalNavBar } from '@/services/juxt-web/views/portal/navbar';
-import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
+import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
@@ -40,7 +39,7 @@ export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
 				<div className="body-content" id="activity-feed">
 					<PortalFeedTabs selected={0} />
 					<div className="tab-body post-list">
-						<PortalPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						{props.children}
 					</div>
 				</div>
 			</PortalPageBody>
@@ -64,7 +63,7 @@ export function PortalPeopleFeedView(props: FeedViewProps): ReactNode {
 				<div className="body-content" id="activity-feed">
 					<PortalFeedTabs selected={1} />
 					<div className="tab-body post-list">
-						<PortalPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						{props.children}
 					</div>
 				</div>
 			</PortalPageBody>
@@ -88,7 +87,7 @@ export function PortalGlobalFeedView(props: FeedViewProps): ReactNode {
 				<div className="body-content" id="activity-feed">
 					<PortalFeedTabs selected={2} />
 					<div className="tab-body post-list">
-						<PortalPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+						{props.children}
 					</div>
 				</div>
 			</PortalPageBody>
