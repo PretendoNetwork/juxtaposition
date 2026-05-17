@@ -1,0 +1,33 @@
+// Actually the wrapper for each individual community *in* the list
+.community-list-wrapper {
+    display: flex;
+
+    background: var(--background-alt);
+    padding: 1em;
+    border-radius: 1em;
+}
+
+.community-list-icon {
+    width: 100px;
+    height: 100px;
+
+    margin-right: 1em;
+    border-radius: 1em;
+    display: block;
+}
+
+.community-list-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    word-break: break-word;
+}
+
+.community-list-title {
+    font-size: 18px;
+    margin: 0; // since it's an h3
+}
+
+.community-list-followers {
+    font-size: 1.5ch;
+}
