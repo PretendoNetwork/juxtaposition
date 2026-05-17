@@ -47,7 +47,7 @@ export function WebUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 				<WebInfobox>
 					<div className="title-line">
 						<WebIcon
-							src="/assets/web/images/bandwidthlost.png"
+							src="/assets/web/images/bandwidthlost-128.png"
 							type="header-icon"
 						/>
 						<div className="title">{title}</div>

@@ -84,6 +84,7 @@
   },
   "user_settings": {
     "profile_settings": "Profile Settings",
+    "show_profile": "Show Profile to guests",
     "show_country": "Show Country on Profile",
     "show_birthday": "Show Birthday on Profile",
     "show_game": "Show Game Experience on Profile",

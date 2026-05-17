@@ -105,6 +105,7 @@ userPageRouter.get('/me/:type', async function (req, res) {
 userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 	const { body, auth } = parseReq(req, {
 		body: z.object({
+			profile: z.coerce.boolean(),
 			country: z.coerce.boolean(),
 			birthday: z.coerce.boolean(),
 			experience: z.coerce.boolean(),
@@ -116,11 +117,12 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 		return res.redirect('/users/me');
 	}
 
+	userSettings.profile_visibility = body.profile ? 'public' : 'users_only';
 	userSettings.country_visibility = body.country;
 	userSettings.birthday_visibility = body.birthday;
 	userSettings.game_skill_visibility = body.experience;
 	userSettings.profile_comment_visibility = !!body.comment;
-	userSettings.updateComment(body.comment ?? '');
+	await userSettings.updateComment(body.comment ?? '');
 
 	res.redirect('/users/me');
 });
