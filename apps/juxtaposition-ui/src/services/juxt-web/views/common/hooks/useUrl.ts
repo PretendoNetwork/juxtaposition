@@ -4,7 +4,7 @@ import type { Community } from '@/api/generated';
 export type CtrHeader = { bannerUrl: string; imageId: string; legacy: boolean };
 type Serializable = string | number | boolean | undefined | null;
 
-function buildUrl(u: string, query?: Record<string, Serializable>): string {
+export function buildUrl(u: string, query?: Record<string, Serializable>): string {
 	const [pathName, search = ''] = u.split('?', 2);
 	const originalParams = new URLSearchParams(search);
 	Object.entries(query ?? {}).forEach(([key, value]) => {

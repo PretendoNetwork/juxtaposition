@@ -158,6 +158,13 @@ const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods
 	}
 });
 
+CommunitySchema.index({
+	olive_community_id: 1
+}, { unique: true });
+CommunitySchema.index({
+	community_id: 1
+}, { unique: true });
+
 CommunitySchema.method<HydratedCommunityDocument>('addUserFavorite', async function addUserFavorite(pid: number): Promise<void> {
 	if (this.user_favorites === undefined) {
 		this.user_favorites = [pid];

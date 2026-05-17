@@ -1,3 +1,6 @@
+@use './theme.scss' as t;
+@use './components/WebInfobox.scss';
+
 :root {
   --background: #1b1f3b;
   --background-alt: #2a2f50;
@@ -231,6 +234,7 @@ header > .selected svg {
   height: 64px;
   border-radius: 0.5em;
   background: var(--text-secondary);
+  display: block;
 }
 
 .user-icon.verified {
@@ -439,7 +443,7 @@ iframe {
 }
 
 .community-list-title {
-  margin: 0.5em 0-1em;
+  margin: 0.5em 0 -1em;
   font-size: 18px;
 }
 
@@ -561,11 +565,6 @@ iframe {
   padding-left: 0.5em;
   font-size: larger;
   padding-top: 0.5em;
-}
-
-.banner {
-  width: 110%;
-  margin: -1em;
 }
 
 .community-page-follow-button-wrapper {
@@ -1147,6 +1146,10 @@ input[type="radio"] {
 .feeling-button-puzzled:checked {
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23ce80ff' stroke='%23fff' viewBox='0 0 256 256'%3E%3Ccircle cx='128' cy='128' r='96' fill='23ce80ff' stroke='%23ce80ff' stroke-miterlimit='10' stroke-width='16'/%3E%3Cpolyline points='80 172 96 152 112 172 128 152 144 172 160 152 176 172' fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3E%3Ccircle cx='92' cy='108' r='12' fill='%23fff'/%3E%3Ccircle cx='164' cy='108' r='12' fill='%23fff'/%3E%3C/svg%3E") !important;
 }
+.supporter-star .ui-icon {
+  display: inline-block;
+  vertical-align: center;
+}
 .supporter-star.mario svg {
 	fill:rgba(255,132,132,.2);
 	color:#ff8484
@@ -1429,7 +1432,7 @@ li.reports .button-spacer {
 }
 
 .community-page-post-box .buttons.tabs {
-  margin-bottom: 1em;
+  margin: 1em 0;
 }
 
 .community-info.active::before {
@@ -1445,7 +1448,7 @@ li.reports .button-spacer {
 	border: 3px solid white;
   }
 
-@media screen and (max-width: 1400px) {
+@include t.media(">=tablet", "<desktop") {
   .communities-wrapper {
     max-width: 600px;
     grid-template-columns: auto auto;
@@ -1466,7 +1469,7 @@ li.reports .button-spacer {
   }
 }
 
-@media screen and (max-width: 1000px) {
+@include t.media(">=phone", "<tablet") {
   #main {
     width: 100%;
     margin-bottom: 60px;
@@ -1866,7 +1869,7 @@ button.report {
 	z-index: 100;
   }
 
-@media screen and (max-width: 1400px) {
+@include t.media(">=tablet", "<desktop") {
 	.communities-wrapper {
 		max-width: 600px;
 		grid-template-columns: auto auto;
@@ -1887,7 +1890,7 @@ button.report {
 	}
 }
 
-@media screen and (max-width: 1000px) {
+@include t.media(">=phone", "<tablet") {
 	#main {
 		width: 100%;
 		margin-bottom: 60px

@@ -143,7 +143,10 @@ export default defineConfig([
 			'webfiles/web/js/login.js',
 			'webfiles/web/js/painting.js',
 			'webfiles/web/js/web.js',
-			'webfiles/web/**/*.css'
+			'webfiles/web/css/web.scss',
+			'webfiles/web/css/admin.css',
+			'webfiles/web/css/first_run.css',
+			'webfiles/web/css/login.css'
 		],
 		bundle: true,
 		sourcemap: true,
@@ -160,6 +163,7 @@ export default defineConfig([
 			options.tsconfig = './webfiles/web/tsconfig.json';
 		},
 		esbuildPlugins: [
+			sassPlugin({ type: 'css' }),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [

@@ -1,18 +1,12 @@
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
-import type { InferSchemaType } from 'mongoose';
-import type { PostSchema } from '@/models/post';
-import type { SelfContent } from '@/api/generated';
 
 export type TopicTagViewProps = {
 	title: string;
-	userContent: SelfContent | null;
-	posts: InferSchemaType<typeof PostSchema>[];
-	nextLink: string;
+	children: ReactNode | ReactNode[];
 };
 
 export function WebTopicTagView(props: TopicTagViewProps): ReactNode {
@@ -24,7 +18,7 @@ export function WebTopicTagView(props: TopicTagViewProps): ReactNode {
 			<WebNavBar selection={1} />
 			<div id="toast"></div>
 			<WebWrapper>
-				<WebPostListView nextLink={props.nextLink} userContent={props.userContent} posts={props.posts} />
+				{props.children}
 			</WebWrapper>
 			<WebReportModalView />
 		</WebRoot>

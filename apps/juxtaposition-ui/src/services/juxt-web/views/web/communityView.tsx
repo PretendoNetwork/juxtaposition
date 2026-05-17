@@ -5,6 +5,9 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { WebPostListClosedView } from '@/services/juxt-web/views/web/postList';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
 import type { ReactNode } from 'react';
 import type { Community } from '@/api/generated';
 
@@ -54,8 +57,8 @@ export function WebCommunityHead(props: CommunityViewProps): ReactNode {
 
 export function WebCommunityView(props: CommunityViewProps): ReactNode {
 	const url = useUrl();
+	const user = useUser();
 	const community = props.community;
-	const imageId = community.parentId ? community.parentId : community.olive_community_id;
 	const bannerUrl = url.cdn(community.wupHeaderImagePath);
 
 	return (
@@ -66,46 +69,50 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
-				<div className="community-top">
-					<img className="banner" src={bannerUrl} />
-					<div className="community-info">
-						<img className="user-icon" src={url.cdn(`/icons/${imageId}/128.png`)} />
-						<h2 className="community-title">{community.name}</h2>
-						{community.permissions.open
-							? (
-									<a
-										href="#"
-										className={cx('favorite-button', {
-											checked: props.isUserFollowing
-										})}
-										evt-click="follow(this)"
-										data-sound="SE_WAVE_CHECKBOX_UNCHECK"
-										data-url="/titles/follow"
-										data-community-id={community.olive_community_id}
-										data-text={props.isUserFollowing ? T.str('user_page.follow_user') : T.str('user_page.following_user')}
-									>
-										{props.isUserFollowing ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
-									</a>
-								)
-							: null}
+				<WebInfobox	bannerUrl={bannerUrl}>
+					<div className="title-line">
+						<WebCommunityIcon community={community} size="128" type="header-icon" />
+						<div className="title">{community.name}</div>
+						<WebInfoboxFollowButton
+							followType="title"
+							followId={community.olive_community_id}
+							isFollowing={props.isUserFollowing}
+						/>
 					</div>
-					<h4 className="community-description">{community.description}</h4>
-					<span className="community-page-follow-button-text" id={community.olive_community_id}></span>
-					<div className="info-boxes-wrapper">
-						<div>
-							<h4><T k="community.followers" /></h4>
-							<h4 className="community-page-table-text" id="followers">{community.followerCount}</h4>
-						</div>
-						<div>
-							<h4><T k="community.posts" /></h4>
-							<h4>{props.totalPosts}</h4>
-						</div>
-						<div>
-							<h4><T k="community.tags" /></h4>
-							<h4><T k="community.tags_not_applicable" /></h4>
-						</div>
+					<div className="description">
+						{community.description}
 					</div>
-				</div>
+					<WebInfoboxStatBoxes>
+						<div>
+							<div className="value" id="followers">{community.followerCount}</div>
+							<div className="name"><T k="community.followers" /></div>
+						</div>
+						<div>
+							<div className="value">{props.totalPosts}</div>
+							<div className="name"><T k="community.posts" /></div>
+						</div>
+						<div>
+							<div className="value"><T k="community.tags_not_applicable" /></div>
+							<div className="name"><T k="community.tags" /></div>
+						</div>
+					</WebInfoboxStatBoxes>
+				</WebInfobox>
+				<WebInfoboxButtons>
+					{props.hasSubCommunities
+						? (
+								<WebInfoboxButton href={`/titles/${community.olive_community_id}/related`}>
+									<T k="community.related" />
+								</WebInfoboxButton>
+							)
+						: null}
+					{user.perms.developer
+						? (
+								<WebInfoboxButton href={`/admin/communities/${community.olive_community_id}`}>
+									Edit Community
+								</WebInfoboxButton>
+							)
+						: null}
+				</WebInfoboxButtons>
 				<div className="buttons tabs">
 					<a
 						id="recent-tab"

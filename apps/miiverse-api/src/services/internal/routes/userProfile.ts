@@ -5,7 +5,6 @@ import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/c
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { Settings } from '@/models/settings';
 import { mapShallowUser, mapUserProfile, shallowUserSchema, userProfileSchema } from '@/services/internal/contract/user';
-import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { errors } from '@/services/internal/errors';
 import { createNewFollowNotification } from '@/services/internal/utils/notifications';
 import { getUserAccountData, getUserFriendPIDs } from '@/util';
@@ -13,6 +12,7 @@ import { Post } from '@/models/post';
 import { communitySchema, mapCommunity } from '@/services/internal/contract/community';
 import { COMMUNITY_TYPE } from '@/types/mongoose/community';
 import { Community } from '@/models/community';
+import { followSchema, mapFollowUser } from '@/services/internal/contract/follow';
 import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
 import { Content } from '@/models/content';
 import type { FilterQuery } from 'mongoose';
@@ -236,7 +236,7 @@ userProfileRouter.post({
 		params: z.object({
 			id: z.coerce.number()
 		}),
-		response: resultSchema
+		response: followSchema
 	},
 	async handler({ params, auth }) {
 		const targetUserPid = params.id;
@@ -257,7 +257,7 @@ userProfileRouter.post({
 		const currentUserFollowedUsers = currentUser.content.followed_users;
 		const isFollowing = currentUserFollowedUsers.includes(targetUserPid);
 		if (isFollowing) {
-			return mapResult('success');
+			return mapFollowUser('follow', targetUserContent);
 		}
 
 		targetUserContent.following_users.push(currentUserPid);
@@ -266,7 +266,7 @@ userProfileRouter.post({
 		await currentUser.content.save();
 
 		await createNewFollowNotification({ currentUser: currentUserPid, userToFollow: targetUserPid });
-		return mapResult('success');
+		return mapFollowUser('follow', targetUserContent);
 	}
 });
 
@@ -278,7 +278,7 @@ userProfileRouter.delete({
 		params: z.object({
 			id: z.coerce.number()
 		}),
-		response: resultSchema
+		response: followSchema
 	},
 	async handler({ params, auth }) {
 		const targetUserPid = params.id;
@@ -298,7 +298,7 @@ userProfileRouter.delete({
 		const currentUserFollowedUsers = currentUser.content.followed_users;
 		const isFollowing = currentUserFollowedUsers.includes(targetUserPid);
 		if (!isFollowing) {
-			return mapResult('success');
+			return mapFollowUser('unfollow', targetUserContent);
 		}
 
 		targetUserContent.following_users = targetUserContent.following_users.filter(pid => pid !== currentUserPid);
@@ -306,6 +306,6 @@ userProfileRouter.delete({
 		await targetUserContent.save();
 		await currentUser.content.save();
 
-		return mapResult('success');
+		return mapFollowUser('unfollow', targetUserContent);
 	}
 });

@@ -32,29 +32,6 @@ cave.toolbar_setCallback(5, function () {
 });
 cave.toolbar_setCallback(8, function () { });
 
-export function initMorePosts() {
-	var els = document.querySelectorAll('.load-more[data-href]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			cave.snd_playSe('SE_OLV_OK');
-			GET(el.getAttribute('data-href'), function a(data) {
-				var response = data.responseText;
-				if (response && data.status === 200) {
-					el.parentElement.outerHTML = response;
-					initPosts();
-					initMorePosts();
-					pjaxRefresh();
-				} else {
-					el.parentElement.outerHTML = '';
-				}
-			});
-		});
-	}
-}
 export function initPosts() {
 	var els = document.querySelectorAll('.post-content[data-href]');
 	if (!els) {
@@ -107,7 +84,6 @@ window.stopLoading = stopLoading;
 
 function initAll() {
 	initPosts();
-	initMorePosts();
 	initNewPostView();
 	initNavTabs();
 	initPostPageView();
@@ -140,14 +116,19 @@ function follow(el) {
 	}
 
 	POST(el.getAttribute('data-url'), params, function a(data) {
-		var element = JSON.parse(data.responseText);
-		if (!element || element.status !== 200) {
+		var response = JSON.parse(data.responseText);
+		if (!response || response.status !== 200) {
 			// Apparently there was an actual error code for not being able to yeah a post, who knew!
 			// TODO: Find more of these
 			return cave.error_callErrorViewer(155927);
 		}
 		el.disabled = false;
-		count.innerText = element.count;
+		count.innerText = response.follower_count;
+		if (response.action === 'follow') {
+			el.classList.add('selected');
+		} else {
+			el.classList.remove('selected');
+		}
 	});
 }
 window.follow = follow;
