@@ -16,6 +16,7 @@ import bellIcon from '../../assets/bell.svg?raw';
 import usersIcon from '../../assets/users.svg?raw';
 import homeIcon from '../../assets/home.svg?raw';
 import hammerIcon from '../../assets/hammer.svg?raw';
+import rightIcon from '../../assets/right_line.svg?raw';
 import type { ReactNode } from 'react';
 
 const icons = {
@@ -33,20 +34,24 @@ const icons = {
 	'bell': bellIcon,
 	'users': usersIcon,
 	'home': homeIcon,
-	'hammer': hammerIcon
+	'hammer': hammerIcon,
+	'right-arrow': rightIcon
 } as const;
 
 type WebUIIcon = keyof typeof icons;
 
 export type WebUIIconProps = {
 	name: WebUIIcon;
+	title?: string;
 };
 
 export function WebUIIcon(props: WebUIIconProps): ReactNode {
 	const iconHtml = icons[props.name];
 	return (
 		<span
+			className="ui-icon"
 			role="img"
+			title={props.title}
 			aria-label={`${props.name} icon`}
 			style={{ lineHeight: '0.7' }}
 			dangerouslySetInnerHTML={{ __html: iconHtml }}

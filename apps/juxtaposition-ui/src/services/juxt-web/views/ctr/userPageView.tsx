@@ -92,7 +92,7 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 
 									evt-click="follow(this)"
 									data-url="/users/follow"
-									data-community-id={profile.pid}
+									data-community-id={`${profile.pid}`}
 								>
 								</CtrPageButton>
 							)

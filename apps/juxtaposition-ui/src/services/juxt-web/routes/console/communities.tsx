@@ -21,11 +21,12 @@ import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView'
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import { Community } from '@/models/communities';
 import { getAllFromList } from '@/api/helpers';
+import { WebSubCommunityView } from '@/services/juxt-web/views/web/subCommunityView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
-import type { Post } from '@/api/generated';
+import type { FollowAction, FollowActionEnum, Post } from '@/api/generated';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
 const upload = multer({ dest: 'uploads/' });
@@ -123,6 +124,7 @@ communitiesRouter.get('/:communityID/related', async function (req, res) {
 		subcommunities: children
 	};
 	res.jsxForDirectory({
+		web: <WebSubCommunityView {...props} />,
 		portal: <PortalSubCommunityView {...props} />,
 		ctr: <CtrSubCommunityView {...props} />
 	});
@@ -257,13 +259,18 @@ communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 		})
 	});
 
-	const { data: community } = await req.api.communities.get({ id: body.id });
 	const userContent = await database.getUserContent(auth().pid);
-
-	if (!userContent || !community) {
-		res.send({ status: 423, id: community?.olive_community_id, count: community?.followerCount });
+	if (!userContent) {
+		res.send({ status: 403 });
 		return;
 	}
+
+	const { data: community } = await req.api.communities.get({ id: body.id });
+	if (!community) {
+		res.send({ status: 404 });
+		return;
+	}
+
 	const dbCommunity = await Community.findOne({ olive_community_id: community.olive_community_id });
 	if (!dbCommunity) {
 		throw new Error('Community gone after request');
@@ -271,13 +278,22 @@ communitiesRouter.post('/follow', upload.none(), async function (req, res) {
 
 	// Pretty terrible use of `any` here, but database models aren't typed yet so I have to
 	const userFollowsCommunity = userContent.followed_communities.includes(community.olive_community_id);
+	let action: FollowActionEnum;
 	if (!userFollowsCommunity) {
 		await dbCommunity.upFollower();
 		await (userContent as any).addToCommunities(community.olive_community_id);
+		action = 'follow';
 	} else {
 		await dbCommunity.downFollower();
 		await (userContent as any).removeFromCommunities(community.olive_community_id);
+		action = 'unfollow';
 	}
 
-	res.send({ status: 200, id: community.olive_community_id, count: community.followerCount });
+	const result: FollowAction = {
+		action,
+		follower_count: dbCommunity.followers,
+		id: dbCommunity.olive_community_id
+	};
+
+	res.send({ status: 200, ...result });
 });

@@ -160,22 +160,16 @@ userPageRouter.post('/follow', upload.none(), async function (req, res) {
 	const userContent = auth().self.content;
 	if (!userToFollowProfile) {
 		// Invalid state, can't do a follow
-		return res.send({ status: 423, id: body.id, count: 0 });
+		return res.send({ status: 404 });
 	}
 
 	const isFollowing = userContent.followed_users.includes(userToFollowProfile.pid);
 	const shouldFollow = !isFollowing;
-	if (shouldFollow) {
-		await req.api.users.followerUser({ id: userToFollowProfile.pid });
-	} else {
-		await req.api.users.unfollowUser({ id: userToFollowProfile.pid });
-	}
+	const result = shouldFollow
+		? await req.api.users.followerUser({ id: userToFollowProfile.pid })
+		: await req.api.users.unfollowUser({ id: userToFollowProfile.pid });
 
-	const changeNum = shouldFollow ? 1 : -1;
-	const newFollowerCount = userToFollowProfile.followers + changeNum;
-
-	// idk why, but it always subtracts one from the count before returning
-	res.send({ status: 200, id: userToFollowProfile.pid, count: newFollowerCount - 1 });
+	res.send({ status: 200, ...result.data });
 });
 
 userPageRouter.get('/:pid', async function (req, res) {

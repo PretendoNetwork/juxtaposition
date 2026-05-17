@@ -76,7 +76,11 @@
     "friend_requests": "Requests",
     "deleted": "Deleted User",
     "banned": "Banned User",
-    "not_found": "User doesn't exist"
+    "not_found": "User doesn't exist",
+    "tester_tag": "Tester",
+    "supporter_tag": "Supporter",
+    "moderator_tag": "Moderator",
+    "developer_tag": "Developer"
   },
   "user_settings": {
     "profile_settings": "Profile Settings",

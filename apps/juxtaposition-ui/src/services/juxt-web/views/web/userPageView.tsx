@@ -7,6 +7,9 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
+import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
+import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
+import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
 
@@ -41,22 +44,24 @@ export function WebUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 			<WebNavBar selection={-1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
-				<div className="community-top">
-					<img className="banner" src="/assets/web/images/banner.png" alt="" />
-					<div className="community-info">
-						<img className="user-icon" src="/assets/web/images/bandwidthlost.png" />
-						<h2 className="community-title">{title}</h2>
+				<WebInfobox>
+					<div className="title-line">
+						<WebIcon
+							src="/assets/web/images/bandwidthlost.png"
+							type="header-icon"
+						/>
+						<div className="title">{title}</div>
 					</div>
+				</WebInfobox>
+				<WebInfoboxButtons>
 					{user.perms.moderator && userExists
 						? (
-								<div className="info-boxes-wrapper">
-									<div>
-										<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${props.pid}`}><T k="moderation.moderate_user" /></a></h4>
-									</div>
-								</div>
+								<WebInfoboxButton href={`/admin/accounts/${props.pid}`}>
+									<T k="moderation.moderate_user" />
+								</WebInfoboxButton>
 							)
 						: null}
-				</div>
+				</WebInfoboxButtons>
 			</WebWrapper>
 		</WebRoot>
 	);
@@ -68,24 +73,24 @@ export function WebUserTier(props: { flags: UserBadgeEnum[] }): ReactNode {
 	if (props.flags.includes('support:mario')) {
 		parts.push(
 			<span className="supporter-star mario">
-				|
-				<WebUIIcon name="star-badge" />
+				{' | '}
+				<WebUIIcon name="star-badge" title={T.str('user_page.supporter_tag')} />
 			</span>
 		);
 	}
 	if (props.flags.includes('support:super')) {
 		parts.push(
 			<span className="supporter-star super">
-				|
-				<WebUIIcon name="star-badge" />
+				{' | '}
+				<WebUIIcon name="star-badge" title={T.str('user_page.supporter_tag')} />
 			</span>
 		);
 	}
 	if (props.flags.includes('support:mega')) {
 		parts.push(
 			<span className="supporter-star mega">
-				|
-				<WebUIIcon name="star-badge" />
+				{' | '}
+				<WebUIIcon name="star-badge" title={T.str('user_page.supporter_tag')} />
 			</span>
 		);
 	}
@@ -93,24 +98,24 @@ export function WebUserTier(props: { flags: UserBadgeEnum[] }): ReactNode {
 	if (props.flags.includes('al:dev')) {
 		parts.push(
 			<span className="supporter-star dev">
-				|
-				<WebUIIcon name="dev-badge" />
+				{' | '}
+				<WebUIIcon name="dev-badge" title={T.str('user_page.developer_tag')} />
 			</span>
 		);
 	}
 	if (props.flags.includes('al:mod')) {
 		parts.push(
 			<span className="supporter-star mega">
-				|
-				<WebUIIcon name="mod-badge" />
+				{' | '}
+				<WebUIIcon name="mod-badge" title={T.str('user_page.moderator_tag')} />
 			</span>
 		);
 	}
 	if (props.flags.includes('al:tester')) {
 		parts.push(
 			<span className="supporter-star tester">
-				|
-				<WebUIIcon name="tester-badge" />
+				{' | '}
+				<WebUIIcon name="tester-badge" title={T.str('user_page.tester_tag')} />
 			</span>
 		);
 	}
@@ -153,7 +158,6 @@ export function WebUserPageMeta(props: { profile: UserProfile; withImage?: boole
 }
 
 export function WebUserPageView(props: UserPageViewProps): ReactNode {
-	const url = useUrl();
 	const user = useUser();
 	const profile = props.profile;
 	const isSelf = user.pid === props.profile.pid;
@@ -168,99 +172,89 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 			<WebNavBar selection={isSelf ? 0 : -1} />
 			<div id="toast"></div>
 			<WebWrapper className="community-page-post-box">
-				<div className="community-top">
-					<img className="banner" src="/assets/web/images/banner.png" alt="" />
-					<div className={cx('community-info', {
-						active: profile.isOnline
-					})}
-					>
-						<img className={cx('user-icon', { verified: profile.flags.includes('verified') })} src={url.cdn(`/mii/${profile.pid}/normal_face.png`)} />
-						<h2 className="community-title">
+				<WebInfobox>
+					<div className="title-line">
+						<WebMiiIcon
+							pid={props.profile.pid}
+							type="header-icon"
+							className={cx({
+								verified: profile.flags.includes('verified'),
+								online: profile.isOnline
+							})}
+						/>
+						<div className="title">
 							{profile.miiName}
 							{' '}
 							@
 							{profile.username}
 							{ profile.flags.includes('verified') ? <span className="verified-badge">✓</span> : null}
-						</h2>
-						{ !isSelf
+						</div>
+						{!isSelf
 							? (
-									<>
-										<a
-											href="#"
-											className={cx('favorite-button', { checked: isRequesterFollowingUser })}
-											evt-click="follow(this)"
-											data-sound="SE_WAVE_CHECKBOX_UNCHECK"
-											data-url="/users/follow"
-											data-community-id={profile.pid}
-											data-text={isRequesterFollowingUser ? T.str('user_page.follow_user') : T.str('user_page.following_user')}
-										>
-											{isRequesterFollowingUser ? <T k="user_page.following_user" /> : <T k="user_page.follow_user" />}
-										</a>
-									</>
+									<WebInfoboxFollowButton
+										followType="user"
+										followId={props.profile.pid}
+										isFollowing={isRequesterFollowingUser}
+									/>
 								)
-							: null }
+							: null}
 					</div>
-					<h4 className="community-description">
+					<div className="description">
 						{profile.profileInfo.comment ?? <T k="global.private" />}
 						<WebUserTier flags={profile.flags} />
-					</h4>
-					<div className="info-boxes-wrapper">
-						<div>
-							<h4><T k="user_page.country" /></h4>
-							<h4>{profile.profileInfo.country ?? <T k="global.private" />}</h4>
-						</div>
-						<div>
-							<h4><T k="user_page.birthday" /></h4>
-							<h4>{profile.profileInfo.birthday ? moment(profile.profileInfo.birthday).format('MMM Do') : <T k="global.private" />}</h4>
-						</div>
-						<div>
-							<h4><T k="user_page.game_experience" /></h4>
-							{ profile.profileInfo.gameSkill !== null
-								? (
-										<h4>
-											{profile.profileInfo.gameSkill === 0
-												? (
-														<><T k="setup.experience_text.beginner" /></>
-													)
-												: profile.profileInfo.gameSkill === 1
-													? (
-															<><T k="setup.experience_text.intermediate" /></>
-														)
-													: profile.profileInfo.gameSkill === 2
-														? (
-																<><T k="setup.experience_text.expert" /></>
-															)
-														: <><T k="user_page.game_experience_unknown" /></>}
-										</h4>
-									)
-								: <h4><T k="global.private" /></h4>}
-						</div>
-						<div>
-							<h4><T k="user_page.followers" /></h4>
-							<h4 id="user-page-followers-tab">{profile.followers}</h4>
-						</div>
-						{isSelf
-							? (
-									<div>
-										<h4><T k="user_settings.gdpr_download" /></h4>
-										<h4 id="user-page-download-tab">
-											<a href="/users/downloadUserData.json">
-												<T k="user_settings.gdpr_download_action" />
-											</a>
-										</h4>
-									</div>
-								)
-							: null}
-						{user.perms.moderator
-							? (
-									<div>
-										<h4 id="user-page-download-tab"><a className="moderate" href={`/admin/accounts/${profile.pid}`}><T k="moderation.moderate_user" /></a></h4>
-									</div>
-								)
-							: null}
 					</div>
-
-				</div>
+					<WebInfoboxStatBoxes>
+						<div>
+							<div className="value">{profile.profileInfo.country ?? <T k="global.private" />}</div>
+							<div className="name"><T k="user_page.country" /></div>
+						</div>
+						<div>
+							<div className="value">{profile.profileInfo.birthday ? moment(profile.profileInfo.birthday).format('MMM Do') : <T k="global.private" />}</div>
+							<div className="name"><T k="user_page.birthday" /></div>
+						</div>
+						<div>
+							<div className="value">
+								{/* eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- duplicated literals */}
+								<T k={(() => {
+									switch (profile.profileInfo.gameSkill) {
+										case 0:
+											return 'setup.experience_text.beginner';
+										case 1:
+											return 'setup.experience_text.intermediate';
+										case 2:
+											return 'setup.experience_text.expert';
+										case null:
+											return 'global.private';
+										default:
+											return 'user_page.game_experience_unknown';
+									}
+								})()}
+								/>
+							</div>
+							<div className="name"><T k="user_page.game_experience" /></div>
+						</div>
+						<div>
+							<div className="value" id="followers">{profile.followers}</div>
+							<div className="name"><T k="user_page.followers" /></div>
+						</div>
+					</WebInfoboxStatBoxes>
+				</WebInfobox>
+				<WebInfoboxButtons>
+					{isSelf
+						? (
+								<WebInfoboxButton href="/users/downloadUserData.json">
+									<T k="user_settings.gdpr_download" />
+								</WebInfoboxButton>
+							)
+						: null}
+					{user.perms.moderator
+						? (
+								<WebInfoboxButton href={`/admin/accounts/${profile.pid}`}>
+									<T k="moderation.moderate_user" />
+								</WebInfoboxButton>
+							)
+						: null}
+				</WebInfoboxButtons>
 				<div className="buttons tabs">
 					<a id="tab-header-post" className={props.selectedTab === 0 ? 'selected' : ''} href={props.baseLink}><T k="user_page.posts" /></a>
 					<a id="tab-header-friends" className={props.selectedTab === 1 ? 'selected' : ''} href={props.baseLink + 'friends'}><T k="user_page.friends" /></a>

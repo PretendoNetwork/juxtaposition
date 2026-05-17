@@ -1,0 +1,179 @@
+@use '../theme.scss' as t;
+
+$icon-size: 64px;
+
+.page-infobox {
+    box-sizing: border-box;
+    * { box-sizing: border-box; }
+
+    width: calc(600px + 2em); // 2em to align with non-border-box components. TODO
+    @include t.media('<tablet') {
+        width: calc(90vw + 2em);
+        max-width: calc(600px + 2em);
+    }
+
+    background: var(--background-alt);
+    border: 5px solid var(--background-alt);
+    border-radius: t.$component-radius;
+    overflow: hidden;
+    &:has(+ .page-infobox-buttons:not(:empty)) {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    // Using mask-image seems to affect the stacking on Firefox..?
+    z-index: 0;
+    .banner {
+        position: relative;
+        z-index: -1;
+
+        width: 100%;
+        mask-image: linear-gradient(#ffff 70%, 90%, #fff0);
+    }
+
+    .banner-content {
+        padding: 1em;
+
+        padding-top: 0;
+        margin-top: -2em; // deliberately overlap with banner img
+
+        .title-line {
+            display: flex;
+        }
+        .header-icon {
+            background: white;
+            border: 5px solid white;
+            border-radius: t.$component-radius;
+            width: $icon-size + 10px;
+            height: $icon-size + 10px;
+            display: block;
+        }
+        .verified > .header-icon {
+            border: 5px solid var(--btn);
+        }
+        .online {
+            position: relative;
+            &::before {
+                content: "";
+                background: #23a55a;
+                border: 3px solid white;
+                border-radius: 100%;
+
+                display: block;
+                width: 15px;
+                height: 15px;
+                
+                position: absolute;
+                bottom: -5px;
+                right: -5px;
+            }
+        }
+        .title {
+            align-self: center;
+            flex: 1;
+
+            font-weight: bold;
+            // aren't ems fun
+            font-size: 150%;
+            padding: 0 calc(2em/3);
+        }
+        // todo a lot of this should really go to a shared button component
+        .follow-button {
+            display: block;
+            align-self: center;
+            padding: 0.5em;
+
+            border-radius: t.$component-radius;
+            border: 2px solid var(--btn);
+            background: var(--background-alt);
+            &.selected { 
+                background: var(--btn);
+                svg {
+                    fill: red;
+                    stroke: red;
+                }
+            }
+
+            >.ui-icon {
+                display: block;
+            }
+        }
+        .description {
+            margin: 1em 0;
+        }
+    }
+
+    .stat-boxes {
+        text-wrap: nowrap;
+        display: grid;
+        row-gap: 0.5em;
+        &.cols-3 {
+            // todo: media query this for a single-column mode
+            grid-template-columns: repeat(3, minmax(160px, 1fr));
+            > :nth-child(3n) {
+                border-right: 0;
+            }
+        }
+        
+        &.cols-2 {
+            // "Game Experience" is sliiightly too big for 150px
+            grid-template-columns: repeat(2, minmax(160px, 1fr));
+            > :nth-child(2n) {
+                border-right: 0;
+            }
+        }
+
+        > div {
+            text-align: center;
+            border-right: 2px solid var(--border);
+
+            .value {
+                font-weight: bold;
+                font-size: 150%;
+            }
+            .name {
+                color: var(--text-secondary);
+            }
+        }
+    }
+}
+
+.page-infobox-buttons {
+    box-sizing: border-box;
+    * { box-sizing: border-box; }
+
+    width: calc(600px + 2em); // 2em to align with non-border-box components. TODO
+    @include t.media('<tablet') {
+        width: calc(90vw + 2em);
+        max-width: calc(600px + 2em);
+    }
+
+    background: var(--background-alt-alt);
+    border: 5px solid var(--background-alt-alt);
+    border-radius: 0 0 t.$component-radius t.$component-radius;
+    padding: 0 1em;
+
+    &:empty {
+        display: none;
+    }
+
+    .button {
+        padding: 0.75em 0;
+        border-bottom: 2px solid var(--border);
+        &:last-of-type {
+            border: 0;
+        }
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        >.ui-icon {
+            display: block;
+
+            svg {
+                fill: white;
+            }
+        }
+    }
+}

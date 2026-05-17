@@ -7,17 +7,18 @@ export type CommunityIconProps = {
 	community: Community;
 	size: `${keyof Community['iconImagePaths']}`;
 	className?: string;
-	type?: 'header-icon' | 'icon';
+	type?: 'header-icon' | 'icon'; // default icon
 };
 
 export function WebCommunityIcon(props: CommunityIconProps): ReactNode {
 	const url = useUrl();
+	const type = props.type ?? 'icon';
 	const iconUrl = url.cdn(props.community.iconImagePaths[props.size]);
 
 	return (
 		<WebIcon
 			src={iconUrl}
-			type="icon"
+			type={type}
 			className={props.className}
 		>
 		</WebIcon>
