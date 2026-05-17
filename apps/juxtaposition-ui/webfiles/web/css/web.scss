@@ -189,17 +189,40 @@ header > .selected svg {
   height: 2em;
 }
 
-#wrapper {
-  display: flex;
+.container {
+  display: flex; // Flex is required by the child elements
   flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
+  max-width: 600px;
+  box-sizing: border-box;
+  padding: 0 0.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  
+  // Page padding
+  &.page {
+    margin-top: 0rem;
+    margin-bottom: 4rem;
+  }
+  
+  // Only have bottom padding
+  &.bottom {
+    margin-bottom: 4rem;
+    margin-top: 0;
+  }
+
+  &.wide {
+    max-width: 900px;
+  }
+
+  &.center {
+    align-items: center;
+  }
 }
 
 .posts-wrapper {
   position: relative;
-  width: 600px;
+  width: 100%;
+  box-sizing: border-box;
   color: var(--text);
   background: var(--background-alt);
   margin-bottom: 1em;
@@ -389,7 +412,7 @@ header > .selected svg {
 
 
 #load-more {
-  width: 632px;
+  width: 100%;
   margin-bottom: 1em;
 }
 
@@ -425,7 +448,6 @@ iframe {
   cursor: pointer;
   background: var(--background-alt);
   padding: 1em;
-  width: 90%;
   border-radius: 1em;
   grid-template-columns: 111px 152px;
 }
@@ -454,7 +476,6 @@ iframe {
 
 .communities-wrapper {
   display: grid;
-  max-width: 900px;
   grid-template-columns: auto auto auto;
   grid-row-gap: 1em;
   grid-column-gap: 1em;
@@ -472,7 +493,6 @@ iframe {
 
 .notifications-list-content {
   background: var(--background-alt);
-  width: 600px;
   min-height: 4em;
   margin: 0;
   display: flex;
@@ -511,7 +531,6 @@ iframe {
   margin-bottom: 1em;
   padding: 1em;
   border-radius: 1em;
-  width: 600px;
   overflow: hidden;
 }
 
@@ -520,7 +539,6 @@ iframe {
   margin-bottom: 1em;
   padding: 1em;
   border-radius: 1em;
-  width: 600px;
   overflow: hidden;
 }
 
@@ -634,7 +652,6 @@ iframe {
 }
 
 .hover {
-  width: 600px;
   display: inherit;
   border-radius: 1em;
   padding: 1em;
@@ -674,7 +691,6 @@ iframe {
 button.report {
   margin-bottom: 1.5em;
   max-width: 630px;
-  width: 90vw;
 }
 
 #report-form-modal {
@@ -737,7 +753,6 @@ button.report {
   justify-content: center;
   align-items: center;
   padding: 1em;
-  max-width: 600px;
   background: var(--background-alt);
   border-radius: 1em;
   margin-top: 4em;
@@ -1378,10 +1393,6 @@ summary {
   align-items: center;
   padding-left: 1em;
 }
-details {
-  width: 600px;
-  max-width: 100%;
-}
 li.reports .posts-wrapper {
   margin-top: 1ch;
 }
@@ -1450,7 +1461,6 @@ li.reports .button-spacer {
 
 @include t.media(">=tablet", "<desktop") {
   .communities-wrapper {
-    max-width: 600px;
     grid-template-columns: auto auto;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
@@ -1473,12 +1483,6 @@ li.reports .button-spacer {
   #main {
     width: 100%;
     margin-bottom: 60px;
-  }
-
-  #news-list-content,
-  .posts-wrapper {
-    max-width: 600px;
-    width: 90vw;
   }
 
   .post-content,
@@ -1556,8 +1560,6 @@ li.reports .button-spacer {
 
   #load-more {
     margin-bottom: 1em;
-    max-width: 600px;
-    width: 90vw;
   }
 
   #title {
@@ -1574,24 +1576,13 @@ li.reports .button-spacer {
     z-index: 100;
   }
 
-  #wrapper {
-    margin-top: 4em;
-  }
-
-  #wrapper.bottom {
-    margin-top: 0;
-    margin-bottom: 1em;
-  }
-
   .communities-wrapper {
-    max-width: 600px;
     grid-template-columns: auto;
     grid-row-gap: 10px;
     grid-column-gap: 10px;
   }
 
   .notifications-list-content {
-    width: 90vw;
     min-height: 4em;
   }
 
@@ -1604,11 +1595,6 @@ li.reports .button-spacer {
   community-info > .user-icon {
     width: 64px;
     height: 64px;
-  }
-
-  .community-top {
-    max-width: 600px;
-    width: 90vw;
   }
 
   .info-boxes-wrapper > div {
@@ -1628,8 +1614,6 @@ li.reports .button-spacer {
 
   li.reports .posts-wrapper {
     margin-left: 0em;
-    width: calc(90vw - 2em);
-    max-width: calc(600px - 2em);
   }
 
   li.reports .hover {
@@ -1664,7 +1648,6 @@ li.reports .button-spacer {
 button.report {
 	margin-bottom: 1.5em;
 	max-width: 630px;
-	width: 90vw
 }
 
 #report-post-page {
@@ -1871,7 +1854,6 @@ button.report {
 
 @include t.media(">=tablet", "<desktop") {
 	.communities-wrapper {
-		max-width: 600px;
 		grid-template-columns: auto auto;
 		grid-row-gap: 10px;
 		grid-column-gap: 10px
@@ -1894,12 +1876,6 @@ button.report {
 	#main {
 		width: 100%;
 		margin-bottom: 60px
-	}
-
-	#news-list-content,
-	.posts-wrapper {
-		max-width: 600px;
-		width: 90vw
 	}
 
 	.post-content,
@@ -1977,8 +1953,6 @@ button.report {
 
 	#load-more {
 		margin-bottom: 1em;
-		max-width: 600px;
-		width: 90vw
 	}
 
 	#title {
@@ -1995,24 +1969,13 @@ button.report {
 		z-index: 100;
 	}
 
-	#wrapper {
-		margin-top: 4em
-	}
-
-	#wrapper.bottom {
-		margin-top: 0;
-		margin-bottom: 1em
-	}
-
 	.communities-wrapper {
-		max-width: 600px;
 		grid-template-columns: auto;
 		grid-row-gap: 10px;
 		grid-column-gap: 10px
 	}
 
 	.notifications-list-content {
-		width: 90vw;
 		min-height: 4em
 	}
 
@@ -2025,11 +1988,6 @@ button.report {
 	community-info>.user-icon {
 		width: 64px;
 		height: 64px
-	}
-
-	.community-top {
-		max-width: 600px;
-		width: 90vw
 	}
 
 	.info-boxes-wrapper>div {
@@ -2047,10 +2005,6 @@ button.report {
 		overflow: clip
 	}
 
-	li.reports .posts-wrapper {
-		margin-left: -1em
-	}
-
 	li.reports .hover {
 		width: auto;
 		padding: .5em .25em
@@ -2066,4 +2020,15 @@ button.report {
 	.header-button {
 		bottom: 8%;
 	  }
+}
+
+@include t.media("<tablet") {
+  .container.page {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
+  .container.bottom {
+    margin-top: 0;
+    margin-bottom: 4rem;
+  }
 }
