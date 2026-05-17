@@ -22,11 +22,10 @@ export type CommunityViewProps = {
 };
 
 export function WebCommunityHead(props: CommunityViewProps): ReactNode {
-	const url = useUrl();
 	const name = props.community.name;
 	const title = `Juxt - ${name}`;
 	const description = props.community.description;
-	const image = url.cdn(`/icons/${props.community.olive_community_id}/128.png`);
+	const image = props.community.iconImagePaths['128'];
 	const communityUrl = `https://juxt.pretendo.cc/communities/${props.community.olive_community_id}/new`;
 
 	return (

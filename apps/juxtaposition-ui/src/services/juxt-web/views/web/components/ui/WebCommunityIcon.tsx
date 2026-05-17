@@ -1,13 +1,14 @@
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import type { ReactNode } from 'react';
+import type { IconProps } from '@/services/juxt-web/views/web/components/ui/WebIcon';
 import type { Community } from '@/api/generated';
 
 export type CommunityIconProps = {
 	community: Community;
 	size: `${keyof Community['iconImagePaths']}`;
 	className?: string;
-	type?: 'header-icon' | 'icon'; // default icon
+	type?: IconProps['type'];
 };
 
 export function WebCommunityIcon(props: CommunityIconProps): ReactNode {

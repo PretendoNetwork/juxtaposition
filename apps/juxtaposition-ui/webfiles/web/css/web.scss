@@ -1,5 +1,6 @@
 @use './theme.scss' as t;
 @use './components/WebInfobox.scss';
+@use './components/WebCommunityListView.scss';
 
 :root {
   --background: #1b1f3b;
@@ -441,42 +442,9 @@ iframe {
   transform: translateY(-130%);
 }
 
-.community-list-wrapper {
-  display: grid;
-  grid-template-areas: "icon main" "icon footer";
-  gap: 0;
-  cursor: pointer;
-  background: var(--background-alt);
-  padding: 1em;
-  border-radius: 1em;
-  grid-template-columns: 111px 152px;
-}
-
-.community-list-icon {
-  width: 100px;
-  height: 100px;
-  grid-area: icon;
-  margin-right: 1em;
-  border-radius: 1em;
-  -webkit-border-radius: 1em;
-  -moz-border-radius: 1em;
-  -ms-border-radius: 1em;
-  -o-border-radius: 1em;
-}
-
-.community-list-title {
-  margin: 0.5em 0 -1em;
-  font-size: 18px;
-}
-
-.community-list-followers {
-  margin: 1em 0 0;
-  font-size: 1.5ch;
-}
-
 .communities-wrapper {
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   grid-row-gap: 1em;
   grid-column-gap: 1em;
 }
@@ -1461,7 +1429,7 @@ li.reports .button-spacer {
 
 @include t.media(">=tablet", "<desktop") {
   .communities-wrapper {
-    grid-template-columns: auto auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-row-gap: 10px;
     grid-column-gap: 10px;
   }
@@ -1577,7 +1545,7 @@ li.reports .button-spacer {
   }
 
   .communities-wrapper {
-    grid-template-columns: auto;
+    grid-template-columns: minmax(0, 1fr);
     grid-row-gap: 10px;
     grid-column-gap: 10px;
   }
@@ -1854,7 +1822,7 @@ button.report {
 
 @include t.media(">=tablet", "<desktop") {
 	.communities-wrapper {
-		grid-template-columns: auto auto;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		grid-row-gap: 10px;
 		grid-column-gap: 10px
 	}
@@ -1970,7 +1938,7 @@ button.report {
 	}
 
 	.communities-wrapper {
-		grid-template-columns: auto;
+		grid-template-columns: minmax(0, 1fr);
 		grid-row-gap: 10px;
 		grid-column-gap: 10px
 	}
