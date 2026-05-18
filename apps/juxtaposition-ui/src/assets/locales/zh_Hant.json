@@ -84,7 +84,8 @@
         "tags_not_applicable": "N/A",
         "related": "相關社群",
         "related_to": "{{community}} 相關社群",
-        "closed": "此社群不再接受新貼文。"
+        "closed": "此社群不再接受新貼文。",
+        "related_short": "相關"
     },
     "user_page": {
         "game_experience": "遊戲經驗",
