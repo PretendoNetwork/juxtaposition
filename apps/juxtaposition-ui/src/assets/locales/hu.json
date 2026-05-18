@@ -56,7 +56,11 @@
         "deleted": "Törölt felhasználó",
         "banned": "Bannolt felhasználó",
         "friend_requests": "Kérések",
-        "not_found": "Felhasználó nem létezik"
+        "not_found": "Felhasználó nem létezik",
+        "moderator_tag": "Moderátor",
+        "developer_tag": "Fejlesztő",
+        "tester_tag": "Tesztelő",
+        "supporter_tag": "Támogató"
     },
     "user_settings": {
         "show_country": "Ország megjelenítése a Profilon",
@@ -65,7 +69,8 @@
         "show_game": "Játéktapasztalat megjelenítése a Profilon",
         "save_action": "Beállítások mentése",
         "gdpr_download": "Felhasználó adat letöltése",
-        "gdpr_download_action": "Letöltés"
+        "gdpr_download_action": "Letöltés",
+        "show_profile": "Profil megjelenítése vendégnek"
     },
     "notifications": {
         "none": "Nincsennek értesítések.",
