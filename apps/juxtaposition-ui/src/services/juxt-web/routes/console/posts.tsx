@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { config } from '@/config';
 import { database } from '@/database';
 import { uploadPainting, uploadScreenshot } from '@/images';
-import { logger } from '@/logger';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import { redisRemove } from '@/redisCache';
@@ -272,23 +271,49 @@ postsRouter.get('/:post_id/report', async function (req, res) {
 });
 
 postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
-	const { body, auth } = parseReq(req, {
+	const { body, query, auth } = parseReq(req, {
 		body: z.object({
 			reason: z.string(),
 			message: z.string(),
 			post_id: z.string()
+		}),
+		query: z.object({
+			pjax_api: z.stringbool().default(false)
 		})
 	});
 
+	const reject = (reason: string): void => {
+		if (query.pjax_api) {
+			const doc = { status: 400, message: reason, href: '#back' };
+			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
+			return;
+		}
+
+		res.renderError({
+			code: 400,
+			message: reason
+		});
+	};
+
 	const { reason, message, post_id } = body;
 	const { data: post } = await req.api.posts.get({ post_id });
-	if (!reason || !post_id || !post) {
-		return res.redirect('/404');
+	if (!post_id || !post) {
+		return reject(res.i18n.t('reporting.invalid_post'));
 	}
+
+	const accept = (message: string): void => {
+		const acceptNextUrl = `/titles/${post.community_id}/new`;
+		if (query.pjax_api) {
+			const doc = { status: 200, message, href: acceptNextUrl };
+			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
+			return;
+		}
+		return res.redirect(acceptNextUrl);
+	};
 
 	const duplicate = await database.getDuplicateReports(auth().pid, post_id);
 	if (duplicate) {
-		return res.redirect(`/posts/${post.id}`);
+		return reject(res.i18n.t('reporting.invalid_dupe'));
 	}
 
 	const reportDoc = {
@@ -303,13 +328,16 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 	const reportObj = new REPORT(reportDoc);
 	await reportObj.save();
 
-	return res.redirect(`/posts/${post.id}`);
+	return accept(res.i18n.t('reporting.submitted'));
 });
 
 async function newPost(req: Request, res: Response): Promise<void> {
-	const { params, body, files, auth, hasAuth } = parseReq(req, {
+	const { params, query, body, files, auth, hasAuth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string().optional()
+		}),
+		query: z.object({
+			pjax_api: z.stringbool().default(false)
 		}),
 		body: z.object({
 			body: z.string().default(''),
@@ -326,38 +354,52 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		files: ['shot']
 	});
 	const self = hasAuth() ? auth().self : null;
-	const rejectReturnUrl = params.post_id ? `/posts/${params.post_id}/create` : `/titles/${body.community_id}/create`;
+
+	const reject = (reason: string): void => {
+		const rejectReturnUrl = params.post_id ? `/posts/${params.post_id}/create` : `/titles/${body.community_id}/create`;
+		const errorParams = new URLSearchParams();
+		errorParams.append('error-text', reason);
+		const url = rejectReturnUrl + '?' + errorParams.toString();
+
+		if (query.pjax_api) {
+			const doc = { status: 400, href: url };
+			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
+			return;
+		}
+		return res.redirect(url);
+	};
+	const accept = (): void => {
+		const acceptNextUrl = params.post_id ? `/posts/${params.post_id}` : `/titles/${body.community_id}/new`;
+		if (query.pjax_api) {
+			const doc = { status: 200, href: acceptNextUrl };
+			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
+			return;
+		}
+		return res.redirect(acceptNextUrl);
+	};
 
 	let parentPost = null;
 	const postId = await generatePostUID(21);
 	let { data: community } = await req.api.communities.get({ id: body.community_id });
 	if (params.post_id) {
 		parentPost = await database.getPostByID(params.post_id.toString());
-		if (!parentPost) {
-			res.sendStatus(403);
-			return;
-		} else {
-			const { data: parentPostCommunity } = await req.api.communities.get({ id: parentPost.community_id ?? '' });
-			community = parentPostCommunity;
-			if (parentPost.removed) {
-				res.sendStatus(400);
-				return;
-			}
+		if (!parentPost || parentPost.removed) {
+			return reject(res.i18n.t('new_post.invalid_data'));
 		}
+		const { data: parentPostCommunity } = await req.api.communities.get({ id: parentPost.community_id ?? '' });
+		community = parentPostCommunity;
 	}
-	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '' && files.shot.length == 0)) {
-		res.status(422);
-		return res.redirect('/posts/' + req.params.post_id.toString());
+
+	if (body.body === '' && body.painting === '' && body.screenshot === '' && files.shot.length == 0) {
+		return reject(res.i18n.t('new_post.empty_post'));
 	}
+
 	if (!community || !self) {
-		res.status(403);
-		logger.error('Incoming post is missing data - rejecting');
-		return res.redirect('/titles/show');
+		return reject(res.i18n.t('new_post.invalid_data'));
 	}
 
 	if (!isPostingAllowed(community, self, parentPost)) {
-		res.status(403);
-		return res.redirect(`/titles/${community.olive_community_id}/new`);
+		return reject(res.i18n.t('new_post.permission_denied'));
 	}
 
 	let paintings: PaintingUrls | null = null;
@@ -370,14 +412,10 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			postId
 		});
 		if (paintings === null) {
-			res.status(422);
-			res.renderError({
-				code: 422,
-				message: 'Upload failed. Please try again later.'
-			});
-			return;
+			return reject(res.i18n.t('new_post.upload_failed'));
 		}
 	}
+
 	let screenshots = null;
 	if ((body.screenshot || files.shot.length === 1) &&
 		getShotMode(community, auth().paramPackData) !== 'block') {
@@ -388,12 +426,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			postId
 		});
 		if (screenshots === null) {
-			res.status(422);
-			res.renderError({
-				code: 422,
-				message: 'Upload failed. Please try again later.'
-			});
-			return;
+			return reject(res.i18n.t('new_post.upload_failed'));
 		}
 	}
 
@@ -420,16 +453,12 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	}
 	const postBody = body.body;
 	if (postBody && getInvalidPostRegex().test(postBody)) {
-		// TODO - Log this error
-		res.sendStatus(422);
-		return;
+		return reject(res.i18n.t('new_post.invalid_content'));
 	}
 
 	/* Don't count \r\n as two */
 	if (postBody && postBody.replaceAll('\r\n', '\n').length > 280) {
-		// TODO - Log this error
-		res.sendStatus(422);
-		return;
+		return reject(res.i18n.t('new_post.post_too_long'));
 	}
 
 	const document = {
@@ -463,11 +492,9 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	};
 	const maxDuplicatePostAgeMs = 5 * 60 * 1000;
 	const duplicatePost = await database.getDuplicatePosts(auth().pid, document, maxDuplicatePostAgeMs);
-	if (duplicatePost && params.post_id) {
-		return res.redirect('/posts/' + params.post_id.toString());
-	}
-	if ((document.body === '' && document.painting === '' && document.screenshot === '') || duplicatePost) {
-		return res.redirect('/titles/' + community.olive_community_id + '/new');
+	if (duplicatePost) {
+		// Lying!
+		return accept();
 	}
 
 	// Automod
@@ -475,9 +502,7 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	const automodEval = evaluateAutomodRules(document, automodRules);
 	const automodResult = await performAutomodAction(document, automodEval);
 	if (!automodResult.allowPost) {
-		const params = new URLSearchParams();
-		params.append('error-text', res.i18n.t('new_post.automod_error'));
-		return res.redirect(rejectReturnUrl + '?' + params.toString());
+		return reject(res.i18n.t('new_post.automod_error'));
 	}
 
 	// Actual posting
@@ -491,11 +516,12 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		if (!params.post_id) {
 			throw new Error('Has parent post but no postId, this is impossible');
 		}
-		res.redirect('/posts/' + params.post_id.toString());
+
 		await redisRemove(`${parentPost.pid}_user_page_posts`);
+		return accept();
 	} else {
-		res.redirect('/titles/' + community.olive_community_id + '/new');
 		await redisRemove(`${auth().pid}_user_page_posts`);
+		return accept();
 	}
 }
 

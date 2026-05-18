@@ -8,6 +8,7 @@ import { initPostPageView, initYeahButton } from './post';
 import { initToolbarConfigs } from './toolbar';
 import { GET, POST } from './xhr';
 import { initNavTabs } from './components/ui/CtrNavTabs';
+import { initPjaxForms } from './components/ui/CtrPjaxForm';
 
 setInterval(checkForUpdates, 30000);
 
@@ -89,6 +90,7 @@ function initAll() {
 	initPostPageView();
 	initClientTabs();
 	initCheckboxes();
+	initPjaxForms();
 	checkForUpdates();
 	initToolbarConfigs();
 	pjaxRefresh();
@@ -154,6 +156,11 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 document.addEventListener('PjaxRequest', function () {
 	cave.transition_begin();
+});
+document.addEventListener('PjaxError', function () {
+	cave.error_callErrorViewer(15_5000);
+	cave.requestGc();
+	cave.transition_end();
 });
 document.addEventListener('PjaxDone', function () {
 	initAll();

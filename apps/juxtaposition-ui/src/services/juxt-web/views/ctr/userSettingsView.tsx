@@ -1,6 +1,7 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrPjaxForm } from '@/services/juxt-web/views/ctr/components/ui/CtrPjaxForm';
 import type { ReactNode } from 'react';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
 
@@ -17,7 +18,7 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 				</CtrPageTitledHeader>
 				<div className="body-content tab2-content" id="community-post-list">
 					<div className="tab-body">
-						<form method="post" action="/users/me/settings" id="settings-form">
+						<CtrPjaxForm action="/users/me/settings" id="settings-form">
 							<ul className="list-content-with-icon-column settings-list">
 								<li data-name="profile_visibility" className="scroll">
 									<label className="checkbox-container" htmlFor="country">
@@ -47,9 +48,8 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 										<span className="checkmark"></span>
 									</label>
 								</li>
-								<input id="submit" type="submit" className="post-button fixed-bottom-button" value={T.str('global.save')} />
 							</ul>
-						</form>
+						</CtrPjaxForm>
 					</div>
 				</div>
 			</CtrPageBody>

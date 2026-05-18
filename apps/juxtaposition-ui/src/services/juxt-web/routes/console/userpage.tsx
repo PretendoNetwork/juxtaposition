@@ -103,18 +103,32 @@ userPageRouter.get('/me/:type', async function (req, res) {
 });
 
 userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
-	const { body, auth } = parseReq(req, {
+	const { body, query, auth } = parseReq(req, {
 		body: z.object({
 			profile: z.coerce.boolean(),
 			country: z.coerce.boolean(),
 			birthday: z.coerce.boolean(),
 			experience: z.coerce.boolean(),
 			comment: z.string().optional()
+		}),
+		query: z.object({
+			pjax_api: z.stringbool().default(false)
 		})
 	});
+
+	const accept = (): void => {
+		const url = '/users/me';
+		if (query.pjax_api) {
+			const doc = { status: 200, href: url };
+			res.send(`<script>parent.postMessage('${JSON.stringify(doc)}','*');</script>`);
+			return;
+		}
+		return res.redirect(url);
+	};
+
 	const userSettings = await database.getUserSettings(auth().pid);
 	if (!userSettings) {
-		return res.redirect('/users/me');
+		return accept();
 	}
 
 	userSettings.profile_visibility = body.profile ? 'public' : 'users_only';
@@ -124,7 +138,7 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 	userSettings.profile_comment_visibility = !!body.comment;
 	await userSettings.updateComment(body.comment ?? '');
 
-	res.redirect('/users/me');
+	return accept();
 });
 
 userPageRouter.get('/show', async function (req, res) {

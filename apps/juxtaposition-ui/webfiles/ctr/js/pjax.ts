@@ -2,10 +2,13 @@ import { GET } from './xhr';
 
 var elements: string = '';
 var selectors: string[] = [];
+// The page we are *currently* on.
 var href: string = '';
+// List of historical pages (not including current one).
 var pjaxHistory: string[] = [];
 var PjaxRequest = document.createEvent('Event');
 var PjaxDone = document.createEvent('Event');
+var PjaxError = document.createEvent('Event');
 
 export type PjaxOptions = {
 	elements: string;
@@ -15,10 +18,11 @@ export type PjaxOptions = {
 export function pjaxInit(init: PjaxOptions): void {
 	elements = init.elements;
 	selectors = init.selectors;
-	href = document.location.href;
+	href = document.location.pathname;
 
 	PjaxRequest.initEvent('PjaxRequest', true, true);
 	PjaxDone.initEvent('PjaxDone', true, true);
+	PjaxError.initEvent('PjaxError', true, true);
 }
 
 function pjaxClick(this: HTMLElement, e: Event): boolean {
@@ -37,18 +41,25 @@ export function pjaxRefresh(): void {
 	}
 }
 
-export function pjaxLoadUrl(url: string, pushHistory: boolean): void {
-	document.dispatchEvent(PjaxRequest);
-	GET(url, xhr => pjaxParseDom(xhr, url));
-
-	if (pushHistory && href.indexOf(url) === -1) {
-		pjaxHistory.push(href);
+export function pjaxLoadUrl(url: string, pushHistory: boolean, skipDispatch?: boolean): void {
+	if (!skipDispatch) {
+		document.dispatchEvent(PjaxRequest);
 	}
+
+	GET(url, (xhr) => {
+		// update history state with new page
+		pjaxSetUrl(url, pushHistory);
+		// parse new page in
+		pjaxParseDom(xhr);
+		// Delay to next tick so replaceChild can finish
+		setTimeout(() => document.dispatchEvent(PjaxDone), 0);
+	}, () => document.dispatchEvent(PjaxError));
 }
 
-function pjaxParseDom(xhr: XMLHttpRequest, url: string): void {
+function pjaxParseDom(xhr: XMLHttpRequest): void {
 	var response = xhr.responseText;
 	if (!response) {
+		document.dispatchEvent(PjaxError);
 		return;
 	}
 
@@ -67,9 +78,6 @@ function pjaxParseDom(xhr: XMLHttpRequest, url: string): void {
 	}
 
 	pjaxRefresh();
-	href = url;
-	// Delay to next tick so replaceChild can finish
-	setTimeout(() => document.dispatchEvent(PjaxDone), 0);
 }
 
 export function pjaxCanGoBack(): boolean {
@@ -84,9 +92,14 @@ export function pjaxBack(): void {
 	pjaxLoadUrl(url, false);
 }
 
-export function pjaxPushHistory(url: string): void {
-	if (href.indexOf(url) === -1) {
+export function pjaxSetUrl(url: string, pushHistory: boolean): void {
+	if (pushHistory && href !== url) {
 		pjaxHistory.push(href);
 	}
+
 	href = url;
+	if (window.isDebugCave) {
+		// for browser debugging. this doesn't work on console
+		window.location.hash = url;
+	}
 }

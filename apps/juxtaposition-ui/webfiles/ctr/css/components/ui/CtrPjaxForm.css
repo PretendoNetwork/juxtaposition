@@ -1,0 +1,9 @@
+iframe[name="pjax-submit"] {
+    display: none;
+}
+
+.pjax-form {
+    input[type=submit] {
+        display: none;
+    }
+}
