@@ -21,7 +21,7 @@ function searchChanged(el: HTMLInputElement): void {
 
 export function initSearchForm(): void {
 	// https://stackoverflow.com/questions/1948332/#comment25346117_1949416
-	// Thanks, Johan!
+	// Thanks, Johan! This is the same on wiiu, lol
 	document.querySelectorAll<HTMLInputElement>('[data-community-list-search]').forEach((el) => {
 		var interval = setInterval(() => {
 			// Cancel everything if we navigate away (limit memory leaky)

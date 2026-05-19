@@ -3,7 +3,7 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { SearchFormProps } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 
-export function CtrSearchForm(props: SearchFormProps): ReactNode {
+export function PortalSearchForm(props: SearchFormProps): ReactNode {
 	const dataset = useDatasetProps(props);
 	return (
 		<form className="search-form">

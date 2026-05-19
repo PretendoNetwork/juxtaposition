@@ -3,6 +3,7 @@ import { initReportForm, reportPost } from './reports';
 import { POST, GET } from './xhr';
 import { deletePostById } from './api';
 import { initYeahButton } from './post';
+import { initSearchForm } from './components/ui/WebSearchForm';
 
 setInterval(checkForUpdates, 30000);
 
@@ -175,6 +176,7 @@ function initAll() {
 	initNavBar();
 	initTabs();
 	initPosts();
+	initSearchForm();
 	initMorePosts();
 	initPostModules();
 	initReportForm();

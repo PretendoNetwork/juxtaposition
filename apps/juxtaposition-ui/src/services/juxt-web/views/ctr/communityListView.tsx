@@ -40,7 +40,7 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 					<T k="all_communities.text" />
 				</CtrPageTitledHeader>
 				<div className="body-content">
-					<CtrSearchForm data-community-list-search="#community-new-content" />
+					<CtrSearchForm type="box" data-community-list-search="#community-new-content" />
 					<div className="communities-list">
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.communities.map(community => (
