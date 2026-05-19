@@ -57,7 +57,11 @@
         "friend_requests": "Requêtes",
         "deleted": "Utilisateur supprimmé",
         "banned": "Utilisateur Banni",
-        "not_found": "Cet utilisateur n'existe pas"
+        "not_found": "Cet utilisateur n'existe pas",
+        "tester_tag": "Testeur",
+        "supporter_tag": "Supporteur",
+        "moderator_tag": "Modérateur",
+        "developer_tag": "Développeur"
     },
     "user_settings": {
         "profile_settings": "Paramètres du profil",
@@ -66,7 +70,8 @@
         "show_game": "Afficher mon expérience de joueur sur le profil",
         "save_action": "Enregistrer les paramètres",
         "gdpr_download": "Télécharger les données utilisateur",
-        "gdpr_download_action": "Télécharger"
+        "gdpr_download_action": "Télécharger",
+        "show_profile": "Afficher le profil aux invités"
     },
     "activity_feed": {
         "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
