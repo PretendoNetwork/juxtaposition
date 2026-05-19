@@ -75,7 +75,8 @@
         "no_screenshot": "스크린샷 없음",
         "spoiler_label": "스포일러",
         "painting_close": "취소",
-        "painting_submit": "확인"
+        "painting_submit": "확인",
+        "automod_error": "당신의 게시물에 Juxtaposition에서 허용되지 않는 내용이 포함되어 있습니다. 더 자세히 알고 싶으시다면, 해당 페이지를 확인해주세요: https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "Juxtaposition에 오신 것을 환영합니다!",
