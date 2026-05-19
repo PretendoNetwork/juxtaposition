@@ -2,13 +2,14 @@ import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/roo
 import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalCommunityIcon } from '@/services/juxt-web/views/portal/components/ui/PortalCommunityIcon';
+import { PortalSearchForm } from '@/services/juxt-web/views/portal/components/ui/PortalSearchForm';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
 export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
 	return (
-		<li id={id}>
+		<li id={id} data-search-term={props.community.name}>
 			<PortalCommunityIcon community={props.community} size="128" />
 			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button"></a>
 			<div className="body">
@@ -34,6 +35,7 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 					<h1 id="page-title"><T k="all_communities.text" /></h1>
 				</header>
 				<div className="body-content">
+					<PortalSearchForm type="box" data-community-list-search="#community-new-content" />
 					<div className="communities-list">
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.communities.map(community => (

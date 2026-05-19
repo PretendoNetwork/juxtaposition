@@ -4,6 +4,7 @@ import { GET, POST } from './xhr';
 import { empathyPostById } from './api';
 import { initPostPageView } from './post';
 import { initNavTabs } from './components/ui/PortalNavTabs';
+import { initSearchForm } from './components/ui/PortalSearchForm';
 import { initNavBar } from './components/PortalNavBar';
 import { back } from './nav';
 
@@ -188,6 +189,7 @@ function initAll() {
 	initMorePosts();
 	initPostModules();
 	initPostPageView();
+	initSearchForm();
 	initSounds();
 	initNewPost();
 	checkForUpdates();
