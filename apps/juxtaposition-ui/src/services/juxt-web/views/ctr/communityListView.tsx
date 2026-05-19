@@ -3,13 +3,14 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
 import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
+import { CtrSearchForm } from '@/services/juxt-web/views/ctr/components/ui/CtrSearchForm';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
 export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
 	return (
-		<li id={id}>
+		<li id={id} data-search-term={props.community.name}>
 			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button">
 				<CtrCommunityIcon community={props.community} size="64"></CtrCommunityIcon>
 				<div className="body">
@@ -39,6 +40,7 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 					<T k="all_communities.text" />
 				</CtrPageTitledHeader>
 				<div className="body-content">
+					<CtrSearchForm data-community-list-search="#community-new-content" />
 					<div className="communities-list">
 						<ul className="list-content-with-icon-column" id="community-new-content">
 							{props.communities.map(community => (
