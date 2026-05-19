@@ -84,7 +84,7 @@
         "new_follower/multiple": "<follower_one />, <follower_two /> et {{count_other}} autres personnes vous suivent !"
     },
     "new_post": {
-        "post_to": "Poster à {{user}}",
+        "post_to": "Envoyer à {{user}}",
         "swearing": "Les publications ne peuvent pas contenir de language explicite.",
         "content_placeholder": "Partagez vos pensées en postant sur une communauté, ou à vos abonnés.",
         "screenshots_coming_soon": "Les captures d'écran ne sont pas encore disponibles. Revérifiez bientôt !",
