@@ -127,7 +127,7 @@
             "info": "Comment décririez-vous votre niveau de compétence avec les jeux ? Vous pourrez changer ce paramètre plus tard.",
             "beginner": "Débutant",
             "intermediate": "Intermédiaire",
-            "expert": "Expert"
+            "expert": "Expert(e)"
         },
         "analytics": "Analytiques",
         "analytics_text": "Juxtaposition utilise Cloudflare Web Analytics afin de savoir comment les visiteurs interagissent avec notre service. Les données recueillies comprennent, sans s'y limiter, l'heure de visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas rattachées à votre personne et ne seront pas utilisées à des fins publicitaires, ni par nous ni par Cloudflare.",
