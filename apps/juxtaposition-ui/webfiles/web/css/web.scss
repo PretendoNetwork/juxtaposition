@@ -1359,7 +1359,9 @@ li.reports .post-buttons-wrapper {
 }
 
 li.reports .button-spacer {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  column-gap: 16px;
 }
 
 .accounts .hover {
