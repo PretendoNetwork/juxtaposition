@@ -1,6 +1,6 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
+import { WebAdminCenterItems, WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebAutomodRuleModeDropdown, WebAutomodRuleTypeDropdown } from '@/services/juxt-web/views/web/admin/automodRuleCreateView';
 import type { ReactNode } from 'react';
@@ -73,7 +73,7 @@ function AutomodRuleItem({ rule, canEdit }: AutomodRuleItemViewProps): ReactNode
 	}
 
 	return (
-		<li className="reports" style={{ width: 500 }}>
+		<li className="reports">
 			<span className="body messages report">
 				<h4 className="text" style={{ textDecoration: rule.enabled ? 'none' : 'line-through' }}>
 					{rule.title}
@@ -101,20 +101,22 @@ export function WebAutomodRuleListView(props: AutomodRuleListViewProps): ReactNo
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="automod" />
-				{ props.canEdit
-					? (
-							<button style={{ marginTop: '1em' }}>
-								<a href="/admin/automod/rules/create" className="button">New rule</a>
-							</button>
-						)
-					: null}
-				{props.items.length === 0
-					? (
-							<p>
-								No rules found
-							</p>
-						)
-					: null }
+				<WebAdminCenterItems>
+					{ props.canEdit
+						? (
+								<button style={{ marginTop: '1em' }}>
+									<a href="/admin/automod/rules/create" className="button">New rule</a>
+								</button>
+							)
+						: null}
+					{props.items.length === 0
+						? (
+								<p>
+									No rules found
+								</p>
+							)
+						: null }
+				</WebAdminCenterItems>
 				<ul className="list-content-with-icon-and-text arrow-list accounts" id="news-list-content">
 					{props.items.map(rule => (
 						<AutomodRuleItem rule={rule} key={rule.id} canEdit={props.canEdit} />

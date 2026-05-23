@@ -6,6 +6,14 @@ export type ModerationTabsProps = {
 	selected: 'users' | 'reports' | 'automod' | 'communities';
 };
 
+export function WebAdminCenterItems(props: { children?: ReactNode }): ReactNode {
+	return (
+		<div className="admin-center-items">
+			{props.children}
+		</div>
+	);
+}
+
 export function WebModerationTabs(props: ModerationTabsProps): ReactNode {
 	const user = useUser();
 
