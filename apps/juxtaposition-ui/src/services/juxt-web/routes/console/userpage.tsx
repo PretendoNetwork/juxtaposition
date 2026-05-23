@@ -17,11 +17,11 @@ import { PortalUserMissingPage, PortalUserPageView } from '@/services/juxt-web/v
 import { CtrUserMissingPage, CtrUserPageView } from '@/services/juxt-web/views/ctr/userPageView';
 import { wrapApi } from '@/api/errors';
 import type { Request, Response } from 'express';
-import type { CommunityViewData, UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
+import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
-import type { ShallowUser } from '@/api/generated';
+import type { Community, ShallowUser } from '@/api/generated';
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
@@ -86,6 +86,7 @@ userPageRouter.get('/me/:type', async function (req, res) {
 userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 	const { body, auth } = parseReq(req, {
 		body: z.object({
+			profile: z.coerce.boolean(),
 			country: z.coerce.boolean(),
 			birthday: z.coerce.boolean(),
 			experience: z.coerce.boolean(),
@@ -97,11 +98,12 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 		return res.redirect('/users/me');
 	}
 
+	userSettings.profile_visibility = body.profile ? 'public' : 'users_only';
 	userSettings.country_visibility = body.country;
 	userSettings.birthday_visibility = body.birthday;
 	userSettings.game_skill_visibility = body.experience;
 	userSettings.profile_comment_visibility = !!body.comment;
-	userSettings.updateComment(body.comment ?? '');
+	await userSettings.updateComment(body.comment ?? '');
 
 	res.redirect('/users/me');
 });
@@ -141,22 +143,16 @@ userPageRouter.post('/follow', upload.none(), async function (req, res) {
 	const userContent = auth().self.content;
 	if (!userToFollowProfile) {
 		// Invalid state, can't do a follow
-		return res.send({ status: 423, id: body.id, count: 0 });
+		return res.send({ status: 404 });
 	}
 
 	const isFollowing = userContent.followed_users.includes(userToFollowProfile.pid);
 	const shouldFollow = !isFollowing;
-	if (shouldFollow) {
-		await req.api.users.followerUser({ id: userToFollowProfile.pid });
-	} else {
-		await req.api.users.unfollowUser({ id: userToFollowProfile.pid });
-	}
+	const result = shouldFollow
+		? await req.api.users.followerUser({ id: userToFollowProfile.pid })
+		: await req.api.users.unfollowUser({ id: userToFollowProfile.pid });
 
-	const changeNum = shouldFollow ? 1 : -1;
-	const newFollowerCount = userToFollowProfile.followers + changeNum;
-
-	// idk why, but it always subtracts one from the count before returning
-	res.send({ status: 200, id: userToFollowProfile.pid, count: newFollowerCount - 1 });
+	res.send({ status: 200, ...result.data });
 });
 
 userPageRouter.get('/:pid', async function (req, res) {
@@ -301,7 +297,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
 	let followers: ShallowUser[] = [];
-	let communities: CommunityViewData[] = [];
+	let communities: Community[] = [];
 	let selection = 0;
 
 	if (params.type === 'yeahs') {
@@ -356,7 +352,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		const { data: page } = await req.api.users.listFollowing({ id: userID, limit: 100, offset });
 		const { data: communityPage } = await req.api.users.listFollowedCommunities({ id: userID, limit: 100, offset });
 		followers = page.items;
-		communities = communityPage.items.map(com => ({ id: com.olive_community_id, name: com.name }));
+		communities = communityPage.items;
 		selection = 2;
 	}
 

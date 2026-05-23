@@ -38,7 +38,8 @@
         "tags_not_applicable": "--",
         "related": "Povezane zajednice",
         "related_to": "Povezane zajednice s {{community}}",
-        "closed": "Ova je zajednica zatvorena za nove objave."
+        "closed": "Ova je zajednica zatvorena za nove objave.",
+        "related_short": "Povezano"
     },
     "user_page": {
         "country": "Zemlja",
@@ -180,7 +181,8 @@
         "reason_piracy": "Piratstvo",
         "reason_inappropiate_ingame": "Neprimjereno ponašanje u igri",
         "reason_missing_images": "Nedostajuće slike",
-        "reason_spoiler": "Spoiler"
+        "reason_spoiler": "Spoiler",
+        "reason_others": "Drugo"
     },
     "moderation": {
         "title": "Moderacija",

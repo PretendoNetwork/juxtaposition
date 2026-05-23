@@ -16,6 +16,8 @@ import { Report } from '@/models/report';
 import { createNewPost, postCreateSchema } from '@/services/internal/utils/posts';
 import { isPostingAllowed } from '@/services/internal/utils/communities';
 import { mapSelf } from '@/services/internal/contract/self';
+import { Settings } from '@/models/settings';
+import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -45,6 +47,14 @@ postsRouter.get({
 		// guests can view userpages, but not feeds (no topic tags etc.)
 		if (auth === null && !query.posted_by && !query.empathy_by && !query.parent_id) {
 			throw errors.for('requires_auth');
+		}
+		// Extra checks for user posts
+		if (query.posted_by) {
+			const user = await Settings.findOne({ pid: query.posted_by });
+			// We can't see this user for some reason (doesn't exist, permission, etc)
+			if (!user || !canAccessUser(auth, user)) {
+				return mapPage(0, []);
+			}
 		}
 
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
@@ -91,6 +101,13 @@ postsRouter.get({
 			throw errors.for('not_found');
 		}
 		const community = await Community.findOne({ olive_community_id: post.community_id });
+
+		const poster = await Settings.findOne({ pid: post.pid });
+		if (!poster) {
+			throw errors.for('not_found');
+		}
+		// Throws if user isn't visible for some reason
+		assertCanAccessUser(auth, poster);
 
 		return mapPost(post, community);
 	}

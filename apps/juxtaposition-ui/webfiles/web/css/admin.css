@@ -1,4 +1,4 @@
-@import url('web.css');
+@import url('web.scss');
 
 .community-create {
     .col-md-4, .col-md-3, .col-md-9 {
@@ -43,11 +43,15 @@
     }
 }
 
+.admin-center-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .account-status-editor {
     background: #161931;
     border: 1px solid var(--background-alt);
-    max-width: 600px;
-    width: 100vw;
     border-radius: 15px;
 
     .header {

@@ -4,6 +4,7 @@ import { GET, POST } from './xhr';
 import { empathyPostById } from './api';
 import { initPostPageView } from './post';
 import { initNavTabs } from './components/ui/PortalNavTabs';
+import { initSearchForm } from './components/ui/PortalSearchForm';
 import { initNavBar } from './components/PortalNavBar';
 import { back } from './nav';
 
@@ -188,6 +189,7 @@ function initAll() {
 	initMorePosts();
 	initPostModules();
 	initPostPageView();
+	initSearchForm();
 	initSounds();
 	initNewPost();
 	checkForUpdates();
@@ -261,7 +263,8 @@ window.chooseScreenShot = chooseScreenShot;
 
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
-	var count = document.getElementById('followers');
+	// See comment below
+	// var count = document.getElementById('followers');
 	el.disabled = true;
 	var params = 'id=' + id;
 	if (el.classList.contains('checked')) {
@@ -273,14 +276,28 @@ function follow(el) {
 	}
 
 	POST(el.getAttribute('data-url'), params, function a(data) {
-		var element = JSON.parse(data.response);
-		if (!element || element.status !== 200) {
+		var response = JSON.parse(data.response);
+		if (!response || response.status !== 200) {
 			// Apparently there was an actual error code for not being able to yeah a post, who knew!
 			// TODO: Find more of these
 			return wiiuErrorViewer.openByCode(1155927);
 		}
 		el.disabled = false;
-		count.innerText = element.count;
+		/* Portal has a yet-unidentified bug where the displayed value is 1 update "behind"
+		 * the JS-visible value. So, if we start with count = 0:
+		 * count.textContent = 1; // still displays 0
+		 * count.textContent = 2; // displays 1
+		 * count.textContent = 0; // displays 2
+		 * .. and so on. Older Juxt backends had serverside hacks to deliberately mis-report
+		 * the follower count and account for this, but it didn't work right and it ruined all
+		 * the other platforms in the process.
+		 * Just disable it for now until we can find a proper workaround. */
+		// count.textContent = response.follower_count;
+		if (response.action === 'follow') {
+			el.classList.add('checked');
+		} else {
+			el.classList.remove('checked');
+		}
 	});
 }
 window.follow = follow;

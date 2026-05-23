@@ -1,4 +1,5 @@
 @import "./components/ui/PortalNavTabs.css";
+@import "./components/ui/PortalSearchForm.css";
 
 html {
  background-color:#fff;
@@ -21,7 +22,7 @@ body {
  width:1280px
 }
 .body-content>div,
-.body-content>form,
+#settings-form,
 .body-content>ul {
  padding:0 40px 30px 200px
 }
