@@ -2,7 +2,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
-import { WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
+import { prepSearchTerm, WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import type { ReactNode } from 'react';
 import type { Community } from '@/api/generated';
 
@@ -21,7 +21,7 @@ export type CommunityItemProps = {
 
 export function WebCommunityItem(props: CommunityItemProps): ReactNode {
 	return (
-		<a key={props.community.olive_community_id} className="community-list-wrapper" href={`/titles/${props.community.olive_community_id}/new`} data-search-term={props.community.name}>
+		<a key={props.community.olive_community_id} className="community-list-wrapper" href={`/titles/${props.community.olive_community_id}/new`} data-search-term={prepSearchTerm(props.community.name)}>
 			<WebCommunityIcon type="community-list-icon" community={props.community} size="128" />
 			<div className="community-list-info">
 				<h2 className="community-list-title">{props.community.name}</h2>

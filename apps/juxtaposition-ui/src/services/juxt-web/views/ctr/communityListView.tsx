@@ -4,13 +4,14 @@ import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/Ct
 import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import { CtrSearchForm } from '@/services/juxt-web/views/ctr/components/ui/CtrSearchForm';
+import { prepSearchTerm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
 export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
 	return (
-		<li id={id} data-search-term={props.community.name}>
+		<li id={id} data-search-term={prepSearchTerm(props.community.name)}>
 			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button">
 				<CtrCommunityIcon community={props.community} size="64"></CtrCommunityIcon>
 				<div className="body">

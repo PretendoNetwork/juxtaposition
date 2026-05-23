@@ -1,7 +1,6 @@
 function prepSearchTerm(term: string): string {
 	var removeChars = /\W/g;
-	// é for Pokémon
-	return term.toLowerCase().replace('é', 'e').replace(removeChars, '');
+	return term.toLowerCase().replace(removeChars, '');
 }
 
 function searchChanged(el: HTMLInputElement): void {
@@ -9,7 +8,7 @@ function searchChanged(el: HTMLInputElement): void {
 	var searchTerm = prepSearchTerm(el.value);
 
 	list.querySelectorAll<HTMLElement>('[data-search-term]').forEach((item) => {
-		var term = prepSearchTerm(item.getAttribute('data-search-term')!);
+		var term = item.getAttribute('data-search-term')!;
 
 		if (term.includes(searchTerm)) {
 			item.style.display = '';

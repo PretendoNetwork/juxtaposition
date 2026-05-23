@@ -3,13 +3,14 @@ import { PortalNavBar } from '@/services/juxt-web/views/portal/components/Portal
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalCommunityIcon } from '@/services/juxt-web/views/portal/components/ui/PortalCommunityIcon';
 import { PortalSearchForm } from '@/services/juxt-web/views/portal/components/ui/PortalSearchForm';
+import { prepSearchTerm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
 export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
 	return (
-		<li id={id} data-search-term={props.community.name}>
+		<li id={id} data-search-term={prepSearchTerm(props.community.name)}>
 			<PortalCommunityIcon community={props.community} size="128" />
 			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button"></a>
 			<div className="body">

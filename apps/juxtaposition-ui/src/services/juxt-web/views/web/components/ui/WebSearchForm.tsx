@@ -22,3 +22,11 @@ export function WebSearchForm(props: SearchFormProps): ReactNode {
 		</form>
 	);
 }
+
+export function prepSearchTerm(term: string): string {
+	const removeChars = /\W/g;
+	return term
+		.toLowerCase()
+		.normalize('NFD').replace(/[\u0300-\u036f]/g, '') // strip diacritics
+		.replace(removeChars, '');
+}
