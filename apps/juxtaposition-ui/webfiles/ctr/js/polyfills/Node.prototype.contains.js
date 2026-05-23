@@ -1,8 +1,4 @@
-Node.prototype.contains = function (el) {
-	while ((el = el.parentNode)) {
-		if (el === this) {
-			return true;
-		}
-	}
-	return false;
+/*! (c) Andrea Giammarchi - ISC */
+Node.prototype.contains = function contains(el) {
+	return !!(el.compareDocumentPosition(this) & el.DOCUMENT_POSITION_CONTAINS);
 };

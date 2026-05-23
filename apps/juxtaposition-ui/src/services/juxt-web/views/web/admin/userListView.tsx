@@ -2,7 +2,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
+import { WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import type { ReactNode } from 'react';
 import type { ShallowUser } from '@/api/generated';
 
@@ -30,7 +30,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="users" />
-				<WebSearchBar search={props.search} />
+				<WebSearchForm search={props.search} type="with-submit" />
 				<span style={{ marginTop: '16px' }}>
 					{ props.userCount }
 					{' '}

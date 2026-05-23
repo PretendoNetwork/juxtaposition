@@ -1,5 +1,4 @@
 import './polyfills';
-
 import { initCheckboxes } from './controls/checkbox';
 import { initClientTabs } from './controls/ctabs';
 import { initNewPostView } from './new-post-view';
@@ -8,6 +7,7 @@ import { initPostPageView, initYeahButton } from './post';
 import { initToolbarConfigs } from './toolbar';
 import { GET, POST } from './xhr';
 import { initNavTabs } from './components/ui/CtrNavTabs';
+import { initSearchForm } from './components/ui/CtrSearchForm';
 
 setInterval(checkForUpdates, 30000);
 
@@ -89,6 +89,7 @@ function initAll() {
 	initPostPageView();
 	initClientTabs();
 	initCheckboxes();
+	initSearchForm();
 	checkForUpdates();
 	initToolbarConfigs();
 	pjaxRefresh();
