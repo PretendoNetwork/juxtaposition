@@ -3,39 +3,54 @@
 
 export type XHRCallback = (request: XMLHttpRequest) => void;
 
-export function POSTNoTranstion(url: string, data: string, callback: XHRCallback): void {
+export function POSTNoTranstion(url: string, data: string, callback: XHRCallback, error?: XHRCallback): void {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onload = function (): void {
 		callback(this);
+	};
+	xhttp.onerror = function (): void {
+		if (error) {
+			error(this);
+		}
 	};
 	xhttp.open('POST', url, true);
 	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xhttp.send(data);
 }
 
-export function POST(url: string, data: string, callback: XHRCallback): void {
+export function POST(url: string, data: string, callback: XHRCallback, error?: XHRCallback): void {
 	cave.transition_begin();
 	POSTNoTranstion(url, data, (request) => {
 		cave.transition_end();
 		callback(request);
-	});
+	}, error);
 }
 
-export function GET(url: string, callback: XHRCallback): void {
+export function GET(url: string, callback: XHRCallback, error?: XHRCallback): void {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onload = function (): void {
 		callback(this);
+	};
+	xhttp.onerror = function (): void {
+		if (error) {
+			error(this);
+		}
 	};
 	xhttp.open('GET', url, true);
 	xhttp.send();
 }
 
-export function DELETE(url: string, callback: XHRCallback): void {
+export function DELETE(url: string, callback: XHRCallback, error?: XHRCallback): void {
 	cave.transition_begin();
 	var xhttp = new XMLHttpRequest();
 	xhttp.onload = function (): void {
 		cave.transition_end();
 		callback(this);
+	};
+	xhttp.onerror = function (): void {
+		if (error) {
+			error(this);
+		}
 	};
 	xhttp.open('POST', url, true);
 	xhttp.setRequestHeader('X-HTTP-Method-Override', 'DELETE');

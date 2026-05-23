@@ -23,3 +23,9 @@ staticRouter.use('/images', (req, res, next) => {
 	const fileRoot = path.join(distFolder, 'webfiles', directory, 'images');
 	return express.static(fileRoot)(req, res, next);
 });
+
+// Dummy route for empty iframes where about:blank no worky (X-Nintendo-WhiteList conflict?)
+staticRouter.use('/blank', (req, res, _next) => {
+	res.set('Cache-Control', `public, max-age=${60 * 60}`);
+	res.send('<html></html>');
+});

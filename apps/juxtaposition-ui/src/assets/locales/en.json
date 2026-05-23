@@ -107,6 +107,12 @@
   },
   "new_post": {
     "automod_error": "Your post contains text that is not allowed on Juxtaposition. For more information, please visit https://preten.do/juxt-rules",
+    "empty_post": "Post is empty. Please try again.",
+    "invalid_content": "Post contains invalid characters. Please try again.",
+    "invalid_data": "Post data is invalid.",
+    "permission_denied": "Posting is not allowed here.",
+    "upload_failed": "Upload failed - please try again later.",
+    "post_too_long": "Post is too long. Please try again.",
     "new_post_short": "Post",
     "post_to": "Post to {{user}}",
     "swearing": "Post cannot contain explicit language.",
@@ -187,7 +193,10 @@
     "reason_piracy": "Piracy",
     "reason_inappropiate_ingame": "Inappropriate Behavior in Game",
     "reason_missing_images": "Missing Images",
-    "reason_others": "Other"
+    "reason_others": "Other",
+    "invalid_post": "Post not found or was deleted.",
+    "invalid_dupe": "You have already reported this post. If you have extra information or questions, please contact us on https://preten.do/juxt-mods.",
+    "submitted": "Your report has been received and will be reviewed shortly. Thank you for help keeping Juxtaposition safe!"
   },
   "moderation": {
     "title": "Moderation",
