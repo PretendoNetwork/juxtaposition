@@ -1,6 +1,6 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
+import { WebAdminCenterItems, WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
@@ -28,10 +28,12 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="communities" />
-				<WebSearchForm search={props.search} type="with-submit" />
-				<button style={{ marginTop: '1em' }}>
-					<a href="/admin/communities/new" className="button">Create Community</a>
-				</button>
+				<WebAdminCenterItems>
+					<WebSearchForm search={props.search} type="with-submit" />
+					<button style={{ marginTop: '1em' }}>
+						<a href="/admin/communities/new" className="button">Create Community</a>
+					</button>
+				</WebAdminCenterItems>
 				{props.communities.length === 0 ? <p>No Communities found</p> : null}
 				{props.communities.length > 0
 					? (

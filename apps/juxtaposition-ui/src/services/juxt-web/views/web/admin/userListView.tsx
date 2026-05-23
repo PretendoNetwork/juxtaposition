@@ -1,6 +1,6 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
+import { WebAdminCenterItems, WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import type { ReactNode } from 'react';
@@ -30,26 +30,28 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="users" />
-				<WebSearchForm search={props.search} type="with-submit" />
-				<span style={{ marginTop: '16px' }}>
-					{ props.userCount }
-					{' '}
-					total user(s),
-					{' '}
-					{ props.activeCount }
-					{' '}
-					online user(s)
-				</span>
-				<span style={{ marginTop: '16px' }}>
-					{ props.totalPostCount }
-					{' '}
-					total post(s),
-					{' '}
-					{ props.dailyPostCount }
-					{' '}
-					post(s) today
-				</span>
-				{props.users.length === 0 ? <p>No Users found</p> : null}
+				<WebAdminCenterItems>
+					<WebSearchForm search={props.search} type="with-submit" />
+					<span style={{ marginTop: '16px' }}>
+						{ props.userCount }
+						{' '}
+						total user(s),
+						{' '}
+						{ props.activeCount }
+						{' '}
+						online user(s)
+					</span>
+					<span style={{ marginTop: '16px' }}>
+						{ props.totalPostCount }
+						{' '}
+						total post(s),
+						{' '}
+						{ props.dailyPostCount }
+						{' '}
+						post(s) today
+					</span>
+					{props.users.length === 0 ? <p>No Users found</p> : null}
+				</WebAdminCenterItems>
 				{props.users.length > 0
 					? (
 							<>

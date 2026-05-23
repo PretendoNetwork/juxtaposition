@@ -41,7 +41,7 @@ export function WebCommunityListView(props: CommunityListViewProps): ReactNode {
 			</h2>
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
-			<WebWrapper>
+			<WebWrapper className="wide center">
 				<WebSearchForm type="box" data-community-list-search=".communities-wrapper" />
 				<div id="popular" className="communities-wrapper">
 					{props.communities.map(community => (
@@ -61,7 +61,7 @@ export function WebCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 			</h2>
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
-			<WebWrapper>
+			<WebWrapper className="wide center">
 				<h3 className="communities-header"><T k="all_communities.popular_places" /></h3>
 				<div id="popular" className="communities-wrapper">
 					{props.popularCommunities.map(community => (
@@ -75,7 +75,7 @@ export function WebCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 					))}
 				</div>
 			</WebWrapper>
-			<WebWrapper className="bottom">
+			<WebWrapper className="bottom center">
 				<button id="load-more-posts-button" data-offset="20" evt-click="location.href='/titles/all'"><T k="all_communities.text" /></button>
 			</WebWrapper>
 		</WebRoot>

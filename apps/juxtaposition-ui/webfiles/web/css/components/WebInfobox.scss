@@ -6,12 +6,6 @@ $icon-size: 64px;
     box-sizing: border-box;
     * { box-sizing: border-box; }
 
-    width: calc(600px + 2em); // 2em to align with non-border-box components. TODO
-    @include t.media('<tablet') {
-        width: calc(90vw + 2em);
-        max-width: calc(600px + 2em);
-    }
-
     background: var(--background-alt);
     border: 5px solid var(--background-alt);
     border-radius: t.$component-radius;
@@ -141,12 +135,6 @@ $icon-size: 64px;
 .page-infobox-buttons {
     box-sizing: border-box;
     * { box-sizing: border-box; }
-
-    width: calc(600px + 2em); // 2em to align with non-border-box components. TODO
-    @include t.media('<tablet') {
-        width: calc(90vw + 2em);
-        max-width: calc(600px + 2em);
-    }
 
     background: var(--background-alt-alt);
     border: 5px solid var(--background-alt-alt);
