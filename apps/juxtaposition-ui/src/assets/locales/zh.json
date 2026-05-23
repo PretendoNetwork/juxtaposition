@@ -39,7 +39,8 @@
         "tags_not_applicable": "N/A",
         "related": "相关社区",
         "related_to": "{{community}} 相关社区",
-        "closed": "本社区不再接受新帖子。"
+        "closed": "本社区不再接受新帖子。",
+        "related_short": "相关"
     },
     "user_page": {
         "country": "国家/地区",

@@ -19,7 +19,10 @@
         "global_feed": "Feed Global",
         "friend_requests": "Solicitações de Amizade",
         "updates": "Atualizações",
-        "search": "Pesquisar..."
+        "search": "Pesquisar...",
+        "global_feed_short": "Global",
+        "people_feed": "Feed de Pessoas",
+        "people_feed_short": "Pessoas"
     },
     "all_communities": {
         "text": "Todas as comunidades",
@@ -36,7 +39,8 @@
         "tags_not_applicable": "N/D",
         "related": "Comunidades Relacionadas",
         "related_to": "{{community}} Comunidades Relacionadas",
-        "closed": "Esta comunidade está fechada para novas postagens."
+        "closed": "Esta comunidade está fechada para novas postagens.",
+        "related_short": "Relacionado"
     },
     "user_page": {
         "country": "País",
@@ -51,7 +55,13 @@
         "game_experience_unknown": "Desconhecido",
         "settings": "Configurações",
         "deleted": "Usuário Deletado",
-        "banned": "Usuário Banido"
+        "banned": "Usuário Banido",
+        "friend_requests": "Pedidos",
+        "not_found": "Usuário não existe",
+        "tester_tag": "Testador",
+        "supporter_tag": "Apoiador",
+        "moderator_tag": "Moderador",
+        "developer_tag": "Desenvolvedor"
     },
     "user_settings": {
         "profile_settings": "Preferências",
@@ -60,7 +70,8 @@
         "show_game": "Mostrar Experiência em Jogos no perfil",
         "save_action": "Salvar Configurações",
         "gdpr_download": "Fazer download dos Dados do Usuário",
-        "gdpr_download_action": "Download"
+        "gdpr_download_action": "Download",
+        "show_profile": "Mostrar Perfil para visitantes"
     },
     "activity_feed": {
         "empty": "Isto está muito vazio. Começe a seguir alguém!"
@@ -81,7 +92,8 @@
         "no_screenshot": "Sem Captura de tela",
         "spoiler_label": "Spoiler",
         "painting_close": "Cancelar",
-        "painting_submit": "OK"
+        "painting_submit": "OK",
+        "automod_error": "Sua postagem contém texto que não é permitido no Juxtaposition. Para mais informações, por favor visite https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "Bem-vindo a Juxt!",
@@ -174,7 +186,8 @@
         "reason_nsfw": "Sexualmente Explícito",
         "reason_piracy": "Pirataria",
         "reason_inappropiate_ingame": "Atitude Inapropriada no Jogo",
-        "reason_missing_images": "Imagens faltando"
+        "reason_missing_images": "Imagens faltando",
+        "reason_others": "Outros"
     },
     "moderation": {
         "title": "Moderação",

@@ -2,7 +2,7 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebAdminCenterItems, WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
+import { WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
 import type { ReactNode } from 'react';
 import type { AdminCommunity } from '@/api/generated';
@@ -29,7 +29,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 			<WebWrapper>
 				<WebModerationTabs selected="communities" />
 				<WebAdminCenterItems>
-					<WebSearchBar search={props.search} />
+					<WebSearchForm search={props.search} type="with-submit" />
 					<button style={{ marginTop: '1em' }}>
 						<a href="/admin/communities/new" className="button">Create Community</a>
 					</button>

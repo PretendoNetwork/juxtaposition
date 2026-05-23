@@ -445,6 +445,10 @@ iframe {
   transform: translateY(-130%);
 }
 
+.search-form {
+  margin-bottom: 1em;
+}
+
 .communities-wrapper {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
