@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { mapPost, postSchema } from '@/services/internal/contract/post';
+import { mapPostWithModeration, postSchema } from '@/services/internal/contract/post';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { HydratedReportDocument } from '@/types/mongoose/report';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
@@ -35,6 +35,8 @@ export function mapReport(report: HydratedReportDocument, users: HydratedSetting
 	const reporter = users.find(v => v.pid === report.reported_by);
 	const resolver = report.resolved_by ? users.find(v => v.pid === report.resolved_by) : null;
 
+	const remover = post?.removed_by ? users.find(v => v.pid === post.removed_by) ?? null : null;
+
 	return {
 		id: report.id,
 		createdAt: report.created_at,
@@ -52,6 +54,6 @@ export function mapReport(report: HydratedReportDocument, users: HydratedSetting
 			note: report.note ?? null,
 			reason: report.resolved ? 'reportResolved' : 'similarReportResolved'
 		},
-		post: post ? mapPost(post, community) : null
+		post: post ? mapPostWithModeration(post, community, remover) : null
 	};
 }

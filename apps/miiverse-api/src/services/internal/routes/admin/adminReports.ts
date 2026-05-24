@@ -51,7 +51,10 @@ adminReportsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const relatedUserIds = rawReports.flatMap(v => [v.reported_by, v.resolved_by]).filter((v): v is number => !!v);
+		const relatedUserIds = [
+			...rawReports.flatMap(v => [v.reported_by, v.resolved_by]),
+			...posts.map(v => v.removed_by)
+		].filter((v): v is number => !!v);
 		const users = await Settings.find({ pid: { $in: relatedUserIds } });
 
 		let reports = rawReports.map((report) => {

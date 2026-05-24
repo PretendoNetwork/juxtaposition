@@ -3,7 +3,7 @@ import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
 import { deleteOptional, filterRemovedPosts } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
-import { mapPost, postSchema } from '@/services/internal/contract/post';
+import { mapPost, mapPostWithModeration, postSchema } from '@/services/internal/contract/post';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { empathyActionSchema, empathySchema, mapEmpathy } from '@/services/internal/contract/empathy';
@@ -20,6 +20,7 @@ import { Settings } from '@/models/settings';
 import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 
 export const postsRouter = createInternalApiRouter();
 
@@ -78,7 +79,19 @@ postsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		return mapPage(total, posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
+		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
+		const users = await Settings.find({ pid: { $in: userIds } });
+
+		const mappedPosts = posts.map((p) => {
+			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
+			const remover = p.removed_by ? users.find(v => v.pid === p.removed_by) ?? null : null;
+
+			if (auth?.moderator) {
+				return mapPostWithModeration(p, comm, remover);
+			}
+			return mapPost(p, comm);
+		});
+		return mapPage(total, mappedPosts);
 	}
 });
 
@@ -102,6 +115,11 @@ postsRouter.get({
 		}
 		const community = await Community.findOne({ olive_community_id: post.community_id });
 
+		let remover: HydratedSettingsDocument | null = null;
+		if (post.removed_by) {
+			remover = await Settings.findOne({ pid: post.removed_by });
+		}
+
 		const poster = await Settings.findOne({ pid: post.pid });
 		if (!poster) {
 			throw errors.for('not_found');
@@ -109,6 +127,9 @@ postsRouter.get({
 		// Throws if user isn't visible for some reason
 		assertCanAccessUser(auth, poster);
 
+		if (auth?.moderator) {
+			return mapPostWithModeration(post, community, remover);
+		}
 		return mapPost(post, community);
 	}
 });
