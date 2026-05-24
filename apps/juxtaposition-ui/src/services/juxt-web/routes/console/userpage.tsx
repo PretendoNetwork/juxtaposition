@@ -1,7 +1,6 @@
 import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
-import { database } from '@/database';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserMissingPage, WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
 import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
@@ -59,8 +58,7 @@ userPageRouter.get('/downloadUserData.json', async function (req, res) {
 });
 
 userPageRouter.get('/me/settings', async function (req, res) {
-	const { auth } = parseReq(req);
-	const userSettings = await database.getUserSettings(auth().pid);
+	const { data: userSettings } = await req.api.users.me.settings.get();
 	if (!userSettings) {
 		return res.redirect('/404');
 	}
@@ -84,7 +82,7 @@ userPageRouter.get('/me/:type', async function (req, res) {
 });
 
 userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
-	const { body, auth } = parseReq(req, {
+	const { body } = parseReq(req, {
 		body: z.object({
 			profile: z.coerce.boolean(),
 			country: z.coerce.boolean(),
@@ -93,17 +91,14 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 			comment: z.string().optional()
 		})
 	});
-	const userSettings = await database.getUserSettings(auth().pid);
-	if (!userSettings) {
-		return res.redirect('/users/me');
-	}
 
-	userSettings.profile_visibility = body.profile ? 'public' : 'users_only';
-	userSettings.country_visibility = body.country;
-	userSettings.birthday_visibility = body.birthday;
-	userSettings.game_skill_visibility = body.experience;
-	userSettings.profile_comment_visibility = !!body.comment;
-	await userSettings.updateComment(body.comment ?? '');
+	await req.api.users.me.settings.update({
+		profileVisibility: body.profile ? 'public' : 'users_only',
+		birthdayVisible: body.birthday,
+		gameSkillVisible: body.experience,
+		countryVisible: body.country,
+		comment: body.comment ? body.comment : null
+	});
 
 	res.redirect('/users/me');
 });

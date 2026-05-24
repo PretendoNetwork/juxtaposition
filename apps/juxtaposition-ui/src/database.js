@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { SETTINGS } from '@/models/settings';
 import { logger } from '@/logger';
 import { config } from '@/config';
 
@@ -19,18 +18,6 @@ async function connect() {
 	await mongoose.connect(config.mongoose.uri);
 }
 
-function verifyConnected() {
-	if (!connection) {
-		connect();
-	}
-}
-
-async function getUserSettings(pid) {
-	verifyConnected();
-	return SETTINGS.findOne({ pid: pid });
-}
-
 export const database = {
-	connect,
-	getUserSettings
+	connect
 };
