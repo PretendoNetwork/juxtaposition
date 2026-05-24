@@ -1,7 +1,5 @@
 import express from 'express';
 import { z } from 'zod';
-import { database } from '@/database';
-import { createUser } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebFirstRunView } from '@/services/juxt-web/views/web/firstRunView';
 import { PortalFirstRunView } from '@/services/juxt-web/views/portal/firstRunView';
@@ -50,10 +48,14 @@ showRouter.post('/newUser', async function (req, res) {
 			notifications: z.boolean()
 		})
 	});
-
 	const self = hasAuth() ? auth().self : null;
 
-	if (!self || !req.new_users || req.directory === 'web') {
+	const newUsersEnabled = !!req.new_users; // Can this instance onboard new users?
+	const platformAllowsOnboarding = req.directory !== 'web'; // Web is not allowed to onboard users
+	const isAuthed = !!self;
+
+	const canDoOnboarding = isAuthed && platformAllowsOnboarding && newUsersEnabled;
+	if (!canDoOnboarding) {
 		return res.sendStatus(401);
 	}
 
@@ -61,10 +63,9 @@ showRouter.post('/newUser', async function (req, res) {
 		return res.sendStatus(504); // Onboarding already finished
 	}
 
-	await createUser(auth().pid, body.experience, body.notifications);
-	if (await database.getUserSettings(auth().pid) !== null) {
-		res.sendStatus(200);
-	} else {
-		res.sendStatus(504);
-	}
+	await req.api.onboarding.submit({
+		experienceId: body.experience,
+		receiveNotifications: body.notifications
+	});
+	res.sendStatus(200);
 });

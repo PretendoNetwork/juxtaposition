@@ -11,8 +11,6 @@ import { DateTime } from 'luxon';
 import { z } from 'zod';
 import { rateLimit } from 'express-rate-limit';
 import { logger } from '@/logger';
-import { CONTENT } from '@/models/content';
-import { SETTINGS } from '@/models/settings';
 import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
@@ -54,30 +52,6 @@ const s3 = new S3Client({
 // TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
 export function getInvalidPostRegex(): RegExp {
 	return /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√|¦⇒⇔¤¢€£¥™©®+×÷=±∞`΄΅˘˙¸˛~˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
-}
-
-export async function createUser(pid: number, experience: number, notifications: boolean): Promise<void> {
-	const pnid = await getUserAccountData(pid);
-	if (!pnid) {
-		return;
-	}
-
-	const name = pnid.mii?.name ?? 'Default';
-
-	const newSettings = {
-		pid: pid,
-		screen_name: name,
-		game_skill: experience,
-		receive_notifications: notifications
-	};
-	const newContent = {
-		pid: pid
-	};
-	const newSettingsObj = new SETTINGS(newSettings);
-	await newSettingsObj.save();
-
-	const newContentObj = new CONTENT(newContent);
-	await newContentObj.save();
 }
 
 export function decodeParamPack(paramPack: string): ParamPack {
