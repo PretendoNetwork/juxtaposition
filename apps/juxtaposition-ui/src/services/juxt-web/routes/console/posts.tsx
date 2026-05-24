@@ -63,19 +63,19 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	const { data: community } = await req.api.communities.get({ id: post.community_id });
-	const postPNID = await getUserAccountData(post.pid);
+	const { data: community } = await req.api.communities.get({ id: post.community.id });
+	const postPNID = await getUserAccountData(post.author.pid);
 
 	let img = {};
-	if (post.painting !== '') {
+	if (post.painting) {
 		img = {
-			thumbnail_url: `${res.locals.cdnURL}/paintings/${post.pid}/${post.id}.png`,
+			thumbnail_url: `${res.locals.cdnURL}/paintings/${post.author.pid}/${post.id}.png`,
 			thumbnail_width: 320,
 			thumbnail_height: 120
 		};
-	} else if (post.screenshot_thumb !== '') {
+	} else if (post.screenshot) {
 		img = {
-			thumbnail_url: `${res.locals.cdnURL}${post.screenshot_thumb}`
+			thumbnail_url: `${res.locals.cdnURL}${post.screenshot.imageUrlThumbnail}`
 		};
 	} else {
 		img = {
@@ -88,10 +88,10 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	const doc = {
 		type: 'link',
 		version: '1.0',
-		title: `${post.screen_name} (@${postPNID.username}) - ${community?.name}`,
+		title: `${post.author.miiName} (@${postPNID.username}) - ${community?.name}`,
 		description: post.body,
-		author_name: post.screen_name,
-		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid,
+		author_name: post.author.miiName,
+		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.author.pid,
 		provider_name: 'Juxtaposition - Pretendo Network',
 		provider_url: `https://juxt.pretendo.network`,
 		...img
@@ -111,17 +111,17 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	const existingEmpathy = post.yeahs.indexOf(auth().pid) !== -1;
+	const existingEmpathy = post.yeahsBy.some(v => v.pid === auth().pid);
 	const action: EmpathyActionEnum = !existingEmpathy ? 'add' : 'remove';
 	const { data: result } = await req.api.posts.changeEmpathy({ post_id: post.id, action });
 	if (result === null) {
-		res.send({ status: 423, id: post.id, count: post.empathy_count });
+		res.send({ status: 423, id: post.id, count: post.stats.empathyCount });
 		return;
 	}
 
 	res.send({ status: 200, id: result.post_id, count: result.empathy_count });
 
-	await redisRemove(`${post.pid}_user_page_posts`);
+	await redisRemove(`${post.author.pid}_user_page_posts`);
 });
 
 postsRouter.post('/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
@@ -140,21 +140,25 @@ postsRouter.get('/:post_id', async function (req, res) {
 	if (!post) {
 		return res.redirect('/404');
 	}
-	if (post.parent) {
-		const { data: parent } = await req.api.posts.get({ post_id: post.parent });
+	if (post.parentId) {
+		const { data: parent } = await req.api.posts.get({ post_id: post.parentId });
 		if (!parent) {
 			return res.redirect('/404');
 		}
 		return res.redirect(`/posts/${parent.id}`);
 	}
-	const { data: community } = await req.api.communities.get({ id: post.community_id });
+
+	if (!post.community) {
+		return res.redirect('/404');
+	}
+	const { data: community } = await req.api.communities.get({ id: post.community.id });
 	if (!community) {
 		return res.redirect('/404');
 	}
 
 	// increase limit for post replies since there's no pagination yet
 	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort: 'oldest', limit: 500 }))?.data.items ?? [];
-	const postPNID = await getUserAccountData(post.pid);
+	const postPNID = await getUserAccountData(post.author.pid);
 	const canPost = !!self && isPostingAllowed(community, self, post);
 
 	const props: PostPageViewProps = {
@@ -193,12 +197,12 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	}
 
 	res.statusCode = 200;
-	if (post.parent) {
-		res.send(`/posts/${post.parent}`);
+	if (post.parentId) {
+		res.send(`/posts/${post.parentId}`);
 	} else {
 		res.send('/users/me');
 	}
-	await redisRemove(`${post.pid}_user_page_posts`);
+	await redisRemove(`${post.author.pid}_user_page_posts`);
 });
 
 postsRouter.post('/:post_id/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
@@ -220,7 +224,10 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	const { data: community } = await req.api.communities.get({ id: parent.community_id });
+	if (!parent.community) {
+		return res.sendStatus(404);
+	}
+	const { data: community } = await req.api.communities.get({ id: parent.community.id });
 	if (!community) {
 		return res.sendStatus(404);
 	}
@@ -228,8 +235,8 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 	const shotMode = getShotMode(community, auth().paramPackData);
 
 	const props: NewPostViewProps = {
-		id: parent.community_id,
-		name: parent.screen_name,
+		id: parent.community.id,
+		name: parent.author.miiName,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
 		shotMode,
@@ -365,10 +372,10 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		throw new Error('Null newPostResult');
 	}
 
-	if (newPostResult.parent) {
-		res.redirect('/posts/' + newPostResult.parent.toString());
+	if (newPostResult.parentId) {
+		res.redirect('/posts/' + newPostResult.parentId.toString());
 		return;
 	}
 
-	res.redirect('/titles/' + newPostResult.community_id + '/new');
+	res.redirect('/titles/' + newPostResult.community?.id + '/new');
 }

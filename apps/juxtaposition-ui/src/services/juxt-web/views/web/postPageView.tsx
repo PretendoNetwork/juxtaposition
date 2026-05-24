@@ -20,22 +20,22 @@ export type PostPageViewProps = {
 function PostHead(props: PostPageViewProps): ReactNode {
 	const url = useUrl();
 	const post = props.post;
-	const pageTitle = T.str('post.title', { username: post.screen_name });
+	const pageTitle = T.str('post.title', { username: post.author.miiName });
 
-	if (post.removed) {
+	if (post.moderation?.removed) {
 		return (
 			<title>{pageTitle}</title>
 		);
 	}
 
-	const title = `${post.screen_name} (@${props.postPNID.username}) - ${props.community.name}`;
+	const title = `${post.author.miiName} (@${props.postPNID.username}) - ${props.community.name}`;
 	const description = post.body + '\n\n' +
-		`${post.reply_count} 🗨️  ${post.empathy_count} ❤️`;
+		`${post.stats.replyCount} 🗨️  ${post.stats.empathyCount} ❤️`;
 	let image: string | null = null;
 	if (post.screenshot) {
-		image = url.cdn(post.screenshot);
+		image = url.cdn(post.screenshot.imageUrl);
 	} else if (post.painting) {
-		image = url.cdn(`/paintings/${post.pid}/${post.id}.png`);
+		image = url.cdn(`/paintings/${post.author.pid}/${post.id}.png`);
 	}
 
 	return (
