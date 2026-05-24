@@ -38,22 +38,7 @@ const schema = z.object({
 	disableConsoleChecks: z.stringbool().default(false),
 	/** The AES key to use for decrypting service tokens. Must match the account server's. */
 	aesKey: z.string(),
-	mongoose: z.object({
-		uri: z.string()
-	}),
-	s3: z.object({
-		endpoint: z.string(),
-		key: z.string(),
-		secret: z.string(),
-		bucket: z.string(),
-		region: z.string()
-	}),
 	grpc: z.object({
-		friends: z.object({
-			host: z.string(),
-			port: z.string(),
-			apiKey: z.string()
-		}),
 		account: z.object({
 			host: z.string(),
 			port: z.string(),
@@ -91,22 +76,7 @@ export const presets = {
 		serverEnvironment: 'prod',
 		disableConsoleChecks: true,
 		aesKey: '1234567812345678123456781234567812345678123456781234567812345678',
-		mongoose: {
-			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'
-		},
-		s3: {
-			endpoint: 'http://localhost:9000',
-			key: 'minioadmin',
-			secret: 'minioadmin',
-			bucket: 'miiverse',
-			region: 'us-east-1'
-		},
 		grpc: {
-			friends: {
-				host: 'localhost',
-				port: 8124,
-				apiKey: '12345678123456781234567812345678'
-			},
 			account: {
 				host: 'localhost',
 				port: 8123,

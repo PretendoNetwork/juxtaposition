@@ -1,7 +1,6 @@
 import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
-import { redisRemove } from '@/redisCache';
 import { getUserAccountData, createRatelimit } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
@@ -62,14 +61,17 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	if (!post) {
 		return res.sendStatus(404);
 	}
+	const { data: author } = await req.api.users.getProfile({ id: post.author.pid });
+	if (!author) {
+		return res.sendStatus(404);
+	}
 
 	const { data: community } = await req.api.communities.get({ id: post.community.id });
-	const postPNID = await getUserAccountData(post.author.pid);
 
 	let img = {};
 	if (post.painting) {
 		img = {
-			thumbnail_url: `${res.locals.cdnURL}/paintings/${post.author.pid}/${post.id}.png`,
+			thumbnail_url: `${res.locals.cdnURL}/paintings/${author.pid}/${post.id}.png`,
 			thumbnail_width: 320,
 			thumbnail_height: 120
 		};
@@ -88,10 +90,10 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	const doc = {
 		type: 'link',
 		version: '1.0',
-		title: `${post.author.miiName} (@${postPNID.username}) - ${community?.name}`,
+		title: `${author.miiName} (@${author.username}) - ${community?.name}`,
 		description: post.body,
-		author_name: post.author.miiName,
-		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.author.pid,
+		author_name: author.miiName,
+		author_url: 'https://juxt.pretendo.network/users/show?pid=' + author.pid,
 		provider_name: 'Juxtaposition - Pretendo Network',
 		provider_url: `https://juxt.pretendo.network`,
 		...img
@@ -120,8 +122,6 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 	}
 
 	res.send({ status: 200, id: result.post_id, count: result.empathy_count });
-
-	await redisRemove(`${post.author.pid}_user_page_posts`);
 });
 
 postsRouter.post('/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
@@ -202,7 +202,6 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	} else {
 		res.send('/users/me');
 	}
-	await redisRemove(`${post.author.pid}_user_page_posts`);
 });
 
 postsRouter.post('/:post_id/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {

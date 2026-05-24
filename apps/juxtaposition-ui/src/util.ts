@@ -3,9 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
 import { DateTime } from 'luxon';
 import { z } from 'zod';
@@ -14,45 +12,21 @@ import { logger } from '@/logger';
 import { config } from '@/config';
 import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
-import { AutomodLog } from '@/models/automodLog';
 import type { Options as RatelimitOptions } from 'express-rate-limit';
 import type { ZodType } from 'zod';
-import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
-import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
-import type { GetUserFriendPIDsResponse } from '@pretendonetwork/grpc/friends/get_user_friend_pids_rpc';
 import type { RequestHandler } from 'express';
 import type { Config } from '@/config';
 import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
-import type { AutomodAction } from '@/models/automodLog';
-import type { HydratedAutomodRuleDocument } from '@/models/automodRules';
-
-const gRPCFriendsChannel = createChannel(`${config.grpc.friends.host}:${config.grpc.friends.port}`);
-const gRPCFriendsClient = createClient(FriendsDefinition, gRPCFriendsChannel);
 
 const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
 const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
 
 const gRPCApiChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
 const gRPCApiClient = createClient(APIDefinition, gRPCApiChannel);
-
-const s3 = new S3Client({
-	endpoint: config.s3.endpoint,
-	forcePathStyle: true,
-	region: config.s3.region,
-	credentials: {
-		accessKeyId: config.s3.key,
-		secretAccessKey: config.s3.secret
-	}
-});
-
-// TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
-export function getInvalidPostRegex(): RegExp {
-	return /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√|¦⇒⇔¤¢€£¥™©®+×÷=±∞`΄΅˘˙¸˛~˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
-}
 
 export function decodeParamPack(paramPack: string): ParamPack {
 	const values = Buffer.from(paramPack, 'base64').toString().split('\\').filter(v => v.length > 0).values();
@@ -171,49 +145,6 @@ export function getReasonMap(): string[] {
 	];
 }
 
-export async function uploadCDNAsset(key: string, data: Buffer, acl: ObjectCannedACL): Promise<boolean> {
-	const awsPutParams = new PutObjectCommand({
-		Body: data,
-		Key: key,
-		Bucket: config.s3.bucket,
-		ACL: acl
-	});
-	try {
-		await s3.send(awsPutParams);
-		return true;
-	} catch (e) {
-		logger.error(e, 'Could not upload to CDN');
-		return false;
-	}
-}
-
-export async function getUserFriendPIDs(pid: number): Promise<number[]> {
-	const response = await gRPCFriendsClient.getUserFriendPIDs({
-		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.apiKey
-		})
-	}).catch((err): GetUserFriendPIDsResponse => {
-		logger.error(err, `Couldn't fetch friends for user ${pid}`);
-		return { pids: [] };
-	});
-
-	return response.pids;
-}
-
-export async function getUserFriendRequestsIncoming(pid: number): Promise<FriendRequest[]> {
-	const response = await gRPCFriendsClient.getUserFriendRequestsIncoming({
-		pid: pid
-	}, {
-		metadata: Metadata({
-			'X-API-Key': config.grpc.friends.apiKey
-		})
-	});
-
-	return response.friendRequests;
-}
-
 export function getUserAccountData(pid: number): Promise<AccountGetUserDataResponse> {
 	return gRPCAccountClient.getUserData({
 		pid: pid
@@ -255,98 +186,6 @@ export async function passwordLogin(username: string, password: string): Promise
 // 		})
 // 	});
 // }
-
-export type AutomodRuleEvaluationMatch = {
-	start: number;
-	end: number;
-};
-export type AutomodRuleEvaluation = {
-	violatedRule: HydratedAutomodRuleDocument;
-	matches: AutomodRuleEvaluationMatch[];
-	action: AutomodAction;
-} | null;
-
-export function evaluateAutomodRules(post: any, rules: HydratedAutomodRuleDocument[]): AutomodRuleEvaluation {
-	const blockRules = rules.filter(v => v.mode === 'block');
-	const nonBlockRules = rules.filter(v => v.mode !== 'block');
-	const orderedRules = [...blockRules, ...nonBlockRules];
-
-	for (const rule of orderedRules) {
-		let hasMatched = false;
-		const matches: AutomodRuleEvaluationMatch[] = [];
-		if (rule.type === 'keyword') {
-			const bodyNormalized: string = (post.body ?? '').toLowerCase();
-			const keywordsToCheck = rule.keyword_settings?.keywords ?? [];
-			keywordsToCheck.forEach((keywordUpper) => {
-				const keyword = keywordUpper.toLowerCase();
-				const index = bodyNormalized.indexOf(keyword);
-				if (index < 0) {
-					return;
-				}
-
-				hasMatched = true;
-				matches.push({
-					start: index,
-					end: index + keyword.length
-				});
-			});
-		}
-
-		if (hasMatched) {
-			return {
-				action: rule.mode === 'block' ? 'blocked' : 'logged',
-				matches,
-				violatedRule: rule
-			};
-		}
-	}
-
-	return null; // No rules apply to this post
-}
-
-export async function performAutomodAction(post: any, evaluation: AutomodRuleEvaluation): Promise<{ allowPost: boolean }> {
-	if (!evaluation) {
-		return { allowPost: true };
-	}
-
-	if (evaluation.action === 'blocked' || evaluation.action === 'logged') {
-		const allowPost = evaluation.action === 'blocked' ? false : true;
-		await AutomodLog.create({
-			action: evaluation.action,
-			author: post.pid,
-			post_id: post.id,
-			post_content_body: post.body ?? '',
-			created_at: new Date(),
-			rule_id: evaluation.violatedRule.id,
-			parent_post_id: post.parent ?? null,
-			community_id: post.community_id,
-			matches: evaluation.matches.map(match => ({
-				start: match.start,
-				end: match.end
-			}))
-		});
-		return {
-			allowPost
-		};
-	}
-
-	throw new Error('Invalid automod evaluation');
-}
-
-/**
- * Deletes undefined, but present, values. Useful for Mongoose queries.
- * @param obj Your object.
- * @returns Partial<obj>, with undefined values deleted
- */
-export function deleteOptional<T extends {}>(obj: T): Partial<T> { // Partial<T> kinda wrong but good enough
-	for (const _key of Object.keys(obj)) {
-		const key = _key as keyof T;
-		if (obj[key] === undefined) {
-			delete obj[key];
-		}
-	}
-	return obj;
-}
 
 export function fixupUnicodes(input: string): string {
 	// 202F NARROW NON BREAKING SPACE
