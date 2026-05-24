@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { CONTENT } from '@/models/content';
 import { SETTINGS } from '@/models/settings';
 import { logger } from '@/logger';
 import { config } from '@/config';
@@ -31,13 +30,7 @@ async function getUserSettings(pid) {
 	return SETTINGS.findOne({ pid: pid });
 }
 
-async function getUserContent(pid) {
-	verifyConnected();
-	return CONTENT.findOne({ pid: pid });
-}
-
 export const database = {
 	connect,
-	getUserSettings,
-	getUserContent
+	getUserSettings
 };
