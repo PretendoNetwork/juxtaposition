@@ -31,12 +31,12 @@ export function ModerateUserRemovedPostView(props: ModerateUserRemovedPostsViewP
 							<details>
 								<summary>
 									<div className="hover">
-										<a href={`/users/${removed.removedBy.pid}`} className="icon-container notify">
-											<img src={url.cdn(`/mii/${removed.removedBy.pid}/normal_face.png`)} className="icon" />
+										<a href={`/users/${removed.removedBy?.pid}`} className="icon-container notify">
+											<img src={url.cdn(`/mii/${removed.removedBy?.pid}/normal_face.png`)} className="icon" />
 										</a>
 										<span className="body messages report">
 											<span className="text">
-												<a href={`/users/${removed.removedBy.pid}`} className="nick-name">
+												<a href={`/users/${removed.removedBy?.pid}`} className="nick-name">
 													Removed By:
 													{' '}
 													{removed.removedBy?.miiName ?? 'Nobody'}

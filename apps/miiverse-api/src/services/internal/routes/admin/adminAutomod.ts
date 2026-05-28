@@ -167,7 +167,7 @@ adminAutomodRouter.get({
 
 		const userIds = logs.map(v => v.author);
 		const users = await Settings.find({
-			_id: {
+			pid: {
 				$in: userIds
 			}
 		});
