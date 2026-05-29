@@ -29,7 +29,7 @@ userSettingsRouter.get({
 userSettingsRouter.post({
 	path: '/users/@me/settings',
 	name: 'users.me.settings.update',
-	description: 'Get user settings',
+	description: 'Update user settings',
 	guard: guards.user,
 	schema: {
 		body: z.object({
@@ -60,6 +60,8 @@ userSettingsRouter.post({
 			settings.profile_comment_visibility = false;
 			settings.profile_comment = '';
 		}
+
+		await settings.save();
 
 		return mapResult('success');
 	}
