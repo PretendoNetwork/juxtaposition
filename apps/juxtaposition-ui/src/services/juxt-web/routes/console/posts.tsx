@@ -58,7 +58,7 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	});
 
 	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
-	if (!post) {
+	if (!post || post.moderation?.removed) {
 		return res.sendStatus(404);
 	}
 	const { data: author } = await req.api.users.getProfile({ id: post.author.pid });
@@ -91,7 +91,7 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 		type: 'link',
 		version: '1.0',
 		title: `${author.miiName} (@${author.username}) - ${community?.name}`,
-		description: post.body,
+		description: post.body ?? '',
 		author_name: author.miiName,
 		author_url: 'https://juxt.pretendo.network/users/show?pid=' + author.pid,
 		provider_name: 'Juxtaposition - Pretendo Network',
