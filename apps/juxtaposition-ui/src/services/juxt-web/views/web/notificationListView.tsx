@@ -24,7 +24,7 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	const url = useUrl();
 	const notif = props.notification;
 	if (notif.type === 'follow') {
-		const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? null}</span>;
+		const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? 'Nobody'}</span>;
 
 		let i18nKey: TranslationKey = 'notifications.new_follower/one';
 		if (notif.users.length === 2) {
