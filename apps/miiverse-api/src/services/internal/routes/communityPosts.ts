@@ -40,7 +40,19 @@ communityPostsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		return mapFeedPage(posts.map(p => mapPost(p, communities.find(v => v.olive_community_id === p.community_id) ?? null)));
+		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
+		const users = await Settings.find({ pid: { $in: userIds } });
+
+		const mappedPosts = posts.map((p) => {
+			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
+			const remover = p.removed_by ? users.find(v => v.pid === p.removed_by) ?? null : null;
+
+			if (auth?.moderator) {
+				return mapPostWithModeration(p, comm, remover);
+			}
+			return mapPost(p, comm);
+		});
+		return mapFeedPage(mappedPosts);
 	}
 });
 
