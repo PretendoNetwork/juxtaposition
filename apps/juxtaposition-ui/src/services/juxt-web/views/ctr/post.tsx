@@ -70,12 +70,15 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 						</span>
 						{ post.topicTag
 							? (
-									<a href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
-										<span>
-											<span className="sprite sp-tag inline-sprite"></span>
-											<span className="tags">{post.topicTag}</span>
-										</span>
-									</a>
+									<>
+										<br />
+										<a href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
+											<span>
+												<span className="sprite sp-tag inline-sprite"></span>
+												<span className="tags">{post.topicTag}</span>
+											</span>
+										</a>
+									</>
 								)
 							: null }
 					</header>
