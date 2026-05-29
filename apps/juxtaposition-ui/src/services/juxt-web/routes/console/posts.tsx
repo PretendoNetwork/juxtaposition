@@ -347,13 +347,13 @@ async function newPost(req: Request, res: Response): Promise<void> {
 	let newPostResult: Post | InternalApiError | null;
 	if (params.post_id) {
 		const out = await wrapApi(req.api.posts.reply({
-			...postBody,
+			postCreateBody: postBody,
 			post_id: params.post_id
 		}));
 		newPostResult = out.error ?? out.result ?? null;
 	} else {
 		const out = await wrapApi(req.api.communities.createPost({
-			...postBody,
+			postCreateBody: postBody,
 			id: body.community_id
 		}));
 		newPostResult = out.error ?? out.result ?? null;
