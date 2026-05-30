@@ -1,5 +1,5 @@
 import { GET } from '../../xhr';
-import { pjaxPushHistory, pjaxRefresh } from '../../pjax';
+import { pjaxSetUrl, pjaxRefresh } from '../../pjax';
 import { initPosts } from '../../juxt';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {
@@ -30,7 +30,7 @@ function navTabsClick(this: HTMLElement, ev: Event): void {
 		}
 
 		target.innerHTML = xhr.responseText;
-		pjaxPushHistory(href);
+		pjaxSetUrl(href, true);
 		initPosts();
 		pjaxRefresh();
 		cave.transition_end();
