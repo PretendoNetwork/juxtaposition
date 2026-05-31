@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 export type MiiIconProps = {
 	pid: number;
 	face_url?: string;
+	link?: boolean; // default true
 
 	type?: 'mii-icon' | 'icon' | 'header-icon'; // default ".mii-icon"
 	className?: string; // extra classes
@@ -13,7 +14,7 @@ export type MiiIconProps = {
 export function WebMiiIcon(props: MiiIconProps): ReactNode {
 	const url = useUrl();
 	const miiUrl = props.face_url ?? url.cdn(`/mii/${props.pid}/normal_face.png`);
-	const href = `/users/${props.pid}`;
+	const href = props.link !== false ? `/users/${props.pid}` : undefined;
 	const type = props.type ?? 'mii-icon';
 
 	return (

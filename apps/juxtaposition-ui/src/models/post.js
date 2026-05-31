@@ -112,6 +112,14 @@ PostSchema.index({
 	parent: 1
 });
 
+// Topic tag lookups
+PostSchema.index({
+	topic_tag: 1,
+	parent: 1,
+	removed: 1,
+	created_at: -1
+});
+
 PostSchema.methods.upReply = async function () {
 	const replyCount = this.get('reply_count');
 	if (replyCount + 1 < 0) {

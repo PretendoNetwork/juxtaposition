@@ -5,6 +5,7 @@ import { guards } from '@/services/internal/middleware/guards';
 import { mapPost, postSchema } from '@/services/internal/contract/post';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
+import { canAccessUser } from '@/services/internal/utils/user';
 import { getPostTypeFilter, postTypeFilter, standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { Settings } from '@/models/settings';
 import type { FilterQuery } from 'mongoose';
@@ -29,13 +30,15 @@ userPostsRouter.get({
 		response: pageDtoSchema(postSchema)
 	},
 	async handler({ params, query, auth }) {
-		const targetUser = await Settings.findOne({ pid: params.id });
-		if (!targetUser) {
+		const pid = params.id;
+		const user = await Settings.findOne({ pid });
+		// We can't see this user for some reason (doesn't exist, permission, etc)
+		if (!user || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
 		}
 
 		const dbQuery: FilterQuery<IPost> = deleteOptional({
-			pid: targetUser.pid,
+			pid,
 			removed: query.removed,
 			message_to_pid: null, // messages aren't really posts
 			...getPostTypeFilter(query.type),

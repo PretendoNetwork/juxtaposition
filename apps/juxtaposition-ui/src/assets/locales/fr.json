@@ -4,7 +4,6 @@
         "user_page": "Page de l'utilisateur",
         "activity_feed": "Suivi des activités",
         "communities": "Communautés",
-        "messages": "Messages privés",
         "notifications": "Notifications",
         "go_back": "Retour",
         "back": "Précédent",
@@ -21,8 +20,7 @@
         "global_feed_short": "Actualités",
         "people_feed": "Actualités des abonnés",
         "people_feed_short": "Abonnés",
-        "friend_requests": "Demmandes d'amis",
-        "notifications_and_messages": "Notifications et messages",
+        "friend_requests": "Demandes d'amis",
         "updates": "Mises à jour",
         "search": "Chercher..."
     },
@@ -40,12 +38,14 @@
         "followers_count": "{{count}} abonnés",
         "tags_not_applicable": "Non appliquable",
         "related": "Communautés associées",
-        "closed": "Cette communauté est fermée aux nouveaux posts."
+        "closed": "Cette communauté est fermée aux nouveaux posts.",
+        "related_to": "Communautés liées à {{community}}",
+        "related_short": "En lien"
     },
     "user_page": {
         "country": "Pays",
         "birthday": "Anniversaire",
-        "game_experience": "Expérience de joueur",
+        "game_experience": "Expérience de jeu",
         "posts": "Publications",
         "friends": "Amis",
         "following": "Abonnements",
@@ -56,7 +56,12 @@
         "settings": "Paramètres",
         "friend_requests": "Requêtes",
         "deleted": "Utilisateur supprimmé",
-        "banned": "Utilisateur Banni"
+        "banned": "Utilisateur Banni",
+        "not_found": "Cet utilisateur n'existe pas",
+        "tester_tag": "Testeur",
+        "supporter_tag": "Supporteur",
+        "moderator_tag": "Modérateur",
+        "developer_tag": "Développeur"
     },
     "user_settings": {
         "profile_settings": "Paramètres du profil",
@@ -65,7 +70,8 @@
         "show_game": "Afficher mon expérience de joueur sur le profil",
         "save_action": "Enregistrer les paramètres",
         "gdpr_download": "Télécharger les données utilisateur",
-        "gdpr_download_action": "Télécharger"
+        "gdpr_download_action": "Télécharger",
+        "show_profile": "Afficher le profil aux invités"
     },
     "activity_feed": {
         "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
@@ -78,16 +84,16 @@
         "new_follower/multiple": "<follower_one />, <follower_two /> et {{count_other}} autres personnes vous suivent !"
     },
     "new_post": {
-        "post_to": "Poster à {{user}}",
+        "post_to": "Envoyer à {{user}}",
         "swearing": "Les publications ne peuvent pas contenir de language explicite.",
-        "content_placeholder": "Partagez vos pensées dans une publication dans une communauté ou à vos abonnés.",
+        "content_placeholder": "Partagez vos pensées en postant sur une communauté, ou à vos abonnés.",
         "screenshots_coming_soon": "Les captures d'écran ne sont pas encore disponibles. Revérifiez bientôt !",
         "no_screenshot": "Pas de capture d'écran",
         "painting_close": "Annuler",
-        "painting_submit": "Valider"
-    },
-    "messages": {
-        "coming_soon": "Les messages ne sont pas encore disponibles. Revenez bientôt !"
+        "painting_submit": "Valider",
+        "new_post_short": "Publier",
+        "spoiler_label": "Spoiler",
+        "automod_error": "Votre post contient du texte qui n'est pas autorisé sur Juxtaposition. pour plus d'information, consultez https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",
@@ -109,8 +115,8 @@
             "fifth": "Afin que Juxt reste un endroit agréable pour tous, nous vous demandons d'être soucieux des autres utilisateurs. Aidez-nous à faire de Juxt une expérience agréable en ne publiant rien d'inapproprié ou d'offensant.",
             "sixth": "Ne publiez pas d'informations personnelles - les vôtres ou celles des autres",
             "seventh": "N'oubliez pas que connaître quelqu'un sur Juxt n'est pas la même chose que de le connaître dans la vie réelle. Ne partagez jamais votre adresse électronique, votre adresse personnelle, le nom de votre lieu de travail ou école, ou toute autre information permettant de vous identifier personnellement avec quelqu'un sur Juxt, et ne partagez jamais non plus les informations de quelqu'un d'autre. Si une personne rencontrée sur Juxt vous invite à la rencontrer dans le monde réel, n'acceptez pas. Juxt est une communauté en ligne et ne doit pas être utilisé pour organiser des rencontres dans le monde réel.",
-            "eighth": "Ne postez pas les secrets d'un jeu",
-            "ninth": "Certaines personnes viennent sur Juxt à la recherche de conseils et d'astuces pour les jeux, mais d'autres veulent découvrir les secrets d'un jeu par elles-mêmes. Les messages qui révèlent les secrets d'un jeu ou de son histoire sont appelés \"spoilers\". Si vous publiez quelque chose sur un jeu qui pourrait être un spoiler, assurez-vous de cocher la case Spoilers avant d'envoyer votre message. Ainsi, les personnes qui ne veulent pas être spoilées ne verront pas votre message.",
+            "eighth": "Ne postez pas de spoilers",
+            "ninth": "Certains utilisateurs viennent sur Juxt à la recherche de conseils et d'astuces pour les jeux, tandis que d'autres voudraient découvrir les secrets d'un jeu par eux-mêmes. Or, certaines publications sont susceptibles de révéler certains secrets d'un jeu ou de son histoire : on parle alors de « spoiler ». Si le contenu que vous postez est susceptible de contenir des spoilers, assurez-vous de cocher la case « Spoilers » avant de le publier. Ainsi, les personnes qui ne souhaitent pas voir ces secrets ne verront pas votre message.",
             "tenth": "Violations du Code de Conduite",
             "eleventh": "Notre objectif est de faire en sorte que Juxt reste amusant et agréable pour tous. Dans le cas où quelqu'un violerait le code de conduite de Juxt, nous prendrons les mesures appropriées, pouvant aller jusqu'au blocage de l'utilisateur ou de la console incriminée.",
             "twelfth": "Avez-vous joué à ce jeu ?",
@@ -120,8 +126,8 @@
         "experience_text": {
             "info": "Comment décririez-vous votre niveau de compétence avec les jeux ? Vous pourrez changer ce paramètre plus tard.",
             "beginner": "Débutant",
-            "intermediate": "Connaisseur",
-            "expert": "Adepte"
+            "intermediate": "Intermédiaire",
+            "expert": "Expert(e)"
         },
         "analytics": "Analytiques",
         "analytics_text": "Juxtaposition utilise Cloudflare Web Analytics afin de savoir comment les visiteurs interagissent avec notre service. Les données recueillies comprennent, sans s'y limiter, l'heure de visite, les pages visitées et le temps passé sur le site. Ces données ne sont en aucun cas rattachées à votre personne et ne seront pas utilisées à des fins publicitaires, ni par nous ni par Cloudflare.",
@@ -175,17 +181,17 @@
         "reason_personal_info": "Informations personnelles",
         "reason_violence": "Contenu violent",
         "reason_inappropiate": "Contenu inaproprié/nocif",
-        "reason_bullying": "Contenu haineux / intimidation",
+        "reason_bullying": "Contenu haineux/intimidation",
         "reason_advertising": "Publicité",
         "reason_nsfw": "Sexe explicite",
         "reason_piracy": "Piratage",
         "reason_inappropiate_ingame": "Comportement inapproprié dans un jeu",
         "reason_missing_images": "Images manquantes",
-        "reason_one": "autre",
-        "reason_many": "autres",
-        "reason_other": "autres"
+        "reason_others": "Autre"
     },
     "moderation": {
-        "title": "Modération"
+        "title": "Modération",
+        "silently_delete_post": "Supprimer discrètement",
+        "moderate_user": "Modérer l'utilisateur"
     }
 }

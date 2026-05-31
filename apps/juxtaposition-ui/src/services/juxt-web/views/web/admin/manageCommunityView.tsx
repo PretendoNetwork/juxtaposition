@@ -1,8 +1,9 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
+import { WebAdminCenterItems, WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { WebSearchBar } from '@/services/juxt-web/views/web/components/ui/WebSearchBar';
+import { WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
+import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
 import type { ReactNode } from 'react';
 import type { AdminCommunity } from '@/api/generated';
 
@@ -27,10 +28,12 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="communities" />
-				<WebSearchBar search={props.search} />
-				<button style={{ marginTop: '1em' }}>
-					<a href="/admin/communities/new" className="button">Create Community</a>
-				</button>
+				<WebAdminCenterItems>
+					<WebSearchForm search={props.search} type="with-submit" />
+					<button style={{ marginTop: '1em' }}>
+						<a href="/admin/communities/new" className="button">Create Community</a>
+					</button>
+				</WebAdminCenterItems>
 				{props.communities.length === 0 ? <p>No Communities found</p> : null}
 				{props.communities.length > 0
 					? (
@@ -38,14 +41,14 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 								<ul className="list-content-with-icon-and-text arrow-list accounts" id="news-list-content">
 									{props.communities.map(community => (
 										<li key={community.id}>
-											<div className="hover">
-												<a href={`/communities/${community.olive_community_id}`} className="icon-container notify">
-													<img src={url.cdn(`/icons/${community.olive_community_id}/128.png`)} className="icon" />
-												</a>
-												<a className="body" href={`/communities/${community.olive_community_id}`}>
-													<span className="text"><span className="nick-name">{community.name}</span></span>
-												</a>
-											</div>
+											<a className="hover" href={`/communities/${community.olive_community_id}`}>
+												<WebCommunityIcon community={community} size="64" />
+												<div className="body">
+													<span className="text">
+														<span className="nick-name">{community.name}</span>
+													</span>
+												</div>
+											</a>
 											<button evt-click="this.children[0].click()"><a id={`account-${community.id}`} href={`/admin/communities/${community.olive_community_id}`}>Manage Community</a></button>
 										</li>
 									))}

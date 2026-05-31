@@ -1,6 +1,6 @@
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
-import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
+import { WebAdminCenterItems, WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
@@ -110,16 +110,18 @@ export function WebAutomodLogListView(props: AutomodLogListViewProps): ReactNode
 			<div id="toast"></div>
 			<WebWrapper>
 				<WebModerationTabs selected="automod" />
-				<button style={{ marginTop: '1em' }}>
-					<a href="/admin/automod/rules" className="button">View rules</a>
-				</button>
-				{props.items.length === 0
-					? (
-							<p>
-								No logs found
-							</p>
-						)
-					: null }
+				<WebAdminCenterItems>
+					<button style={{ marginTop: '1em' }}>
+						<a href="/admin/automod/rules" className="button">View rules</a>
+					</button>
+					{props.items.length === 0
+						? (
+								<p>
+									No logs found
+								</p>
+							)
+						: null }
+				</WebAdminCenterItems>
 				<ul className="list-content-with-icon-and-text arrow-list accounts" id="news-list-content">
 					{props.items.map(log => (
 						<AutomodLogItem log={log} key={log.id} />

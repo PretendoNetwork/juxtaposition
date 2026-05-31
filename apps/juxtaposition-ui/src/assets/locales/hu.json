@@ -11,7 +11,6 @@
         "close": "Bezár",
         "exit": "Kilépés",
         "next": "Tovább",
-        "messages": "Üzenetek",
         "more": "Több bejegyzés betöltése",
         "save": "Mentés",
         "notifications": "Értesítések",
@@ -19,7 +18,6 @@
         "my_feed": "Csatornám",
         "updates": "Frissítések",
         "friend_requests": "Barát kérések",
-        "notifications_and_messages": "Értesítések és üzenetek",
         "search": "Keresés...",
         "global_feed_short": "Globális",
         "people_feed": "Követett személyek",
@@ -40,7 +38,8 @@
         "related": "Kapcsolódó közösségek",
         "closed": "Ez a közösség már nem fogad új bejegyzést.",
         "tags_not_applicable": "N/A",
-        "related_to": "{{community}} kapcsolódó közösségei"
+        "related_to": "{{community}} kapcsolódó közösségei",
+        "related_short": "Kapcsolódó"
     },
     "user_page": {
         "country": "Ország",
@@ -56,7 +55,12 @@
         "settings": "Beállítások",
         "deleted": "Törölt felhasználó",
         "banned": "Bannolt felhasználó",
-        "friend_requests": "Kérések"
+        "friend_requests": "Kérések",
+        "not_found": "Felhasználó nem létezik",
+        "moderator_tag": "Moderátor",
+        "developer_tag": "Fejlesztő",
+        "tester_tag": "Tesztelő",
+        "supporter_tag": "Támogató"
     },
     "user_settings": {
         "show_country": "Ország megjelenítése a Profilon",
@@ -65,7 +69,8 @@
         "show_game": "Játéktapasztalat megjelenítése a Profilon",
         "save_action": "Beállítások mentése",
         "gdpr_download": "Felhasználó adat letöltése",
-        "gdpr_download_action": "Letöltés"
+        "gdpr_download_action": "Letöltés",
+        "show_profile": "Profil megjelenítése vendégnek"
     },
     "notifications": {
         "none": "Nincsennek értesítések.",
@@ -83,10 +88,8 @@
         "painting_submit": "OK",
         "spoiler_label": "Spoiler",
         "content_placeholder": "Oszd meg gondolataid egy bejegyzésben egy közösség vagy a követőid felé.",
-        "screenshots_coming_soon": "A képernyőképek még nincs kész. Nézd meg újra nemsokára!"
-    },
-    "messages": {
-        "coming_soon": "Nincs üzenet"
+        "screenshots_coming_soon": "A képernyőképek még nincs kész. Nézd meg újra nemsokára!",
+        "automod_error": "A bejegyzésed olyan szöveget tartalmaz, ami nem engedélyezett a Juxtaposition-ön. További információért látogasd meg a https://preten.do/juxt-rules oldalt"
     },
     "setup": {
         "welcome": "Köszöntünk Juxtaposition-ben!",
@@ -184,8 +187,7 @@
         "description": "Jelenteni készülsz egy bejegyzést ami megsérti a Juxtaposition magatartási kódexét. Ez a bejelentés a Pretendo Juxtaposition adminisztrátorainak lesz elküldve, nem a bejegyzés létrehozójának.",
         "reason_inappropiate_ingame": "Nem megfelelő viselkedés a játékban",
         "reason_missing_images": "Hiányzó képek",
-        "reason_one": "Egyéb",
-        "reason_other": "Egyéb"
+        "reason_others": "Egyéb"
     },
     "moderation": {
         "title": "Moderálás",

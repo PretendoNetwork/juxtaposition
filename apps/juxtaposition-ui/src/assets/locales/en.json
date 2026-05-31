@@ -76,10 +76,15 @@
     "friend_requests": "Requests",
     "deleted": "Deleted User",
     "banned": "Banned User",
-    "not_found": "User doesn't exist"
+    "not_found": "User doesn't exist",
+    "tester_tag": "Tester",
+    "supporter_tag": "Supporter",
+    "moderator_tag": "Moderator",
+    "developer_tag": "Developer"
   },
   "user_settings": {
     "profile_settings": "Profile Settings",
+    "show_profile": "Show Profile to guests",
     "show_country": "Show Country on Profile",
     "show_birthday": "Show Birthday on Profile",
     "show_game": "Show Game Experience on Profile",
@@ -182,7 +187,7 @@
     "reason_piracy": "Piracy",
     "reason_inappropiate_ingame": "Inappropriate Behavior in Game",
     "reason_missing_images": "Missing Images",
-    "reason_other": "Other"
+    "reason_others": "Other"
   },
   "moderation": {
     "title": "Moderation",

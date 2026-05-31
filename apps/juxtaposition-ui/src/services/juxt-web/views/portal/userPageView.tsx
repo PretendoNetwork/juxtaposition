@@ -125,7 +125,7 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 						</span>
 						{!isSelf
 							? (
-									<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={profile.pid}></a>
+									<a href="#" className={cx('favorite-button favorite-button-mini button', { checked: isRequesterFollowingUser })} evt-click="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id={`${profile.pid}`}></a>
 								)
 							: null}
 						<span className="title">

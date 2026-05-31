@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import type { ReactNode } from 'react';
 
 export function DefaultHead(): ReactNode {
@@ -70,7 +71,7 @@ export type WrapperProps = {
 
 export function WebWrapper(props: WrapperProps): ReactNode {
 	return (
-		<div id="wrapper" className={props.className}>
+		<div className={cx('container page', props.className)}>
 			{props.children}
 		</div>
 	);

@@ -4,7 +4,6 @@
         "user_page": "사용자 페이지",
         "activity_feed": "활동 피드",
         "communities": "커뮤니티",
-        "messages": "메시지",
         "notifications": "알림",
         "go_back": "뒤로 가기",
         "back": "뒤로",
@@ -76,10 +75,8 @@
         "no_screenshot": "스크린샷 없음",
         "spoiler_label": "스포일러",
         "painting_close": "취소",
-        "painting_submit": "확인"
-    },
-    "messages": {
-        "coming_soon": "메시지 없음"
+        "painting_submit": "확인",
+        "automod_error": "당신의 게시물에 Juxtaposition에서 허용되지 않는 내용이 포함되어 있습니다. 더 자세히 알고 싶으시다면, 해당 페이지를 확인해주세요: https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "Juxtaposition에 오신 것을 환영합니다!",
