@@ -7,10 +7,10 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserProfile } from '@/api/generated';
-import { shortenNum } from '@/i18n';
 
 export function PortalUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 	let title = <T k="user_page.not_found" />;

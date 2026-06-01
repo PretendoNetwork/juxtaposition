@@ -7,9 +7,9 @@ import { CtrPageHeaderStat, CtrPageIconHeader } from '@/services/juxt-web/views/
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
-import { shortenNum } from '@/i18n';
 
 export function CtrUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 	let title = <T k="user_page.not_found" />;

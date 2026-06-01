@@ -10,9 +10,9 @@ import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon
 import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
-import { shortenNum } from '@/i18n';
 
 export type UserMissingPageViewProps = {
 	pid: number;

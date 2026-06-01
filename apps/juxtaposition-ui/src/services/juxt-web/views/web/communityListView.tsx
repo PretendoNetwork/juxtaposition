@@ -3,9 +3,9 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
 import { prepSearchTerm, WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { Community } from '@/api/generated';
-import { shortenNum } from '@/i18n';
 
 export type CommunityListViewProps = {
 	communities: Community[];

@@ -5,9 +5,9 @@ import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/Ct
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import { CtrSearchForm } from '@/services/juxt-web/views/ctr/components/ui/CtrSearchForm';
 import { prepSearchTerm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
-import { shortenNum } from '@/i18n';
 
 export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;

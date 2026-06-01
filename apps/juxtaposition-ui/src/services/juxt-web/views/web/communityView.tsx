@@ -8,9 +8,9 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { Community } from '@/api/generated';
-import { shortenNum } from '@/i18n';
 
 export type CommunityViewProps = {
 	community: Community;

@@ -7,9 +7,9 @@ import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/Ct
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import { CtrPageHeaderStat, CtrPageIconHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
-import { shortenNum } from '@/i18n';
 
 export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 	const url = useUrl();
