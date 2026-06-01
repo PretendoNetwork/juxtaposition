@@ -70,3 +70,11 @@ export async function createI18n(): Promise<i18n> {
 
 	return i18n;
 }
+
+export function shortenNum(num: number): string {
+	return new Intl.NumberFormat("en-GB", {
+		notation: "compact",
+		compactDisplay: "short",
+		maximumFractionDigits: 1,
+	}).format(num);
+}

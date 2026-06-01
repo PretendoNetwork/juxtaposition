@@ -10,6 +10,7 @@ import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-w
 import type { ReactNode } from 'react';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserProfile } from '@/api/generated';
+import { shortenNum } from '@/i18n';
 
 export function PortalUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 	let title = <T k="user_page.not_found" />;
@@ -140,13 +141,13 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 								{' | '}
 								<PortalUIIcon name="posts" />
 								{' '}
-								{profile.posts}
+								{shortenNum(profile.posts)}
 							</span>
 							<span>
 								{' | '}
 								<PortalUIIcon name="followers" />
 								{' '}
-								<span id="followers">{profile.followers}</span>
+								<span id="followers">{shortenNum(profile.followers)}</span>
 							</span>
 							{profile.profileInfo.country
 								? (

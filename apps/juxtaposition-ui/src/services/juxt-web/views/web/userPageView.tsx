@@ -12,6 +12,7 @@ import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIc
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
+import { shortenNum } from '@/i18n';
 
 export type UserMissingPageViewProps = {
 	pid: number;
@@ -234,7 +235,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 							<div className="name"><T k="user_page.game_experience" /></div>
 						</div>
 						<div>
-							<div className="value" id="followers">{profile.followers}</div>
+							<div className="value" id="followers">{shortenNum(profile.followers)}</div>
 							<div className="name"><T k="user_page.followers" /></div>
 						</div>
 					</WebInfoboxStatBoxes>

@@ -7,6 +7,7 @@ import { CtrSearchForm } from '@/services/juxt-web/views/ctr/components/ui/CtrSe
 import { prepSearchTerm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
+import { shortenNum } from '@/i18n';
 
 export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
@@ -19,7 +20,7 @@ export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 						<span className="community-name title">{props.community.name}</span>
 						<br />
 						<span className="text">
-							{props.community.followerCount}
+							{shortenNum(props.community.followerCount)}
 							{' '}
 							<T k="community.followers" />
 						</span>

@@ -9,6 +9,7 @@ import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/Por
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
+import { shortenNum } from '@/i18n';
 
 export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 	const url = useUrl();
@@ -66,14 +67,14 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 							<span>
 								<PortalUIIcon name="posts" />
 								{' '}
-								{props.totalPosts}
+								{shortenNum(props.totalPosts)}
 							</span>
 							<span>
 								{' | '}
 								<PortalUIIcon name="followers" />
 								{' '}
 								<span id="followers">
-									{community.followerCount}
+									{shortenNum(community.followerCount)}
 								</span>
 							</span>
 						</span>

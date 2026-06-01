@@ -9,6 +9,7 @@ import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/com
 import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
 import type { ReactNode } from 'react';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
+import { shortenNum } from '@/i18n';
 
 export function CtrUserMissingPage(props: UserMissingPageViewProps): ReactNode {
 	let title = <T k="user_page.not_found" />;
@@ -62,10 +63,10 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 					</div>
 					<div className="stats">
 						<CtrPageHeaderStat sprite="sp-follower-count">
-							<div id="followers">{profile.followers}</div>
+							<div id="followers">{shortenNum(profile.followers)}</div>
 						</CtrPageHeaderStat>
 						<CtrPageHeaderStat sprite="sp-post-count">
-							<div id="post-count">{profile.posts}</div>
+							<div id="post-count">{shortenNum(profile.posts)}</div>
 						</CtrPageHeaderStat>
 					</div>
 				</CtrPageIconHeader>

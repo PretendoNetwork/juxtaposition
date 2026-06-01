@@ -6,6 +6,7 @@ import { PortalSearchForm } from '@/services/juxt-web/views/portal/components/ui
 import { prepSearchTerm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
+import { shortenNum } from '@/i18n';
 
 export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
@@ -17,7 +18,7 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 				<div className="body-content">
 					<span className="community-name title">{props.community.name}</span>
 					<span className="text">
-						{props.community.followerCount}
+						{shortenNum(props.community.followerCount)}
 						{' '}
 						<T k="community.followers" />
 					</span>

@@ -10,6 +10,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
 import type { ReactNode } from 'react';
 import type { Community } from '@/api/generated';
+import { shortenNum } from '@/i18n';
 
 export type CommunityViewProps = {
 	community: Community;
@@ -83,11 +84,11 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 					</div>
 					<WebInfoboxStatBoxes>
 						<div>
-							<div className="value" id="followers">{community.followerCount}</div>
+							<div className="value" id="followers">{shortenNum(community.followerCount)}</div>
 							<div className="name"><T k="community.followers" /></div>
 						</div>
 						<div>
-							<div className="value">{props.totalPosts}</div>
+							<div className="value">{shortenNum(props.totalPosts)}</div>
 							<div className="name"><T k="community.posts" /></div>
 						</div>
 						<div>
