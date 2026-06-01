@@ -6,6 +6,7 @@ import { langsFolder } from '@/util';
 import type { i18n } from 'i18next';
 import type en from '@/assets/locales/en.json';
 import type { ParamPack } from '@/types/common/param-pack';
+import { useRequest } from '@/services/juxt-web/views/common/hooks/useRequest';
 
 const entries = await fs.readdir(langsFolder, { withFileTypes: true });
 const langFiles = entries
@@ -72,7 +73,9 @@ export async function createI18n(): Promise<i18n> {
 }
 
 export function shortenNum(num: number): string {
-	return new Intl.NumberFormat('en-GB', {
+	const { lang } = useRequest();
+	console.log(lang);
+	return new Intl.NumberFormat(lang, {
 		notation: 'compact',
 		compactDisplay: 'short',
 		maximumFractionDigits: 1
