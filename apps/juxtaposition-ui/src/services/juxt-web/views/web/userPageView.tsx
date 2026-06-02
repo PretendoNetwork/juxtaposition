@@ -10,9 +10,9 @@ import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon
 import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
+import { humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
-import { humanFromNow } from '@/util';
 
 export type UserMissingPageViewProps = {
 	pid: number;
@@ -162,8 +162,6 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 	const user = useUser();
 	const profile = props.profile;
 	const isSelf = user.pid === props.profile.pid;
-	const dateTime = new Date();
-	const accountAge = moment(dateTime).diff(moment(profile.createdAt), 'days');
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(profile.pid) ?? false;
 
