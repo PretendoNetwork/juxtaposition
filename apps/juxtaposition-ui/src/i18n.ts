@@ -74,7 +74,6 @@ export async function createI18n(): Promise<i18n> {
 
 export function shortenNum(num: number): string {
 	const { lang } = useRequest();
-	console.log(lang);
 	return new Intl.NumberFormat(lang, {
 		notation: 'compact',
 		compactDisplay: 'short',
