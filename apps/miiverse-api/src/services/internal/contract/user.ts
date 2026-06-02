@@ -32,6 +32,7 @@ export const userProfileSchema = asOpenapi('UserProfile', z.object({
 	followers: z.number(),
 	posts: z.number(),
 	isOnline: z.boolean(),
+	createdAt: z.date(),
 	profileInfo: z.object({
 		country: z.string().nullable(),
 		birthday: z.date().nullable(),
@@ -88,6 +89,7 @@ export function mapUserProfile(settings: HydratedSettingsDocument, pnid: GetUser
 		miiName: settings.screen_name,
 		flags: getProfileFlags(pnid),
 		isOnline: settings.last_active ? isDateInRange(settings.last_active, 10) : false,
+		createdAt: settings.created_at,
 		profileInfo: {
 			comment: settings.profile_comment_visibility ? settings.profile_comment ?? null : null,
 			country: settings.country_visibility ? pnid.country : null,

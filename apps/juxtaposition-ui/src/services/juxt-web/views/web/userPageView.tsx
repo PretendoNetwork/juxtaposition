@@ -12,6 +12,7 @@ import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIc
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
+import { humanFromNow } from '@/util';
 
 export type UserMissingPageViewProps = {
 	pid: number;
@@ -161,6 +162,8 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 	const user = useUser();
 	const profile = props.profile;
 	const isSelf = user.pid === props.profile.pid;
+	const dateTime = new Date();
+	const accountAge = moment(dateTime).diff(moment(profile.createdAt), 'days');
 
 	const isRequesterFollowingUser = props.requestUserContent?.followed_users.includes(profile.pid) ?? false;
 
@@ -236,6 +239,14 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						<div>
 							<div className="value" id="followers">{profile.followers}</div>
 							<div className="name"><T k="user_page.followers" /></div>
+						</div>
+						<div>
+							<div className="value" id="profileAge">{humanFromNow(profile.createdAt)}</div>
+							<div className="name">Account Age</div>
+						</div>
+						<div>
+							<div className="value" id="joinDate">{moment(profile.createdAt).format('MMM Do YY')}</div>
+							<div className="name">Join Date</div>
 						</div>
 					</WebInfoboxStatBoxes>
 				</WebInfobox>
