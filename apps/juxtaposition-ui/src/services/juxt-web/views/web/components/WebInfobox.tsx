@@ -79,8 +79,8 @@ export function WebInfoboxStatBoxes(props: WebInfoboxStatBoxesProps): ReactNode 
 	const even = itemCount % 2 == 0;
 	return (
 		<div className={cx('stat-boxes', {
-			'cols-2': even,
-			'cols-3': !even
+			'cols-2': even && itemCount % 3 != 0,
+			'cols-3': !even || itemCount % 3 == 0,
 		})}
 		>
 			{props.children}
