@@ -1,6 +1,6 @@
 import { Buffer } from 'node:buffer';
 import { readFile } from 'node:fs/promises';
-import { ColorType, FilterType, Gravity, ImageMagick, initializeImageMagick, Interlace, MagickColors, Orientation } from '@imagemagick/magick-wasm';
+import { AlphaOption, ColorType, FilterType, Gravity, ImageMagick, initializeImageMagick, Interlace, MagickColors, Orientation } from '@imagemagick/magick-wasm';
 import { deflate, inflate } from 'pako';
 import { logger } from '@/logger';
 import { uploadCDNAsset } from '@/util';
@@ -181,6 +181,10 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 	image.settings.setDefine('JPEG', 'sampling-factor', '2x2');
 	image.settings.interlace = Interlace.Jpeg;
 
+	// Remove alpha if input was an alpha-enabled BMP
+	image.backgroundColor = 'white';
+	image.alpha(AlphaOption.Remove);
+
 	return {
 		jpg: image.write('JPEG', Buffer.from),
 		thumb: image.clone((image) => {
@@ -207,8 +211,32 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 	};
 }
 
-export function processJpgScreenshot(painting: Buffer): Screenshot | null {
-	return ImageMagick.read(painting, 'JPG', processScreenshot);
+export function processAutoScreenshot(screenshot: Buffer): Screenshot | null {
+	let format: 'JPG' | 'BMP';
+
+	// JPEG: FF D8 FF
+	// Used by official Miiverse-enabled games
+	if (
+		screenshot.length >= 3 &&
+		screenshot[0] === 0xff &&
+		screenshot[1] === 0xd8 &&
+		screenshot[2] === 0xff
+	) {
+		format = 'JPG';
+	}
+	// BMP: 42 4D ("BM")
+	// Used by un-official mods, such as CTGP-7
+	else if (
+		screenshot.length >= 2 &&
+		screenshot[0] === 0x42 &&
+		screenshot[1] === 0x4d
+	) {
+		format = 'BMP';
+	} else {
+		return null;
+	}
+
+	return ImageMagick.read(screenshot, format, processScreenshot);
 }
 
 export type ScreenshotUrls = {
@@ -228,7 +256,7 @@ export type UploadScreenshotOptions = {
 export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<ScreenshotUrls | null> {
 	// try buffer, otherwise blob
 	const screenshotBuf = opts.buffer ?? Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
-	const screenshots = processJpgScreenshot(screenshotBuf);
+	const screenshots = processAutoScreenshot(screenshotBuf);
 	if (screenshots === null) {
 		return null;
 	}
