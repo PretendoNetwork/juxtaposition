@@ -261,6 +261,10 @@ header>.selected svg {
   display: block;
 }
 
+.icon-container.notify {
+  margin: auto;
+}
+
 .user-icon.verified {
   border: solid 4px var(--btn);
   width: 60px;
