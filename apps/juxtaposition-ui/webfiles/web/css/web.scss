@@ -254,6 +254,7 @@ header>.selected svg {
 
 .icon-container>img,
 .user-icon {
+  box-sizing: border-box;
   width: 64px;
   height: 64px;
   border-radius: 0.5em;
@@ -262,9 +263,10 @@ header>.selected svg {
 }
 
 .user-icon.verified {
+  box-sizing: border-box;
   border: solid 4px var(--btn);
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
 }
 
 .verified-badge {
