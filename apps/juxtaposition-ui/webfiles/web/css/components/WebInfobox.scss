@@ -35,8 +35,7 @@ $icon-size: 64px;
             display: flex;
         }
         .header-icon {
-            background: white;
-            border: 5px solid white;
+            background: var(--text-secondary);
             border-radius: t.$component-radius;
             width: $icon-size + 10px;
             height: $icon-size + 10px;
