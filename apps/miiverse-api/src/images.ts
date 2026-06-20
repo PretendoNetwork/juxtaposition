@@ -1,6 +1,6 @@
 import { Buffer } from 'node:buffer';
 import { readFile } from 'node:fs/promises';
-import { AlphaOption, ColorType, FilterType, Gravity, ImageMagick, initializeImageMagick, Interlace, MagickColors, Orientation } from '@imagemagick/magick-wasm';
+import { AlphaAction, ColorType, FilterType, Gravity, ImageMagick, initializeImageMagick, Interlace, MagickColor, MagickColors, Orientation } from '@imagemagick/magick-wasm';
 import { deflate, inflate } from 'pako';
 import { logger } from '@/logger';
 import { uploadCDNAsset } from '@/util';
@@ -182,8 +182,8 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 	image.settings.interlace = Interlace.Jpeg;
 
 	// Remove alpha if input was an alpha-enabled BMP
-	image.backgroundColor = 'white';
-	image.alpha(AlphaOption.Remove);
+	image.backgroundColor = new MagickColor('white');
+	image.alpha(AlphaAction.Remove);
 
 	return {
 		jpg: image.write('JPEG', Buffer.from),
@@ -212,31 +212,16 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 }
 
 export function processAutoScreenshot(screenshot: Buffer): Screenshot | null {
-	let format: 'JPG' | 'BMP';
-
-	// JPEG: FF D8 FF
-	// Used by official Miiverse-enabled games
-	if (
-		screenshot.length >= 3 &&
-		screenshot[0] === 0xff &&
-		screenshot[1] === 0xd8 &&
-		screenshot[2] === 0xff
-	) {
-		format = 'JPG';
-	}
-	// BMP: 42 4D ("BM")
-	// Used by un-official mods, such as CTGP-7
-	else if (
-		screenshot.length >= 2 &&
-		screenshot[0] === 0x42 &&
-		screenshot[1] === 0x4d
-	) {
-		format = 'BMP';
-	} else {
-		return null;
-	}
-
-	return ImageMagick.read(screenshot, format, processScreenshot);
+	const allowedFormats = [
+		'JPEG', // Used by Miiverse and Miiverse-enabled games
+		'BMP' // Used by un-official mods, such as CTGP-7
+	];
+	return ImageMagick.read(screenshot, (img) => {
+		if (!allowedFormats.includes(img.format)) {
+			throw new Error(`Invalid format, got '${img.format}'`);
+		}
+		return processScreenshot(img);
+	});
 }
 
 export type ScreenshotUrls = {
