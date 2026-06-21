@@ -214,7 +214,7 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 export function processAutoScreenshot(screenshot: Buffer): Screenshot | null {
 	const allowedFormats = [
 		'JPEG', // Used by Miiverse and Miiverse-enabled games
-		'BMP' // Used by un-official mods, such as CTGP-7
+		'BMP', 'BMP3' // Used by un-official mods, such as CTGP-7
 	];
 	return ImageMagick.read(screenshot, (img) => {
 		if (!allowedFormats.includes(img.format)) {
