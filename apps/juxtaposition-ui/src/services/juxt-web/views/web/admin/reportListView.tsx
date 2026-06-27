@@ -74,7 +74,7 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 				<WebModerationTabs selected="reports" />
 				{props.reports.length === 0
 					? (
-							<p>
+							<p className="no-reports-message">
 								All reports handled 🎉
 								<br />
 								Good job team!
