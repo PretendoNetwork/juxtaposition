@@ -25,7 +25,7 @@ export const ReportSchema = new Schema<IReport, ReportModel>({
 	created_at: {
 		type: Date,
 		required: true,
-		default: new Date()
+		default: (): Date => new Date()
 	},
 	resolved: {
 		type: Boolean,
