@@ -1,7 +1,7 @@
 import { popupItemCb, setupPopup } from './menus';
 import { initReportForm, reportPost } from './reports';
 import { POST, GET } from './xhr';
-import { deletePostById } from './api';
+import { deletePostById, spoilerPostById, unspoilerPostById } from './api';
 import { initYeahButton } from './post';
 import { initSearchForm } from './components/ui/WebSearchForm';
 
@@ -96,6 +96,18 @@ function initPopupMenus() {
 		});
 		popupItemCb(menu.querySelector('[data-action="copy"]'), (_item, _ev) => {
 			copyToClipboard(`${window.location.origin}/posts/${post}`);
+		});
+		popupItemCb(menu.querySelector('[data-action="spoiler"]'), (_item, _ev) => {
+			spoilerPostById(post, () => {
+				alert('Spoiler has been successfully added to the post');
+				window.location.reload();
+			});
+		});
+		popupItemCb(menu.querySelector('[data-action="unspoiler"]'), (_item, _ev) => {
+			unspoilerPostById(post, () => {
+				alert('Spoiler has been successfully removed from post');
+				window.location.reload();
+			});
 		});
 	});
 }
