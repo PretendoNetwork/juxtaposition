@@ -306,6 +306,48 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 	return res.redirect(`/posts/${post.id}`);
 });
 
+postsRouter.post('/:post_id/edit/spoiler', async function (req, res) {
+	const { params } = parseReq(req, {
+		params: z.object({
+			post_id: z.string()
+		})
+	});
+
+	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
+	if (!post) {
+		return res.json({
+			success: false
+		});
+	}
+
+	await req.api.posts.changeSpoiler({ post_id: params.post_id, is_spoiler: true });
+
+	res.json({
+		success: true
+	});
+});
+
+postsRouter.post('/:post_id/edit/unspoiler', async function (req, res) {
+	const { params } = parseReq(req, {
+		params: z.object({
+			post_id: z.string()
+		})
+	});
+
+	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
+	if (!post) {
+		return res.json({
+			success: false
+		});
+	}
+
+	await req.api.posts.changeSpoiler({ post_id: params.post_id, is_spoiler: false });
+
+	res.json({
+		success: true
+	});
+});
+
 async function newPost(req: Request, res: Response): Promise<void> {
 	const { params, body, files, auth, hasAuth } = parseReq(req, {
 		params: z.object({
