@@ -13,7 +13,7 @@ export function WebSubCommunityView(props: SubCommunityViewProps): ReactNode {
 			</h2>
 			<WebNavBar selection={2} />
 			<div id="toast"></div>
-			<WebWrapper>
+			<WebWrapper className="wide center">
 				<div id="popular" className="communities-wrapper">
 					{props.subcommunities.map(community => (
 						<WebCommunityItem key={community.olive_community_id} community={community} />

@@ -181,7 +181,7 @@ export const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunity
 	owner: Number,
 	created_at: {
 		type: Date,
-		default: new Date()
+		default: (): Date => new Date()
 	},
 	empathy_count: {
 		type: Number,
