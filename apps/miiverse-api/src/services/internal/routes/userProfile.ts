@@ -240,8 +240,8 @@ userProfileRouter.post({
 	},
 	async handler({ params, auth }) {
 		const targetUserPid = params.id;
-		const targetUser = await Settings.findOne({ targetUserPid });
-		const targetUserContent = await Content.findOne({ targetUserPid });
+		const targetUser = await Settings.findOne({ pid: targetUserPid });
+		const targetUserContent = await Content.findOne({ pid: targetUserPid });
 		if (!targetUser || !targetUserContent) {
 			throw errors.for('not_found');
 		}
@@ -282,8 +282,8 @@ userProfileRouter.delete({
 	},
 	async handler({ params, auth }) {
 		const targetUserPid = params.id;
-		const targetUser = await Settings.findOne({ targetUserPid });
-		const targetUserContent = await Content.findOne({ targetUserPid });
+		const targetUser = await Settings.findOne({ pid: targetUserPid });
+		const targetUserContent = await Content.findOne({ pid: targetUserPid });
 		if (!targetUser || !targetUserContent) {
 			throw errors.for('not_found');
 		}
