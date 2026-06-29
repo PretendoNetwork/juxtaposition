@@ -26,7 +26,7 @@
     },
     "all_communities": {
         "text": "Alle Communitys",
-        "popular_places": "Beliebte Orte",
+        "popular_places": "Beliebte Communities",
         "new_communities": "Neue Communitys"
     },
     "community": {
@@ -39,7 +39,8 @@
         "tags_not_applicable": "nicht verfügbar",
         "related": "Ähnliche Communities",
         "related_to": "Ähnliche Communities wie {{community}}",
-        "closed": "In dieser Community können keine neuen Beiträge erstellt werden."
+        "closed": "In dieser Community können keine neuen Beiträge erstellt werden.",
+        "related_short": "Verwandte"
     },
     "user_page": {
         "country": "Land",
@@ -55,7 +56,12 @@
         "settings": "Einstellungen",
         "deleted": "Gelöschter Nutzer",
         "banned": "Gesperrter Nutzer",
-        "friend_requests": "Anfragen"
+        "friend_requests": "Anfragen",
+        "not_found": "Nutzer existiert nicht",
+        "tester_tag": "Tester*In",
+        "supporter_tag": "Unterstützer*In",
+        "moderator_tag": "Moderator*In",
+        "developer_tag": "Entwickler*In"
     },
     "user_settings": {
         "profile_settings": "Profileinstellungen",
@@ -64,7 +70,8 @@
         "show_game": "Spielerfahrung im Profil anzeigen",
         "save_action": "Einstellungen speichern",
         "gdpr_download": "Nutzerdaten herunterladen",
-        "gdpr_download_action": "Herunterladen"
+        "gdpr_download_action": "Herunterladen",
+        "show_profile": "Zeige Profil Gästen"
     },
     "activity_feed": {
         "empty": "Es ist ganz schön leer hier. Versuche, jemandem zu folgen!"
@@ -85,14 +92,15 @@
         "no_screenshot": "Kein Screenshot",
         "spoiler_label": "Spoiler",
         "painting_close": "Abbrechen",
-        "painting_submit": "OK"
+        "painting_submit": "OK",
+        "automod_error": "Dein Beitrag beinhaltet Text, welcher nicht auf Juxtaposition erlaubt ist. Für mehr Informationen besuche bitte https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "Willkommen bei Juxtaposition!",
         "welcome_text": "Juxt ist eine Gaming-Community, die Menschen aus der ganzen Welt mit Mii-Charakteren verbindet. Nutze Juxt, um deine Spielerlebnisse zu teilen und Leute aus der ganzen Welt zu treffen.",
         "beta": "Beta-Haftungsausschluss",
         "beta_text": {
-            "first": "Du bist dabei, die erste öffentliche Beta von Juxt auszuprobieren. Das heißt, es liegt noch viel in der Luft, vieles kann sich jederzeit ändern.",
+            "first": "Willkommen zur öffentlichen Beta von Pretendo Network! Seit der ersten öffentlichen Beta hat sich einiges geändert, Juxt ist immer noch in aktiver Entwicklung und es kann sich einiges in kurzer Zeit ändern.",
             "second": "Dies kann und wird eine vollständige Löschung der Datenbank am Ende oder während des Beta-Zeitraums beinhalten.",
             "third": "Die Website, ihre Software und alle darauf enthaltenen Inhalte werden „wie besehen“ und „wie verfügbar“ bereitgestellt. Das Pretendo Network gibt keine ausdrücklichen oder stillschweigenden Garantien hinsichtlich der Eignung oder Nutzbarkeit der Website, ihrer Software oder ihres Inhalts."
         },
@@ -144,7 +152,7 @@
         "title": "Error {{code}}",
         "heading": "Error {{code}}: {{message}}",
         "message": "Hoppla! Die gesuchte Seite konnte leider nicht gefunden werden.<newline/>Überprüfe bitte deinen Link oder versuche es später noch einmal.",
-        "no_access": "Sie sind nicht berechtigt, auf diese Anwendung zuzugreifen ({{code}}).",
+        "no_access": "Sie sind nicht berechtigt auf diese Anwendung zuzugreifen ({{code}})",
         "message_web": "<status>Serverstatus</status> anzeigen.<newline/>Oder <home>zurück zur Startseite</home>.",
         "error_details": "Anfrage-ID: {{id}}"
     },
@@ -155,7 +163,7 @@
         "title": "Beitrag von {{username}}",
         "heading": "Beitrag",
         "yeahs_count/one": "<count/> Person hat diesem Beitrag ein „Yeah“ gegeben.",
-        "yeahs_count/multiple": "<count/> Person hat diesem Beitrag ein „Yeah“ gegeben.",
+        "yeahs_count/multiple": "<count/> Personen haben diesem Beitrag ein „Yeah“ gegeben.",
         "show_spoiler": "Spoiler anzeigen",
         "reply_post": "Antworten",
         "report_post": "Beitrag melden",
@@ -165,7 +173,7 @@
     },
     "reporting": {
         "title": "Beitrag melden",
-        "submit": "Bericht senden",
+        "submit": "Meldung senden",
         "description": "Du bist dabei, einen Beitrag zu melden, dessen Inhalt gegen den Juxtaposition-Verhaltenskodex verstößt. Diese Meldung wird an die Juxtaposition-Administratoren von Pretendo gesendet und nicht an den Ersteller des Beitrags.",
         "label": "Grund:",
         "additional_info_placeholder": "Zusätzliche Kommentare oder Informationen eingeben",
@@ -178,7 +186,8 @@
         "reason_nsfw": "Sexuell explizit",
         "reason_piracy": "Piraterie",
         "reason_inappropiate_ingame": "Unangemessenes Verhalten im Spiel",
-        "reason_missing_images": "Fehlende Bilder"
+        "reason_missing_images": "Fehlende Bilder",
+        "reason_others": "Andere Gründe"
     },
     "moderation": {
         "title": "Moderation",
