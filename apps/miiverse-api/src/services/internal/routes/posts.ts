@@ -212,3 +212,37 @@ postsRouter.post({
 		return mapEmpathy(body.action, post);
 	}
 });
+
+postsRouter.post({
+	path: '/posts/:post_id/edit/spoiler',
+	name: 'posts.changeSpoiler',
+	description: 'Change spoiler for post',
+	guard: guards.moderator,
+	schema: {
+		params: postIdObjSchema,
+		body: z.object({
+			is_spoiler: z.boolean()
+		}),
+		response: resultSchema
+	},
+	async handler({ params, body, auth }) {
+		const post = await Post.findOne({
+			id: params.post_id,
+			message_to_pid: null, // messages aren't really posts
+			...filterRemovedPosts(auth)
+		});
+		if (!post) {
+			throw errors.for('not_found');
+		}
+
+		await Post.findOneAndUpdate({
+			_id: post._id
+		}, {
+			$set: {
+				is_spoiler: body.is_spoiler
+			}
+		});
+
+		return mapResult('success');
+	}
+});
