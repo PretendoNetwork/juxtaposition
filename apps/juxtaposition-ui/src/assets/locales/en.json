@@ -127,7 +127,9 @@
     "report_post": "Report post",
     "delete_post": "Delete post",
     "removed": "Post has been removed.",
-    "copy_link": "Copy link"
+    "copy_link": "Copy link",
+    "sort_newest_first": "Newest posts",
+    "sort_oldest_first": "Oldest posts"
   },
   "setup": {
     "title": "Juxtaposition Setup",
