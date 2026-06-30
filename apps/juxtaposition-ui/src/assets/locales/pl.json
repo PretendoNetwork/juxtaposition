@@ -80,7 +80,8 @@
         "tags_not_applicable": "Niedostępne",
         "related": "Powiązane społeczności",
         "related_to": "Powiązane społeczności ze społecznością {{community}}",
-        "closed": "Ta społeczność ma zablokowane tworzenie nowych postów."
+        "closed": "Ta społeczność ma zablokowane tworzenie nowych postów.",
+        "related_short": "Powiązane"
     },
     "user_page": {
         "country": "Kraj",
@@ -93,19 +94,32 @@
         "follow_user": "Obserwuj",
         "following_user": "Obserwujesz",
         "game_experience_unknown": "Nieznane",
-        "settings": "Ustawienia"
+        "settings": "Ustawienia",
+        "banned": "Zbanowane Konto",
+        "deleted": "Usunięte Konto",
+        "supporter_tag": "Wspierający",
+        "moderator_tag": "Moderator",
+        "not_found": "Konto nie istnieje",
+        "tester_tag": "Tester",
+        "developer_tag": "Deweloper"
     },
     "user_settings": {
         "profile_settings": "Ustawienia profilu",
         "show_country": "Pokaż kraj na profilu",
         "show_birthday": "Pokaż urodziny na profilu",
-        "show_game": "Pokaż doświadczenia w grze na profilu"
+        "show_game": "Pokaż doświadczenia w grze na profilu",
+        "save_action": "Zapisz ustawienia",
+        "gdpr_download": "Pobierz dane użytkownika",
+        "gdpr_download_action": "Pobierz"
     },
     "activity_feed": {
         "empty": "Pusto tutaj. Zaobserwuj kogoś!"
     },
     "notifications": {
-        "none": "Brak powiadomień."
+        "none": "Brak powiadomień.",
+        "new_follower/one": "<follower_one/> obserwuje cię!",
+        "new_follower/two": "<follower_one/>, <follower_two/> obserwują cię!",
+        "new_follower/three": "<follower_one />, <follower_two /> i {{count_other}} innych obserwuje cię!"
     },
     "new_post": {
         "post_to": "Postuj do {{user}}",

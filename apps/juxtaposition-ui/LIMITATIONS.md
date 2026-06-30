@@ -2,6 +2,10 @@ Dev notes regarding the console frontends
 
 # CTR
 
+## D-Pad navigation
+The D-Pad navigation is based on which elements are tab-focusable.
+After much experimenting, the cleanest approach seems to be always using `<a href="#">` (or a real URL), though `<button>` can be situationally useful. Obviously you probably want to preventDefault if you use href=#. tabIndex will appear to work, but you won't get click events from pressing A!
+
 ## 16-bit and RGB565
 When designing for CTR, gradients tend to look *really bad* due to the console rendering at [16-bit RGB565](https://rgbcolorpicker.com/565) internally. This leads to very visible banding. Dithering can help but needs to be done manually and still missing a good workflow.
 
