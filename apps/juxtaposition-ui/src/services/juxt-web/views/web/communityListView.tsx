@@ -3,6 +3,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebCommunityIcon } from '@/services/juxt-web/views/web/components/ui/WebCommunityIcon';
 import { prepSearchTerm, WebSearchForm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { Community } from '@/api/generated';
 
@@ -26,7 +27,7 @@ export function WebCommunityItem(props: CommunityItemProps): ReactNode {
 			<div className="community-list-info">
 				<h2 className="community-list-title">{props.community.name}</h2>
 				<p className="community-list-followers">
-					<T k="community.followers_count" values={{ count: props.community.followerCount }} />
+					<T k="community.followers_count" values={{ count: shortenNum(props.community.followerCount) }} />
 				</p>
 			</div>
 		</a>

@@ -7,6 +7,7 @@ import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/Ct
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import { CtrPageHeaderStat, CtrPageIconHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -29,10 +30,10 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 					</div>
 					<div className="stats">
 						<CtrPageHeaderStat sprite="sp-follower-count">
-							<div id="followers">{community.followerCount}</div>
+							<div id="followers">{shortenNum(community.followerCount)}</div>
 						</CtrPageHeaderStat>
 						<CtrPageHeaderStat sprite="sp-post-count">
-							<div id="post-count">{props.totalPosts}</div>
+							<div id="post-count">{shortenNum(props.totalPosts)}</div>
 						</CtrPageHeaderStat>
 					</div>
 				</CtrPageIconHeader>

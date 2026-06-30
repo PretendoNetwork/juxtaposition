@@ -7,6 +7,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserProfile } from '@/api/generated';
@@ -140,13 +141,13 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 								{' | '}
 								<PortalUIIcon name="posts" />
 								{' '}
-								{profile.posts}
+								{shortenNum(profile.posts)}
 							</span>
 							<span>
 								{' | '}
 								<PortalUIIcon name="followers" />
 								{' '}
-								<span id="followers">{profile.followers}</span>
+								<span id="followers">{shortenNum(profile.followers)}</span>
 							</span>
 							{profile.profileInfo.country
 								? (

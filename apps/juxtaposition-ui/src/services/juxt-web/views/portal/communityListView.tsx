@@ -4,6 +4,7 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalCommunityIcon } from '@/services/juxt-web/views/portal/components/ui/PortalCommunityIcon';
 import { PortalSearchForm } from '@/services/juxt-web/views/portal/components/ui/PortalSearchForm';
 import { prepSearchTerm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
@@ -17,7 +18,7 @@ export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 				<div className="body-content">
 					<span className="community-name title">{props.community.name}</span>
 					<span className="text">
-						{props.community.followerCount}
+						{shortenNum(props.community.followerCount)}
 						{' '}
 						<T k="community.followers" />
 					</span>

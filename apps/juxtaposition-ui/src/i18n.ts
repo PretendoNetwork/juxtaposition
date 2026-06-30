@@ -3,6 +3,7 @@ import path from 'path';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { langsFolder } from '@/util';
+import { useRequest } from '@/services/juxt-web/views/common/hooks/useRequest';
 import type { i18n } from 'i18next';
 import type en from '@/assets/locales/en.json';
 import type { ParamPack } from '@/types/common/param-pack';
@@ -69,4 +70,13 @@ export async function createI18n(): Promise<i18n> {
 	await i18n.use(initReactI18next).init();
 
 	return i18n;
+}
+
+export function shortenNum(num: number): string {
+	const { lang } = useRequest();
+	return new Intl.NumberFormat(lang, {
+		notation: 'compact',
+		compactDisplay: 'short',
+		maximumFractionDigits: 1
+	}).format(num);
 }

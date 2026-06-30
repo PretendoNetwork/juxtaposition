@@ -10,6 +10,7 @@ import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon
 import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
+import { shortenNum } from '@/i18n';
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
 
@@ -234,7 +235,7 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 							<div className="name"><T k="user_page.game_experience" /></div>
 						</div>
 						<div>
-							<div className="value" id="followers">{profile.followers}</div>
+							<div className="value" id="followers">{shortenNum(profile.followers)}</div>
 							<div className="name"><T k="user_page.followers" /></div>
 						</div>
 					</WebInfoboxStatBoxes>
