@@ -9,7 +9,8 @@ import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageVi
 export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 	const user = useUser();
 	const { post } = props;
-	const pageTitle = !post.removed ? post.screen_name : 'Removed Post';
+	const removedData = post.moderation?.removed;
+	const pageTitle = !removedData ? post.author.miiName : 'Removed Post';
 
 	return (
 		<PortalRoot title={T.str('global.activity_feed')}>
@@ -17,7 +18,7 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 			<PortalPageBody>
 				<header id="header">
 					<h1 id="page-title" className="left">{pageTitle}</h1>
-					{!post.removed && props.canPost
+					{!removedData && props.canPost
 						? (
 								<a
 									id="header-post-button"
@@ -29,9 +30,9 @@ export function PortalPostPageView(props: PostPageViewProps): ReactNode {
 								</a>
 							)
 						: null}
-					{!post.removed
+					{!removedData
 						? (
-								post.pid === user.pid
+								post.author.pid === user.pid
 									? (
 											<a id="header-communities-button" className="delete" href="#" data-button-delete-post={post.id}>
 												<T k="post.delete_post" />

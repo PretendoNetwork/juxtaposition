@@ -3,7 +3,7 @@ import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
 import { deleteOptional, filterRemovedPosts } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
-import { mapPost, postSchema } from '@/services/internal/contract/post';
+import { mapPost, mapPostWithModeration, postSchema } from '@/services/internal/contract/post';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { empathyActionSchema, empathySchema, mapEmpathy } from '@/services/internal/contract/empathy';
@@ -11,10 +11,16 @@ import { postIdObjSchema, postIdSchema } from '@/services/internal/schemas';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { createLogEntry } from '@/services/internal/utils/auditLogs';
+import { Community } from '@/models/community';
+import { Report } from '@/models/report';
+import { createNewPost, postCreateSchema } from '@/services/internal/utils/posts';
+import { isPostingAllowed } from '@/services/internal/utils/communities';
+import { mapSelf } from '@/services/internal/contract/self';
 import { Settings } from '@/models/settings';
 import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 
 export const postsRouter = createInternalApiRouter();
 
@@ -70,7 +76,22 @@ postsRouter.get({
 			.limit(query.limit);
 		const total = await Post.countDocuments(dbQuery);
 
-		return mapPage(total, posts.map(mapPost));
+		const communityIds = posts.map(v => v.community_id);
+		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
+
+		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
+		const users = await Settings.find({ pid: { $in: userIds } });
+
+		const mappedPosts = posts.map((p) => {
+			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
+			const remover = p.removed_by ? users.find(v => v.pid === p.removed_by) ?? null : null;
+
+			if (auth?.moderator) {
+				return mapPostWithModeration(p, comm, remover);
+			}
+			return mapPost(p, comm);
+		});
+		return mapPage(total, mappedPosts);
 	}
 });
 
@@ -92,6 +113,12 @@ postsRouter.get({
 		if (!post) {
 			throw errors.for('not_found');
 		}
+		const community = await Community.findOne({ olive_community_id: post.community_id });
+
+		let remover: HydratedSettingsDocument | null = null;
+		if (post.removed_by) {
+			remover = await Settings.findOne({ pid: post.removed_by });
+		}
 
 		const poster = await Settings.findOne({ pid: post.pid });
 		if (!poster) {
@@ -100,7 +127,10 @@ postsRouter.get({
 		// Throws if user isn't visible for some reason
 		assertCanAccessUser(auth, poster);
 
-		return mapPost(post);
+		if (auth?.moderator) {
+			return mapPostWithModeration(post, community, remover);
+		}
+		return mapPost(post, community);
 	}
 });
 
@@ -210,5 +240,98 @@ postsRouter.post({
 		}
 
 		return mapEmpathy(body.action, post);
+	}
+});
+
+postsRouter.post({
+	path: '/posts/:post_id/report',
+	name: 'posts.report',
+	guard: guards.user,
+	schema: {
+		params: postIdObjSchema,
+		body: z.object({
+			reasonId: z.number(),
+			message: z.string()
+		}),
+		response: resultSchema
+	},
+	async handler({ body, params, auth }) {
+		// guards.user makes this safe
+		const account = auth!;
+		const pid = account.pnid.pid;
+
+		const post = await Post.findOne({
+			id: params.post_id,
+			message_to_pid: null, // messages aren't really posts
+			removed: false
+		});
+		if (!post) {
+			throw errors.for('not_found');
+		}
+
+		const duplicateReport = await Report.findOne({
+			reported_by: pid,
+			post_id: post.id
+		});
+		if (duplicateReport) {
+			return mapResult('success'); // Silently reject duplicate reports
+		}
+
+		await Report.create({
+			pid: post.pid,
+			reported_by: pid,
+			post_id: post.id,
+			reason: body.reasonId,
+			message: body.message
+		});
+
+		return mapResult('success');
+	}
+});
+
+postsRouter.post({
+	path: '/posts/:post_id/replies',
+	name: 'posts.reply',
+	guard: guards.user,
+	schema: {
+		params: postIdObjSchema,
+		body: postCreateSchema,
+		response: postSchema
+	},
+	async handler({ body, params, auth }) {
+		const account = auth!;
+
+		const parentPost = await Post.findOne({
+			id: params.post_id,
+			message_to_pid: null,
+			removed: false
+		});
+		if (!parentPost) {
+			throw errors.for('not_found');
+		}
+
+		const community = await Community.findOne({ olive_community_id: parentPost.community_id });
+		if (!community) {
+			throw errors.for('not_found');
+		}
+
+		const self = mapSelf(account);
+		if (!isPostingAllowed(community, self, parentPost)) {
+			throw errors.for('forbidden');
+		}
+
+		const newPost = await createNewPost({
+			author: {
+				pid: account.pnid.pid,
+				miiData: account.pnid.mii?.data ?? '',
+				screenName: account.settings?.screen_name ?? '',
+				verified: self.permissions.moderator
+			},
+			body,
+			community,
+			parentPost
+		});
+
+		return mapPost(newPost, community);
 	}
 });

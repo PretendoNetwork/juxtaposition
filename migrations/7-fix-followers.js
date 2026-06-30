@@ -5,7 +5,7 @@
 // That data can be fixed once it's moved to a relational database
 // ---
 // This script is intended to run in mongosh:
-// $ mongosh mongodb://localhost:27017/mydb 6-fix-followers.js
+// $ mongosh mongodb://localhost:27017/mydb 7-fix-followers.js
 
 const user = db.contents.findOne({ });
 

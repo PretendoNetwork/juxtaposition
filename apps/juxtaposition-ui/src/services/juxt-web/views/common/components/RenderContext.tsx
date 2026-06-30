@@ -1,5 +1,4 @@
 import { createContext, useContext } from 'react';
-import { getCommunityHash, getUserHash } from '@/util';
 import type { ReactNode } from 'react';
 import type { Response } from 'express';
 import type { i18n } from 'i18next';
@@ -11,13 +10,6 @@ export type RenderContextContent = {
 	developer: boolean;
 	pid: number;
 	uaIsConsole?: boolean; // user agent looks like a Nintendo console
-	usersMap: HashMap<number, string>; // map of PID -> screen name
-
-	// map of the following:
-	//  olive_community_id -> community name
-	//  title_id -> community name
-	//  <TITLE_ID>-id -> olive_community_id
-	communityMap: HashMap<string, string>;
 };
 
 const InternalRenderContext = createContext<RenderContextContent | null>(null);
@@ -33,8 +25,6 @@ export function useRenderContext(): RenderContextContent {
 export function buildContext(res: Response): RenderContextContent {
 	const locals = res.locals;
 	return {
-		usersMap: getUserHash(),
-		communityMap: getCommunityHash(),
 		cdnUrl: locals.cdnURL,
 		moderator: locals.moderator,
 		developer: locals.developer,
