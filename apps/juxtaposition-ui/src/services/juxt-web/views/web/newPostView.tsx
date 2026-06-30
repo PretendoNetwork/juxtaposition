@@ -102,11 +102,6 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 				</div>
 				<div id="button-wrapper">
 					<input id="message_to_pid" type="hidden" name="message_to_pid" value={props.messagePid ?? undefined} />
-					<input
-						type="button"
-						className="olv-modal-close-button fixed-bottom-button left"
-						value="Cancel"
-					/>
 					<input type="submit" className="post-button fixed-bottom-button" value="Post" />
 				</div>
 			</form>
