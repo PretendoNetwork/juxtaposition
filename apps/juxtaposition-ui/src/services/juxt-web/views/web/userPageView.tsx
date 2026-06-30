@@ -10,6 +10,7 @@ import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon
 import { WebInfobox, WebInfoboxButton, WebInfoboxButtons, WebInfoboxFollowButton, WebInfoboxStatBoxes } from '@/services/juxt-web/views/web/components/WebInfobox';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import { WebIcon } from '@/services/juxt-web/views/web/components/ui/WebIcon';
+import { humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { SelfContent, UserBadgeEnum, UserProfile } from '@/api/generated';
 
@@ -236,6 +237,14 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 						<div>
 							<div className="value" id="followers">{profile.followers}</div>
 							<div className="name"><T k="user_page.followers" /></div>
+						</div>
+						<div>
+							<div className="value" id="profileAge">{humanFromNow(profile.createdAt)}</div>
+							<div className="name">Account Age</div>
+						</div>
+						<div>
+							<div className="value" id="joinDate">{moment(profile.createdAt).format('MMM Do YY')}</div>
+							<div className="name">Join Date</div>
 						</div>
 					</WebInfoboxStatBoxes>
 				</WebInfobox>
