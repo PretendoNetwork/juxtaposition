@@ -749,7 +749,7 @@ button.report {
   align-items: center;
   width: 100%;
   justify-content: center;
-  border-radius: 0 20px 20px 0;
+  border-radius: 10px;
 }
 
 .add-post-page .textarea-text {
@@ -759,7 +759,7 @@ button.report {
   padding: 1ch;
   border: none;
   resize: none;
-  border-radius: 0 20px 20px 0;
+  border-radius: 10px;
   background: #f9f5fb;
 }
 
@@ -2060,5 +2060,5 @@ button.report {
 }
 
 .no-reports-message {
-    margin: 20px auto auto auto;
-  }
+  margin: 20px auto auto auto;
+}

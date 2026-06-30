@@ -20,11 +20,12 @@ import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPos
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
 import { AutomodRule } from '@/models/automodRules';
+import { WebNewPostPage } from '@/services/juxt-web/views/web/newPostView';
 import type { Request, Response } from 'express';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
 import type { EmpathyActionEnum } from '@/api/generated';
-import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
@@ -246,7 +247,8 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
-		portal: <PortalNewPostPage {...props} />
+		portal: <PortalNewPostPage {...props} />,
+		web: <WebNewPostPage {... props} />
 	});
 });
 

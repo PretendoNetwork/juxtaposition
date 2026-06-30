@@ -22,12 +22,13 @@ import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permis
 import { Community } from '@/models/communities';
 import { getAllFromList } from '@/api/helpers';
 import { WebSubCommunityView } from '@/services/juxt-web/views/web/subCommunityView';
+import { WebNewPostPage } from '@/services/juxt-web/views/web/newPostView';
+import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
 import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 import type { FollowAction, FollowActionEnum, Post } from '@/api/generated';
-import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
@@ -158,7 +159,8 @@ communitiesRouter.get('/:communityID/create', async function (req, res) {
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
-		portal: <PortalNewPostPage {...props} />
+		portal: <PortalNewPostPage {...props} />,
+		web: <WebNewPostPage {... props} />
 	});
 });
 

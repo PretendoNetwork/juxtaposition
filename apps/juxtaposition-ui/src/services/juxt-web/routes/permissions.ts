@@ -29,8 +29,8 @@ export function isPostingAllowed(community: Community, user: Self, parentPost: I
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
-export function getShotMode(community: Community, pack: ParamPack | null): CommunityShotMode {
-	if (pack === null) {
+export function getShotMode(community: Community, pack: ParamPack | null | undefined): CommunityShotMode {
+	if (!pack) {
 		return 'block';
 	}
 

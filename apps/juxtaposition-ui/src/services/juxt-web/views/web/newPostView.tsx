@@ -1,6 +1,8 @@
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
+import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import type { ReactNode } from 'react';
 import type { CommunityShotMode } from '@/models/communities';
 import type { Community } from '@/api/generated';
@@ -65,8 +67,8 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
 	return (
-		<div id="add-post-page" className="add-post-page official-user-post" style={{ display: 'none' }}>
-			<form method="post" action={props.url} id="posts-form" data-is-own-title="1" data-is-identified="1">
+		<div id="add-post-page" className="add-post-page official-user-post">
+			<form method="post" action={props.url} id="posts-form">
 				{props.errorText ? <p>{props.errorText}</p> : null}
 				<input type="hidden" name="community_id" value={props.id} />
 				<div className="add-post-page-content">
@@ -89,19 +91,8 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 						</ul>
 					</div>
 					<div className="textarea-container textarea-with-menu active-text">
-						<menu className="textarea-menu">
-							<li className="textarea-menu-text">
-								<input type="radio" name="_post_type" value="body" defaultChecked data-sound="" evt-click="openText()" />
-							</li>
-							<li className="textarea-menu-memo">
-								<input type="radio" name="_post_type" value="painting" data-sound="" evt-click="newPainting(false)" disabled />
-							</li>
-						</menu>
+						<input type="hidden" name="_post_type" value="body" />
 						<textarea id="new-post-text" name="body" className="textarea-text" value="" maxLength={280} placeholder={T.str('new_post.content_placeholder')}></textarea>
-						<div id="new-post-memo" className="textarea-memo trigger" data-sound="" evt-click="newPainting(false)" style={{ display: 'none' }}>
-							<img id="memo" className="textarea-memo-preview" src="" />
-							<input id="memo-value" type="hidden" name="painting" />
-						</div>
 					</div>
 					<label className="checkbox-container spoiler-button">
 						<T k="new_post.spoiler_label" />
@@ -115,15 +106,26 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 						type="button"
 						className="olv-modal-close-button fixed-bottom-button left"
 						value="Cancel"
-						data-sound="SE_WAVE_CANCEL"
-						data-module-show={props.show}
-						data-module-hide="add-post-page"
-						data-header="true"
-						data-menu="true"
 					/>
 					<input type="submit" className="post-button fixed-bottom-button" value="Post" />
 				</div>
 			</form>
 		</div>
+	);
+}
+
+export function WebNewPostPage(props: NewPostViewProps): ReactNode {
+	const cache = useCache();
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
+
+	return (
+		<WebRoot>
+			<h2 id="title" className="page-header">
+				<T k="new_post.post_to" values={{ user: name ?? '' }} />
+			</h2>
+			<WebWrapper className="community-page-post-box">
+				<WebNewPostView {... props} />
+			</WebWrapper>
+		</WebRoot>
 	);
 }
