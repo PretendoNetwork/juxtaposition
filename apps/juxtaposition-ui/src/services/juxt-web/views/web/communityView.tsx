@@ -111,6 +111,13 @@ export function WebCommunityView(props: CommunityViewProps): ReactNode {
 								</WebInfoboxButton>
 							)
 						: null}
+					{user.perms.moderator && props.canPost
+						? (
+								<WebInfoboxButton href={`/titles/${community.olive_community_id}/create`}>
+									Create post
+								</WebInfoboxButton>
+							)
+						: null}
 				</WebInfoboxButtons>
 				<div className="buttons tabs">
 					<a

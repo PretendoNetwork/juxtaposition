@@ -1872,6 +1872,44 @@ button.report {
   z-index: 100;
 }
 
+.reply-control-bar {
+  background: var(--background-dark);
+  border-radius: 8px;
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+
+  .reply-control-title {
+    flex: 1;
+    font-size: 14px;
+  }
+
+  .reply-control-item {
+    transition: background ease-in-out 100ms, transform ease-in-out 100ms;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+
+    &:hover {
+      background: var(--background-alt);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
+  .reply-icon {
+    transform: scale(0.8);
+    color: var(--text-light);
+  }
+}
+
 @include t.media(">=tablet", "<desktop") {
   .container.wide {
     max-width: 600px;

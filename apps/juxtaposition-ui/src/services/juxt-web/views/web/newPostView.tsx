@@ -116,7 +116,17 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 
 export function WebNewPostPage(props: NewPostViewProps): ReactNode {
 	const cache = useCache();
+	const user = useUser();
 	const name = props.name ?? cache.getUserName(props.pid ?? 0);
+
+	let content = <WebNewPostView {... props} />;
+	if (!user.perms.moderator) {
+		content = (
+			<div>
+				<p>Posting is disabled on web</p>
+			</div>
+		);
+	}
 
 	return (
 		<WebRoot>
@@ -124,7 +134,7 @@ export function WebNewPostPage(props: NewPostViewProps): ReactNode {
 				<T k="new_post.post_to" values={{ user: name ?? '' }} />
 			</h2>
 			<WebWrapper className="community-page-post-box">
-				<WebNewPostView {... props} />
+				{content}
 			</WebWrapper>
 		</WebRoot>
 	);

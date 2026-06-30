@@ -25,7 +25,7 @@ import type { Request, Response } from 'express';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
-import type { EmpathyActionEnum } from '@/api/generated';
+import type { EmpathyActionEnum, StandardSortEnum } from '@/api/generated';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
@@ -138,9 +138,12 @@ postsRouter.post('/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }
 });
 
 postsRouter.get('/:post_id', async function (req, res) {
-	const { params, hasAuth, auth } = parseReq(req, {
+	const { params, query, hasAuth, auth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
+		}),
+		query: z.object({
+			sort: z.enum(['newest-first', 'oldest-first']).default('oldest-first')
 		})
 	});
 	const self = hasAuth() ? auth().self : null;
@@ -162,7 +165,8 @@ postsRouter.get('/:post_id', async function (req, res) {
 	}
 
 	// increase limit for post replies since there's no pagination yet
-	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort: 'oldest', limit: 500 }))?.data.items ?? [];
+	const sort: StandardSortEnum = query.sort === 'newest-first' ? 'newest' : 'oldest';
+	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort, limit: 500 }))?.data.items ?? [];
 	const postPNID = await getUserAccountData(post.pid);
 	const canPost = !!self && isPostingAllowed(community, self, post);
 
@@ -172,7 +176,8 @@ postsRouter.get('/:post_id', async function (req, res) {
 		postPNID,
 		replies,
 		canPost,
-		userContent: self?.content ?? null
+		userContent: self?.content ?? null,
+		sort: query.sort
 	};
 	res.jsxForDirectory({
 		web: <WebPostPageView {...props} />,
