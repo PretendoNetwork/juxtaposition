@@ -150,7 +150,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 							{' '}
 							<T k="post.copy_link" />
 						</li>
-						{ isModerator && post.is_spoiler
+						{ isModerator && post.isSpoiler
 							? (
 									<li role="menuitem" data-action="unspoiler">
 										<WebUIIcon name="eye" />
@@ -159,7 +159,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 									</li>
 								)
 							: null}
-						{ isModerator && !post.is_spoiler
+						{ isModerator && !post.isSpoiler
 							? (
 									<li role="menuitem" data-action="spoiler">
 										<WebUIIcon name="eye-slash" />
