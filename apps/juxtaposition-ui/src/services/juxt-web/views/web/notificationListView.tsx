@@ -134,7 +134,7 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 						<T
 							k={i18nKey}
 							values={{
-								until: data.notif.content.until ? humanDate(data.notif.content.reason) : '',
+								until: data.notif.content.until ? humanDate(data.notif.content.until) : '',
 								reason: data.notif.content.reason ?? ''
 							}}
 						/>
