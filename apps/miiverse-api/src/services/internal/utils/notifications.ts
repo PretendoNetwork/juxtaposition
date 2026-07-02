@@ -1,4 +1,5 @@
 import { humanDate } from '@/services/internal/utils/dates';
+import { genId } from '@/util';
 import type { PrismaClient } from '@/prisma/client';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -109,12 +110,12 @@ export async function createNewFollowNotification(db: PrismaClient, ops: FollowN
 	};
 	await db.notification.create({
 		data: {
-			id: 'test', // TODO create uuid
+			id: genId(),
 			content,
 			type: 'Follow',
 			notificationRecipients: {
 				create: {
-					id: 'test', // TODO create uuid
+					id: genId(),
 					pid: ops.userToFollow
 				}
 			}
@@ -134,12 +135,12 @@ export async function createNewPostDeletionNotification(db: PrismaClient, ops: P
 	};
 	await db.notification.create({
 		data: {
-			id: 'test', // TODO create uuid
+			id: genId(),
 			content,
 			type: 'System',
 			notificationRecipients: {
 				create: {
-					id: 'test', // TODO create uuid
+					id: genId(),
 					pid: ops.postAuthor
 				}
 			}
@@ -159,12 +160,12 @@ export async function createNewLimitedPostingNotification(db: PrismaClient, ops:
 	};
 	await db.notification.create({
 		data: {
-			id: 'test', // TODO create uuid
+			id: genId(),
 			content,
 			type: 'System',
 			notificationRecipients: {
 				create: {
-					id: 'test', // TODO create uuid
+					id: genId(),
 					pid: ops.pid
 				}
 			}
