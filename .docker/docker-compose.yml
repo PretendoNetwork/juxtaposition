@@ -9,7 +9,7 @@ services:
     volumes:
       - redis_data:/data
   postgres:
-    image: postgres
+    image: postgres:18
     restart: unless-stopped
     ports:
       - "5432:5432"
@@ -18,8 +18,8 @@ services:
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "postgres"
     volumes:
-      - "postgres_data:/var/lib/postgresql"
-      - ./create-dbs:/docker-entrypoint-initdb.d/init.sql
+      - "db_data:/var/lib/postgresql"
+      - ./create-dbs.sql:/docker-entrypoint-initdb.d/init.sql
   mongo:
     image: mongo:8.0
     restart: unless-stopped
@@ -138,8 +138,8 @@ services:
       PN_FRIENDS_ACCOUNT_GRPC_API_KEY: "12345678123456781234567812345678"
 
 volumes:
-  postgres_data:
   mongo_data:
   mongo_config:
   redis_data:
   minio_data:
+  db_data:
