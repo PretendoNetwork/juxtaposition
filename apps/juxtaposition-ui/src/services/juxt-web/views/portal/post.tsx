@@ -1,6 +1,7 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -12,18 +13,18 @@ function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
 
 	const post = props.post;
 	if (!post.screenshot) {
-		return null;
+		return <></>;
 	}
 
-	if (post.screenshot.aspectRatio) {
+	if (post.screenshot_aspect) {
 		// modern type
 		return (
 			<img
 				className={cx(
 					'post-screenshot',
-					`post-screenshot-${post.screenshot.aspectRatio}`
+					`post-screenshot-${post.screenshot_aspect}`
 				)}
-				src={url.cdn(post.screenshot.imageUrlBig ? post.screenshot.imageUrlBig : post.screenshot.imageUrl)}
+				src={url.cdn(post.screenshot_big ? post.screenshot_big : post.screenshot)}
 			/>
 		);
 	} else {
@@ -31,7 +32,7 @@ function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
 		return (
 			<img
 				className="post-screenshot"
-				src={url.cdn(post.screenshot.imageUrl)}
+				src={url.cdn(post.screenshot)}
 			/>
 		);
 	}
@@ -39,20 +40,21 @@ function PortalPostScreenshot(props: PostScreenshotProps): ReactNode {
 
 export function PortalPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
+	const cache = useCache();
 	const user = useUser();
 	const post = props.post;
-	const hasYeahed = post.yeahsBy.some(v => v.pid === user.pid);
+	const hasYeahed = post.yeahs && post.yeahs.indexOf(user.pid) !== -1;
 	const isModerator = user.perms.moderator;
 	// TODO implement moderator removed post logic
 
 	const content = (
 		<>
-			<a href={url.url('/users/show', { pid: post.author.pid })} className="mii-icon-container" data-pjax="#body">
-				<img src={post.mii.imageUrl ?? undefined} className="mii-icon" />
+			<a href={url.url('/users/show', { pid: post.pid })} className="mii-icon-container" data-pjax="#body">
+				<img src={post.mii_face_url ?? undefined} className="mii-icon" />
 			</a>
 			<div
 				className={cx('post-body-content', {
-					removed: Boolean(post.moderation?.removed)
+					removed: post.removed
 				})}
 			>
 				<div
@@ -63,19 +65,19 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 				>
 					<header>
 						<span className="screen-name">
-							{post.author.miiName}
+							{post.screen_name}
 						</span>
 						{' '}
 						<span className="timestamp">
 							{'- '}
-							{moment(post.createdAt).fromNow()}
+							{moment(post.created_at).fromNow()}
 						</span>
-						{post.topicTag
+						{post.topic_tag
 							? (
-									<a href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
+									<a href={url.url('/topics', { topic_tag: post.topic_tag })} data-pjax="#body">
 										{/* TODO this has been modified due to inbalanced tags */}
 										<PortalUIIcon name="topic" />
-										<span className="tags">{post.topicTag}</span>
+										<span className="tags">{post.topic_tag}</span>
 									</a>
 								)
 							: null }
@@ -83,16 +85,16 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 
 					{ !props.isReply
 						? (
-								<a href={`/titles/${post.community.id}`} className="community-banner" data-pjax="#body">
+								<a href={`/titles/${post.community_id}`} className="community-banner" data-pjax="#body">
 									<span className="title-icon-container" data-pjax="#body">
-										<img src={url.cdn(`/icons/${post.community.id}/64.png`)} className="title-icon" />
+										<img src={url.cdn(`/icons/${post.community_id}/64.png`)} className="title-icon" />
 									</span>
-									<span className="community-name">{post.community.name}</span>
+									<span className="community-name">{cache.getCommunityName(post.community_id ?? '')}</span>
 								</a>
 							)
 						: null}
 
-					{ post.isSpoiler
+					{ post.is_spoiler
 						? (
 								<div className="spoiler-wrapper">
 									<button data-post-id={post.id}><T k="post.show_spoiler" /></button>
@@ -104,9 +106,9 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						className="post-content"
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
 					>
-						{post.body ? <p className="post-content-text">{post.body}</p> : null}
+						{post.body !== '' ? <p className="post-content-text">{post.body}</p> : null}
 						<PortalPostScreenshot post={post}></PortalPostScreenshot>
-						{post.painting ? <img className="post-memo" src={url.cdn(post.painting.imageUrlBig ? post.painting.imageUrlBig : `/paintings/${post.author.pid}/${post.id}.png`)} /> : null}
+						{post.painting !== '' ? <img className="post-memo" src={url.cdn(post.painting_big ? post.painting_big : `/paintings/${post.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
 					</div>
 
@@ -121,14 +123,14 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						</button>
 						{' '}
 						<a href={!props.isReply ? `/posts/${post.id}` : undefined} className="to-permalink-button" data-pjax="#body">
-							{ props.isReply && post.author.pid !== user.pid && !isModerator
+							{ props.isReply && post.pid !== user.pid && !isModerator
 								? (
 										<div>
 											<button type="button" className="submit report" data-post={post.id} evt-click="reportPost(this)"></button>
 										</div>
 									)
 								: null}
-							{ props.isReply && (post.author.pid === user.pid || isModerator)
+							{ props.isReply && (post.pid === user.pid || isModerator)
 								? (
 										<div>
 											<button type="button" className="submit remove" data-button-delete-post={post.id}></button>
@@ -139,10 +141,10 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 								? (
 										<>
 											{' '}
-											<span className="feeling" id={`count-${post.id}`}>{post.stats.empathyCount}</span>
+											<span className="feeling" id={`count-${post.id}`}>{post.empathy_count}</span>
 											{ !props.isReply
 												? (
-														<span className="reply">{post.stats.replyCount}</span>
+														<span className="reply">{post.reply_count}</span>
 													)
 												: null}
 											{' '}
@@ -153,22 +155,22 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 					</div>
 				</div>
 			</div>
-			{ props.isMainPost && post.yeahsBy.length > 0
+			{ props.isMainPost && post.yeahs.length > 0
 				? (
 						<>
 
 							<h6 className="yeah-text">
 								<T
-									k={post.yeahsBy.length === 1 ? 'post.yeahs_count/one' : 'post.yeahs_count/multiple'}
+									k={post.yeahs.length === 1 ? 'post.yeahs_count/one' : 'post.yeahs_count/multiple'}
 									components={{
-										count: <span className="feeling" id={`count-${post.id}`}>{post.stats.empathyCount}</span>
+										count: <span className="feeling" id={`count-${post.id}`}>{post.empathy_count}</span>
 									}}
 								/>
 							</h6>
 							<div className="yeah-list">
-								{post.yeahsBy.slice(0, 9).map(({ pid }) => (
-									<a href={`/users/${pid}`} className="mii-icon-container" data-pjax="#body">
-										<img src={url.cdn(`/mii/${pid}/normal_face.png`)} className="mii-icon" />
+								{post.yeahs.slice(0, 9).map(yeah => (
+									<a href={`/users/${yeah}`} className="mii-icon-container" data-pjax="#body">
+										<img src={url.cdn(`/mii/${yeah}/normal_face.png`)} className="mii-icon" />
 									</a>
 								))}
 							</div>
@@ -183,10 +185,10 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 			id={`post-${post.id}`}
 			className={cx('post', {
 				reply: props.isReply,
-				spoiler: post.isSpoiler
+				spoiler: post.is_spoiler
 			})}
 		>
-			{post.moderation?.removed
+			{post.removed
 				? (
 						<div className="post-body-content removed">
 							<h2><T k="post.removed" /></h2>
