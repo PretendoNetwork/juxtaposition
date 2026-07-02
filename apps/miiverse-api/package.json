@@ -14,7 +14,8 @@
 		"migration:reset": "prisma migrate reset",
 		"db:seed": "tsup && node --enable-source-maps dist/seed.entry.mjs",
 		"lint": "eslint .",
-		"lint:fix": "eslint . --fix"
+		"lint:fix": "eslint . --fix",
+		"postinstall": "prisma generate"
 	},
 	"dependencies": {
 		"@asteasolutions/zod-to-openapi": "^8.5.0",
