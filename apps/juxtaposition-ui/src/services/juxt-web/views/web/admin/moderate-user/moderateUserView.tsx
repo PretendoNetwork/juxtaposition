@@ -5,6 +5,7 @@ import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebUserPageMeta, WebUserTier } from '@/services/juxt-web/views/web/userPageView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import type { ReactNode } from 'react';
 import type { AdminUserProfile } from '@/api/generated';
 
@@ -109,6 +110,7 @@ export function WebModerateUserView(props: ModerateUserViewProps): ReactNode {
 				<ModerateUserTabs pid={profile.pid} selected={props.tab} />
 				{props.children}
 			</WebWrapper>
+			<WebReportModalView />
 		</WebRoot>
 	);
 }

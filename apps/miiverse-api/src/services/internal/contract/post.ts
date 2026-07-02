@@ -1,118 +1,151 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
+import { mapShallowCommunity, shallowCommunitySchema } from '@/services/internal/contract/community';
+import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { IPost } from '@/types/mongoose/post';
+import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 
 export const postSchema = asOpenapi('Post', z.object({
 	id: z.string(),
-	title_id: z.string().optional(), // number as string
-	screen_name: z.string(),
-	body: z.string(),
-	app_data: z.string().optional(), // nintendo base64
+	createdAt: z.date(),
+	parentId: z.string().nullable(),
+	dmTo: z.number().nullable(),
+	community: shallowCommunitySchema.nullable(),
+	author: z.object({
+		miiName: z.string(),
+		pid: z.number(),
+		verified: z.boolean()
+	}),
+	mii: z.object({
+		data: z.string(),
+		imageUrl: z.string()
+	}),
 
-	painting: z.string().optional(), // base64 or '', undef for PMs
-	painting_img: z.string().optional(), // URL frag (leading /) or '', undef for PMs
-	painting_big: z.string().optional(), // URL frag (leading /) or '', undef for PMs
-	screenshot: z.string().optional(), // URL frag (leading /) or '', undef for PMs
-	screenshot_big: z.string().optional(), // URL frag (leading /) or '', undef for PMs/old posts
-	screenshot_thumb: z.string().optional(), // URL frag (leading /) or '', undef for PMs/old posts
-	screenshot_length: z.number().optional(),
-	screenshot_aspect: z.string().optional(), // '4:3' '5:3' '16:9'
+	feelingId: z.number().nullable(),
+	body: z.string().nullable(),
+	painting: z.object({
+		data: z.string(),
+		imageUrl: z.string(),
+		imageUrlBig: z.string()
+	}).nullable(),
+	screenshot: z.object({
+		imageUrl: z.string(),
+		imageUrlBig: z.string(),
+		imageUrlThumbnail: z.string(),
+		length: z.number(),
+		aspectRatio: z.enum(['4:3', '5:3', '16:9'])
+	}).nullable(),
 
-	search_key: z.array(z.string()).optional(),
-	topic_tag: z.string().optional(),
+	stats: z.object({
+		empathyCount: z.number(),
+		replyCount: z.number()
+	}),
+	yeahsBy: z.array(z.object({
+		pid: z.number()
+	})),
 
-	community_id: z.string(), // number
-	created_at: z.string(), // ISO Z
-	feeling_id: z.number().optional(),
+	searchKey: z.array(z.string()),
+	topicTag: z.string().nullable(),
 
-	is_autopost: z.boolean(),
-	is_community_private_autopost: z.boolean(),
-	is_spoiler: z.boolean(),
-	is_app_jumpable: z.boolean(),
+	isAutopost: z.boolean(),
+	isCommunityPrivateAutopost: z.boolean(),
+	isSpoiler: z.boolean(),
+	isAppJumpable: z.boolean(),
 
-	empathy_count: z.number(),
-	country_id: z.number(),
-	language_id: z.number(),
+	countryId: z.number(),
+	languageId: z.number(),
+	platformId: z.number().nullable(),
+	regionId: z.number().nullable(),
+	titleId: z.string().nullable(),
+	appData: z.string().nullable(),
 
-	mii: z.string(), // nintendo base64
-	mii_face_url: z.string(), // full URL (cdn., r2-cdn.)
-
-	pid: z.number(),
-	platform_id: z.number().optional(),
-	region_id: z.number().optional(),
-	parent: z.string().nullable(),
-
-	reply_count: z.number(),
-	verified: z.boolean(),
-
-	message_to_pid: z.string().nullable(),
-
-	removed: z.boolean(),
-	removed_by: z.number().optional(),
-	removed_at: z.string().optional(), // ISO Z
-	removed_reason: z.string().optional(),
-
-	yeahs: z.array(z.number())
+	moderation: z.object({
+		removed: z.object({
+			removedBy: shallowUserSchema.nullable(),
+			removedAt: z.date(),
+			reason: z.string()
+		}).nullable()
+	}).nullable()
 }));
 
 export type PostDto = z.infer<typeof postSchema>;
 
-/**
- * Maps a Post from the databse to the frontend contract post type.
- * Doesn't do much for now, but as the database changes, this abstraction will carry more.
- * @param post Database post type
- * @returns API/frontend post type
- */
-export function mapPost(post: IPost): PostDto {
+export function mapPost(post: IPost, comm: HydratedCommunityDocument | null): PostDto {
 	return {
 		id: post.id,
-		title_id: post.title_id,
-		screen_name: post.screen_name,
-		body: post.body,
-		app_data: post.app_data,
+		createdAt: post.created_at,
+		parentId: post.parent ?? null,
+		dmTo: post.message_to_pid ? Number(post.message_to_pid) : null,
+		community: comm ? mapShallowCommunity(comm) : null,
+		author: {
+			miiName: post.screen_name,
+			pid: post.pid,
+			verified: post.verified
+		},
+		mii: {
+			data: post.mii,
+			imageUrl: post.mii_face_url
+		},
 
-		painting: post.painting,
-		painting_img: post.painting_img,
-		painting_big: post.painting_big,
-		screenshot: post.screenshot,
-		screenshot_big: post.screenshot_big,
-		screenshot_thumb: post.screenshot_thumb,
-		screenshot_length: post.screenshot_length,
-		screenshot_aspect: post.screenshot_aspect,
+		feelingId: post.feeling_id ?? null,
+		body: post.body ? post.body : null,
+		painting: post.painting
+			? {
+					data: post.painting,
+					imageUrl: post.painting_img ?? '',
+					imageUrlBig: post.painting_big ?? ''
+				}
+			: null,
+		screenshot: post.screenshot
+			? {
+					imageUrl: post.screenshot,
+					imageUrlBig: post.screenshot_big ?? '',
+					imageUrlThumbnail: post.screenshot_thumb ?? '',
+					length: post.screenshot_length ?? 0,
+					aspectRatio: post.screenshot_aspect as any
+				}
+			: null,
 
-		search_key: post.search_key,
-		topic_tag: post.topic_tag,
+		stats: {
+			empathyCount: post.empathy_count,
+			replyCount: post.reply_count
+		},
+		yeahsBy: post.yeahs.map(pid => ({
+			pid
+		})),
 
-		community_id: post.community_id,
-		created_at: post.created_at.toISOString(),
-		feeling_id: post.feeling_id,
+		searchKey: post.search_key ?? [],
+		topicTag: post.topic_tag ?? null,
 
-		is_autopost: !!post.is_autopost,
-		is_community_private_autopost: !!post.is_community_private_autopost,
-		is_spoiler: !!post.is_spoiler,
-		is_app_jumpable: !!post.is_app_jumpable,
+		isAutopost: !!post.is_autopost,
+		isCommunityPrivateAutopost: !!post.is_community_private_autopost,
+		isSpoiler: !!post.is_spoiler,
+		isAppJumpable: !!post.is_app_jumpable,
 
-		empathy_count: post.empathy_count,
-		country_id: post.country_id,
-		language_id: post.language_id,
+		countryId: post.country_id,
+		languageId: post.language_id,
+		platformId: post.platform_id ?? null,
+		regionId: post.region_id ?? null,
+		titleId: post.title_id ?? null,
+		appData: post.app_data ?? null,
 
-		mii: post.mii,
-		mii_face_url: post.mii_face_url,
+		moderation: null
+	};
+}
 
-		pid: post.pid,
-		platform_id: post.platform_id,
-		region_id: post.region_id,
-		parent: post.parent ?? null,
+export function mapPostWithModeration(post: IPost, comm: HydratedCommunityDocument | null, remover: HydratedSettingsDocument | null): PostDto {
+	return {
+		...mapPost(post, comm),
 
-		reply_count: post.reply_count,
-		verified: post.verified,
-
-		message_to_pid: post.message_to_pid,
-		removed: post.removed,
-		removed_by: post.removed_by,
-		removed_at: post.removed_at?.toISOString(),
-		removed_reason: post.removed_reason,
-
-		yeahs: post.yeahs
+		moderation: {
+			removed: post.removed
+				? {
+						removedBy: remover ? mapShallowUser(remover) : null,
+						removedAt: post.removed_at ?? new Date(),
+						reason: post.removed_reason ?? ''
+					}
+				: null
+		}
 	};
 }

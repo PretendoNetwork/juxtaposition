@@ -14,7 +14,14 @@
         "user_page": "Pàgina d'usuari",
         "go_back": "Torna",
         "yeahs": "Mola",
-        "search": "Cerca..."
+        "search": "Cerca...",
+        "my_feed": "Les meves Publicacions",
+        "global_feed": "Publicacions Globals",
+        "global_feed_short": "Global",
+        "people_feed": "Seguint",
+        "people_feed_short": "Seguits",
+        "friend_requests": "Sol·licituds d'Amistat",
+        "updates": "Actualitzacions"
     },
     "notifications": {
         "none": "No hi ha notificacions."
@@ -35,7 +42,10 @@
         "tags": "Etiquetes",
         "followers": "Seguidors",
         "recent": "Publicacions recents",
-        "popular": "Publicacions populars"
+        "popular": "Publicacions populars",
+        "followers_count": "{{count}} seguidors",
+        "tags_not_applicable": "N/A",
+        "related": "Comunitats relacionades"
     },
     "user_settings": {
         "show_game": "Mostra la experiència de joc al perfil",
@@ -103,9 +113,17 @@
         "forgot_password": "¿Has oblidat la teva contrasenya?",
         "no_account": "¿No tens cap compte?",
         "login_action": "Iniciar sessió",
-        "no_account_setup": "La creació de comptes només estarà disponible quan hagis vinculat una Wii U o 3DS."
+        "no_account_setup": "La creació de comptes només estarà disponible quan hagis vinculat una Wii U o 3DS.",
+        "title": "Inicia la sessió per juxtaposició",
+        "heading": "Registre per juxtaposició",
+        "sub_title": "Introduïu les dades del vostre compte a continuació"
     },
     "error": {
-        "title": "Codi d'error: {{code}}"
+        "title": "Codi d'error: {{code}}",
+        "heading": "Error {{code}}: {{message}}",
+        "message": "Ups! Sembla que no hem trobat la pàgina que busques.<newline/>Comprova l'enllaç o torna-ho a provar més tard",
+        "no_access": "No estas autoritzat a accedir a aquesta aplicació ({{code}})",
+        "message_web": "Veure l'<status>estat actual del servidor</status>.<newline/>O bé, <home>torna a la pàgina d'inici</home>",
+        "error_details": "ID de sol·licitud: {{id}}"
     }
 }
