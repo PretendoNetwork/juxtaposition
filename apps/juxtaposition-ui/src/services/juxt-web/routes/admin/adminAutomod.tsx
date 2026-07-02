@@ -8,11 +8,8 @@ import { onOffSchema } from '@/services/juxt-web/routes/admin/admin';
 import type { AutomodRuleListViewProps } from '@/services/juxt-web/views/web/admin/automodRuleListView';
 import type { AutomodLogListViewProps } from '@/services/juxt-web/views/web/admin/automodLogListView';
 
-export const automodRuleType = ['keyword'] as const;
-export type AutomodRuleType = (typeof automodRuleType)[number];
-
-export const automodRuleMode = ['block', 'log'] as const;
-export type AutomodRuleMode = (typeof automodRuleMode)[number];
+const automodRuleType = ['keyword'] as const;
+const automodRuleMode = ['block', 'log'] as const;
 
 export const adminAutomodRouter = express.Router();
 
