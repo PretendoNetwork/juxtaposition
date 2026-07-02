@@ -11,11 +11,12 @@ import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView'
 import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
+import { WebNewPostPage } from '@/services/juxt-web/views/web/newPostView';
 import { InternalApiError, wrapApi } from '@/api/errors';
 import type { Request, Response } from 'express';
-import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
-import type { EmpathyActionEnum, Post, PostCreateBody } from '@/api/generated';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
+import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
+import type { EmpathyActionEnum, StandardSortEnum, Post, PostCreateBody } from '@/api/generated';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 export const postsRouter = express.Router();
@@ -129,9 +130,12 @@ postsRouter.post('/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }
 });
 
 postsRouter.get('/:post_id', async function (req, res) {
-	const { params, hasAuth, auth } = parseReq(req, {
+	const { params, query, hasAuth, auth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string()
+		}),
+		query: z.object({
+			sort: z.enum(['newest-first', 'oldest-first']).default('oldest-first')
 		})
 	});
 	const self = hasAuth() ? auth().self : null;
@@ -157,7 +161,8 @@ postsRouter.get('/:post_id', async function (req, res) {
 	}
 
 	// increase limit for post replies since there's no pagination yet
-	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort: 'oldest', limit: 500 }))?.data.items ?? [];
+	const sort: StandardSortEnum = query.sort === 'newest-first' ? 'newest' : 'oldest';
+	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort, limit: 500 }))?.data.items ?? [];
 	const postPNID = await getUserAccountData(post.author.pid);
 	const canPost = !!self && isPostingAllowed(community, self, post);
 
@@ -167,7 +172,8 @@ postsRouter.get('/:post_id', async function (req, res) {
 		postPNID,
 		replies,
 		canPost,
-		userContent: self?.content ?? null
+		userContent: self?.content ?? null,
+		sort: query.sort
 	};
 	res.jsxForDirectory({
 		web: <WebPostPageView {...props} />,
@@ -244,7 +250,8 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 	};
 	res.jsxForDirectory({
 		ctr: <CtrNewPostPage {...props} />,
-		portal: <PortalNewPostPage {...props} />
+		portal: <PortalNewPostPage {...props} />,
+		web: <WebNewPostPage {... props} />
 	});
 });
 
