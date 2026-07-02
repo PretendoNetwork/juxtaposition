@@ -11,7 +11,7 @@ export const postSchema = asOpenapi('Post', z.object({
 	createdAt: z.date(),
 	parentId: z.string().nullable(),
 	dmTo: z.number().nullable(),
-	community: shallowCommunitySchema.nullable(),
+	community: shallowCommunitySchema.optional(),
 	author: z.object({
 		miiName: z.string(),
 		pid: z.number(),
@@ -77,7 +77,7 @@ export function mapPost(post: IPost, comm: HydratedCommunityDocument | null): Po
 		createdAt: post.created_at,
 		parentId: post.parent ?? null,
 		dmTo: post.message_to_pid ? Number(post.message_to_pid) : null,
-		community: comm ? mapShallowCommunity(comm) : null,
+		community: comm ? mapShallowCommunity(comm) : undefined,
 		author: {
 			miiName: post.screen_name,
 			pid: post.pid,

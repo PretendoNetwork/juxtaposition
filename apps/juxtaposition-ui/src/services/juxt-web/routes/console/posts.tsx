@@ -67,7 +67,7 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	const { data: community } = await req.api.communities.get({ id: post.community.id });
+	const { data: community } = await req.api.communities.get({ id: post.community?.olive_community_id ?? '' });
 
 	let img = {};
 	if (post.painting) {
@@ -155,7 +155,7 @@ postsRouter.get('/:post_id', async function (req, res) {
 	if (!post.community) {
 		return res.redirect('/404');
 	}
-	const { data: community } = await req.api.communities.get({ id: post.community.id });
+	const { data: community } = await req.api.communities.get({ id: post.community.olive_community_id });
 	if (!community) {
 		return res.redirect('/404');
 	}
@@ -232,7 +232,7 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 	if (!parent.community) {
 		return res.sendStatus(404);
 	}
-	const { data: community } = await req.api.communities.get({ id: parent.community.id });
+	const { data: community } = await req.api.communities.get({ id: parent.community.olive_community_id });
 	if (!community) {
 		return res.sendStatus(404);
 	}
@@ -240,7 +240,7 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 	const shotMode = getShotMode(community, auth().paramPackData);
 
 	const props: NewPostViewProps = {
-		id: parent.community.id,
+		id: parent.community.olive_community_id,
 		name: parent.author.miiName,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
@@ -425,5 +425,5 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		return;
 	}
 
-	res.redirect('/titles/' + newPostResult.community?.id + '/new');
+	res.redirect('/titles/' + newPostResult.community?.olive_community_id + '/new');
 }

@@ -29,7 +29,7 @@ export const communityIconsSchema = z.object({
 }).openapi('CommunityIcons');
 
 export const communitySchema = asOpenapi('Community', z.object({
-	id: z.string(),
+	unstable_id: z.string(),
 	olive_community_id: z.string(),
 	parentId: z.string().nullable(),
 	permissions: communityPermissionSchema,
@@ -51,7 +51,7 @@ export const communitySchema = asOpenapi('Community', z.object({
 export type CommunityDto = z.infer<typeof communitySchema>;
 
 export const shallowCommunitySchema = asOpenapi('ShallowCommunity', z.object({
-	id: z.string(),
+	unstable_id: z.string(),
 	olive_community_id: z.string(),
 	name: z.string(),
 	type: z.number(),
@@ -92,7 +92,7 @@ export function mapCommunity(comm: HydratedCommunityDocument): CommunityDto {
 	const imageId = comm.parent ? comm.parent : comm.olive_community_id;
 	const shallowCommunity = mapShallowCommunity(comm);
 	return {
-		id: shallowCommunity.id,
+		unstable_id: shallowCommunity.unstable_id,
 		olive_community_id: shallowCommunity.olive_community_id,
 		type: shallowCommunity.type,
 		name: shallowCommunity.name,
@@ -116,7 +116,7 @@ export function mapCommunity(comm: HydratedCommunityDocument): CommunityDto {
 export function mapShallowCommunity(comm: HydratedCommunityDocument): ShallowCommunityDto {
 	const imageId = comm.parent ? comm.parent : comm.olive_community_id;
 	return {
-		id: comm.community_id,
+		unstable_id: comm.community_id,
 		olive_community_id: comm.olive_community_id,
 		type: comm.type,
 		name: comm.name,

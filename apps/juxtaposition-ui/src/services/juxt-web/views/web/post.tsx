@@ -71,7 +71,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					<p className="extra-info">
 						<a href={`/posts/${post.id}`}>{moment(post.createdAt).fromNow()}</a>
 						{' - '}
-						{post.community ? <a href={`/titles/${post.community.id}`}>{post.community.name}</a> : null }
+						{post.community ? <a href={`/titles/${post.community.olive_community_id}`}>{post.community.name}</a> : null }
 					</p>
 				</div>
 			</div>

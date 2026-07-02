@@ -25,7 +25,7 @@ export function WebUserPageFollowingView(props: UserPageFollowingViewProps): Rea
 				</li>
 			))}
 			{props.communities.map(community => (
-				<li key={community.id} id={community.id}>
+				<li key={community.olive_community_id} id={community.olive_community_id}>
 					<a className="hover" href={`/titles/${community.olive_community_id}/new`}>
 						<WebCommunityIcon community={community} size="64" />
 						<div className="body">

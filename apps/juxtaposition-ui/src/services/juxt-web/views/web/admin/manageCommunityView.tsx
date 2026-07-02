@@ -40,7 +40,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 							<>
 								<ul className="list-content-with-icon-and-text arrow-list accounts" id="news-list-content">
 									{props.communities.map(community => (
-										<li key={community.id}>
+										<li key={community.olive_community_id}>
 											<a className="hover" href={`/communities/${community.olive_community_id}`}>
 												<WebCommunityIcon community={community} size="64" />
 												<div className="body">
@@ -49,7 +49,7 @@ export function WebManageCommunityView(props: ManageCommunityViewProps): ReactNo
 													</span>
 												</div>
 											</a>
-											<button evt-click="this.children[0].click()"><a id={`account-${community.id}`} href={`/admin/communities/${community.olive_community_id}`}>Manage Community</a></button>
+											<button evt-click="this.children[0].click()"><a id={`account-${community.olive_community_id}`} href={`/admin/communities/${community.olive_community_id}`}>Manage Community</a></button>
 										</li>
 									))}
 								</ul>

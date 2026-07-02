@@ -83,11 +83,11 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 
 					{ !props.isReply
 						? (
-								<a href={`/titles/${post.community.id}`} className="community-banner" data-pjax="#body">
+								<a href={`/titles/${post.community?.olive_community_id}`} className="community-banner" data-pjax="#body">
 									<span className="title-icon-container" data-pjax="#body">
-										<img src={url.cdn(`/icons/${post.community.id}/64.png`)} className="title-icon" />
+										<img src={url.cdn(`/icons/${post.community?.olive_community_id}/64.png`)} className="title-icon" />
 									</span>
-									<span className="community-name">{post.community.name}</span>
+									<span className="community-name">{post.community?.name}</span>
 								</a>
 							)
 						: null}
