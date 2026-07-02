@@ -32,7 +32,7 @@ export const communityPlatformDisplayMap: Record<number, string> = {
 
 export function isPostingAllowed(community: HydratedCommunityDocument, user: SelfDto, parentPost: HydratedPostDocument | null): boolean {
 	const isReply = !!parentPost;
-	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
+	const isPublicPostableCommunity = community.type === 0 || community.type === 1;
 	const isOpenCommunity = community.permissions.open;
 
 	const isCommunityAdmin = community.admins?.includes(user.pid) ?? false;

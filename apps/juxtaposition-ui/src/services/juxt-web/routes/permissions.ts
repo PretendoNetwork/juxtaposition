@@ -3,7 +3,7 @@ import type { Community, CommunityShotMode, Post, Self } from '@/api/generated';
 
 export function isPostingAllowed(community: Community, user: Self, parentPost: Post | null): boolean {
 	const isReply = !!parentPost;
-	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
+	const isPublicPostableCommunity = community.type === 0 || community.type === 1;
 	const isOpenCommunity = community.permissions.open;
 
 	const isCommunityAdmin = community.adminPids.includes(user.pid);
