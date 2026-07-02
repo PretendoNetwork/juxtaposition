@@ -11,42 +11,44 @@ import type { NotificationItemProps, NotificationListViewProps, NotificationWrap
 
 function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 	const cache = useCache();
-	const notif = props.notification;
-	if (notif.type === 'follow') {
+	const data = props.notification;
+	if (data.notif.type === 'follow') {
 		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
+		const users = [...data.notif.content.users].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+		const latestUser = users[0];
 
 		let i18nKey: TranslationKey = 'notifications.new_follower/one';
-		if (notif.users.length === 2) {
+		if (users.length === 2) {
 			i18nKey = 'notifications.new_follower/two';
 		}
-		if (notif.users.length === 3) {
+		if (users.length === 3) {
 			i18nKey = 'notifications.new_follower/three';
 		}
-		if (notif.users.length > 3) {
+		if (users.length > 3) {
 			i18nKey = 'notifications.new_follower/multiple';
 		}
 
 		return (
 			<>
-				<PortalMiiIcon pid={Number(notif.resourceId)} type="icon"></PortalMiiIcon>
+				<PortalMiiIcon pid={latestUser.pid} type="icon"></PortalMiiIcon>
 				<div className="body">
 					<p className="text">
-						<a className="link" href={notif.link ?? '#'}>
+						<a className="link" href={`/users/${latestUser.pid}`}>
 							<T
 								k={i18nKey}
 								values={{
-									count: notif.users.length,
-									count_other: Math.max(0, notif.users.length - 2)
+									count: users.length,
+									count_other: Math.max(0, users.length - 2)
 								}}
 								components={{
-									follower_one: <NickName userId={notif.resourceId} />,
-									follower_two: <NickName userId={notif.users[0]?.pid} />
+									follower_one: <NickName userId={users[0]?.pid} />,
+									follower_two: <NickName userId={users[1]?.pid} />
 								}}
 							/>
 						</a>
 						<span className="timestamp">
 							{' '}
-							{humanFromNow(notif.updatedAt)}
+							{humanFromNow(data.updatedAt)}
 						</span>
 					</p>
 				</div>
@@ -54,17 +56,17 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 		);
 	}
 
-	if (notif.type === 'notice') {
+	if (data.notif.type === 'system') {
 		return (
 			<>
-				<PortalIcon href={notif.link ?? undefined} src={notif.imageUrl}></PortalIcon>
+				<PortalIcon href={data.notif.content.link} src={data.notif.content.imagePath}></PortalIcon>
 				<div className="body">
-					<a href={notif.link ?? '#'}>
+					<a href={data.notif.content.link}>
 						<span className="text">
-							{notif.content}
+							{data.notif.content.text}
 							<span className="timestamp">
 								{' '}
-								{humanFromNow(notif.updatedAt)}
+								{humanFromNow(data.updatedAt)}
 							</span>
 						</span>
 					</a>
