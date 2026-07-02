@@ -1,6 +1,6 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
-import { humanFromNow } from '@/util';
+import { humanDate, humanFromNow } from '@/util';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/ui/PortalMiiIcon';
@@ -17,15 +17,15 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 		const users = [...data.notif.content.users].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 		const latestUser = users[0];
 
-		let i18nKey: TranslationKey = 'notifications.new_follower/one';
+		let i18nKey: TranslationKey = 'notifications.new_follower.message/one';
 		if (users.length === 2) {
-			i18nKey = 'notifications.new_follower/two';
+			i18nKey = 'notifications.new_follower.message/two';
 		}
 		if (users.length === 3) {
-			i18nKey = 'notifications.new_follower/three';
+			i18nKey = 'notifications.new_follower.message/three';
 		}
 		if (users.length > 3) {
-			i18nKey = 'notifications.new_follower/multiple';
+			i18nKey = 'notifications.new_follower.message/multiple';
 		}
 
 		return (
@@ -51,6 +51,89 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 							{humanFromNow(data.updatedAt)}
 						</span>
 					</p>
+				</div>
+			</>
+		);
+	}
+
+	if (data.notif.type === 'postDeleted') {
+		let i18nKey: TranslationKey = 'notifications.post_deleted.post_removed';
+		if (data.notif.content.reason) {
+			i18nKey = 'notifications.post_deleted.post_removed_for_reason';
+		}
+		if (data.notif.content.postType === 'comment') {
+			i18nKey = 'notifications.post_deleted.comment_removed';
+			if (data.notif.content.reason) {
+				i18nKey = 'notifications.post_deleted.comment_removed_for_reason';
+			}
+		}
+		return (
+			<>
+				<PortalIcon href="/titles/2551084080/new" src="/images/bandwidthalert.png"></PortalIcon>
+				<div className="body">
+					<a href="/titles/2551084080/new">
+						<span className="text">
+							<T
+								k={i18nKey}
+								values={{
+									reason: data.notif.content.reason ?? ''
+								}}
+							/>
+							{' '}
+							<T
+								k="notifications.post_deleted.footer"
+								values={{
+									contactModsUrl: 'https://preten.do/juxt-mods/'
+								}}
+							/>
+							<span className="timestamp">
+								{' '}
+								{humanFromNow(data.updatedAt)}
+							</span>
+						</span>
+					</a>
+				</div>
+			</>
+		);
+	}
+
+	if (data.notif.type === 'limitedFromPosting') {
+		let i18nKey: TranslationKey = 'notifications.limited_from_posting.message';
+		if (data.notif.content.reason) {
+			i18nKey = 'notifications.limited_from_posting.message_with_reason';
+		}
+		if (data.notif.content.until) {
+			i18nKey = 'notifications.limited_from_posting.temporary';
+			if (data.notif.content.reason) {
+				i18nKey = 'notifications.limited_from_posting.temporary_with_reason';
+			}
+		}
+		return (
+			<>
+				<PortalIcon href="/titles/2551084080/new" src="/images/bandwidthalert.png"></PortalIcon>
+				<div className="body">
+					<a href="/titles/2551084080/new">
+						<span className="text">
+							<T
+								k={i18nKey}
+								values={{
+									until: data.notif.content.until ? humanDate(data.notif.content.reason) : '',
+									reason: data.notif.content.reason ?? ''
+								}}
+							/>
+							{' '}
+							<T
+								k="notifications.limited_from_posting.footer"
+								values={{
+									banAppealUrl: 'https://preten.do/ban-appeal/'
+								}}
+							/>
+							<span className="timestamp">
+								{' '}
+								{humanFromNow(data.updatedAt)}
+							</span>
+						</span>
+					</a>
 				</div>
 			</>
 		);

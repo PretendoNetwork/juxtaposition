@@ -9,6 +9,8 @@ datasource db {
 
 enum NotificationType {
   Follow
+  LimitedFromPosting
+  PostDeleted
   System
 }
 

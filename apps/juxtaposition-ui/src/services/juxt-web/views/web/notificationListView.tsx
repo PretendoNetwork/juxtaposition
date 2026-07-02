@@ -4,7 +4,7 @@ import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalVie
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
-import { humanFromNow } from '@/util';
+import { humanDate, humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { Notification } from '@/api/generated';
@@ -30,15 +30,15 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 		const users = [...data.notif.content.users].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 		const latestUser = users[0];
 
-		let i18nKey: TranslationKey = 'notifications.new_follower/one';
+		let i18nKey: TranslationKey = 'notifications.new_follower.message/one';
 		if (users.length === 2) {
-			i18nKey = 'notifications.new_follower/two';
+			i18nKey = 'notifications.new_follower.message/two';
 		}
 		if (users.length === 3) {
-			i18nKey = 'notifications.new_follower/three';
+			i18nKey = 'notifications.new_follower.message/three';
 		}
 		if (users.length > 3) {
-			i18nKey = 'notifications.new_follower/multiple';
+			i18nKey = 'notifications.new_follower.message/multiple';
 		}
 
 		return (
@@ -61,6 +61,89 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 								}}
 							/>
 						</span>
+						<span className="timestamp">
+							{' '}
+							{humanFromNow(data.updatedAt)}
+						</span>
+					</span>
+				</a>
+			</div>
+		);
+	}
+
+	if (data.notif.type === 'postDeleted') {
+		let i18nKey: TranslationKey = 'notifications.post_deleted.post_removed';
+		if (data.notif.content.reason) {
+			i18nKey = 'notifications.post_deleted.post_removed_for_reason';
+		}
+		if (data.notif.content.postType === 'comment') {
+			i18nKey = 'notifications.post_deleted.comment_removed';
+			if (data.notif.content.reason) {
+				i18nKey = 'notifications.post_deleted.comment_removed_for_reason';
+			}
+		}
+		return (
+			<div className="hover">
+				<a href="/titles/2551084080/new" className="icon-container notify">
+					<img src="/images/bandwidthalert.png" className="icon" />
+				</a>
+				<a className="body" href="/titles/2551084080/new">
+					<span className="text">
+						<T
+							k={i18nKey}
+							values={{
+								reason: data.notif.content.reason ?? ''
+							}}
+						/>
+						{' '}
+						<T
+							k="notifications.post_deleted.footer"
+							values={{
+								contactModsUrl: 'https://preten.do/juxt-mods/'
+							}}
+						/>
+						<span className="timestamp">
+							{' '}
+							{humanFromNow(data.updatedAt)}
+						</span>
+					</span>
+				</a>
+			</div>
+		);
+	}
+
+	if (data.notif.type === 'limitedFromPosting') {
+		let i18nKey: TranslationKey = 'notifications.limited_from_posting.message';
+		if (data.notif.content.reason) {
+			i18nKey = 'notifications.limited_from_posting.message_with_reason';
+		}
+		if (data.notif.content.until) {
+			i18nKey = 'notifications.limited_from_posting.temporary';
+			if (data.notif.content.reason) {
+				i18nKey = 'notifications.limited_from_posting.temporary_with_reason';
+			}
+		}
+		return (
+			<div className="hover">
+				<a href="/titles/2551084080/new" className="icon-container notify">
+					<img src="/images/bandwidthalert.png" className="icon" />
+				</a>
+				<a className="body" href="/titles/2551084080/new">
+					<span className="text">
+						<T
+							k={i18nKey}
+							values={{
+								until: data.notif.content.until ? humanDate(data.notif.content.reason) : '',
+								reason: data.notif.content.reason ?? ''
+							}}
+						/>
+						{' '}
+						<T
+							k="notifications.limited_from_posting.footer"
+							values={{
+								banAppealUrl: 'https://preten.do/ban-appeal/'
+							}}
+						/>
 						<span className="timestamp">
 							{' '}
 							{humanFromNow(data.updatedAt)}

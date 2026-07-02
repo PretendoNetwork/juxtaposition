@@ -1,10 +1,7 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import type { Notification, NotificationRecipient } from '@/prisma/client';
-import type { FollowNotificationContent, SystemNotificationContent } from '@/services/internal/utils/notifications';
-
-export const notificationTypeSchema = asOpenapi('NotificationType', z.enum(['system', 'follow']));
-export type NotificationType = z.infer<typeof notificationTypeSchema>;
+import type { FollowNotificationContent, LimitedFromPostingNotificationContent, PostDeletedNotificationContent, SystemNotificationContent } from '@/services/internal/utils/notifications';
 
 export const followNotificationSchema = asOpenapi('FollowNotification', z.object({
 	type: z.literal('follow'),
@@ -25,13 +22,32 @@ export const systemNotificationSchema = asOpenapi('SystemNotification', z.object
 	})
 }));
 
+export const postDeletedNotificationSchema = asOpenapi('PostDeletedNotification', z.object({
+	type: z.literal('postDeleted'),
+	content: z.object({
+		postId: z.string(),
+		reason: z.string().optional(),
+		postType: z.enum(['comment', 'post'])
+	})
+}));
+
+export const limitedFromPostingNotificationSchema = asOpenapi('LimitedFromPostingNotification', z.object({
+	type: z.literal('limitedFromPosting'),
+	content: z.object({
+		reason: z.string().optional(),
+		until: z.date().optional()
+	})
+}));
+
 export const notificationSchema = z.object({
 	pid: z.number(),
 	hasRead: z.boolean(),
 	updatedAt: z.date(),
 	notif: z.discriminatedUnion('type', [
 		followNotificationSchema,
-		systemNotificationSchema
+		systemNotificationSchema,
+		postDeletedNotificationSchema,
+		limitedFromPostingNotificationSchema
 	])
 }).openapi('Notification');
 
@@ -57,6 +73,25 @@ export function mapNotification(recipient: NotificationRecipient, notif: Notific
 		const content = notif.content as SystemNotificationContent;
 		data = {
 			type: 'system',
+			content
+		};
+	}
+
+	if (notif.type === 'LimitedFromPosting') {
+		const content = notif.content as LimitedFromPostingNotificationContent;
+		data = {
+			type: 'limitedFromPosting',
+			content: {
+				reason: content.reason,
+				until: content.until ? new Date(content.until) : undefined
+			}
+		};
+	}
+
+	if (notif.type === 'PostDeleted') {
+		const content = notif.content as PostDeletedNotificationContent;
+		data = {
+			type: 'postDeleted',
 			content
 		};
 	}

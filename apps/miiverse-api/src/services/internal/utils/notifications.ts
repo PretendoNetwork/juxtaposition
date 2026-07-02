@@ -1,4 +1,3 @@
-import { humanDate } from '@/services/internal/utils/dates';
 import { genId } from '@/util';
 import type { PrismaClient } from '@/prisma/client';
 import type { IPost } from '@/types/mongoose/post';
@@ -22,7 +21,7 @@ export type LimitedPostingNotificationOptions = {
 
 export type FollowNotificationContent = {
 	users: {
-		timestamp: string; // Iso timestamp
+		timestamp: string; // ISO timestamp
 		pid: number;
 	}[];
 };
@@ -31,6 +30,17 @@ export type SystemNotificationContent = {
 	imagePath: string;
 	link: string;
 	text: string;
+};
+
+export type PostDeletedNotificationContent = {
+	postId: string;
+	reason?: string;
+	postType: 'comment' | 'post';
+};
+
+export type LimitedFromPostingNotificationContent = {
+	reason?: string;
+	until?: string; // ISO timestamp,
 };
 
 export async function createNewFollowNotification(db: PrismaClient, ops: FollowNotificationOptions): Promise<void> {
@@ -124,20 +134,16 @@ export async function createNewFollowNotification(db: PrismaClient, ops: FollowN
 }
 
 export async function createNewPostDeletionNotification(db: PrismaClient, ops: PostDeletionNotificationOptions): Promise<void> {
-	const postType = ops.post.parent ? 'comment' : 'post';
-	const content: SystemNotificationContent = {
-		imagePath: '/images/bandwidthalert.png',
-		link: '/titles/2551084080/new',
-		text: `Your ${postType} "${ops.post.id}" has been removed` +
-			(ops.reason ? ` for the following reason: "${ops.reason}". ` : '. ') +
-			`Click this message to view the Juxtaposition Code of Conduct. ` +
-			`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/juxt-mods/).`
+	const content: PostDeletedNotificationContent = {
+		postId: ops.post.id,
+		reason: ops.reason,
+		postType: ops.post.parent ? 'comment' : 'post'
 	};
 	await db.notification.create({
 		data: {
 			id: genId(),
 			content,
-			type: 'System',
+			type: 'PostDeleted',
 			notificationRecipients: {
 				create: {
 					id: genId(),
@@ -149,20 +155,15 @@ export async function createNewPostDeletionNotification(db: PrismaClient, ops: P
 }
 
 export async function createNewLimitedPostingNotification(db: PrismaClient, ops: LimitedPostingNotificationOptions): Promise<void> {
-	const firstSentence = ops.banLiftDate ? `You have been Limited from Posting until ${humanDate(ops.banLiftDate)}. ` : `You have been Limited from Posting. `;
-	const content: SystemNotificationContent = {
-		imagePath: '/images/bandwidthalert.png',
-		link: '/titles/2551084080/new',
-		text: firstSentence +
-			(ops.reason ? `Reason: "${ops.reason}". ` : '') +
-			`Click this message to view the Juxtaposition Code of Conduct. ` +
-			`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`
+	const content: LimitedFromPostingNotificationContent = {
+		until: ops.banLiftDate?.toISOString() ?? undefined,
+		reason: ops.reason ?? undefined
 	};
 	await db.notification.create({
 		data: {
 			id: genId(),
 			content,
-			type: 'System',
+			type: 'LimitedFromPosting',
 			notificationRecipients: {
 				create: {
 					id: genId(),
