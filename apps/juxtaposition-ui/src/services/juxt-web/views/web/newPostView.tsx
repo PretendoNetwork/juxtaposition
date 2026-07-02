@@ -1,7 +1,6 @@
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import type { ReactNode } from 'react';
 import type { Community, CommunityShotMode } from '@/api/generated';
@@ -107,9 +106,7 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 }
 
 export function WebNewPostPage(props: NewPostViewProps): ReactNode {
-	const cache = useCache();
 	const user = useUser();
-	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 
 	let content = <WebNewPostView {... props} />;
 	if (!user.perms.moderator) {
@@ -123,7 +120,7 @@ export function WebNewPostPage(props: NewPostViewProps): ReactNode {
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				<T k="new_post.post_to" values={{ user: name ?? '' }} />
+				<T k="new_post.post_to" values={{ user: props.name }} />
 			</h2>
 			<WebWrapper className="community-page-post-box">
 				{content}
