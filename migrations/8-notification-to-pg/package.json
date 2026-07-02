@@ -1,0 +1,11 @@
+{
+    "type": "module",
+    "scripts": {
+        "start": "node ./script.ts"
+    },
+    "dependencies": {
+        "dotenv": "^17.4.2",
+        "mongodb": "^7.4.0",
+        "pg": "^8.22.0"
+    }
+}
