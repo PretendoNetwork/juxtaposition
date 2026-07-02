@@ -9,7 +9,7 @@ import type { SchemaTransformer, SchemaTransformerContext } from '@neato/config'
 
 const schema = z.object({
 	db: z.object({
-		url: z.string()
+		url: z.string().optional()
 	})
 });
 
