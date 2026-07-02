@@ -6,3 +6,34 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum NotificationType {
+  Follow
+  System
+}
+
+/// Notification content
+model Notification {
+  id      String           @id
+  type    NotificationType
+  content Json /// Any extra context, dependent on type. Like users who followed
+
+  createdAt              DateTime                @default(now()) @map("created_at")
+  updatedAt              DateTime                @updatedAt @map("updated_at")
+  notificationRecipients NotificationRecipient[]
+
+  @@map("notifications")
+}
+
+/// Received notification
+model NotificationRecipient {
+  id      String  @id
+  pid     Int
+  hasRead Boolean @default(false) @map("has_read")
+
+  notificationId String       @map("notification_id")
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@index([pid])
+  @@map("notification_recipients")
+}

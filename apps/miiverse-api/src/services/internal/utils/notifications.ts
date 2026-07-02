@@ -1,5 +1,5 @@
-import { Notification } from '@/models/notification';
 import { humanDate } from '@/services/internal/utils/dates';
+import type { PrismaClient } from '@/prisma/client';
 import type { IPost } from '@/types/mongoose/post';
 
 export type FollowNotificationOptions = {
@@ -19,78 +19,155 @@ export type LimitedPostingNotificationOptions = {
 	reason: string | null;
 };
 
-export async function createNewFollowNotification(ops: FollowNotificationOptions): Promise<void> {
-	const now = new Date();
-	const url = `/users/${ops.currentUser}`;
+export type FollowNotificationContent = {
+	users: {
+		timestamp: string; // Iso timestamp
+		pid: number;
+	}[];
+};
 
-	// Same user has followed previously
-	const existingNotif = await Notification.findOne({ pid: ops.userToFollow, objectID: ops.currentUser });
-	if (existingNotif) {
-		existingNotif.lastUpdated = now;
-		existingNotif.read = false;
-		await existingNotif.save();
+export type SystemNotificationContent = {
+	imagePath: string;
+	link: string;
+	text: string;
+};
+
+export async function createNewFollowNotification(db: PrismaClient, ops: FollowNotificationOptions): Promise<void> {
+	const now = new Date();
+
+	// Prevent sending a new notification if the same user has done so recently
+	const weekInMs = 7 * 24 * 60 * 60 * 1000;
+	const recentFollowNotifs = await db.notificationRecipient.findMany({
+		where: {
+			pid: ops.userToFollow,
+			notification: {
+				type: 'Follow',
+				updatedAt: {
+					gte: new Date(now.getTime() - weekInMs) // Get 7 days worth of follow notifications
+				}
+			}
+		},
+		include: {
+			notification: true
+		}
+	});
+	const followNotifsContent = recentFollowNotifs.map(v => v.notification.content as FollowNotificationContent);
+	const hasFollowNotifContentForUser = followNotifsContent.some(content => content.users.some(usr => usr.pid === ops.currentUser));
+	if (hasFollowNotifContentForUser) {
+		// Don't send any notification to prevent follow notif spam
 		return;
 	}
 
-	// Combine existing follower notification
-	const last60min = new Date(now.getTime() - 60 * 60 * 1000);
-	const groupedNotif = await Notification.findOne({ pid: ops.userToFollow, type: 'follow', lastUpdated: { $gte: last60min } });
-	if (groupedNotif) {
-		groupedNotif.users.push({
-			user: ops.currentUser,
-			timestamp: now
+	// Group follower notifications into batch
+	const hourInMs = 60 * 60 * 1000;
+	const recentFollowNotif = await db.notificationRecipient.findFirst({
+		where: {
+			pid: ops.userToFollow,
+			notification: {
+				type: 'Follow',
+				updatedAt: {
+					gte: new Date(now.getTime() - hourInMs)
+				}
+			}
+		},
+		include: {
+			notification: true
+		}
+	});
+	if (recentFollowNotif) {
+		const newContent = recentFollowNotif.notification.content as FollowNotificationContent;
+		newContent.users.push({
+			pid: ops.currentUser,
+			timestamp: now.toISOString()
 		});
-		groupedNotif.lastUpdated = now;
-		groupedNotif.link = url;
-		groupedNotif.objectID = ops.currentUser.toString();
-		groupedNotif.read = false;
-		await groupedNotif.save();
+		await db.notification.update({
+			where: {
+				id: recentFollowNotif.notificationId
+			},
+			data: {
+				content: newContent,
+				updatedAt: now
+			}
+		});
+		await db.notificationRecipient.update({
+			where: {
+				id: recentFollowNotif.id
+			},
+			data: {
+				hasRead: false
+			}
+		});
 		return;
 	}
 
 	// Create new notification
-	await Notification.create({
-		pid: ops.userToFollow,
-		type: 'follow',
+	const content: FollowNotificationContent = {
 		users: [{
-			user: ops.currentUser,
-			timestamp: now
-		}],
-		link: url,
-		objectID: ops.currentUser.toString(),
-		read: false,
-		lastUpdated: now
+			pid: ops.currentUser,
+			timestamp: now.toISOString()
+		}]
+	};
+	await db.notification.create({
+		data: {
+			id: 'test', // TODO create uuid
+			content,
+			type: 'Follow',
+			notificationRecipients: {
+				create: {
+					id: 'test', // TODO create uuid
+					pid: ops.userToFollow
+				}
+			}
+		}
 	});
 }
 
-export async function createNewPostDeletionNotification(ops: PostDeletionNotificationOptions): Promise<void> {
+export async function createNewPostDeletionNotification(db: PrismaClient, ops: PostDeletionNotificationOptions): Promise<void> {
 	const postType = ops.post.parent ? 'comment' : 'post';
-
-	await Notification.create({
-		pid: ops.postAuthor,
-		type: 'notice',
-		read: false,
-		lastUpdated: new Date(),
+	const content: SystemNotificationContent = {
+		imagePath: '/images/bandwidthalert.png',
+		link: '/titles/2551084080/new',
 		text: `Your ${postType} "${ops.post.id}" has been removed` +
 			(ops.reason ? ` for the following reason: "${ops.reason}". ` : '. ') +
 			`Click this message to view the Juxtaposition Code of Conduct. ` +
-			`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/juxt-mods/).`,
-		image: '/images/bandwidthalert.png',
-		link: '/titles/2551084080/new'
+			`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/juxt-mods/).`
+	};
+	await db.notification.create({
+		data: {
+			id: 'test', // TODO create uuid
+			content,
+			type: 'System',
+			notificationRecipients: {
+				create: {
+					id: 'test', // TODO create uuid
+					pid: ops.postAuthor
+				}
+			}
+		}
 	});
 }
 
-export async function createNewLimitedPostingNotification(ops: LimitedPostingNotificationOptions): Promise<void> {
+export async function createNewLimitedPostingNotification(db: PrismaClient, ops: LimitedPostingNotificationOptions): Promise<void> {
 	const firstSentence = ops.banLiftDate ? `You have been Limited from Posting until ${humanDate(ops.banLiftDate)}. ` : `You have been Limited from Posting. `;
-
-	await Notification.create({
-		pid: ops.pid,
-		type: 'notice',
+	const content: SystemNotificationContent = {
+		imagePath: '/images/bandwidthalert.png',
+		link: '/titles/2551084080/new',
 		text: firstSentence +
 			(ops.reason ? `Reason: "${ops.reason}". ` : '') +
 			`Click this message to view the Juxtaposition Code of Conduct. ` +
-			`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`,
-		image: '/images/bandwidthalert.png',
-		link: '/titles/2551084080/new'
+			`If you have any questions, please contact the moderators on the Pretendo Network Forum (https://preten.do/ban-appeal/).`
+	};
+	await db.notification.create({
+		data: {
+			id: 'test', // TODO create uuid
+			content,
+			type: 'System',
+			notificationRecipients: {
+				create: {
+					id: 'test', // TODO create uuid
+					pid: ops.pid
+				}
+			}
+		}
 	});
 }

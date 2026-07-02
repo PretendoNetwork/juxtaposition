@@ -238,7 +238,7 @@ userProfileRouter.post({
 		}),
 		response: followSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, db, auth }) {
 		const targetUserPid = params.id;
 		const targetUser = await Settings.findOne({ pid: targetUserPid });
 		const targetUserContent = await Content.findOne({ pid: targetUserPid });
@@ -265,7 +265,7 @@ userProfileRouter.post({
 		await targetUserContent.save();
 		await currentUser.content.save();
 
-		await createNewFollowNotification({ currentUser: currentUserPid, userToFollow: targetUserPid });
+		await createNewFollowNotification(db, { currentUser: currentUserPid, userToFollow: targetUserPid });
 		return mapFollowUser('follow', targetUserContent);
 	}
 });

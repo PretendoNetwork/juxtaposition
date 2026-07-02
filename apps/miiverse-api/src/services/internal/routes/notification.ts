@@ -2,11 +2,8 @@ import { z } from 'zod';
 import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
-import { deleteOptional } from '@/services/internal/utils';
-import { Notification } from '@/models/notification';
 import { mapNotification, notificationSchema } from '@/services/internal/contract/notification';
-import type { RootFilterQuery } from 'mongoose';
-import type { INotification } from '@/types/mongoose/notification';
+import type { NotificationRecipientWhereInput } from '@/prisma/models';
 
 export const notificationsRouter = createInternalApiRouter();
 
@@ -21,32 +18,43 @@ notificationsRouter.get({
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(notificationSchema)
 	},
-	async handler({ query, auth }) {
+	async handler({ query, db, auth }) {
 		const account = auth!;
 
-		const dbQuery: RootFilterQuery<INotification> = deleteOptional({
-			read: query.read,
+		const dbQuery: NotificationRecipientWhereInput = {
+			hasRead: query.read,
 			pid: account.pnid.pid
+		};
+		const notifications = await db.notificationRecipient.findMany({
+			where: dbQuery,
+			take: query.limit,
+			skip: query.offset,
+			orderBy: {
+				notification: {
+					updatedAt: 'desc'
+				}
+			},
+			include: {
+				notification: true
+			}
 		});
-		const notifications = await Notification
-			.find(dbQuery)
-			.sort({ lastUpdated: -1 })
-			.limit(query.limit)
-			.skip(query.offset);
-		const total = await Notification.countDocuments(dbQuery);
+		const total = await db.notificationRecipient.count({
+			where: dbQuery
+		});
 
 		if (query.markAsRead) {
-			await Notification.updateMany({
-				_id: {
-					$in: notifications.map(v => v._id)
-				}
-			}, {
-				$set: {
-					read: true
+			await db.notificationRecipient.updateMany({
+				where: {
+					id: {
+						in: notifications.map(v => v.id)
+					}
+				},
+				data: {
+					hasRead: true
 				}
 			});
 		}
 
-		return mapPage(total, notifications.map(v => mapNotification(v)));
+		return mapPage(total, notifications.map(v => mapNotification(v, v.notification)));
 	}
 });

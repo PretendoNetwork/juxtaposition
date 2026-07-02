@@ -73,7 +73,7 @@ adminReportsRouter.post({
 		}),
 		response: resultSchema
 	},
-	async handler({ params, body, auth }) {
+	async handler({ db, params, body, auth }) {
 		const account = auth!;
 
 		const report = await Report.findOne({ _id: params.id });
@@ -105,7 +105,7 @@ adminReportsRouter.post({
 				note: reason
 			}
 		});
-		await createNewPostDeletionNotification({
+		await createNewPostDeletionNotification(db, {
 			postAuthor: post.pid,
 			post: post,
 			reason

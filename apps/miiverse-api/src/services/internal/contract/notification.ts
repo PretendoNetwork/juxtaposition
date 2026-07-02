@@ -1,40 +1,25 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
-import type { INotification } from '@/types/mongoose/notification';
+import type { Notification, NotificationRecipient } from '@/prisma/client';
 
-export const notificationTypeSchema = asOpenapi('NotificationType', z.enum(['follow', 'notice']));
+export const notificationTypeSchema = asOpenapi('NotificationType', z.enum(['system', 'follow']));
 export type NotificationType = z.infer<typeof notificationTypeSchema>;
 
 export const notificationSchema = z.object({
-	toPid: z.number(),
-	resourceId: z.string(),
-	link: z.string().nullable(),
-	imageUrl: z.string(),
-	content: z.string(),
-	read: z.boolean(),
+	pid: z.number(),
+	hasRead: z.boolean(),
 	updatedAt: z.date(),
-	type: notificationTypeSchema,
-	users: z.array(z.object({
-		pid: z.number(),
-		timestamp: z.date()
-	}))
+	type: notificationTypeSchema
+	// TODO implement new DTO for notification content
 }).openapi('Notification');
 
 export type NotificationDto = z.infer<typeof notificationSchema>;
 
-export function mapNotification(notif: INotification): NotificationDto {
+export function mapNotification(recipient: NotificationRecipient, notif: Notification): NotificationDto {
 	return {
-		toPid: Number(notif.pid),
-		resourceId: notif.objectID,
-		read: notif.read,
-		updatedAt: notif.lastUpdated,
-		link: notif.link,
-		type: notif.type as any,
-		users: notif.users.map(v => ({
-			pid: Number(v.user),
-			timestamp: v.timestamp
-		})),
-		content: notif.text,
-		imageUrl: notif.image
+		pid: recipient.pid,
+		hasRead: recipient.hasRead,
+		updatedAt: notif.updatedAt,
+		type: notif.type === 'Follow' ? 'follow' : 'system'
 	};
 }

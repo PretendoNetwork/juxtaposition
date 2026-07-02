@@ -116,7 +116,7 @@ adminUsersRouter.patch({
 		}),
 		response: moderationProfileSchema
 	},
-	async handler({ params, body, auth }) {
+	async handler({ params, db, body, auth }) {
 		const account = auth!;
 		const oldSettings = await Settings.findOne({ pid: params.id });
 		if (!oldSettings) {
@@ -141,7 +141,7 @@ adminUsersRouter.patch({
 
 		const accountStatusChanged = oldSettings.account_status !== settings.account_status;
 		if (accountStatusChanged && settings.account_status === 1) {
-			await createNewLimitedPostingNotification({
+			await createNewLimitedPostingNotification(db, {
 				pid: settings.pid,
 				banLiftDate: settings.ban_lift_date ?? null,
 				reason: settings.ban_reason ?? null

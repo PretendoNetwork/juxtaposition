@@ -3,7 +3,7 @@ import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { errors } from '@/services/internal/errors';
 import { mapBannedSelf, mapSelf, mapSelfNotificationCount, selfNotificationCountSchema, selfSchema } from '@/services/internal/contract/self';
 import { Settings } from '@/models/settings';
-import { Notification } from '@/models/notification';
+import { getDb } from '@/database';
 
 export const selfRouter = createInternalApiRouter();
 
@@ -76,9 +76,11 @@ selfRouter.get({
 	async handler({ auth }) {
 		const account = auth!;
 
-		const notificationCount = await Notification.countDocuments({
-			pid: account.pnid.pid,
-			read: false
+		const notificationCount = await getDb().notificationRecipient.count({
+			where: {
+				pid: account.pnid.pid,
+				hasRead: false
+			}
 		});
 
 		return mapSelfNotificationCount(notificationCount);
