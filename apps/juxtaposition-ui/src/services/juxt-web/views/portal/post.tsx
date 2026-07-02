@@ -52,7 +52,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 			</a>
 			<div
 				className={cx('post-body-content', {
-					removed: !!post.moderation?.removed
+					removed: Boolean(post.moderation?.removed)
 				})}
 			>
 				<div
