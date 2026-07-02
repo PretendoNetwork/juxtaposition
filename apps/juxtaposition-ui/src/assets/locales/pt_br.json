@@ -78,10 +78,12 @@
     },
     "notifications": {
         "none": "Sem notificações.",
-        "new_follower/one": "<follower_one /> seguiu você!",
-        "new_follower/two": "<follower_one />, <follower_two /> seguiram você!",
-        "new_follower/three": "<follower_one />, <follower_two />, e {{count_other}} outro seguiram você!",
-        "new_follower/multiple": "<follower_one />, <follower_two />, e {{count_other}} outros seguiram você!"
+        "new_follower": {
+            "message/one": "<follower_one /> seguiu você!",
+            "message/two": "<follower_one />, <follower_two /> seguiram você!",
+            "message/three": "<follower_one />, <follower_two />, e {{count_other}} outro seguiram você!",
+            "message/multiple": "<follower_one />, <follower_two />, e {{count_other}} outros seguiram você!"
+        }
     },
     "new_post": {
         "post_to": "Postar em {{user}}",
