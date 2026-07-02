@@ -1,32 +1,29 @@
 import cx from 'classnames';
 import moment from 'moment';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
-import type { InferSchemaType } from 'mongoose';
 import type { ReactNode } from 'react';
-import type { PostSchema } from '@/models/post';
 import type { Post, SelfContent } from '@/api/generated';
 
 export type PostScreenshotProps = {
-	post: InferSchemaType<typeof PostSchema> | Post;
+	post: Post;
 };
 
 export function WebPostScreenshot(props: PostScreenshotProps): ReactNode {
 	const url = useUrl();
 	const post = props.post;
 	if (!post.screenshot) {
-		return <></>;
+		return null;
 	}
 
-	return <img id={post.id ?? undefined} className="screenshot" src={url.cdn(post.screenshot)} />;
+	return <img id={post.id ?? undefined} className="screenshot" src={url.cdn(post.screenshot.imageUrl)} />;
 }
 
 export type PostViewProps = {
 	userContent?: SelfContent | null;
-	post: InferSchemaType<typeof PostSchema> | Post;
+	post: Post;
 	isReply?: boolean;
 	isMainPost?: boolean;
 };
@@ -34,15 +31,13 @@ export type PostViewProps = {
 export function WebPostView(props: PostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
-	const cache = useCache();
 	const post = props.post;
 	const isModerator = user.perms.moderator;
-	const canAccessContent = !post.removed || isModerator;
 
-	const yeahed = !!props.userContent && !!post.yeahs && post.yeahs.includes(user.pid);
+	const yeahed = post.yeahsBy.some(v => v.pid === user.pid);
 
 	let removedPostPart = null;
-	if (post.removed) {
+	if (post.moderation?.removed) {
 		removedPostPart = (
 			<div className="post-body-content removed">
 				<h3><T k="post.removed" /></h3>
@@ -53,34 +48,34 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	const contentPart = (
 		<>
 			<div className="post-user-info-wrapper" id={post.id ?? undefined}>
-				<a href={url.url('/users/show', { pid: post.pid })}>
+				<a href={url.url('/users/show', { pid: post.author.pid })}>
 					<img
 						className={cx('user-icon', {
-							verified: post.verified
+							verified: post.author.verified
 						})}
-						src={post.mii_face_url ?? undefined}
+						src={post.mii.imageUrl ?? undefined}
 					/>
 				</a>
 
 				<div className="post-meta-wrapper">
 					<h3>
-						<a href={url.url('/users/show', { pid: post.pid })}>{post.screen_name}</a>
+						<a href={url.url('/users/show', { pid: post.author.pid })}>{post.author.miiName}</a>
 					</h3>
 
-					{ post.verified
+					{ post.author.verified
 						? (
 								<span className="verified-badge">✓</span>
 							)
 						: null}
 
 					<p className="extra-info">
-						<a href={`/posts/${post.id}`}>{moment(post.created_at).fromNow()}</a>
+						<a href={`/posts/${post.id}`}>{moment(post.createdAt).fromNow()}</a>
 						{' - '}
-						<a href={`/titles/${post.community_id}`}>{cache.getCommunityName(post.community_id ?? '')}</a>
+						{post.community ? <a href={`/titles/${post.community.id}`}>{post.community.name}</a> : null }
 					</p>
 				</div>
 			</div>
-			{ post.is_spoiler
+			{ post.isSpoiler
 				? (
 						<div className="spoiler-overlay">
 							<button evt-click={`this.parentElement.style.display = 'none'; document.getElementById('post-content-${post.id}').style.display = 'block'`}>
@@ -94,13 +89,13 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				className="post-content"
 				id={`post-content-${post.id}`}
 				style={{
-					display: post.is_spoiler ? 'none' : undefined // Will be removed by spoiler-overlay onclick
+					display: post.isSpoiler ? 'none' : undefined // Will be removed by spoiler-overlay onclick
 				}}
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
-				{post.body !== '' ? <p>{post.body}</p> : null}
+				{post.body ? <p>{post.body}</p> : null}
 				<WebPostScreenshot post={props.post}></WebPostScreenshot>
-				{post.painting !== '' ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.pid}/${post.id}.png`)} /> : null}
+				{post.painting ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.author.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
 			</div>
 
@@ -115,7 +110,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					aria-pressed={yeahed}
 				>
 					<WebUIIcon name="heart" />
-					<h4 id={`count-${post.id}`}>{post.empathy_count}</h4>
+					<h4 id={`count-${post.id}`}>{post.stats.empathyCount}</h4>
 				</span>
 
 				{/* Reply "button" */}
@@ -125,14 +120,14 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					role="button"
 				>
 					<WebUIIcon name="reply" />
-					<h4>{post.reply_count}</h4>
+					<h4>{post.stats.replyCount}</h4>
 				</a>
 
 				{/* Hamburger menu */}
 				<span className="post-button post-hamburger-button" aria-haspopup="menu" aria-expanded="false">
 					<WebUIIcon name="menu" />
 					<ul className="post-hamburger" role="menu" data-post={post.id}>
-						{ !post.removed
+						{ !post.moderation?.removed
 							? (
 									<li role="menuitem" data-action="report">
 										<WebUIIcon name="flag" />
@@ -141,7 +136,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 									</li>
 								)
 							: null}
-						{ (isModerator || post.pid === user.pid) && !post.removed
+						{ (isModerator || post.author.pid === user.pid) && !post.moderation?.removed
 							? (
 									<li role="menuitem" data-action="delete" data-moderator={isModerator}>
 										<WebUIIcon name="bin" />
@@ -162,9 +157,9 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	);
 
 	return (
-		<div className={cx('posts-wrapper', { 'posts-wrapper-removed': post.removed })} id={post.id ?? undefined}>
+		<div className={cx('posts-wrapper', { 'posts-wrapper-removed': post.moderation?.removed })} id={post.id ?? undefined}>
 			{removedPostPart}
-			{canAccessContent ? contentPart : null}
+			{contentPart}
 		</div>
 	);
 }
