@@ -92,6 +92,7 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 						<T
 							k={i18nKey}
 							values={{
+								postId: data.notif.content.postId,
 								reason: data.notif.content.reason ?? ''
 							}}
 						/>
