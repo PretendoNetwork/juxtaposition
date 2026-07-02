@@ -5,7 +5,6 @@ import type { ReactNode } from 'react';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
 
 export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode {
-	const settings = props.userSettings;
 	return (
 		<PortalRoot title={T.str('user_settings.profile_settings')}>
 			<PortalNavBar selection={1} />
@@ -18,28 +17,28 @@ export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode 
 								<li data-name="profile_visibility" className="scroll">
 									<p className="settings-label"><T k="user_settings.show_profile" /></p>
 									<label className="checkbox-container">
-										<input type="checkbox" id="profile" name="profile" value="true" checked={settings.profileVisibility !== 'users_only'} />
+										<input type="checkbox" id="profile" name="profile" value="true" checked={props.userSettings?.profile_visibility !== 'users_only'} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
 								<li data-name="profile_comment_visibility" className="scroll">
 									<p className="settings-label"><T k="user_settings.show_country" /></p>
 									<label className="checkbox-container">
-										<input type="checkbox" id="country" name="country" value="true" checked={settings.countryVisible} />
+										<input type="checkbox" id="country" name="country" value="true" checked={!!props.userSettings?.country_visibility} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
 								<li data-name="game_skill" className="scroll">
 									<p className="settings-label"><T k="user_settings.show_birthday" /></p>
 									<label className="checkbox-container">
-										<input type="checkbox" id="birthday" name="birthday" value="true" checked={settings.birthdayVisible} />
+										<input type="checkbox" id="birthday" name="birthday" value="true" checked={!!props.userSettings?.birthday_visibility} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
 								<li data-name="game_skill_visibility" className="scroll">
 									<p className="settings-label"><T k="user_settings.show_game" /></p>
 									<label className="checkbox-container">
-										<input type="checkbox" id="experience" name="experience" value="true" checked={settings.gameSkillVisible} />
+										<input type="checkbox" id="experience" name="experience" value="true" checked={!!props.userSettings?.game_skill_visibility} />
 										<span className="checkmark"></span>
 									</label>
 								</li>

@@ -225,22 +225,18 @@ function canPost(community: HydratedCommunityDocument, userSettings: HydratedSet
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
-export function getShotModeForTitleId(community: HydratedCommunityDocument, titleId: string): CommunityShotMode {
-	// Shots only on matching communities
-	if (!community.title_id.includes(titleId) &&
-		!community.shot_extra_title_id?.includes(titleId)) {
-		return 'block';
-	}
-
-	return community.shot_mode as CommunityShotMode; // type validated by database
-}
-
 export function getShotMode(community: HydratedCommunityDocument, pack: ParamPack | null): CommunityShotMode {
 	if (pack === null) {
 		return 'block';
 	}
 
-	return getShotModeForTitleId(community, pack.title_id);
+	// Shots only on matching communities
+	if (!community.title_id.includes(pack.title_id) &&
+		!community.shot_extra_title_id?.includes(pack.title_id)) {
+		return 'block';
+	}
+
+	return community.shot_mode as CommunityShotMode; // type validated by database
 }
 
 async function newPost(request: express.Request, response: express.Response): Promise<void> {

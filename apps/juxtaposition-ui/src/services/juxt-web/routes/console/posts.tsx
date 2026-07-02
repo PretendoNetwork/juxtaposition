@@ -1,7 +1,15 @@
+import crypto from 'crypto';
 import express from 'express';
 import multer from 'multer';
 import { z } from 'zod';
-import { getUserAccountData, createRatelimit } from '@/util';
+import { config } from '@/config';
+import { database } from '@/database';
+import { uploadPainting, uploadScreenshot } from '@/images';
+import { logger } from '@/logger';
+import { POST } from '@/models/post';
+import { REPORT } from '@/models/report';
+import { redisRemove } from '@/redisCache';
+import { createRatelimit, evaluateAutomodRules, getInvalidPostRegex, getUserAccountData, performAutomodAction } from '@/util';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebPostPageView } from '@/services/juxt-web/views/web/postPageView';
 import { CtrPostPageView } from '@/services/juxt-web/views/ctr/postPageView';
@@ -11,10 +19,11 @@ import { PortalNewPostPage } from '@/services/juxt-web/views/portal/newPostView'
 import { PortalReportPostPage } from '@/services/juxt-web/views/portal/reportPostView';
 import { CtrReportPostPage } from '@/services/juxt-web/views/ctr/reportPostView';
 import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permissions';
-import { InternalApiError, wrapApi } from '@/api/errors';
+import { AutomodRule } from '@/models/automodRules';
 import type { Request, Response } from 'express';
+import type { PaintingUrls } from '@/images';
 import type { PostPageViewProps } from '@/services/juxt-web/views/web/postPageView';
-import type { EmpathyActionEnum, Post, PostCreateBody } from '@/api/generated';
+import type { EmpathyActionEnum } from '@/api/generated';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
@@ -58,26 +67,23 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	});
 
 	const { data: post } = await req.api.posts.get({ post_id: params.post_id });
-	if (!post || post.moderation?.removed) {
-		return res.sendStatus(404);
-	}
-	const { data: author } = await req.api.users.getProfile({ id: post.author.pid });
-	if (!author) {
+	if (!post) {
 		return res.sendStatus(404);
 	}
 
-	const { data: community } = await req.api.communities.get({ id: post.community.id });
+	const { data: community } = await req.api.communities.get({ id: post.community_id });
+	const postPNID = await getUserAccountData(post.pid);
 
 	let img = {};
-	if (post.painting) {
+	if (post.painting !== '') {
 		img = {
-			thumbnail_url: `${res.locals.cdnURL}/paintings/${author.pid}/${post.id}.png`,
+			thumbnail_url: `${res.locals.cdnURL}/paintings/${post.pid}/${post.id}.png`,
 			thumbnail_width: 320,
 			thumbnail_height: 120
 		};
-	} else if (post.screenshot) {
+	} else if (post.screenshot_thumb !== '') {
 		img = {
-			thumbnail_url: `${res.locals.cdnURL}${post.screenshot.imageUrlThumbnail}`
+			thumbnail_url: `${res.locals.cdnURL}${post.screenshot_thumb}`
 		};
 	} else {
 		img = {
@@ -90,10 +96,10 @@ postsRouter.get('/:post_id/oembed.json', async function (req, res) {
 	const doc = {
 		type: 'link',
 		version: '1.0',
-		title: `${author.miiName} (@${author.username}) - ${community?.name}`,
-		description: post.body ?? '',
-		author_name: author.miiName,
-		author_url: 'https://juxt.pretendo.network/users/show?pid=' + author.pid,
+		title: `${post.screen_name} (@${postPNID.username}) - ${community?.name}`,
+		description: post.body,
+		author_name: post.screen_name,
+		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid,
 		provider_name: 'Juxtaposition - Pretendo Network',
 		provider_url: `https://juxt.pretendo.network`,
 		...img
@@ -113,15 +119,17 @@ postsRouter.post('/empathy', yeahLimit, async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	const existingEmpathy = post.yeahsBy.some(v => v.pid === auth().pid);
+	const existingEmpathy = post.yeahs.indexOf(auth().pid) !== -1;
 	const action: EmpathyActionEnum = !existingEmpathy ? 'add' : 'remove';
 	const { data: result } = await req.api.posts.changeEmpathy({ post_id: post.id, action });
 	if (result === null) {
-		res.send({ status: 423, id: post.id, count: post.stats.empathyCount });
+		res.send({ status: 423, id: post.id, count: post.empathy_count });
 		return;
 	}
 
 	res.send({ status: 200, id: result.post_id, count: result.empathy_count });
+
+	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
 postsRouter.post('/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
@@ -140,25 +148,21 @@ postsRouter.get('/:post_id', async function (req, res) {
 	if (!post) {
 		return res.redirect('/404');
 	}
-	if (post.parentId) {
-		const { data: parent } = await req.api.posts.get({ post_id: post.parentId });
+	if (post.parent) {
+		const { data: parent } = await req.api.posts.get({ post_id: post.parent });
 		if (!parent) {
 			return res.redirect('/404');
 		}
 		return res.redirect(`/posts/${parent.id}`);
 	}
-
-	if (!post.community) {
-		return res.redirect('/404');
-	}
-	const { data: community } = await req.api.communities.get({ id: post.community.id });
+	const { data: community } = await req.api.communities.get({ id: post.community_id });
 	if (!community) {
 		return res.redirect('/404');
 	}
 
 	// increase limit for post replies since there's no pagination yet
 	const replies = (await req.api.posts.list({ parent_id: post.id, include_replies: 'true', sort: 'oldest', limit: 500 }))?.data.items ?? [];
-	const postPNID = await getUserAccountData(post.author.pid);
+	const postPNID = await getUserAccountData(post.pid);
 	const canPost = !!self && isPostingAllowed(community, self, post);
 
 	const props: PostPageViewProps = {
@@ -197,11 +201,12 @@ postsRouter.delete('/:post_id', async function (req, res) {
 	}
 
 	res.statusCode = 200;
-	if (post.parentId) {
-		res.send(`/posts/${post.parentId}`);
+	if (post.parent) {
+		res.send(`/posts/${post.parent}`);
 	} else {
 		res.send('/users/me');
 	}
+	await redisRemove(`${post.pid}_user_page_posts`);
 });
 
 postsRouter.post('/:post_id/new', postLimit, upload.fields([{ name: 'shot', maxCount: 1 }]), async function (req, res) {
@@ -223,10 +228,7 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	if (!parent.community) {
-		return res.sendStatus(404);
-	}
-	const { data: community } = await req.api.communities.get({ id: parent.community.id });
+	const { data: community } = await req.api.communities.get({ id: parent.community_id });
 	if (!community) {
 		return res.sendStatus(404);
 	}
@@ -234,8 +236,8 @@ postsRouter.get('/:post_id/create', async function (req, res) {
 	const shotMode = getShotMode(community, auth().paramPackData);
 
 	const props: NewPostViewProps = {
-		id: parent.community.id,
-		name: parent.author.miiName,
+		id: parent.community_id,
+		pid: parent.pid,
 		url: `/posts/${parent.id}/new`,
 		show: 'post',
 		shotMode,
@@ -270,30 +272,42 @@ postsRouter.get('/:post_id/report', async function (req, res) {
 });
 
 postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
-	const { body } = parseReq(req, {
+	const { body, auth } = parseReq(req, {
 		body: z.object({
-			reason: z.coerce.number(),
-			message: z.string().trim(),
+			reason: z.string(),
+			message: z.string(),
 			post_id: z.string()
 		})
 	});
 
-	const { data: post } = await req.api.posts.get({ post_id: body.post_id });
-	if (!post) {
+	const { reason, message, post_id } = body;
+	const { data: post } = await req.api.posts.get({ post_id });
+	if (!reason || !post_id || !post) {
 		return res.redirect('/404');
 	}
 
-	await req.api.posts.report({
-		post_id: post.id,
-		message: body.message,
-		reasonId: body.reason
-	});
+	const duplicate = await database.getDuplicateReports(auth().pid, post_id);
+	if (duplicate) {
+		return res.redirect(`/posts/${post.id}`);
+	}
+
+	const reportDoc = {
+		pid: post.pid,
+		reported_by: auth().pid,
+		post_id,
+		reason,
+		message,
+		created_at: new Date()
+	};
+
+	const reportObj = new REPORT(reportDoc);
+	await reportObj.save();
 
 	return res.redirect(`/posts/${post.id}`);
 });
 
 async function newPost(req: Request, res: Response): Promise<void> {
-	const { params, body, files, auth } = parseReq(req, {
+	const { params, body, files, auth, hasAuth } = parseReq(req, {
 		params: z.object({
 			post_id: z.string().optional()
 		}),
@@ -311,70 +325,183 @@ async function newPost(req: Request, res: Response): Promise<void> {
 		}),
 		files: ['shot']
 	});
-
+	const self = hasAuth() ? auth().self : null;
 	const rejectReturnUrl = params.post_id ? `/posts/${params.post_id}/create` : `/titles/${body.community_id}/create`;
-	const postBody: PostCreateBody = {
-		feelingId: body.feeling_id,
-		body: body.body.length > 0 ? body.body : undefined,
-		isSpoiler: body.spoiler,
-		isAppJumpable: body.is_app_jumpable,
-		languageId: body.language_id
-	};
-	const paramPack = auth().paramPackData;
-	if (paramPack) {
-		postBody.platformId = Number(paramPack.platform_id);
-		postBody.regionId = Number(paramPack.region_id);
-		postBody.countryId = Number(paramPack.country_id);
-	}
-	if (body._post_type === 'painting' && body.painting) {
-		postBody.painting = {
-			file: body.painting.replace(/\0/g, '').trim(), // Remove nintendo jank
-			isBmp: body.bmp
-		};
-	}
-	if (body.screenshot || files.shot.length === 1) {
-		const bufferFile = files.shot[0]?.buffer.toString('base64');
-		const base64File = body.screenshot.replace(/\0/g, '').trim(); // Remove nintendo jank
-		if (!paramPack) {
-			throw new Error('Must have parampack when uploading screenshot');
-		}
-		postBody.screenshot = {
-			file: bufferFile ?? base64File,
-			titleId: paramPack.title_id
-		};
-	}
 
-	let newPostResult: Post | InternalApiError | null;
+	let parentPost = null;
+	const postId = await generatePostUID(21);
+	let { data: community } = await req.api.communities.get({ id: body.community_id });
 	if (params.post_id) {
-		const out = await wrapApi(req.api.posts.reply({
-			postCreateBody: postBody,
-			post_id: params.post_id
-		}));
-		newPostResult = out.error ?? out.result ?? null;
-	} else {
-		const out = await wrapApi(req.api.communities.createPost({
-			postCreateBody: postBody,
-			id: body.community_id
-		}));
-		newPostResult = out.error ?? out.result ?? null;
-	}
-
-	if (newPostResult instanceof InternalApiError) {
-		if (newPostResult.isCode('automod_prevented')) {
-			const params = new URLSearchParams();
-			params.append('error-text', res.i18n.t('new_post.automod_error'));
-			return res.redirect(rejectReturnUrl + '?' + params.toString());
+		parentPost = await database.getPostByID(params.post_id.toString());
+		if (!parentPost) {
+			res.sendStatus(403);
+			return;
+		} else {
+			const { data: parentPostCommunity } = await req.api.communities.get({ id: parentPost.community_id ?? '' });
+			community = parentPostCommunity;
+			if (parentPost.removed) {
+				res.sendStatus(400);
+				return;
+			}
 		}
-		throw newPostResult;
 	}
-	if (!newPostResult) {
-		throw new Error('Null newPostResult');
+	if (params.post_id && (body.body === '' && body.painting === '' && body.screenshot === '' && files.shot.length == 0)) {
+		res.status(422);
+		return res.redirect('/posts/' + req.params.post_id.toString());
+	}
+	if (!community || !self) {
+		res.status(403);
+		logger.error('Incoming post is missing data - rejecting');
+		return res.redirect('/titles/show');
 	}
 
-	if (newPostResult.parentId) {
-		res.redirect('/posts/' + newPostResult.parentId.toString());
+	if (!isPostingAllowed(community, self, parentPost)) {
+		res.status(403);
+		return res.redirect(`/titles/${community.olive_community_id}/new`);
+	}
+
+	let paintings: PaintingUrls | null = null;
+	if (body._post_type === 'painting' && body.painting) {
+		paintings = await uploadPainting({
+			blob: body.painting,
+			autodetectFormat: false,
+			isBmp: body.bmp,
+			pid: auth().pid,
+			postId
+		});
+		if (paintings === null) {
+			res.status(422);
+			res.renderError({
+				code: 422,
+				message: 'Upload failed. Please try again later.'
+			});
+			return;
+		}
+	}
+	let screenshots = null;
+	if ((body.screenshot || files.shot.length === 1) &&
+		getShotMode(community, auth().paramPackData) !== 'block') {
+		screenshots = await uploadScreenshot({
+			buffer: files.shot[0]?.buffer,
+			blob: body.screenshot,
+			pid: auth().pid,
+			postId
+		});
+		if (screenshots === null) {
+			res.status(422);
+			res.renderError({
+				code: 422,
+				message: 'Upload failed. Please try again later.'
+			});
+			return;
+		}
+	}
+
+	let miiFace;
+	switch (body.feeling_id) {
+		case 1:
+			miiFace = 'smile_open_mouth.png';
+			break;
+		case 2:
+			miiFace = 'wink_left.png';
+			break;
+		case 3:
+			miiFace = 'surprise_open_mouth.png';
+			break;
+		case 4:
+			miiFace = 'frustrated.png';
+			break;
+		case 5:
+			miiFace = 'sorrow.png';
+			break;
+		default:
+			miiFace = 'normal_face.png';
+			break;
+	}
+	const postBody = body.body;
+	if (postBody && getInvalidPostRegex().test(postBody)) {
+		// TODO - Log this error
+		res.sendStatus(422);
 		return;
 	}
 
-	res.redirect('/titles/' + newPostResult.community?.id + '/new');
+	/* Don't count \r\n as two */
+	if (postBody && postBody.replaceAll('\r\n', '\n').length > 280) {
+		// TODO - Log this error
+		res.sendStatus(422);
+		return;
+	}
+
+	const document = {
+		title_id: community.titleIds[0],
+		community_id: community.olive_community_id,
+		screen_name: self.miiName,
+		body: postBody,
+		painting: paintings?.blob ?? '',
+		painting_img: paintings?.img ?? '',
+		painting_big: paintings?.big ?? '',
+		screenshot: screenshots?.full ?? '',
+		screenshot_big: screenshots?.big ?? '',
+		screenshot_length: screenshots?.fullLength ?? 0,
+		screenshot_thumb: screenshots?.thumb ?? '',
+		screenshot_aspect: screenshots?.aspect ?? '',
+		country_id: auth().paramPackData?.country_id ?? 49,
+		created_at: new Date(),
+		feeling_id: body.feeling_id,
+		id: postId,
+		is_autopost: 0,
+		is_spoiler: (body.spoiler) ? 1 : 0,
+		is_app_jumpable: body.is_app_jumpable,
+		language_id: body.language_id,
+		mii: auth().user.mii?.data,
+		mii_face_url: `${config.cdnDomain}/mii/${auth().pid}/${miiFace}`,
+		pid: auth().pid,
+		platform_id: auth().paramPackData?.platform_id ?? 0,
+		region_id: auth().paramPackData?.region_id ?? 2,
+		verified: res.locals.moderator,
+		parent: parentPost ? parentPost.id : null
+	};
+	const maxDuplicatePostAgeMs = 5 * 60 * 1000;
+	const duplicatePost = await database.getDuplicatePosts(auth().pid, document, maxDuplicatePostAgeMs);
+	if (duplicatePost && params.post_id) {
+		return res.redirect('/posts/' + params.post_id.toString());
+	}
+	if ((document.body === '' && document.painting === '' && document.screenshot === '') || duplicatePost) {
+		return res.redirect('/titles/' + community.olive_community_id + '/new');
+	}
+
+	// Automod
+	const automodRules = await AutomodRule.find({ enabled: true });
+	const automodEval = evaluateAutomodRules(document, automodRules);
+	const automodResult = await performAutomodAction(document, automodEval);
+	if (!automodResult.allowPost) {
+		const params = new URLSearchParams();
+		params.append('error-text', res.i18n.t('new_post.automod_error'));
+		return res.redirect(rejectReturnUrl + '?' + params.toString());
+	}
+
+	// Actual posting
+	const newPost = new POST(document);
+	newPost.save();
+	if (parentPost) {
+		parentPost.reply_count = parentPost.reply_count + 1;
+		parentPost.save();
+	}
+	if (parentPost) {
+		if (!params.post_id) {
+			throw new Error('Has parent post but no postId, this is impossible');
+		}
+		res.redirect('/posts/' + params.post_id.toString());
+		await redisRemove(`${parentPost.pid}_user_page_posts`);
+	} else {
+		res.redirect('/titles/' + community.olive_community_id + '/new');
+		await redisRemove(`${auth().pid}_user_page_posts`);
+	}
+}
+
+async function generatePostUID(length: number): Promise<string> {
+	let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, '').substring(0, length);
+	const inuse = await POST.findOne({ id });
+	id = (inuse ? await generatePostUID(length) : id);
+	return id;
 }

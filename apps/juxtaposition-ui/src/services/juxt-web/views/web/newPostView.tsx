@@ -2,7 +2,8 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
-import type { Community, CommunityShotMode } from '@/api/generated';
+import type { CommunityShotMode } from '@/models/communities';
+import type { Community } from '@/api/generated';
 
 const empathies = [
 	{
@@ -46,7 +47,9 @@ const empathies = [
 
 export type NewPostViewProps = {
 	id: string;
-	name: string; // Username or community name
+	// must provide name OR pid
+	name?: string;
+	pid?: number;
 	url: string;
 	show: string;
 	// must provide messagePid OR community

@@ -3,6 +3,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
+import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import type { ReactNode } from 'react';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 
@@ -49,8 +50,9 @@ const empathies = [
 export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
+	const cache = useCache();
 
-	const name = props.name;
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
 		<div id="add-post-page" className="add-post-page official-user-post">
 			<header className="add-post-page-header">
@@ -136,8 +138,10 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 }
 
 export function PortalNewPostPage(props: NewPostViewProps): ReactNode {
+	const cache = useCache();
+	const name = props.name ?? cache.getUserName(props.pid ?? 0);
 	return (
-		<PortalRoot title={T.str('new_post.post_to', { user: props.name })}>
+		<PortalRoot title={T.str('new_post.post_to', { user: name })}>
 			<PortalNavBar selection={-1} />
 			<PortalPageBody>
 				<PortalNewPostView {... props} />

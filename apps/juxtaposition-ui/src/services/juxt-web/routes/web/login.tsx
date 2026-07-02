@@ -1,11 +1,11 @@
 import express from 'express';
 import { z } from 'zod';
+import { database } from '@/database';
 import { passwordLogin, getUserDataFromToken } from '@/util';
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { WebLoginView } from '@/services/juxt-web/views/web/loginView';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { getDiscoveryStatusMessage } from '@/middleware/discovery';
 
 export const loginRouter = express.Router();
 const cookieDomain = config.http.cookieDomain;
@@ -51,15 +51,27 @@ loginRouter.post('/', async (req, res) => {
 		return res.jsx(<WebLoginView toast="Invalid username or password." redirect={redirect} />);
 	}
 
-	const { data: discovery } = await req.api.discovery.get({ environment: config.serverEnvironment });
-	const discoveryStatus = discovery.status;
-	if (discoveryStatus !== 'open') {
+	const discovery = await database.getEndPoint(config.serverEnvironment);
+	const discoveryStatus = discovery?.status ?? 5;
+
+	let message = '';
+	switch (discoveryStatus) {
+		case 3:
+			message = 'Juxt is currently undergoing maintenance. Please try again later.';
+			break;
+		case 4:
+			message = 'Juxt is currently closed. Thank you for your interest.';
+			break;
+		default:
+			message = 'Juxt is currently unavailable. Please try again later.';
+			break;
+	}
+	if (discoveryStatus !== 0) {
 		return res.renderError({
 			code: 504,
-			message: getDiscoveryStatusMessage(discoveryStatus)
+			message
 		});
 	}
-
 	const expiration = login.expiresIn * 60 * 60;
 
 	res.cookie('access_token', login.accessToken, { domain: cookieDomain, maxAge: expiration });

@@ -21,7 +21,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 					header={header}
 					data-toolbar-mode="normal"
 				>
-					{post.author.miiName}
+					{post.screen_name}
 				</CtrPageTitledHeader>
 				<CtrPageButtons>
 					{props.canPost
@@ -35,7 +35,7 @@ export function CtrPostPageView(props: PostPageViewProps): ReactNode {
 								</CtrPageButton>
 							)
 						: null }
-					{post.author.pid === user.pid
+					{post.pid === user.pid
 						? (
 								<CtrPageButton
 									type="right"

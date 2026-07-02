@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import type { IContent } from '@/types/mongoose/content';
-import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
 export const followActionSchema = z.enum(['follow', 'unfollow']).openapi('FollowActionEnum');
 export type FollowAction = z.infer<typeof followActionSchema>;
@@ -17,13 +16,5 @@ export function mapFollowUser(action: FollowAction, targetUser: IContent): Follo
 		action,
 		id: `${targetUser.pid}`,
 		follower_count: targetUser.following_users.length
-	};
-}
-
-export function mapFollowCommunity(action: FollowAction, target: HydratedCommunityDocument): FollowDto {
-	return {
-		action,
-		id: target.olive_community_id,
-		follower_count: target.followers
 	};
 }

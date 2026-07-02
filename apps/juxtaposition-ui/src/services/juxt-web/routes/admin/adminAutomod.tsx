@@ -2,14 +2,12 @@ import express from 'express';
 import { z } from 'zod';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebAutomodLogListView } from '@/services/juxt-web/views/web/admin/automodLogListView';
+import { automodRuleMode, automodRuleType } from '@/models/automodRules';
 import { WebAutomodRuleListView } from '@/services/juxt-web/views/web/admin/automodRuleListView';
 import { WebAutomodRuleCreateView } from '@/services/juxt-web/views/web/admin/automodRuleCreateView';
 import { onOffSchema } from '@/services/juxt-web/routes/admin/admin';
 import type { AutomodRuleListViewProps } from '@/services/juxt-web/views/web/admin/automodRuleListView';
 import type { AutomodLogListViewProps } from '@/services/juxt-web/views/web/admin/automodLogListView';
-
-const automodRuleType = ['keyword'] as const;
-const automodRuleMode = ['block', 'log'] as const;
 
 export const adminAutomodRouter = express.Router();
 

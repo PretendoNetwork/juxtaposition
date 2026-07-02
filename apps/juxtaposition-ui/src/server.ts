@@ -3,13 +3,15 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { RedisStore } from 'connect-redis';
 import methodOverride from 'method-override';
+import { database } from '@/database';
 import { logger } from '@/logger';
 import { loggerHttp } from '@/loggerHttp';
-import { redisClient } from '@/redis';
+import { redisClient } from '@/redisCache';
 import { router } from '@/services/juxt-web';
 import { healthzRouter } from '@/services/healthz';
 import { config } from '@/config';
 import { jsxRenderer } from '@/middleware/jsx';
+import { initImageProcessing } from '@/images';
 import { loginWall } from '@/middleware/webAuth';
 import { listenMetrics, registerMetrics } from '@/metrics';
 import { i18nMiddleware } from '@/middleware/i18n';
@@ -102,7 +104,10 @@ async function main(): Promise<void> {
 	// Starts the server
 	logger.info('Starting server');
 
+	await database.connect();
+	logger.success('Database connected');
 	await redisClient.connect();
+	await initImageProcessing();
 
 	app.listen(port, '0.0.0.0', () => {
 		logger.success(`Server started on port ${port}`);
