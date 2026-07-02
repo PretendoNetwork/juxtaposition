@@ -150,6 +150,24 @@ export function WebPostView(props: PostViewProps): ReactNode {
 							{' '}
 							<T k="post.copy_link" />
 						</li>
+						{ isModerator && post.isSpoiler
+							? (
+									<li role="menuitem" data-action="unspoiler">
+										<WebUIIcon name="eye" />
+										{' '}
+										<T k="moderation.mark_as_not_spoiler" />
+									</li>
+								)
+							: null}
+						{ isModerator && !post.isSpoiler
+							? (
+									<li role="menuitem" data-action="spoiler">
+										<WebUIIcon name="eye-slash" />
+										{' '}
+										<T k="moderation.mark_as_spoiler" />
+									</li>
+								)
+							: null}
 					</ul>
 				</span>
 			</div>

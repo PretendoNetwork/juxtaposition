@@ -192,6 +192,8 @@
   "moderation": {
     "title": "Moderation",
     "silently_delete_post": "Silently delete",
+    "mark_as_spoiler": "Mark as spoiler",
+    "mark_as_not_spoiler": "Remove spoiler",
     "moderate_user": "Moderate User"
   }
 }
