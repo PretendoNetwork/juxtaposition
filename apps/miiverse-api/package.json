@@ -8,7 +8,7 @@
 	"scripts": {
 		"start": "node --enable-source-maps dist/server.js",
 		"build": "prisma generate && tsup && tsc --noEmit",
-		"dev": "prisma generate && tsup --watch --onSuccess \"npm start",
+		"dev": "prisma generate && tsup --watch --onSuccess \"npm start\"",
 		"migration:create": "prisma migrate dev --create-only && prisma generate",
 		"migration:deploy": "prisma migrate deploy",
 		"migration:reset": "prisma migrate reset",
