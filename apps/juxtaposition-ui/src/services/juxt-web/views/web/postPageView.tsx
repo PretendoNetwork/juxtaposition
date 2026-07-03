@@ -81,11 +81,11 @@ export function WebPostPageView(props: PostPageViewProps): ReactNode {
 				<WebWrapper>
 					<WebPostView post={props.post} userContent={props.userContent} isMainPost />
 					<div className="reply-control-bar">
-						<p className="reply-control-title">Replies</p>
+						<p className="reply-control-title"><T k="post.replies_heading" /></p>
 						{user.perms.moderator
 							? (
 									<a className="reply-control-item" href={`/posts/${props.post.id}/create`}>
-										<span className="reply-icon"><WebUIIcon name="reply" /></span>
+										<span className="reply-icon small"><WebUIIcon name="reply" /></span>
 										<T k="post.reply_post" />
 									</a>
 								)
@@ -93,11 +93,13 @@ export function WebPostPageView(props: PostPageViewProps): ReactNode {
 						{props.sort === 'newest-first'
 							? (
 									<a className="reply-control-item" href={`/posts/${props.post.id}?sort=oldest-first`}>
+										<span className="reply-icon"><WebUIIcon name="up-down" /></span>
 										<T k="post.sort_newest_first" />
 									</a>
 								)
 							: (
 									<a className="reply-control-item" href={`/posts/${props.post.id}?sort=newest-first`}>
+										<span className="reply-icon"><WebUIIcon name="up-down" /></span>
 										<T k="post.sort_oldest_first" />
 									</a>
 								)}

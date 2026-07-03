@@ -1905,8 +1905,16 @@ button.report {
   }
 
   .reply-icon {
-    transform: scale(0.8);
     color: var(--text-light);
+    font-size: 1.3em;
+    line-height: 0.7;
+    margin-right: 0.2em;
+    margin-left: -0.2em;
+
+    &.small {
+      font-size: 1em;
+      transform: scale(0.8);
+    }
   }
 }
 
