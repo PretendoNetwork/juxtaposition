@@ -28,10 +28,6 @@ function createMetaFromDoc(doc: Document): { type: string, content: Record<strin
 			timestamp: v.timestamp,
 			pid: Number(v.user),
 		}));
-		users.push({
-			timestamp: doc.lastUpdated,
-			pid: Number(doc.objectID),
-		})
 		return {
 			type: 'Follow',
 			content: {
