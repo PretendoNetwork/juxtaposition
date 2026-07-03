@@ -22,6 +22,10 @@ const pg = new PgClient({
 });
 await pg.connect();
 
+function parseDateString(str: string): Date {
+	return new Date(str);
+}
+
 function createMetaFromDoc(doc: Document): { type: string, content: Record<string, any>}  | null {
 	if (doc.type === 'follow') {
 		const users = doc.users.map((v: any) => ({
@@ -113,15 +117,10 @@ function createMetaFromDoc(doc: Document): { type: string, content: Record<strin
 				}
 			}
 
-			let date: Date;
-			if (dateStr === "null") date = new Date();
-			else if (dateStr === "Invalid date") date = new Date();
-			else date = new Date(dateStr)
-
 			return {
 				type: 'LimitedFromPosting',
 				content: {
-					until: date.toISOString(),
+					until: parseDateString(dateStr).toISOString(),
 					reason,
 				}
 			}
