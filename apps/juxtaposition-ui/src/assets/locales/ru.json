@@ -78,7 +78,10 @@
     },
     "notifications": {
         "none": "Нет уведомлений.",
-        "new_follower/one": "<follower_one /> подписался(-ась) на вас!"
+        "new_follower/one": "<follower_one /> подписался(-ась) на вас!",
+        "new_follower/two": "<follower_one /> и <follower_two /> подписались на вас!",
+        "new_follower/three": "<follower_one />, <follower_two /> и ещё {{count_other}} пользователь подписались на вас!",
+        "new_follower/multiple": "<follower_one />, <follower_two /> и ещё {{count_other}} подп. подписались на вас!"
     },
     "new_post": {
         "post_to": "Написать {{user}}",
