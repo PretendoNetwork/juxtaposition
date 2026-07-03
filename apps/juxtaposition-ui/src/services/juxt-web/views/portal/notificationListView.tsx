@@ -1,19 +1,18 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { humanDate, humanFromNow } from '@/util';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/ui/PortalMiiIcon';
 import { PortalIcon } from '@/services/juxt-web/views/portal/components/ui/PortalIcon';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
+import type { ShallowUser } from '@/api/generated';
 
 function PortalNotificationItem(props: NotificationItemProps): ReactNode {
-	const cache = useCache();
 	const data = props.notification;
 	if (data.notif.type === 'follow') {
-		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
+		const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? null}</span>;
 		const users = [...data.notif.content.users].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 		const latestUser = users[0];
 
@@ -41,8 +40,8 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 									count_other: Math.max(0, users.length - 2)
 								}}
 								components={{
-									follower_one: <NickName userId={users[0]?.pid} />,
-									follower_two: <NickName userId={users[1]?.pid} />
+									follower_one: <NickName user={users[0]?.user} />,
+									follower_two: <NickName user={users[1]?.user} />
 								}}
 							/>
 						</a>

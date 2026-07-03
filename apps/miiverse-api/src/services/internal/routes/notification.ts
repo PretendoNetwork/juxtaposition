@@ -3,6 +3,8 @@ import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapNotification, notificationSchema } from '@/services/internal/contract/notification';
+import { Settings } from '@/models/settings';
+import type { FollowNotificationContent } from '@/services/internal/utils/notifications';
 import type { NotificationRecipientWhereInput } from '@/prisma/models';
 
 export const notificationsRouter = createInternalApiRouter();
@@ -42,6 +44,16 @@ notificationsRouter.get({
 			where: dbQuery
 		});
 
+		const relatedUserIds = notifications.reduce<number[]>((acc, v) => {
+			acc.push(v.pid);
+			if (v.notification.type === 'Follow') {
+				const content = v.notification.content as FollowNotificationContent;
+				acc.push(...content.users.map(u => u.pid));
+			}
+			return acc;
+		}, []);
+		const users = await Settings.find({ pid: { $in: relatedUserIds } });
+
 		if (query.markAsRead) {
 			await db.notificationRecipient.updateMany({
 				where: {
@@ -55,6 +67,6 @@ notificationsRouter.get({
 			});
 		}
 
-		return mapPage(total, notifications.map(v => mapNotification(v, v.notification)));
+		return mapPage(total, notifications.map(v => mapNotification(v, v.notification, users)));
 	}
 });

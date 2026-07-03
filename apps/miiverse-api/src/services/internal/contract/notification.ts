@@ -1,14 +1,17 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
+import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { Notification, NotificationRecipient } from '@/prisma/client';
 import type { FollowNotificationContent, LimitedFromPostingNotificationContent, PostDeletedNotificationContent, SystemNotificationContent } from '@/services/internal/utils/notifications';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 
 export const followNotificationSchema = asOpenapi('FollowNotification', z.object({
 	type: z.literal('follow'),
 	content: z.object({
 		users: z.array(z.object({
 			pid: z.number(),
-			timestamp: z.date()
+			timestamp: z.date(),
+			user: shallowUserSchema.optional()
 		}))
 	})
 }));
@@ -41,6 +44,7 @@ export const limitedFromPostingNotificationSchema = asOpenapi('LimitedFromPostin
 
 export const notificationSchema = z.object({
 	pid: z.number(),
+	user: shallowUserSchema.optional(),
 	hasRead: z.boolean(),
 	updatedAt: z.date(),
 	notif: z.discriminatedUnion('type', [
@@ -53,7 +57,7 @@ export const notificationSchema = z.object({
 
 export type NotificationDto = z.infer<typeof notificationSchema>;
 
-export function mapNotification(recipient: NotificationRecipient, notif: Notification): NotificationDto {
+export function mapNotification(recipient: NotificationRecipient, notif: Notification, users: HydratedSettingsDocument[]): NotificationDto {
 	let data: NotificationDto['notif'] | null = null;
 
 	if (notif.type === 'Follow') {
@@ -61,10 +65,14 @@ export function mapNotification(recipient: NotificationRecipient, notif: Notific
 		data = {
 			type: 'follow',
 			content: {
-				users: content.users.map(v => ({
-					pid: v.pid,
-					timestamp: new Date(v.timestamp)
-				}))
+				users: content.users.map((v) => {
+					const user = users.find(u => u.pid === v.pid);
+					return {
+						pid: v.pid,
+						timestamp: new Date(v.timestamp),
+						user: user ? mapShallowUser(user) : undefined
+					};
+				})
 			}
 		};
 	}
@@ -100,8 +108,10 @@ export function mapNotification(recipient: NotificationRecipient, notif: Notific
 		throw new Error(`No DTO mapping for notification ${notif.type} found`);
 	}
 
+	const user = users.find(u => u.pid === recipient.pid);
 	return {
 		pid: recipient.pid,
+		user: user ? mapShallowUser(user) : undefined,
 		hasRead: recipient.hasRead,
 		updatedAt: notif.updatedAt,
 		notif: data

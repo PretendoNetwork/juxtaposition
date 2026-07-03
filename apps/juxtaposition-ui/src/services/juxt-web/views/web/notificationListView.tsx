@@ -2,12 +2,11 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { humanDate, humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
-import type { Notification } from '@/api/generated';
+import type { Notification, ShallowUser } from '@/api/generated';
 
 export type NotificationWrapperViewProps = {
 	children?: ReactNode;
@@ -23,10 +22,9 @@ export type NotificationItemProps = {
 
 function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	const url = useUrl();
-	const cache = useCache();
 	const data = props.notification;
 	if (data.notif.type === 'follow') {
-		const NickName = ({ userId }: { userId: string | number | null | undefined }): ReactNode => <span className="nick-name">{userId ? cache.getUserName(Number(userId)) : null}</span>;
+		const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? 'Nobody'}</span>;
 		const users = [...data.notif.content.users].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 		const latestUser = users[0];
 
@@ -56,8 +54,8 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 									count_other: Math.max(0, users.length - 2)
 								}}
 								components={{
-									follower_one: <NickName userId={users[0]?.pid} />,
-									follower_two: <NickName userId={users[1]?.pid} />
+									follower_one: <NickName user={users[0]?.user} />,
+									follower_two: <NickName user={users[1]?.user} />
 								}}
 							/>
 						</span>

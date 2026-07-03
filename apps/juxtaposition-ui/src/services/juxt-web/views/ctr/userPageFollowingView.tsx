@@ -19,9 +19,9 @@ export function CtrUserPageFollowingView(props: UserPageFollowingViewProps): Rea
 					</li>
 				))}
 				{props.communities.map(community => (
-					<li key={community.id} id={community.id}>
-						<span className="icon-container"><img src={url.cdn(`/icons/${community.id}/128.png`)} className="icon" /></span>
-						<a href={`/titles/${community.id}/new`} data-pjax="#body" className="scroll to-community-button full"></a>
+					<li key={community.olive_community_id} id={community.olive_community_id}>
+						<span className="icon-container"><img src={url.cdn(`/icons/${community.olive_community_id}/128.png`)} className="icon" /></span>
+						<a href={`/titles/${community.olive_community_id}/new`} data-pjax="#body" className="scroll to-community-button full"></a>
 						<div className="body">
 							<div className="body-content">
 								<span className="community-name title">{community.name}</span>

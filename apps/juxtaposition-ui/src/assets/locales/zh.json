@@ -57,7 +57,8 @@
         "deleted": "已删除用户",
         "banned": "已禁止用户",
         "friend_requests": "请求",
-        "not_found": "用户不存在"
+        "not_found": "用户不存在",
+        "tester_tag": "测试用户"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
