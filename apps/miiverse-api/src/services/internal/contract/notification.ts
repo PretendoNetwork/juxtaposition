@@ -30,17 +30,9 @@ export function mapNotification(notif: INotification, users: HydratedSettingsDoc
 	const toUser = users.find(u => u.pid === Number(notif.pid));
 	const type = notif.type as NotificationType;
 
-	const followUsers: NotificationDto['users'] = [];
+	let followUsers: NotificationDto['users'] = [];
 	if (type === 'follow') {
-		const pid = Number(notif.objectID);
-		const user = users.find(u => u.pid === pid);
-		followUsers.push({
-			pid,
-			timestamp: notif.lastUpdated, // Not actually correct, but whatever
-			user: user ? mapShallowUser(user) : null
-		});
-
-		const restUsers = notif.users.map((v) => {
+		followUsers = notif.users.map((v) => {
 			const pid = Number(v.user);
 			const user = users.find(u => u.pid === pid);
 			return {
@@ -49,7 +41,6 @@ export function mapNotification(notif: INotification, users: HydratedSettingsDoc
 				user: user ? mapShallowUser(user) : null
 			};
 		});
-		followUsers.push(...restUsers);
 	}
 
 	return {
