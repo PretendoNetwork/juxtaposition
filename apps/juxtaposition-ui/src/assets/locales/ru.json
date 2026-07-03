@@ -85,7 +85,15 @@
     },
     "new_post": {
         "post_to": "Написать {{user}}",
-        "swearing": "Сообщение не должно иметь нецензурную лексику."
+        "swearing": "Сообщение не должно иметь нецензурную лексику.",
+        "automod_error": "Ваша публикация содержит текст, запрещённый в Juxtaposition. Для получения дополнительной информации, пожалуйста, посетите https://preten.do/juxt-rules",
+        "new_post_short": "Пост",
+        "content_placeholder": "Поделитесь своими мыслями в публикации для сообщества или своих подписчиков.",
+        "screenshots_coming_soon": "Скриншоты ещё не готовы. Загляните позже!",
+        "no_screenshot": "Без скриншота",
+        "spoiler_label": "Спойлер",
+        "painting_close": "Отмена",
+        "painting_submit": "ОК"
     },
     "setup": {
         "welcome": "Добро пожаловать в Juxtaposition!",
@@ -126,7 +134,8 @@
         "ready": "Готовы начать использовать Juxt",
         "ready_text": "Сначала загляните в некоторые сообщества и посмотрите, о чём пишут люди со всего мира. Воспользуйтесь этой возможностью, чтобы познакомиться с Juxt. Возможно, по пути вы сделаете несколько новых открытий!",
         "done": "Веселитесь в Juxt!",
-        "done_button": "Вперёд!"
+        "done_button": "Вперёд!",
+        "title": "Настройка Juxtaposition"
     },
     "login": {
         "title": "Вход в Juxtaposition",
@@ -149,5 +158,44 @@
     },
     "friend_requests": {
         "none": "Нет заявок в друзья"
+    },
+    "post": {
+        "title": "Публикация от {{username}}",
+        "heading": "Публикация",
+        "yeahs_count/one": "<count/> пользователь поставил отметку «Здорово».",
+        "yeahs_count/multiple": "Пользователей, которым это «Здорово!»: <count/>.",
+        "show_spoiler": "Показать спойлер",
+        "reply_post": "Ответить",
+        "report_post": "Пожаловаться",
+        "delete_post": "Удалить публикацию",
+        "removed": "Публикация была удалена.",
+        "copy_link": "Копировать ссылку",
+        "sort_newest_first": "Сначала новые",
+        "sort_oldest_first": "Сначала старые"
+    },
+    "reporting": {
+        "reason_spoiler": "Спойлер",
+        "reason_personal_info": "Личные данные",
+        "reason_violence": "Жестокий контент",
+        "reason_inappropiate": "Недопустимое/вредоносное поведение",
+        "reason_bullying": "Оскорбления/травля",
+        "reason_advertising": "Реклама",
+        "reason_nsfw": "Материалы сексуального характера",
+        "reason_piracy": "Пиратство",
+        "reason_inappropiate_ingame": "Недопустимое поведение в игре",
+        "reason_missing_images": "Отсутствуют изображения",
+        "reason_others": "Другое",
+        "title": "Пожаловаться на публикацию",
+        "submit": "Отправить жалобу",
+        "description": "Вы собираетесь пожаловаться на публикацию, содержание которой нарушает Правила поведения в Juxtaposition. Эта жалоба будет отправлена администраторам Juxtaposition в Pretendo, а не автору публикации.",
+        "label": "Причина:",
+        "additional_info_placeholder": "Введите дополнительные комментарии или информацию»"
+    },
+    "moderation": {
+        "moderate_user": "Применить меры к пользователю",
+        "mark_as_not_spoiler": "Удалить пометку спойлера",
+        "silently_delete_post": "Удалить незаметно",
+        "title": "Модерация",
+        "mark_as_spoiler": "Отметить как спойлер"
     }
 }
