@@ -39,7 +39,8 @@
         "related": "Otras comunidades",
         "related_to": "Otras comunidades de {{community}}",
         "closed": "Esta comunidad está cerrada a nuevos mensajes.",
-        "tags_not_applicable": "N/A"
+        "tags_not_applicable": "N/A",
+        "related_short": "Relacionado"
     },
     "user_page": {
         "country": "País",
@@ -55,7 +56,9 @@
         "game_experience_unknown": "Desconocido",
         "settings": "Ajustes",
         "deleted": "Usuario eliminado",
-        "banned": "Usuario restringido"
+        "banned": "Usuario restringido",
+        "not_found": "Este usuario no existe",
+        "tester_tag": "Tester"
     },
     "user_settings": {
         "profile_settings": "Ajustes del perfil",
