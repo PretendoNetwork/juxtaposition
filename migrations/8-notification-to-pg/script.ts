@@ -23,7 +23,11 @@ const pg = new PgClient({
 await pg.connect();
 
 function parseDateString(str: string): Date {
-	return new Date(str);
+	if (str == "null" || str == "Invalid date") {
+		return new Date();
+	} else {
+		return new Date(str);
+	}
 }
 
 function createMetaFromDoc(doc: Document): { type: string, content: Record<string, any>}  | null {
