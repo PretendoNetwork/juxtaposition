@@ -149,7 +149,9 @@
         "show_spoiler": "Spoiler megjelenítése",
         "title": "{{username}} bejegyzése",
         "yeahs_count/one": "<count/> személy adott ennek a bejegyzésnek egy Yeah-t.",
-        "yeahs_count/multiple": "<count/> személy adott ennek a bejegyzésnek egy Yeah-t."
+        "yeahs_count/multiple": "<count/> személy adott ennek a bejegyzésnek egy Yeah-t.",
+        "sort_newest_first": "Legfrissebb bejegyzések",
+        "sort_oldest_first": "Legrégebbi bejegyzések"
     },
     "login": {
         "title": "Juxtaposition belépés",
@@ -194,6 +196,8 @@
     "moderation": {
         "title": "Moderálás",
         "silently_delete_post": "Törlés csendben",
-        "moderate_user": "Felhasználó moderálása"
+        "moderate_user": "Felhasználó moderálása",
+        "mark_as_spoiler": "Megjelölés spoilerként",
+        "mark_as_not_spoiler": "Spoiler jelölés eltávolítása"
     }
 }
