@@ -2,7 +2,6 @@ import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebModerationTabs } from '@/services/juxt-web/views/web/admin/admin';
 import { WebPostView } from '@/services/juxt-web/views/web/post';
-import { useCache } from '@/services/juxt-web/views/common/hooks/useCache';
 import { humanDate, humanFromNow } from '@/util';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import type { ReactNode } from 'react';
@@ -21,7 +20,6 @@ export type ReportProps = {
 };
 
 function Report(props: ReportProps): ReactNode {
-	const cache = useCache();
 	const createdAt = new Date(props.report.createdAt);
 	const reporter = props.report.reporter;
 
@@ -34,7 +32,7 @@ function Report(props: ReportProps): ReactNode {
 						<span className="body messages report">
 							<span className="text">
 								<a className="nick-name" href={`/users/${reporter.pid}`}>
-									{`Reported by ${cache.getUserName(reporter.pid)}`}
+									{`Reported by ${reporter.user.miiName}`}
 								</a>
 								{' - '}
 								<span className="pid-display">{reporter.pid}</span>
@@ -74,7 +72,7 @@ export function WebReportListView(props: ReportListViewProps): ReactNode {
 				<WebModerationTabs selected="reports" />
 				{props.reports.length === 0
 					? (
-							<p>
+							<p className="no-reports-message">
 								All reports handled 🎉
 								<br />
 								Good job team!

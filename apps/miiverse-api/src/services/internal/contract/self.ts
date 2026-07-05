@@ -1,6 +1,9 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
+import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
+import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { AccountData } from '@/types/common/account-data';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 
 export const banCodes = z.enum(['network_ban', 'temp_ban', 'perma_ban']).openapi('BanCodeEnum');
 
@@ -43,6 +46,14 @@ export const selfNotificationCountSchema = z.object({
 }).openapi('SelfNotificationCount');
 
 export type SelfNotificationCountDto = z.infer<typeof selfNotificationCountSchema>;
+
+export const selfFriendRequestSchema = z.object({
+	sentAt: z.date(),
+	sender: shallowUserSchema,
+	message: z.string()
+}).openapi('SelfFriendRequest');
+
+export type SelfFriendRequestDto = z.infer<typeof selfFriendRequestSchema>;
 
 const baseSelf: SelfDto = {
 	pid: 0,
@@ -111,5 +122,13 @@ export function mapSelf(auth: AccountData): SelfDto {
 export function mapSelfNotificationCount(unreadNotifications: number): SelfNotificationCountDto {
 	return {
 		unreadNotifications
+	};
+}
+
+export function mapSelfFriendRequest(req: FriendRequest, user: HydratedSettingsDocument): SelfFriendRequestDto {
+	return {
+		sentAt: new Date(Number(req.sent) * 1000),
+		sender: mapShallowUser(user),
+		message: req.message
 	};
 }

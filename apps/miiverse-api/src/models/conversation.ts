@@ -40,11 +40,11 @@ export const ConversationSchema = new Schema<Conversation>({
 	},
 	created_at: {
 		type: Date,
-		default: new Date()
+		default: (): Date => new Date()
 	},
 	last_updated: {
 		type: Date,
-		default: new Date()
+		default: (): Date => new Date()
 	},
 	message_preview: {
 		type: String,

@@ -512,12 +512,13 @@ body {
 }
 header svg {
  fill:#a362d8;
- -webkit-transform:translate(10px,10px);
- margin-left:-10px
+ -webkit-transform:translate(0px,10px) scale(0.8);
+ margin-left: 20px;
+ margin-right: 5px;
 }
 .tags,
 header svg {
- color:#a362d8
+ color:#a362d8;
 }
 .post-list .post .no-play,
 .post-list .post .screen-name {

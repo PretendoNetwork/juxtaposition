@@ -67,7 +67,7 @@
         "profile_settings": "Paramètres du profil",
         "show_country": "Afficher mon pays sur le profil",
         "show_birthday": "Afficher mon anniversaire sur le profil",
-        "show_game": "Afficher mon expérience de joueur sur le profil",
+        "show_game": "Afficher mon expérience de jeu sur le profil",
         "save_action": "Enregistrer les paramètres",
         "gdpr_download": "Télécharger les données utilisateur",
         "gdpr_download_action": "Télécharger",
@@ -122,7 +122,7 @@
             "twelfth": "Avez-vous joué à ce jeu ?",
             "thirteenth": "Si vous postez dans la communauté pour un jeu auquel vous avez joué, vos messages auront une icône indiquant que vous y avez joué."
         },
-        "experience": "Expérience de joueur",
+        "experience": "Expérience de jeu",
         "experience_text": {
             "info": "Comment décririez-vous votre niveau de compétence avec les jeux ? Vous pourrez changer ce paramètre plus tard.",
             "beginner": "Débutant",

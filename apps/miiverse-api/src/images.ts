@@ -1,6 +1,6 @@
 import { Buffer } from 'node:buffer';
 import { readFile } from 'node:fs/promises';
-import { ColorType, FilterType, Gravity, ImageMagick, initializeImageMagick, Interlace, MagickColors, Orientation } from '@imagemagick/magick-wasm';
+import { AlphaAction, ColorType, FilterType, Gravity, ImageMagick, initializeImageMagick, Interlace, MagickColor, MagickColors, Orientation } from '@imagemagick/magick-wasm';
 import { deflate, inflate } from 'pako';
 import { logger } from '@/logger';
 import { uploadCDNAsset } from '@/util';
@@ -181,6 +181,10 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 	image.settings.setDefine('JPEG', 'sampling-factor', '2x2');
 	image.settings.interlace = Interlace.Jpeg;
 
+	// Remove alpha if input was an alpha-enabled BMP
+	image.backgroundColor = new MagickColor('white');
+	image.alpha(AlphaAction.Remove);
+
 	return {
 		jpg: image.write('JPEG', Buffer.from),
 		thumb: image.clone((image) => {
@@ -207,8 +211,17 @@ function processScreenshot(image: IMagickImage): Screenshot | null {
 	};
 }
 
-export function processJpgScreenshot(painting: Buffer): Screenshot | null {
-	return ImageMagick.read(painting, 'JPG', processScreenshot);
+export function processAutoScreenshot(screenshot: Buffer): Screenshot | null {
+	const allowedFormats = [
+		'JPEG', // Used by Miiverse and Miiverse-enabled games
+		'BMP', 'BMP3' // Used by un-official mods, such as CTGP-7
+	];
+	return ImageMagick.read(screenshot, (img) => {
+		if (!allowedFormats.includes(img.format)) {
+			throw new Error(`Invalid format, got '${img.format}'`);
+		}
+		return processScreenshot(img);
+	});
 }
 
 export type ScreenshotUrls = {
@@ -228,7 +241,7 @@ export type UploadScreenshotOptions = {
 export async function uploadScreenshot(opts: UploadScreenshotOptions): Promise<ScreenshotUrls | null> {
 	// try buffer, otherwise blob
 	const screenshotBuf = opts.buffer ?? Buffer.from(opts.blob.replace(/\0/g, '').trim(), 'base64');
-	const screenshots = processJpgScreenshot(screenshotBuf);
+	const screenshots = processAutoScreenshot(screenshotBuf);
 	if (screenshots === null) {
 		return null;
 	}

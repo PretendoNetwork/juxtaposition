@@ -13,7 +13,15 @@
         "close": "Tutup",
         "save": "Simpan",
         "exit": "Keluar",
-        "next": "Berikut"
+        "next": "Berikut",
+        "my_feed": "Feed Saya",
+        "global_feed": "Feed Global",
+        "global_feed_short": "Global",
+        "people_feed": "Feed Orang",
+        "people_feed_short": "Orang",
+        "friend_requests": "Permintaan Pertemanan",
+        "updates": "Pembaruan",
+        "search": "Cari..."
     },
     "language": "Bahasa Indonesia",
     "all_communities": {
@@ -25,7 +33,11 @@
         "show_game": "Tunjuk Pengalaman Permainan di Profil",
         "profile_settings": "Pengaturan Profil",
         "show_country": "Tunjuk Negara di Profil",
-        "show_birthday": "Tunjuk Ulang Tahun di Profil"
+        "show_birthday": "Tunjuk Ulang Tahun di Profil",
+        "show_profile": "Tampilkan Profil kepada tamu",
+        "save_action": "Simpan Pengaturan",
+        "gdpr_download": "Unduh Data Pengguna",
+        "gdpr_download_action": "Unduh"
     },
     "setup": {
         "welcome_text": "Juxt adalah komunitas game yang menghubungan orang-orang dari seluruh dunia menggunakan karakter Mii. Gunakan Juxt untuk berbagi pengalaman bermain game anda dan bertemu orang-orang dari seluruh dunia.",
@@ -66,14 +78,21 @@
         "ready": "Siap untuk Mulai Menggunakan Juxt",
         "info_text": "Juxt adalah komunitas game yang digerakkan oleh pengguna tempat anda dapat berinteraksi dengan orang-orang\n                di seluruh dunia. Anda dapat menulis atau menggambar postingan di komunitas game atau mengirim pesan langsung ke teman-teman anda.",
         "analytics_text": "Juxt menggunakan Cloudflare Web Analytics untuk melacak bagaimana pengguna menggunakan layanan kami. Data yang dikumpulkan termasuk tetapi tidak terbatas pada waktu kunjungan, halaman yang dikunjungi, dan waktu yang dihabiskan di situs. Data ini tidak dikaitkan dengan Anda dengan cara apa pun, dan tidak digunakan untuk iklan oleh kami atau Cloudflare.",
-        "info": "Apa itu Juxtaposition?"
+        "info": "Apa itu Juxtaposition?",
+        "title": "Penyiapan Juxtaposition"
     },
     "community": {
         "followers": "Pengikutas",
         "posts": "Postingan",
         "tags": "Label",
         "recent": "Postingan Terkini",
-        "popular": "Postingan Populer"
+        "popular": "Postingan Populer",
+        "followers_count": "{{count}} pengikut",
+        "tags_not_applicable": "T/A",
+        "related": "Komunitas Terkait",
+        "related_short": "Terkait",
+        "related_to": "Komunitas Terkait {{community}}",
+        "closed": "Komunitas ini ditutup untuk posting baru."
     },
     "user_page": {
         "country": "Negara",
@@ -84,16 +103,95 @@
         "following": "Mengikuti",
         "followers": "Pengikutas",
         "follow_user": "Mengikut",
-        "following_user": "Mengikuti"
+        "following_user": "Mengikuti",
+        "game_experience_unknown": "Tidak Diketahui",
+        "settings": "Pengaturan",
+        "friend_requests": "Permintaan",
+        "deleted": "Pengguna Dihapus",
+        "banned": "Pengguna Diblokir",
+        "not_found": "Pengguna tidak ada",
+        "tester_tag": "Penguji",
+        "supporter_tag": "Pendukung",
+        "moderator_tag": "Moderator",
+        "developer_tag": "Pengembang"
     },
     "activity_feed": {
         "empty": "Tidak ada apa-apa di sini. Coba mengikut orang!"
     },
     "notifications": {
-        "none": "Tidak ada notificasi."
+        "none": "Tidak ada notificasi.",
+        "new_follower/one": "<follower_one /> mengikuti Anda!",
+        "new_follower/two": "<follower_one />, <follower_two /> mengikuti Anda!",
+        "new_follower/three": "<follower_one />, <follower_two />, dan {{count_other}} lainnya mengikuti Anda!",
+        "new_follower/multiple": "<follower_one />, <follower_two />, dan {{count_other}} lainnya mengikuti Anda!"
     },
     "new_post": {
         "post_to": "Posting ke {{user}}",
-        "swearing": "Postingan tidak boleh mengandung bahasa eksplisit."
+        "swearing": "Postingan tidak boleh mengandung bahasa eksplisit.",
+        "automod_error": "Postingan Anda berisi teks yang tidak diizinkan di Juxtaposition. Untuk informasi lebih lanjut, silakan kunjungi [https://preten.do/juxt-rules](https://preten.do/juxt-rules)",
+        "new_post_short": "Posting",
+        "content_placeholder": "Bagikan pikiran Anda dalam sebuah posting ke komunitas atau kepada pengikut Anda.",
+        "screenshots_coming_soon": "Tangkapan layar belum siap. Periksa lagi nanti!",
+        "no_screenshot": "Tidak Ada Tangkapan Layar",
+        "spoiler_label": "Spoiler",
+        "painting_close": "Batal",
+        "painting_submit": "OK"
+    },
+    "login": {
+        "title": "Masuk ke Juxtaposition",
+        "heading": "Masuk ke Juxtaposition",
+        "sub_title": "Masukkan detail akun Anda di bawah ini",
+        "username": "Nama Pengguna",
+        "password": "Kata Sandi",
+        "forgot_password": "Lupa kata sandi Anda?",
+        "no_account": "Belum punya akun?",
+        "login_action": "Masuk",
+        "no_account_setup": "Pembuatan akun hanya tersedia jika Anda memiliki Wii U atau 3DS yang terhubung."
+    },
+    "error": {
+        "title": "Kesalahan {{code}}",
+        "heading": "Kesalahan {{code}}: {{message}}",
+        "message": "Ups! Sepertinya kami tidak dapat menemukan halaman yang Anda cari.<newline/>Periksa kembali tautan Anda atau coba lagi nanti",
+        "no_access": "Anda tidak berwenang untuk mengakses aplikasi ini ({{code}})",
+        "message_web": "Lihat <status>status server</status> saat ini.<newline/>Atau, <home>kembali ke beranda</home>",
+        "error_details": "ID Permintaan: {{id}}"
+    },
+    "friend_requests": {
+        "none": "Tidak Ada Permintaan Pertemanan"
+    },
+    "post": {
+        "title": "Posting oleh {{username}}",
+        "heading": "Posting",
+        "yeahs_count/one": "<count/> orang memberi yeah pada posting ini.",
+        "yeahs_count/multiple": "<count/> orang memberi yeah pada posting ini.",
+        "show_spoiler": "Tampilkan Spoiler",
+        "reply_post": "Balas",
+        "report_post": "Laporkan posting",
+        "delete_post": "Hapus posting",
+        "removed": "Posting telah dihapus.",
+        "copy_link": "Salin tautan"
+    },
+    "reporting": {
+        "title": "Laporkan Posting",
+        "submit": "Kirim Laporan",
+        "description": "Anda akan melaporkan sebuah posting dengan konten yang melanggar Kode Etik Juxtaposition. Laporan ini akan dikirim ke administrator Juxtaposition Pretendo dan bukan kepada pembuat posting.",
+        "label": "Alasan:",
+        "additional_info_placeholder": "Masukkan komentar atau informasi tambahan",
+        "reason_spoiler": "Spoiler",
+        "reason_personal_info": "Informasi Pribadi",
+        "reason_violence": "Konten Kekerasan",
+        "reason_inappropiate": "Tindakan Tidak Pantas/Berbahaya",
+        "reason_bullying": "Kebencian/Perundungan",
+        "reason_advertising": "Iklan",
+        "reason_nsfw": "Konten Seksual Eksplisit",
+        "reason_piracy": "Pembajakan",
+        "reason_inappropiate_ingame": "Perilaku Tidak Pantas dalam Game",
+        "reason_missing_images": "Gambar Hilang",
+        "reason_others": "Lainnya"
+    },
+    "moderation": {
+        "title": "Moderasi",
+        "silently_delete_post": "Hapus diam-diam",
+        "moderate_user": "Moderasi Pengguna"
     }
 }
