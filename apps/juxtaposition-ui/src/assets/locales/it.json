@@ -71,10 +71,12 @@
     },
     "notifications": {
         "none": "Nessuna notifica.",
-        "new_follower/one": "<follower_one /> ti segue!",
-        "new_follower/two": "<follower_one /> e <follower_two /> ti seguono!",
-        "new_follower/three": "<follower_one />, <follower_two /> e {{count_other}} altro ti seguono!",
-        "new_follower/multiple": "<follower_one />, <follower_two /> e altri {{count_other}} ti seguono!"
+        "new_follower": {
+            "message/one": "<follower_one /> ti segue!",
+            "message/two": "<follower_one /> e <follower_two /> ti seguono!",
+            "message/three": "<follower_one />, <follower_two /> e {{count_other}} altro ti seguono!",
+            "message/multiple": "<follower_one />, <follower_two /> e altri {{count_other}} ti seguono!"
+        }
     },
     "new_post": {
         "post_to": "Posta su {{user}}",

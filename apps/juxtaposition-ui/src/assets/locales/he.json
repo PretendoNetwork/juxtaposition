@@ -109,10 +109,12 @@
     },
     "notifications": {
         "none": "אין התראות.",
-        "new_follower/one": "‏<follower_one/> עקב אחריכם!",
-        "new_follower/two": "‏<follower_one/>,‏‏ <follower_two/> עקבו אחריכם!",
-        "new_follower/three": "‏<follower_one/>, ‏<follower_two/> ו-{{count_other}} נוסף עקבו אחריכם!",
-        "new_follower/multiple": "‏<follower_one/>, ‏<follower_two/> ו-{{count_other}} נוספים עקבו אחריכם!"
+        "new_follower": {
+            "message/one": "‏<follower_one/> עקב אחריכם!",
+            "message/two": "‏<follower_one/>,‏‏ <follower_two/> עקבו אחריכם!",
+            "message/three": "‏<follower_one/>, ‏<follower_two/> ו-{{count_other}} נוסף עקבו אחריכם!",
+            "message/multiple": "‏<follower_one/>, ‏<follower_two/> ו-{{count_other}} נוספים עקבו אחריכם!"
+        }
     },
     "new_post": {
         "swearing": "הפוסט לא יכול להכיל שפה בוטה.",

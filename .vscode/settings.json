@@ -6,6 +6,7 @@
     ],
     "eslint.format.enable": true,
     "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "js/ts.preferences.importModuleSpecifier": "non-relative",
     "[javascript]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
@@ -18,12 +19,13 @@
     "[html]": {
         "editor.defaultFormatter": "vscode.html-language-features"
     },
-    "javascript.preferences.importModuleSpecifier": "non-relative",
-    "typescript.preferences.importModuleSpecifier": "non-relative",
     "[typescriptreact]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
     "[scss]": {
         "editor.defaultFormatter": "vscode.css-language-features"
     },
+    "[prisma]": {
+        "editor.defaultFormatter": "Prisma.prisma"
+    }
 }

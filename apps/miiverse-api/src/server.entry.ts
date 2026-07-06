@@ -1,6 +1,6 @@
 import '@/extend-zod'; // Needs to be the first import
 import express from 'express';
-import { connect as connectDatabase } from '@/database';
+import { connect as connectDatabase, setupPrisma } from '@/database';
 import { logger } from '@/logger';
 import { loggerHttp } from '@/loggerHttp';
 import auth from '@/middleware/auth';
@@ -65,6 +65,7 @@ async function main(): Promise<void> {
 	setupS3();
 	connectGrpc();
 	await connectDatabase();
+	await setupPrisma();
 	await initImageProcessing();
 
 	app.listen(config.http.port, '0.0.0.0', () => {

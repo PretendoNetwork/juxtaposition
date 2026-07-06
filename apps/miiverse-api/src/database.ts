@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { logger } from '@/logger';
 import { Community } from '@/models/community';
 import { Content } from '@/models/content';
@@ -7,12 +8,34 @@ import { Endpoint } from '@/models/endpoint';
 import { Post } from '@/models/post';
 import { Settings } from '@/models/settings';
 import { config } from '@/config';
+import { PrismaClient } from '@/prisma/client';
 import type { HydratedEndpointDocument } from '@/models/endpoint';
 import type { HydratedConversationDocument } from '@/models/conversation';
 import type { HydratedContentDocument } from '@/types/mongoose/content';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+
+let prisma: PrismaClient | null = null;
+
+export function getDb() {
+	if (!prisma) {
+		throw new Error('Prisma used before initialisation');
+	}
+	return prisma;
+}
+
+export async function setupPrisma() {
+	const adapter = new PrismaPg({ connectionString: config.db.url });
+	prisma = new PrismaClient({ adapter });
+
+	try {
+		await prisma.$connect();
+		logger?.info('Connected to database!');
+	} catch (err) {
+		logger?.error(err, 'Failed to connect to database, continueing anyway!');
+	}
+}
 
 let connection: mongoose.Connection;
 mongoose.set('strictQuery', true);

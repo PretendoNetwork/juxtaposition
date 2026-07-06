@@ -117,9 +117,11 @@
     },
     "notifications": {
         "none": "Brak powiadomień.",
-        "new_follower/one": "<follower_one/> obserwuje cię!",
-        "new_follower/two": "<follower_one/>, <follower_two/> obserwują cię!",
-        "new_follower/three": "<follower_one />, <follower_two /> i {{count_other}} innych obserwuje cię!"
+        "new_follower": {
+            "message/one": "<follower_one/> obserwuje cię!",
+            "message/two": "<follower_one/>, <follower_two/> obserwują cię!",
+            "message/three": "<follower_one />, <follower_two /> i {{count_other}} innych obserwuje cię!"
+        }
     },
     "new_post": {
         "post_to": "Postuj do {{user}}",
