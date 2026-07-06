@@ -6,7 +6,7 @@ import { initPostPageView } from './post';
 import { initNavTabs } from './components/ui/PortalNavTabs';
 import { initSearchForm } from './components/ui/PortalSearchForm';
 import { initNavBar } from './components/PortalNavBar';
-import { back } from './nav';
+import { back, exit } from './nav';
 
 export var pjax;
 setInterval(checkForUpdates, 30000);
@@ -377,3 +377,8 @@ function input() {
 			back();
 	}
 }
+
+function exitApplet() {
+	exit();
+}
+window.exitApplet = exitApplet;
