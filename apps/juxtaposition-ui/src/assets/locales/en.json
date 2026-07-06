@@ -144,8 +144,9 @@
     "delete_post": "Delete post",
     "removed": "Post has been removed.",
     "copy_link": "Copy link",
-    "sort_newest_first": "Newest posts",
-    "sort_oldest_first": "Oldest posts"
+    "sort_newest_first": "Sort by newest",
+    "sort_oldest_first": "Sort by oldest",
+    "replies_heading": "Replies"
   },
   "setup": {
     "title": "Juxtaposition Setup",

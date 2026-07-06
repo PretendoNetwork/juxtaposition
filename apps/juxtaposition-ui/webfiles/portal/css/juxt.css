@@ -513,8 +513,8 @@ body {
 header svg {
  fill:#a362d8;
  -webkit-transform:translate(0px,10px) scale(0.8);
- margin-left: 20px;
- margin-right: 5px;
+ margin-left: 15px;
+ margin-right: 1px;
 }
 .tags,
 header svg {
