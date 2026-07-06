@@ -7,14 +7,22 @@
         "notifications": "Уведомления",
         "go_back": "Вернуться",
         "back": "Назад",
-        "yeahs": "Классно",
+        "yeahs": "Лайки",
         "more": "Загрузить больше сообщений",
         "no_posts": "Нет постов",
         "private": "Приватный",
         "close": "Закрыть",
         "save": "Сохранить",
         "exit": "Выход",
-        "next": "Следующий"
+        "next": "Следующий",
+        "my_feed": "Моя лента",
+        "global_feed": "Общая лента",
+        "global_feed_short": "Общая",
+        "people_feed": "Лента подписок",
+        "people_feed_short": "Подписки",
+        "friend_requests": "Запросы в друзья",
+        "updates": "Обновления",
+        "search": "Поиск..."
     },
     "all_communities": {
         "text": "Все сообщества",
@@ -26,7 +34,13 @@
         "posts": "Публикации",
         "tags": "Ярлыки",
         "recent": "Недавние сообщения",
-        "popular": "Популярные сообщения"
+        "popular": "Популярные сообщения",
+        "followers_count": "Подписчики: {{count}}",
+        "tags_not_applicable": "Н/Д",
+        "related": "Связанные сообщества",
+        "related_short": "Связанные",
+        "related_to": "Сообщества, связанные с {{community}}",
+        "closed": "Это сообщество закрыто для новых публикаций."
     },
     "user_page": {
         "country": "Страна",
@@ -37,23 +51,49 @@
         "following": "Подписан",
         "followers": "Подписчики",
         "follow_user": "Подписаться",
-        "following_user": "Подписан"
+        "following_user": "Подписан",
+        "game_experience_unknown": "Неизвестно",
+        "settings": "Настройки",
+        "friend_requests": "Запросы",
+        "deleted": "Удалённый пользователь",
+        "banned": "Заблокированный пользователь",
+        "not_found": "Пользователь не существует",
+        "tester_tag": "Тестировщик",
+        "supporter_tag": "Спонсор",
+        "moderator_tag": "Модератор",
+        "developer_tag": "Разработчик"
     },
     "user_settings": {
         "profile_settings": "Настройки профиля",
         "show_country": "Показывать страну в профиле",
         "show_birthday": "Показывать дату рождения в профиле",
-        "show_game": "Показывать игровой опыт в профиле"
+        "show_game": "Показывать игровой опыт в профиле",
+        "show_profile": "Показывать профиль гостям",
+        "save_action": "Сохранить настройки",
+        "gdpr_download": "Скачать данные пользователя",
+        "gdpr_download_action": "Скачать"
     },
     "activity_feed": {
         "empty": "Тут пусто. Попробуйте на кого-то подписаться!"
     },
     "notifications": {
-        "none": "Нет уведомлений."
+        "none": "Нет уведомлений.",
+        "new_follower/one": "<follower_one /> подписался(-ась) на вас!",
+        "new_follower/two": "<follower_one /> и <follower_two /> подписались на вас!",
+        "new_follower/three": "<follower_one />, <follower_two /> и ещё {{count_other}} пользователь подписались на вас!",
+        "new_follower/multiple": "<follower_one />, <follower_two /> и ещё {{count_other}} подп. подписались на вас!"
     },
     "new_post": {
         "post_to": "Написать {{user}}",
-        "swearing": "Сообщение не должно иметь нецензурную лексику."
+        "swearing": "Сообщение не должно иметь нецензурную лексику.",
+        "automod_error": "Ваша публикация содержит текст, запрещённый в Juxtaposition. Для получения дополнительной информации, пожалуйста, посетите https://preten.do/juxt-rules",
+        "new_post_short": "Пост",
+        "content_placeholder": "Поделитесь своими мыслями в публикации для сообщества или своих подписчиков.",
+        "screenshots_coming_soon": "Скриншоты ещё не готовы. Загляните позже!",
+        "no_screenshot": "Без скриншота",
+        "spoiler_label": "Спойлер",
+        "painting_close": "Отмена",
+        "painting_submit": "ОК"
     },
     "setup": {
         "welcome": "Добро пожаловать в Juxtaposition!",
@@ -94,6 +134,68 @@
         "ready": "Готовы начать использовать Juxt",
         "ready_text": "Сначала загляните в некоторые сообщества и посмотрите, о чём пишут люди со всего мира. Воспользуйтесь этой возможностью, чтобы познакомиться с Juxt. Возможно, по пути вы сделаете несколько новых открытий!",
         "done": "Веселитесь в Juxt!",
-        "done_button": "Вперёд!"
+        "done_button": "Вперёд!",
+        "title": "Настройка Juxtaposition"
+    },
+    "login": {
+        "title": "Вход в Juxtaposition",
+        "heading": "Войти в Juxtaposition",
+        "sub_title": "Введите ниже данные своего аккаунта",
+        "username": "Имя",
+        "password": "Пароль",
+        "forgot_password": "Забыли пароль?",
+        "no_account": "Нет аккаунта?",
+        "login_action": "Войти",
+        "no_account_setup": "Создание аккаунта доступно только при наличии привязанной консоли Wii U или 3DS."
+    },
+    "error": {
+        "title": "Ошибка {{code}}",
+        "heading": "Ошибка {{code}}: {{message}}",
+        "message": "Ой! Похоже, нам не удалось найти нужную страницу.<newline/>Проверьте ссылку или повторите попытку позже",
+        "no_access": "У вас нет прав для доступа к этому приложению ({{code}})",
+        "message_web": "Посмотреть текущий <status>статус сервера</status>.<newline/>Или <home>вернуться на главную страницу</home>",
+        "error_details": "ID запроса: {{id}}"
+    },
+    "friend_requests": {
+        "none": "Нет заявок в друзья"
+    },
+    "post": {
+        "title": "Публикация от {{username}}",
+        "heading": "Публикация",
+        "yeahs_count/one": "<count/> пользователь поставил отметку «Здорово».",
+        "yeahs_count/multiple": "Пользователей, которым это «Здорово!»: <count/>.",
+        "show_spoiler": "Показать спойлер",
+        "reply_post": "Ответить",
+        "report_post": "Пожаловаться",
+        "delete_post": "Удалить публикацию",
+        "removed": "Публикация была удалена.",
+        "copy_link": "Копировать ссылку",
+        "sort_newest_first": "Сначала новые",
+        "sort_oldest_first": "Сначала старые"
+    },
+    "reporting": {
+        "reason_spoiler": "Спойлер",
+        "reason_personal_info": "Личные данные",
+        "reason_violence": "Жестокий контент",
+        "reason_inappropiate": "Недопустимое/вредоносное поведение",
+        "reason_bullying": "Оскорбления/травля",
+        "reason_advertising": "Реклама",
+        "reason_nsfw": "Материалы сексуального характера",
+        "reason_piracy": "Пиратство",
+        "reason_inappropiate_ingame": "Недопустимое поведение в игре",
+        "reason_missing_images": "Отсутствуют изображения",
+        "reason_others": "Другое",
+        "title": "Пожаловаться на публикацию",
+        "submit": "Отправить жалобу",
+        "description": "Вы собираетесь пожаловаться на публикацию, содержание которой нарушает Правила поведения в Juxtaposition. Эта жалоба будет отправлена администраторам Juxtaposition в Pretendo, а не автору публикации.",
+        "label": "Причина:",
+        "additional_info_placeholder": "Введите дополнительные комментарии или информацию»"
+    },
+    "moderation": {
+        "moderate_user": "Применить меры к пользователю",
+        "mark_as_not_spoiler": "Удалить пометку спойлера",
+        "silently_delete_post": "Удалить незаметно",
+        "title": "Модерация",
+        "mark_as_spoiler": "Отметить как спойлер"
     }
 }
