@@ -22,20 +22,20 @@ export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 						{' '}
 					</label>
 					<select name="reason" id="report">
-						<option value="201"><T k="reporting.reason_not_nice" /></option>
-						<option value="202"><T k="reporting.reason_inappropriate" /></option>
-						<option value="203"><T k="reporting.reason_spam" /></option>
-						<option value="204"><T k="reporting.reason_offtopic" /></option>
-						<option value="205"><T k="reporting.reason_piracy_new" /></option>
-						<option value="208"><T k="reporting.reason_exploits" /></option>
-						<option value="209"><T k="reporting.reason_drama" /></option>
-						<option value="210"><T k="reporting.reason_cheating" /></option>
-						<option value="211"><T k="reporting.reason_spoiler_new" /></option>
-						<option value="212"><T k="reporting.reason_personal_info_new" /></option>
-						<option value="213"><T k="reporting.reason_politics" /></option>
-						<option value="214"><T k="reporting.reason_misinformation" /></option>
-						<option value="215"><T k="reporting.reason_impersonation" /></option>
-						<option value="216"><T k="reporting.reason_others" /></option>
+						<option value="11"><T k="reporting.reason_not_nice" /></option>
+						<option value="12"><T k="reporting.reason_inappropriate" /></option>
+						<option value="13"><T k="reporting.reason_spam" /></option>
+						<option value="14"><T k="reporting.reason_offtopic" /></option>
+						<option value="15"><T k="reporting.reason_piracy_new" /></option>
+						<option value="16"><T k="reporting.reason_exploits" /></option>
+						<option value="17"><T k="reporting.reason_drama" /></option>
+						<option value="18"><T k="reporting.reason_cheating" /></option>
+						<option value="19"><T k="reporting.reason_spoiler_new" /></option>
+						<option value="20"><T k="reporting.reason_personal_info_new" /></option>
+						<option value="21"><T k="reporting.reason_politics" /></option>
+						<option value="22"><T k="reporting.reason_misinformation" /></option>
+						<option value="23"><T k="reporting.reason_impersonation" /></option>
+						<option value="10"><T k="reporting.reason_others" /></option>
 					</select>
 				</div>
 				<textarea
