@@ -79,6 +79,20 @@
             "message/two": "<follower_one />, <follower_two /> bekövetett téged!",
             "message/three": "<follower_one />, <follower_two /> és {{count_other}} további felhasználó bekövetett téged!",
             "message/multiple": "<follower_one />, <follower_two /> és {{count_other}} további felhasználó bekövetett téged!"
+        },
+        "post_deleted": {
+            "post_removed": "A(z) \"{{postId}}\" bejegyzésed törlésre került.",
+            "post_removed_for_reason": "A(z) \"{{postId}}\" bejegyzésed törlésre került, a következő okból: \"{{reason}}\".",
+            "comment_removed": "A(z) \"{{postId}}\" hozzászólásod törlésre került.",
+            "comment_removed_for_reason": "A(z) \"{{postId}}\" hozzászólásod törlésre került, a következő okból: \"{{reason}}\".",
+            "footer": "Kattints erre az üzenetre, hogy megtekintsd a Juxtaposition magatartás kódexét. Ha kérdéseid vannak, vedd fel a kapcsolatot a moderátorokkal a Pretendo Network Forum-on ({{contactModsUrl}})."
+        },
+        "limited_from_posting": {
+            "message": "Korlátozva vagy a bejegyzések létrehozásában.",
+            "message_with_reason": "Korlátozva vagy a bejegyzések létrehozásában. Oka: \"{{reason}}\".",
+            "temporary": "Korlátozva vagy a bejegyzések létrehozásában {{until}} -ig.",
+            "temporary_with_reason": "Korlátozva vagy a bejegyzések létrehozásában {{until}} -ig. Oka: \"{{reason}}\".",
+            "footer": "Kattints erre az üzenetre, hogy megtekintsd a Juxtaposition magatartás kódexét. Ha kérdéseid vannak, vedd fel a kapcsolatot a moderátorokkal a Pretendo Network Forum-on ({{banAppealUrl}})."
         }
     },
     "new_post": {
@@ -150,8 +164,9 @@
         "title": "{{username}} bejegyzése",
         "yeahs_count/one": "<count/> személy adott ennek a bejegyzésnek egy Yeah-t.",
         "yeahs_count/multiple": "<count/> személy adott ennek a bejegyzésnek egy Yeah-t.",
-        "sort_newest_first": "Legfrissebb bejegyzések",
-        "sort_oldest_first": "Legrégebbi bejegyzések"
+        "sort_newest_first": "Rendezés legfrissebbre",
+        "sort_oldest_first": "Rendezés legrégebbire",
+        "replies_heading": "Válaszok"
     },
     "login": {
         "title": "Juxtaposition belépés",
