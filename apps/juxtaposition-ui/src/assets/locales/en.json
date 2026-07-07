@@ -193,7 +193,7 @@
   "reporting": {
     "title": "Report Post",
     "submit": "Submit Report",
-    "description": "You are about to report a post with content which violates the Juxtaposition Code of Conduct. This report will be sent to Pretendo's Juxtaposition administrators and not to the creator of the post.",
+    "description": "You are about to report a post that violates the Juxtaposition Code of Conduct. This report will be sent only to Juxtaposition Moderators and not to the creator of the post.",
     "label": "Reason:",
     "additional_info_placeholder": "Enter additional comments or information",
     "reason_spoiler": "Spoiler",
