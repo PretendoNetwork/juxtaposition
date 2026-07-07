@@ -272,13 +272,6 @@ function copyToClipboard(text) {
 	Toast('Copied to clipboard.');
 }
 
-function startHideToast(ms) {
-	setTimeout(function () {
-		const x = document.getElementById('toast');
-		x.className = x.className.replace('show', '');
-	}, ms);
-}
-
 function downloadURI(uri, name) {
 	const link = document.createElement('a');
 	link.download = name;
