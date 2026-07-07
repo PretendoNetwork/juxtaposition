@@ -296,7 +296,7 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 		reasonId: body.reason
 	});
 
-	return res.redirect(`/posts/${post.id}`);
+	res.sendStatus(200);
 });
 
 postsRouter.post('/:post_id/edit/spoiler', async function (req, res) {

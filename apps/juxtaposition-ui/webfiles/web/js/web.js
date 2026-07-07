@@ -4,6 +4,7 @@ import { POST, GET } from './xhr';
 import { deletePostById, spoilerPostById, unspoilerPostById } from './api';
 import { initYeahButton } from './post';
 import { initSearchForm } from './components/ui/WebSearchForm';
+import { Toast, initToast } from './toast';
 
 setInterval(checkForUpdates, 30000);
 
@@ -269,27 +270,6 @@ function copyToClipboard(text) {
 	document.execCommand('copy');
 	inputc.parentNode.removeChild(inputc);
 	Toast('Copied to clipboard.');
-}
-
-function Toast(text, ms) {
-	const x = document.getElementById('toast');
-	x.innerText = text;
-	x.className = 'show';
-	startHideToast(ms ? ms : 3000);
-}
-
-function initToast() {
-	const x = document.getElementById('toast');
-	if (!x) {
-		return; // No toast on screen
-	}
-	const attr = x.getAttribute('data-show');
-	if (!attr) {
-		return; // Nothing to do
-	}
-
-	x.removeAttribute('data-show');
-	setTimeout(() => Toast(x.innerText, 20000), 100); // Show after a delay so it shows an animation
 }
 
 function startHideToast(ms) {
