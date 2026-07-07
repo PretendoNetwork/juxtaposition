@@ -193,7 +193,7 @@
   "reporting": {
     "title": "Report Post",
     "submit": "Submit Report",
-    "description": "You are about to report a post with content which violates the Juxtaposition Code of Conduct. This report will be sent to Pretendo's Juxtaposition administrators and not to the creator of the post.",
+    "description": "You are about to report a post that violates the Juxtaposition Code of Conduct. This report will be sent only to Juxtaposition Moderators and not to the creator of the post.",
     "label": "Reason:",
     "additional_info_placeholder": "Enter additional comments or information",
     "reason_spoiler": "Spoiler",
@@ -206,7 +206,20 @@
     "reason_piracy": "Piracy",
     "reason_inappropiate_ingame": "Inappropriate Behavior in Game",
     "reason_missing_images": "Missing Images",
-    "reason_others": "Other"
+    "reason_others": "Other",
+    "reason_not_nice": "Mean/Rude/Hateful (Rule 1)",
+    "reason_inappropriate": "Inappropriate/NSFW (Rule 2)",
+    "reason_spam": "Spam/Self-Promotion (Rule 3)",
+    "reason_offtopic": "Off-Topic (Rule 4)",
+    "reason_piracy_new": "Piracy (Rule 5)",
+    "reason_exploits": "API Abuse/Exploiting Bugs (Rule 8)",
+    "reason_drama": "Drama (Rule 9)",
+    "reason_cheating": "Cheating Online (Rule 10)",
+    "reason_spoiler_new": "Spoiler (Rule 11)",
+    "reason_personal_info_new": "Personal Information (Rule 12)",
+    "reason_politics": "Politics (Rule 13)",
+    "reason_misinformation": "Misinformation/Bad Advice (Rule 14)",
+    "reason_impersonation": "Impersonation (Rule 15)"
   },
   "moderation": {
     "title": "Moderation",
