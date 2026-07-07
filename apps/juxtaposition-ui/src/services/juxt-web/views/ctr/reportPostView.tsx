@@ -35,7 +35,7 @@ export function CtrReportPostView(props: ReportPostViewProps): ReactNode {
 						<option value="21"><T k="reporting.reason_politics" /></option>
 						<option value="22"><T k="reporting.reason_misinformation" /></option>
 						<option value="23"><T k="reporting.reason_impersonation" /></option>
-						<option value="10"><T k="reporting.reason_others" /></option>
+						<option value="9"><T k="reporting.reason_others" /></option>
 					</select>
 				</div>
 				<textarea
