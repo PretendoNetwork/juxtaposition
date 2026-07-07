@@ -141,7 +141,20 @@ export function getReasonMap(): string[] {
 		'Piracy',
 		'Inappropriate Behavior in Game',
 		'Other',
-		'Missing Images; Reach out to Jemma with post link to fix'
+		'Missing Images; Reach out to Jemma with post link to fix',
+		'Mean/Rude/Hateful (Rule 1)',
+		'Inappropriate/NSFW (Rule 2)',
+		'Spam/Self-Promotion (Rule 3)',
+		'Off-Topic (Rule 4)',
+		'Piracy (Rule 5)',
+		'API Abuse/Exploiting Bugs (Rule 8)',
+		'Drama (Rule 9)',
+		'Cheating Online (Rule 10)',
+		'Spoiler (Rule 11)',
+		'Personal Information (Rule 12)',
+		'Politics (Rule 13)',
+		'Misinformation/Bad Advice (Rule 14)',
+		'Impersonation (Rule 15)'
 	];
 }
 
