@@ -17,17 +17,20 @@ export function PortalReportPostView(props: ReportPostViewProps): ReactNode {
 					<div>
 						<h4><T k="reporting.label" /></h4>
 						<select name="reason" id="report">
-							<option value="0"><T k="reporting.reason_spoiler" /></option>
-							<option value="1"><T k="reporting.reason_personal_info" /></option>
-							<option value="2"><T k="reporting.reason_violence" /></option>
-							<option value="3"><T k="reporting.reason_inappropiate" /></option>
-							<option value="4"><T k="reporting.reason_bullying" /></option>
-							<option value="5"><T k="reporting.reason_advertising" /></option>
-							<option value="6"><T k="reporting.reason_nsfw" /></option>
-							<option value="7"><T k="reporting.reason_piracy" /></option>
-							<option value="8"><T k="reporting.reason_inappropiate_ingame" /></option>
-							<option value="10"><T k="reporting.reason_missing_images" /></option>
-							<option value="9"><T k="reporting.reason_others" /></option>
+							<option value="201"><T k="reporting.reason_not_nice" /></option>
+							<option value="202"><T k="reporting.reason_inappropriate" /></option>
+							<option value="203"><T k="reporting.reason_spam" /></option>
+							<option value="204"><T k="reporting.reason_offtopic" /></option>
+							<option value="205"><T k="reporting.reason_piracy_new" /></option>
+							<option value="208"><T k="reporting.reason_exploits" /></option>
+							<option value="209"><T k="reporting.reason_drama" /></option>
+							<option value="210"><T k="reporting.reason_cheating" /></option>
+							<option value="211"><T k="reporting.reason_spoiler_new" /></option>
+							<option value="212"><T k="reporting.reason_personal_info_new" /></option>
+							<option value="213"><T k="reporting.reason_politics" /></option>
+							<option value="214"><T k="reporting.reason_misinformation" /></option>
+							<option value="215"><T k="reporting.reason_impersonation" /></option>
+							<option value="216"><T k="reporting.reason_others" /></option>
 						</select>
 					</div>
 					<textarea name="message" className="textarea-text" value="" maxLength={280} placeholder={T.str('reporting.additional_info_placeholder')}></textarea>
