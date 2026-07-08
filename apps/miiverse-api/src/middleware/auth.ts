@@ -106,7 +106,8 @@ async function auth(request: express.Request, response: express.Response, next: 
 				},
 				include: {
 					settings: true,
-					follows: true
+					follows: true,
+					followedCommunities: true
 				}
 			});
 		}

@@ -184,8 +184,9 @@ communitiesRouter.post({
 		}),
 		response: followSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		const communityId = params.id;
+		const currentUser = auth!;
 
 		const typesToFilter: RootFilterQuery<ICommunity> = auth?.moderator
 			? {}
@@ -202,23 +203,30 @@ communitiesRouter.post({
 		if (!community) {
 			throw errors.for('not_found');
 		}
+		const followCount = await db.communityFollow.count({
+			where: {
+				communityId
+			}
+		});
 
-		const currentUser = auth!;
-		if (!currentUser.content) {
-			throw errors.for('not_found');
+		const existingFollow = await db.communityFollow.findFirst({
+			where: {
+				pid: currentUser.pnid.pid,
+				communityId
+			}
+		});
+		if (existingFollow) {
+			return mapFollowCommunity('follow', community, followCount);
 		}
 
-		const isFollowing = currentUser.content.followed_communities.includes(communityId);
-		if (isFollowing) {
-			return mapFollowCommunity('follow', community);
-		}
+		await db.communityFollow.create({
+			data: {
+				pid: currentUser.pnid.pid,
+				communityId
+			}
+		});
 
-		currentUser.content.followed_communities.push(communityId);
-		await currentUser.content.save();
-		community.followers += 1;
-		await community.save();
-
-		return mapFollowCommunity('follow', community);
+		return mapFollowCommunity('follow', community, followCount + 1);
 	}
 });
 
@@ -232,8 +240,9 @@ communitiesRouter.delete({
 		}),
 		response: followSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		const communityId = params.id;
+		const currentUser = auth!;
 
 		const typesToFilter: RootFilterQuery<ICommunity> = auth?.moderator
 			? {}
@@ -250,24 +259,29 @@ communitiesRouter.delete({
 		if (!community) {
 			throw errors.for('not_found');
 		}
+		const followCount = await db.communityFollow.count({
+			where: {
+				communityId
+			}
+		});
 
-		const currentUser = auth!;
-		if (!currentUser.content) {
-			throw errors.for('not_found');
+		const existingFollow = await db.communityFollow.findFirst({
+			where: {
+				pid: currentUser.pnid.pid,
+				communityId
+			}
+		});
+		if (!existingFollow) {
+			return mapFollowCommunity('unfollow', community, followCount);
 		}
 
-		const isFollowing = currentUser.content.followed_communities.includes(communityId);
-		if (!isFollowing) {
-			return mapFollowCommunity('unfollow', community);
-		}
-
-		const newFollowingList = currentUser.content.followed_communities.filter(v => v !== communityId);
-		currentUser.content.followed_communities = newFollowingList;
-		await currentUser.content.save();
-		community.followers -= 1;
-		await community.save();
-
-		return mapFollowCommunity('unfollow', community);
+		await db.communityFollow.delete({
+			where: {
+				pid: currentUser.pnid.pid,
+				communityId
+			}
+		});
+		return mapFollowCommunity('unfollow', community, followCount - 1);
 	}
 });
 

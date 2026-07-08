@@ -6,7 +6,6 @@ import { mapBannedSelf, mapSelf, mapSelfFriendRequest, mapSelfNotificationCount,
 import { getDb } from '@/database';
 import { getUserFriendRequestsIncoming } from '@/util';
 import { Post } from '@/models/post';
-import { Content } from '@/models/content';
 import type { SelfFriendRequestDto } from '@/services/internal/contract/self';
 import type { UserUpdateInput } from '@/prisma/models';
 
@@ -55,7 +54,8 @@ selfRouter.get({
 				data,
 				include: {
 					settings: true,
-					follows: true
+					follows: true,
+					followedCommunities: true
 				}
 			});
 			auth.user = newUser;
@@ -158,10 +158,11 @@ selfRouter.post({
 				pid: account.pnid.pid
 			},
 			include: {
-				settings: true
+				settings: true,
+				followedCommunities: true,
+				follows: true
 			}
 		});
-		const userContent = await Content.findOne({ pid: account.pnid.pid });
 
 		// Clean non-user data
 		const postsJson = rawPosts.map(post => ({
@@ -173,7 +174,6 @@ selfRouter.post({
 		}
 
 		return {
-			user_content: userContent,
 			user,
 			posts: postsJson
 		};

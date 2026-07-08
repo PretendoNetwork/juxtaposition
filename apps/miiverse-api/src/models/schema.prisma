@@ -32,9 +32,10 @@ model User {
   banEndsAt     DateTime? @map("ban_ends_at")
   bannedBy      Int?      @map("banned_by")
 
-  follows   UserFollow[] @relation("follows")
-  followers UserFollow[] @relation("followers")
-  settings  UserSetting?
+  settings            UserSetting?
+  follows             UserFollow[]      @relation("follows")
+  followers           UserFollow[]      @relation("followers")
+  followedCommunities CommunityFollow[]
 
   @@map("users")
 }
@@ -68,6 +69,17 @@ model UserFollow {
 
   @@unique([pid, followingPid])
   @@map("user_follows")
+}
+
+/// Community Follow
+model CommunityFollow {
+  pid         Int    @id
+  communityId String @map("community_id")
+
+  user User @relation(fields: [pid], references: [pid], onDelete: Cascade)
+
+  @@unique([pid, communityId])
+  @@map("community_follows")
 }
 
 /// Notification content

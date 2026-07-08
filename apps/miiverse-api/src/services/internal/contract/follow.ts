@@ -19,10 +19,10 @@ export function mapFollowUser(action: FollowAction, targetPid: number, targetFol
 	};
 }
 
-export function mapFollowCommunity(action: FollowAction, target: HydratedCommunityDocument): FollowDto {
+export function mapFollowCommunity(action: FollowAction, target: HydratedCommunityDocument, followCount: number): FollowDto {
 	return {
 		action,
 		id: target.olive_community_id,
-		follower_count: target.followers
+		follower_count: followCount
 	};
 }

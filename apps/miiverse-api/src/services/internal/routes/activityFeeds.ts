@@ -124,7 +124,7 @@ activityFeedsRouter.get({
 		response: feedPageDtoSchema(postSchema)
 	},
 	async handler({ query, auth, db }) {
-		const { content, pnid } = auth!; // Auth guard protects it
+		const { pnid } = auth!; // Auth guard protects it
 
 		const anyOfQueries: FilterQuery<IPost>[] = [
 			{ pid: pnid.pid } // Add own posts
@@ -134,10 +134,13 @@ activityFeedsRouter.get({
 				pid: pnid.pid
 			}
 		});
+		const followedComms = await db.communityFollow.findMany({
+			where: {
+				pid: pnid.pid
+			}
+		});
 		anyOfQueries.push({ pid: followedUsers.map(v => v.followingPid) }); // Add following users posts
-		if (content) {
-			anyOfQueries.push({ community_id: content.followed_communities }); // Add following communities posts
-		}
+		anyOfQueries.push({ community_id: followedComms.map(v => v.communityId) }); // Add following communities posts
 
 		const posts = await Post
 			.find(deleteOptional({

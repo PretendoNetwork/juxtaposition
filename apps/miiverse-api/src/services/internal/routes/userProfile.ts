@@ -13,7 +13,6 @@ import { COMMUNITY_TYPE } from '@/types/mongoose/community';
 import { Community } from '@/models/community';
 import { followSchema, mapFollowUser } from '@/services/internal/contract/follow';
 import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
-import { Content } from '@/models/content';
 import type { FilterQuery } from 'mongoose';
 import type { ICommunity } from '@/types/mongoose/community';
 import type { UserFollowWhereInput, UserWhereInput } from '@/prisma/models';
@@ -200,17 +199,19 @@ userProfileRouter.get({
 				settings: true
 			}
 		});
-		const content = await Content.findOne({ pid });
-		if (!user || !content || !canAccessUser(auth, user)) {
+		if (!user || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
 		}
 
-		// User contents frequently have a `0` element in it
-		const targetCommunities = (content.followed_communities ?? []).filter(v => v !== '0');
+		const followedComms = await db.communityFollow.findMany({
+			where: {
+				pid
+			}
+		});
 
 		const dbQuery: FilterQuery<ICommunity> = deleteOptional({
 			olive_community_id: {
-				$in: targetCommunities
+				$in: followedComms.map(v => v.communityId)
 			},
 			type: {
 				$ne: COMMUNITY_TYPE.Private

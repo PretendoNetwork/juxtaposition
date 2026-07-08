@@ -4,7 +4,6 @@ import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { pageControlSchema } from '@/services/internal/contract/page';
 import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
-import { Content } from '@/models/content';
 
 export const onboardingRouter = createInternalApiRouter();
 
@@ -25,7 +24,7 @@ onboardingRouter.post({
 			throw errors.for('requires_auth');
 		}
 
-		if (auth.user && auth.content) {
+		if (auth.user) {
 			// Already completed the full onboarding process
 			return mapResult('success');
 		}
@@ -52,11 +51,6 @@ onboardingRouter.post({
 						}
 					}
 				}
-			});
-		}
-		if (!auth.content) {
-			await Content.create({
-				pid: auth.pnid.pid
 			});
 		}
 

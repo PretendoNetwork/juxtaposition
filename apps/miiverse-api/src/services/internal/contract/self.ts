@@ -89,7 +89,7 @@ export function mapBannedSelf(auth: AccountData, banCode: BanCodesEnum, banLiftD
 }
 
 export function mapSelf(auth: AccountData): SelfDto {
-	if (!auth.user || !auth.content) {
+	if (!auth.user) {
 		return {
 			...baseSelf,
 			pid: auth.pnid.pid
@@ -103,7 +103,7 @@ export function mapSelf(auth: AccountData): SelfDto {
 		miiName: auth.user.displayName,
 		hasDoneOnboarding: true,
 		content: {
-			followed_communities: auth.content.followed_communities.filter(v => v !== '0'),
+			followed_communities: auth.user.followedCommunities.map(v => v.communityId),
 			followed_users: auth.user.follows.map(v => v.followingPid)
 		},
 		permissions: {
