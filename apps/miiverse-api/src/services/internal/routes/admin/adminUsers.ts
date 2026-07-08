@@ -12,8 +12,9 @@ import { createNewLimitedPostingNotification } from '@/services/internal/utils/n
 import { accountStatusDisplayMap } from '@/services/internal/utils/communities';
 import { accountActionDisplayMap, createLogEntry } from '@/services/internal/utils/auditLogs';
 import { humanDate } from '@/services/internal/utils/dates';
+import { buildPrismaSearchQuery } from '@/services/internal/utils/search';
 import type { LogEntryActions } from '@/models/logs';
-import type { UserUpdateInput } from '@/prisma/models';
+import type { UserUpdateInput, UserWhereInput } from '@/prisma/models';
 
 export const adminUsersRouter = createInternalApiRouter();
 
@@ -23,13 +24,25 @@ adminUsersRouter.get({
 	guard: guards.moderator,
 	schema: {
 		query: z.object({
-			search: z.string().optional()
+			search: z.string().trim().optional()
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(shallowUserSchema)
 	},
 	async handler({ query, db }) {
-		// TODO search query
-		const dbQuery = {};
+		let dbQuery: UserWhereInput = {};
+		if (query.search) {
+			const searchOrStatements: UserWhereInput[] = [];
+			searchOrStatements.push(buildPrismaSearchQuery(['displayName'], query.search));
+			if (query.search.match(/^\d+$/)) {
+				searchOrStatements.push({
+					pid: Number(query.search)
+				});
+			}
+			dbQuery = {
+				OR: searchOrStatements
+			};
+		}
+
 		const users = await db.user.findMany({
 			where: dbQuery,
 			skip: query.offset,
