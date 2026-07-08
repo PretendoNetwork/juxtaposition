@@ -41,7 +41,6 @@ export interface ICommunity {
 	owner?: number;
 	created_at: Date;
 	empathy_count: number;
-	followers: number;
 	has_shop_page: number;
 	icon: string;
 	ctr_header?: string;
@@ -69,7 +68,6 @@ type CommunityDefaultedFields =
 	'admins' |
 	'created_at' |
 	'empathy_count' |
-	'followers' |
 	'has_shop_page' |
 	'icon' |
 	'title_ids' |

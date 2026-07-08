@@ -11,9 +11,9 @@ export const adminCommunitySchema = communitySchema.extend({
 
 export type AdminCommunityDto = z.infer<typeof adminCommunitySchema>;
 
-export function mapAdminCommunity(comm: HydratedCommunityDocument): AdminCommunityDto {
+export function mapAdminCommunity(comm: HydratedCommunityDocument, followerCount: number): AdminCommunityDto {
 	return {
-		...mapCommunity(comm),
+		...mapCommunity(comm, followerCount),
 		isRecommended: !!comm.is_recommended,
 		hasShopPage: !!comm.has_shop_page,
 		platformId: comm.platform_id,

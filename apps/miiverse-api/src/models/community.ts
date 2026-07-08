@@ -100,10 +100,6 @@ const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods
 		type: Number,
 		default: 0
 	},
-	followers: {
-		type: Number,
-		default: 0
-	},
 	has_shop_page: {
 		type: Number,
 		default: 0

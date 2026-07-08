@@ -224,7 +224,18 @@ userProfileRouter.get({
 			.limit(query.limit);
 		const total = await Community.countDocuments(dbQuery);
 
-		return mapPage(total, communities.map(c => mapCommunity(c)));
+		const ids = communities.map(v => v.olive_community_id);
+		const followers = await db.communityFollow.groupBy({
+			by: ['communityId'],
+			_count: true,
+			where: {
+				communityId: {
+					in: ids
+				}
+			}
+		});
+
+		return mapPage(total, communities.map(c => mapCommunity(c, followers.find(v => v.communityId === c.olive_community_id)?._count ?? 0)));
 	}
 });
 

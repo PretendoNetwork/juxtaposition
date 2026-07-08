@@ -30,7 +30,7 @@ communitiesRouter.get({
 		}).extend(pageControlSchema(90)),
 		response: pageDtoSchema(communitySchema)
 	},
-	async handler({ query, auth }) {
+	async handler({ query, auth, db }) {
 		const typesToFilter: RootFilterQuery<ICommunity> = auth?.moderator
 			? {}
 			: {
@@ -57,7 +57,18 @@ communitiesRouter.get({
 			.limit(query.limit);
 		const total = await Community.countDocuments(dbQuery);
 
-		return mapPage(total, communities.map(c => mapCommunity(c)));
+		const ids = communities.map(v => v.olive_community_id);
+		const followers = await db.communityFollow.groupBy({
+			by: ['communityId'],
+			_count: true,
+			where: {
+				communityId: {
+					in: ids
+				}
+			}
+		});
+
+		return mapPage(total, communities.map(c => mapCommunity(c, followers.find(v => v.communityId === c.olive_community_id)?._count ?? 0)));
 	}
 });
 
@@ -71,7 +82,7 @@ communitiesRouter.get({
 		}),
 		response: listDtoSchema(communitySchema)
 	},
-	async handler({ query }) {
+	async handler({ query, db }) {
 		// TODO add caching
 		const popularCommunityIds = await calculateMostPopularCommunities(popularRangeMs);
 		const popularCommunities = await Community.aggregate<HydratedCommunityDocument>([
@@ -92,7 +103,18 @@ communitiesRouter.get({
 			{ $project: { index: 0, _id: 0 } }
 		]);
 
-		return mapList(popularCommunities.map(c => mapCommunity(c)));
+		const ids = popularCommunities.map(v => v.olive_community_id);
+		const followers = await db.communityFollow.groupBy({
+			by: ['communityId'],
+			_count: true,
+			where: {
+				communityId: {
+					in: ids
+				}
+			}
+		});
+
+		return mapList(popularCommunities.map(c => mapCommunity(c, followers.find(v => v.communityId === c.olive_community_id)?._count ?? 0)));
 	}
 });
 
@@ -145,7 +167,7 @@ communitiesRouter.get({
 		}),
 		response: communitySchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		let titleId: undefined | string = undefined;
 		let communityId: undefined | string = params.id;
 		if (params.id.startsWith('tid:')) {
@@ -170,7 +192,13 @@ communitiesRouter.get({
 			throw errors.for('not_found');
 		}
 
-		return mapCommunity(community);
+		const followers = await db.communityFollow.count({
+			where: {
+				communityId: community.olive_community_id
+			}
+		});
+
+		return mapCommunity(community, followers);
 	}
 });
 
