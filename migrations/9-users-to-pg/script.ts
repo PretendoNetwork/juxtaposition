@@ -123,23 +123,7 @@ async function main() {
 			await pg.query("BEGIN");
 
 			const follows = (content.followed_users as number[] ?? []).filter(v=>v && v > 0);
-			if (follows.length > 0) {
-				const values = follows
-				.map((_, i) => `($1, $${i + 2})`)
-				.join(", ");
-
-				await pg.query(
-					`
-					INSERT INTO user_follows (pid, following_pid)
-					VALUES ${values}
-					ON CONFLICT DO NOTHING
-					`,
-					[
-						content.pid,
-						...follows,
-					]
-				);
-			}
+			await migrateFollower(content.pid, follows);
 
 			const communityIds = (content.followed_communities as string[] ?? []).filter(v=>v && v.length > 0);
 			if (communityIds.length > 0) {
@@ -179,3 +163,43 @@ await main().catch((err) => {
 
 await pg.end();
 await mongo.close();
+
+async function migrateFollower(pid: number, targetPids: number[]) {
+	let finalTargetPids = [...targetPids];
+
+	while (true) {
+		try {
+			if (finalTargetPids.length > 0) {
+				const values = finalTargetPids
+				.map((_, i) => `($1, $${i + 2})`)
+				.join(", ");
+
+				await pg.query(
+					`
+					INSERT INTO user_follows (pid, following_pid)
+					VALUES ${values}
+					ON CONFLICT DO NOTHING
+					`,
+					[
+						pid,
+						...finalTargetPids,
+					]
+				);
+			}
+			return; // Success
+		} catch (err: any) {
+			if (err && err.code === '23503' && err.constraint === 'user_follows_following_pid_fkey') {
+				const match = (err.detail as string ?? '').match(/\(following_pid\)=\((\d+)\)/);
+				if (!match || !match[1]) {
+					console.error("Failed to extract pid from error detail", err);
+					throw err;
+				}
+				const pidToRemove = Number(match[1])
+				finalTargetPids = finalTargetPids.filter(v=>v!==pidToRemove);
+				console.error(`Cannot follow nonexisting user: ${pidToRemove} - removing follow and reimporting followers for ${pid}`)
+				continue; // Retry
+			}
+			throw err;
+		}
+	}
+}
