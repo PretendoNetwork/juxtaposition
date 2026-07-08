@@ -120,8 +120,6 @@ async function main() {
 		console.log(`Processing ${content.pid}`);
 
 		try {
-			await pg.query("BEGIN");
-
 			const follows = (content.followed_users as number[] ?? []).filter(v=>v && v > 0);
 			await migrateFollower(content.pid, follows);
 
@@ -144,11 +142,8 @@ async function main() {
 				);
 			}
 
-			await pg.query("COMMIT");
-
 			migratedContent++;
 		} catch (err) {
-			await pg.query("ROLLBACK");
 			console.error(`Failed to migrate content ${content.pid}`, err);
 		}
 	}
