@@ -380,8 +380,10 @@ userProfileRouter.delete({
 
 		await db.userFollow.delete({
 			where: {
-				pid: currentUserPid,
-				followingPid: targetUserPid
+				pid_followingPid: {
+					pid: currentUserPid,
+					followingPid: targetUserPid
+				}
 			}
 		});
 		return mapFollowUser('unfollow', targetUserPid, targetFollowCount - 1);

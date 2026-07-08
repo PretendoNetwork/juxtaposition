@@ -47,7 +47,7 @@ model UserSetting {
 
   receiveNotifications        Boolean            @map("receive_notifications")
   profilePrivacy              ProfilePrivacyType @map("profile_privacy")
-  isFavouriteCommunityVisible Boolean            @map("is_favouriteCommunity_visible")
+  isFavouriteCommunityVisible Boolean            @map("is_favourite_community_visible")
   isCountryVisible            Boolean            @map("is_country_visible")
   isRelationshipVisible       Boolean            @map("is_relationship_visible")
   isBirthdayVisible           Boolean            @map("is_birthday_visible")
@@ -61,24 +61,24 @@ model UserSetting {
 
 /// User Follow
 model UserFollow {
-  pid          Int @id
+  pid          Int
   followingPid Int @map("following_pid")
 
   user          User @relation(name: "follows", fields: [pid], references: [pid], onDelete: Cascade)
   followingUser User @relation(name: "followers", fields: [followingPid], references: [pid], onDelete: Cascade)
 
-  @@unique([pid, followingPid])
+  @@id([pid, followingPid])
   @@map("user_follows")
 }
 
 /// Community Follow
 model CommunityFollow {
-  pid         Int    @id
+  pid         Int
   communityId String @map("community_id")
 
   user User @relation(fields: [pid], references: [pid], onDelete: Cascade)
 
-  @@unique([pid, communityId])
+  @@id([pid, communityId])
   @@map("community_follows")
 }
 

@@ -277,8 +277,10 @@ communitiesRouter.delete({
 
 		await db.communityFollow.delete({
 			where: {
-				pid: currentUser.pnid.pid,
-				communityId
+				pid_communityId: {
+					pid: currentUser.pnid.pid,
+					communityId
+				}
 			}
 		});
 		return mapFollowCommunity('unfollow', community, followCount - 1);
