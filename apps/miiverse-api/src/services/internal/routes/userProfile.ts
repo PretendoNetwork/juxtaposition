@@ -3,7 +3,6 @@ import { deleteOptional } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
-import { Settings } from '@/models/settings';
 import { mapShallowUser, mapUserProfile, shallowUserSchema, userProfileSchema } from '@/services/internal/contract/user';
 import { errors } from '@/services/internal/errors';
 import { createNewFollowNotification } from '@/services/internal/utils/notifications';
@@ -17,12 +16,20 @@ import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/us
 import { Content } from '@/models/content';
 import type { FilterQuery } from 'mongoose';
 import type { ICommunity } from '@/types/mongoose/community';
-import type { ISettings } from '@/types/mongoose/settings';
+import type { UserWhereInput } from '@/prisma/models';
 
 export const userProfileRouter = createInternalApiRouter();
 
-function notBanned() {
-	return { account_status: { $in: [0, 1] } };
+function notBannedUserQuery(query?: UserWhereInput): UserWhereInput {
+	const queries: UserWhereInput[] = [
+		{ accountStatus: { in: [0, 1] } }
+	];
+	if (query) {
+		queries.push(query);
+	}
+	return {
+		AND: queries
+	};
 }
 
 userProfileRouter.get({
@@ -37,9 +44,16 @@ userProfileRouter.get({
 		}),
 		response: userProfileSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
 		const content = await Content.findOne({ pid });
 		const pnid = await getUserAccountData(pid);
 		if (!user || !content || !pnid || pnid.deleted) {
@@ -74,9 +88,16 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
 		if (!user) {
 			throw errors.for('not_found');
 		}
@@ -84,18 +105,22 @@ userProfileRouter.get({
 		assertCanAccessUser(auth, user);
 
 		const targetPids = await getUserFriendPIDs(pid);
-		const dbQuery: FilterQuery<ISettings> = deleteOptional({
+		const dbQuery = notBannedUserQuery({
 			pid: {
-				$in: targetPids
-			},
-			...notBanned()
+				in: targetPids
+			}
 		});
-		const items = await Settings
-			.find(dbQuery)
-			.sort({ pid: -1 })
-			.skip(query.offset)
-			.limit(query.limit);
-		const total = await Settings.countDocuments(dbQuery);
+		const items = await db.user.findMany({
+			where: dbQuery,
+			orderBy: {
+				pid: 'desc'
+			},
+			skip: query.offset,
+			take: query.limit
+		});
+		const total = await db.user.count({
+			where: dbQuery
+		});
 
 		return mapPage(total, items.map(mapShallowUser));
 	}
@@ -113,9 +138,16 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
 		const content = await Content.findOne({ pid });
 		if (!user || !content || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
@@ -123,19 +155,22 @@ userProfileRouter.get({
 
 		// User contents frequently have a `0` element in it
 		const targetPids = (content.following_users ?? []).filter(v => v !== 0);
-
-		const dbQuery: FilterQuery<ISettings> = deleteOptional({
+		const dbQuery = notBannedUserQuery({
 			pid: {
-				$in: targetPids
-			},
-			...notBanned()
+				in: targetPids
+			}
 		});
-		const items = await Settings
-			.find(dbQuery)
-			.sort({ pid: -1 })
-			.skip(query.offset)
-			.limit(query.limit);
-		const total = await Settings.countDocuments(dbQuery);
+		const items = await db.user.findMany({
+			where: dbQuery,
+			orderBy: {
+				pid: 'desc'
+			},
+			skip: query.offset,
+			take: query.limit
+		});
+		const total = await db.user.count({
+			where: dbQuery
+		});
 
 		return mapPage(total, items.map(mapShallowUser));
 	}
@@ -153,9 +188,16 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(communitySchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
 		const content = await Content.findOne({ pid });
 		if (!user || !content || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
@@ -197,9 +239,16 @@ userProfileRouter.get({
 		}).extend(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
 		const content = await Content.findOne({ pid });
 		if (!user || !content || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
@@ -211,18 +260,22 @@ userProfileRouter.get({
 			targetPids = targetPids.filter(v => v === query.followerId);
 		}
 
-		const dbQuery: FilterQuery<ISettings> = deleteOptional({
+		const dbQuery = notBannedUserQuery({
 			pid: {
-				$in: targetPids
-			},
-			...notBanned()
+				in: targetPids
+			}
 		});
-		const items = await Settings
-			.find(dbQuery)
-			.sort({ pid: -1 })
-			.skip(query.offset)
-			.limit(query.limit);
-		const total = await Settings.countDocuments(dbQuery);
+		const items = await db.user.findMany({
+			where: dbQuery,
+			orderBy: {
+				pid: 'desc'
+			},
+			skip: query.offset,
+			take: query.limit
+		});
+		const total = await db.user.count({
+			where: dbQuery
+		});
 
 		return mapPage(total, items.map(mapShallowUser));
 	}
@@ -238,9 +291,16 @@ userProfileRouter.post({
 		}),
 		response: followSchema
 	},
-	async handler({ params, db, auth }) {
+	async handler({ params, auth, db }) {
 		const targetUserPid = params.id;
-		const targetUser = await Settings.findOne({ pid: targetUserPid });
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: targetUserPid
+			},
+			include: {
+				settings: true
+			}
+		});
 		const targetUserContent = await Content.findOne({ pid: targetUserPid });
 		if (!targetUser || !targetUserContent) {
 			throw errors.for('not_found');
@@ -280,9 +340,16 @@ userProfileRouter.delete({
 		}),
 		response: followSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		const targetUserPid = params.id;
-		const targetUser = await Settings.findOne({ pid: targetUserPid });
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: targetUserPid
+			},
+			include: {
+				settings: true
+			}
+		});
 		const targetUserContent = await Content.findOne({ pid: targetUserPid });
 		if (!targetUser || !targetUserContent) {
 			throw errors.for('not_found');

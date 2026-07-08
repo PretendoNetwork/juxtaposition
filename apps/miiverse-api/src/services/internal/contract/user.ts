@@ -2,6 +2,8 @@ import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
+import type { UserWithSettings } from '@/services/internal/utils/user';
 
 export const userBadgeSchema = z.enum([
 	'al:dev',
@@ -42,11 +44,11 @@ export const userProfileSchema = asOpenapi('UserProfile', z.object({
 
 export type UserProfileDto = z.infer<typeof userProfileSchema>;
 
-export function mapShallowUser(settings: HydratedSettingsDocument): ShallowUserDto {
+export function mapShallowUser(user: User): ShallowUserDto {
 	return {
-		pid: settings.pid,
-		accountStatus: settings.account_status,
-		miiName: settings.screen_name
+		pid: user.pid,
+		accountStatus: user.accountStatus,
+		miiName: user.displayName
 	};
 }
 
@@ -80,7 +82,7 @@ export function getProfileFlags(pnid: GetUserDataResponse): UserBadgeEnum[] {
 	return flags;
 }
 
-export function mapUserProfile(settings: HydratedSettingsDocument, pnid: GetUserDataResponse, followers: number, posts: number): UserProfileDto {
+export function mapUserProfile(user: UserWithSettings, pnid: GetUserDataResponse, followers: number, posts: number): UserProfileDto {
 	return {
 		pid: settings.pid,
 		accountStatus: settings.account_status,

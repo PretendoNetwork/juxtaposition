@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { mapUserProfile, userProfileSchema } from '@/services/internal/contract/user';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { UserWithSettings } from '@/services/internal/utils/user';
 
 export const adminUserProfileSchema = userProfileSchema.extend({
 	moderation: z.object({
@@ -11,7 +11,7 @@ export const adminUserProfileSchema = userProfileSchema.extend({
 
 export type AdminUserProfileDto = z.infer<typeof adminUserProfileSchema>;
 
-export function mapAdminUserProfile(settings: HydratedSettingsDocument, pnid: GetUserDataResponse, followers: number, posts: number): AdminUserProfileDto {
+export function mapAdminUserProfile(settings: UserWithSettings, pnid: GetUserDataResponse, followers: number, posts: number): AdminUserProfileDto {
 	const profile = mapUserProfile(settings, pnid, followers, posts);
 	profile.profileInfo = {
 		comment: settings.profile_comment ?? null,

@@ -4,7 +4,7 @@ import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/
 import type { HydratedReportDocument } from '@/types/mongoose/report';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
 
 export const reportSchema = z.object({
 	id: z.string(),
@@ -28,7 +28,7 @@ export const reportSchema = z.object({
 
 export type ReportDto = z.infer<typeof reportSchema>;
 
-export function mapReport(report: HydratedReportDocument, users: HydratedSettingsDocument[], post: HydratedPostDocument | null, community: HydratedCommunityDocument | null): ReportDto {
+export function mapReport(report: HydratedReportDocument, users: User[], post: HydratedPostDocument | null, community: HydratedCommunityDocument | null): ReportDto {
 	const hasPost = post && !post.removed ? post : null;
 	const isResolved = report.resolved || !hasPost;
 

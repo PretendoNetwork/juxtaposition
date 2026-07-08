@@ -3,8 +3,6 @@ import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
-import { buildSearchQuery } from '@/services/internal/utils/search';
-import { Settings } from '@/models/settings';
 import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
 import { getUserAccountData } from '@/util';
@@ -16,8 +14,6 @@ import { createNewLimitedPostingNotification } from '@/services/internal/utils/n
 import { accountStatusDisplayMap } from '@/services/internal/utils/communities';
 import { accountActionDisplayMap, createLogEntry } from '@/services/internal/utils/auditLogs';
 import { humanDate } from '@/services/internal/utils/dates';
-import type { FilterQuery } from 'mongoose';
-import type { ISettings } from '@/types/mongoose/settings';
 import type { LogEntryActions } from '@/models/logs';
 
 export const adminUsersRouter = createInternalApiRouter();
@@ -32,13 +28,17 @@ adminUsersRouter.get({
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ query }) {
-		const dbQuery: FilterQuery<ISettings> = query.search ? buildSearchQuery(['pid', 'screen_name'], query.search) : {};
-		const users = await Settings
-			.find(dbQuery)
-			.limit(query.limit)
-			.skip(query.offset);
-		const total = await Settings.countDocuments(dbQuery);
+	async handler({ query, db }) {
+		// TODO search query
+		const dbQuery = {};
+		const users = await db.user.findMany({
+			where: dbQuery,
+			skip: query.offset,
+			take: query.limit
+		});
+		const total = await db.user.count({
+			where: dbQuery
+		});
 
 		return mapPage(total, users.map(v => mapShallowUser(v)));
 	}
@@ -56,13 +56,20 @@ adminUsersRouter.get({
 		}),
 		response: adminUserProfileSchema
 	},
-	async handler({ params }) {
-		const settings = await Settings.findOne({ pid: params.id });
+	async handler({ params, db }) {
+		const user = await db.user.findUnique({
+			where: {
+				pid: params.id
+			},
+			include: {
+				settings: true
+			}
+		});
 		const content = await Content.findOne({ pid: params.id });
 		const pnid = await getUserAccountData(params.id).catch(() => {
 			return null;
 		});
-		if (!settings || !content || !pnid) {
+		if (!user || !content || !pnid) {
 			throw errors.for('not_found');
 		}
 
@@ -74,7 +81,7 @@ adminUsersRouter.get({
 			removed: false
 		}).countDocuments();
 
-		return mapAdminUserProfile(settings, pnid, followers, totalPosts);
+		return mapAdminUserProfile(user, pnid, followers, totalPosts);
 	}
 });
 
@@ -90,13 +97,20 @@ adminUsersRouter.get({
 		}),
 		response: moderationProfileSchema
 	},
-	async handler({ params }) {
-		const settings = await Settings.findOne({ pid: params.id });
-		if (!settings) {
+	async handler({ params, db }) {
+		const user = await db.user.findUnique({
+			where: {
+				pid: params.id
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (!user) {
 			throw errors.for('not_found');
 		}
 
-		return mapModerationProfile(settings);
+		return mapModerationProfile(user);
 	}
 });
 

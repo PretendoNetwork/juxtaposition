@@ -10,7 +10,6 @@ import { createNewPost, postCreateSchema } from '@/services/internal/utils/posts
 import { errors } from '@/services/internal/errors';
 import { isPostingAllowed } from '@/services/internal/utils/communities';
 import { mapSelf } from '@/services/internal/contract/self';
-import { Settings } from '@/models/settings';
 
 export const communityPostsRouter = createInternalApiRouter();
 
@@ -25,7 +24,7 @@ communityPostsRouter.get({
 		query: z.object(pageControlSchema()),
 		response: feedPageDtoSchema(postSchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const posts = await Post
 			.find(deleteOptional({
 				community_id: params.id,
@@ -40,8 +39,14 @@ communityPostsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
-		const users = await Settings.find({ pid: { $in: userIds } });
+		const userIds = posts.flatMap(v => v.removed_by).filter((v): v is number => !!v);
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: userIds
+				}
+			}
+		});
 
 		const mappedPosts = posts.map((p) => {
 			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
@@ -67,7 +72,7 @@ communityPostsRouter.get({
 		query: z.object(pageControlSchema()),
 		response: feedPageDtoSchema(postSchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const posts = await Post
 			.find(deleteOptional({
 				community_id: params.id,
@@ -81,8 +86,14 @@ communityPostsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
-		const users = await Settings.find({ pid: { $in: userIds } });
+		const userIds = posts.flatMap(v => v.removed_by).filter((v): v is number => !!v);
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: userIds
+				}
+			}
+		});
 
 		const mappedPosts = posts.map((p) => {
 			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;

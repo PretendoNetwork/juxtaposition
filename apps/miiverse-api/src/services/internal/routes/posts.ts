@@ -16,11 +16,10 @@ import { Report } from '@/models/report';
 import { createNewPost, postCreateSchema } from '@/services/internal/utils/posts';
 import { isPostingAllowed } from '@/services/internal/utils/communities';
 import { mapSelf } from '@/services/internal/contract/self';
-import { Settings } from '@/models/settings';
 import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
 
 export const postsRouter = createInternalApiRouter();
 
@@ -41,7 +40,7 @@ postsRouter.get({
 		}).extend(pageControlSchema(500)),
 		response: pageDtoSchema(postSchema)
 	},
-	async handler({ query, auth }) {
+	async handler({ query, auth, db }) {
 		if (query.parent_id && !query.include_replies) {
 			throw errors.for('bad_request', 'Please set include_replies=true to get replies to a parent');
 		}
@@ -51,7 +50,14 @@ postsRouter.get({
 		}
 		// Extra checks for user posts
 		if (query.posted_by) {
-			const user = await Settings.findOne({ pid: query.posted_by });
+			const user = await db.user.findUnique({
+				where: {
+					pid: query.posted_by
+				},
+				include: {
+					settings: true
+				}
+			});
 			// We can't see this user for some reason (doesn't exist, permission, etc)
 			if (!user || !canAccessUser(auth, user)) {
 				return mapPage(0, []);
@@ -79,8 +85,14 @@ postsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
-		const users = await Settings.find({ pid: { $in: userIds } });
+		const userIds = posts.flatMap(v => v.removed_by).filter((v): v is number => !!v);
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: userIds
+				}
+			}
+		});
 
 		const mappedPosts = posts.map((p) => {
 			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
@@ -104,7 +116,7 @@ postsRouter.get({
 		params: postIdObjSchema,
 		response: postSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		const post = await Post.findOne({
 			id: params.post_id,
 			message_to_pid: null, // messages aren't really posts
@@ -115,12 +127,23 @@ postsRouter.get({
 		}
 		const community = await Community.findOne({ olive_community_id: post.community_id });
 
-		let remover: HydratedSettingsDocument | null = null;
+		let remover: User | null = null;
 		if (post.removed_by) {
-			remover = await Settings.findOne({ pid: post.removed_by });
+			remover = await db.user.findUnique({
+				where: {
+					pid: post.removed_by
+				}
+			});
 		}
 
-		const poster = await Settings.findOne({ pid: post.pid });
+		const poster = await db.user.findUnique({
+			where: {
+				pid: post.pid
+			},
+			include: {
+				settings: true
+			}
+		});
 		if (!poster) {
 			throw errors.for('not_found');
 		}

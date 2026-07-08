@@ -5,6 +5,7 @@ import { getUserContent, getFollowedUsers } from '@/database';
 import { getValueFromQueryString, getUserFriendPIDs } from '@/util';
 import { Post } from '@/models/post';
 import { ApiErrorCode, badRequest } from '@/errors';
+import { userToOliveUser } from '@/services/internal/utils';
 import type { CommunityPostsQuery } from '@/types/mongoose/community-posts-query';
 import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
 import type { PeopleFollowingResult, PeoplePostsResult } from '@/types/miiverse/people';
@@ -121,7 +122,7 @@ router.get('/:pid/following', async function (request: express.Request, response
 		return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
 	}
 
-	const people = await getFollowedUsers(userContent);
+	const people = await getFollowedUsers(pid);
 
 	const result: PeopleFollowingResult = {
 		has_error: 0,
@@ -132,7 +133,7 @@ router.get('/:pid/following', async function (request: express.Request, response
 
 	for (const person of people) {
 		result.people.push({
-			person: person.json()
+			person: userToOliveUser(person)
 		});
 	}
 

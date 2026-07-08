@@ -12,10 +12,10 @@ import {
 	getPostByID,
 	getUserContent,
 	getPostReplies,
-	getUserSettings,
 	getCommunityByID,
 	getCommunityByTitleID,
-	getDuplicatePosts
+	getDuplicatePosts,
+	getUser
 } from '@/database';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
@@ -28,8 +28,8 @@ import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { CommunityShotMode, HydratedCommunityDocument } from '@/types/mongoose/community';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 import type { ParamPack } from '@/types/common/param-pack';
+import type { UserWithSettings } from '@/services/internal/utils/user';
 
 const APP_DATA_MAX_SIZE = 1024; // * 0x400 - Real name is `nn::olv::APP_DATA_MAX_SIZE`
 
@@ -199,13 +199,13 @@ router.get('/', async function (request: express.Request, response: express.Resp
 	}).end({ pretty: true, allowEmpty: true }));
 });
 
-function canPost(community: HydratedCommunityDocument, userSettings: HydratedSettingsDocument, parentPost: HydratedPostDocument | null, user: GetUserDataResponse): boolean {
+function canPost(community: HydratedCommunityDocument, dbUser: UserWithSettings, parentPost: HydratedPostDocument | null, user: GetUserDataResponse): boolean {
 	const isReply = !!parentPost;
 	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
 	const isOpenCommunity = community.permissions.open;
 
 	const isCommunityAdmin = (community.admins ?? []).includes(user.pid);
-	const isUserLimitedFromPosting = userSettings.account_status !== 0;
+	const isUserLimitedFromPosting = dbUser.accountStatus !== 0;
 	const hasAccessLevelRequirement = isReply
 		? user.accessLevel >= community.permissions.minimum_new_comment_access_level
 		: user.accessLevel >= community.permissions.minimum_new_post_access_level;
@@ -257,10 +257,10 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		return serverError(response, ApiErrorCode.ACCOUNT_SERVER_ERROR);
 	}
 
-	const userSettings = await getUserSettings(request.pid);
+	const dbUser = await getUser(request.pid);
 	const bodyCheck = newPostSchema.safeParse(request.body);
 
-	if (!userSettings || !bodyCheck.success) {
+	if (!dbUser || !bodyCheck.success) {
 		request.log.warn('Body check failed');
 		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
@@ -323,11 +323,11 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		}
 	}
 
-	if (!community || userSettings.account_status !== 0 || community.community_id === 'announcements') {
+	if (!community || dbUser.accountStatus !== 0 || community.community_id === 'announcements') {
 		return badRequest(response, ApiErrorCode.NOT_FOUND_COMMUNITY, 404);
 	}
 
-	if (!canPost(community, userSettings, parentPost, request.user)) {
+	if (!canPost(community, dbUser, parentPost, request.user)) {
 		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 
@@ -373,7 +373,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		id: '', // * This gets changed when saving the document for the first time
 		title_id: request.paramPack.title_id,
 		community_id: community.olive_community_id,
-		screen_name: userSettings.screen_name,
+		screen_name: dbUser.displayName,
 		body: messageBody ? messageBody : '',
 		app_data: appData,
 		painting: '',

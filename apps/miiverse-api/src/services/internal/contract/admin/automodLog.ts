@@ -5,7 +5,7 @@ import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { HydratedAutomodLogDocument } from '@/models/automodLog';
 import type { HydratedAutomodRuleDocument } from '@/models/automodRules';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
 
 export const automodActionEnum = asOpenapi('AutomodActionEnum', z.enum(automodAction));
 
@@ -29,7 +29,7 @@ export const automodLogSchema = z.object({
 
 export type AutomodLogDto = z.infer<typeof automodLogSchema>;
 
-export function mapAutomodLog(log: HydratedAutomodLogDocument, user: HydratedSettingsDocument | null, rule: HydratedAutomodRuleDocument | null): AutomodLogDto {
+export function mapAutomodLog(log: HydratedAutomodLogDocument, user: User | null, rule: HydratedAutomodRuleDocument | null): AutomodLogDto {
 	return {
 		id: log.id,
 		createdAt: log.created_at,

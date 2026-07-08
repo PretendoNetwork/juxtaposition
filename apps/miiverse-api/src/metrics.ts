@@ -3,8 +3,8 @@ import expressMetrics from 'express-prom-bundle';
 import express from 'express';
 import { logger } from '@/logger';
 import { config } from '@/config';
-import { Settings } from '@/models/settings';
 import { Post } from '@/models/post';
+import { getDb } from '@/database';
 import type { Express, NextFunction, Request, Response } from 'express';
 
 // This file contains juxtaposition_ui prefixed metrics.
@@ -16,11 +16,14 @@ export const onlineNowGauge = new Gauge({
 	async collect(): Promise<void> {
 		const onlineRangeMs = 10 * 60 * 1000; // 10 minutes
 		const cutoff = new Date(Date.now() - onlineRangeMs);
-		const [result] = await Settings.aggregate<{ n: number } | undefined>([
-			{ $match: { last_active: { $gt: cutoff } } },
-			{ $count: 'n' }
-		]);
-		this.set(result?.n ?? 0);
+		const total = await getDb().user.count({
+			where: {
+				lastSeen: {
+					gt: cutoff
+				}
+			}
+		});
+		this.set(total);
 	}
 });
 
@@ -30,11 +33,14 @@ export const activeMonthlyGauge = new Gauge({
 	async collect(): Promise<void> {
 		const monthlyRangeMs = 30 * 24 * 60 * 60 * 1000;
 		const cutoff = new Date(Date.now() - monthlyRangeMs);
-		const [result] = await Settings.aggregate<{ n: number } | undefined>([
-			{ $match: { last_active: { $gt: cutoff } } },
-			{ $count: 'n' }
-		]);
-		this.set(result?.n ?? 0);
+		const total = await getDb().user.count({
+			where: {
+				lastSeen: {
+					gt: cutoff
+				}
+			}
+		});
+		this.set(total);
 	}
 });
 
@@ -44,11 +50,14 @@ export const activeYearlyGauge = new Gauge({
 	async collect(): Promise<void> {
 		const yearlyRangeMs = 365 * 24 * 60 * 60 * 1000;
 		const cutoff = new Date(Date.now() - yearlyRangeMs);
-		const [result] = await Settings.aggregate<{ n: number } | undefined>([
-			{ $match: { last_active: { $gt: cutoff } } },
-			{ $count: 'n' }
-		]);
-		this.set(result?.n ?? 0);
+		const total = await getDb().user.count({
+			where: {
+				lastSeen: {
+					gt: cutoff
+				}
+			}
+		});
+		this.set(total);
 	}
 });
 
@@ -56,7 +65,7 @@ export const totalUsersGauge = new Gauge({
 	name: 'juxtaposition_user_count_total',
 	help: 'Total number of registered users',
 	async collect(): Promise<void> {
-		const count = await Settings.estimatedDocumentCount();
+		const count = await getDb().user.count();
 		this.set(count);
 	}
 });

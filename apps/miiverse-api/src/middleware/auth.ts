@@ -1,7 +1,7 @@
 import moment from 'moment';
 import * as z from 'zod';
 import { getUserAccountData, getValueFromHeaders, decodeParamPack, getPIDFromServiceToken } from '@/util';
-import { getEndpoint, getUserSettings } from '@/database';
+import { getEndpoint, getUser } from '@/database';
 import { badRequest, ApiErrorCode, serverError } from '@/errors';
 import type express from 'express';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
@@ -87,26 +87,26 @@ async function auth(request: express.Request, response: express.Response, next: 
 	request.pid = pid;
 	request.paramPack = paramPackData;
 
-	const userSettings = await getUserSettings(request.pid);
+	const dbUser = await getUser(request.pid);
 
 	if (request.path === '/v1/endpoint') {
 		return next();
-	} else if (!userSettings) {
+	} else if (!dbUser) {
 		return badRequest(response, ApiErrorCode.SETUP_NOT_COMPLETE);
 	}
 
-	if (moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
-		userSettings.account_status = 0;
-		userSettings.ban_lift_date = null;
-		await userSettings.save();
+	if (moment(dbUser.ban_lift_date) <= moment() && dbUser.account_status !== 3) {
+		dbUser.account_status = 0;
+		dbUser.ban_lift_date = null;
+		await dbUser.save();
 	}
 
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
-	if (userSettings.account_status < 0 || userSettings.account_status > 1 || user.accessLevel < 0) {
-		if (userSettings.account_status === 2 && request.method === 'GET') {
+	if (dbUser.account_status < 0 || dbUser.account_status > 1 || user.accessLevel < 0) {
+		if (dbUser.account_status === 2 && request.method === 'GET') {
 			return next();
-		} else if (userSettings.account_status === 2) {
+		} else if (dbUser.account_status === 2) {
 			return badRequest(response, ApiErrorCode.ACCOUNT_POSTING_LIMITED);
 		} else {
 			return badRequest(response, ApiErrorCode.ACCOUNT_BANNED);

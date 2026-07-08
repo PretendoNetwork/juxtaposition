@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import type { AccountData } from '@/types/common/account-data';
+import type { User } from '@/prisma/client';
 
 export type HandlerContext = {
 	req: Request;
@@ -40,4 +41,11 @@ export function deleteOptional<T extends {}>(obj: T): Partial<T> { // Partial<T>
 		}
 	}
 	return obj;
+}
+
+export function userToOliveUser(user: User) {
+	return {
+		pid: user.pid,
+		screen_name: user.displayName
+	};
 }

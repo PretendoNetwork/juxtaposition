@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { pageControlSchema } from '@/services/internal/contract/page';
-import { Settings } from '@/models/settings';
 import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { Content } from '@/models/content';
@@ -20,7 +19,7 @@ onboardingRouter.post({
 		}).extend(pageControlSchema()),
 		response: resultSchema
 	},
-	async handler({ body, auth }) {
+	async handler({ body, auth, db }) {
 		if (!auth) {
 			// Needs an auth token
 			throw errors.for('requires_auth');
@@ -33,11 +32,19 @@ onboardingRouter.post({
 
 		const name = auth.pnid.mii?.name ?? 'Default';
 		if (!auth.settings) {
-			await Settings.create({
-				pid: auth.pnid.pid,
-				screen_name: name,
-				game_skill: body.experienceId,
-				receive_notifications: body.receiveNotifications
+			await db.user.create({
+				data: {
+					pid: auth.pnid.pid,
+					displayName: name,
+					accountStatus: 0,
+					settings: {
+						create: {
+							gameSkill: body.experienceId,
+							receiveNotifications: body.receiveNotifications,
+							isBirthdayVisible: false
+						}
+					}
+				}
 			});
 		}
 		if (!auth.content) {

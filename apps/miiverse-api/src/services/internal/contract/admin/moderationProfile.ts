@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { UserWithSettings } from '@/services/internal/utils/user';
 
 export const moderationProfileSchema = z.object({
 	pid: z.number(),
@@ -10,7 +10,7 @@ export const moderationProfileSchema = z.object({
 
 export type ModerationProfileDto = z.infer<typeof moderationProfileSchema>;
 
-export function mapModerationProfile(settings: HydratedSettingsDocument): ModerationProfileDto {
+export function mapModerationProfile(settings: UserWithSettings): ModerationProfileDto {
 	return {
 		pid: settings.pid,
 		accountStatus: settings.account_status,

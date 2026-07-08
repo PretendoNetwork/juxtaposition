@@ -3,7 +3,7 @@ import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { AccountData } from '@/types/common/account-data';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
 
 export const banCodes = z.enum(['network_ban', 'temp_ban', 'perma_ban']).openapi('BanCodeEnum');
 
@@ -125,7 +125,7 @@ export function mapSelfNotificationCount(unreadNotifications: number): SelfNotif
 	};
 }
 
-export function mapSelfFriendRequest(req: FriendRequest, user: HydratedSettingsDocument): SelfFriendRequestDto {
+export function mapSelfFriendRequest(req: FriendRequest, user: User): SelfFriendRequestDto {
 	return {
 		sentAt: new Date(Number(req.sent) * 1000),
 		sender: mapShallowUser(user),
