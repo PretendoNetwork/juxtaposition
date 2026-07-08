@@ -54,7 +54,8 @@ selfRouter.get({
 				},
 				data,
 				include: {
-					settings: true
+					settings: true,
+					follows: true
 				}
 			});
 			auth.user = newUser;
@@ -167,6 +168,9 @@ selfRouter.post({
 			...post.toJSON(),
 			removed_by: null
 		}));
+		if (user) {
+			user.bannedBy = null;
+		}
 
 		return {
 			user_content: userContent,
