@@ -105,7 +105,8 @@ async function auth(request: express.Request, response: express.Response, next: 
 					accountStatus: 0
 				},
 				include: {
-					settings: true
+					settings: true,
+					follows: true
 				}
 			});
 		}

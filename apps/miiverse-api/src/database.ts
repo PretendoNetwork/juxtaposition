@@ -14,7 +14,7 @@ import type { HydratedConversationDocument } from '@/models/conversation';
 import type { HydratedContentDocument } from '@/types/mongoose/content';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
-import type { UserWithSettings } from '@/services/internal/utils/user';
+import type { UserWithSettingsAndFollows } from '@/services/internal/utils/user';
 
 let prisma: PrismaClient | null = null;
 
@@ -161,13 +161,14 @@ export async function getEndpoint(accessLevel: string): Promise<HydratedEndpoint
 	});
 }
 
-export async function getUser(pid: number): Promise<UserWithSettings | null> {
+export async function getUser(pid: number): Promise<UserWithSettingsAndFollows | null> {
 	return await getDb().user.findUnique({
 		where: {
 			pid
 		},
 		include: {
-			settings: true
+			settings: true,
+			follows: true
 		}
 	});
 }
@@ -188,6 +189,18 @@ export async function getFollowedUsers(pid: number): Promise<User[]> {
 		}
 	});
 	return follows.map(v => v.followingUser);
+}
+
+export async function getFollowedUserPids(pid: number): Promise<number[]> {
+	const follows = await getDb().userFollow.findMany({
+		where: {
+			pid
+		},
+		select: {
+			followingPid: true
+		}
+	});
+	return follows.map(v => v.followingPid);
 }
 
 export async function getConversationByUsers(pids: number[]): Promise<HydratedConversationDocument | null> {

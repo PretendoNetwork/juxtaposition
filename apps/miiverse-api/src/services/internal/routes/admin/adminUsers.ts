@@ -6,7 +6,6 @@ import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/
 import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
 import { getUserAccountData } from '@/util';
-import { Content } from '@/models/content';
 import { mapModerationProfile, moderationProfileSchema } from '@/services/internal/contract/admin/moderationProfile';
 import { adminUserProfileSchema, mapAdminUserProfile } from '@/services/internal/contract/admin/adminUsers';
 import { createNewLimitedPostingNotification } from '@/services/internal/utils/notifications';
@@ -65,15 +64,18 @@ adminUsersRouter.get({
 				settings: true
 			}
 		});
-		const content = await Content.findOne({ pid: params.id });
 		const pnid = await getUserAccountData(params.id).catch(() => {
 			return null;
 		});
-		if (!user || !content || !pnid) {
+		if (!user || !pnid) {
 			throw errors.for('not_found');
 		}
 
-		const followers = content.following_users.filter(v => v !== 0).length;
+		const followers = await db.userFollow.count({
+			where: {
+				followingPid: user.pid
+			}
+		});
 		const totalPosts = await Post.find({
 			pid: params.id,
 			parent: null,

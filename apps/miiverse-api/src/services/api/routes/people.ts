@@ -1,7 +1,7 @@
 import express from 'express';
 import xmlbuilder from 'xmlbuilder';
 import moment from 'moment';
-import { getUserContent, getFollowedUsers } from '@/database';
+import { getFollowedUsers, getUser, getFollowedUserPids } from '@/database';
 import { getValueFromQueryString, getUserFriendPIDs } from '@/util';
 import { Post } from '@/models/post';
 import { ApiErrorCode, badRequest } from '@/errors';
@@ -15,12 +15,6 @@ const router = express.Router();
 /* GET post titles. */
 router.get('/', async function (request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
-
-	const userContent = await getUserContent(request.pid);
-
-	if (!userContent) {
-		return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
-	}
 
 	const query: CommunityPostsQuery = {
 		removed: false,
@@ -48,7 +42,8 @@ router.get('/', async function (request: express.Request, response: express.Resp
 	if (relation === 'friend') {
 		query.pid = { $in: await getUserFriendPIDs(request.pid) };
 	} else if (relation === 'following') {
-		query.pid = { $in: userContent.followed_users };
+		const followedUsers = await getFollowedUserPids(request.pid);
+		query.pid = { $in: followedUsers };
 	} else if (request.query.pid) {
 		const pidInputs = getValueFromQueryString(request.query, 'pid');
 		const pids = pidInputs.map(pid => Number(pid)).filter(pid => !isNaN(pid));
@@ -116,9 +111,8 @@ router.get('/:pid/following', async function (request: express.Request, response
 		return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
 	}
 
-	const userContent = await getUserContent(pid);
-
-	if (!userContent) {
+	const user = await getUser(pid);
+	if (!user) {
 		return badRequest(response, ApiErrorCode.NOT_FOUND, 404);
 	}
 

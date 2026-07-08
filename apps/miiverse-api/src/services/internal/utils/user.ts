@@ -1,10 +1,13 @@
 import { errors } from '@/services/internal/errors';
-import type { User, UserSetting } from '@/prisma/client';
+import type { User, UserFollow, UserSetting } from '@/prisma/client';
 import type { InternalAPIError } from '@/services/internal/errors';
 import type { AccountData } from '@/types/common/account-data';
 
 export type UserWithSettings = User & {
 	settings: UserSetting | null;
+};
+export type UserWithSettingsAndFollows = UserWithSettings & {
+	follows: UserFollow[];
 };
 
 function checkUserAccess(auth: AccountData | null, targetUser: UserWithSettings): InternalAPIError | null {

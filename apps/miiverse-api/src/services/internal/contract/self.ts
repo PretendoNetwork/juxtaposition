@@ -104,7 +104,7 @@ export function mapSelf(auth: AccountData): SelfDto {
 		hasDoneOnboarding: true,
 		content: {
 			followed_communities: auth.content.followed_communities.filter(v => v !== '0'),
-			followed_users: auth.content.followed_users.filter(v => v !== 0)
+			followed_users: auth.user.follows.map(v => v.followingPid)
 		},
 		permissions: {
 			moderator: auth.moderator,

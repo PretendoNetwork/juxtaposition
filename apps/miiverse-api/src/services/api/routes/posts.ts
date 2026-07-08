@@ -10,7 +10,6 @@ import {
 } from '@/util';
 import {
 	getPostByID,
-	getUserContent,
 	getPostReplies,
 	getCommunityByID,
 	getCommunityByTitleID,
@@ -60,13 +59,13 @@ router.post('/:post_id.delete', async function (request: express.Request, respon
 	response.type('application/xml');
 
 	const post = await getPostByID(request.params.post_id);
-	const userContent = await getUserContent(request.pid);
+	const user = await getUser(request.pid);
 
-	if (!post || !userContent) {
+	if (!post || !user) {
 		return badRequest(response, ApiErrorCode.FAIL_NOT_FOUND_POST, 404);
 	}
 
-	if (post.pid !== userContent.pid) {
+	if (post.pid !== user.pid) {
 		return badRequest(response, ApiErrorCode.NOT_ALLOWED, 403);
 	}
 

@@ -9,7 +9,7 @@ import {
 	getMostPopularCommunities,
 	getNewCommunities,
 	getCommunityByTitleID,
-	getUserContent
+	getFollowedUserPids
 } from '@/database';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
@@ -178,14 +178,8 @@ router.get('/:communityID/posts', async function (request: express.Request, resp
 	}
 
 	if (queryBy === 'followings') {
-		const userContent = await getUserContent(request.pid);
-
-		if (!userContent) {
-			request.log.warn(`USER PID ${request.pid} HAS NO USER CONTENT`);
-			query.pid = [];
-		} else {
-			query.pid = userContent.following_users;
-		}
+		const followedUsers = await getFollowedUserPids(request.pid);
+		query.pid = followedUsers;
 	} else if (queryBy === 'self') {
 		query.pid = request.pid;
 	}

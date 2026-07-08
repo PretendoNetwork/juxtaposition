@@ -6,14 +6,6 @@ const ContentSchema = new Schema<IContent, ContentModel>({
 	followed_communities: {
 		type: [String],
 		default: []
-	},
-	followed_users: {
-		type: [Number],
-		default: []
-	},
-	following_users: {
-		type: [Number],
-		default: []
 	}
 });
 
