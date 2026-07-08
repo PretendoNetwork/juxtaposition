@@ -164,7 +164,7 @@ adminAutomodRouter.get({
 			}
 		});
 
-		const userIds = logs.map(v => v.author);
+		const userIds = logs.map(v => v.author).filter(v => !!v);
 		const users = await db.user.findMany({
 			where: {
 				pid: {

@@ -38,6 +38,7 @@ selfRouter.get({
 			const shouldClearBan = user.banEndsAt && new Date(user.banEndsAt) <= new Date();
 			if (hasBan && shouldClearBan) {
 				data.accountStatus = 0;
+				data.banEndsAt = null;
 			}
 
 			// Record activity & update metadata
