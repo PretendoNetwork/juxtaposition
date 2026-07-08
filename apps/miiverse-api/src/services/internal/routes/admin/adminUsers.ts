@@ -9,12 +9,12 @@ import { getUserAccountData } from '@/util';
 import { Content } from '@/models/content';
 import { mapModerationProfile, moderationProfileSchema } from '@/services/internal/contract/admin/moderationProfile';
 import { adminUserProfileSchema, mapAdminUserProfile } from '@/services/internal/contract/admin/adminUsers';
-import { deleteOptional } from '@/services/internal/utils';
 import { createNewLimitedPostingNotification } from '@/services/internal/utils/notifications';
 import { accountStatusDisplayMap } from '@/services/internal/utils/communities';
 import { accountActionDisplayMap, createLogEntry } from '@/services/internal/utils/auditLogs';
 import { humanDate } from '@/services/internal/utils/dates';
 import type { LogEntryActions } from '@/models/logs';
+import type { UserUpdateInput } from '@/prisma/models';
 
 export const adminUsersRouter = createInternalApiRouter();
 
@@ -101,9 +101,6 @@ adminUsersRouter.get({
 		const user = await db.user.findUnique({
 			where: {
 				pid: params.id
-			},
-			include: {
-				settings: true
 			}
 		});
 		if (!user) {
@@ -132,8 +129,12 @@ adminUsersRouter.patch({
 	},
 	async handler({ params, db, body, auth }) {
 		const account = auth!;
-		const oldSettings = await Settings.findOne({ pid: params.id });
-		if (!oldSettings) {
+		const oldUser = await db.user.findUnique({
+			where: {
+				pid: params.id
+			}
+		});
+		if (!oldUser) {
 			throw errors.for('not_found');
 		}
 
@@ -141,24 +142,25 @@ adminUsersRouter.patch({
 		if (body.accountStatus == 0) {
 			banLiftDate = null; // If account status is normal, remove ban date
 		}
-		const settings = await Settings.findOneAndUpdate({ pid: params.id }, {
-			$set: deleteOptional({
-				account_status: body.accountStatus,
-				ban_lift_date: banLiftDate,
-				banned_by: account.pnid.pid,
-				ban_reason: body.banReason
-			})
-		}, { new: true });
-		if (!settings) {
-			throw new Error('Settings gone after save');
-		}
 
-		const accountStatusChanged = oldSettings.account_status !== settings.account_status;
-		if (accountStatusChanged && settings.account_status === 1) {
+		const data: UserUpdateInput = {};
+		data.accountStatus = body.accountStatus;
+		data.bannedBy = account.pnid.pid;
+		data.banEndsAt = banLiftDate;
+		data.banReason = body.banReason;
+		const newUser = await db.user.update({
+			where: {
+				pid: oldUser.pid
+			},
+			data
+		});
+
+		const accountStatusChanged = oldUser.accountStatus !== newUser.accountStatus;
+		if (accountStatusChanged && newUser.accountStatus === 1) {
 			await createNewLimitedPostingNotification(db, {
-				pid: settings.pid,
-				banLiftDate: settings.ban_lift_date ?? null,
-				reason: settings.ban_reason ?? null
+				pid: newUser.pid,
+				banLiftDate: newUser.banEndsAt ?? null,
+				reason: newUser.banReason ?? null
 			});
 		}
 
@@ -167,33 +169,33 @@ adminUsersRouter.patch({
 		const fields = [];
 
 		if (accountStatusChanged) {
-			const oldStatus = accountStatusDisplayMap[oldSettings.account_status];
-			const newStatus = accountStatusDisplayMap[settings.account_status];
-			action = accountActionDisplayMap[settings.account_status] ?? 'NONE';
+			const oldStatus = accountStatusDisplayMap[oldUser.accountStatus];
+			const newStatus = accountStatusDisplayMap[newUser.accountStatus];
+			action = accountActionDisplayMap[newUser.accountStatus] ?? 'NONE';
 			fields.push('account_status');
 			changes.push(`Account Status changed from "${oldStatus}" to "${newStatus}"`);
 		}
 
-		if (accountStatusChanged || oldSettings.ban_lift_date !== settings.ban_lift_date) {
+		if (accountStatusChanged || oldUser.banEndsAt !== newUser.banEndsAt) {
 			fields.push('ban_lift_date');
-			changes.push(`User Ban Lift Date changed from "${humanDate(oldSettings.ban_lift_date)}" to "${humanDate(settings.ban_lift_date)}"`);
+			changes.push(`User Ban Lift Date changed from "${humanDate(oldUser.banEndsAt)}" to "${humanDate(newUser.banEndsAt)}"`);
 		}
 
-		if (accountStatusChanged || oldSettings.ban_reason !== settings.ban_reason) {
+		if (accountStatusChanged || oldUser.banReason !== newUser.banReason) {
 			fields.push('ban_reason');
-			changes.push(`Ban reason changed from "${oldSettings.ban_reason}" to "${settings.ban_reason}"`);
+			changes.push(`Ban reason changed from "${oldUser.banReason}" to "${newUser.banReason}"`);
 		}
 
 		if (changes.length > 0) {
 			await createLogEntry({
 				actorId: account.pnid.pid,
 				action,
-				targetResourceId: settings.pid.toString(),
+				targetResourceId: newUser.pid.toString(),
 				context: changes.join('\n'),
 				fields
 			});
 		}
 
-		return mapModerationProfile(settings);
+		return mapModerationProfile(newUser);
 	}
 });

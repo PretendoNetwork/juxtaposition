@@ -25,23 +25,30 @@ onboardingRouter.post({
 			throw errors.for('requires_auth');
 		}
 
-		if (auth.settings && auth.content) {
+		if (auth.user && auth.content) {
 			// Already completed the full onboarding process
 			return mapResult('success');
 		}
 
 		const name = auth.pnid.mii?.name ?? 'Default';
-		if (!auth.settings) {
+		if (!auth.user) {
 			await db.user.create({
 				data: {
 					pid: auth.pnid.pid,
 					displayName: name,
 					accountStatus: 0,
+					lastSeen: new Date(),
 					settings: {
 						create: {
 							gameSkill: body.experienceId,
 							receiveNotifications: body.receiveNotifications,
-							isBirthdayVisible: false
+							isFavouriteCommunityVisible: true,
+							isGameSkillVisible: true,
+							profilePrivacy: 'Public',
+							isBirthdayVisible: false,
+							isRelationshipVisible: false,
+							isCountryVisible: false,
+							profileComment: null
 						}
 					}
 				}

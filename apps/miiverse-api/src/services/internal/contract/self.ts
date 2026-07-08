@@ -89,7 +89,7 @@ export function mapBannedSelf(auth: AccountData, banCode: BanCodesEnum, banLiftD
 }
 
 export function mapSelf(auth: AccountData): SelfDto {
-	if (!auth.settings || !auth.content) {
+	if (!auth.user || !auth.content) {
 		return {
 			...baseSelf,
 			pid: auth.pnid.pid
@@ -99,8 +99,8 @@ export function mapSelf(auth: AccountData): SelfDto {
 	return {
 		pid: auth.pnid.pid,
 		username: auth.pnid.username,
-		accountStatus: auth.settings.account_status,
-		miiName: auth.settings.screen_name,
+		accountStatus: auth.user.accountStatus,
+		miiName: auth.user.displayName,
 		hasDoneOnboarding: true,
 		content: {
 			followed_communities: auth.content.followed_communities.filter(v => v !== '0'),
@@ -113,7 +113,7 @@ export function mapSelf(auth: AccountData): SelfDto {
 			accessLevel: auth.pnid.accessLevel,
 
 			// 0 = normal, 1 = limited from posting, 2 = temp ban, 3 = perma ban
-			posting: auth.settings.account_status === 0
+			posting: auth.user.accountStatus === 0
 		},
 		banState: null
 	};

@@ -25,7 +25,7 @@ export async function authAccessCheck(request: express.Request, response: expres
 
 	// TODO console linking check (needs account server support)
 
-	if (account.settings === null) {
+	if (account.user === null) {
 		// Account hasn't completed initial setup yet
 		// User guard will check this for endpoints that care
 		// Still.. spooky
@@ -33,7 +33,7 @@ export async function authAccessCheck(request: express.Request, response: expres
 	}
 
 	// 0 = normal, 1 = limited from posting, 2 = temp ban, 3 = perma ban
-	if (account.settings.account_status !== 0 && account.settings.account_status !== 1) {
+	if (account.user.accountStatus !== 0 && account.user.accountStatus !== 1) {
 		response.locals.accountAuthError = errors.for('auth_account_juxt_banned');
 		return next();
 	}

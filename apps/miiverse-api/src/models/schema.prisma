@@ -21,11 +21,16 @@ enum ProfilePrivacyType {
 
 /// User
 model User {
-  pid           Int      @id
-  createdAt     DateTime @default(now()) @map("created_at")
-  displayName   String   @map("display_name")
-  lastSeen      DateTime @map("last_seen")
-  accountStatus Int      @map("account_status") // TODO refactor to different table so it keeps a history
+  pid         Int      @id
+  createdAt   DateTime @default(now()) @map("created_at")
+  displayName String   @map("display_name")
+  lastSeen    DateTime @map("last_seen")
+
+  // TODO refactor bans to different table so it keeps a history
+  accountStatus Int       @map("account_status")
+  banReason     String?   @map("ban_reason")
+  banEndsAt     DateTime? @map("ban_ends_at")
+  bannedBy      Int?      @map("banned_by")
 
   follows   UserFollow[] @relation("follows")
   followers UserFollow[] @relation("followers")

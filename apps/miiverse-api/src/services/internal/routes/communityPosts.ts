@@ -136,7 +136,7 @@ communityPostsRouter.post({
 			author: {
 				pid: account.pnid.pid,
 				miiData: account.pnid.mii?.data ?? '',
-				screenName: account.settings?.screen_name ?? '',
+				screenName: account.user?.displayName ?? '',
 				verified: self.permissions.moderator
 			},
 			body,

@@ -8,6 +8,7 @@ import { getUserFriendRequestsIncoming } from '@/util';
 import { Post } from '@/models/post';
 import { Content } from '@/models/content';
 import type { SelfFriendRequestDto } from '@/services/internal/contract/self';
+import type { UserUpdateInput } from '@/prisma/models';
 
 export const selfRouter = createInternalApiRouter();
 
@@ -31,25 +32,35 @@ selfRouter.get({
 			}
 		});
 		if (user) {
+			const data: UserUpdateInput = {};
+
 			// Clear ban lift date if neccesary
-			const hasBan = user.account_status !== 0;
-			const shouldClearBan = user.ban_lift_date && new Date(user.ban_lift_date) <= new Date();
+			const hasBan = user.accountStatus !== 0;
+			const shouldClearBan = user.banEndsAt && new Date(user.banEndsAt) <= new Date();
 			if (hasBan && shouldClearBan) {
-				user.account_status = 0;
+				data.accountStatus = 0;
 			}
 
 			// Record activity & update metadata
-			user.last_active = new Date();
+			data.lastSeen = new Date();
 			if (auth.pnid.mii) {
-				user.screen_name = auth.pnid.mii.name;
+				data.displayName = auth.pnid.mii.name;
 			}
 
-			// Save changes to current auth state
-			await user.save();
-			auth.settings = user;
+			// Save changes
+			const newUser = await db.user.update({
+				where: {
+					pid: user.pid
+				},
+				data,
+				include: {
+					settings: true
+				}
+			});
+			auth.user = newUser;
 		}
 
-		const accountStatus = auth.settings?.account_status ?? 0;
+		const accountStatus = auth.user?.accountStatus ?? 0;
 		const isJuxtBanned = accountStatus < 0 || accountStatus > 1;
 		const isNetworkBanned = auth.pnid.accessLevel < 0 ||
 			auth.pnid.permissions?.bannedAllPermanently === true ||
@@ -59,8 +70,8 @@ selfRouter.get({
 			return mapBannedSelf(auth, 'network_ban', null, null);
 		}
 		if (isJuxtBanned) {
-			const reason = user?.ban_reason ?? null;
-			const endDate = user?.ban_lift_date ?? null;
+			const reason = user?.banReason ?? null;
+			const endDate = user?.banEndsAt ?? null;
 			if (accountStatus === 2) {
 				return mapBannedSelf(auth, 'temp_ban', endDate, reason);
 			}

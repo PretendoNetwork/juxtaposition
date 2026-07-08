@@ -24,7 +24,7 @@ export async function user(request: express.Request, response: express.Response,
 		throw authError;
 	}
 
-	if (account.settings === null) {
+	if (account.user === null) {
 		// Most endpoints expect users to have completed the account setup flow
 		throw errors.for('auth_onboarding_incomplete');
 	}
@@ -43,7 +43,7 @@ export async function moderator(request: express.Request, response: express.Resp
 			throw errors.for('requires_auth');
 		}
 
-		if (account.settings === null) {
+		if (account.user === null) {
 			throw errors.for('auth_onboarding_incomplete');
 		}
 
