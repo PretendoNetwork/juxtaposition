@@ -14,6 +14,12 @@ enum NotificationType {
   System
 }
 
+enum ReportResolutionAction {
+  NoAction
+  PostDeleted
+  UserBanned
+}
+
 /// Notification content
 model Notification {
   id      String           @id
@@ -38,4 +44,54 @@ model NotificationRecipient {
 
   @@index([pid])
   @@map("notification_recipients")
+}
+
+/// Report of a post
+model PostReport {
+  id          String   @id
+  createdAt   DateTime @default(now()) @map("created_at")
+  reporterPid Int      @map("reported_pid")
+  postId      String   @map("post_id")
+
+  reasonId  String  @map("reason_id")
+  extraInfo String? @map("extra_info")
+
+  resolutionId String?           @map("resolution_id")
+  resolution   ReportResolution? @relation(fields: [resolutionId], references: [id], onDelete: SetNull)
+
+  @@map("post_reports")
+}
+
+/// Report of a user
+model UserReport {
+  id          String   @id
+  createdAt   DateTime @default(now()) @map("created_at")
+  reporterPid Int      @map("reported_pid")
+  userPid     String   @map("user_pid")
+
+  reasonId  String  @map("reason_id")
+  extraInfo String? @map("extra_info")
+
+  resolutionId String?           @map("resolution_id")
+  resolution   ReportResolution? @relation(fields: [resolutionId], references: [id], onDelete: SetNull)
+
+  @@map("user_reports")
+}
+
+/// Report resolution
+model ReportResolution {
+  id          String   @id
+  createdAt   DateTime @default(now()) @map("created_at")
+  resolverPid Int      @map("resolver_pid")
+
+  // TODO store notification text (maybe as enum?)
+  action          ReportResolutionAction
+  notifyReporters Boolean                @map("notify_reporters")
+  notifyUser      Boolean                @map("notify_user")
+  extraInfo       String?                @map("extra_info")
+
+  postReports PostReport[]
+  userReports UserReport[]
+
+  @@map("report_resolutions")
 }
