@@ -43,8 +43,9 @@ export function reportPost(id) {
 		return;
 	}
 
-	form.action = `/posts/${id}/report`;
+	form.action = `/posts/${id}/report?api=true`;
 	formID.value = id;
 
 	modal.hidden = false;
+	form.reset();
 }
