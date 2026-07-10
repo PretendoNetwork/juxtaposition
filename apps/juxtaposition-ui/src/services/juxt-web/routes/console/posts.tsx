@@ -301,10 +301,8 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 
 	if (query.api === 'true') {
 		return res.sendStatus(200);
-	}
-	else 
-	{
-	return res.redirect(`/posts/${post.id}`);
+	} else {
+		return res.redirect(`/posts/${post.id}`);
 	}
 });
 
