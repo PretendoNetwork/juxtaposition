@@ -61,7 +61,7 @@ async function main() {
 					settings.last_active ?? settings.created_at ?? settings._id.getTimestamp(),
 					settings.account_status,
 					settings.ban_reason ?? null,
-					settings.ban_list_date ?? null,
+					settings.ban_lift_date ?? null,
 					settings.banned_by ?? null,
 				]
 			);
