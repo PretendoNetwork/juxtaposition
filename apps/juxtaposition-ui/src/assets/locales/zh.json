@@ -57,7 +57,8 @@
         "deleted": "已删除用户",
         "banned": "已禁止用户",
         "friend_requests": "请求",
-        "not_found": "用户不存在"
+        "not_found": "用户不存在",
+        "tester_tag": "测试用户"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
@@ -73,10 +74,12 @@
     },
     "notifications": {
         "none": "无通知。",
-        "new_follower/one": "<follower_one /> 已开始关注你！",
-        "new_follower/two": "<follower_one />、<follower_two /> 已开始关注你！",
-        "new_follower/three": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！",
-        "new_follower/multiple": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！"
+        "new_follower": {
+            "message/one": "<follower_one /> 已开始关注你！",
+            "message/two": "<follower_one />、<follower_two /> 已开始关注你！",
+            "message/three": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！",
+            "message/multiple": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！"
+        }
     },
     "new_post": {
         "post_to": "发布到{{user}}",

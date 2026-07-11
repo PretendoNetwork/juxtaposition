@@ -68,10 +68,12 @@
     },
     "notifications": {
         "none": "Žiadne upozornenia.",
-        "new_follower/one": "<follower_one /> Vás začal/-a sledovať!",
-        "new_follower/two": "<follower_one />, <follower_two /> Vás začali sledovať!",
-        "new_follower/three": "<follower_one />, <follower_two />, a {{count_other}} ďalší Vás začali sledovať!",
-        "new_follower/multiple": "<follower_one />, <follower_two />, a {{count_other}} ďalších Vás začali sledovať!"
+        "new_follower": {
+            "message/one": "<follower_one /> Vás začal/-a sledovať!",
+            "message/two": "<follower_one />, <follower_two /> Vás začali sledovať!",
+            "message/three": "<follower_one />, <follower_two />, a {{count_other}} ďalší Vás začali sledovať!",
+            "message/multiple": "<follower_one />, <follower_two />, a {{count_other}} ďalších Vás začali sledovať!"
+        }
     },
     "new_post": {
         "swearing": "Príspevok nemôže obsahovať nevhodné výrazy.",

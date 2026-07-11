@@ -18,16 +18,19 @@ export function WebReportModalView(): ReactNode {
 					<div>
 						<h4><T k="reporting.label" /></h4>
 						<select name="reason" id="report">
-							<option value="0"><T k="reporting.reason_spoiler" /></option>
-							<option value="1"><T k="reporting.reason_personal_info" /></option>
-							<option value="2"><T k="reporting.reason_violence" /></option>
-							<option value="3"><T k="reporting.reason_inappropiate" /></option>
-							<option value="4"><T k="reporting.reason_bullying" /></option>
-							<option value="5"><T k="reporting.reason_advertising" /></option>
-							<option value="6"><T k="reporting.reason_nsfw" /></option>
-							<option value="7"><T k="reporting.reason_piracy" /></option>
-							<option value="8"><T k="reporting.reason_inappropiate_ingame" /></option>
-							<option value="10"><T k="reporting.reason_missing_images" /></option>
+							<option value="11"><T k="reporting.reason_not_nice" /></option>
+							<option value="12"><T k="reporting.reason_inappropriate" /></option>
+							<option value="13"><T k="reporting.reason_spam" /></option>
+							<option value="14"><T k="reporting.reason_offtopic" /></option>
+							<option value="15"><T k="reporting.reason_piracy_new" /></option>
+							<option value="16"><T k="reporting.reason_exploits" /></option>
+							<option value="17"><T k="reporting.reason_drama" /></option>
+							<option value="18"><T k="reporting.reason_cheating" /></option>
+							<option value="19"><T k="reporting.reason_spoiler_new" /></option>
+							<option value="20"><T k="reporting.reason_personal_info_new" /></option>
+							<option value="21"><T k="reporting.reason_politics" /></option>
+							<option value="22"><T k="reporting.reason_misinformation" /></option>
+							<option value="23"><T k="reporting.reason_impersonation" /></option>
 							<option value="9"><T k="reporting.reason_others" /></option>
 						</select>
 					</div>

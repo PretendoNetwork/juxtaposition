@@ -13,23 +13,26 @@
 
 body {
     margin: 0;
-    font-family: nintendo_NTLG-DB_001,sans-serif;
+    font-family: nintendo_NTLG-DB_001, sans-serif;
     width: 400px;
     background: #00f
 }
 
 #body,
 body {
-    overflow-x: clip; /* Doesn't work on CTR, but the CSS relies on it not working */
+    overflow-x: clip;
+    /* Doesn't work on CTR, but the CSS relies on it not working */
 }
 
 #body {
     background-image: url(@/images/background.png);
     background-repeat: repeat;
-    padding-bottom: 28px; /* Toolbar location */
+    padding-bottom: 28px;
+    /* Toolbar location */
 
     -webkit-box-sizing: border-box;
-    min-height: 460px; /* Never show the blue background! */
+    min-height: 460px;
+    /* Never show the blue background! */
 }
 
 a {
@@ -64,12 +67,12 @@ ul {
     padding: 0
 }
 
-.headline > h2 {
+.headline>h2 {
     font-size: 18px;
     padding: 0 10px
 }
 
-#body > .body-content {
+#body>.body-content {
     width: 322px;
     margin-left: 39px;
     min-height: 175px;
@@ -95,13 +98,13 @@ menu.tab-header {
     border-color: #59c9a5
 }
 
-.icon-container > .icon {
+.icon-container>.icon {
     width: 64px;
     height: 64px;
     background: #e6eaf1
 }
 
-.list-content-with-icon-column > li {
+.list-content-with-icon-column>li {
     display: table;
     width: 300px;
     border-bottom: 3px dotted #d2b0e1;
@@ -144,7 +147,8 @@ menu.tab-header {
     right: 10px;
     top: 2px;
 }
-.text > span > span {
+
+.text>span>span {
     vertical-align: middle;
 }
 
@@ -197,7 +201,7 @@ menu.tab-header.user-page li:first-child {
 }
 
 menu.tab-header.user-page li.double,
-menu.tab-header.user-page li.double > a {
+menu.tab-header.user-page li.double>a {
     width: 146px
 }
 
@@ -264,33 +268,30 @@ menu.tab-header.user-page li:last-child {
     margin-top: 10px;
 }
 
-.post header > a,
-.tags {
+.post header>a {
     display: inline-block;
-    position: absolute
 }
 
-.post header > a {
-    width: 258px;
-    vertical-align: middle;
-    overflow: clip;
-    left: 0;
-    top: 17px
-}
+.tags-container {
+    >.sprite {
+        margin-right: 5px;
+        position: relative;
+        top: 3px;
+    }
 
-.tags {
-    color: #a362d8;
-    font-size: 10px;
-    line-height: 12px;
-    margin-top: 1px;
-    margin-left: 0
+    .tags {
+        display: inline-block;
+        color: #a362d8;
+        font-size: 10px;
+        line-height: 12px;
+    }
 }
 
 .post-content-text {
     padding: 5px;
     font-size: 15px;
-	word-wrap: break-word;
-	white-space: pre-wrap;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 .post header {
@@ -349,7 +350,7 @@ menu.tab-header.user-page li:last-child {
     display: inline-block
 }
 
-.spoiler-wrapper > button {
+.spoiler-wrapper>button {
     position: relative;
     z-index: 2;
     font-size: 12px;
@@ -462,23 +463,26 @@ menu.tab-header.no-margin {
     font-weight: 400;
     color: #969696;
 }
+
 .body.message span {
     font-size: 10px;
     color: #646464;
 }
+
 .body.message .nick-name {
     font-size: 14px;
     color: #000;
 }
+
 .body .nick-name {
     color: #000;
 }
 
-.settings-list > li {
+.settings-list>li {
     display: inline-block;
 }
 
 p.settings-label {
-	float: left;
-	width: 275px;
+    float: left;
+    width: 275px;
 }

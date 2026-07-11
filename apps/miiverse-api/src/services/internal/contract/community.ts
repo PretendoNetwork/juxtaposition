@@ -29,7 +29,7 @@ export const communityIconsSchema = z.object({
 }).openapi('CommunityIcons');
 
 export const communitySchema = asOpenapi('Community', z.object({
-	id: z.string(),
+	unstable_id: z.string(),
 	olive_community_id: z.string(),
 	parentId: z.string().nullable(),
 	permissions: communityPermissionSchema,
@@ -49,6 +49,16 @@ export const communitySchema = asOpenapi('Community', z.object({
 }));
 
 export type CommunityDto = z.infer<typeof communitySchema>;
+
+export const shallowCommunitySchema = asOpenapi('ShallowCommunity', z.object({
+	unstable_id: z.string(),
+	olive_community_id: z.string(),
+	name: z.string(),
+	type: z.number(),
+	iconImagePaths: communityIconsSchema
+}));
+
+export type ShallowCommunityDto = z.infer<typeof shallowCommunitySchema>;
 
 export const communityStatsSchema = z.object({
 	id: z.string(),
@@ -80,23 +90,36 @@ export function mapCommunityType(type: number): CommunityCategoryEnum {
 
 export function mapCommunity(comm: HydratedCommunityDocument): CommunityDto {
 	const imageId = comm.parent ? comm.parent : comm.olive_community_id;
+	const shallowCommunity = mapShallowCommunity(comm);
 	return {
-		id: comm.community_id,
-		olive_community_id: comm.olive_community_id,
+		unstable_id: shallowCommunity.unstable_id,
+		olive_community_id: shallowCommunity.olive_community_id,
+		type: shallowCommunity.type,
+		name: shallowCommunity.name,
+		iconImagePaths: shallowCommunity.iconImagePaths,
+
 		parentId: comm.parent ?? null,
 		titleIds: comm.title_id ?? [],
-		type: comm.type,
 		permissions: comm.permissions,
 		adminPids: comm.admins ?? [],
 		category: mapCommunityType(comm.type),
-		name: comm.name,
 		description: comm.description,
 		followerCount: comm.followers,
 		ctrHeaderImagePath: comm.ctr_header ?? `/headers/${imageId}/3DS.png`,
 		hasLegacyCtrHeader: !comm.ctr_header,
 		wupHeaderImagePath: comm.wup_header ?? `/headers/${imageId}/WiiU.png`,
 		shotMode: comm.shot_mode ?? null,
-		extraShotTitleIds: comm.shot_extra_title_id ?? [],
+		extraShotTitleIds: comm.shot_extra_title_id ?? []
+	};
+}
+
+export function mapShallowCommunity(comm: HydratedCommunityDocument): ShallowCommunityDto {
+	const imageId = comm.parent ? comm.parent : comm.olive_community_id;
+	return {
+		unstable_id: comm.community_id,
+		olive_community_id: comm.olive_community_id,
+		type: comm.type,
+		name: comm.name,
 		iconImagePaths: {
 			32: comm.icon_paths?.[32] ?? `/icons/${imageId}/32.png`,
 			48: comm.icon_paths?.[48] ?? `/icons/${imageId}/48.png`,

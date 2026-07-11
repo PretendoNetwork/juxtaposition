@@ -1,4 +1,4 @@
-import crypto from 'node:crypto';
+import crypto, { randomUUID } from 'node:crypto';
 import { DeleteObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import crc32 from 'crc/crc32';
 import { config } from '@/config';
@@ -299,4 +299,8 @@ export async function performAutomodAction(post: IPostInput, evaluation: Automod
 	}
 
 	throw new Error('Invalid automod evaluation');
+}
+
+export function genId(): string {
+	return randomUUID();
 }

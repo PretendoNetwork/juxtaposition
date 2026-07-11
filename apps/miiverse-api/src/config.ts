@@ -30,6 +30,10 @@ const schema = z.object({
 	mongoose: z.object({
 		uri: z.string()
 	}),
+	db: z.object({
+		/** Postgres connection string */
+		url: z.string()
+	}),
 	s3: z.object({
 		endpoint: z.string(),
 		key: z.string(),
@@ -68,6 +72,9 @@ export const presets: Record<string, any> = {
 		cdnUrl: 'http://cdn.pretendo.cc/miiverse',
 		mongoose: {
 			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'
+		},
+		db: {
+			url: 'postgres://postgres:postgres@localhost:5432/miiverse'
 		},
 		s3: {
 			endpoint: 'http://localhost:9000',

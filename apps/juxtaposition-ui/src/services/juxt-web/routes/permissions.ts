@@ -1,11 +1,9 @@
-import type { InferSchemaType } from 'mongoose';
-import type { PostSchema } from '@/models/post';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { Community, CommunityShotMode, Post, Self } from '@/api/generated';
 
-export function isPostingAllowed(community: Community, user: Self, parentPost: InferSchemaType<typeof PostSchema> | Post | null): boolean {
+export function isPostingAllowed(community: Community, user: Self, parentPost: Post | null): boolean {
 	const isReply = !!parentPost;
-	const isPublicPostableCommunity = community.type >= 0 && community.type < 2;
+	const isPublicPostableCommunity = community.type === 0 || community.type === 1;
 	const isOpenCommunity = community.permissions.open;
 
 	const isCommunityAdmin = community.adminPids.includes(user.pid);
@@ -29,8 +27,8 @@ export function isPostingAllowed(community: Community, user: Self, parentPost: I
 	return isReply ? isOpenCommunity : isPublicPostableCommunity;
 }
 
-export function getShotMode(community: Community, pack: ParamPack | null): CommunityShotMode {
-	if (pack === null) {
+export function getShotMode(community: Community, pack: ParamPack | null | undefined): CommunityShotMode {
+	if (!pack) {
 		return 'block';
 	}
 

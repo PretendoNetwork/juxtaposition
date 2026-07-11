@@ -1,7 +1,6 @@
 import '@/extend-zod'; // Needs to be the first import
 import express from 'express';
-import expressMetrics from 'express-prom-bundle';
-import { connect as connectDatabase } from '@/database';
+import { connect as connectDatabase, setupPrisma } from '@/database';
 import { logger } from '@/logger';
 import { loggerHttp } from '@/loggerHttp';
 import auth from '@/middleware/auth';
@@ -14,30 +13,12 @@ import { initImageProcessing } from '@/images';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import { connectGrpc } from '@/grpc';
 import { setupS3 } from '@/s3';
+import { listenMetrics, registerMetrics } from '@/metrics';
 
-const { http: { port }, metrics: { enabled: metricsEnabled, port: metricsPort } } = config;
-const metrics = express();
 const app = express();
 
 // Metrics has to happen first so we can measure the other middleware
-if (metricsEnabled) {
-	logger.info('Setting up metrics');
-	app.use(expressMetrics({
-		// Include full express and nodejs metrics
-		includeMethod: true,
-		includePath: true,
-		urlValueParser: {
-			minBase64Length: 15
-		},
-		promClient: {
-			collectDefaultMetrics: {}
-		},
-
-		// Keep metrics on a different app (so they aren't exposed)
-		autoregister: false,
-		metricsApp: metrics
-	}));
-}
+const metricsApp = registerMetrics(app);
 
 app.set('etag', false);
 app.set('trust proxy', config.http.trustProxy);
@@ -84,19 +65,15 @@ async function main(): Promise<void> {
 	setupS3();
 	connectGrpc();
 	await connectDatabase();
+	await setupPrisma();
 	await initImageProcessing();
 
-	app.listen(port, '0.0.0.0', () => {
-		logger.info(`Server started on port ${port}`);
+	app.listen(config.http.port, '0.0.0.0', () => {
+		logger.info(`Server started on port ${config.http.port}`);
 	});
+	listenMetrics(metricsApp);
 
 	await setupGrpc();
-
-	if (metricsEnabled) {
-		metrics.listen(metricsPort, () => {
-			logger.info(`Metrics server started on port ${metricsPort}`);
-		});
-	}
 }
 
 process.title = 'Pretendo - Miiverse';

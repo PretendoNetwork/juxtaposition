@@ -10,6 +10,7 @@ import { categoryToCommunityTypes, communityCategory, communitySchema, community
 import { errors } from '@/services/internal/errors';
 import { Post } from '@/models/post';
 import { listDtoSchema, mapList } from '@/services/internal/contract/list';
+import { followSchema, mapFollowCommunity } from '@/services/internal/contract/follow';
 import type { FilterQuery, RootFilterQuery } from 'mongoose';
 import type { ICommunity, HydratedCommunityDocument } from '@/types/mongoose/community';
 
@@ -170,6 +171,103 @@ communitiesRouter.get({
 		}
 
 		return mapCommunity(community);
+	}
+});
+
+communitiesRouter.post({
+	path: '/communities/:id/followers/@me',
+	name: 'communities.follow',
+	guard: guards.user,
+	schema: {
+		params: z.object({
+			id: z.string()
+		}),
+		response: followSchema
+	},
+	async handler({ params, auth }) {
+		const communityId = params.id;
+
+		const typesToFilter: RootFilterQuery<ICommunity> = auth?.moderator
+			? {}
+			: {
+					type: {
+						$ne: COMMUNITY_TYPE.Private
+					}
+				};
+
+		const community = await Community.findOne(deleteOptional({
+			olive_community_id: communityId,
+			...typesToFilter
+		}));
+		if (!community) {
+			throw errors.for('not_found');
+		}
+
+		const currentUser = auth!;
+		if (!currentUser.content) {
+			throw errors.for('not_found');
+		}
+
+		const isFollowing = currentUser.content.followed_communities.includes(communityId);
+		if (isFollowing) {
+			return mapFollowCommunity('follow', community);
+		}
+
+		currentUser.content.followed_communities.push(communityId);
+		await currentUser.content.save();
+		community.followers += 1;
+		await community.save();
+
+		return mapFollowCommunity('follow', community);
+	}
+});
+
+communitiesRouter.delete({
+	path: '/communities/:id/followers/@me',
+	name: 'communities.unfollow',
+	guard: guards.user,
+	schema: {
+		params: z.object({
+			id: z.string()
+		}),
+		response: followSchema
+	},
+	async handler({ params, auth }) {
+		const communityId = params.id;
+
+		const typesToFilter: RootFilterQuery<ICommunity> = auth?.moderator
+			? {}
+			: {
+					type: {
+						$ne: COMMUNITY_TYPE.Private
+					}
+				};
+
+		const community = await Community.findOne(deleteOptional({
+			olive_community_id: communityId,
+			...typesToFilter
+		}));
+		if (!community) {
+			throw errors.for('not_found');
+		}
+
+		const currentUser = auth!;
+		if (!currentUser.content) {
+			throw errors.for('not_found');
+		}
+
+		const isFollowing = currentUser.content.followed_communities.includes(communityId);
+		if (!isFollowing) {
+			return mapFollowCommunity('unfollow', community);
+		}
+
+		const newFollowingList = currentUser.content.followed_communities.filter(v => v !== communityId);
+		currentUser.content.followed_communities = newFollowingList;
+		await currentUser.content.save();
+		community.followers -= 1;
+		await community.save();
+
+		return mapFollowCommunity('unfollow', community);
 	}
 });
 

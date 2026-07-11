@@ -20,12 +20,12 @@ export const ReportSchema = new Schema<IReport, ReportModel>({
 	},
 	message: {
 		type: String,
-		required: true
+		default: ''
 	},
 	created_at: {
 		type: Date,
 		required: true,
-		default: new Date()
+		default: (): Date => new Date()
 	},
 	resolved: {
 		type: Boolean,

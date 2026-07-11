@@ -1,0 +1,2 @@
+CREATE DATABASE friends;
+CREATE DATABASE miiverse;

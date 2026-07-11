@@ -97,10 +97,26 @@
   },
   "notifications": {
     "none": "No notifications.",
-    "new_follower/one": "<follower_one /> followed you!",
-    "new_follower/two": "<follower_one />, <follower_two /> followed you!",
-    "new_follower/three": "<follower_one />, <follower_two />, and {{count_other}} other followed you!",
-    "new_follower/multiple": "<follower_one />, <follower_two />, and {{count_other}} others followed you!"
+    "new_follower": {
+      "message/one": "<follower_one /> followed you!",
+      "message/two": "<follower_one />, <follower_two /> followed you!",
+      "message/three": "<follower_one />, <follower_two />, and {{count_other}} other followed you!",
+      "message/multiple": "<follower_one />, <follower_two />, and {{count_other}} others followed you!"
+    },
+    "post_deleted": {
+      "post_removed": "Your post \"{{postId}}\" has been removed.",
+      "post_removed_for_reason": "Your post \"{{postId}}\" has been removed for the following reason: \"{{reason}}\".",
+      "comment_removed": "Your comment \"{{postId}}\" has been removed.",
+      "comment_removed_for_reason": "Your comment \"{{postId}}\" has been removed for the following reason: \"{{reason}}\".",
+      "footer": "Click this message to view the Juxtaposition Code of Conduct. If you have any questions, please contact the moderators on the Pretendo Network Forum ({{contactModsUrl}})."
+    },
+    "limited_from_posting": {
+      "message": "You have been Limited from Posting.",
+      "message_with_reason": "You have been Limited from Posting. Reason: \"{{reason}}\".",
+      "temporary": "You have been Limited from Posting until {{until}}.",
+      "temporary_with_reason": "You have been Limited from Posting until {{until}}. Reason: \"{{reason}}\".",
+      "footer": "Click this message to view the Juxtaposition Code of Conduct. If you have any questions, please contact the moderators on the Pretendo Network Forum ({{banAppealUrl}})."
+    }
   },
   "friend_requests": {
     "none": "No Friend Requests"
@@ -127,7 +143,10 @@
     "report_post": "Report post",
     "delete_post": "Delete post",
     "removed": "Post has been removed.",
-    "copy_link": "Copy link"
+    "copy_link": "Copy link",
+    "sort_newest_first": "Sort by newest",
+    "sort_oldest_first": "Sort by oldest",
+    "replies_heading": "Replies"
   },
   "setup": {
     "title": "Juxtaposition Setup",
@@ -174,7 +193,7 @@
   "reporting": {
     "title": "Report Post",
     "submit": "Submit Report",
-    "description": "You are about to report a post with content which violates the Juxtaposition Code of Conduct. This report will be sent to Pretendo's Juxtaposition administrators and not to the creator of the post.",
+    "description": "You are about to report a post that violates the Juxtaposition Code of Conduct. This report will be sent only to Juxtaposition Moderators and not to the creator of the post.",
     "label": "Reason:",
     "additional_info_placeholder": "Enter additional comments or information",
     "reason_spoiler": "Spoiler",
@@ -187,11 +206,26 @@
     "reason_piracy": "Piracy",
     "reason_inappropiate_ingame": "Inappropriate Behavior in Game",
     "reason_missing_images": "Missing Images",
-    "reason_others": "Other"
+    "reason_others": "Other",
+    "reason_not_nice": "Mean/Rude/Hateful (Rule 1)",
+    "reason_inappropriate": "Inappropriate/NSFW (Rule 2)",
+    "reason_spam": "Spam/Self-Promotion (Rule 3)",
+    "reason_offtopic": "Off-Topic (Rule 4)",
+    "reason_piracy_new": "Piracy (Rule 5)",
+    "reason_exploits": "API Abuse/Exploiting Bugs (Rule 8)",
+    "reason_drama": "Drama (Rule 9)",
+    "reason_cheating": "Cheating Online (Rule 10)",
+    "reason_spoiler_new": "Spoiler (Rule 11)",
+    "reason_personal_info_new": "Personal Information (Rule 12)",
+    "reason_politics": "Politics (Rule 13)",
+    "reason_misinformation": "Misinformation/Bad Advice (Rule 14)",
+    "reason_impersonation": "Impersonation (Rule 15)"
   },
   "moderation": {
     "title": "Moderation",
     "silently_delete_post": "Silently delete",
+    "mark_as_spoiler": "Mark as spoiler",
+    "mark_as_not_spoiler": "Remove spoiler",
     "moderate_user": "Moderate User"
   }
 }

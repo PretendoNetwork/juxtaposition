@@ -85,7 +85,7 @@ export function PortalFirstRunView(_props: FirstRunViewProps): ReactNode {
 						</p>
 					</AboutSection.Body>
 
-					<AboutSection.BackButton currentId="add-post-page" text={T.str('global.exit')} onClick="exit()" />
+					<AboutSection.BackButton currentId="add-post-page" text={T.str('global.exit')} onClick="exitApplet()" />
 					<AboutSection.NextButton currentId={sections.welcome} nextId={sections.beta} text={T.str('global.next')} />
 				</AboutSection.Root>
 

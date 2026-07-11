@@ -1,5 +1,7 @@
+import { getDb } from '@/database';
 import type { Request, Response } from 'express';
 import type { z } from 'zod';
+import type { PrismaClient } from '@/prisma/client';
 
 export type ZodRouteSchemaSchape = {
 	body?: z.ZodType;
@@ -12,6 +14,7 @@ export type ZodRouteContext<TSchema extends ZodRouteSchemaSchape = {}, TAuthCtx 
 	body: z.infer<TSchema['body']>;
 	query: z.infer<TSchema['query']>;
 	params: z.infer<TSchema['params']>;
+	db: PrismaClient;
 	auth: TAuthCtx;
 };
 
@@ -24,6 +27,7 @@ export function createRouteContext<TSchema extends ZodRouteSchemaSchape = {}, TA
 		body,
 		query,
 		params,
+		db: getDb(),
 		auth: authCtx
 	} as ZodRouteContext<TSchema, TAuthCtx>;
 }
