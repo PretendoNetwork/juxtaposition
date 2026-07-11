@@ -277,11 +277,14 @@ postsRouter.get('/:post_id/report', async function (req, res) {
 });
 
 postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
-	const { body } = parseReq(req, {
+	const { body, query } = parseReq(req, {
 		body: z.object({
 			reason: z.coerce.number(),
 			message: z.string().trim(),
 			post_id: z.string()
+		}),
+		query: z.object({
+			api: z.enum(['true', 'false']).default('false')
 		})
 	});
 
@@ -296,7 +299,11 @@ postsRouter.post('/:post_id/report', upload.none(), async function (req, res) {
 		reasonId: body.reason
 	});
 
-	return res.redirect(`/posts/${post.id}`);
+	if (query.api === 'true') {
+		return res.sendStatus(200);
+	} else {
+		return res.redirect(`/posts/${post.id}`);
+	}
 });
 
 postsRouter.post('/:post_id/edit/spoiler', async function (req, res) {
