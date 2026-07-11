@@ -13,7 +13,7 @@ import { standardSortSchema, standardSortToDirection } from '@/services/internal
 import { createLogEntry } from '@/services/internal/utils/auditLogs';
 import { Community } from '@/models/community';
 import { Report } from '@/models/report';
-import { createNewPost, postCreateSchema } from '@/services/internal/utils/posts';
+import { createNewPost, isValidPost, postCreateSchema } from '@/services/internal/utils/posts';
 import { isPostingAllowed } from '@/services/internal/utils/communities';
 import { mapSelf } from '@/services/internal/contract/self';
 import { Settings } from '@/models/settings';
@@ -355,6 +355,9 @@ postsRouter.post({
 			throw errors.for('forbidden');
 		}
 
+		if (!isValidPost(body)) {
+			throw errors.for('invalid_post');
+		}
 		const newPost = await createNewPost({
 			author: {
 				pid: account.pnid.pid,

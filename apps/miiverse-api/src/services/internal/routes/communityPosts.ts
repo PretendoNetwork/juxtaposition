@@ -6,7 +6,7 @@ import { mapPost, mapPostWithModeration, postSchema } from '@/services/internal/
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { Community } from '@/models/community';
-import { createNewPost, postCreateSchema } from '@/services/internal/utils/posts';
+import { createNewPost, isValidPost, postCreateSchema } from '@/services/internal/utils/posts';
 import { errors } from '@/services/internal/errors';
 import { isPostingAllowed } from '@/services/internal/utils/communities';
 import { mapSelf } from '@/services/internal/contract/self';
@@ -121,6 +121,9 @@ communityPostsRouter.post({
 			throw errors.for('forbidden');
 		}
 
+		if (!isValidPost(body)) {
+			throw errors.for('invalid_post');
+		}
 		const newPost = await createNewPost({
 			author: {
 				pid: account.pnid.pid,
