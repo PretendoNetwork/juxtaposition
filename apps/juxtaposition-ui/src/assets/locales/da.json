@@ -1,7 +1,15 @@
 {
     "new_post": {
         "swearing": "Opslag må ikke indeholde upassende sprog.",
-        "post_to": "Post til {{user}}"
+        "post_to": "Send til {{user}}",
+        "new_post_short": "Indsend",
+        "automod_error": "Dit opslag indeholder tekst, der ikke er tilladt på Juxtaposition. For mere information, besøg https://preten.do/juxt-rules",
+        "content_placeholder": "Del dine tanker i et opslag på et fællesskab eller til dine følgerer.",
+        "screenshots_coming_soon": "Skærmbilleder er ikke klar endnu. Tjek igen senere!",
+        "no_screenshot": "Intet skærmbillede",
+        "painting_close": "Annuller",
+        "painting_submit": "Ok",
+        "spoiler_label": "Spoiler"
     },
     "setup": {
         "welcome": "Velkommen til Juxtaposition!",
@@ -17,16 +25,16 @@
             "first": "Det følgende er nogle vigtige retningslinjer, der sørger for at Juxt er en god oplevelse for alle. Juxts adfærdskodeks indeholder vigtig information, så vær rar med at give dig selv tid til at læse det omhyggeligt.",
             "sixth": "Del ikke personlige oplysninger - Dine eller Andres",
             "twelfth": "Har du spillet det spil?",
-            "fourth": "Vær sød or rare ved hinanden",
+            "fourth": "Vær respektfulde over for hinanden",
             "second": "Oplæg Kan Ses Verdenen Over",
             "eighth": "Del ikke Spoilere",
             "tenth": "Retningslinjer Overtrædelser",
-            "eleventh": "",
-            "third": "",
-            "thirteenth": "",
-            "fifth": "",
-            "ninth": "",
-            "seventh": ""
+            "eleventh": "Vores mål er at holde Juxt sjovt og underholdende for alle. I tilfældet ved at nogen bryder Juxts regler, vil vi udføre passende handlinger, op til og inkluderer blokere den pågældende bruger eller konsol.",
+            "third": "Juxt indeholder mange gaming fællesskaber, hvor folk verden over kan dele deres tanker. Når du deler et opslag i et fællesskab, husk på at alle kan se det, så vær så venlig at udtrykke dig selv på en måde til alle. Brug sund fornuft, og tænk før du deler. Juxt er en service, der også er tilgængeligt fra internettet, så husk på at folk, der ikke bruger Juxt, også kan se dine opslag. Derudover, enhver kommentar du laver på dine venners opslag vil ikke kun ses a dine venner, men af alle over hele verdenen også. Vær rar at huske på alt det.",
+            "thirteenth": "Hvis du indsender et opslag i et fællesskab for et spil du har spillet, vil dit opslag have et ikon der viser at du har spillet det spil.",
+            "fifth": "For at sørge for at Juxt er et sjovt sted for alle, spørger vi dig om at vise hensyn til andre brugere. Hjælp os med at holde Juxt en god oplevelse ved ikke at dele noget, der er upassende eller stødende.",
+            "ninth": "Nogle folk kommer til Juxt for at få tips og tricks for spil, men andre vil gerne udforske et spils hemmeligheder helt selv. Opslag der udveksler hemmeligheder fra et spil eller dets historie er kaldet \"spoilere.\" Hvis du sender noget omkring et spil der måske kunne være en spoiler, bare vær sikker og tryk på Spoiler knappen før du indsender dit opslag. På denne måde, vil folk, der ikke vil blive spoilet ikke se dit opslag.",
+            "seventh": "Husk på, at folk på Juxt er ikke nødvendigvis opfører sig den samme måde som i virkeligheden. Del aldrig din e-mailadresse, hjemmeadresse, arbejde- eller skolenavn, eller andet personligt identificerende med andre på Juxt, og aldrig del andres information. Derudover, hvis der er nogen du møder på Juxt der inviterer dig til at mødes i virkeligheden, sig ikke ja. Juxt er et online fællesskab og burde ikke blive brugt til at arrangere møder i virkeligheden."
         },
         "beta": "Beta Ansvarsfralæggelse",
         "done_button": "Lad os komme i gang!",
@@ -40,9 +48,10 @@
         "ready_text": "Først og fremmest check ud nogle af fællesskaberne for at se hvad folk rund om verdenen snakker om. Brug det øjeblik til at gøre dig mere bekendt med Juxt. Måske opstår der endda nogle nye opdagelser på vejen!",
         "done": "Mor dig i Juxt!",
         "info_text": "Juxt er et brugerdrevet spilfællesskab, hvor du kan kommunikere med folk\nfra hele verdenen. Du kan skrive eller tegne oplag i spilfælleskaber eller sende beskeder direkte til dine venner.",
-        "ready": "",
-        "analytics": "",
-        "analytics_text": ""
+        "ready": "Klar til at begynde at bruge Juxt",
+        "analytics": "Analyse",
+        "analytics_text": "Juxtaposition bruger Cloudflare Web Analyse for at få indsigt i hvordan folk bruger vores service. Dataene vi indsamler inkluderer, men er ikke gældende til tidspunktet af besøg, sider besøgt, og antal tid brugt på siden. Denne data er ikke knyttet til din bruger på nogen måde og er ikke brugt til føring af markedsføring af os eller Cloudflare.",
+        "title": "Juxtaposition Opsætning"
     },
     "user_page": {
         "followers": "Følgere",
@@ -53,13 +62,26 @@
         "posts": "Oplæg",
         "following": "Følger",
         "follow_user": "Følg",
-        "following_user": "Følger"
+        "following_user": "Følger",
+        "game_experience_unknown": "Ukendt",
+        "settings": "Indstillinger",
+        "friend_requests": "Anmodninger",
+        "deleted": "Slettet Bruger",
+        "banned": "Bandlyst Bruger",
+        "not_found": "Brugeren eksisterer ikke",
+        "tester_tag": "Tester",
+        "developer_tag": "Udvikler",
+        "moderator_tag": "Moderator"
     },
     "user_settings": {
         "profile_settings": "Profilindstillinger",
         "show_birthday": "Vis Fødselsdag på Profil",
         "show_country": "Vis Land på Profil",
-        "show_game": "Vis Spilerfaring på Profil"
+        "show_game": "Vis Spilerfaring på Profil",
+        "show_profile": "Vis profil til gæster",
+        "save_action": "Gem indstillinger",
+        "gdpr_download": "Download brugerdata",
+        "gdpr_download_action": "Download"
     },
     "global": {
         "no_posts": "Ingen Opslag",
@@ -75,7 +97,14 @@
         "back": "Tilbage",
         "private": "Privat",
         "close": "Luk",
-        "save": "Gem"
+        "save": "Gem",
+        "my_feed": "Mit Feed",
+        "global_feed": "Globalt Feed",
+        "global_feed_short": "Globalt",
+        "people_feed": "Personligt Feed",
+        "friend_requests": "Venneanmodninger",
+        "updates": "Opdateringer",
+        "search": "Søg..."
     },
     "all_communities": {
         "popular_places": "Populære Steder",
@@ -87,13 +116,114 @@
         "tags": "Etiketter",
         "popular": "Populære Opslag",
         "posts": "Opslag",
-        "recent": "Nylige Opslag"
+        "recent": "Nylige Opslag",
+        "followers_count": "{{count}} følgere",
+        "tags_not_applicable": "N/A",
+        "related": "Relateret Fællesskaber",
+        "related_short": "Relateret",
+        "related_to": "{{community}} Relateret Fællesskaber",
+        "closed": "Dette fællesskab modtager ikke nye opslag."
     },
     "activity_feed": {
         "empty": "Det ser tomt ud her. Prøv at følge nogen!"
     },
     "notifications": {
-        "none": "Ingen notifikationer."
+        "none": "Ingen notifikationer.",
+        "new_follower": {
+            "message/one": "<follower_one /> følger dig!",
+            "message/two": "<follower_one />, <follower_two /> følger dig!",
+            "message/three": "<follower_one />, <follower_two />, og {{count_other}} anden følger dig!",
+            "message/multiple": "<follower_one />, <follower_two />, og {{count_other}} andre følger dig!"
+        },
+        "post_deleted": {
+            "post_removed": "Dit opslag \"{{postId}}\" er blevet fjernet.",
+            "post_removed_for_reason": "Dit opslag \"{{postId}}\" er blevet fjernet af følgende grund: \"{{reason}}\".",
+            "comment_removed": "Din kommentar \"{{postId}}\" er blevet fjernet.",
+            "comment_removed_for_reason": "Din kommentar \"{{postId}}\" er blevet fjernet af følgende grund: \"{{reason}}\".",
+            "footer": "Klik på denne besked for at vise Juxtapositions regler. Hvis du har nogen spørgsmål, vær venlig at kontakte moderatorerne på Pretendo Network forummet {{contactModsUrl}}."
+        },
+        "limited_from_posting": {
+            "message": "Du er blevet begrænset for at lave opslag.",
+            "message_with_reason": "Du er begrænset for at lave opslag. Grund: \"{{reason}}\".",
+            "temporary": "Du er blevet begrænset for at lave opslag indtil {{until}}.",
+            "temporary_with_reason": "Du er blevet begrænset for at lave opslag indtil {{until}}. Grund: \"{{reason}}\".",
+            "footer": "Klik på denne besked for at vise Juxtapositions regler. Hvis du har nogen spørgsmål, vær så venlig at kontakte moderatorerne på Pretendo Network Forummet {{banAppealUrl}}."
+        }
     },
-    "language": "Dansk"
+    "language": "Dansk",
+    "login": {
+        "title": "Juxtaposition Log ind",
+        "heading": "Juxtaposition Log på",
+        "sub_title": "Indtast dine bruger oplysninger herunder",
+        "username": "Brugernavn",
+        "password": "Adgangskode",
+        "forgot_password": "Glemt adgangskode?",
+        "no_account": "Har ikke en bruger?",
+        "login_action": "Login",
+        "no_account_setup": "Bruger Oprettelse er kun tilgængeligt når du har en linked Wii U eller 3DS."
+    },
+    "error": {
+        "title": "Fejl {{code}}",
+        "heading": "Fejl {{code}}: {{message}}",
+        "message": "Åh nej! Det ser ud til at vi ikke kune finde den side du leder efter.<newline/>Dobbelttjek linkadressen eller prøv igen senere",
+        "no_access": "Du har ikke adgang til denne applikation {{code}}",
+        "message_web": "Vis nuværende <status>server status</status>.<newline/>Eller, <home>gå tilbage til hjem</home>",
+        "error_details": "Anmodnings-id: {{id}}"
+    },
+    "friend_requests": {
+        "none": "Ingen venneanmodninger"
+    },
+    "post": {
+        "title": "Opslag fra {{username}}",
+        "heading": "Opslag",
+        "yeahs_count/one": "<count/> person gav dette opslag et yeah.",
+        "yeahs_count/multiple": "<count/> personer gav dette opslag et yeah.",
+        "show_spoiler": "Vis Spoiler",
+        "reply_post": "Svar",
+        "report_post": "Reporter opslag",
+        "delete_post": "Slet opslag",
+        "removed": "Opslaget er blevet fjernet.",
+        "copy_link": "Kopier link",
+        "sort_newest_first": "Soter efter nyeste",
+        "sort_oldest_first": "Soter efter ældste",
+        "replies_heading": "Svar"
+    },
+    "reporting": {
+        "title": "Reporter opslag",
+        "submit": "Send report",
+        "label": "Grund:",
+        "description": "Du er i gang med at rapporterer et opslag, der går i strid mod Juxtaposition regler. Denne report vil kun blive sendt til Juxtaposition moderatorer og ikke forfatteren af dette opslag.",
+        "additional_info_placeholder": "Indtast yderligere kommentarer eller information",
+        "reason_spoiler": "Spoiler",
+        "reason_personal_info": "Personlig information",
+        "reason_violence": "Voldeligt indhold",
+        "reason_inappropiate": "Upassende/Skadende Adfærd",
+        "reason_bullying": "Hadfyldt/Mobning",
+        "reason_advertising": "Markedsføring",
+        "reason_nsfw": "Seksuelt eksplicit",
+        "reason_piracy": "Piratkopiering",
+        "reason_inappropiate_ingame": "Upassende adfærd i spil",
+        "reason_missing_images": "Manglende billeder",
+        "reason_others": "Andet",
+        "reason_not_nice": "Led/Uhøflig/Hadefuld (Regel 1)",
+        "reason_inappropriate": "Upassende/NSFW (Regel 2)",
+        "reason_spam": "Spam/Selv-promovering (Regel 3)",
+        "reason_offtopic": "Uden for emne (Regel 4)",
+        "reason_piracy_new": "Piratkopiering (Regel 5)",
+        "reason_exploits": "API misbrug/Misbrug af fejl (Regel 8)",
+        "reason_drama": "Konflikter (Regel 9)",
+        "reason_cheating": "Onlinesnyd (Regel 10)",
+        "reason_spoiler_new": "Spoilere (Rule 11)",
+        "reason_personal_info_new": "Personlig information (Regel 12)",
+        "reason_politics": "Politik (Regel 13)",
+        "reason_misinformation": "Misinformation/Dårlig råd (Regel 14)",
+        "reason_impersonation": "Efterligning (Regel 15)"
+    },
+    "moderation": {
+        "title": "Moderering",
+        "silently_delete_post": "Lydløs sletning",
+        "mark_as_spoiler": "Marker som spoiler",
+        "mark_as_not_spoiler": "Fjern spoiler",
+        "moderate_user": "Moderer bruger"
+    }
 }
