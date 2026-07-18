@@ -1,13 +1,13 @@
 import { createChannel, createClient, Metadata } from 'nice-grpc';
-import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
-import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
+import { ApiServiceDefinition } from '@pretendonetwork/grpc/api/v2/api_service';
+import { AccountServiceDefinition } from '@pretendonetwork/grpc/account/v2/account_service';
+import { FriendsServiceDefinition } from '@pretendonetwork/grpc/friends/v2/friends_service';
 import { config } from '@/config';
 import type { Client, CompatServiceDefinition } from 'nice-grpc';
 
-export const grpcFriends = grpcFactory(FriendsDefinition);
-export const grpcAccount = grpcFactory(AccountDefinition);
-export const grpcApi = grpcFactory(APIDefinition);
+export const grpcFriends = grpcFactory(FriendsServiceDefinition);
+export const grpcAccount = grpcFactory(AccountServiceDefinition);
+export const grpcApi = grpcFactory(ApiServiceDefinition);
 
 type GrpcConnection<T extends CompatServiceDefinition> = {
 	client(): Client<T>;

@@ -1,8 +1,8 @@
-import { getPIDFromServiceToken, getUserAccountData, getUserDataFromToken, getValueFromHeaders } from '@/util';
+import { getUserAccountData, getUserDataFromServiceToken, getUserDataFromToken, getValueFromHeaders } from '@/util';
 import { errors } from '@/services/internal/errors';
 import { getUserContent, getUserSettings } from '@/database';
 import type express from 'express';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 
 /**
  * Handles authentication for service (NNAS/console) and OAuth (web) tokens. Sets locals.account to AccountData.
@@ -43,14 +43,10 @@ export async function authPopulate(request: express.Request, response: express.R
 }
 
 async function consoleAuth(_request: express.Request, serviceToken: string): Promise<GetUserDataResponse> {
-	const pid = getPIDFromServiceToken(serviceToken);
-	if (pid === null) {
-		throw errors.for('unauthorized', 'Invalid service token!');
+	const pnid: GetUserDataResponse | null = await getUserDataFromServiceToken(serviceToken);
+	if (!pnid) {
+		throw new Error('Could not extract PNID from service token');
 	}
-
-	// If the user has a valid token for an unknown PID, just let the exception bubble
-	const pnid = await getUserAccountData(pid);
-
 	return pnid;
 }
 
