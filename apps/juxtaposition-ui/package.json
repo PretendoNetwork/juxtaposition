@@ -24,7 +24,6 @@
     "classnames": "^2.5.1",
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
-    "crc": "^4.3.2",
     "esbuild-sass-plugin": "^3.7.0",
     "express": "^5.2.1",
     "express-prom-bundle": "^7.0.2",

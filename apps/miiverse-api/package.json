@@ -26,7 +26,6 @@
 		"@prisma/adapter-pg": "^7.8.0",
 		"@prisma/client": "^7.8.0",
 		"@repo/grpc-client": "^0.0.0",
-		"crc": "^4.3.2",
 		"express": "^5.2.1",
 		"express-prom-bundle": "^7.0.2",
 		"express-rate-limit": "^8.2.1",
