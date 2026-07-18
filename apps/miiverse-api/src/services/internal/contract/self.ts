@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
-import type { FriendRequest } from '@pretendonetwork/grpc/friends/v2/friend_request';
+import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { AccountData } from '@/types/common/account-data';
 import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 

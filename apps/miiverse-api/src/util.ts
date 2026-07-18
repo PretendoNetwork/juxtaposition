@@ -3,12 +3,12 @@ import { DeleteObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { SystemType } from '@pretendonetwork/grpc/account/v2/token_info';
 import { config } from '@/config';
 import { logger } from '@/logger';
-import { grpcAccount, grpcApi, grpcFriends } from '@/grpc';
+import { grpcAccount, grpcApi, oldGrpcFriends } from '@/grpc';
 import { getS3 } from '@/s3';
 import { AutomodLog } from '@/models/automodLog';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
-import type { FriendRequest } from '@pretendonetwork/grpc/friends/v2/friend_request';
+import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/v2/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
 import type { GetPNIDResponse } from '@pretendonetwork/grpc/account/v2/get_pnid_rpc';
@@ -133,7 +133,7 @@ export async function bulkDeleteCDNAsset(keys: string[]): Promise<boolean> {
 }
 
 export async function getUserFriendPIDs(pid: number): Promise<number[]> {
-	const response = await grpcFriends.client().getUserFriendPIDs({
+	const response = await oldGrpcFriends.client().getUserFriendPIDs({
 		pid: pid
 	});
 
@@ -141,7 +141,7 @@ export async function getUserFriendPIDs(pid: number): Promise<number[]> {
 }
 
 export async function getUserFriendRequestsIncoming(pid: number): Promise<FriendRequest[]> {
-	const response = await grpcFriends.client().getUserFriendRequestsIncoming({
+	const response = await oldGrpcFriends.client().getUserFriendRequestsIncoming({
 		pid: pid
 	});
 

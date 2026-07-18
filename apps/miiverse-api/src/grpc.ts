@@ -1,11 +1,13 @@
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import { ApiServiceDefinition } from '@pretendonetwork/grpc/api/v2/api_service';
 import { AccountServiceDefinition } from '@pretendonetwork/grpc/account/v2/account_service';
-import { FriendsServiceDefinition } from '@pretendonetwork/grpc/friends/v2/friends_service';
+import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { config } from '@/config';
 import type { Client, CompatServiceDefinition } from 'nice-grpc';
 
-export const grpcFriends = grpcFactory(FriendsServiceDefinition);
+// Newer versions of friends require dumping decryption keys. We're using an old version to keep local hosting easy
+export const oldGrpcFriends = grpcFactory(FriendsDefinition);
+
 export const grpcAccount = grpcFactory(AccountServiceDefinition);
 export const grpcApi = grpcFactory(ApiServiceDefinition);
 
@@ -53,7 +55,7 @@ function grpcFactory<T extends CompatServiceDefinition>(definition: T): GrpcConn
 }
 
 export function connectGrpc() {
-	grpcFriends.connect(config.grpc.friends);
+	oldGrpcFriends.connect(config.grpc.friends);
 	grpcAccount.connect(config.grpc.account);
 	grpcApi.connect(config.grpc.account);
 }
