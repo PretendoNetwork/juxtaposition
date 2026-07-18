@@ -126,7 +126,8 @@ export function getReasonMap(): string[] {
 }
 
 export async function getUserAccountData(pid: number): Promise<AccountGetUserDataResponse> {
-	const result: AccountGetUserDataResponse = await gRPCAccountClient.getPNID({
+	// getUserData is deprecated, but the alternatives aren't implemented yet...
+	const result: AccountGetUserDataResponse = await gRPCAccountClient.getUserData({
 		pid: pid
 	}, {
 		metadata: Metadata({

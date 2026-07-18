@@ -99,7 +99,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   account:
-    image: ghcr.io/pretendonetwork/account:sha-99aec60
+    image: ghcr.io/pretendonetwork/account:sha-fc12061
     restart: unless-stopped
     ports:
       - "8123:8123" # grpc

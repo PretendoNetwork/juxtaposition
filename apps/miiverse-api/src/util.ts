@@ -149,7 +149,8 @@ export async function getUserFriendRequestsIncoming(pid: number): Promise<Friend
 }
 
 export function getUserAccountData(pid: number): Promise<GetPNIDResponse> {
-	return grpcAccount.client().getPNID({
+	// getUserData is deprecated, but the alternatives aren't implemented yet...
+	return grpcAccount.client().getUserData({
 		pid
 	});
 }
