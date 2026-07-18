@@ -1,25 +1,22 @@
-import crypto from 'crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import { AccountServiceDefinition } from '@pretendonetwork/grpc/account/v2/account_service';
 import { ApiServiceDefinition } from '@pretendonetwork/grpc/api/v2/api_service';
-import crc32 from 'crc/crc32';
 import { DateTime } from 'luxon';
 import { z } from 'zod';
 import { rateLimit } from 'express-rate-limit';
+import { SystemType } from '@pretendonetwork/grpc/account/v2/token_info';
 import { logger } from '@/logger';
 import { config } from '@/config';
-import { SystemType } from '@/types/common/system-types';
-import { TokenType } from '@/types/common/token-types';
 import type { Options as RatelimitOptions } from 'express-rate-limit';
 import type { ZodType } from 'zod';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/v2/get_user_data_rpc';
 import type { LoginResponse } from '@pretendonetwork/grpc/api/v2/login_rpc';
 import type { RequestHandler } from 'express';
+import type { GetPNIDResponse } from '@pretendonetwork/grpc/account/v2/get_pnid_rpc';
 import type { Config } from '@/config';
-import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
 
 const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
@@ -63,70 +60,40 @@ export function decodeParamPack(paramPack: string): ParamPack {
 	};
 }
 
-export function getPIDFromServiceToken(token: string): number | null {
+export async function getUserDataFromServiceToken(token: string): Promise<GetPNIDResponse | null> {
 	try {
-		const decryptedToken = decryptToken(Buffer.from(token, 'base64'));
+		const userData = await gRPCAccountClient.exchangeIndependentServiceTokenForUserData({
+			token
+		});
 
-		if (!decryptedToken) {
-			return null;
+		const unpackedToken = userData.tokenInfo;
+		if (!unpackedToken) {
+			throw new Error('No tokenInfo on service token');
+		}
+		if (!unpackedToken.issueTime) {
+			throw new Error('No issueTime on service token');
 		}
 
-		const unpackedToken = unpackServiceToken(decryptedToken);
-		if (unpackedToken === null) {
-			return null;
-		}
-
-		// * Only allow token types 1 (Wii U) and 2 (3DS)
-		if (unpackedToken.system_type !== SystemType.CTR && unpackedToken.system_type !== SystemType.WUP) {
+		// * Only allow CTR and WUP tokens
+		if (![SystemType.SYSTEM_TYPE_CTR, SystemType.SYSTEM_TYPE_WUP].includes(unpackedToken.systemType)) {
 			return null;
 		}
 
 		// * Check if the token is expired
-		if (unpackedToken.issue_time + (24n * 3600n * 1000n) < Date.now()) {
+		const expiryTime = 24 * 60 * 60 * 1000; // 24 hours
+		if (new Date(unpackedToken.issueTime.getTime() + expiryTime) < new Date()) {
 			return null;
 		}
 
-		return unpackedToken.pid;
+		if (!userData.pnid) {
+			return null;
+		}
+
+		return userData.pnid;
 	} catch (e) {
 		logger.error(e, 'Failed to extract PID from service token');
 		return null;
 	}
-}
-
-function decryptToken(token: Buffer): Buffer {
-	const iv = Buffer.alloc(16);
-
-	const expectedChecksum = token.readUint32BE();
-	const encryptedBody = token.subarray(4);
-
-	const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(config.aesKey, 'hex'), iv);
-
-	const decrypted = Buffer.concat([
-		decipher.update(encryptedBody),
-		decipher.final()
-	]);
-
-	if (expectedChecksum !== crc32(decrypted)) {
-		throw new Error('Checksum did not match. Failed decrypt. Are you using the right key?');
-	}
-
-	return decrypted;
-}
-
-export function unpackServiceToken(token: Buffer): ServiceToken | null {
-	const token_type = token.readUInt8(0x1);
-	if (token_type !== TokenType.IndependentService) {
-		return null;
-	}
-
-	return {
-		system_type: token.readUInt8(0x0),
-		token_type: token.readUInt8(0x1),
-		pid: token.readUInt32LE(0x2),
-		issue_time: token.readBigUInt64LE(0x6),
-		title_id: token.readBigUInt64LE(0xE),
-		access_level: token.readInt8(0x16)
-	};
 }
 
 export function getReasonMap(): string[] {
