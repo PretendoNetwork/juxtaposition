@@ -45,7 +45,7 @@ export async function authPopulate(request: express.Request, response: express.R
 async function consoleAuth(_request: express.Request, serviceToken: string): Promise<GetUserDataResponse> {
 	const pnid: GetUserDataResponse | null = await getUserDataFromServiceToken(serviceToken);
 	if (!pnid) {
-		throw new Error('Could not extract PNID from service token');
+		throw errors.for('unauthorized', 'Invalid service token!');
 	}
 	return pnid;
 }
