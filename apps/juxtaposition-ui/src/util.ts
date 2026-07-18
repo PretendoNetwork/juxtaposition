@@ -2,8 +2,8 @@ import crypto from 'crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createChannel, createClient, Metadata } from 'nice-grpc';
-import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
+import { AccountServiceDefinition } from '@pretendonetwork/grpc/account/v2/account_service';
+import { ApiServiceDefinition } from '@pretendonetwork/grpc/api/v2/api_service';
 import crc32 from 'crc/crc32';
 import { DateTime } from 'luxon';
 import { z } from 'zod';
@@ -14,19 +14,19 @@ import { SystemType } from '@/types/common/system-types';
 import { TokenType } from '@/types/common/token-types';
 import type { Options as RatelimitOptions } from 'express-rate-limit';
 import type { ZodType } from 'zod';
-import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
-import type { LoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
+import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
+import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/v2/get_user_data_rpc';
+import type { LoginResponse } from '@pretendonetwork/grpc/api/v2/login_rpc';
 import type { RequestHandler } from 'express';
 import type { Config } from '@/config';
 import type { ServiceToken } from '@/types/common/service-token';
 import type { ParamPack } from '@/types/common/param-pack';
 
 const gRPCAccountChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
-const gRPCAccountClient = createClient(AccountDefinition, gRPCAccountChannel);
+const gRPCAccountClient = createClient(AccountServiceDefinition, gRPCAccountChannel);
 
 const gRPCApiChannel = createChannel(`${config.grpc.account.host}:${config.grpc.account.port}`);
-const gRPCApiClient = createClient(APIDefinition, gRPCApiChannel);
+const gRPCApiClient = createClient(ApiServiceDefinition, gRPCApiChannel);
 
 export function decodeParamPack(paramPack: string): ParamPack {
 	const values = Buffer.from(paramPack, 'base64').toString().split('\\').filter(v => v.length > 0).values();
@@ -158,14 +158,15 @@ export function getReasonMap(): string[] {
 	];
 }
 
-export function getUserAccountData(pid: number): Promise<AccountGetUserDataResponse> {
-	return gRPCAccountClient.getUserData({
+export async function getUserAccountData(pid: number): Promise<AccountGetUserDataResponse> {
+	const result: AccountGetUserDataResponse = await gRPCAccountClient.getPNID({
 		pid: pid
 	}, {
 		metadata: Metadata({
 			'X-API-Key': config.grpc.account.apiKey
 		})
 	});
+	return result;
 }
 
 export async function getUserDataFromToken(token: string): Promise<ApiGetUserDataResponse> {
