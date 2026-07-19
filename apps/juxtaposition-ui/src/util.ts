@@ -64,6 +64,10 @@ export async function getUserDataFromServiceToken(token: string): Promise<GetPNI
 	try {
 		const userData = await gRPCAccountClient.exchangeIndependentServiceTokenForUserData({
 			token
+		}, {
+			metadata: Metadata({
+				'X-API-Key': config.grpc.account.apiKey
+			})
 		});
 
 		const unpackedToken = userData.tokenInfo;
