@@ -23,8 +23,6 @@ const schema = z.object({
 		enabled: z.stringbool().default(false),
 		port: z.coerce.number().default(9090)
 	}).prefault({}),
-	/** The AES key to use for decrypting service tokens. Must match the account server's. */
-	aesKey: z.string(),
 	/** CDN path hosting Mii images. ${cdnUrl}/mii/100000000/normal_face.png */
 	cdnUrl: z.string().url().transform(s => s.replace(/\/$/g, '')),
 	mongoose: z.object({
@@ -68,7 +66,6 @@ export const presets: Record<string, any> = {
 		http: {
 			trustProxy: 'loopback'
 		},
-		aesKey: '1234567812345678123456781234567812345678123456781234567812345678',
 		cdnUrl: 'http://cdn.pretendo.cc/miiverse',
 		mongoose: {
 			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'
