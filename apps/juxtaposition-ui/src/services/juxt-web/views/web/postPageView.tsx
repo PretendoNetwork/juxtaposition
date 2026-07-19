@@ -7,7 +7,7 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import type { ReactNode } from 'react';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { Community, Post, SelfContent } from '@/api/generated';
 
 export type PostPageViewProps = {

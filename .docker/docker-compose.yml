@@ -99,7 +99,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   account:
-    image: ghcr.io/pretendonetwork/account:sha-99aec60
+    image: ghcr.io/pretendonetwork/account:sha-fc12061
     restart: unless-stopped
     ports:
       - "8123:8123" # grpc
@@ -120,7 +120,7 @@ services:
       PN_ACT_CONFIG_GRPC_MASTER_API_KEY_ACCOUNT: "12345678123456781234567812345678"
       PN_ACT_CONFIG_GRPC_MASTER_API_KEY_API: "12345678123456781234567812345678"
 
-  friends:
+  friends: # Newer versions of friends require dumping decryption keys. We're using an old version to keep local hosting easy
     image: ghcr.io/pretendonetwork/friends:sha-5560c1d
     restart: unless-stopped
     ports:

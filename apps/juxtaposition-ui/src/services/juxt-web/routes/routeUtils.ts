@@ -1,4 +1,4 @@
-import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { Request } from 'express';
 import type { z } from 'zod';
 import type { UserTokens } from '@/types/juxt/tokens';
