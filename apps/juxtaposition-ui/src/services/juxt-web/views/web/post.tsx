@@ -47,7 +47,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 
 	const contentPart = (
 		<>
-			<div className="post-user-info-wrapper" id={post.id ?? undefined}>
+			<div className="post-user-info-wrapper">
 				<a href={url.url('/users/show', { pid: post.author.pid })}>
 					<img
 						className={cx('user-icon', {
