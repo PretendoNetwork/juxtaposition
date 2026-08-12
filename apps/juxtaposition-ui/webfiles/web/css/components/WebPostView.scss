@@ -1,0 +1,34 @@
+@use '../theme.scss' as t;
+
+$margin: 5px;
+
+.yeah-text {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.yeah-list {
+    display: flex;
+    justify-content: space-between;
+
+    // Make overflow items vanish! poof!
+    flex-wrap: wrap;
+    overflow-y: hidden;
+
+    height: 40px; // Height of a mii-icon
+    @include t.media(">=phone", "<tablet") {
+        height: 32px;
+    }
+
+    .mii-icon-container {
+        margin: 0 $margin;
+    }
+    .mii-icon { 
+        display: block;
+
+        @include t.media(">=phone", "<tablet") {
+            width: 32px;
+            height: 32px;
+        }
+    }
+}
