@@ -4,6 +4,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
 import type { ReactNode } from 'react';
 import type { Post, SelfContent } from '@/api/generated';
 
@@ -171,6 +172,25 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					</ul>
 				</span>
 			</div>
+			{ props.isMainPost && post.yeahsBy.length > 0
+				? (
+						<>
+							<div className="yeah-text">
+								<T
+									k={post.yeahsBy.length === 1 ? 'post.yeahs_count/one' : 'post.yeahs_count/multiple'}
+									components={{
+										count: <span className="feeling">{ post.yeahsBy.length }</span>
+									}}
+								/>
+							</div>
+							<div className="yeah-list">
+								{post.yeahsBy.slice(0, 15).map(({ pid }) => (
+									<WebMiiIcon pid={pid}></WebMiiIcon>
+								))}
+							</div>
+						</>
+					)
+				: null}
 		</>
 	);
 
