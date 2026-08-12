@@ -1,9 +1,8 @@
-import * as z from 'zod';
-import { getUserAccountData, getValueFromHeaders, decodeParamPack, getPIDFromServiceToken } from '@/util';
+import { z } from 'zod';
+import { getValueFromHeaders, decodeParamPack, getUserDataFromServiceToken } from '@/util';
 import { getDb, getEndpoint, getUser } from '@/database';
 import { badRequest, ApiErrorCode, serverError } from '@/errors';
 import type express from 'express';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
 
 const ParamPackSchema = z.object({
 	title_id: z.string(),
@@ -33,17 +32,17 @@ async function auth(request: express.Request, response: express.Response, next: 
 		return next();
 	}
 
-	let encryptedToken = getValueFromHeaders(request.headers, 'x-nintendo-servicetoken');
-	if (!encryptedToken) {
-		encryptedToken = getValueFromHeaders(request.headers, 'olive service token');
+	let token = getValueFromHeaders(request.headers, 'x-nintendo-servicetoken');
+	if (!token) {
+		token = getValueFromHeaders(request.headers, 'olive service token');
 	}
 
-	if (!encryptedToken) {
+	if (!token) {
 		return badRequest(response, ApiErrorCode.NO_TOKEN);
 	}
 
-	const pid = getPIDFromServiceToken(encryptedToken);
-	if (pid === null) {
+	const pnid = await getUserDataFromServiceToken(token);
+	if (pnid === null) {
 		return badRequest(response, ApiErrorCode.BAD_TOKEN);
 	}
 
@@ -59,31 +58,22 @@ async function auth(request: express.Request, response: express.Response, next: 
 		return badRequest(response, ApiErrorCode.BAD_PARAM_PACK);
 	}
 
-	let user: GetUserDataResponse;
-
-	try {
-		user = await getUserAccountData(pid);
-	} catch (error) {
-		request.log.error(error, `Failed to get account data for ${pid}`);
-		return serverError(response, ApiErrorCode.ACCOUNT_SERVER_ERROR);
-	}
-
-	const discovery = await getEndpoint(user.serverAccessLevel);
+	const discovery = await getEndpoint(pnid.serverAccessLevel);
 
 	if (!discovery) {
-		request.log.error(`Discovery data is missing for ${user.serverAccessLevel}`);
+		request.log.error(`Discovery data is missing for ${pnid.serverAccessLevel}`);
 		return serverError(response, ApiErrorCode.NO_DISCOVERY_DATA);
 	}
 
 	if (discovery.status > 0 && discovery.status <= 7) {
 		return badRequest(response, discovery.status);
 	} else if (discovery.status !== 0) {
-		request.log.error(`Discovery status ${discovery.status} unexpected for ${user.serverAccessLevel}`);
+		request.log.error(`Discovery status ${discovery.status} unexpected for ${pnid.serverAccessLevel}`);
 		return serverError(response, ApiErrorCode.NO_DISCOVERY_DATA);
 	}
 
-	request.user = user;
-	request.pid = pid;
+	request.user = pnid;
+	request.pid = pnid.pid;
 	request.paramPack = paramPackData;
 
 	let dbUser = await getUser(request.pid);
@@ -115,7 +105,7 @@ async function auth(request: express.Request, response: express.Response, next: 
 
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
-	if (dbUser.accountStatus < 0 || dbUser.accountStatus > 1 || user.accessLevel < 0) {
+	if (dbUser.accountStatus < 0 || dbUser.accountStatus > 1 || pnid.accessLevel < 0) {
 		if (dbUser.accountStatus === 2 && request.method === 'GET') {
 			return next();
 		} else if (dbUser.accountStatus === 2) {

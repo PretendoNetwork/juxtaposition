@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/consistent-type-imports -- other methods of importing type dont work */
 
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { i18n } from 'i18next';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { UserTokens } from '@/types/juxt/tokens';

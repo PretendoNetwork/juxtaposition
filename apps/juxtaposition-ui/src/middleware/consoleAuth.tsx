@@ -4,7 +4,7 @@ import { getLanguage } from '@/i18n';
 import { logger } from '@/logger';
 import { CtrFatalErrorView } from '@/services/juxt-web/views/ctr/errorView';
 import { PortalFatalErrorView } from '@/services/juxt-web/views/portal/errorView';
-import { decodeParamPack, getPIDFromServiceToken, getUserAccountData, getUserDataFromToken } from '@/util';
+import { decodeParamPack, getUserAccountData, getUserDataFromServiceToken, getUserDataFromToken } from '@/util';
 import type { RequestHandler, Response } from 'express';
 
 function renderAuthError(res: Response, code: number, message: string): void {
@@ -22,8 +22,14 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 		request.tokens = request.session.tokens;
 	} else {
 		request.tokens = { serviceToken: request.get('x-nintendo-servicetoken') };
-		request.pid = request.headers['x-nintendo-servicetoken'] ? getPIDFromServiceToken(request.get('x-nintendo-servicetoken') ?? '') : null;
-		request.user = request.pid ? await getUserAccountData(request.pid) : null;
+		request.pid = null;
+		request.user = null;
+
+		if (request.tokens.serviceToken) {
+			const pnid = await getUserDataFromServiceToken(request.tokens.serviceToken);
+			request.user = pnid ?? null;
+			request.pid = pnid?.pid ?? null;
+		}
 
 		request.session.user = request.user;
 		request.session.pid = request.pid;

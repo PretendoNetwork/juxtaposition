@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { mapUserProfile, userProfileSchema } from '@/services/internal/contract/user';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { UserWithSettings } from '@/services/internal/utils/user';
 
 export const adminUserProfileSchema = userProfileSchema.extend({

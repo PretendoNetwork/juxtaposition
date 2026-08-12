@@ -13,7 +13,7 @@ import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 
 export const postCreateSchema = asOpenapi('PostCreateBody', z.object({
-	body: z.string().optional(),
+	body: z.string().trim().optional(),
 	feelingId: z.number(),
 	isSpoiler: z.boolean().default(false),
 	isAppJumpable: z.boolean().default(false),
@@ -54,6 +54,15 @@ const miiFaceFilenameMap: Record<number, string> = {
 	4: 'frustrated.png',
 	5: 'sorrow.png'
 };
+
+export function isValidPost(post: PostCreateBody): boolean {
+	const hasContent = post.body && post.body.length > 0;
+	if (!hasContent && !post.painting && !post.screenshot) {
+		return false; // No content
+	}
+
+	return true;
+}
 
 /**
  * Create a new post from an input body

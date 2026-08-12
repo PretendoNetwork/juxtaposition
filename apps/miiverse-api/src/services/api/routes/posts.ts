@@ -23,7 +23,7 @@ import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { cleanedBase64 } from '@/zodUtils';
 import { AutomodRule } from '@/models/automodRules';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { CommunityShotMode, HydratedCommunityDocument } from '@/types/mongoose/community';

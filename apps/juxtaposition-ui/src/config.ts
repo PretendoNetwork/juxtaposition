@@ -36,7 +36,7 @@ const schema = z.object({
 	serverEnvironment: z.string(),
 	/** By default, only consoles can reach the console domains. This setting disable that constraint */
 	disableConsoleChecks: z.stringbool().default(false),
-	/** The AES key to use for decrypting service tokens. Must match the account server's. */
+	/** AES key for encrypting session */
 	aesKey: z.string(),
 	grpc: z.object({
 		account: z.object({

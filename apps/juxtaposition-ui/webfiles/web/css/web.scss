@@ -1,6 +1,7 @@
 @use './theme.scss' as t;
 @use './components/WebInfobox.scss';
 @use './components/WebCommunityListView.scss';
+@use './components/WebPostView.scss';
 
 :root {
   --background: #1b1f3b;

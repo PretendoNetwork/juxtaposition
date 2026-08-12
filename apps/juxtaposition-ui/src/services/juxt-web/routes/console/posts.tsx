@@ -421,6 +421,9 @@ async function newPost(req: Request, res: Response): Promise<void> {
 			params.append('error-text', res.i18n.t('new_post.automod_error'));
 			return res.redirect(rejectReturnUrl + '?' + params.toString());
 		}
+		if (newPostResult.isCode('invalid_post')) {
+			return res.redirect(rejectReturnUrl);
+		}
 		throw newPostResult;
 	}
 	if (!newPostResult) {

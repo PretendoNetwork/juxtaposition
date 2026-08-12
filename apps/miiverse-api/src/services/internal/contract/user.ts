@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
-import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { User } from '@/prisma/client';
 import type { UserWithSettings } from '@/services/internal/utils/user';
 
