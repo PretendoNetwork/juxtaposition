@@ -4,6 +4,7 @@ import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
 import { humanDate, humanFromNow } from '@/util';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { CtrListView, CtrListViewItem } from '@/services/juxt-web/views/ctr/components/CtrListView';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationItemTypeProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -26,30 +27,28 @@ function FollowNotificationView(props: NotificationItemTypeProps<FollowNotificat
 	}
 
 	return (
-		<>
+		<CtrListViewItem href={`/users/${latestUser.pid}`}>
 			<CtrMiiIcon pid={latestUser.pid} type="icon"></CtrMiiIcon>
-			<div className="body">
+			<div className="list-body">
 				<p>
-					<a className="link" href={`/users/${latestUser.pid}`} data-pjax="#body">
-						<T
-							k={i18nKey}
-							values={{
-								count: users.length,
-								count_other: Math.max(0, users.length - 2)
-							}}
-							components={{
-								follower_one: <NickName user={users[0]?.user} />,
-								follower_two: <NickName user={users[1]?.user} />
-							}}
-						/>
-					</a>
+					<T
+						k={i18nKey}
+						values={{
+							count: users.length,
+							count_other: Math.max(0, users.length - 2)
+						}}
+						components={{
+							follower_one: <NickName user={users[0]?.user} />,
+							follower_two: <NickName user={users[1]?.user} />
+						}}
+					/>
 					<span className="timestamp">
 						{' '}
 						{humanFromNow(props.data.updatedAt)}
 					</span>
 				</p>
 			</div>
-		</>
+		</CtrListViewItem>
 	);
 }
 
@@ -66,35 +65,33 @@ function PostDeletedNotificationView(props: NotificationItemTypeProps<PostDelete
 	}
 
 	return (
-		<>
-			<CtrIcon href="/titles/2551084080/new" src="/images/bandwidthalert.png"></CtrIcon>
-			<div className="body">
-				<a href="/titles/2551084080/new" data-pjax="#body">
-					<p style={{ color: 'black' }}>
-						<span>
-							<T
-								k={i18nKey}
-								values={{
-									postId: props.notif.content.postId,
-									reason: props.notif.content.reason ?? ''
-								}}
-							/>
-							{' '}
-							<T
-								k="notifications.post_deleted.footer"
-								values={{
-									contactModsUrl: 'https://preten.do/juxt-mods/'
-								}}
-							/>
-						</span>
-						<span className="timestamp">
-							{' '}
-							{humanFromNow(props.data.updatedAt)}
-						</span>
-					</p>
-				</a>
+		<CtrListViewItem href="/titles/2551084080/new">
+			<CtrIcon src="/images/bandwidthalert.png"></CtrIcon>
+			<div className="list-body">
+				<p style={{ color: 'black' }}>
+					<span>
+						<T
+							k={i18nKey}
+							values={{
+								postId: props.notif.content.postId,
+								reason: props.notif.content.reason ?? ''
+							}}
+						/>
+						{' '}
+						<T
+							k="notifications.post_deleted.footer"
+							values={{
+								contactModsUrl: 'https://preten.do/juxt-mods/'
+							}}
+						/>
+					</span>
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
+					</span>
+				</p>
 			</div>
-		</>
+		</CtrListViewItem>
 	);
 }
 
@@ -111,54 +108,50 @@ function LimitedFromPostingNotificationView(props: NotificationItemTypeProps<Lim
 	}
 
 	return (
-		<>
-			<CtrIcon href="/titles/2551084080/new" src="/images/bandwidthalert.png"></CtrIcon>
-			<div className="body">
-				<a href="/titles/2551084080/new" data-pjax="#body">
-					<p style={{ color: 'black' }}>
-						<span>
-							<T
-								k={i18nKey}
-								values={{
-									until: props.notif.content.until ? humanDate(props.notif.content.until) : '',
-									reason: props.notif.content.reason ?? ''
-								}}
-							/>
-							{' '}
-							<T
-								k="notifications.limited_from_posting.footer"
-								values={{
-									banAppealUrl: 'https://preten.do/ban-appeal/'
-								}}
-							/>
-						</span>
-						<span className="timestamp">
-							{' '}
-							{humanFromNow(props.data.updatedAt)}
-						</span>
-					</p>
-				</a>
+		<CtrListViewItem href="/titles/2551084080/new">
+			<CtrIcon src="/images/bandwidthalert.png"></CtrIcon>
+			<div className="list-body">
+				<p style={{ color: 'black' }}>
+					<span>
+						<T
+							k={i18nKey}
+							values={{
+								until: props.notif.content.until ? humanDate(props.notif.content.until) : '',
+								reason: props.notif.content.reason ?? ''
+							}}
+						/>
+						{' '}
+						<T
+							k="notifications.limited_from_posting.footer"
+							values={{
+								banAppealUrl: 'https://preten.do/ban-appeal/'
+							}}
+						/>
+					</span>
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
+					</span>
+				</p>
 			</div>
-		</>
+		</CtrListViewItem>
 	);
 }
 
 function SystemNotificationView(props: NotificationItemTypeProps<SystemNotification>): ReactNode {
 	return (
-		<>
-			<CtrIcon href={props.notif.content.link} src={props.notif.content.imagePath}></CtrIcon>
-			<div className="body">
-				<a href={props.notif.content.link} data-pjax="#body">
-					<p style={{ color: 'black' }}>
-						<span>{props.notif.content.text}</span>
-						<span className="timestamp">
-							{' '}
-							{humanFromNow(props.data.updatedAt)}
-						</span>
-					</p>
-				</a>
+		<CtrListViewItem href={props.notif.content.link}>
+			<CtrIcon src={props.notif.content.imagePath} type="icon"></CtrIcon>
+			<div className="list-body">
+				<p style={{ color: 'black' }}>
+					<span>{props.notif.content.text}</span>
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
+					</span>
+				</p>
 			</div>
-		</>
+		</CtrListViewItem>
 	);
 }
 
@@ -185,14 +178,12 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 
 export function CtrNotificationListView(props: NotificationListViewProps): ReactNode {
 	return (
-		<ul className="list-content-with-icon-column arrow-list" id="news-list-content">
+		<CtrListView type="icon-column">
 			{props.notifications.length === 0 ? <li><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
-				<li key={i}>
-					<CtrNotificationItem notification={notification} />
-				</li>
+				<CtrNotificationItem notification={notification} key={i} />
 			))}
-		</ul>
+		</CtrListView>
 	);
 }
 

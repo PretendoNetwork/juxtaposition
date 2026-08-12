@@ -8,6 +8,7 @@
 @use './components/CtrPageButtons.scss';
 @use './components/CtrPageHeader.scss';
 @use './components/CtrCommunityList.scss';
+@use './components/CtrListView.scss';
 @use 'new-post-view.css';
 @use 'report-post-page.css';
 @use 'theme.scss' as t;
@@ -102,44 +103,8 @@ menu.tab-header {
 .icon-container>.icon {
     width: 64px;
     height: 64px;
-    background: #e6eaf1
-}
-
-.list-content-with-icon-column>li {
-    display: table;
-    width: 300px;
-    border-bottom: 3px dotted #d2b0e1;
-    margin: 6px 10px
-}
-
-.icon-container {
-    display: table-cell;
-    width: 60px;
-    height: 60px
-}
-
-.list-content-with-icon-column .body {
-    display: table-cell;
-    text-align: left;
-    vertical-align: middle;
-    padding-left: 10px
-}
-
-.list-content-with-icon-column .body-content .text {
-    color: #969696;
-    font-size: 12px;
-    position: relative;
-    top: -5px;
-    left: 0;
-}
-
-.scroll.to-community-button {
-    display: block
-}
-
-.community-name.title {
-    font-size: 15px;
-    color: #323232
+    background: #e6eaf1;
+    display: block;
 }
 
 .text {
@@ -259,10 +224,6 @@ menu.tab-header.user-page li:last-child {
 
 .post-screenshot-4\3A 3 {
     height: 240px;
-}
-
-.post-list .post .timestamp {
-    color: #969696
 }
 
 .tab-body.post-list {
@@ -405,41 +366,13 @@ div.button-wrapper.center {
     margin-bottom: 15px
 }
 
-#news-list-content li .body .timestamp {
+.timestamp {
     color: #969696;
-    white-space: nowrap
-}
-
-#news-list-content li .body .link {
-    color: #673db6
+    white-space: nowrap;
 }
 
 menu.tab-header.no-margin {
     margin-top: 0
-}
-
-.scroll.to-community-button.full {
-    position: absolute;
-    width: 298px;
-    height: 66px;
-    left: 52px
-}
-
-.checkbox-container.spoiler-button {
-    width: 100%;
-    position: relative;
-    vertical-align: middle;
-    display: inline-block
-}
-
-.checkbox-container span {
-    margin: 4px auto;
-    display: block;
-    width: 100px;
-}
-
-.checkbox-container label {
-    font-size: 16px;
 }
 
 .yeah-text {
@@ -477,10 +410,6 @@ menu.tab-header.no-margin {
 
 .body .nick-name {
     color: #000;
-}
-
-.settings-list>li {
-    display: inline-block;
 }
 
 p.settings-label {
