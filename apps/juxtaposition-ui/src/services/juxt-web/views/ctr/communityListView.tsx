@@ -17,12 +17,19 @@ export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 				<div className="body">
 					<div className="body-content">
 						<span className="community-name title">{props.community.name}</span>
-						<br />
-						<span className="text">
-							{props.community.followerCount}
-							{' '}
-							<T k="community.followers" />
-						</span>
+						<div className="community-info">
+							{props.community.platform == 'ctr' || props.community.platform == 'both'
+								? <span className="platform-dot ctr">{'● '}</span>
+								: null}
+							{props.community.platform == 'wup' || props.community.platform == 'both'
+								? <span className="platform-dot wup">{'● '}</span>
+								: null}
+							<span className="followers">
+								{props.community.followerCount}
+								{' '}
+								<T k="community.followers" />
+							</span>
+						</div>
 					</div>
 				</div>
 			</a>

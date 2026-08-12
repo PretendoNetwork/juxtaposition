@@ -1,0 +1,17 @@
+@use '../theme.scss' as t;
+
+.communities-list {
+    .community-info {
+        font-size: t.$subline-size;
+        color: t.$subline-text;
+
+        .platform-dot {
+            &.ctr {
+                color: #CE181E;
+            }
+            &.wup {
+                color: #0096C8;
+            }
+        }
+    }
+}
