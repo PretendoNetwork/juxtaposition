@@ -2,6 +2,7 @@ import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/roo
 import { PortalNavBar } from '@/services/juxt-web/views/portal/components/PortalNavBar';
 import { PortalCommunityItem } from '@/services/juxt-web/views/portal/communityListView';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalListView } from '@/services/juxt-web/views/portal/components/PortalListView';
 import type { ReactNode } from 'react';
 import type { Community } from '@/api/generated';
 
@@ -21,12 +22,12 @@ export function PortalSubCommunityView(props: SubCommunityViewProps): ReactNode 
 					</h1>
 				</header>
 				<div className="body-content">
-					<div className="communities-list double">
-						<ul className="list-content-with-icon-column" id="community-new-content">
+					<div className="communities-list">
+						<PortalListView type="table-3col">
 							{props.subcommunities.map(community => (
 								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
-						</ul>
+						</PortalListView>
 					</div>
 				</div>
 			</PortalPageBody>

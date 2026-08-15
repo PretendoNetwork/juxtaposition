@@ -4,6 +4,7 @@ import { humanDate, humanFromNow } from '@/util';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/ui/PortalMiiIcon';
 import { PortalIcon } from '@/services/juxt-web/views/portal/components/ui/PortalIcon';
+import { PortalListView, PortalListViewItem } from '@/services/juxt-web/views/portal/components/PortalListView';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationItemTypeProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
@@ -26,30 +27,28 @@ function FollowNotificationView(props: NotificationItemTypeProps<FollowNotificat
 	}
 
 	return (
-		<>
-			<PortalMiiIcon pid={latestUser.pid} type="icon"></PortalMiiIcon>
-			<div className="body">
-				<p className="text">
-					<a className="link" href={`/users/${latestUser.pid}`}>
-						<T
-							k={i18nKey}
-							values={{
-								count: users.length,
-								count_other: Math.max(0, users.length - 2)
-							}}
-							components={{
-								follower_one: <NickName user={users[0]?.user} />,
-								follower_two: <NickName user={users[1]?.user} />
-							}}
-						/>
-					</a>
+		<PortalListViewItem href={`/users/${latestUser.pid}`}>
+			<PortalMiiIcon pid={latestUser.pid} type="icon" />
+			<div className="list-body">
+				<span className="text">
+					<T
+						k={i18nKey}
+						values={{
+							count: users.length,
+							count_other: Math.max(0, users.length - 2)
+						}}
+						components={{
+							follower_one: <NickName user={users[0]?.user} />,
+							follower_two: <NickName user={users[1]?.user} />
+						}}
+					/>
 					<span className="timestamp">
 						{' '}
 						{humanFromNow(props.data.updatedAt)}
 					</span>
-				</p>
+				</span>
 			</div>
-		</>
+		</PortalListViewItem>
 	);
 }
 
@@ -66,33 +65,31 @@ function PostDeletedNotificationView(props: NotificationItemTypeProps<PostDelete
 	}
 
 	return (
-		<>
-			<PortalIcon href="/titles/2551084080/new" src="/images/bandwidthalert.png"></PortalIcon>
-			<div className="body">
-				<a href="/titles/2551084080/new">
-					<span className="text">
-						<T
-							k={i18nKey}
-							values={{
-								postId: props.notif.content.postId,
-								reason: props.notif.content.reason ?? ''
-							}}
-						/>
+		<PortalListViewItem href="/titles/2551084080/new">
+			<PortalIcon src="/images/bandwidthalert.png" type="icon" />
+			<div className="list-body">
+				<span className="text">
+					<T
+						k={i18nKey}
+						values={{
+							postId: props.notif.content.postId,
+							reason: props.notif.content.reason ?? ''
+						}}
+					/>
+					{' '}
+					<T
+						k="notifications.post_deleted.footer"
+						values={{
+							contactModsUrl: 'https://preten.do/juxt-mods/'
+						}}
+					/>
+					<span className="timestamp">
 						{' '}
-						<T
-							k="notifications.post_deleted.footer"
-							values={{
-								contactModsUrl: 'https://preten.do/juxt-mods/'
-							}}
-						/>
-						<span className="timestamp">
-							{' '}
-							{humanFromNow(props.data.updatedAt)}
-						</span>
+						{humanFromNow(props.data.updatedAt)}
 					</span>
-				</a>
+				</span>
 			</div>
-		</>
+		</PortalListViewItem>
 	);
 }
 
@@ -109,52 +106,48 @@ function LimitedFromPostingNotificationView(props: NotificationItemTypeProps<Lim
 	}
 
 	return (
-		<>
-			<PortalIcon href="/titles/2551084080/new" src="/images/bandwidthalert.png"></PortalIcon>
-			<div className="body">
-				<a href="/titles/2551084080/new">
-					<span className="text">
-						<T
-							k={i18nKey}
-							values={{
-								until: props.notif.content.until ? humanDate(props.notif.content.until) : '',
-								reason: props.notif.content.reason ?? ''
-							}}
-						/>
+		<PortalListViewItem href="/titles/2551084080/new">
+			<PortalIcon src="/images/bandwidthalert.png" type="icon" />
+			<div className="list-body">
+				<span className="text">
+					<T
+						k={i18nKey}
+						values={{
+							until: props.notif.content.until ? humanDate(props.notif.content.until) : '',
+							reason: props.notif.content.reason ?? ''
+						}}
+					/>
+					{' '}
+					<T
+						k="notifications.limited_from_posting.footer"
+						values={{
+							banAppealUrl: 'https://preten.do/ban-appeal/'
+						}}
+					/>
+					<span className="timestamp">
 						{' '}
-						<T
-							k="notifications.limited_from_posting.footer"
-							values={{
-								banAppealUrl: 'https://preten.do/ban-appeal/'
-							}}
-						/>
-						<span className="timestamp">
-							{' '}
-							{humanFromNow(props.data.updatedAt)}
-						</span>
+						{humanFromNow(props.data.updatedAt)}
 					</span>
-				</a>
+				</span>
 			</div>
-		</>
+		</PortalListViewItem>
 	);
 }
 
 function SystemNotificationView(props: NotificationItemTypeProps<SystemNotification>): ReactNode {
 	return (
-		<>
-			<PortalIcon href={props.notif.content.link} src={props.notif.content.imagePath}></PortalIcon>
-			<div className="body">
-				<a href={props.notif.content.link}>
-					<span className="text">
-						{props.notif.content.text}
-						<span className="timestamp">
-							{' '}
-							{humanFromNow(props.data.updatedAt)}
-						</span>
+		<PortalListViewItem href={props.notif.content.link}>
+			<PortalIcon src={props.notif.content.imagePath} type="icon" />
+			<div className="list-body">
+				<span className="text">
+					{props.notif.content.text}
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
 					</span>
-				</a>
+				</span>
 			</div>
-		</>
+		</PortalListViewItem>
 	);
 }
 
@@ -181,14 +174,12 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 
 export function PortalNotificationListView(props: NotificationListViewProps): ReactNode {
 	return (
-		<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
+		<PortalListView type="list" id="news-list-content">
 			{props.notifications.length === 0 ? <li><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
-				<li key={i}>
-					<PortalNotificationItem notification={notification} />
-				</li>
+				<PortalNotificationItem notification={notification} key={i} />
 			))}
-		</ul>
+		</PortalListView>
 	);
 }
 

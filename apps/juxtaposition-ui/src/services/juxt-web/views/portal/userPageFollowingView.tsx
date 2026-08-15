@@ -1,35 +1,38 @@
-import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { PortalListView, PortalListViewItem } from '@/services/juxt-web/views/portal/components/PortalListView';
+import { PortalMiiIcon } from '@/services/juxt-web/views/portal/components/ui/PortalMiiIcon';
+import { PortalCommunityIcon } from '@/services/juxt-web/views/portal/components/ui/PortalCommunityIcon';
 import type { ReactNode } from 'react';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 
 export function PortalUserPageFollowingView(props: UserPageFollowingViewProps): ReactNode {
-	const url = useUrl();
 	return (
-		<div className="communities-list">
-			<ul className="list-content-with-icon-column" id="community-new-content">
+		<div>
+			<PortalListView type="table-3col">
 				{props.followers.map(user => (
-					<li key={user.pid} id={user.pid.toString()}>
-						<span className="icon-container"><img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} className="icon" /></span>
-						<a href={`/users/show?pid=${user.pid}`} data-pjax="#body" className="scroll to-community-button"></a>
-						<div className="body">
-							<div className="body-content">
-								<span className="community-name title">{user.miiName}</span>
-							</div>
+					<PortalListViewItem
+						key={user.pid}
+						id={user.pid.toString()}
+						href={`/users/show?pid=${user.pid}`}
+					>
+						<PortalMiiIcon pid={user.pid} type="icon" />
+						<div className="list-body">
+							<span>{user.miiName}</span>
 						</div>
-					</li>
+					</PortalListViewItem>
 				))}
 				{props.communities.map(community => (
-					<li key={community.olive_community_id} id={community.olive_community_id}>
-						<span className="icon-container"><img src={url.cdn(`/icons/${community.olive_community_id}/128.png`)} className="icon" /></span>
-						<a href={`/titles/${community.olive_community_id}/new`} data-pjax="#body" className="scroll to-community-button"></a>
-						<div className="body">
-							<div className="body-content">
-								<span className="community-name title">{community.name}</span>
-							</div>
+					<PortalListViewItem
+						key={community.olive_community_id}
+						id={community.olive_community_id}
+						href={`/titles/${community.olive_community_id}/new`}
+					>
+						<PortalCommunityIcon community={community} type="icon" size="96" />
+						<div className="list-body">
+							<span>{community.name}</span>
 						</div>
-					</li>
+					</PortalListViewItem>
 				))}
-			</ul>
+			</PortalListView>
 		</div>
 	);
 }

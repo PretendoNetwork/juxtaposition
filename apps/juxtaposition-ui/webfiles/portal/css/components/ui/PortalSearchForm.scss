@@ -1,7 +1,8 @@
+@use "../../theme.scss" as t;
 
 .search-form {
     text-align: center;
-    padding: 0 40px 0 200px;
+    margin-bottom: t.$component-gap;
 
     input {
         font-size: 24px;
