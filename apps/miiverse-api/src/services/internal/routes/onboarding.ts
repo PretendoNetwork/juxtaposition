@@ -2,10 +2,8 @@ import { z } from 'zod';
 import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { pageControlSchema } from '@/services/internal/contract/page';
-import { Settings } from '@/models/settings';
 import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
-import { Content } from '@/models/content';
 
 export const onboardingRouter = createInternalApiRouter();
 
@@ -20,29 +18,39 @@ onboardingRouter.post({
 		}).extend(pageControlSchema()),
 		response: resultSchema
 	},
-	async handler({ body, auth }) {
+	async handler({ body, auth, db }) {
 		if (!auth) {
 			// Needs an auth token
 			throw errors.for('requires_auth');
 		}
 
-		if (auth.settings && auth.content) {
+		if (auth.user) {
 			// Already completed the full onboarding process
 			return mapResult('success');
 		}
 
 		const name = auth.pnid.mii?.name ?? 'Default';
-		if (!auth.settings) {
-			await Settings.create({
-				pid: auth.pnid.pid,
-				screen_name: name,
-				game_skill: body.experienceId,
-				receive_notifications: body.receiveNotifications
-			});
-		}
-		if (!auth.content) {
-			await Content.create({
-				pid: auth.pnid.pid
+		if (!auth.user) {
+			await db.user.create({
+				data: {
+					pid: auth.pnid.pid,
+					displayName: name,
+					accountStatus: 0,
+					lastSeen: new Date(),
+					settings: {
+						create: {
+							gameSkill: body.experienceId,
+							receiveNotifications: body.receiveNotifications,
+							isFavouriteCommunityVisible: true,
+							isGameSkillVisible: true,
+							profilePrivacy: 'Public',
+							isBirthdayVisible: false,
+							isRelationshipVisible: false,
+							isCountryVisible: false,
+							profileComment: null
+						}
+					}
+				}
 			});
 		}
 

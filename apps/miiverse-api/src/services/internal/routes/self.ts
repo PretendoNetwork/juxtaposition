@@ -3,12 +3,11 @@ import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { errors } from '@/services/internal/errors';
 import { mapBannedSelf, mapSelf, mapSelfFriendRequest, mapSelfNotificationCount, selfFriendRequestSchema, selfNotificationCountSchema, selfSchema } from '@/services/internal/contract/self';
-import { Settings } from '@/models/settings';
 import { getDb } from '@/database';
 import { getUserFriendRequestsIncoming } from '@/util';
 import { Post } from '@/models/post';
-import { Content } from '@/models/content';
 import type { SelfFriendRequestDto } from '@/services/internal/contract/self';
+import type { UserUpdateInput } from '@/prisma/models';
 
 export const selfRouter = createInternalApiRouter();
 
@@ -20,33 +19,50 @@ selfRouter.get({
 	schema: {
 		response: selfSchema
 	},
-	async handler({ auth }) {
+	async handler({ auth, db }) {
 		if (!auth) {
 			throw errors.for('unauthorized');
 		}
 
 		// TODO these updates should probably be done in a middleware
-		const userSettings = await Settings.findOne({ pid: auth.pnid.pid });
-		if (userSettings) {
+		const user = await db.user.findUnique({
+			where: {
+				pid: auth.pnid.pid
+			}
+		});
+		if (user) {
+			const data: UserUpdateInput = {};
+
 			// Clear ban lift date if neccesary
-			const hasBan = userSettings.account_status !== 0;
-			const shouldClearBan = userSettings.ban_lift_date && new Date(userSettings.ban_lift_date) <= new Date();
+			const hasBan = user.accountStatus !== 0;
+			const shouldClearBan = user.banEndsAt && new Date(user.banEndsAt) <= new Date();
 			if (hasBan && shouldClearBan) {
-				userSettings.account_status = 0;
+				data.accountStatus = 0;
+				data.banEndsAt = null;
 			}
 
 			// Record activity & update metadata
-			userSettings.last_active = new Date();
+			data.lastSeen = new Date();
 			if (auth.pnid.mii) {
-				userSettings.screen_name = auth.pnid.mii.name;
+				data.displayName = auth.pnid.mii.name;
 			}
 
-			// Save changes to current auth state
-			await userSettings.save();
-			auth.settings = userSettings;
+			// Save changes
+			const newUser = await db.user.update({
+				where: {
+					pid: user.pid
+				},
+				data,
+				include: {
+					settings: true,
+					follows: true,
+					followedCommunities: true
+				}
+			});
+			auth.user = newUser;
 		}
 
-		const accountStatus = auth.settings?.account_status ?? 0;
+		const accountStatus = auth.user?.accountStatus ?? 0;
 		const isJuxtBanned = accountStatus < 0 || accountStatus > 1;
 		const isNetworkBanned = auth.pnid.accessLevel < 0 ||
 			auth.pnid.permissions?.bannedAllPermanently === true ||
@@ -56,8 +72,8 @@ selfRouter.get({
 			return mapBannedSelf(auth, 'network_ban', null, null);
 		}
 		if (isJuxtBanned) {
-			const reason = userSettings?.ban_reason ?? null;
-			const endDate = userSettings?.ban_lift_date ?? null;
+			const reason = user?.banReason ?? null;
+			const endDate = user?.banEndsAt ?? null;
 			if (accountStatus === 2) {
 				return mapBannedSelf(auth, 'temp_ban', endDate, reason);
 			}
@@ -100,7 +116,7 @@ selfRouter.get({
 	schema: {
 		response: z.array(selfFriendRequestSchema)
 	},
-	async handler({ auth }) {
+	async handler({ auth, db }) {
 		const account = auth!;
 
 		const now = new Date();
@@ -108,7 +124,13 @@ selfRouter.get({
 		const validRequests = allRequests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
 
 		const senders = validRequests.map(v => v.sender);
-		const relatedUsers = await Settings.find({ pid: { $in: senders } });
+		const relatedUsers = await db.user.findMany({
+			where: {
+				pid: {
+					in: senders
+				}
+			}
+		});
 
 		return validRequests.reduce<SelfFriendRequestDto[]>((acc, req) => {
 			const user = relatedUsers.find(v => v.pid === req.sender);
@@ -129,24 +151,31 @@ selfRouter.post({
 	schema: {
 		response: z.any()
 	},
-	async handler({ auth }) {
+	async handler({ auth, db }) {
 		const account = auth!;
 		const rawPosts = await Post.find({ pid: account.pnid.pid });
-		const userSettings = await Settings.findOne({ pid: account.pnid.pid });
-		const userContent = await Content.findOne({ pid: account.pnid.pid });
+		const user = await db.user.findUnique({
+			where: {
+				pid: account.pnid.pid
+			},
+			include: {
+				settings: true,
+				followedCommunities: true,
+				follows: true
+			}
+		});
 
 		// Clean non-user data
-		if (userSettings) {
-			userSettings.banned_by = null;
-		}
 		const postsJson = rawPosts.map(post => ({
 			...post.toJSON(),
 			removed_by: null
 		}));
+		if (user) {
+			user.bannedBy = null;
+		}
 
 		return {
-			user_content: userContent,
-			user_settings: userSettings,
+			user,
 			posts: postsJson
 		};
 	}

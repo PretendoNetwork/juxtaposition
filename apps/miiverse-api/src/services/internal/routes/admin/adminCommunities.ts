@@ -56,7 +56,7 @@ adminCommunitiesRouter.get({
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(adminCommunitySchema)
 	},
-	async handler({ query }) {
+	async handler({ query, db }) {
 		const dbQuery: FilterQuery<ICommunity> = {
 			$and: [
 				{
@@ -72,7 +72,18 @@ adminCommunitiesRouter.get({
 			.limit(query.limit);
 		const total = await Community.countDocuments(dbQuery);
 
-		return mapPage(total, communities.map(c => mapAdminCommunity(c)));
+		const ids = communities.map(v => v.olive_community_id);
+		const followers = await db.communityFollow.groupBy({
+			by: ['communityId'],
+			_count: true,
+			where: {
+				communityId: {
+					in: ids
+				}
+			}
+		});
+
+		return mapPage(total, communities.map(c => mapAdminCommunity(c, followers.find(v => v.communityId === c.olive_community_id)?._count ?? 0)));
 	}
 });
 
@@ -87,13 +98,19 @@ adminCommunitiesRouter.get({
 		}),
 		response: adminCommunitySchema
 	},
-	async handler({ params }) {
+	async handler({ params, db }) {
 		const community = await Community.findOne({ olive_community_id: params.id });
 		if (!community) {
 			throw errors.for('not_found');
 		}
 
-		return mapAdminCommunity(community);
+		const followers = await db.communityFollow.count({
+			where: {
+				communityId: community.olive_community_id
+			}
+		});
+
+		return mapAdminCommunity(community, followers);
 	}
 });
 
@@ -190,7 +207,7 @@ adminCommunitiesRouter.post({
 			]
 		});
 
-		return mapAdminCommunity(community);
+		return mapAdminCommunity(community, 0);
 	}
 });
 
@@ -205,7 +222,7 @@ adminCommunitiesRouter.patch({
 		body: communityCreateSchema.partial(),
 		response: adminCommunitySchema
 	},
-	async handler({ body, params, auth }) {
+	async handler({ body, params, auth, db }) {
 		const pnid = auth!.pnid;
 		const communityId = params.id;
 		const oldCommunity = await Community.findOne({ olive_community_id: params.id });
@@ -334,7 +351,13 @@ adminCommunitiesRouter.patch({
 			});
 		}
 
-		return mapAdminCommunity(comm);
+		const followers = await db.communityFollow.count({
+			where: {
+				communityId: comm.olive_community_id
+			}
+		});
+
+		return mapAdminCommunity(comm, followers);
 	}
 });
 

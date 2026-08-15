@@ -3,7 +3,8 @@ import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
-import { mapUserSettings, profileVisibilitySchema, userSettingsSchema } from '@/services/internal/contract/userSettings';
+import { mapUserSettings, profilePrivacyReverseMap, profileVisibilitySchema, userSettingsSchema } from '@/services/internal/contract/userSettings';
+import type { UserSettingUpdateInput } from '@/prisma/models';
 
 export const userSettingsRouter = createInternalApiRouter();
 
@@ -18,11 +19,11 @@ userSettingsRouter.get({
 	},
 	async handler({ auth }) {
 		const account = auth!;
-		if (!account.settings) {
+		if (!account.user || !account.user.settings) {
 			throw errors.for('not_found');
 		}
 
-		return mapUserSettings(account.settings);
+		return mapUserSettings(account.user.settings);
 	}
 });
 
@@ -41,27 +42,26 @@ userSettingsRouter.post({
 		}),
 		response: resultSchema
 	},
-	async handler({ body, auth }) {
+	async handler({ body, auth, db }) {
 		const account = auth!;
-		const settings = account.settings;
+		const settings = account.user?.settings;
 		if (!settings) {
 			throw errors.for('not_found');
 		}
 
-		settings.profile_visibility = body.profileVisibility;
-		settings.country_visibility = body.countryVisible;
-		settings.birthday_visibility = body.birthdayVisible;
-		settings.game_skill_visibility = body.gameSkillVisible;
+		const data: UserSettingUpdateInput = {};
+		data.profilePrivacy = profilePrivacyReverseMap[body.profileVisibility];
+		data.isCountryVisible = body.countryVisible;
+		data.isBirthdayVisible = body.birthdayVisible;
+		data.isGameSkillVisible = body.gameSkillVisible;
+		data.profileComment = body.comment ? body.comment : null;
 
-		if (body.comment) {
-			settings.profile_comment_visibility = true;
-			settings.profile_comment = body.comment;
-		} else {
-			settings.profile_comment_visibility = false;
-			settings.profile_comment = '';
-		}
-
-		await settings.save();
+		await db.userSetting.update({
+			where: {
+				pid: settings.pid
+			},
+			data
+		});
 
 		return mapResult('success');
 	}

@@ -3,7 +3,6 @@ import { deleteOptional } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
-import { Settings } from '@/models/settings';
 import { mapShallowUser, mapUserProfile, shallowUserSchema, userProfileSchema } from '@/services/internal/contract/user';
 import { errors } from '@/services/internal/errors';
 import { createNewFollowNotification } from '@/services/internal/utils/notifications';
@@ -14,15 +13,22 @@ import { COMMUNITY_TYPE } from '@/types/mongoose/community';
 import { Community } from '@/models/community';
 import { followSchema, mapFollowUser } from '@/services/internal/contract/follow';
 import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
-import { Content } from '@/models/content';
 import type { FilterQuery } from 'mongoose';
 import type { ICommunity } from '@/types/mongoose/community';
-import type { ISettings } from '@/types/mongoose/settings';
+import type { UserFollowWhereInput, UserWhereInput } from '@/prisma/models';
 
 export const userProfileRouter = createInternalApiRouter();
 
-function notBanned() {
-	return { account_status: { $in: [0, 1] } };
+function notBannedUserQuery(query?: UserWhereInput): UserWhereInput {
+	const queries: UserWhereInput[] = [
+		{ accountStatus: { in: [0, 1] } }
+	];
+	if (query) {
+		queries.push(query);
+	}
+	return {
+		AND: queries
+	};
 }
 
 userProfileRouter.get({
@@ -37,12 +43,18 @@ userProfileRouter.get({
 		}),
 		response: userProfileSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
-		const content = await Content.findOne({ pid });
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
 		const pnid = await getUserAccountData(pid);
-		if (!user || !content || !pnid || pnid.deleted) {
+		if (!user || !pnid || pnid.deleted) {
 			throw errors.for('not_found');
 		}
 
@@ -51,7 +63,11 @@ userProfileRouter.get({
 			throw errors.for('user_banned');
 		}
 
-		const followers = content.following_users.filter(v => v !== 0).length;
+		const followers = await db.userFollow.count({
+			where: {
+				followingPid: user.pid
+			}
+		});
 		const totalPosts = await Post.find({
 			pid: params.id,
 			parent: null,
@@ -74,9 +90,16 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
 		if (!user) {
 			throw errors.for('not_found');
 		}
@@ -84,18 +107,22 @@ userProfileRouter.get({
 		assertCanAccessUser(auth, user);
 
 		const targetPids = await getUserFriendPIDs(pid);
-		const dbQuery: FilterQuery<ISettings> = deleteOptional({
+		const dbQuery = notBannedUserQuery({
 			pid: {
-				$in: targetPids
-			},
-			...notBanned()
+				in: targetPids
+			}
 		});
-		const items = await Settings
-			.find(dbQuery)
-			.sort({ pid: -1 })
-			.skip(query.offset)
-			.limit(query.limit);
-		const total = await Settings.countDocuments(dbQuery);
+		const items = await db.user.findMany({
+			where: dbQuery,
+			orderBy: {
+				pid: 'desc'
+			},
+			skip: query.offset,
+			take: query.limit
+		});
+		const total = await db.user.count({
+			where: dbQuery
+		});
 
 		return mapPage(total, items.map(mapShallowUser));
 	}
@@ -113,31 +140,40 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
-		const content = await Content.findOne({ pid });
-		if (!user || !content || !canAccessUser(auth, user)) {
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (!user || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
 		}
 
-		// User contents frequently have a `0` element in it
-		const targetPids = (content.following_users ?? []).filter(v => v !== 0);
-
-		const dbQuery: FilterQuery<ISettings> = deleteOptional({
-			pid: {
-				$in: targetPids
+		const dbQuery: UserFollowWhereInput = {
+			followingPid: user.pid,
+			user: notBannedUserQuery()
+		};
+		const items = await db.userFollow.findMany({
+			where: dbQuery,
+			include: {
+				user: true
 			},
-			...notBanned()
+			orderBy: {
+				pid: 'desc'
+			},
+			skip: query.offset,
+			take: query.limit
 		});
-		const items = await Settings
-			.find(dbQuery)
-			.sort({ pid: -1 })
-			.skip(query.offset)
-			.limit(query.limit);
-		const total = await Settings.countDocuments(dbQuery);
+		const total = await db.userFollow.count({
+			where: dbQuery
+		});
 
-		return mapPage(total, items.map(mapShallowUser));
+		return mapPage(total, items.map(v => mapShallowUser(v.user)));
 	}
 });
 
@@ -153,20 +189,29 @@ userProfileRouter.get({
 		query: z.object(pageControlSchema(100)),
 		response: pageDtoSchema(communitySchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
-		const content = await Content.findOne({ pid });
-		if (!user || !content || !canAccessUser(auth, user)) {
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (!user || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
 		}
 
-		// User contents frequently have a `0` element in it
-		const targetCommunities = (content.followed_communities ?? []).filter(v => v !== '0');
+		const followedComms = await db.communityFollow.findMany({
+			where: {
+				pid
+			}
+		});
 
 		const dbQuery: FilterQuery<ICommunity> = deleteOptional({
 			olive_community_id: {
-				$in: targetCommunities
+				$in: followedComms.map(v => v.communityId)
 			},
 			type: {
 				$ne: COMMUNITY_TYPE.Private
@@ -179,7 +224,18 @@ userProfileRouter.get({
 			.limit(query.limit);
 		const total = await Community.countDocuments(dbQuery);
 
-		return mapPage(total, communities.map(c => mapCommunity(c)));
+		const ids = communities.map(v => v.olive_community_id);
+		const followers = await db.communityFollow.groupBy({
+			by: ['communityId'],
+			_count: true,
+			where: {
+				communityId: {
+					in: ids
+				}
+			}
+		});
+
+		return mapPage(total, communities.map(c => mapCommunity(c, followers.find(v => v.communityId === c.olive_community_id)?._count ?? 0)));
 	}
 });
 
@@ -197,34 +253,40 @@ userProfileRouter.get({
 		}).extend(pageControlSchema(100)),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ params, query, auth }) {
+	async handler({ params, query, auth, db }) {
 		const pid = params.id;
-		const user = await Settings.findOne({ pid });
-		const content = await Content.findOne({ pid });
-		if (!user || !content || !canAccessUser(auth, user)) {
+		const user = await db.user.findUnique({
+			where: {
+				pid
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (!user || !canAccessUser(auth, user)) {
 			return mapPage(0, []);
 		}
 
-		// User contents frequently have a `0` element in it
-		let targetPids = (content.followed_users ?? []).filter(v => v !== 0);
-		if (query.followerId) {
-			targetPids = targetPids.filter(v => v === query.followerId);
-		}
-
-		const dbQuery: FilterQuery<ISettings> = deleteOptional({
-			pid: {
-				$in: targetPids
+		const dbQuery: UserFollowWhereInput = {
+			pid: user.pid,
+			followingUser: notBannedUserQuery()
+		};
+		const items = await db.userFollow.findMany({
+			where: dbQuery,
+			include: {
+				followingUser: true
 			},
-			...notBanned()
+			orderBy: {
+				pid: 'desc'
+			},
+			skip: query.offset,
+			take: query.limit
 		});
-		const items = await Settings
-			.find(dbQuery)
-			.sort({ pid: -1 })
-			.skip(query.offset)
-			.limit(query.limit);
-		const total = await Settings.countDocuments(dbQuery);
+		const total = await db.userFollow.count({
+			where: dbQuery
+		});
 
-		return mapPage(total, items.map(mapShallowUser));
+		return mapPage(total, items.map(v => mapShallowUser(v.followingUser)));
 	}
 });
 
@@ -238,11 +300,22 @@ userProfileRouter.post({
 		}),
 		response: followSchema
 	},
-	async handler({ params, db, auth }) {
+	async handler({ params, auth, db }) {
 		const targetUserPid = params.id;
-		const targetUser = await Settings.findOne({ pid: targetUserPid });
-		const targetUserContent = await Content.findOne({ pid: targetUserPid });
-		if (!targetUser || !targetUserContent) {
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: targetUserPid
+			},
+			include: {
+				settings: true
+			}
+		});
+		const targetFollowCount = await db.userFollow.count({
+			where: {
+				followingPid: targetUserPid
+			}
+		});
+		if (!targetUser) {
 			throw errors.for('not_found');
 		}
 
@@ -250,23 +323,25 @@ userProfileRouter.post({
 
 		const currentUser = auth!;
 		const currentUserPid = currentUser.pnid.pid;
-		if (!currentUser.content) {
-			throw errors.for('not_found');
+		const existingFollow = await db.userFollow.findFirst({
+			where: {
+				pid: currentUserPid,
+				followingPid: targetUserPid
+			}
+		});
+		if (existingFollow) {
+			return mapFollowUser('follow', targetUserPid, targetFollowCount);
 		}
 
-		const currentUserFollowedUsers = currentUser.content.followed_users;
-		const isFollowing = currentUserFollowedUsers.includes(targetUserPid);
-		if (isFollowing) {
-			return mapFollowUser('follow', targetUserContent);
-		}
-
-		targetUserContent.following_users.push(currentUserPid);
-		currentUser.content.followed_users.push(targetUserPid);
-		await targetUserContent.save();
-		await currentUser.content.save();
+		await db.userFollow.create({
+			data: {
+				pid: currentUserPid,
+				followingPid: targetUserPid
+			}
+		});
 
 		await createNewFollowNotification(db, { currentUser: currentUserPid, userToFollow: targetUserPid });
-		return mapFollowUser('follow', targetUserContent);
+		return mapFollowUser('follow', targetUserPid, targetFollowCount + 1);
 	}
 });
 
@@ -280,32 +355,48 @@ userProfileRouter.delete({
 		}),
 		response: followSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		const targetUserPid = params.id;
-		const targetUser = await Settings.findOne({ pid: targetUserPid });
-		const targetUserContent = await Content.findOne({ pid: targetUserPid });
-		if (!targetUser || !targetUserContent) {
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: targetUserPid
+			},
+			include: {
+				settings: true
+			}
+		});
+		const targetFollowCount = await db.userFollow.count({
+			where: {
+				followingPid: targetUserPid
+			}
+		});
+		if (!targetUser) {
 			throw errors.for('not_found');
 		}
 
 		assertCanAccessUser(auth, targetUser);
+
 		const currentUser = auth!;
 		const currentUserPid = currentUser.pnid.pid;
-		if (!currentUser.content) {
-			throw errors.for('not_found');
+
+		const existingFollow = await db.userFollow.findFirst({
+			where: {
+				pid: currentUserPid,
+				followingPid: targetUserPid
+			}
+		});
+		if (!existingFollow) {
+			return mapFollowUser('unfollow', targetUserPid, targetFollowCount);
 		}
 
-		const currentUserFollowedUsers = currentUser.content.followed_users;
-		const isFollowing = currentUserFollowedUsers.includes(targetUserPid);
-		if (!isFollowing) {
-			return mapFollowUser('unfollow', targetUserContent);
-		}
-
-		targetUserContent.following_users = targetUserContent.following_users.filter(pid => pid !== currentUserPid);
-		currentUser.content.followed_users = currentUser.content.followed_users.filter(pid => pid !== targetUserPid);
-		await targetUserContent.save();
-		await currentUser.content.save();
-
-		return mapFollowUser('unfollow', targetUserContent);
+		await db.userFollow.delete({
+			where: {
+				pid_followingPid: {
+					pid: currentUserPid,
+					followingPid: targetUserPid
+				}
+			}
+		});
+		return mapFollowUser('unfollow', targetUserPid, targetFollowCount - 1);
 	}
 });

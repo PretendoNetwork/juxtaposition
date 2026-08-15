@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
+import type { UserWithSettings } from '@/services/internal/utils/user';
 
 export const userBadgeSchema = z.enum([
 	'al:dev',
@@ -42,11 +43,11 @@ export const userProfileSchema = asOpenapi('UserProfile', z.object({
 
 export type UserProfileDto = z.infer<typeof userProfileSchema>;
 
-export function mapShallowUser(settings: HydratedSettingsDocument): ShallowUserDto {
+export function mapShallowUser(user: User): ShallowUserDto {
 	return {
-		pid: settings.pid,
-		accountStatus: settings.account_status,
-		miiName: settings.screen_name
+		pid: user.pid,
+		accountStatus: user.accountStatus,
+		miiName: user.displayName
 	};
 }
 
@@ -80,19 +81,19 @@ export function getProfileFlags(pnid: GetUserDataResponse): UserBadgeEnum[] {
 	return flags;
 }
 
-export function mapUserProfile(settings: HydratedSettingsDocument, pnid: GetUserDataResponse, followers: number, posts: number): UserProfileDto {
+export function mapUserProfile(user: UserWithSettings, pnid: GetUserDataResponse, followers: number, posts: number): UserProfileDto {
 	return {
-		pid: settings.pid,
-		accountStatus: settings.account_status,
+		pid: user.pid,
+		accountStatus: user.accountStatus,
 		username: pnid.username,
-		miiName: settings.screen_name,
+		miiName: user.displayName,
 		flags: getProfileFlags(pnid),
-		isOnline: settings.last_active ? isDateInRange(settings.last_active, 10) : false,
+		isOnline: isDateInRange(user.lastSeen, 10),
 		profileInfo: {
-			comment: settings.profile_comment_visibility ? settings.profile_comment ?? null : null,
-			country: settings.country_visibility ? pnid.country : null,
-			birthday: settings.birthday_visibility ? new Date(pnid.birthdate) : null,
-			gameSkill: settings.game_skill_visibility ? settings.game_skill : null
+			comment: user.settings?.profileComment ?? null,
+			country: user.settings?.isCountryVisible ? pnid.country : null,
+			birthday: user.settings?.isBirthdayVisible ? new Date(pnid.birthdate) : null,
+			gameSkill: user.settings?.isGameSkillVisible ? user.settings.gameSkill : null
 		},
 		followers,
 		posts
