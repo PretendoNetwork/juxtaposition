@@ -98,8 +98,7 @@ function initAll() {
 function checkForUpdates() {
 	GET('/users/notifications.json', function updates(data) {
 		var notificationObj = JSON.parse(data.responseText);
-		var count =
-			notificationObj.message_count + notificationObj.notification_count;
+		var count = notificationObj.notification_count;
 		cave.toolbar_setNotificationCount(count);
 	});
 }
