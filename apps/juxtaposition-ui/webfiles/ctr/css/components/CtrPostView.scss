@@ -51,7 +51,7 @@
     }
 
     .post-content-text {
-        padding: 10px;
+        margin: 10px;
 
         word-wrap: break-word;
         white-space: pre-wrap;
@@ -139,7 +139,9 @@
 
 .post-memo,
 .post-screenshot {
-    width: 320px
+    width: 320px;
+    display: block;
+    margin: 10px 0;
 }
 
 .post-memo {
