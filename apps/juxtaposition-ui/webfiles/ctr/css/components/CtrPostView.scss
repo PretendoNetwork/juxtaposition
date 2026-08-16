@@ -1,0 +1,163 @@
+@use "../theme.scss" as t;
+
+.post {
+    margin-bottom: 10px;
+
+    .post-banner {
+        display: -webkit-box;
+        padding: 0 32px;
+
+        position: relative;
+        .sp-speech-bubble {
+            position: absolute;
+            bottom: -(t.$component-border-size);
+            left: 20px; // done by eye
+        }
+
+        .text {
+            -webkit-box-flex: 1;
+            // vertical center
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-box-pack: center;
+            
+            font-size: 12px;
+            line-height: 16px;
+
+            > * {
+                display: block;
+                
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+            .screen-name { color: t.$root-text-5; }
+            .community { color: t.$root-text-2; }
+            .topic-tag {
+                color: t.$root-text-accent;
+                .sprite { vertical-align: sub; }
+            }
+        }
+    }
+
+    .post-body {
+        background: #fff;
+        border: t.$component-border;
+        border-radius: t.$component-radius;
+        overflow: hidden;
+
+        font-size: 14px;
+        color: t.$root-text-4;
+    }
+
+    .post-content-text {
+        padding: 10px;
+
+        word-wrap: break-word;
+        white-space: pre-wrap;
+    }
+
+    .post-buttons {
+        height: 42px;
+        background: url(@/images/gradient-42px.png);
+        // just webkit bugs
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+        .post-buttons-box {
+            > * { display: block; }
+            display: -webkit-box;
+            -webkit-box-align: center;
+
+            height: 100%;
+
+            margin: 0 10px;
+            border-top: t.$component-border;
+        }
+
+        .post-action-button {
+            position: relative;
+            display: block;
+            width: 20px;
+            height: 20px;
+
+            padding: 0;
+            margin: 0;
+            border: 0;
+            background: 0;
+        }
+
+        .caption {
+            margin-left: 5px;
+            margin-right: 15px;
+        }
+
+        .timestamp {
+            color: t.$root-text-1;
+        }
+    }
+
+    &.spoiler .post-content {
+        display: none
+    }
+
+    .spoiler-wrapper {
+        padding: 10px;
+    }
+}
+
+.mii-icon,
+.mii-icon-container {
+    display: block;
+    width: 48px;
+    height: 48px;
+}
+
+.yeah-text {
+    text-align: center;
+    margin: 5px 0;
+}
+
+.yeah-list {
+    display: -webkit-box;
+    padding: 0 1px; // 320px inner
+}
+
+.yeah-list-icon {
+    display: block;
+    width: 28px;
+    height: 28px;
+}
+.yeah-list-icon-container {
+    display: block;
+    margin: 1px;
+
+    background: t.$root-light-300;
+    border: t.$component-border;
+    border-radius: 2px;
+}
+
+.post-memo,
+.post-screenshot {
+    width: 320px
+}
+
+.post-memo {
+    height: 120px
+}
+
+.post-screenshot {
+    height: 178px;
+}
+
+.post-screenshot-16\3A 9 {
+    height: 180px;
+}
+
+.post-screenshot-5\3A 3 {
+    height: 192px;
+}
+
+.post-screenshot-4\3A 3 {
+    height: 240px;
+}

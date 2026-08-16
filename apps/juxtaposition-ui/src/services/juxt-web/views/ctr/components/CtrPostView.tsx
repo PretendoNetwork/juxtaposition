@@ -1,10 +1,10 @@
 import cx from 'classnames';
-import moment from 'moment';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { CtrButton } from '@/services/juxt-web/views/ctr/components/ui/CtrButton';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -53,90 +53,76 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 				spoiler: post.isSpoiler
 			})}
 		>
-			<CtrMiiIcon pid={post.author.pid} face_url={post.mii.imageUrl}></CtrMiiIcon>
-			<div className="post-body-content">
-				<div
-					id={post.id}
-					className={cx('post-body', {
-						yeah: hasYeahed
-					})}
-				>
-					<header>
-						<span className="screen-name">{post.author.miiName}</span>
-						{' '}
-						<span className="timestamp">
-							{'- '}
-							{moment(post.createdAt).fromNow()}
-						</span>
-						{ post.topicTag
-							? (
-									<>
-										<br />
-										<a href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
-											<span className="tags-container">
-												<span className="sprite sp-tag inline-sprite"></span>
-												<span className="tags">{post.topicTag}</span>
-											</span>
-										</a>
-									</>
-								)
-							: null }
-					</header>
-
+			<div className="post-banner">
+				<CtrMiiIcon pid={post.author.pid} face_url={post.mii.imageUrl} />
+				<div className="sprite sp-speech-bubble" />
+				<div className="text">
+					<a className="screen-name" href={`/users/${post.author.pid}`} data-pjax="#body">{post.author.miiName}</a>
 					{ !props.isReply
+						? <a className="community" href={`/titles/${post.community?.olive_community_id}`} data-pjax="#body">{post.community?.name}</a>
+						: null}
+					{ post.topicTag
 						? (
-								<a href={`/titles/${post.community?.olive_community_id}`} className="community-banner" data-pjax="#body">
-									<span className="title-icon-container" data-pjax="#body">
-										<img src={url.cdn(`/icons/${post.community?.olive_community_id}/32.png`)} className="title-icon" />
-									</span>
-									<span className="community-name">{post.community?.name}</span>
+								<a className="topic-tag" href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
+									<span className="sprite sp-tag inline-sprite"></span>
+									{' '}
+									<span>{post.topicTag}</span>
 								</a>
 							)
 						: null}
+				</div>
+			</div>
 
-					{ post.isSpoiler
+			<div
+				id={post.id}
+				className={cx('post-body', {
+					yeah: hasYeahed
+				})}
+			>
+				{ post.isSpoiler
+					? (
+							<div className="spoiler-wrapper" id={`spoiler-${post.id}`}>
+								<button className="show-spoiler" data-post-id={post.id}><T k="post.show_spoiler" /></button>
+							</div>
+						)
+					: null }
+
+				<div className="post-content" data-href={!props.isReply ? `/posts/${post.id}` : undefined}>
+					{post.body
 						? (
-								<div className="spoiler-wrapper" id={`spoiler-${post.id}`}>
-									<button data-post-id={post.id}><T k="post.show_spoiler" /></button>
-								</div>
+								<p className="post-content-text">{post.body}</p>
 							)
-						: null }
+						: null}
+					<CtrPostScreenshot post={post}></CtrPostScreenshot>
+					{post.painting
+						? (
+								<img className="post-memo" src={url.cdn(`/paintings/${post.author.pid}/${post.id}.png`)} />
+							)
+						: null}
+					{/* TODO add post.url back */}
+				</div>
 
-					<div className="post-content" data-href={!props.isReply ? `/posts/${post.id}` : undefined}>
-						{post.body
-							? (
-									<p className="post-content-text">{post.body}</p>
-								)
-							: null}
-						<CtrPostScreenshot post={post}></CtrPostScreenshot>
-						{post.painting
-							? (
-									<img className="post-memo" src={url.cdn(`/paintings/${post.author.pid}/${post.id}.png`)} />
-								)
-							: null}
-						{/* TODO add post.url back */}
-					</div>
-
-					<div className="post-buttons">
-						<CtrButton type="small" sprite="sp-yeah" selected={hasYeahed} data-button-yeah-post={post.id} />
+				<div className="post-buttons">
+					<div className="post-buttons-box">
+						<CtrButton type="post-action" sprite="sp-heart" selected={hasYeahed} data-button-yeah-post={post.id} />
+						<span className="caption yeah-count" id={`count-${post.id}`}>{post.stats.empathyCount}</span>
 						{props.isReply && post.author.pid !== user.pid
 							? (
-									<CtrButton type="small" sprite="sp-flag" href={`/posts/${post.id}/report`} />
+									<CtrButton type="post-action" sprite="sp-flag" href={`/posts/${post.id}/report`} />
 								)
 							: null}
-						<a href={`/posts/${post.id}`} className="to-permalink-button" data-pjax="#body">
-							<span className="sprite sp-yeah-small inline-sprite"></span>
-							<span className="yeah-count" id={`count-${post.id}`}>{post.stats.empathyCount}</span>
-							{' '}
-							{!props.isReply
-								? (
-										<>
-											<span className="sprite sp-reply inline-sprite"></span>
-											<span className="reply-count">{post.stats.replyCount}</span>
-										</>
-									)
-								: null}
-						</a>
+
+						{!props.isReply
+							? (
+									<>
+										<CtrButton type="post-action" sprite="sp-comments" href={`/posts/${post.id}`} />
+										<span className="caption reply-count">{post.stats.replyCount}</span>
+									</>
+								)
+							: null}
+
+						<div className="flex-spacer"></div>
+						<a className="timestamp" href={`/posts/${post.id}`} data-pjax="#body">{humanFromNow(post.createdAt, 'short')}</a>
 					</div>
 				</div>
 			</div>
@@ -153,7 +139,18 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 							</h6>
 							<div className="yeah-list">
 								{post.yeahsBy.slice(0, 10).map(({ pid }) => (
-									<CtrMiiIcon pid={pid}></CtrMiiIcon>
+									<>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
+									</>
 								))}
 							</div>
 						</>

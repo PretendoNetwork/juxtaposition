@@ -44,7 +44,7 @@ function inc(base: string, val: number): string {
 }
 
 function yeahPost(this: HTMLInputElement, _e: Event): void {
-	var sprite = this.querySelector('.sprite.sp-yeah')!;
+	var sprite = this.querySelector('.sprite.sp-heart')!;
 	var id = this.getAttribute('data-button-yeah-post')!;
 	var count = document.getElementById('count-' + id)!;
 	this.disabled = true;

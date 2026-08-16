@@ -7,7 +7,7 @@ export type MiiIconProps = {
 	face_url?: string;
 	link?: boolean; // default true
 
-	type?: 'mii-icon' | 'icon' | 'header-icon'; // default ".mii-icon"
+	type?: 'mii-icon' | 'icon' | 'header-icon' | 'yeah-list-icon'; // default ".mii-icon"
 	className?: string; // extra classes
 };
 
