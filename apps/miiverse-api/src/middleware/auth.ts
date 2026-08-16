@@ -1,7 +1,6 @@
-import moment from 'moment';
-import * as z from 'zod';
+import { z } from 'zod';
 import { getValueFromHeaders, decodeParamPack, getUserDataFromServiceToken } from '@/util';
-import { getEndpoint, getUserSettings } from '@/database';
+import { getDb, getEndpoint, getUser } from '@/database';
 import { badRequest, ApiErrorCode, serverError } from '@/errors';
 import type express from 'express';
 
@@ -77,26 +76,39 @@ async function auth(request: express.Request, response: express.Response, next: 
 	request.pid = pnid.pid;
 	request.paramPack = paramPackData;
 
-	const userSettings = await getUserSettings(request.pid);
+	let dbUser = await getUser(request.pid);
 
 	if (request.path === '/v1/endpoint') {
 		return next();
-	} else if (!userSettings) {
+	} else if (!dbUser) {
 		return badRequest(response, ApiErrorCode.SETUP_NOT_COMPLETE);
 	}
 
-	if (moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
-		userSettings.account_status = 0;
-		userSettings.ban_lift_date = null;
-		await userSettings.save();
+	if (dbUser.banEndsAt && dbUser.accountStatus !== 3) {
+		if (dbUser.banEndsAt < new Date()) {
+			dbUser = await getDb().user.update({
+				where: {
+					pid: dbUser.pid
+				},
+				data: {
+					banEndsAt: null,
+					accountStatus: 0
+				},
+				include: {
+					settings: true,
+					follows: true,
+					followedCommunities: true
+				}
+			});
+		}
 	}
 
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
-	if (userSettings.account_status < 0 || userSettings.account_status > 1 || pnid.accessLevel < 0) {
-		if (userSettings.account_status === 2 && request.method === 'GET') {
+	if (dbUser.accountStatus < 0 || dbUser.accountStatus > 1 || pnid.accessLevel < 0) {
+		if (dbUser.accountStatus === 2 && request.method === 'GET') {
 			return next();
-		} else if (userSettings.account_status === 2) {
+		} else if (dbUser.accountStatus === 2) {
 			return badRequest(response, ApiErrorCode.ACCOUNT_POSTING_LIMITED);
 		} else {
 			return badRequest(response, ApiErrorCode.ACCOUNT_BANNED);

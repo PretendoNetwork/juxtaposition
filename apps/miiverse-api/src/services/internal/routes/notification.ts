@@ -3,7 +3,6 @@ import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapNotification, notificationSchema } from '@/services/internal/contract/notification';
-import { Settings } from '@/models/settings';
 import type { FollowNotificationContent } from '@/services/internal/utils/notifications';
 import type { NotificationRecipientWhereInput } from '@/prisma/models';
 
@@ -52,7 +51,13 @@ notificationsRouter.get({
 			}
 			return acc;
 		}, []);
-		const users = await Settings.find({ pid: { $in: relatedUserIds } });
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: relatedUserIds
+				}
+			}
+		});
 
 		if (query.markAsRead) {
 			await db.notificationRecipient.updateMany({

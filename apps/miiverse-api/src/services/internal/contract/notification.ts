@@ -1,9 +1,8 @@
 import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
-import type { Notification, NotificationRecipient } from '@/prisma/client';
+import type { Notification, NotificationRecipient, User } from '@/prisma/client';
 import type { FollowNotificationContent, LimitedFromPostingNotificationContent, PostDeletedNotificationContent, SystemNotificationContent } from '@/services/internal/utils/notifications';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 
 export const followNotificationSchema = asOpenapi('FollowNotification', z.object({
 	type: z.literal('follow'),
@@ -57,7 +56,7 @@ export const notificationSchema = z.object({
 
 export type NotificationDto = z.infer<typeof notificationSchema>;
 
-export function mapNotification(recipient: NotificationRecipient, notif: Notification, users: HydratedSettingsDocument[]): NotificationDto {
+export function mapNotification(recipient: NotificationRecipient, notif: Notification, users: User[]): NotificationDto {
 	let data: NotificationDto['notif'] | null = null;
 
 	if (notif.type === 'Follow') {

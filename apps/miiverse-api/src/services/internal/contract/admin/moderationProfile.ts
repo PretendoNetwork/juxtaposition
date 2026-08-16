@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
 
 export const moderationProfileSchema = z.object({
 	pid: z.number(),
@@ -10,11 +10,11 @@ export const moderationProfileSchema = z.object({
 
 export type ModerationProfileDto = z.infer<typeof moderationProfileSchema>;
 
-export function mapModerationProfile(settings: HydratedSettingsDocument): ModerationProfileDto {
+export function mapModerationProfile(user: User): ModerationProfileDto {
 	return {
-		pid: settings.pid,
-		accountStatus: settings.account_status,
-		bannedUntil: settings.ban_lift_date ?? null,
-		banReason: settings.ban_reason ?? null
+		pid: user.pid,
+		accountStatus: user.accountStatus,
+		bannedUntil: user.banEndsAt ?? null,
+		banReason: user.banReason ?? null
 	};
 }

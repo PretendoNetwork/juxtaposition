@@ -3,7 +3,7 @@ import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { AccountData } from '@/types/common/account-data';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
 
 export const banCodes = z.enum(['network_ban', 'temp_ban', 'perma_ban']).openapi('BanCodeEnum');
 
@@ -89,7 +89,7 @@ export function mapBannedSelf(auth: AccountData, banCode: BanCodesEnum, banLiftD
 }
 
 export function mapSelf(auth: AccountData): SelfDto {
-	if (!auth.settings || !auth.content) {
+	if (!auth.user) {
 		return {
 			...baseSelf,
 			pid: auth.pnid.pid
@@ -99,12 +99,12 @@ export function mapSelf(auth: AccountData): SelfDto {
 	return {
 		pid: auth.pnid.pid,
 		username: auth.pnid.username,
-		accountStatus: auth.settings.account_status,
-		miiName: auth.settings.screen_name,
+		accountStatus: auth.user.accountStatus,
+		miiName: auth.user.displayName,
 		hasDoneOnboarding: true,
 		content: {
-			followed_communities: auth.content.followed_communities.filter(v => v !== '0'),
-			followed_users: auth.content.followed_users.filter(v => v !== 0)
+			followed_communities: auth.user.followedCommunities.map(v => v.communityId),
+			followed_users: auth.user.follows.map(v => v.followingPid)
 		},
 		permissions: {
 			moderator: auth.moderator,
@@ -113,7 +113,7 @@ export function mapSelf(auth: AccountData): SelfDto {
 			accessLevel: auth.pnid.accessLevel,
 
 			// 0 = normal, 1 = limited from posting, 2 = temp ban, 3 = perma ban
-			posting: auth.settings.account_status === 0
+			posting: auth.user.accountStatus === 0
 		},
 		banState: null
 	};
@@ -125,7 +125,7 @@ export function mapSelfNotificationCount(unreadNotifications: number): SelfNotif
 	};
 }
 
-export function mapSelfFriendRequest(req: FriendRequest, user: HydratedSettingsDocument): SelfFriendRequestDto {
+export function mapSelfFriendRequest(req: FriendRequest, user: User): SelfFriendRequestDto {
 	return {
 		sentAt: new Date(Number(req.sent) * 1000),
 		sender: mapShallowUser(user),

@@ -2,7 +2,6 @@ import { z } from 'zod';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
-import { Settings } from '@/models/settings';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { auditLogActionSchema, auditLogSchema, mapAuditLog } from '@/services/internal/contract/admin/auditLogs';
 import { Logs } from '@/models/logs';
@@ -24,7 +23,7 @@ adminAuditLogs.get({
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(auditLogSchema)
 	},
-	async handler({ query }) {
+	async handler({ query, db }) {
 		const dbQuery: FilterQuery<AuditLog> = deleteOptional({
 			target: query.targetId,
 			action: query.action
@@ -36,9 +35,11 @@ adminAuditLogs.get({
 			.skip(query.offset);
 		const total = await Logs.countDocuments(dbQuery);
 
-		const users = await Settings.find({
-			pid: {
-				$in: logs.map(v => v.actor)
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: logs.map(v => v.actor)
+				}
 			}
 		});
 

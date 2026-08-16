@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { mapUserProfile, userProfileSchema } from '@/services/internal/contract/user';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { UserWithSettings } from '@/services/internal/utils/user';
 
 export const adminUserProfileSchema = userProfileSchema.extend({
 	moderation: z.object({
@@ -11,19 +11,19 @@ export const adminUserProfileSchema = userProfileSchema.extend({
 
 export type AdminUserProfileDto = z.infer<typeof adminUserProfileSchema>;
 
-export function mapAdminUserProfile(settings: HydratedSettingsDocument, pnid: GetUserDataResponse, followers: number, posts: number): AdminUserProfileDto {
-	const profile = mapUserProfile(settings, pnid, followers, posts);
+export function mapAdminUserProfile(user: UserWithSettings, pnid: GetUserDataResponse, followers: number, posts: number): AdminUserProfileDto {
+	const profile = mapUserProfile(user, pnid, followers, posts);
 	profile.profileInfo = {
-		comment: settings.profile_comment ?? null,
+		comment: user.settings?.profileComment ?? null,
 		country: pnid.country ?? null,
 		birthday: pnid.birthdate ? new Date(pnid.birthdate) : null,
-		gameSkill: settings.game_skill ?? null
+		gameSkill: user.settings?.gameSkill ?? null
 	};
 
 	let status: AdminUserProfileDto['moderation']['status'] = 'normal';
 	const deleted = pnid.deleted;
 	const networkBanned = pnid.accessLevel < 0;
-	const juxtBanned = settings.account_status < 0 || settings.account_status > 1;
+	const juxtBanned = user.accountStatus < 0 || user.accountStatus > 1;
 	if (juxtBanned) {
 		status = 'juxt_ban';
 	}

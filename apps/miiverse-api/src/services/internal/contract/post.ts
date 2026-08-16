@@ -4,7 +4,7 @@ import { mapShallowCommunity, shallowCommunitySchema } from '@/services/internal
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { IPost } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
 
 export const postSchema = asOpenapi('Post', z.object({
 	id: z.string(),
@@ -134,7 +134,7 @@ export function mapPost(post: IPost, comm: HydratedCommunityDocument | null): Po
 	};
 }
 
-export function mapPostWithModeration(post: IPost, comm: HydratedCommunityDocument | null, remover: HydratedSettingsDocument | null): PostDto {
+export function mapPostWithModeration(post: IPost, comm: HydratedCommunityDocument | null, remover: User | null): PostDto {
 	return {
 		...mapPost(post, comm),
 

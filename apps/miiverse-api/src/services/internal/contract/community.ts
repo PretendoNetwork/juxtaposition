@@ -102,7 +102,7 @@ export function mapCommunityPlatform(id: number): CommunityPlatform {
 	return 'both'; // 2
 }
 
-export function mapCommunity(comm: HydratedCommunityDocument): CommunityDto {
+export function mapCommunity(comm: HydratedCommunityDocument, followerCount: number): CommunityDto {
 	const imageId = comm.parent ? comm.parent : comm.olive_community_id;
 	const shallowCommunity = mapShallowCommunity(comm);
 	return {
@@ -118,7 +118,7 @@ export function mapCommunity(comm: HydratedCommunityDocument): CommunityDto {
 		adminPids: comm.admins ?? [],
 		category: mapCommunityType(comm.type),
 		description: comm.description,
-		followerCount: comm.followers,
+		followerCount,
 		ctrHeaderImagePath: comm.ctr_header ?? `/headers/${imageId}/3DS.png`,
 		hasLegacyCtrHeader: !comm.ctr_header,
 		wupHeaderImagePath: comm.wup_header ?? `/headers/${imageId}/WiiU.png`,
