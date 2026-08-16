@@ -141,15 +141,6 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 								{post.yeahsBy.slice(0, 10).map(({ pid }) => (
 									<>
 										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
-										<CtrMiiIcon pid={pid} type="yeah-list-icon"></CtrMiiIcon>
 									</>
 								))}
 							</div>
