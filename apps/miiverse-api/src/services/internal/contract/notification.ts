@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { Notification, NotificationRecipient, User } from '@/prisma/client';
-import type { EmpathyNotificationContent, FollowNotificationContent, LimitedFromPostingNotificationContent, PostDeletedNotificationContent, SystemNotificationContent } from '@/services/internal/utils/notifications';
+import type { EmpathyNotificationContent, FollowNotificationContent, LimitedFromPostingNotificationContent, PostDeletedNotificationContent, ReplyNotificationContent, SystemNotificationContent } from '@/services/internal/utils/notifications';
 
 export const followNotificationSchema = asOpenapi('FollowNotification', z.object({
 	type: z.literal('follow'),
@@ -24,6 +24,16 @@ export const empathyNotificationSchema = asOpenapi('EmpathyNotification', z.obje
 			user: shallowUserSchema.optional()
 		})),
 		postId: z.string()
+	})
+}));
+
+export const replyNotificationSchema = asOpenapi('ReplyNotification', z.object({
+	type: z.literal('reply'),
+	content: z.object({
+		pid: z.number(),
+		post: z.string(),
+		parent: z.string(),
+		user: shallowUserSchema.optional()
 	})
 }));
 
@@ -61,6 +71,7 @@ export const notificationSchema = z.object({
 	notif: z.discriminatedUnion('type', [
 		followNotificationSchema,
 		empathyNotificationSchema,
+		replyNotificationSchema,
 		systemNotificationSchema,
 		postDeletedNotificationSchema,
 		limitedFromPostingNotificationSchema
@@ -103,6 +114,18 @@ export function mapNotification(recipient: NotificationRecipient, notif: Notific
 					};
 				}),
 				postId: content.post
+			}
+		};
+	}
+
+	if (notif.type === 'Reply') {
+		const content = notif.content as ReplyNotificationContent;
+		const user = users.find(u => u.pid === content.pid);
+		data = {
+			type: 'reply',
+			content: {
+				...content,
+				user: user ? mapShallowUser(user) : undefined
 			}
 		};
 	}

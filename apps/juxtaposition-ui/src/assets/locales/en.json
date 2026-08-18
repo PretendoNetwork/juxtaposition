@@ -109,6 +109,7 @@
       "message/three": "<empathy_one />, <empathy_two />, and {{count_other}} other gave your post a Yeah!",
       "message/multiple": "<empathy_one />, <empathy_two />, and {{count_other}} others gave your post a Yeah!"
     },
+    "new_reply": "<reply_author /> commented on your post!",
     "post_deleted": {
       "post_removed": "Your post \"{{postId}}\" has been removed.",
       "post_removed_for_reason": "Your post \"{{postId}}\" has been removed for the following reason: \"{{reason}}\".",

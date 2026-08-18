@@ -13,6 +13,11 @@ export type EmpathyNotificationOptions = {
 	currentUser: number;
 };
 
+export type ReplyNotificationOptions = {
+	reply: IPost;
+	replyToUser: number;
+};
+
 export type PostDeletionNotificationOptions = {
 	postAuthor: number;
 	post: IPost;
@@ -38,6 +43,12 @@ export type EmpathyNotificationContent = {
 		pid: number;
 	}[];
 	post: string;
+};
+
+export type ReplyNotificationContent = {
+	pid: number;
+	post: string;
+	parent: string;
 };
 
 export type SystemNotificationContent = {
@@ -169,6 +180,58 @@ export async function createNewFollowNotification(db: PrismaClient, ops: FollowN
 
 export async function createNewEmpathyNotification(db: PrismaClient, ops: EmpathyNotificationOptions): Promise<void> {
 	return groupRecentNotifications(db, ops.postAuthor, ops.currentUser, 'Empathy', ops.postId);
+}
+
+export async function createNewReplyNotification(db: PrismaClient, ops: ReplyNotificationOptions): Promise<void> {
+	const now = new Date();
+	const post = ops.reply;
+	const targetPid = ops.replyToUser;
+
+	// Prevent sending a new notification if the same user has done so recently
+	const weekInMs = 7 * 24 * 60 * 60 * 1000;
+	const recentNotifs = await db.notificationRecipient.findMany({
+		where: {
+			pid: targetPid,
+			notification: {
+				type: 'Reply',
+				updatedAt: {
+					gte: new Date(now.getTime() - weekInMs) // Get 7 days worth of notifications
+				},
+				content: {
+					path: ['parent'],
+					equals: post.parent!
+				}
+			}
+		},
+		include: {
+			notification: true
+		}
+	});
+	const notifsContent = recentNotifs.map(v => v.notification.content as ReplyNotificationContent);
+	const hasNotifContentForUser = notifsContent.some(content => content.pid === post.pid);
+	if (hasNotifContentForUser) {
+		// Don't send any notification to prevent follow notif spam
+		return;
+	}
+
+	const content: ReplyNotificationContent = {
+		pid: post.pid,
+		parent: post.parent!,
+		post: post.id
+	};
+	await db.notification.create({
+		data: {
+			id: genId(),
+			content,
+			type: 'Reply',
+			notificationRecipients: {
+				create: {
+					id: genId(),
+					pid: targetPid
+				}
+			}
+		}
+	});
 }
 
 export async function createNewPostDeletionNotification(db: PrismaClient, ops: PostDeletionNotificationOptions): Promise<void> {

@@ -8,7 +8,7 @@ import { PortalListView, PortalListViewItem } from '@/services/juxt-web/views/po
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { NotificationItemProps, NotificationItemTypeProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
-import type { EmpathyNotification, FollowNotification, LimitedFromPostingNotification, PostDeletedNotification, ShallowUser, SystemNotification } from '@/api/generated';
+import type { EmpathyNotification, FollowNotification, LimitedFromPostingNotification, PostDeletedNotification, ReplyNotification, ShallowUser, SystemNotification } from '@/api/generated';
 
 function FollowNotificationView(props: NotificationItemTypeProps<FollowNotification>): ReactNode {
 	const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? null}</span>;
@@ -83,6 +83,33 @@ function EmpathyNotificationView(props: NotificationItemTypeProps<EmpathyNotific
 						components={{
 							empathy_one: <NickName user={users[0]?.user} />,
 							empathy_two: <NickName user={users[1]?.user} />
+						}}
+					/>
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
+					</span>
+				</span>
+			</div>
+		</PortalListViewItem>
+	);
+}
+
+function ReplyNotificationView(props: NotificationItemTypeProps<ReplyNotification>): ReactNode {
+	const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? null}</span>;
+	const { pid, user, parent } = props.notif.content;
+
+	const i18nKey: TranslationKey = 'notifications.new_reply';
+
+	return (
+		<PortalListViewItem href={`/posts/${parent}`}>
+			<PortalMiiIcon pid={pid} type="icon" />
+			<div className="list-body">
+				<span className="text">
+					<T
+						k={i18nKey}
+						components={{
+							reply_author: <NickName user={user} />
 						}}
 					/>
 					<span className="timestamp">
@@ -202,6 +229,10 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 
 	if (notif.type === 'empathy') {
 		return <EmpathyNotificationView data={props.notification} notif={notif} />;
+	}
+
+	if (notif.type === 'reply') {
+		return <ReplyNotificationView data={props.notification} notif={notif} />;
 	}
 
 	if (notif.type === 'postDeleted') {
