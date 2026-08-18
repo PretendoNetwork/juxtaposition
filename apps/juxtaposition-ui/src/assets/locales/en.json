@@ -103,6 +103,12 @@
       "message/three": "<follower_one />, <follower_two />, and {{count_other}} other followed you!",
       "message/multiple": "<follower_one />, <follower_two />, and {{count_other}} others followed you!"
     },
+    "new_empathy": {
+      "message/one": "<empathy_one /> gave your post a Yeah!",
+      "message/two": "<empathy_one />, <empathy_two /> gave your post a Yeah!",
+      "message/three": "<empathy_one />, <empathy_two />, and {{count_other}} other gave your post a Yeah!",
+      "message/multiple": "<empathy_one />, <empathy_two />, and {{count_other}} others gave your post a Yeah!"
+    },
     "post_deleted": {
       "post_removed": "Your post \"{{postId}}\" has been removed.",
       "post_removed_for_reason": "Your post \"{{postId}}\" has been removed for the following reason: \"{{reason}}\".",

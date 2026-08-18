@@ -340,7 +340,10 @@ userProfileRouter.post({
 			}
 		});
 
-		await createNewFollowNotification(db, { currentUser: currentUserPid, userToFollow: targetUserPid });
+		if (targetUser.settings?.notifyFollows) {
+			await createNewFollowNotification(db, { currentUser: currentUserPid, userToFollow: targetUserPid });
+		}
+
 		return mapFollowUser('follow', targetUserPid, targetFollowCount + 1);
 	}
 });
