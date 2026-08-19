@@ -44,6 +44,24 @@ export function CtrUserSettingsView(props: UserSettingsViewProps): ReactNode {
 									<input type="checkbox" id="experience" name="experience" value="true" checked={settings.gameSkillVisible} />
 								</label>
 							</CtrListViewItem>
+							<CtrListViewItem>
+								<label htmlFor="notifyEmpathy">
+									<p className="settings-label"><T k="user_settings.notify_empathy" /></p>
+									<input type="checkbox" id="notifyEmpathy" name="notifyEmpathy" value="true" checked={settings.notifyEmpathy} />
+								</label>
+							</CtrListViewItem>
+							<CtrListViewItem>
+								<label htmlFor="notifyFollows">
+									<p className="settings-label"><T k="user_settings.notify_follows" /></p>
+									<input type="checkbox" id="notifyFollows" name="notifyFollows" value="true" checked={settings.notifyFollows} />
+								</label>
+							</CtrListViewItem>
+							<CtrListViewItem>
+								<label htmlFor="notifyReply">
+									<p className="settings-label"><T k="user_settings.notify_reply" /></p>
+									<input type="checkbox" id="notifyReply" name="notifyReply" value="true" checked={settings.notifyReply} />
+								</label>
+							</CtrListViewItem>
 						</CtrListView>
 						<input id="submit" type="submit" className="post-button" value={T.str('global.save')} />
 					</form>

@@ -88,6 +88,9 @@
     "show_country": "Show Country on Profile",
     "show_birthday": "Show Birthday on Profile",
     "show_game": "Show Game Experience on Profile",
+    "notify_empathy": "Show Yeah! Notifications",
+    "notify_follows": "Show Follow Notifications",
+    "notify_reply": "Show Reply/Comment Notifications",
     "save_action": "Save Settings",
     "gdpr_download": "Download User Data",
     "gdpr_download_action": "Download"

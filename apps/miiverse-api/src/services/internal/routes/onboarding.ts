@@ -47,7 +47,10 @@ onboardingRouter.post({
 							isBirthdayVisible: false,
 							isRelationshipVisible: false,
 							isCountryVisible: false,
-							profileComment: null
+							profileComment: null,
+							notifyEmpathy: false,
+							notifyFollows: true,
+							notifyReply: false
 						}
 					}
 				}
