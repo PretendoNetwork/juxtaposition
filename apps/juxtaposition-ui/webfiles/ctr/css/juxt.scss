@@ -9,6 +9,7 @@
 @use './components/CtrPageHeader.scss';
 @use './components/CtrCommunityList.scss';
 @use './components/CtrListView.scss';
+@use './components/CtrPostView.scss';
 @use 'new-post-view.css';
 @use 'report-post-page.css';
 @use 'theme.scss' as t;
@@ -107,17 +108,6 @@ menu.tab-header {
     display: block;
 }
 
-.text {
-    font-size: 16px;
-    position: absolute;
-    right: 10px;
-    top: 2px;
-}
-
-.text>span>span {
-    vertical-align: middle;
-}
-
 menu.tab-header {
     display: inline-block;
     text-align: center;
@@ -179,59 +169,8 @@ menu.tab-header.user-page li:last-child {
     margin-left: -5px
 }
 
-.mii-icon-container img {
-    width: 35px;
-    height: 35px;
-    background: #fff
-}
-
-.mii-icon-container {
-    display: block;
-    height: 35px;
-    position: relative;
-    float: left;
-    border: 1px solid gray;
-    margin: 5px 10px 0 5px
-}
-
-.post {
-    background: #fff;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #666
-}
-
-.post-memo,
-.post-screenshot {
-    width: 320px
-}
-
-.post-memo {
-    height: 120px
-}
-
-.post-screenshot {
-    height: 178px;
-}
-
-.post-screenshot-16\3A 9 {
-    height: 180px;
-}
-
-.post-screenshot-5\3A 3 {
-    height: 192px;
-}
-
-.post-screenshot-4\3A 3 {
-    height: 240px;
-}
-
 .tab-body.post-list {
     margin-top: 10px;
-}
-
-.post header>a {
-    display: inline-block;
 }
 
 .tags-container {
@@ -249,38 +188,11 @@ menu.tab-header.user-page li:last-child {
     }
 }
 
-.post-content-text {
-    padding: 5px;
-    font-size: 15px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-}
-
-.post header {
-    margin-top: 7px;
-    font-size: 12px;
-    position: relative
-}
-
 .community-banner {
     display: inline-block;
     width: 100%
 }
 
-.post .community-banner .community-name {
-    padding: 0 5px;
-    display: inline-block;
-    font-size: 11px;
-    color: #969696;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    top: 8px;
-    position: absolute;
-    overflow: clip
-}
-
-.post .community-banner,
 .title-icon-container {
     display: inline-block;
     width: 20px;
@@ -292,47 +204,6 @@ menu.tab-header.user-page li:last-child {
     height: 20px
 }
 
-.post .community-banner {
-    background-color: #e5e5e5;
-    color: #323232;
-    position: relative;
-    z-index: 2;
-    border-radius: 2px;
-    padding: 5px;
-    width: 299px;
-    margin: 5px
-}
-
-.spoiler .post-content {
-    display: none
-}
-
-.spoiler-wrapper {
-    width: 100%;
-    display: inline-block
-}
-
-.spoiler-wrapper>button {
-    position: relative;
-    z-index: 2;
-    font-size: 12px;
-    border-radius: 5px;
-    min-width: 200px;
-    height: 35px;
-    padding: 0;
-    margin: 0 auto;
-    display: block;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.5, #fff), to(#e6e6e6)) 0 0;
-    border: 1px solid #cecece;
-    cursor: pointer
-}
-
-.yeah-list {
-    display: inline-block;
-    max-height: 85px;
-    overflow: clip
-}
-
 .inline-sprite {
     display: inline-block;
     border: 0;
@@ -341,12 +212,6 @@ menu.tab-header.user-page li:last-child {
 .olv-modal-close-button,
 .post-button {
     display: none
-}
-
-.yeah-count,
-.reply-count {
-    padding-left: 5px;
-    color: #646464;
 }
 
 .to-permalink-button span {
@@ -375,22 +240,6 @@ menu.tab-header.no-margin {
     margin-top: 0
 }
 
-.yeah-text {
-    margin-left: 5px;
-}
-
-.small-button {
-    position: relative;
-    padding: 0;
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    margin: 5px;
-    border: 1px solid gray;
-    border-radius: 8px;
-    background: t.$root-gradient-30px;
-}
-
 .body.message .id-name {
     margin-left: 0;
     font-size: 12px;
@@ -415,4 +264,23 @@ menu.tab-header.no-margin {
 p.settings-label {
     float: left;
     width: 275px;
+}
+
+.flex-spacer {
+    display: block;
+    -webkit-box-flex: 1;
+}
+
+// Bandwidth decal on error page
+.lost {
+    position: absolute;
+
+    bottom: 32px;
+    right: 44px;
+    width: 100px;
+}
+
+.error-page {
+    -webkit-box-sizing: border-box;
+    padding: 0 11px;
 }

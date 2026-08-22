@@ -1,4 +1,4 @@
-import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
+import { CtrPostView } from '@/services/juxt-web/views/ctr/components/CtrPostView';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
