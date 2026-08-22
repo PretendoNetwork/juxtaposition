@@ -9,7 +9,7 @@ $margin: 5px;
 
 .yeah-list {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     // Make overflow items vanish! poof!
     flex-wrap: wrap;
