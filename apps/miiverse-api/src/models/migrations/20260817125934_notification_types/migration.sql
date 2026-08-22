@@ -1,8 +1,8 @@
 -- AlterTable
 ALTER TABLE "user_settings"
-ADD COLUMN     "notify_empathy" BOOLEAN NOT NULL DEFAULT FALSE,
+ADD COLUMN     "notify_empathy" BOOLEAN NOT NULL DEFAULT TRUE,
 ADD COLUMN     "notify_follows" BOOLEAN NOT NULL DEFAULT TRUE,
-ADD COLUMN     "notify_reply" BOOLEAN NOT NULL DEFAULT FALSE;
+ADD COLUMN     "notify_reply" BOOLEAN NOT NULL DEFAULT TRUE;
 
 -- Don't leave leftover constraints
 ALTER TABLE "user_settings"
