@@ -34,66 +34,6 @@
         "game_experience": "Joko mailak",
         "friends": "Lagunak",
         "following": "Jarraitzen",
-        "followers": "Jarraitzaileak",
-        "follow_user": "",
-        "posts": "",
-        "following_user": ""
-    },
-    "setup": {
-        "rules_text": {
-            "eleventh": "",
-            "tenth": "",
-            "third": "",
-            "thirteenth": "",
-            "fifth": "",
-            "ninth": "",
-            "fourth": "",
-            "second": "",
-            "sixth": "",
-            "first": "",
-            "eighth": "",
-            "seventh": "",
-            "twelfth": ""
-        },
-        "beta_text": {
-            "third": "",
-            "second": "",
-            "first": ""
-        },
-        "experience_text": {
-            "expert": "",
-            "info": "",
-            "intermediate": "",
-            "beginner": ""
-        },
-        "analytics": "",
-        "done_button": "",
-        "ready": "",
-        "experience": "",
-        "rules": "",
-        "welcome_text": "",
-        "analytics_text": "",
-        "info": "",
-        "info_text": "",
-        "ready_text": "",
-        "done": "",
-        "beta": "",
-        "welcome": ""
-    },
-    "notifications": {
-        "none": ""
-    },
-    "new_post": {
-        "swearing": "",
-        "post_to": ""
-    },
-    "user_settings": {
-        "show_game": "",
-        "show_birthday": "",
-        "profile_settings": "",
-        "show_country": ""
-    },
-    "activity_feed": {
-        "empty": ""
+        "followers": "Jarraitzaileak"
     }
 }

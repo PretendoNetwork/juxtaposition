@@ -33,67 +33,17 @@
         "birthday": "Туған күн",
         "game_experience": "Ойын тәжірибесі",
         "friends": "Достар",
-        "posts": "Жазбалар",
-        "follow_user": "",
-        "following_user": "",
-        "followers": "",
-        "following": ""
+        "posts": "Жазбалар"
     },
     "setup": {
         "experience_text": {
             "info": "Ойындар бойынша тәжірибе деңгейіңізді қалай сипаттайтыныңызды айтыңыз. Бұл параметрді кейінірек өзгертуге болады.",
-            "intermediate": "Орташа",
-            "expert": "",
-            "beginner": ""
+            "intermediate": "Орташа"
         },
         "analytics": "Analytics",
         "rules_text": {
-            "eighth": "Спойлер жазбаңыз",
-            "eleventh": "",
-            "tenth": "",
-            "third": "",
-            "thirteenth": "",
-            "fifth": "",
-            "ninth": "",
-            "fourth": "",
-            "second": "",
-            "sixth": "",
-            "first": "",
-            "seventh": "",
-            "twelfth": ""
+            "eighth": "Спойлер жазбаңыз"
         },
-        "ready": "Juxt пайдалануды бастауға дайын",
-        "beta_text": {
-            "third": "",
-            "second": "",
-            "first": ""
-        },
-        "done_button": "",
-        "experience": "",
-        "rules": "",
-        "welcome_text": "",
-        "analytics_text": "",
-        "info": "",
-        "info_text": "",
-        "ready_text": "",
-        "done": "",
-        "beta": "",
-        "welcome": ""
-    },
-    "notifications": {
-        "none": ""
-    },
-    "new_post": {
-        "swearing": "",
-        "post_to": ""
-    },
-    "user_settings": {
-        "show_game": "",
-        "show_birthday": "",
-        "profile_settings": "",
-        "show_country": ""
-    },
-    "activity_feed": {
-        "empty": ""
+        "ready": "Juxt пайдалануды бастауға дайын"
     }
 }
