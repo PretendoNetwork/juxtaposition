@@ -13,6 +13,9 @@ export type CommunityCategoryEnum = z.infer<typeof communityCategory>;
 export const communityShotSchema = asOpenapi('CommunityShotMode', z.enum(['allow', 'block', 'force']));
 export type CommunityShotMode = z.infer<typeof communityShotSchema>;
 
+export const communityPlatformSchema = z.enum(['ctr', 'wup', 'both']).openapi('CommunityPlatform');
+export type CommunityPlatform = z.infer<typeof communityPlatformSchema>;
+
 export const communityPermissionSchema = z.object({
 	open: z.boolean(),
 	minimum_new_post_access_level: z.number(),
@@ -45,7 +48,8 @@ export const communitySchema = asOpenapi('Community', z.object({
 	wupHeaderImagePath: z.string(),
 	iconImagePaths: communityIconsSchema,
 	shotMode: communityShotSchema.nullable(),
-	extraShotTitleIds: z.array(z.string())
+	extraShotTitleIds: z.array(z.string()),
+	platform: communityPlatformSchema
 }));
 
 export type CommunityDto = z.infer<typeof communitySchema>;
@@ -88,6 +92,16 @@ export function mapCommunityType(type: number): CommunityCategoryEnum {
 	return 'listed';
 }
 
+export function mapCommunityPlatform(id: number): CommunityPlatform {
+	if (id == 0) {
+		return 'wup';
+	}
+	if (id == 1) {
+		return 'ctr';
+	}
+	return 'both'; // 2
+}
+
 export function mapCommunity(comm: HydratedCommunityDocument, followerCount: number): CommunityDto {
 	const imageId = comm.parent ? comm.parent : comm.olive_community_id;
 	const shallowCommunity = mapShallowCommunity(comm);
@@ -109,7 +123,8 @@ export function mapCommunity(comm: HydratedCommunityDocument, followerCount: num
 		hasLegacyCtrHeader: !comm.ctr_header,
 		wupHeaderImagePath: comm.wup_header ?? `/headers/${imageId}/WiiU.png`,
 		shotMode: comm.shot_mode ?? null,
-		extraShotTitleIds: comm.shot_extra_title_id ?? []
+		extraShotTitleIds: comm.shot_extra_title_id ?? [],
+		platform: mapCommunityPlatform(comm.platform_id)
 	};
 }
 

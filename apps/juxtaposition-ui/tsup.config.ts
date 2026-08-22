@@ -104,7 +104,13 @@ export default defineConfig([
 	},
 	/* Portal/Wii U webfiles (~Chrome 20) */
 	{
-		entry: ['webfiles/portal/**/*.js', 'webfiles/portal/**/*.css'],
+		entry: [
+			'webfiles/portal/js/juxt.js',
+			'webfiles/portal/js/debug.js',
+			'webfiles/portal/js/firstrun.js',
+			'webfiles/portal/css/juxt.scss',
+			'webfiles/portal/css/firstrun.css'
+		],
 		bundle: true,
 		sourcemap: true,
 		minify: true,
@@ -121,6 +127,7 @@ export default defineConfig([
 		external: ['/images/*', '/fonts/*'],
 		tsconfig: './webfiles/portal/tsconfig.json',
 		esbuildPlugins: [
+			sassPlugin({ type: 'css' }),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [

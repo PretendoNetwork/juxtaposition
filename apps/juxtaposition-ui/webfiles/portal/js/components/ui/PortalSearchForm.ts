@@ -9,11 +9,16 @@ function searchChanged(el: HTMLInputElement): void {
 
 	list.querySelectorAll<HTMLElement>('[data-search-term]').forEach((item) => {
 		var term = item.getAttribute('data-search-term')!;
+		var parent = item.parentElement!;
 
-		if (term.includes(searchTerm)) {
-			item.style.display = '';
-		} else {
-			item.style.display = 'none';
+		// unhide hidden things
+		if (term.includes(searchTerm) && parent.tagName === 'HIDDEN') {
+			list.replaceChild(item, parent);
+		// hide visible things
+		} else if (!term.includes(searchTerm) && parent.tagName !== 'HIDDEN') {
+			parent = document.createElement('hidden');
+			list.replaceChild(parent, item);
+			parent.appendChild(item);
 		}
 	});
 }
