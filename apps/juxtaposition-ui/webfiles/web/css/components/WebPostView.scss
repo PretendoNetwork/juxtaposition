@@ -1,9 +1,6 @@
 @use '../theme.scss' as t;
 
-$margin: 5px;
-
 .yeah-text {
-    margin-bottom: 8px;
     font-size: 14px;
 }
 
@@ -15,16 +12,25 @@ $margin: 5px;
     flex-wrap: wrap;
     overflow-y: hidden;
 
+    padding: 6px;
     height: 40px; // Height of a mii-icon
+
     @include t.media(">=phone", "<tablet") {
         height: 32px;
     }
 
     .mii-icon-container {
-        margin: 0 $margin;
+        margin: 0 -3px;
+        transition: transform 100ms ease-in-out;
+
+        &:hover {
+            transform: translateY(-4px);
     }
+    }
+
     .mii-icon { 
         display: block;
+        outline: 3px solid var(--background-alt);
 
         @include t.media(">=phone", "<tablet") {
             width: 32px;
