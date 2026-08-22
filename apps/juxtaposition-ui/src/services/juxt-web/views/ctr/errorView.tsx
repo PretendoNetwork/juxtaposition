@@ -17,9 +17,10 @@ export function CtrErrorView(props: ErrorViewProps): ReactNode {
 				>
 					<T k="error.heading" values={{ code: props.code, message: props.message }} />
 				</CtrPageTitledHeader>
-				<div className="body-content tab2-content" id="community-post-list">
+				<div className="body-content error-page">
 					<p><T k="error.message" withNewline /></p>
 				</div>
+				<img className="lost" src="/assets/ctr/images/bandwidthlost.png" />
 			</CtrPageBody>
 		</CtrRoot>
 	);
