@@ -18,6 +18,7 @@ export type CommunityViewProps = {
 	isUserFollowing: boolean;
 	hasSubCommunities: boolean;
 	feedType: number;
+	isFirstPage: boolean;
 	children?: ReactNode;
 };
 

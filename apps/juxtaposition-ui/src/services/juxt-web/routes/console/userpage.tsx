@@ -230,7 +230,8 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 		baseLink: link,
 		selectedTab: 0,
 		profile,
-		requestUserContent: self?.content ?? null
+		requestUserContent: self?.content ?? null,
+		isFirstPage: offset === 0
 	};
 	return res.jsxForDirectory({
 		web: (
@@ -314,7 +315,8 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 			baseLink: link,
 			selectedTab: 4,
 			profile,
-			requestUserContent: self?.content ?? null
+			requestUserContent: self?.content ?? null,
+			isFirstPage: offset === 0
 		};
 		return res.jsxForDirectory({
 			web: (
@@ -366,7 +368,8 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 		baseLink: link,
 		selectedTab: selection,
 		profile,
-		requestUserContent: self?.content ?? null
+		requestUserContent: self?.content ?? null,
+		isFirstPage: offset === 0
 	};
 	return res.jsxForDirectory({
 		web: (

@@ -7,6 +7,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
+import { PortalSystemPostView } from '@/services/juxt-web/views/portal/components/PortalSystemPostView';
 import type { ReactNode } from 'react';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserProfile } from '@/api/generated';
@@ -192,6 +193,11 @@ export function PortalUserPageView(props: UserPageViewProps): ReactNode {
 								: null}
 							<PortalUserTier profile={profile} />
 						</span>
+					</div>
+					<div className="post-list notices">
+						{profile.profileInfo.comment && props.isFirstPage && props.selectedTab === 0
+							? <PortalSystemPostView type="profile-comment" author={profile}>{profile.profileInfo.comment}</PortalSystemPostView>
+							: null}
 					</div>
 					<PortalNavTabs target=".tab-body">
 						<PortalNavTabsRow>

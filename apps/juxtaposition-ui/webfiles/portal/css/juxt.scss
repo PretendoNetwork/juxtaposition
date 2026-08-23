@@ -320,6 +320,10 @@ body {
 .post-list .post {
  padding:15px 0
 }
+// hack
+.post-list.notices {
+    padding-bottom: 15px;
+}
 .post-list .post .mii-icon-container {
  position:relative;
  display:block;
@@ -591,7 +595,7 @@ h6.yeah-text {
 #user-page .user-page-content,
 .body-content .tab-body {
  padding-top:5px;
- margin-top:10px
+ margin-top:10px;
 }
 // Notifications and Friend Requests
 #news-list-content li .text {

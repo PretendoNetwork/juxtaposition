@@ -7,6 +7,7 @@ import { CtrPageHeaderStat, CtrPageIconHeader } from '@/services/juxt-web/views/
 import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import { CtrIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrIcon';
+import { CtrSystemPostView } from '@/services/juxt-web/views/ctr/components/CtrSystemPostView';
 import type { ReactNode } from 'react';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 
@@ -100,6 +101,11 @@ export function CtrUserPageView(props: UserPageViewProps): ReactNode {
 				</CtrPageButtons>
 
 				<div className="body-content tab2-content" id="community-post-list">
+					<div className="post-list">
+						{profile.profileInfo.comment && props.isFirstPage && props.selectedTab === 0
+							? <CtrSystemPostView type="profile-comment" author={profile}>{profile.profileInfo.comment}</CtrSystemPostView>
+							: null}
+					</div>
 					<CtrNavTabs target=".tab-body">
 						<CtrNavTabsRow>
 							<CtrNavTab href={props.baseLink} selected={props.selectedTab === 0}>
