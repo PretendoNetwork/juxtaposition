@@ -7,6 +7,7 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalCommunityIcon } from '@/services/juxt-web/views/portal/components/ui/PortalCommunityIcon';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { PortalNavTab, PortalNavTabs, PortalNavTabsRow } from '@/services/juxt-web/views/portal/components/ui/PortalNavTabs';
+import { PortalSystemPostView } from '@/services/juxt-web/views/portal/components/PortalSystemPostView';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -78,6 +79,12 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 							</span>
 						</span>
 					</div>
+					<div className="post-list notices">
+						{community.description && props.isFirstPage
+							? <PortalSystemPostView type="community-comment">{community.description}</PortalSystemPostView>
+							: null}
+						{!community.permissions.open ? <PortalPostListClosedView /> : null}
+					</div>
 					<PortalNavTabs target=".tab-body">
 						<PortalNavTabsRow>
 							<PortalNavTab href={`/titles/${community.olive_community_id}/new`} selected={props.feedType === 0}>
@@ -95,7 +102,6 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 						<div id="new-post"></div>
 					</div>
 					<div className="tab-body post-list">
-						{!community.permissions.open ? <PortalPostListClosedView /> : null}
 						{props.children}
 					</div>
 				</div>
