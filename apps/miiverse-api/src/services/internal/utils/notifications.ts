@@ -7,6 +7,17 @@ export type FollowNotificationOptions = {
 	currentUser: number;
 };
 
+export type EmpathyNotificationOptions = {
+	postId: string;
+	postAuthor: number;
+	currentUser: number;
+};
+
+export type ReplyNotificationOptions = {
+	reply: IPost;
+	replyToUser: number;
+};
+
 export type PostDeletionNotificationOptions = {
 	postAuthor: number;
 	post: IPost;
@@ -26,6 +37,20 @@ export type FollowNotificationContent = {
 	}[];
 };
 
+export type EmpathyNotificationContent = {
+	users: {
+		timestamp: string; // ISO timestamp
+		pid: number;
+	}[];
+	post: string;
+};
+
+export type ReplyNotificationContent = {
+	pid: number;
+	post: string;
+	parent: string;
+};
+
 export type SystemNotificationContent = {
 	imagePath: string;
 	link: string;
@@ -43,18 +68,22 @@ export type LimitedFromPostingNotificationContent = {
 	until?: string; // ISO timestamp,
 };
 
-export async function createNewFollowNotification(db: PrismaClient, ops: FollowNotificationOptions): Promise<void> {
+async function groupRecentNotifications(db: PrismaClient, targetPid: number, actingPid: number, type: 'Follow' | 'Empathy', empathyPost?: string) {
 	const now = new Date();
 
 	// Prevent sending a new notification if the same user has done so recently
 	const weekInMs = 7 * 24 * 60 * 60 * 1000;
-	const recentFollowNotifs = await db.notificationRecipient.findMany({
+	const recentNotifs = await db.notificationRecipient.findMany({
 		where: {
-			pid: ops.userToFollow,
+			pid: targetPid,
 			notification: {
-				type: 'Follow',
+				type,
 				updatedAt: {
-					gte: new Date(now.getTime() - weekInMs) // Get 7 days worth of follow notifications
+					gte: new Date(now.getTime() - weekInMs) // Get 7 days worth of notifications
+				},
+				content: {
+					path: ['post'],
+					equals: empathyPost
 				}
 			}
 		},
@@ -62,22 +91,26 @@ export async function createNewFollowNotification(db: PrismaClient, ops: FollowN
 			notification: true
 		}
 	});
-	const followNotifsContent = recentFollowNotifs.map(v => v.notification.content as FollowNotificationContent);
-	const hasFollowNotifContentForUser = followNotifsContent.some(content => content.users.some(usr => usr.pid === ops.currentUser));
-	if (hasFollowNotifContentForUser) {
+	const notifsContent = recentNotifs.map(v => v.notification.content as FollowNotificationContent | EmpathyNotificationContent);
+	const hasNotifContentForUser = notifsContent.some(content => content.users.some(usr => usr.pid === actingPid));
+	if (hasNotifContentForUser) {
 		// Don't send any notification to prevent follow notif spam
 		return;
 	}
 
-	// Group follower notifications into batch
+	// Group notifications into batch
 	const hourInMs = 60 * 60 * 1000;
-	const recentFollowNotif = await db.notificationRecipient.findFirst({
+	const recentNotif = await db.notificationRecipient.findFirst({
 		where: {
-			pid: ops.userToFollow,
+			pid: targetPid,
 			notification: {
-				type: 'Follow',
+				type,
 				updatedAt: {
 					gte: new Date(now.getTime() - hourInMs)
+				},
+				content: {
+					path: ['post'],
+					equals: empathyPost
 				}
 			}
 		},
@@ -85,15 +118,15 @@ export async function createNewFollowNotification(db: PrismaClient, ops: FollowN
 			notification: true
 		}
 	});
-	if (recentFollowNotif) {
-		const newContent = recentFollowNotif.notification.content as FollowNotificationContent;
+	if (recentNotif) {
+		const newContent = recentNotif.notification.content as FollowNotificationContent | EmpathyNotificationContent;
 		newContent.users.push({
-			pid: ops.currentUser,
+			pid: actingPid,
 			timestamp: now.toISOString()
 		});
 		await db.notification.update({
 			where: {
-				id: recentFollowNotif.notificationId
+				id: recentNotif.notificationId
 			},
 			data: {
 				content: newContent,
@@ -102,7 +135,7 @@ export async function createNewFollowNotification(db: PrismaClient, ops: FollowN
 		});
 		await db.notificationRecipient.update({
 			where: {
-				id: recentFollowNotif.id
+				id: recentNotif.id
 			},
 			data: {
 				hasRead: false
@@ -112,21 +145,89 @@ export async function createNewFollowNotification(db: PrismaClient, ops: FollowN
 	}
 
 	// Create new notification
-	const content: FollowNotificationContent = {
-		users: [{
-			pid: ops.currentUser,
-			timestamp: now.toISOString()
-		}]
+	const content: FollowNotificationContent | EmpathyNotificationContent = type == 'Empathy'
+		? {
+				users: [{
+					pid: actingPid,
+					timestamp: now.toISOString()
+				}],
+				post: empathyPost
+			}
+		: {
+				users: [{
+					pid: actingPid,
+					timestamp: now.toISOString()
+				}]
+			};
+	await db.notification.create({
+		data: {
+			id: genId(),
+			content,
+			type,
+			notificationRecipients: {
+				create: {
+					id: genId(),
+					pid: targetPid
+				}
+			}
+		}
+	});
+}
+
+export async function createNewFollowNotification(db: PrismaClient, ops: FollowNotificationOptions): Promise<void> {
+	return groupRecentNotifications(db, ops.userToFollow, ops.currentUser, 'Follow');
+}
+
+export async function createNewEmpathyNotification(db: PrismaClient, ops: EmpathyNotificationOptions): Promise<void> {
+	return groupRecentNotifications(db, ops.postAuthor, ops.currentUser, 'Empathy', ops.postId);
+}
+
+export async function createNewReplyNotification(db: PrismaClient, ops: ReplyNotificationOptions): Promise<void> {
+	const now = new Date();
+	const post = ops.reply;
+	const targetPid = ops.replyToUser;
+
+	// Prevent sending a new notification if the same user has done so recently
+	const weekInMs = 7 * 24 * 60 * 60 * 1000;
+	const recentNotifs = await db.notificationRecipient.findMany({
+		where: {
+			pid: targetPid,
+			notification: {
+				type: 'Reply',
+				updatedAt: {
+					gte: new Date(now.getTime() - weekInMs) // Get 7 days worth of notifications
+				},
+				content: {
+					path: ['parent'],
+					equals: post.parent!
+				}
+			}
+		},
+		include: {
+			notification: true
+		}
+	});
+	const notifsContent = recentNotifs.map(v => v.notification.content as ReplyNotificationContent);
+	const hasNotifContentForUser = notifsContent.some(content => content.pid === post.pid);
+	if (hasNotifContentForUser) {
+		// Don't send any notification to prevent follow notif spam
+		return;
+	}
+
+	const content: ReplyNotificationContent = {
+		pid: post.pid,
+		parent: post.parent!,
+		post: post.id
 	};
 	await db.notification.create({
 		data: {
 			id: genId(),
 			content,
-			type: 'Follow',
+			type: 'Reply',
 			notificationRecipients: {
 				create: {
 					id: genId(),
-					pid: ops.userToFollow
+					pid: targetPid
 				}
 			}
 		}

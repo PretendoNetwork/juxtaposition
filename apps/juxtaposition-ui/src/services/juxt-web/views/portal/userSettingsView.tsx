@@ -15,31 +15,52 @@ export function PortalUserSettingsView(props: UserSettingsViewProps): ReactNode 
 					<form method="post" action="/users/me/settings" id="settings-form">
 						<div className="settings-list-content">
 							<ul className="settings-list">
-								<li data-name="profile_visibility" className="scroll">
+								<li>
 									<p className="settings-label"><T k="user_settings.show_profile" /></p>
 									<label className="checkbox-container">
 										<input type="checkbox" id="profile" name="profile" value="true" checked={settings.profileVisibility !== 'users_only'} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
-								<li data-name="profile_comment_visibility" className="scroll">
+								<li>
 									<p className="settings-label"><T k="user_settings.show_country" /></p>
 									<label className="checkbox-container">
 										<input type="checkbox" id="country" name="country" value="true" checked={settings.countryVisible} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
-								<li data-name="game_skill" className="scroll">
+								<li>
 									<p className="settings-label"><T k="user_settings.show_birthday" /></p>
 									<label className="checkbox-container">
 										<input type="checkbox" id="birthday" name="birthday" value="true" checked={settings.birthdayVisible} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
-								<li data-name="game_skill_visibility" className="scroll">
+								<li>
 									<p className="settings-label"><T k="user_settings.show_game" /></p>
 									<label className="checkbox-container">
 										<input type="checkbox" id="experience" name="experience" value="true" checked={settings.gameSkillVisible} />
+										<span className="checkmark"></span>
+									</label>
+								</li>
+								<li>
+									<p className="settings-label"><T k="user_settings.notify_empathy" /></p>
+									<label className="checkbox-container">
+										<input type="checkbox" id="notifyEmpathy" name="notifyEmpathy" value="true" checked={settings.notifyEmpathy} />
+										<span className="checkmark"></span>
+									</label>
+								</li>
+								<li>
+									<p className="settings-label"><T k="user_settings.notify_follows" /></p>
+									<label className="checkbox-container">
+										<input type="checkbox" id="notifyFollows" name="notifyFollows" value="true" checked={settings.notifyFollows} />
+										<span className="checkmark"></span>
+									</label>
+								</li>
+								<li>
+									<p className="settings-label"><T k="user_settings.notify_reply" /></p>
+									<label className="checkbox-container">
+										<input type="checkbox" id="notifyReply" name="notifyReply" value="true" checked={settings.notifyReply} />
 										<span className="checkmark"></span>
 									</label>
 								</li>
