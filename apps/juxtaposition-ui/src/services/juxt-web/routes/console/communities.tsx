@@ -231,7 +231,8 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 		hasSubCommunities: subCommunities.length > 0,
 		totalPosts: communityStats.totalPosts,
 		canPost,
-		isUserFollowing
+		isUserFollowing,
+		isFirstPage: offset === 0
 	};
 	res.jsxForDirectory({
 		web: (
