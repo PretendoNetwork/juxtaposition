@@ -58,7 +58,10 @@
         "banned": "已禁止用户",
         "friend_requests": "请求",
         "not_found": "用户不存在",
-        "tester_tag": "测试用户"
+        "tester_tag": "测试者",
+        "supporter_tag": "支持者",
+        "moderator_tag": "版主",
+        "developer_tag": "开发者"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
@@ -67,7 +70,8 @@
         "show_game": "在个人资料显示游戏经验",
         "save_action": "保存设置",
         "gdpr_download": "下载用户数据",
-        "gdpr_download_action": "下载"
+        "gdpr_download_action": "下载",
+        "show_profile": "允许访客查看你的个人资料"
     },
     "activity_feed": {
         "empty": "这里是空的。尝试关注某人！"
@@ -79,6 +83,20 @@
             "message/two": "<follower_one />、<follower_two /> 已开始关注你！",
             "message/three": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！",
             "message/multiple": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！"
+        },
+        "post_deleted": {
+            "post_removed": "您的帖子「{{postId}}」已被删除。",
+            "post_removed_for_reason": "您的帖子「{{postId}}」已被删除，原因如下：「{{reason}}」。",
+            "comment_removed": "您的评论「{{postId}}」已被删除。",
+            "comment_removed_for_reason": "您的评论「{{postId}}」已被删除，原因如下：「{{reason}}」。",
+            "footer": "点击此消息即可查看《Juxtaposition 行为准则》。如有任何疑问，请联系 Pretendo Network 论坛的版主（{{contactModsUrl}}）。"
+        },
+        "limited_from_posting": {
+            "message": "您已被限制发帖。",
+            "message_with_reason": "您已被限制发帖。原因：\"{{reason}}\"。",
+            "temporary": "您已被限制发帖，直至 {{until}}。",
+            "temporary_with_reason": "您已被限制发帖，直至 {{until}}。原因：\"{{reason}}\"。",
+            "footer": "点击此消息即可查看《Juxtaposition 行为准则》。如有任何疑问，请联系 Pretendo Network 论坛的版主（{{banAppealUrl}}）。"
         }
     },
     "new_post": {
@@ -167,7 +185,10 @@
         "report_post": "举报帖子",
         "delete_post": "删除帖子",
         "removed": "帖子已被删除。",
-        "copy_link": "复制链接"
+        "copy_link": "复制链接",
+        "sort_newest_first": "按最新排序",
+        "sort_oldest_first": "按最旧排序",
+        "replies_heading": "回复"
     },
     "reporting": {
         "title": "举报帖子",
@@ -185,11 +206,26 @@
         "reason_piracy": "海盗行为",
         "reason_inappropiate_ingame": "游戏中的不当行为",
         "reason_missing_images": "缺少图像",
-        "reason_others": "其他"
+        "reason_others": "其他",
+        "reason_not_nice": "刻薄/粗鲁/可恨（规则 1）",
+        "reason_inappropriate": "不适宜/不适宜工作场所观看（规则 2）",
+        "reason_spam": "垃圾内容/自我推销（规则 3）",
+        "reason_offtopic": "无关内容（规则 4）",
+        "reason_piracy_new": "海盗行为（规则 5）",
+        "reason_exploits": "API滥用/利用漏洞（规则 8）",
+        "reason_drama": "戏剧（规则 9）",
+        "reason_cheating": "在线作弊（规则 10）",
+        "reason_spoiler_new": "剧透（规则 11）",
+        "reason_personal_info_new": "个人信息（规则 12）",
+        "reason_politics": "政治（规则 13）",
+        "reason_misinformation": "误传/错误建议（规则 14）",
+        "reason_impersonation": "冒充他人（规则 15）"
     },
     "moderation": {
         "title": "审核",
         "silently_delete_post": "静默删除",
-        "moderate_user": "审核用户"
+        "moderate_user": "审核用户",
+        "mark_as_spoiler": "标记为剧透",
+        "mark_as_not_spoiler": "移除剧透"
     }
 }
