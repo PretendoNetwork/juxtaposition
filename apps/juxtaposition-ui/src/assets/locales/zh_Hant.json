@@ -102,7 +102,11 @@
         "deleted": "已刪除使用者",
         "banned": "已禁止使用者",
         "friend_requests": "請求",
-        "not_found": "使用者不存在"
+        "not_found": "使用者不存在",
+        "tester_tag": "測試者",
+        "supporter_tag": "支持者",
+        "moderator_tag": "版主",
+        "developer_tag": "開發者"
     },
     "user_settings": {
         "show_country": "在個人檔案顯示國家/地區",
@@ -111,7 +115,8 @@
         "profile_settings": "個人檔案設定",
         "save_action": "儲存設定",
         "gdpr_download": "下載使用者資料",
-        "gdpr_download_action": "下載"
+        "gdpr_download_action": "下載",
+        "show_profile": "允許訪客查看你的個人檔案"
     },
     "notifications": {
         "none": "沒有通知。",
@@ -120,6 +125,20 @@
             "message/two": "<follower_one />、<follower_two /> 已開始追蹤你！",
             "message/three": "<follower_one />、<follower_two /> 和另外 {{count_other}} 人已開始追蹤你！",
             "message/multiple": "<follower_one />、<follower_two /> 和另外 {{count_other}} 人已開始追蹤你！"
+        },
+        "post_deleted": {
+            "post_removed": "您的貼文「{{postId}}」已遭刪除。",
+            "post_removed_for_reason": "您的貼文「{{postId}}」已遭刪除，原因如下：「{{reason}}」。",
+            "comment_removed": "您的評論「{{postId}}」已遭刪除。",
+            "comment_removed_for_reason": "您的評論「{{postId}}」已遭刪除，原因如下：「{{reason}}」。",
+            "footer": "點觸此訊息即可查看《Juxt 社群守則》。如有任何疑問，請聯絡 Pretendo Network 論壇的版主（{{contactModsUrl}}）。"
+        },
+        "limited_from_posting": {
+            "message": "您已被限制發佈。",
+            "message_with_reason": "您已被限制發佈。原因：\"{{reason}}\"。",
+            "temporary": "您已被限制發佈，直至 {{until}}。",
+            "temporary_with_reason": "您已被限制發佈，直至 {{until}}。原因：\"{{reason}}\"。",
+            "footer": "點觸此訊息即可查看《Juxt 社群守則》。如有任何疑問，請聯絡 Pretendo Network 論壇的版主（{{banAppealUrl}}）。"
         }
     },
     "new_post": {
@@ -166,7 +185,10 @@
         "report_post": "檢舉貼文",
         "delete_post": "刪除貼文",
         "removed": "此貼文已刪除。",
-        "copy_link": "複製連結"
+        "copy_link": "複製連結",
+        "sort_newest_first": "按最新排序",
+        "sort_oldest_first": "按最舊排序",
+        "replies_heading": "回覆"
     },
     "reporting": {
         "title": "檢舉貼文",
@@ -184,11 +206,26 @@
         "reason_piracy": "海盜行為",
         "reason_inappropiate_ingame": "遊戲中的不當行為",
         "reason_missing_images": "缺少圖片",
-        "reason_others": "其他"
+        "reason_others": "其他",
+        "reason_not_nice": "刻薄/粗魯/可恨（規則 1）",
+        "reason_inappropriate": "不適宜/不適宜工作場所觀看（規則 2）",
+        "reason_spam": "垃圾內容/自我推銷（規則 3）",
+        "reason_offtopic": "無關內容（規則 4）",
+        "reason_piracy_new": "海盜行為（規則 5）",
+        "reason_exploits": "API濫用/利用漏洞（規則 8）",
+        "reason_drama": "戲劇（規則 9）",
+        "reason_cheating": "線上作弊（規則 10）",
+        "reason_spoiler_new": "劇透（規則 11）",
+        "reason_personal_info_new": "個人資訊（規則 12）",
+        "reason_politics": "政治（規則 13）",
+        "reason_misinformation": "誤傳/錯誤建議（規則 14）",
+        "reason_impersonation": "冒充他人（規則 15）"
     },
     "moderation": {
         "title": "審核",
         "silently_delete_post": "靜默刪除",
-        "moderate_user": "審核此使用者"
+        "moderate_user": "審核此使用者",
+        "mark_as_spoiler": "標記為劇透",
+        "mark_as_not_spoiler": "移除劇透"
     }
 }
