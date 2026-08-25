@@ -4,26 +4,37 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { PortalCommunityIcon } from '@/services/juxt-web/views/portal/components/ui/PortalCommunityIcon';
 import { PortalSearchForm } from '@/services/juxt-web/views/portal/components/ui/PortalSearchForm';
 import { prepSearchTerm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
+import { PortalListView, PortalListViewItem } from '@/services/juxt-web/views/portal/components/PortalListView';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
 export function PortalCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
 	return (
-		<li id={id} data-search-term={prepSearchTerm(props.community.name)}>
+		<PortalListViewItem
+			id={id}
+			className="community-list-card"
+			data-search-term={prepSearchTerm(props.community.name)}
+			href={`/titles/${id}/new`}
+		>
 			<PortalCommunityIcon community={props.community} size="128" />
-			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button"></a>
-			<div className="body">
-				<div className="body-content">
-					<span className="community-name title">{props.community.name}</span>
-					<span className="text">
+			<div className="list-body">
+				<span>{props.community.name}</span>
+				<div className="community-info">
+					{props.community.platform == 'ctr' || props.community.platform == 'both'
+						? <span className="platform-dot ctr">{'● '}</span>
+						: null}
+					{props.community.platform == 'wup' || props.community.platform == 'both'
+						? <span className="platform-dot wup">{'● '}</span>
+						: null}
+					<span className="followers">
 						{props.community.followerCount}
 						{' '}
 						<T k="community.followers" />
 					</span>
 				</div>
 			</div>
-		</li>
+		</PortalListViewItem>
 	);
 }
 
@@ -36,13 +47,13 @@ export function PortalCommunityListView(props: CommunityListViewProps): ReactNod
 					<h1 id="page-title"><T k="all_communities.text" /></h1>
 				</header>
 				<div className="body-content">
-					<PortalSearchForm type="box" data-community-list-search="#community-new-content" />
-					<div className="communities-list">
-						<ul className="list-content-with-icon-column" id="community-new-content">
+					<div>
+						<PortalSearchForm type="box" data-community-list-search="#community-content" />
+						<PortalListView type="table-3col" id="community-content">
 							{props.communities.map(community => (
 								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
-						</ul>
+						</PortalListView>
 					</div>
 				</div>
 			</PortalPageBody>
@@ -64,19 +75,19 @@ export function PortalCommunityOverviewView(props: CommunityOverviewViewProps): 
 						<div className="headline">
 							<h2><T k="all_communities.popular_places" /></h2>
 						</div>
-						<ul className="list-content-with-icon-column" id="community-new-content">
+						<PortalListView type="table-3col" id="community-new-content">
 							{props.popularCommunities.map(community => (
 								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
-						</ul>
+						</PortalListView>
 						<div className="headline headline-green">
 							<h2><T k="all_communities.new_communities" /></h2>
 						</div>
-						<ul className="list-content-with-icon-column" id="community-top-content">
+						<PortalListView type="table-3col" id="community-top-content">
 							{props.newCommunities.map(community => (
 								<PortalCommunityItem key={community.olive_community_id} community={community} />
 							))}
-						</ul>
+						</PortalListView>
 					</div>
 				</div>
 			</PortalPageBody>

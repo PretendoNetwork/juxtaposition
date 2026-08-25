@@ -11,7 +11,7 @@ export function PortalMiiIcon(props: MiiIconProps): ReactNode {
 
 	return (
 		<PortalIcon
-			href={href}
+			href={props.type !== 'header-icon' && props.type !== 'icon' ? href : undefined}
 			src={miiUrl}
 			type={type}
 			className={props.className}

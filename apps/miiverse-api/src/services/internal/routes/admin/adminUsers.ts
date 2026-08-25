@@ -3,22 +3,18 @@ import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
-import { buildSearchQuery } from '@/services/internal/utils/search';
-import { Settings } from '@/models/settings';
 import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
 import { getUserAccountData } from '@/util';
-import { Content } from '@/models/content';
 import { mapModerationProfile, moderationProfileSchema } from '@/services/internal/contract/admin/moderationProfile';
 import { adminUserProfileSchema, mapAdminUserProfile } from '@/services/internal/contract/admin/adminUsers';
-import { deleteOptional } from '@/services/internal/utils';
 import { createNewLimitedPostingNotification } from '@/services/internal/utils/notifications';
 import { accountStatusDisplayMap } from '@/services/internal/utils/communities';
 import { accountActionDisplayMap, createLogEntry } from '@/services/internal/utils/auditLogs';
 import { humanDate } from '@/services/internal/utils/dates';
-import type { FilterQuery } from 'mongoose';
-import type { ISettings } from '@/types/mongoose/settings';
+import { buildPrismaSearchQuery } from '@/services/internal/utils/search';
 import type { LogEntryActions } from '@/models/logs';
+import type { UserUpdateInput, UserWhereInput } from '@/prisma/models';
 
 export const adminUsersRouter = createInternalApiRouter();
 
@@ -28,17 +24,33 @@ adminUsersRouter.get({
 	guard: guards.moderator,
 	schema: {
 		query: z.object({
-			search: z.string().optional()
+			search: z.string().trim().optional()
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(shallowUserSchema)
 	},
-	async handler({ query }) {
-		const dbQuery: FilterQuery<ISettings> = query.search ? buildSearchQuery(['pid', 'screen_name'], query.search) : {};
-		const users = await Settings
-			.find(dbQuery)
-			.limit(query.limit)
-			.skip(query.offset);
-		const total = await Settings.countDocuments(dbQuery);
+	async handler({ query, db }) {
+		let dbQuery: UserWhereInput = {};
+		if (query.search) {
+			const searchOrStatements: UserWhereInput[] = [];
+			searchOrStatements.push(buildPrismaSearchQuery(['displayName'], query.search));
+			if (query.search.match(/^\d+$/)) {
+				searchOrStatements.push({
+					pid: Number(query.search)
+				});
+			}
+			dbQuery = {
+				OR: searchOrStatements
+			};
+		}
+
+		const users = await db.user.findMany({
+			where: dbQuery,
+			skip: query.offset,
+			take: query.limit
+		});
+		const total = await db.user.count({
+			where: dbQuery
+		});
 
 		return mapPage(total, users.map(v => mapShallowUser(v)));
 	}
@@ -56,17 +68,27 @@ adminUsersRouter.get({
 		}),
 		response: adminUserProfileSchema
 	},
-	async handler({ params }) {
-		const settings = await Settings.findOne({ pid: params.id });
-		const content = await Content.findOne({ pid: params.id });
+	async handler({ params, db }) {
+		const user = await db.user.findUnique({
+			where: {
+				pid: params.id
+			},
+			include: {
+				settings: true
+			}
+		});
 		const pnid = await getUserAccountData(params.id).catch(() => {
 			return null;
 		});
-		if (!settings || !content || !pnid) {
+		if (!user || !pnid) {
 			throw errors.for('not_found');
 		}
 
-		const followers = content.following_users.filter(v => v !== 0).length;
+		const followers = await db.userFollow.count({
+			where: {
+				followingPid: user.pid
+			}
+		});
 		const totalPosts = await Post.find({
 			pid: params.id,
 			parent: null,
@@ -74,7 +96,7 @@ adminUsersRouter.get({
 			removed: false
 		}).countDocuments();
 
-		return mapAdminUserProfile(settings, pnid, followers, totalPosts);
+		return mapAdminUserProfile(user, pnid, followers, totalPosts);
 	}
 });
 
@@ -90,13 +112,17 @@ adminUsersRouter.get({
 		}),
 		response: moderationProfileSchema
 	},
-	async handler({ params }) {
-		const settings = await Settings.findOne({ pid: params.id });
-		if (!settings) {
+	async handler({ params, db }) {
+		const user = await db.user.findUnique({
+			where: {
+				pid: params.id
+			}
+		});
+		if (!user) {
 			throw errors.for('not_found');
 		}
 
-		return mapModerationProfile(settings);
+		return mapModerationProfile(user);
 	}
 });
 
@@ -118,8 +144,12 @@ adminUsersRouter.patch({
 	},
 	async handler({ params, db, body, auth }) {
 		const account = auth!;
-		const oldSettings = await Settings.findOne({ pid: params.id });
-		if (!oldSettings) {
+		const oldUser = await db.user.findUnique({
+			where: {
+				pid: params.id
+			}
+		});
+		if (!oldUser) {
 			throw errors.for('not_found');
 		}
 
@@ -127,24 +157,25 @@ adminUsersRouter.patch({
 		if (body.accountStatus == 0) {
 			banLiftDate = null; // If account status is normal, remove ban date
 		}
-		const settings = await Settings.findOneAndUpdate({ pid: params.id }, {
-			$set: deleteOptional({
-				account_status: body.accountStatus,
-				ban_lift_date: banLiftDate,
-				banned_by: account.pnid.pid,
-				ban_reason: body.banReason
-			})
-		}, { new: true });
-		if (!settings) {
-			throw new Error('Settings gone after save');
-		}
 
-		const accountStatusChanged = oldSettings.account_status !== settings.account_status;
-		if (accountStatusChanged && settings.account_status === 1) {
+		const data: UserUpdateInput = {};
+		data.accountStatus = body.accountStatus;
+		data.bannedBy = account.pnid.pid;
+		data.banEndsAt = banLiftDate;
+		data.banReason = body.banReason;
+		const newUser = await db.user.update({
+			where: {
+				pid: oldUser.pid
+			},
+			data
+		});
+
+		const accountStatusChanged = oldUser.accountStatus !== newUser.accountStatus;
+		if (accountStatusChanged && newUser.accountStatus === 1) {
 			await createNewLimitedPostingNotification(db, {
-				pid: settings.pid,
-				banLiftDate: settings.ban_lift_date ?? null,
-				reason: settings.ban_reason ?? null
+				pid: newUser.pid,
+				banLiftDate: newUser.banEndsAt ?? null,
+				reason: newUser.banReason ?? null
 			});
 		}
 
@@ -153,33 +184,33 @@ adminUsersRouter.patch({
 		const fields = [];
 
 		if (accountStatusChanged) {
-			const oldStatus = accountStatusDisplayMap[oldSettings.account_status];
-			const newStatus = accountStatusDisplayMap[settings.account_status];
-			action = accountActionDisplayMap[settings.account_status] ?? 'NONE';
+			const oldStatus = accountStatusDisplayMap[oldUser.accountStatus];
+			const newStatus = accountStatusDisplayMap[newUser.accountStatus];
+			action = accountActionDisplayMap[newUser.accountStatus] ?? 'NONE';
 			fields.push('account_status');
 			changes.push(`Account Status changed from "${oldStatus}" to "${newStatus}"`);
 		}
 
-		if (accountStatusChanged || oldSettings.ban_lift_date !== settings.ban_lift_date) {
+		if (accountStatusChanged || oldUser.banEndsAt !== newUser.banEndsAt) {
 			fields.push('ban_lift_date');
-			changes.push(`User Ban Lift Date changed from "${humanDate(oldSettings.ban_lift_date)}" to "${humanDate(settings.ban_lift_date)}"`);
+			changes.push(`User Ban Lift Date changed from "${humanDate(oldUser.banEndsAt)}" to "${humanDate(newUser.banEndsAt)}"`);
 		}
 
-		if (accountStatusChanged || oldSettings.ban_reason !== settings.ban_reason) {
+		if (accountStatusChanged || oldUser.banReason !== newUser.banReason) {
 			fields.push('ban_reason');
-			changes.push(`Ban reason changed from "${oldSettings.ban_reason}" to "${settings.ban_reason}"`);
+			changes.push(`Ban reason changed from "${oldUser.banReason}" to "${newUser.banReason}"`);
 		}
 
 		if (changes.length > 0) {
 			await createLogEntry({
 				actorId: account.pnid.pid,
 				action,
-				targetResourceId: settings.pid.toString(),
+				targetResourceId: newUser.pid.toString(),
 				context: changes.join('\n'),
 				fields
 			});
 		}
 
-		return mapModerationProfile(settings);
+		return mapModerationProfile(newUser);
 	}
 });

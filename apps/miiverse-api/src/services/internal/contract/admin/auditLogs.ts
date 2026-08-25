@@ -3,7 +3,7 @@ import { logEntryActions } from '@/models/logs';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import type { HydratedAuditLogDocument } from '@/models/logs';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { User } from '@/prisma/client';
 
 export const auditLogActionSchema = asOpenapi('AuditLogAction', z.enum(logEntryActions));
 
@@ -19,10 +19,10 @@ export const auditLogSchema = z.object({
 
 export type AuditLogDto = z.infer<typeof auditLogSchema>;
 
-export function mapAuditLog(log: HydratedAuditLogDocument, actorSettings: HydratedSettingsDocument): AuditLogDto {
+export function mapAuditLog(log: HydratedAuditLogDocument, actorUser: User): AuditLogDto {
 	return {
 		id: log.id,
-		actor: mapShallowUser(actorSettings),
+		actor: mapShallowUser(actorUser),
 		targetId: log.target,
 		action: log.action,
 		actionAt: log.timestamp,

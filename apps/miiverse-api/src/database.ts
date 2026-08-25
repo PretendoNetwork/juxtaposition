@@ -2,19 +2,17 @@ import mongoose from 'mongoose';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { logger } from '@/logger';
 import { Community } from '@/models/community';
-import { Content } from '@/models/content';
 import { Conversation } from '@/models/conversation';
 import { Endpoint } from '@/models/endpoint';
 import { Post } from '@/models/post';
-import { Settings } from '@/models/settings';
 import { config } from '@/config';
 import { PrismaClient } from '@/prisma/client';
+import type { User } from '@/prisma/client';
 import type { HydratedEndpointDocument } from '@/models/endpoint';
 import type { HydratedConversationDocument } from '@/models/conversation';
-import type { HydratedContentDocument } from '@/types/mongoose/content';
-import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { UserWithSettingsAndFollows } from '@/services/internal/utils/user';
 
 let prisma: PrismaClient | null = null;
 
@@ -161,24 +159,41 @@ export async function getEndpoint(accessLevel: string): Promise<HydratedEndpoint
 	});
 }
 
-export async function getUserSettings(pid: number): Promise<HydratedSettingsDocument | null> {
-	verifyConnected();
-
-	return Settings.findOne({ pid: pid });
-}
-
-export async function getUserContent(pid: number): Promise<HydratedContentDocument | null> {
-	verifyConnected();
-
-	return Content.findOne({ pid: pid });
-}
-
-export async function getFollowedUsers(content: HydratedContentDocument): Promise<HydratedSettingsDocument[]> {
-	verifyConnected();
-
-	return Settings.find({
-		pid: content.followed_users
+export async function getUser(pid: number): Promise<UserWithSettingsAndFollows | null> {
+	return await getDb().user.findUnique({
+		where: {
+			pid
+		},
+		include: {
+			settings: true,
+			follows: true,
+			followedCommunities: true
+		}
 	});
+}
+
+export async function getFollowedUsers(pid: number): Promise<User[]> {
+	const follows = await getDb().userFollow.findMany({
+		where: {
+			pid
+		},
+		include: {
+			followingUser: true
+		}
+	});
+	return follows.map(v => v.followingUser);
+}
+
+export async function getFollowedUserPids(pid: number): Promise<number[]> {
+	const follows = await getDb().userFollow.findMany({
+		where: {
+			pid
+		},
+		select: {
+			followingPid: true
+		}
+	});
+	return follows.map(v => v.followingPid);
 }
 
 export async function getConversationByUsers(pids: number[]): Promise<HydratedConversationDocument | null> {

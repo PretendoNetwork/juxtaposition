@@ -6,7 +6,6 @@ import { mapPost, mapPostWithModeration, postSchema } from '@/services/internal/
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { Community } from '@/models/community';
-import { Settings } from '@/models/settings';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -21,7 +20,7 @@ activityFeedsRouter.get({
 		query: z.object(pageControlSchema(500)),
 		response: feedPageDtoSchema(postSchema)
 	},
-	async handler({ query, auth }) {
+	async handler({ query, auth, db }) {
 		const posts = await Post
 			.find(deleteOptional({
 				parent: null,
@@ -35,8 +34,14 @@ activityFeedsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
-		const users = await Settings.find({ pid: { $in: userIds } });
+		const userIds = posts.flatMap(v => v.removed_by).filter((v): v is number => !!v);
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: userIds
+				}
+			}
+		});
 
 		const mappedPosts = posts.map((p) => {
 			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
@@ -60,15 +65,18 @@ activityFeedsRouter.get({
 		query: z.object(pageControlSchema(500)),
 		response: feedPageDtoSchema(postSchema)
 	},
-	async handler({ query, auth }) {
-		const { content, pnid } = auth!; // Auth guard protects it
+	async handler({ query, auth, db }) {
+		const { pnid } = auth!; // Auth guard protects it
 
 		const anyOfQueries: FilterQuery<IPost>[] = [
 			{ pid: pnid.pid } // Add own posts
 		];
-		if (content) {
-			anyOfQueries.push({ pid: content.followed_users }); // Add following users posts
-		}
+		const followedUsers = await db.userFollow.findMany({
+			where: {
+				pid: pnid.pid
+			}
+		});
+		anyOfQueries.push({ pid: followedUsers.map(v => v.followingPid) }); // Add following users posts
 
 		const posts = await Post
 			.find(deleteOptional({
@@ -84,8 +92,14 @@ activityFeedsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
-		const users = await Settings.find({ pid: { $in: userIds } });
+		const userIds = posts.flatMap(v => v.removed_by).filter((v): v is number => !!v);
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: userIds
+				}
+			}
+		});
 
 		const mappedPosts = posts.map((p) => {
 			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
@@ -109,16 +123,24 @@ activityFeedsRouter.get({
 		query: z.object(pageControlSchema(500)),
 		response: feedPageDtoSchema(postSchema)
 	},
-	async handler({ query, auth }) {
-		const { content, pnid } = auth!; // Auth guard protects it
+	async handler({ query, auth, db }) {
+		const { pnid } = auth!; // Auth guard protects it
 
 		const anyOfQueries: FilterQuery<IPost>[] = [
 			{ pid: pnid.pid } // Add own posts
 		];
-		if (content) {
-			anyOfQueries.push({ pid: content.followed_users }); // Add following users posts
-			anyOfQueries.push({ community_id: content.followed_communities }); // Add following communities posts
-		}
+		const followedUsers = await db.userFollow.findMany({
+			where: {
+				pid: pnid.pid
+			}
+		});
+		const followedComms = await db.communityFollow.findMany({
+			where: {
+				pid: pnid.pid
+			}
+		});
+		anyOfQueries.push({ pid: followedUsers.map(v => v.followingPid) }); // Add following users posts
+		anyOfQueries.push({ community_id: followedComms.map(v => v.communityId) }); // Add following communities posts
 
 		const posts = await Post
 			.find(deleteOptional({
@@ -134,8 +156,14 @@ activityFeedsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const userIds = posts.flatMap(v => v.removed_by).filter(v => !!v);
-		const users = await Settings.find({ pid: { $in: userIds } });
+		const userIds = posts.flatMap(v => v.removed_by).filter((v): v is number => !!v);
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: userIds
+				}
+			}
+		});
 
 		const mappedPosts = posts.map((p) => {
 			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;

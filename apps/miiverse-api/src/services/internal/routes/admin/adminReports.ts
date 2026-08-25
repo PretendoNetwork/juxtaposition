@@ -12,7 +12,6 @@ import { deleteOptional } from '@/services/internal/utils';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { Community } from '@/models/community';
-import { Settings } from '@/models/settings';
 
 export const adminReportsRouter = createInternalApiRouter();
 
@@ -29,7 +28,7 @@ adminReportsRouter.get({
 		}).extend(pageControlSchema(150)),
 		response: feedPageDtoSchema(reportSchema)
 	},
-	async handler({ query }) {
+	async handler({ query, db }) {
 		if (query.resolved !== undefined && query.offset > 0) {
 			throw errors.for('bad_request', 'Pagination is not possible when filtering for resolved states');
 		}
@@ -55,7 +54,13 @@ adminReportsRouter.get({
 			...rawReports.flatMap(v => [v.reported_by, v.resolved_by]),
 			...posts.map(v => v.removed_by)
 		].filter((v): v is number => !!v);
-		const users = await Settings.find({ pid: { $in: relatedUserIds } });
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: relatedUserIds
+				}
+			}
+		});
 
 		let reports = rawReports.map((report) => {
 			const post = posts.find(v => v.id === report.post_id) ?? null;

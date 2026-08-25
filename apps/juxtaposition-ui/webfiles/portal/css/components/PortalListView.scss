@@ -1,0 +1,79 @@
+@use '../theme.scss' as t;
+
+$border-dot: 4px;
+$border-gap: 7px;
+$tile-gap: 10px;
+
+.list-view {
+    * { -webkit-box-sizing: border-box; } // etc etc
+    line-height: 1; // needed for inline-block trick to work
+    position: relative;
+    
+    // fuck i miss css grid so bad. flex-wrap? flex-wrap...
+    &.table-3col .list-item {
+        width: 340px; // (1040px-$tile-gap*2)/3; // SCSS won't evaluate this idk
+        display: inline-block;
+        vertical-align: top;
+        margin-bottom: ($border-gap*2)+$border-dot;
+
+        // component margin on bottom row
+        &:nth-last-of-type(-n+3) {
+            margin-bottom: t.$component-gap;
+        }
+        // select the first item in each row, unless it's in the last row (last 3 items)
+        &:nth-of-type(3n+1):not(:nth-last-of-type(-n+3))::after {
+            // full-width dotted border (to stop the pattern restarting midway)
+            content: "";
+            display: block;
+            width: 100%;
+
+            position: absolute;
+            left: 0;
+
+            border-bottom: $border-dot dotted #d2b0e1;
+            margin: $border-gap 0;
+        }
+        // select 1st and 2nd items
+        &:not(:nth-of-type(3n+3)) {
+            margin-right: $tile-gap;
+        }
+    }
+    // bit easier without the grid...
+    &.list .list-item {
+        &:not(:last-of-type) {
+            padding-bottom: $border-gap;
+            border-bottom: $border-dot dotted #d2b0e1;
+        }
+        margin-bottom: $border-gap;
+    }
+
+    .list-item .box {
+        display: -webkit-box;
+        color: t.$text; // in case we have an <a>
+    }
+
+    .list-body {
+        padding-left: $tile-gap;
+        word-break: break-word;
+        -webkit-box-flex: 1;
+
+        // font settings
+        line-height: 32px; // max 32px (96/3)
+        font-size: 24px;
+
+        // vertical center
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-box-pack: center;
+    }
+
+    .icon-container {
+        box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+        border-radius: 12px;
+    }
+    .icon {
+        // yes we need to specify border-radius on both, just webkit bugs
+        border-radius: 12px;
+        background-color: #fff;
+    }
+}

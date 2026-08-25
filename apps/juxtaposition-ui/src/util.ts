@@ -9,6 +9,7 @@ import { rateLimit } from 'express-rate-limit';
 import { SystemType } from '@pretendonetwork/grpc/account/v2/token_info';
 import { logger } from '@/logger';
 import { config } from '@/config';
+import type { StringUnitLength } from 'luxon';
 import type { Options as RatelimitOptions } from 'express-rate-limit';
 import type { ZodType } from 'zod';
 import type { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
@@ -201,14 +202,15 @@ export function humanDate(date?: Date | DateTime | string | null): string {
 	return fixupUnicodes(dateString);
 }
 
-export function humanFromNow(date?: Date | DateTime | string | null): string {
+export function humanFromNow(date?: Date | DateTime | string | null, style?: StringUnitLength): string {
 	if (!date) {
 		return 'unknown time';
 	}
 	date = makeDateObject(date);
 
 	const durationString = date.toRelative({
-		rounding: 'expand'
+		rounding: 'expand',
+		style: style
 	});
 	return durationString ?? 'unknown time';
 }

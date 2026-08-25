@@ -42,8 +42,7 @@
     "user_settings": {
         "profile_settings": "Gosodiadau profil",
         "show_country": "Ddangos Gwlad Ar Profil",
-        "show_birthday": "Ddangos Penblwydd Ar Profil",
-        "show_game": ""
+        "show_birthday": "Ddangos Penblwydd Ar Profil"
     },
     "new_post": {
         "post_to": "Llwyth I {{user}}",
@@ -53,42 +52,14 @@
         "rules_text": {
             "second": "Pobol dros y byd yn gallu spio ar eich llwythau",
             "eighth": "Ddim Llwythio Sbeilwyr",
-            "twelfth": "Ydach chi wedi chwarae gem yna?",
-            "eleventh": "",
-            "tenth": "",
-            "third": "",
-            "thirteenth": "",
-            "fifth": "",
-            "ninth": "",
-            "fourth": "",
-            "sixth": "",
-            "first": "",
-            "seventh": ""
+            "twelfth": "Ydach chi wedi chwarae gem yna?"
         },
         "ready": "Barod I i ddechrau defnyddio juxt",
         "done": "Cael Hwyl Yn Juxt!",
         "done_button": "Fynd!",
         "welcome": "Croeso I Jusxtaposition!",
         "rules": "Rheol Juxt",
-        "info": "Beth ydy juxtaposition?",
-        "beta_text": {
-            "third": "",
-            "second": "",
-            "first": ""
-        },
-        "experience_text": {
-            "expert": "",
-            "info": "",
-            "intermediate": "",
-            "beginner": ""
-        },
-        "experience": "",
-        "analytics": "",
-        "welcome_text": "",
-        "analytics_text": "",
-        "info_text": "",
-        "ready_text": "",
-        "beta": ""
+        "info": "Beth ydy juxtaposition?"
     },
     "activity_feed": {
         "empty": "Maen wag yma. Ceishwch dilyn rhywun!"

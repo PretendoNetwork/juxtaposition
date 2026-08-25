@@ -1,0 +1,37 @@
+@use '../theme.scss' as t;
+
+.list-content-with-icon-column {
+    * { -webkit-box-sizing: border-box; } // etc etc
+
+    font-size: 15px;
+    color: #323232;
+
+    .list-item {
+        width: 300px;
+
+        margin: 5px auto;
+        border-bottom: 3px dotted #d2b0e1;
+        padding-bottom: 5px;
+
+        &:last-of-type {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        &.box, .box {
+            display: -webkit-box;
+            color: t.$button-text; // in case we have an <a>
+        }
+    }
+
+    .list-body {
+        width: 300px - 64px; // icon width
+        padding-left: 10px;
+        word-break: break-word;
+
+        // vertical center
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-box-pack: center;
+    }
+}

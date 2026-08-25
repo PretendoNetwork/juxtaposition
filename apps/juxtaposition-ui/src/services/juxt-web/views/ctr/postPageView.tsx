@@ -1,5 +1,5 @@
 import { CtrRoot, CtrPageBody } from '@/services/juxt-web/views/ctr/root';
-import { CtrPostView } from '@/services/juxt-web/views/ctr/post';
+import { CtrPostView } from '@/services/juxt-web/views/ctr/components/CtrPostView';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';

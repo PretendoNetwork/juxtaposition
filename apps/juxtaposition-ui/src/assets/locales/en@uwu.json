@@ -7,9 +7,7 @@
     "community": {
         "recent": "wecent p-posts",
         "followers": "Fowwowers",
-        "popular": "Popuwaw P-posts",
-        "posts": "",
-        "tags": ""
+        "popular": "Popuwaw P-posts"
     },
     "global": {
         "communities": "kitteh klans",
@@ -45,63 +43,6 @@
         "following": "Fowwowing",
         "follow_user": "Fowwow",
         "following_user": "Fowwowing"
-    },
-    "setup": {
-        "rules_text": {
-            "eleventh": "",
-            "tenth": "",
-            "third": "",
-            "thirteenth": "",
-            "fifth": "",
-            "ninth": "",
-            "fourth": "",
-            "second": "",
-            "sixth": "",
-            "first": "",
-            "eighth": "",
-            "seventh": "",
-            "twelfth": ""
-        },
-        "beta_text": {
-            "third": "",
-            "second": "",
-            "first": ""
-        },
-        "experience_text": {
-            "expert": "",
-            "info": "",
-            "intermediate": "",
-            "beginner": ""
-        },
-        "done_button": "",
-        "ready": "",
-        "experience": "",
-        "analytics": "",
-        "rules": "",
-        "welcome_text": "",
-        "analytics_text": "",
-        "info": "",
-        "info_text": "",
-        "ready_text": "",
-        "done": "",
-        "beta": "",
-        "welcome": ""
-    },
-    "notifications": {
-        "none": ""
-    },
-    "new_post": {
-        "swearing": "",
-        "post_to": ""
-    },
-    "user_settings": {
-        "show_game": "",
-        "show_birthday": "",
-        "profile_settings": "",
-        "show_country": ""
-    },
-    "activity_feed": {
-        "empty": ""
     },
     "login": {
         "title": "gimmeh ur passwrd :3c",

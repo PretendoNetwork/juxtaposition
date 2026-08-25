@@ -1,35 +1,30 @@
-import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
+import { CtrListView, CtrListViewItem } from '@/services/juxt-web/views/ctr/components/CtrListView';
+import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIcon';
+import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrCommunityIcon';
 import type { ReactNode } from 'react';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 
 export function CtrUserPageFollowingView(props: UserPageFollowingViewProps): ReactNode {
-	const url = useUrl();
 	return (
 		<div className="communities-list">
-			<ul className="list-content-with-icon-column" id="community-new-content">
+			<CtrListView type="icon-column">
 				{props.followers.map(user => (
-					<li key={user.pid} id={user.pid.toString()}>
-						<span className="icon-container"><img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} className="icon" /></span>
-						<a href={`/users/show?pid=${user.pid}`} data-pjax="#body" className="scroll to-community-button full"></a>
-						<div className="body">
-							<div className="body-content">
-								<span className="community-name title">{user.miiName}</span>
-							</div>
+					<CtrListViewItem href={`/users/show?pid=${user.pid}`} key={user.pid}>
+						<CtrMiiIcon pid={user.pid} type="icon" />
+						<div className="list-body">
+							{user.miiName}
 						</div>
-					</li>
+					</CtrListViewItem>
 				))}
 				{props.communities.map(community => (
-					<li key={community.olive_community_id} id={community.olive_community_id}>
-						<span className="icon-container"><img src={url.cdn(`/icons/${community.olive_community_id}/128.png`)} className="icon" /></span>
-						<a href={`/titles/${community.olive_community_id}/new`} data-pjax="#body" className="scroll to-community-button full"></a>
-						<div className="body">
-							<div className="body-content">
-								<span className="community-name title">{community.name}</span>
-							</div>
+					<CtrListViewItem href={`/titles/${community.olive_community_id}/new`} key={community.olive_community_id}>
+						<CtrCommunityIcon community={community} type="icon" size="64" />
+						<div className="list-body">
+							{community.name}
 						</div>
-					</li>
+					</CtrListViewItem>
 				))}
-			</ul>
+			</CtrListView>
 		</div>
 	);
 }

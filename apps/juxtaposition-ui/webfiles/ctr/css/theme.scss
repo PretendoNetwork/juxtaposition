@@ -3,9 +3,24 @@
 // $root-gradient: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#d7d7d7));
 $root-gradient-30px: url(@/images/gradient-30px.png);
 
+$root-light-100: #ffffff;
+$root-light-200: #fbfafa;
+$root-light-300: #f6f6f6;
+$root-light-300: #edeeef;
 $root-light-500: #e8e8e8;
+$root-light-600: #e3e3e3;
+
+$root-text-1: #9B9DAF;
+$root-text-2: #858899;
+$root-text-4: #404355;
+$root-text-5: #272833;
+
+$root-text-accent: #a362d8; // sampled from topic tag sprite
 
 $title-size: 18px;
+
+$subline-size: 12px;
+$subline-text: #969696;
 
 $component-border: 1px solid #b9b9b9;
 $component-border-size: 1px;

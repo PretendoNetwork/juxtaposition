@@ -83,6 +83,20 @@
             "message/two": "<follower_one />, <follower_two /> seguiram você!",
             "message/three": "<follower_one />, <follower_two />, e {{count_other}} outro seguiram você!",
             "message/multiple": "<follower_one />, <follower_two />, e {{count_other}} outros seguiram você!"
+        },
+        "post_deleted": {
+            "post_removed": "Sua postagem \"{{postId}}\" foi removida.",
+            "post_removed_for_reason": "Sua postagem \"{{postId}}\" foi removida pelo motivo a seguir: \"{{reason}}\".",
+            "comment_removed": "Seu comentário \"{{postId}}\" foi removido.",
+            "comment_removed_for_reason": "Seu comentário \"{{postId}}\" foi removido pelo motivo a seguir: \"{{reason}}\".",
+            "footer": "Clique nesta mensagem para visualizar o Código de Conduta do Juxtaposition. Caso haja dúvidas, entre em contato com os moderadores no Fórum Pretendo Network ({{contactModsUrl}})."
+        },
+        "limited_from_posting": {
+            "message": "Você está sob restrição de fazer postagens.",
+            "message_with_reason": "Você está impedido de fazer postagens. Motivo: \"{{reason}}\".",
+            "temporary": "Você está impedido de fazer postagens até {{until}}.",
+            "temporary_with_reason": "Você está impedido de fazer postagens até {{until}}. Motivo: \"{{reason}}\".",
+            "footer": "Clique nesta mensagem para visualizar o Código de Conduta do Juxtaposition. Caso haja dúvidas, entre em contato com os moderadores no Fórum Pretendo Network ({{banAppealUrl}})."
         }
     },
     "new_post": {
@@ -171,12 +185,15 @@
         "report_post": "Reportar postagem",
         "delete_post": "Deletar postagem",
         "removed": "Postagem removida.",
-        "copy_link": "Copiar link"
+        "copy_link": "Copiar link",
+        "sort_newest_first": "Ordenar por mais recente",
+        "sort_oldest_first": "Ordenar por mais antigo",
+        "replies_heading": "Respostas"
     },
     "reporting": {
         "title": "Reportar Postagem",
         "submit": "Enviar Reportagem",
-        "description": "Você está prestes a reportat uma postagem com conteúdo que viola o Código de Conduta do Juxtaposition. Esta reportagem será enviada aos moderadores do Juxtaposition e não ao criador da postagem.",
+        "description": "Você está prestes a denunciar uma postagem que viola o Código de Conduta do Juxtaposition. Esta denúncia será enviada aos moderadores do Juxtaposition e não ao criador da postagem.",
         "label": "Motivo:",
         "additional_info_placeholder": "Comentários ou informações adicionais",
         "reason_spoiler": "Spoiler",
@@ -189,11 +206,26 @@
         "reason_piracy": "Pirataria",
         "reason_inappropiate_ingame": "Atitude Inapropriada no Jogo",
         "reason_missing_images": "Imagens faltando",
-        "reason_others": "Outros"
+        "reason_others": "Outros",
+        "reason_not_nice": "Maldoso/Rude/Desrespeitoso (Regra nº1)",
+        "reason_inappropriate": "Impróprio/NSFW (Regra nº2)",
+        "reason_spam": "Spam/Autopromoção (Regra nº3)",
+        "reason_offtopic": "Fora do assunto (Regra nº4)",
+        "reason_piracy_new": "Pirataria (Regra nº5)",
+        "reason_exploits": "Abuso de API/Abuso de bugs (Regra nº8)",
+        "reason_drama": "Drama (Regra nº9)",
+        "reason_cheating": "Uso de cheats online (Regra nº10)",
+        "reason_spoiler_new": "Spoiler (Regra nº11)",
+        "reason_personal_info_new": "Dados pessoais (Regra nº12)",
+        "reason_politics": "Política (Regra nº13)",
+        "reason_misinformation": "Informação errada/sugestão inadequada (Regra nº14)",
+        "reason_impersonation": "Fingimento de falsa identidade (Regra nº15)"
     },
     "moderation": {
         "title": "Moderação",
         "silently_delete_post": "Deletar silenciosamente",
-        "moderate_user": "Moderar Usuário"
+        "moderate_user": "Moderar Usuário",
+        "mark_as_spoiler": "Marcar como spoiler",
+        "mark_as_not_spoiler": "Remover spoiler"
     }
 }

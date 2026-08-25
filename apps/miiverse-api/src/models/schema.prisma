@@ -14,6 +14,74 @@ enum NotificationType {
   System
 }
 
+enum ProfilePrivacyType {
+  Public
+  UsersOnly
+}
+
+/// User
+model User {
+  pid         Int      @id
+  createdAt   DateTime @default(now()) @map("created_at")
+  displayName String   @map("display_name")
+  lastSeen    DateTime @map("last_seen")
+
+  // TODO refactor bans to different table so it keeps a history
+  accountStatus Int       @map("account_status")
+  banReason     String?   @map("ban_reason")
+  banEndsAt     DateTime? @map("ban_ends_at")
+  bannedBy      Int?      @map("banned_by")
+
+  settings            UserSetting?
+  follows             UserFollow[]      @relation("follows")
+  followers           UserFollow[]      @relation("followers")
+  followedCommunities CommunityFollow[]
+
+  @@map("users")
+}
+
+/// User settings
+model UserSetting {
+  pid  Int  @id @unique
+  user User @relation(fields: [pid], references: [pid], onDelete: Cascade)
+
+  receiveNotifications        Boolean            @map("receive_notifications")
+  profilePrivacy              ProfilePrivacyType @map("profile_privacy")
+  isFavouriteCommunityVisible Boolean            @map("is_favourite_community_visible")
+  isCountryVisible            Boolean            @map("is_country_visible")
+  isRelationshipVisible       Boolean            @map("is_relationship_visible")
+  isBirthdayVisible           Boolean            @map("is_birthday_visible")
+  isGameSkillVisible          Boolean            @map("is_game_skill_visible")
+
+  profileComment String? @map("profile_comment")
+  gameSkill      Int     @map("game_skill")
+
+  @@map("user_settings")
+}
+
+/// User Follow
+model UserFollow {
+  pid          Int
+  followingPid Int @map("following_pid")
+
+  user          User @relation(name: "follows", fields: [pid], references: [pid], onDelete: Cascade)
+  followingUser User @relation(name: "followers", fields: [followingPid], references: [pid], onDelete: Cascade)
+
+  @@id([pid, followingPid])
+  @@map("user_follows")
+}
+
+/// Community Follow
+model CommunityFollow {
+  pid         Int
+  communityId String @map("community_id")
+
+  user User @relation(fields: [pid], references: [pid], onDelete: Cascade)
+
+  @@id([pid, communityId])
+  @@map("community_follows")
+}
+
 /// Notification content
 model Notification {
   id      String           @id

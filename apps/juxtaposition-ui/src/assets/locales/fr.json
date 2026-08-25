@@ -83,6 +83,16 @@
             "message/two": "<follower_one /> et <follower_two /> vous suivent !",
             "message/three": "<follower_one />, <follower_two /> et {{count_other}} autre personne vous suivent !",
             "message/multiple": "<follower_one />, <follower_two /> et {{count_other}} autres personnes vous suivent !"
+        },
+        "post_deleted": {
+            "post_removed": "Votre post « {{postId}} » a été supprimé.",
+            "post_removed_for_reason": "Votre post « {{postId}} » a été supprimé pour la raison : « {{reason}} » .",
+            "comment_removed": "Votre commentaire « {{postId}} » a été supprimé.",
+            "comment_removed_for_reason": "Votre commentaire « {{postId}} » a été supprimé pour la raison suivante : « {{reason}} » .",
+            "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les moderateurs sur le Forum Pretendo Network ({{contactModsUrl}})."
+        },
+        "limited_from_posting": {
+            "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les modérateurs sur le Forum Pretendo Network ({{banAppealUrl}})."
         }
     },
     "new_post": {
@@ -100,7 +110,7 @@
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",
         "welcome_text": "Juxt est une communauté de jeu qui rassemble les personnes du monde entier à l'aide de personnages Mii. Utilisez Juxt pour partager votre expérience de jeu et rencontrer des gens autour du globe.",
-        "beta": "BÊTA : AVIS DE NON-GARANTIE",
+        "beta": "Bêta: Avis de non-responsabilité",
         "beta_text": {
             "first": "Vous êtes sur le point d'essayer la première version bêta publique de Juxt. Cela signifie que beaucoup de choses sont encore en développement et qu'elles peuvent changer à tout moment.",
             "second": "Cela peut inclure un effacement total de la base de données à la fin ou pendant la période bêta.",
@@ -171,12 +181,15 @@
         "report_post": "Signaler la publication",
         "delete_post": "Supprimmer la publication",
         "removed": "Le post à été supprimmé.",
-        "copy_link": "Copier le lien"
+        "copy_link": "Copier le lien",
+        "sort_newest_first": "Afficher les plus récents",
+        "sort_oldest_first": "Afficher les plus anciens",
+        "replies_heading": "Réponses"
     },
     "reporting": {
         "title": "Sigaler la publication",
         "submit": "Envoyer le signalement",
-        "description": "Vous êtes sur le point de signaler une publication qui viole le Vode de Conduite de Juxtaposition. Ce signalement sera envoyé aux modérateurs Juxtaposition de Pretendo et pas au créateur du post.",
+        "description": "Vous êtes sur le point de signaler une publication qui viole le Vode de Conduite de Juxtaposition. Ce signalement sera envoyé seulement aux modérateurs Juxtaposition de Pretendo et pas au créateur du post.",
         "label": "Raison :",
         "additional_info_placeholder": "Entrez des commentaires ou des informations supplémentaires",
         "reason_spoiler": "Spoiler",
@@ -189,11 +202,26 @@
         "reason_piracy": "Piratage",
         "reason_inappropiate_ingame": "Comportement inapproprié dans un jeu",
         "reason_missing_images": "Images manquantes",
-        "reason_others": "Autre"
+        "reason_others": "Autre",
+        "reason_not_nice": "Méchant/Grossier/Haineux (Règle 1)",
+        "reason_inappropriate": "Inapproprié/Choquant (Règle 2)",
+        "reason_spam": "Spam/Publicité (Règle 3)",
+        "reason_offtopic": "Hors-sujet (Règle 4)",
+        "reason_piracy_new": "Piratage (Règle 5)",
+        "reason_exploits": "Utilisation abusée de l'API/Expoitation de bogue (Règle 8)",
+        "reason_drama": "Drama (Règle 9)",
+        "reason_cheating": "Triche en ligne (Règle 10)",
+        "reason_spoiler_new": "Spoiler (Règle 11)",
+        "reason_personal_info_new": "Informations Personnelles (Règle 12)",
+        "reason_politics": "Politique (Règle 13)",
+        "reason_misinformation": "Désinformation/Mauvais conseils (Règle 14)",
+        "reason_impersonation": "Usurpation d'identité (Règle 15)"
     },
     "moderation": {
         "title": "Modération",
         "silently_delete_post": "Supprimer discrètement",
-        "moderate_user": "Modérer l'utilisateur"
+        "moderate_user": "Modérer l'utilisateur",
+        "mark_as_spoiler": "Marquer comme Spoiler",
+        "mark_as_not_spoiler": "Marquer comme non Spoiler"
     }
 }

@@ -10,7 +10,6 @@ import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { automodLogSchema, mapAutomodLog } from '@/services/internal/contract/admin/automodLog';
 import { automodAction, AutomodLog } from '@/models/automodLog';
-import { Settings } from '@/models/settings';
 import type { RootFilterQuery } from 'mongoose';
 
 export const adminAutomodRouter = createInternalApiRouter();
@@ -146,7 +145,7 @@ adminAutomodRouter.get({
 		}).extend(pageControlSchema(150)),
 		response: pageDtoSchema(automodLogSchema)
 	},
-	async handler({ query }) {
+	async handler({ query, db }) {
 		const dbQuery: RootFilterQuery<AutomodLog> = deleteOptional({
 			action: query.action,
 			author: query.authorPid
@@ -165,10 +164,12 @@ adminAutomodRouter.get({
 			}
 		});
 
-		const userIds = logs.map(v => v.author);
-		const users = await Settings.find({
-			pid: {
-				$in: userIds
+		const userIds = logs.map(v => v.author).filter(v => !!v);
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: userIds
+				}
 			}
 		});
 

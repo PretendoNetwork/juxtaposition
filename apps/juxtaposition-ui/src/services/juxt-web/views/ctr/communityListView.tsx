@@ -5,28 +5,32 @@ import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/Ct
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
 import { CtrSearchForm } from '@/services/juxt-web/views/ctr/components/ui/CtrSearchForm';
 import { prepSearchTerm } from '@/services/juxt-web/views/web/components/ui/WebSearchForm';
+import { CtrListView, CtrListViewItem } from '@/services/juxt-web/views/ctr/components/CtrListView';
 import type { ReactNode } from 'react';
 import type { CommunityItemProps, CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
 
 export function CtrCommunityItem(props: CommunityItemProps): ReactNode {
 	const id = props.community.olive_community_id;
 	return (
-		<li id={id} data-search-term={prepSearchTerm(props.community.name)}>
-			<a href={`/titles/${id}/new`} data-pjax="#body" className="scroll to-community-button">
-				<CtrCommunityIcon community={props.community} size="64"></CtrCommunityIcon>
-				<div className="body">
-					<div className="body-content">
-						<span className="community-name title">{props.community.name}</span>
-						<br />
-						<span className="text">
-							{props.community.followerCount}
-							{' '}
-							<T k="community.followers" />
-						</span>
-					</div>
+		<CtrListViewItem id={id} data-search-term={prepSearchTerm(props.community.name)} href={`/titles/${id}/new`}>
+			<CtrCommunityIcon community={props.community} size="64"></CtrCommunityIcon>
+			<div className="list-body community-list-card">
+				<span>{props.community.name}</span>
+				<div className="community-info">
+					{props.community.platform == 'ctr' || props.community.platform == 'both'
+						? <span className="platform-dot ctr">{'● '}</span>
+						: null}
+					{props.community.platform == 'wup' || props.community.platform == 'both'
+						? <span className="platform-dot wup">{'● '}</span>
+						: null}
+					<span className="followers">
+						{props.community.followerCount}
+						{' '}
+						<T k="community.followers" />
+					</span>
 				</div>
-			</a>
-		</li>
+			</div>
+		</CtrListViewItem>
 	);
 }
 
@@ -41,14 +45,12 @@ export function CtrCommunityListView(props: CommunityListViewProps): ReactNode {
 					<T k="all_communities.text" />
 				</CtrPageTitledHeader>
 				<div className="body-content">
-					<CtrSearchForm type="box" data-community-list-search="#community-new-content" />
-					<div className="communities-list">
-						<ul className="list-content-with-icon-column" id="community-new-content">
-							{props.communities.map(community => (
-								<CtrCommunityItem key={community.olive_community_id} community={community} />
-							))}
-						</ul>
-					</div>
+					<CtrSearchForm type="box" data-community-list-search="#community-list" />
+					<CtrListView type="icon-column" id="community-list">
+						{props.communities.map(community => (
+							<CtrCommunityItem key={community.olive_community_id} community={community} />
+						))}
+					</CtrListView>
 				</div>
 			</CtrPageBody>
 		</CtrRoot>
@@ -69,24 +71,22 @@ export function CtrCommunityOverviewView(props: CommunityOverviewViewProps): Rea
 					<CtrPageButton type="right" href="/titles/all"><T k="all_communities.text" /></CtrPageButton>
 				</CtrPageButtons>
 				<div className="body-content">
-					<div className="communities-list">
-						<div className="headline">
-							<h2><T k="all_communities.popular_places" /></h2>
-						</div>
-						<ul className="list-content-with-icon-column" id="community-new-content">
-							{props.popularCommunities.map(community => (
-								<CtrCommunityItem key={community.olive_community_id} community={community} />
-							))}
-						</ul>
-						<div className="headline headline-green">
-							<h2><T k="all_communities.new_communities" /></h2>
-						</div>
-						<ul className="list-content-with-icon-column" id="community-top-content">
-							{props.newCommunities.map(community => (
-								<CtrCommunityItem key={community.olive_community_id} community={community} />
-							))}
-						</ul>
+					<div className="headline">
+						<h2><T k="all_communities.popular_places" /></h2>
 					</div>
+					<CtrListView type="icon-column">
+						{props.popularCommunities.map(community => (
+							<CtrCommunityItem key={community.olive_community_id} community={community} />
+						))}
+					</CtrListView>
+					<div className="headline headline-green">
+						<h2><T k="all_communities.new_communities" /></h2>
+					</div>
+					<CtrListView type="icon-column">
+						{props.newCommunities.map(community => (
+							<CtrCommunityItem key={community.olive_community_id} community={community} />
+						))}
+					</CtrListView>
 				</div>
 			</CtrPageBody>
 		</CtrRoot>
