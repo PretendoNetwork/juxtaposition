@@ -2,6 +2,8 @@ import crypto from 'node:crypto';
 import { Schema, model } from 'mongoose';
 import { MongoError } from 'mongodb';
 import { CommunityShotModes } from '@/types/mongoose/community';
+import { getUserAccountData } from '@/util';
+import type { CommunityData as ProtoCommunityData } from '@pretendonetwork/grpc/miiverse/v2/community';
 import type { ICommunity, ICommunityMethods, CommunityModel, ICommunityPermissions, HydratedCommunityDocument, ICommunityInput, IIconPaths } from '@/types/mongoose/community';
 import type { CommunityData } from '@/types/miiverse/community';
 
@@ -190,6 +192,42 @@ CommunitySchema.method<HydratedCommunityDocument>('json', function json(): Commu
 		app_data: this.app_data.replace(/[^A-Za-z0-9+/=\s]/g, ''),
 		is_user_community: '0'
 	};
+});
+
+CommunitySchema.method<HydratedCommunityDocument>('proto', async function proto(): Promise<ProtoCommunityData> {
+	const communityResponse: ProtoCommunityData = {
+		communityId: this.community_id,
+		name: this.name,
+		description: this.description,
+		icons: {
+			32: this.icon_paths?.[32] ?? '',
+			48: this.icon_paths?.[48] ?? '',
+			64: this.icon_paths?.[64] ?? '',
+			96: this.icon_paths?.[96] ?? '',
+			128: this.icon_paths?.[128] ?? ''
+		},
+		pid: this.owner ?? 0, // TODO: This probably should have been made optional, oops
+		appData: this.app_data,
+		isUserCommunity: !!this.owner, // We assume a community is created by a user if it has an owner
+		createdAt: this.created_at.toISOString(),
+		hasShopPage: this.has_shop_page == 1,
+		isRecommended: this.is_recommended == 1,
+		titleId: this.title_id
+	};
+
+	if (!this.owner) {
+		return communityResponse;
+	}
+
+	const recipient = await getUserAccountData(this.owner);
+	if (!recipient) {
+		return communityResponse;
+	}
+
+	communityResponse.screenName = recipient.mii?.name;
+	communityResponse.mii = recipient.mii?.data;
+
+	return communityResponse;
 });
 
 export const Community = model<ICommunity, CommunityModel>('Community', CommunitySchema);

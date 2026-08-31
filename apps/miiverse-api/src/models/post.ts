@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Schema, model } from 'mongoose';
 import { getInvalidPostRegex } from '@/util';
 import { config } from '@/config';
+import type { PostData as ProtoPostData } from '@pretendonetwork/grpc/miiverse/v2/post';
 import type { HydratedPostDocument, IPost, IPostMethods, PostModel } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { PostToJSONOptions } from '@/types/mongoose/post-to-json-options';
@@ -283,6 +284,52 @@ PostSchema.method<HydratedPostDocument>('json', function json(options: PostToJSO
 	}
 
 	return post;
+});
+
+PostSchema.method<HydratedPostDocument>('proto', function proto(options: PostToJSONOptions): ProtoPostData {
+	const postResponse: ProtoPostData = {
+		body: this.cleanedBody(),
+		communityId: this.community_id,
+		countryId: this.country_id,
+		createdAt: this.created_at.toISOString(),
+		feelingId: this.feeling_id ?? 0,
+		id: this.id,
+		isAutopost: this.is_autopost == 1,
+		isCommunityPrivateAutopost: this.is_community_private_autopost == 1,
+		isSpoiler: this.is_spoiler == 1,
+		isAppJumpable: this.is_app_jumpable == 1,
+		empathyCount: this.empathy_count,
+		languageId: this.language_id,
+		// TODO: We apparently removed the url field at some point, we'll need to add that back eventually
+		url: undefined,
+		number: 0,
+		painting: this.formatPainting(),
+		pid: this.pid,
+		platformId: this.platform_id ?? 1,
+		regionId: this.region_id ?? 0,
+		replyCount: this.reply_count,
+		screenName: this.screen_name,
+		screenshot: this.formatScreenshot(),
+		titleId: this.title_id ?? '',
+		data: undefined
+	};
+
+	if (options.app_data) {
+		postResponse.appData = this.cleanedAppData();
+	}
+
+	if (options.with_mii) {
+		postResponse.mii = this.cleanedMiiData();
+	}
+
+	if (this.topic_tag && options.topic_tag) {
+		postResponse.topicTag = {
+			name: this.topic_tag,
+			titleId: this.title_id ?? ''
+		};
+	}
+
+	return postResponse;
 });
 
 PostSchema.pre('save', async function (next) {
