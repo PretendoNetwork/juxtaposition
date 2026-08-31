@@ -20,5 +20,15 @@ export interface CommunityPostsQuery {
 	};
 	parent?: {
 		$eq: null;
+	} | string;
+	body?: {
+		$nin: [null, ''];
+	};
+	screenshot?: {
+		$nin: [null, ''];
+	};
+	created_at?: {
+		$gte?: string;
+		$lte?: string;
 	};
 }
