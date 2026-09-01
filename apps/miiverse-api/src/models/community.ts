@@ -206,7 +206,7 @@ CommunitySchema.method<HydratedCommunityDocument>('proto', async function proto(
 			96: this.icon_paths?.[96] ?? '',
 			128: this.icon_paths?.[128] ?? ''
 		},
-		pid: this.owner ?? 0, // TODO: This probably should have been made optional, oops
+		pid: this.owner ?? 0,
 		appData: this.app_data,
 		isUserCommunity: !!this.owner, // We assume a community is created by a user if it has an owner
 		createdAt: this.created_at.toISOString(),

@@ -18,9 +18,8 @@ export async function getUserPosts(req: GetUserPostsRequest): Promise<GetUserPos
 	const limit = req.limit ?? 10;
 	const offset = req.offset ?? 0;
 
-	// TODO: I was under the impression that we could have multiple search keys, may need to refactor this
 	if (req.searchKey) {
-		query.search_key = req.searchKey[0];
+		query.search_key = req.searchKey;
 	}
 
 	if (!req.allowSpoiler) {

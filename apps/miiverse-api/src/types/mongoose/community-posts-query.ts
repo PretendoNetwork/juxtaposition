@@ -10,7 +10,7 @@ export interface CommunityPostsQuery {
 	message_to_pid?: {
 		$eq: null;
 	};
-	search_key?: string;
+	search_key?: string | string[];
 	is_spoiler?: 0 | 1;
 	painting?: {
 		$nin: [null, ''];
