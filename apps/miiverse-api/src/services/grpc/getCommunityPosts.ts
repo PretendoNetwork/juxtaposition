@@ -1,6 +1,7 @@
 import { ServerError, Status } from 'nice-grpc';
-import { PostType, SortBy } from '@pretendonetwork/grpc/miiverse/v2/post';
+import { PostType, SortBy, QueryType } from '@pretendonetwork/grpc/miiverse/v2/post';
 import { Community } from '@/models/community';
+import { getFollowedUserPids } from '@/database';
 import { Post } from '@/models/post';
 import type { PostData } from '@pretendonetwork/grpc/miiverse/v2/post';
 import type { GetCommunityPostsRequest, GetCommunityPostsResponse } from '@pretendonetwork/grpc/miiverse/v2/get_community_posts_rpc';
@@ -25,13 +26,12 @@ export async function getCommunityPosts(req: GetCommunityPostsRequest): Promise<
 		message_to_pid: { $eq: null }
 	};
 
-	// const queryBy = req.queryBy;
+	const queryBy = req.queryBy;
 	const limit = req.limit ?? 10;
 	const offset = req.offset ?? 0;
 
-	// TODO: I was under the impression that we could have multiple search keys, may need to refactor this
 	if (req.searchKey) {
-		query.search_key = req.searchKey[0];
+		query.search_key = req.searchKey;
 	}
 
 	if (!req.allowSpoiler) {
@@ -57,15 +57,19 @@ export async function getCommunityPosts(req: GetCommunityPostsRequest): Promise<
 			break;
 	}
 
-	// TODO: Realized only now that there is have no concept of "self" for grpc requests. Maybe need to add a pid field for these queries?
-	/* switch (queryBy) {
+	if (queryBy && !req.pid) {
+		throw new ServerError(Status.INVALID_ARGUMENT, 'Searching with a QueryBy parameter requires a PID to be supplied');
+	}
+
+	switch (queryBy) {
 		case QueryType.QUERY_TYPE_FOLLOWINGS:
-			query.pid = await getFollowedUserPids(request.pid);
+			// It shouldn't be possible to not have this since we throw the error above, but typescript is angy so
+			query.pid = await getFollowedUserPids(req.pid ?? 0);
 			break;
 		case QueryType.QUERY_TYPE_SELF:
 			query.pid = req.pid;
 			break;
-	} */
+	}
 	const postSortOrder: PostSortOrder = req.sortBy == SortBy.SORT_BY_POPULAR ? { empathy_count: -1 } : { created_at: -1 };
 
 	let posts: HydratedPostDocument[];
