@@ -11,7 +11,7 @@
         "back": "חזרה",
         "more": "טען עוד פוסטים",
         "private": "פרטי",
-        "close": "לִסְגוֹר",
+        "close": "סגירה",
         "save": "שמירה",
         "my_feed": "הפיד שלי",
         "global_feed": "פיד עולמי",
@@ -40,7 +40,7 @@
         "tags_not_applicable": "-"
     },
     "user_page": {
-        "birthday": "יוֹם הוּלֶדֶת",
+        "birthday": "יום הולדת",
         "game_experience": "חווית משחק",
         "posts": "פוסטים",
         "friends": "חברים",
@@ -53,7 +53,12 @@
         "settings": "הגדרות",
         "friend_requests": "בקשות",
         "deleted": "משתמש מחוק",
-        "banned": "משתמש חסום"
+        "banned": "משתמש חסום",
+        "not_found": "משתמש לא קיים",
+        "tester_tag": "בודק",
+        "supporter_tag": "תומך",
+        "moderator_tag": "מודרטור",
+        "developer_tag": "מפתח"
     },
     "user_settings": {
         "profile_settings": "הגדרות פרופיל",
@@ -62,7 +67,8 @@
         "show_country": "הצגת המדינה בפרופיל",
         "save_action": "שמירת הגדרות",
         "gdpr_download": "הורדת נתוני משתמש",
-        "gdpr_download_action": "הורדה"
+        "gdpr_download_action": "הורדה",
+        "show_profile": "הצג פרופיל לאורחים"
     },
     "setup": {
         "rules_text": {
@@ -96,7 +102,7 @@
         "analytics": "אנליטיקות",
         "rules": "חוקי Juxt",
         "welcome_text": "‏Juxt היא קהילת גיימינג שמחברת אנשים מכל העולם בעזרת דמויות Mii. השתמשו ב-Juxt כדי לשתף את חוויות הגיימינג שלכם ולהכיר אנשים מרחבי העולם.",
-        "analytics_text": "‏Juxtaposition משתמש ב Cloudflare Web Analytics כדי לעקוב אחרי השימוש בשירןת שלנו. הנתונים שנאספים כוללים אך לא מוגבלים לשעת הביקור, דפים בהם ביקרתם, ומשך הזמן שביליתם באתר. נתונים אלה לא מוצמדים אליכם בשום אופן, ולא משומשים לפרסומות על ידינו או על ידי Cloudflare.",
+        "analytics_text": "‏Juxtaposition משתמש ב Cloudflare Web Analytics כדי לעקוב אחרי השימוש בשירות שלנו. הנתונים שנאספים כוללים אך לא מוגבלים לשעת הביקור, דפים בהם ביקרתם, ומשך הזמן שביליתם באתר. נתונים אלה לא מוצמדים אליכם בשום אופן, ולא משומשים לפרסומות על ידינו או על ידי Cloudflare.",
         "info": "מה זה Juxtaposition?",
         "info_text": "‏Juxt היא קהילה מכוונת משתמשים שאפשר לתקשר בה עם אנשים\nברחבי העולם. אפשר לכתוב או לצייר פוסטים בקהילות משחקים או לשלוח הודעות ישירות לחברים שלכם.",
         "ready_text": "קודם כל, תסתכלו על קהילות ותראו על מה אנשים מכל העולם מפרסמים. קחו את ההזדמנות להכיר את Juxt. אולי תגלו דברים חדשים לאורך הדרך!",
@@ -112,6 +118,20 @@
             "message/two": "‏<follower_one/>,‏‏ <follower_two/> עקבו אחריכם!",
             "message/three": "‏<follower_one/>, ‏<follower_two/> ו-{{count_other}} נוסף עקבו אחריכם!",
             "message/multiple": "‏<follower_one/>, ‏<follower_two/> ו-{{count_other}} נוספים עקבו אחריכם!"
+        },
+        "post_deleted": {
+            "post_removed": "הפוסט שלך \"{{postId}}\" הוסר.",
+            "post_removed_for_reason": "הפוסט שלך \"{{postId}}\" הוסר מהסיבה הבאה: \"{{reason}}\".",
+            "comment_removed": "התגובה שלך \"{{postId}}\" הוסרה.",
+            "comment_removed_for_reason": "התגובה שלך \"{{postId}}\" הוסרה מהסיבה הבאה: \"{{reason}}\".",
+            "footer": "לחצו על הודעה זו כדי לצפות בקוד ההתנהגות של Juxtaposition. אם יש לכם שאלות, אנא צרו קשר עם המודרטורים בפורום רשת Pretendo ({{contactModsUrl}})."
+        },
+        "limited_from_posting": {
+            "message": "קיבלתם הגבלה מפרסום פוסטים.",
+            "message_with_reason": "קיבלתם הגבלה מפרסום פוסטים. סיבה: \"{{reason}}\".",
+            "temporary": "קיבלתם הגבלה מפרסום פוסטים עד {{until}}.",
+            "temporary_with_reason": "קיבלתם הגבלה מפרסום פוסטים עד {{until}}. סיבה: \"{{reason}}\".",
+            "footer": "לחצו על הודעה זו כדי לצפות בקוד ההתנהגות של Juxtaposition. אם יש לכם שאלות, אנא צרו קשר עם המודרטורים בפורום רשת Pretendo ({{banAppealUrl}})."
         }
     },
     "new_post": {
@@ -123,7 +143,8 @@
         "no_screenshot": "אין צילום מסך",
         "spoiler_label": "ספוילר",
         "painting_close": "ביטול",
-        "painting_submit": "אישור"
+        "painting_submit": "אישור",
+        "automod_error": "הפוסט שלכם מכיל טקסט שנוגד את חוקי Juxtaposition. לעוד מידע, אנא בקרו ב- https://preten.do/juxt-rules"
     },
     "language": "עברית",
     "activity_feed": {
