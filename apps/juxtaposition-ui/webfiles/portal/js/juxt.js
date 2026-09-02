@@ -1,5 +1,6 @@
 import '@/js/polyfills';
 import Pjax from 'pjax';
+import { initLocalStorage, initSessionStorage } from '@common/js/storage';
 import { back, exit } from '@/js/nav';
 import { GET, POST } from '@/js/xhr';
 import { empathyPostById } from '@/js/api';
@@ -11,6 +12,8 @@ import { initNavBar } from '@/js/components/PortalNavBar';
 export var pjax;
 setInterval(checkForUpdates, 30000);
 setInterval(input, 100);
+initLocalStorage();
+initSessionStorage();
 
 function initYeah() {
 	var els = document.querySelectorAll('button[data-post].yeah-button');

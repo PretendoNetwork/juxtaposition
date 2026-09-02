@@ -28,7 +28,9 @@ export default defineConfig([
 			'webfiles/ctr/**/*.js',
 			'webfiles/ctr/**/*.ts',
 			'webfiles/portal/**/*.js',
-			'webfiles/portal/**/*.ts'
+			'webfiles/portal/**/*.ts',
+			'webfiles/common/**/*.js',
+			'webfiles/common/**/*.ts'
 		],
 		rules: {
 			'no-var': 'off' // 3DS and Wii U browsers need to use var
@@ -102,6 +104,20 @@ export default defineConfig([
 		files: [
 			'webfiles/web/**/*.js',
 			'webfiles/web/**/*.ts'
+		]
+	},
+	{
+		// Set tsconfig for library (common) webfiles
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: './webfiles/common/tsconfig.json'
+				}
+			}
+		},
+		files: [
+			'webfiles/common/**/*.js',
+			'webfiles/common/**/*.ts'
 		]
 	}
 ]);

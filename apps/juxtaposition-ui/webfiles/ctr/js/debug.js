@@ -538,6 +538,10 @@ if (typeof cave === 'undefined') {
 		boss_clearNewArrival: function () {
 			console.log('cave.boss_clearNewArrival()');
 		},
+		ls_clear: function () {
+			console.log('cave.ls_clear()');
+			sessionStorage.clear();
+		},
 		lls_clear: function () {
 			console.log('cave.lls_clear()');
 			localStorage.clear();

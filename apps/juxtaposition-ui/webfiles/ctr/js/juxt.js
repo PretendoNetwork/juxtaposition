@@ -1,4 +1,5 @@
 import '@/js/polyfills';
+import { initLocalStorage, initSessionStorage } from '@common/js/storage';
 import { initCheckboxes } from '@/js/controls/checkbox';
 import { initClientTabs } from '@/js/controls/ctabs';
 import { initNewPostView } from '@/js/new-post-view';
@@ -10,6 +11,8 @@ import { initNavTabs } from '@/js/components/ui/CtrNavTabs';
 import { initSearchForm } from '@/js/components/ui/CtrSearchForm';
 
 setInterval(checkForUpdates, 30000);
+initLocalStorage();
+initSessionStorage();
 
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);

@@ -74,6 +74,10 @@ export default defineConfig([
 		target: 'chrome4',
 		format: 'iife',
 
+		define: {
+			platform: '\'ctr\''
+		},
+
 		esbuildOptions(options): void {
 			options.external = ['/fonts/*'];
 			options.tsconfig = './webfiles/ctr/tsconfig.json';
@@ -122,6 +126,10 @@ export default defineConfig([
 		target: 'chrome20',
 		format: 'iife',
 
+		define: {
+			platform: '\'portal\''
+		},
+
 		loader: {
 			'.inline.svg': 'dataurl'
 		},
@@ -166,6 +174,10 @@ export default defineConfig([
 		platform: 'browser',
 		target: browserslist(),
 		format: 'iife',
+
+		define: {
+			platform: '\'web\''
+		},
 
 		esbuildOptions(options): void {
 			options.external = ['/images/*'];

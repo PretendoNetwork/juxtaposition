@@ -7,7 +7,8 @@
 		"esModuleInterop": true,
 		"moduleResolution": "bundler",
 		"skipLibCheck": true,
-		"baseUrl": ".",
+		"rootDir": "..",
+		"rootDirs": [".", "../common"],
 		"outDir": "dist",
 		"allowJs": true,
 		"target": "es2022",
@@ -18,6 +19,9 @@
 		"paths": {
 			"@/*": [
 				"./*"
+			],
+			"@common/*": [
+				"../common/*"
 			]
 		}
 	},

@@ -53,6 +53,8 @@
     "@pretendonetwork/wiiu-browser-types": "^1.0.0",
     "@pretendonetwork/wiiu-dialog-types": "^1.0.0",
     "@pretendonetwork/wiiu-error-viewer-types": "^1.0.0",
+    "@pretendonetwork/wiiu-local-storage-types": "^1.0.0",
+    "@pretendonetwork/wiiu-session-storage-types": "^1.0.0",
     "@pretendonetwork/wiiu-sound-types": "^1.0.0",
     "@repo/esbuild-plugin-oxipng": "^0.0.0",
     "@repo/esbuild-plugin-spritesmith": "^0.0.0",
