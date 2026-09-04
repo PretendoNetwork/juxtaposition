@@ -89,7 +89,13 @@ export interface IPostMethods {
 	formatPainting(): PostPainting | undefined;
 	formatScreenshot(): PostScreenshot | undefined;
 	formatTopicTag(): PostTopicTag | undefined;
+	/**
+	 * @returns JSON representation of the post object
+	 */
 	json(options: PostToJSONOptions, community?: HydratedCommunityDocument): PostData;
+	/**
+	 * @returns Protobuf representation of the post object
+	 */
 	proto(options: PostToJSONOptions): ProtoPostData;
 }
 

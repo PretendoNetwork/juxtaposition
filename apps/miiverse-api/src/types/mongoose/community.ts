@@ -84,7 +84,13 @@ export type ICommunityInput = Omit<ICommunity, CommunityDefaultedFields> & Parti
 export interface ICommunityMethods {
 	addUserFavorite(pid: number): Promise<void>;
 	delUserFavorite(pid: number): Promise<void>;
+	/**
+	 * @returns JSON representation of the community object
+	 */
 	json(): CommunityData;
+	/**
+	 * @returns Protobuf representation of the community object
+	 */
 	proto(): Promise<ProtoCommunityData>;
 }
 
