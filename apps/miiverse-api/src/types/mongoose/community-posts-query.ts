@@ -10,7 +10,7 @@ export interface CommunityPostsQuery {
 	message_to_pid?: {
 		$eq: null;
 	};
-	search_key?: string;
+	search_key?: string | string[];
 	is_spoiler?: 0 | 1;
 	painting?: {
 		$nin: [null, ''];
@@ -20,5 +20,15 @@ export interface CommunityPostsQuery {
 	};
 	parent?: {
 		$eq: null;
+	} | string;
+	body?: {
+		$nin: [null, ''];
+	};
+	screenshot?: {
+		$nin: [null, ''];
+	};
+	created_at?: {
+		$gte?: string;
+		$lte?: string;
 	};
 }

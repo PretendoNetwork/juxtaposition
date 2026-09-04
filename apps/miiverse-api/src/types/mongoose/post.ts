@@ -1,4 +1,5 @@
 import type { Model, Types, HydratedDocument } from 'mongoose';
+import type { PostData as ProtoPostData } from '@pretendonetwork/grpc/miiverse/v2/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { PostToJSONOptions } from '@/types/mongoose/post-to-json-options';
 import type { PostData, PostPainting, PostScreenshot, PostTopicTag } from '@/types/miiverse/post';
@@ -88,7 +89,14 @@ export interface IPostMethods {
 	formatPainting(): PostPainting | undefined;
 	formatScreenshot(): PostScreenshot | undefined;
 	formatTopicTag(): PostTopicTag | undefined;
+	/**
+	 * @returns JSON representation of the post object
+	 */
 	json(options: PostToJSONOptions, community?: HydratedCommunityDocument): PostData;
+	/**
+	 * @returns Protobuf representation of the post object
+	 */
+	proto(options: PostToJSONOptions): ProtoPostData;
 }
 
 export type PostModel = Model<IPost, {}, IPostMethods>;
