@@ -63,7 +63,8 @@
         "ready": "Gotowy(wa), aby zacząc korzystać z Juxt",
         "ready_text": "Najpierw sprawdź kilka społeczności i zobacz, o czym piszą ludzie z całego świata. Skorzystaj z okazji, aby zapoznać się z Juxt. Być może po drodze dokonasz kilku nowych odkryć!",
         "done": "Baw się dobrze w Juxt!",
-        "done_button": "Zaczynamy!"
+        "done_button": "Zaczynamy!",
+        "title": "Konfiguracja Juxtaposition"
     },
     "all_communities": {
         "text": "Wszystkie społeczności",
@@ -101,7 +102,8 @@
         "moderator_tag": "Moderator",
         "not_found": "Konto nie istnieje",
         "tester_tag": "Tester",
-        "developer_tag": "Deweloper"
+        "developer_tag": "Deweloper",
+        "friend_requests": "Prośby"
     },
     "user_settings": {
         "profile_settings": "Ustawienia profilu",
@@ -110,7 +112,8 @@
         "show_game": "Pokaż doświadczenia w grze na profilu",
         "save_action": "Zapisz ustawienia",
         "gdpr_download": "Pobierz dane użytkownika",
-        "gdpr_download_action": "Pobierz"
+        "gdpr_download_action": "Pobierz",
+        "show_profile": "Pokaż profil dla gości"
     },
     "activity_feed": {
         "empty": "Pusto tutaj. Zaobserwuj kogoś!"
@@ -120,12 +123,35 @@
         "new_follower": {
             "message/one": "<follower_one/> obserwuje cię!",
             "message/two": "<follower_one/>, <follower_two/> obserwują cię!",
-            "message/three": "<follower_one />, <follower_two /> i {{count_other}} innych obserwuje cię!"
+            "message/three": "<follower_one />, <follower_two /> i {{count_other}} innych obserwuje cię!",
+            "message/multiple": "<follower_one />, <follower_two />, i {{count_other}} osób zaobserwowało Cię!"
+        },
+        "post_deleted": {
+            "post_removed": "Twój post \"{{postId}}\" został usunięty.",
+            "post_removed_for_reason": "Twój post \"{{postId}}\" został usunięty z podanego powodu: \"{{reason}}\".",
+            "comment_removed": "Twój komentarz \"{{postId}}\" został usunięty.",
+            "comment_removed_for_reason": "Twój komentarz \"{{postId}}\" został usunięty z podanego powodu: \"{{reason}}\".",
+            "footer": "Kliknij tę wiadomość, żeby zobaczyć Kodeks Postępowania Juxtaposition. Jeśli masz jakieś pytania, skontaktuj się z moderatorami na forum Pretendo Network ({{contactModsUrl}})."
+        },
+        "limited_from_posting": {
+            "message": "Twoja możliwość publikowania została ograniczona.",
+            "message_with_reason": "Twoja możliwość publikowania została ograniczona. Powód: \"{{reason}}\".",
+            "temporary": "Twoja możliwość publikowania została ograniczona do {{until}}.",
+            "temporary_with_reason": "Twoja możliwość publikowania została ograniczona do {{until}}. Powód: \"{{reason}}\".",
+            "footer": "Kliknij tę wiadomość, żeby zobaczyć Kodeks Postępowania Juxtaposition. Jeśli masz jakieś pytania, skontaktuj się z moderatorami na forum Pretendo Network ({{banAppealUrl}})."
         }
     },
     "new_post": {
         "post_to": "Postuj do {{user}}",
-        "swearing": "Post nie może zawierać obraźliwego języka."
+        "swearing": "Post nie może zawierać obraźliwego języka.",
+        "automod_error": "Twój post zawiera tekst który jest niedozwolony na Juxtaposition. Po więcej informacji, odwiedź https://preten.do/juxt-rules",
+        "content_placeholder": "Podziel się swoimi myślami we wpisie do społeczności lub do swoich obserwujących.",
+        "screenshots_coming_soon": "Zrzuty ekranu nie są jeszcze gotowe. Zajrzyj tu później!",
+        "no_screenshot": "Brak Zrzutu Ekranu",
+        "spoiler_label": "Spoiler",
+        "painting_close": "Anuluj",
+        "painting_submit": "OK",
+        "new_post_short": "Postuj"
     },
     "login": {
         "title": "Logowanie do Juxtaposition",
@@ -148,6 +174,58 @@
     },
     "post": {
         "yeahs_count/one": "Osoby, które zareagowały \"Nieźle\": <count/>",
-        "yeahs_count/multiple": "Osoby, które zareagowały \"Nieźle\": <count/>"
+        "yeahs_count/multiple": "Osoby, które zareagowały \"Nieźle\": <count/>.",
+        "title": "Post od {{username}}",
+        "heading": "Post",
+        "show_spoiler": "Zobacz Spoiler",
+        "reply_post": "Odpowiedz",
+        "report_post": "Zgłoś post",
+        "delete_post": "Usuń post",
+        "removed": "Post został usunięty.",
+        "copy_link": "Skopiuj link",
+        "sort_newest_first": "Najnowsze",
+        "sort_oldest_first": "Najstarsze",
+        "replies_heading": "Odpowiedzi"
+    },
+    "friend_requests": {
+        "none": "Brak zaproszeń do znajomych"
+    },
+    "reporting": {
+        "title": "Zgłoś Post",
+        "submit": "Prześlij zgłoszenie",
+        "description": "Zgłaszasz post który narusza Kodeks Postępowania Juxtaposition. Zgłoszenie trafi tylko do moderatorów Juxtaposition, a nie do autora postu.",
+        "label": "Powód:",
+        "additional_info_placeholder": "Podaj dodatkowe komentarze lub informacje",
+        "reason_spoiler": "Spoilery",
+        "reason_personal_info": "Dane Osobowe",
+        "reason_violence": "Przemoc",
+        "reason_inappropiate": "Niewłaściwe/szkodliwe zachowanie",
+        "reason_bullying": "Mowa nienawiści / Nękanie",
+        "reason_advertising": "Reklamowanie",
+        "reason_nsfw": "Treści seksualne",
+        "reason_piracy": "Piractwo",
+        "reason_inappropiate_ingame": "Nieodpowiednie zachowanie w grze",
+        "reason_missing_images": "Brak obrazów",
+        "reason_others": "Inne",
+        "reason_not_nice": "Chamskie/Obraźliwe/Nienawistne (Zasada 1)",
+        "reason_inappropriate": "Nieodpowiednie/NSFW (Zasada 2)",
+        "reason_spam": "Spam/Autopromocja (Zasada 3)",
+        "reason_offtopic": "Nie na temat (Zasada 4)",
+        "reason_piracy_new": "Piractwo (Zasada 5)",
+        "reason_exploits": "Nadużywanie API/Wykorzystywanie błędów (Zasada 8)",
+        "reason_drama": "Awantury (Zasada 9)",
+        "reason_cheating": "Oszukiwanie Online (Zasada 10)",
+        "reason_spoiler_new": "Spoilery (Zasada 11)",
+        "reason_personal_info_new": "Dane Osobowe (Zasada 12)",
+        "reason_politics": "Polityka (Zasada 13)",
+        "reason_misinformation": "Dezinformacja/Złe porady (Zasada 14)",
+        "reason_impersonation": "Podszywanie się (Zasada 15)"
+    },
+    "moderation": {
+        "title": "Moderacja",
+        "silently_delete_post": "Usuń bez powiadomienia",
+        "mark_as_spoiler": "Oznacz jako spoiler",
+        "mark_as_not_spoiler": "Usuń spoiler",
+        "moderate_user": "Moderuj użytkownika"
     }
 }

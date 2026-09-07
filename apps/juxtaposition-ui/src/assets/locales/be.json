@@ -42,58 +42,12 @@
     "setup": {
         "experience_text": {
             "beginner": "Пачатковец",
-            "expert": "Эксперт",
-            "info": "",
-            "intermediate": ""
+            "expert": "Эксперт"
         },
         "rules_text": {
             "tenth": "Парушэнні Кодэкса паводзін",
-            "thirteenth": "Калі вы размяшчаеце паведамленні ў суполцы аб гульні, у якую вы гулялі, вашы паведамленні будуць мець значок, які паказвае, што вы ў яе гулялі.",
-            "eleventh": "",
-            "third": "",
-            "fifth": "",
-            "ninth": "",
-            "fourth": "",
-            "second": "",
-            "sixth": "",
-            "first": "",
-            "eighth": "",
-            "seventh": "",
-            "twelfth": ""
+            "thirteenth": "Калі вы размяшчаеце паведамленні ў суполцы аб гульні, у якую вы гулялі, вашы паведамленні будуць мець значок, які паказвае, што вы ў яе гулялі."
         },
-        "experience": "Вопыт гульні",
-        "beta_text": {
-            "third": "",
-            "second": "",
-            "first": ""
-        },
-        "done_button": "",
-        "ready": "",
-        "analytics": "",
-        "rules": "",
-        "welcome_text": "",
-        "analytics_text": "",
-        "info": "",
-        "info_text": "",
-        "ready_text": "",
-        "done": "",
-        "beta": "",
-        "welcome": ""
-    },
-    "notifications": {
-        "none": ""
-    },
-    "new_post": {
-        "swearing": "",
-        "post_to": ""
-    },
-    "user_settings": {
-        "show_game": "",
-        "show_birthday": "",
-        "profile_settings": "",
-        "show_country": ""
-    },
-    "activity_feed": {
-        "empty": ""
+        "experience": "Вопыт гульні"
     }
 }

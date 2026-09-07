@@ -38,7 +38,7 @@
         "followers_count": "{{count}} seguidores",
         "related": "Otras comunidades",
         "related_to": "Otras comunidades de {{community}}",
-        "closed": "Esta comunidad está cerrada a nuevos mensajes.",
+        "closed": "Esta comunidad está cerrada a nuevas publicaciones.",
         "tags_not_applicable": "N/A",
         "related_short": "Relacionado"
     },
@@ -58,7 +58,10 @@
         "deleted": "Usuario eliminado",
         "banned": "Usuario restringido",
         "not_found": "Este usuario no existe",
-        "tester_tag": "Tester"
+        "tester_tag": "Tester",
+        "moderator_tag": "Moderador",
+        "developer_tag": "Desarrollador/a",
+        "supporter_tag": "Apoyador"
     },
     "user_settings": {
         "profile_settings": "Ajustes del perfil",
@@ -67,7 +70,8 @@
         "show_game": "Mostrar tu nivel como jugador en el perfil",
         "save_action": "Guardar ajustes",
         "gdpr_download": "Descargar información de usuario",
-        "gdpr_download_action": "Descargar"
+        "gdpr_download_action": "Descargar",
+        "show_profile": "Mostrar perfil a invitados"
     },
     "activity_feed": {
         "empty": "No hay nada que ver. ¡Prueba a seguir a alguien!"
@@ -79,6 +83,20 @@
             "message/two": "¡<follower_one /> y <follower_two /> te han seguido!",
             "message/three": "¡<follower_one />, <follower_two />, y {{count_other}} más te han seguido!",
             "message/multiple": "¡<follower_one />, <follower_two />, y otros {{count_other}} te han seguido!"
+        },
+        "post_deleted": {
+            "post_removed": "Tu publicación \"{{postId}}\" se ha eliminado.",
+            "post_removed_for_reason": "Tu publicación \"{{postId}}\" se ha eliminado por el siguiente motivo: \"{{reason}}\".",
+            "comment_removed": "Tu comentario \"{{postId}}\" se ha eliminado.",
+            "comment_removed_for_reason": "Tu comentario \"{{postId}}\" se ha eliminado por el siguiente motivo: \"{{reason}}\".",
+            "footer": "Pulsa en este mensaje para ver el Código de Conducta de Juxtaposition. Si tienes alguna pregunta, por favor, contacta a los moderadores en el foro de Pretendo Network {{contactModsUrl}}."
+        },
+        "limited_from_posting": {
+            "message": "Se te ha limitado la posibilidad de publicar.",
+            "message_with_reason": "Se te ha limitado la posibilidad de publicar. Motivo: \"{{reason}}\".",
+            "temporary": "Se te ha limitado la posibilidad de publicar hasta {{until}}.",
+            "temporary_with_reason": "Se te ha limitado la posibilidad de publicar hasta {{until}}. Motivo: \"{{reason}}\".",
+            "footer": "Pulsa en este mensaje para ver el Código de Conducta de Juxtaposition. Si tienes alguna pregunta, por favor, contacta a los moderadores en el foro de Pretendo Network {{banAppealUrl}}."
         }
     },
     "new_post": {
@@ -88,9 +106,10 @@
         "painting_close": "Cancelar",
         "screenshots_coming_soon": "La función de capturas no está lista. ¡Vuelve más tarde!",
         "new_post_short": "Publicar",
-        "content_placeholder": "Toca aquí para escribir un mensaje.",
+        "content_placeholder": "Comparte tus pensamientos en una publicación a una comunidad o a tus seguidores.",
         "painting_submit": "Aceptar",
-        "no_screenshot": "No hay capturas"
+        "no_screenshot": "No hay capturas",
+        "automod_error": "Tu publicación contiene texto que no se permite en Juxtaposition. Para más información, por favor, visita https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "¡Estás en Juxtaposition!",
@@ -126,7 +145,7 @@
             "intermediate": "Intermedio",
             "expert": "Experto"
         },
-        "analytics": "Analytics",
+        "analytics": "Analítica",
         "analytics_text": "Juxtaposition usa Cloudflare Web Analytics para saber cómo se usan nuestros servicios. Los datos recolectados incluyen el tiempo por visita, qué páginas se usan y el tiempo de uso de cada página. La recolección de datos es anónima, y no se utiliza ni por Cloudflare ni por nosotros para mostrar publicidad.",
         "ready": "Listo para usar Juxt",
         "ready_text": "Primero, revisa algunas comunidades y mira las publicaciones de personas de todo el mundo. Aprovecha esta oportunidad para familiarizarte con Juxt. ¡Podrías hacer nuevos descubrimientos en el camino!",
@@ -147,12 +166,15 @@
         "yeahs_count/multiple": "A <count/> personas les mola.",
         "reply_post": "Comentar",
         "report_post": "Denunciar",
-        "title": "Mensaje de {{username}}",
+        "title": "Publicación de {{username}}",
         "show_spoiler": "Ver revelación",
-        "removed": "El mensaje ha sido eliminado.",
+        "removed": "La publicación ha sido eliminada.",
         "heading": "Publicar",
         "delete_post": "Eliminar",
-        "copy_link": "Copiar enlace"
+        "copy_link": "Copiar enlace",
+        "sort_newest_first": "Ordenar por más reciente",
+        "sort_oldest_first": "Ordenar por más antiguo",
+        "replies_heading": "Respuestas"
     },
     "login": {
         "username": "Nombre de usuario",
@@ -166,7 +188,7 @@
         "sub_title": "Introduce tus datos de acceso"
     },
     "reporting": {
-        "description": "Estás a punto de denunciar un mensaje que viola el Código de conducta de Juxtaposition. La denuncia será enviada a los administradores de Juxtaposition de Pretendo y no al creador del mensaje.",
+        "description": "Estás a punto de denunciar una publicación que viola el Código de conducta de Juxtaposition. La denuncia será únicamente enviada a los moderadores de Juxtaposition y no al creador de la publicación.",
         "label": "Motivo:",
         "additional_info_placeholder": "Introduce comentarios o información adicionales",
         "reason_spoiler": "Revelación",
@@ -180,7 +202,21 @@
         "reason_nsfw": "Contenido sexual",
         "reason_missing_images": "Imágenes faltantes",
         "submit": "Enviar denuncia",
-        "title": "Denunciar mensaje"
+        "title": "Denunciar publicación",
+        "reason_others": "Otros",
+        "reason_not_nice": "Grosero/Odioso (Regla 1)",
+        "reason_inappropriate": "Inapropiado/NSFW (Regla 2)",
+        "reason_spam": "Spam/Promoción propia (Regla 3)",
+        "reason_offtopic": "Fuera de tema (Regla 4)",
+        "reason_piracy_new": "Piratería (Regla 5)",
+        "reason_exploits": "Abuso de API/Aprovecharse de bugs (Regla 8)",
+        "reason_drama": "Drama (Regla 9)",
+        "reason_cheating": "Hacer trampas online (Regla 10)",
+        "reason_spoiler_new": "Spoiler (Regla 11)",
+        "reason_personal_info_new": "Información personal (Regla 12)",
+        "reason_politics": "Política (Regla 13)",
+        "reason_misinformation": "Desinformación/Consejos malos (Regla 14)",
+        "reason_impersonation": "Suplantación de identidad (Regla 15)"
     },
     "friend_requests": {
         "none": "No hay solicitudes de amistad"
@@ -188,6 +224,8 @@
     "moderation": {
         "moderate_user": "Moderar usuario",
         "title": "Moderación",
-        "silently_delete_post": "Eliminar en silencio"
+        "silently_delete_post": "Eliminar en silencio",
+        "mark_as_spoiler": "Marcar como spoiler",
+        "mark_as_not_spoiler": "Eliminar spoiler"
     }
 }

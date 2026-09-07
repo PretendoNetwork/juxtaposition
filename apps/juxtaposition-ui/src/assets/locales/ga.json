@@ -60,8 +60,7 @@
         "beta": "Shéanadh Béite",
         "beta_text": {
             "first": "Tá tú chun an chead béite poiblí de Juxt a thrial amach. Cialaíonn sé seo go bhfuil rudaí fós neamhcinnte, agus is feidir le go leor athrú in ann tharlú ag aon am.",
-            "second": "Is féidir agus is féadfaidh go mbeidh scrios iomlán don bunachar sonraí ag deireadh nó i rith an tréimhse béite.",
-            "third": ""
+            "second": "Is féidir agus is féadfaidh go mbeidh scrios iomlán don bunachar sonraí ag deireadh nó i rith an tréimhse béite."
         },
         "info": "Cad é Juxtaposition?",
         "rules_text": {
@@ -69,31 +68,9 @@
             "sixth": "Ná Postáil Eolas Pearsanta atá Leatsa nó Le Duine Eile",
             "fourth": "Beidh Go Deas le Daoine Eile",
             "third": "Tá go leor phobail cluchíocht i Juxt ina bhfuil daoine ar fud an domhain in ann a smaointe a roinnt. Nuair a cruthaíonn tú postáil, cuimhnigh gur feidir le gach daoine in ann é a fheiceál. Le do thoil, chur tú féin in iúl i mbealach a féidir le gach daoine taitneamh a bhaint as. Úsáid chiall cóiteann, agus smaoineamh roimh a deannan tú postál. Is seirbhís é Juxt a bhfuil ar fháil ar an tIdírlíon freisin. Cuimhnigh gur feidir freisin le dhaoine nach úsáideann Juxt do postálacha a fhecáil. Chomh maith leis sin, feicfear aon trácht a dheannan tú ar postálacha do chairde ag ní hamháin do chairde, ach daoine timpeall an domhain freisin. Le do thoil, cuimhnigh ar seo.",
-            "fifth": "Chun Juxt a coinnigh mar áit spraoiúil le haghadih gach duine, cuirimis ceist ort a bheidh tuisceanach le húsáideoirí eile. Cabhair linn Juxt a coinnigh mar taithí taitneamhach agus ná postáil rud ar bith atá mí-oiriúnach nó maslach.",
-            "eleventh": "",
-            "tenth": "",
-            "thirteenth": "",
-            "ninth": "",
-            "first": "",
-            "eighth": "",
-            "seventh": "",
-            "twelfth": ""
+            "fifth": "Chun Juxt a coinnigh mar áit spraoiúil le haghadih gach duine, cuirimis ceist ort a bheidh tuisceanach le húsáideoirí eile. Cabhair linn Juxt a coinnigh mar taithí taitneamhach agus ná postáil rud ar bith atá mí-oiriúnach nó maslach."
         },
-        "rules": "Rialacha Juxt",
-        "experience_text": {
-            "expert": "",
-            "info": "",
-            "intermediate": "",
-            "beginner": ""
-        },
-        "done_button": "",
-        "ready": "",
-        "experience": "",
-        "analytics": "",
-        "analytics_text": "",
-        "info_text": "",
-        "ready_text": "",
-        "done": ""
+        "rules": "Rialacha Juxt"
     },
     "language": "Gaeilge"
 }

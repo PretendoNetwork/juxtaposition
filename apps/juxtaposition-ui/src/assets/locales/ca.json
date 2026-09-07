@@ -35,7 +35,16 @@
         "followers": "Seguidors",
         "birthday": "Aniversari",
         "country": "País",
-        "following": "Seguint"
+        "following": "Seguint",
+        "game_experience_unknown": "Desconegut",
+        "settings": "Configuració",
+        "friend_requests": "Sol·licituds",
+        "deleted": "Usuari eliminat",
+        "banned": "Usuari restringit",
+        "not_found": "L'usuari no existeix",
+        "tester_tag": "Tester",
+        "moderator_tag": "Moderador",
+        "developer_tag": "Desenvolupador"
     },
     "community": {
         "posts": "Publicacions",
@@ -45,13 +54,18 @@
         "popular": "Publicacions populars",
         "followers_count": "{{count}} seguidors",
         "tags_not_applicable": "N/A",
-        "related": "Comunitats relacionades"
+        "related": "Comunitats relacionades",
+        "related_short": "Relacionat",
+        "related_to": "{{community}} Comunitats relacionades",
+        "closed": "Aquesta comunitat està tancada a noves publicacions."
     },
     "user_settings": {
         "show_game": "Mostra la experiència de joc al perfil",
         "show_birthday": "Mostra el teu aniversari al perfil",
         "profile_settings": "Configuració del perfil",
-        "show_country": "Mostra el teu país al perfil"
+        "show_country": "Mostra el teu país al perfil",
+        "show_profile": "Mostrar perfil a invitats",
+        "save_action": "Desa la configuració"
     },
     "new_post": {
         "post_to": "Publica a {{user}}",

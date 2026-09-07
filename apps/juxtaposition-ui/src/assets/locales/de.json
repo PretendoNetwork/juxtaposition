@@ -83,6 +83,10 @@
             "message/two": "<follower_one /> und <follower_two /> folgen dir jetzt!",
             "message/three": "<follower_one />, <follower_two /> und {{count_other}} weitere folgen dir jetzt!",
             "message/multiple": "<follower_one />, <follower_two /> und {{count_other}} weitere folgen dir jetzt!"
+        },
+        "post_deleted": {
+            "post_removed": "Dein Beitrag „{{postId}}“ wurde entfernt.",
+            "post_removed_for_reason": "Dein Beitrag „{{postId}}“ wurde aus folgendem Grund entfernt: „{{reason}}“."
         }
     },
     "new_post": {

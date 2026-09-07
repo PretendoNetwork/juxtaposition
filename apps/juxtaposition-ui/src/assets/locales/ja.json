@@ -14,7 +14,9 @@
         "close": "閉じる",
         "save": "保存",
         "exit": "閉じる",
-        "next": "次へ"
+        "next": "次へ",
+        "friend_requests": "フレンド申請",
+        "updates": "アップデート"
     },
     "all_communities": {
         "text": "すべてのコミュニティ",

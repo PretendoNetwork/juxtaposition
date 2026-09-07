@@ -22,7 +22,9 @@
     "save": "Save",
     "exit": "Exit",
     "next": "Next",
-    "search": "Search..."
+    "search": "Search...",
+    "system_message": "System Message",
+    "mascot_name": "Bandwidth"
   },
   "login": {
     "title": "Juxtaposition Log In",
@@ -59,7 +61,8 @@
     "related": "Related Communities",
     "related_short": "Related",
     "related_to": "{{community}} Related Communities",
-    "closed": "This community is closed to new posts."
+    "closed": "This community is closed to new posts.",
+    "description": "About this Community"
   },
   "user_page": {
     "country": "Country",
