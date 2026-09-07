@@ -58,10 +58,10 @@
         "banned": "已禁止用户",
         "friend_requests": "请求",
         "not_found": "用户不存在",
-        "tester_tag": "测试者",
+        "tester_tag": "测试人员",
         "supporter_tag": "支持者",
         "moderator_tag": "版主",
-        "developer_tag": "开发者"
+        "developer_tag": "开发人员"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
