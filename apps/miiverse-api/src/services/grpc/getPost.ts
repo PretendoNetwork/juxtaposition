@@ -4,7 +4,8 @@ import type { GetPostRequest, GetPostResponse } from '@pretendonetwork/grpc/miiv
 
 export async function getPost(req: GetPostRequest): Promise<GetPostResponse> {
 	const post = await Post.findOne({
-		id: req.postId
+		id: req.postId,
+		removed: false
 	});
 
 	if (!post) {

@@ -7,7 +7,8 @@ import type { HydratedPostDocument } from '@/types/mongoose/post';
 
 export async function getPostReplies(req: GetPostRepliesRequest): Promise<GetPostRepliesResponse> {
 	const post = await Post.findOne({
-		id: req.postId
+		id: req.postId,
+		removed: false
 	});
 
 	if (!post) {
