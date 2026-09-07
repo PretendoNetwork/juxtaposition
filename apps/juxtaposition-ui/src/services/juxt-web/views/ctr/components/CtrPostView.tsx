@@ -120,7 +120,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 									</>
 								)
 							: null}
-
+						<span className="spoiler-label"><T k="post.spoiler_label" /></span>
 						<div className="flex-spacer"></div>
 						<a className="timestamp" href={`/posts/${post.id}`} data-pjax="#body">{humanFromNow(post.createdAt, 'short')}</a>
 					</div>
