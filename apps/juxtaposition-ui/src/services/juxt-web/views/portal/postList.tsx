@@ -1,5 +1,6 @@
 import { PortalPostView } from '@/services/juxt-web/views/portal/post';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { PortalSystemPostView } from '@/services/juxt-web/views/portal/components/PortalSystemPostView';
 import type { ReactNode } from 'react';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
@@ -21,5 +22,5 @@ export function PortalPostListView(props: PostListViewProps): ReactNode {
 }
 
 export function PortalPostListClosedView(): ReactNode {
-	return <div className="headline"><h2><T k="community.closed" /></h2></div>;
+	return <PortalSystemPostView type="system"><T k="community.closed" /></PortalSystemPostView>;
 }

@@ -41,7 +41,7 @@
     }
 
     .post-body {
-        background: #fff;
+        background: url(@/images/gradient-42px.png) bottom repeat-x #fff;
         border: t.$component-border;
         border-radius: t.$component-radius;
         overflow: hidden;
@@ -59,7 +59,6 @@
 
     .post-buttons {
         height: 42px;
-        background: url(@/images/gradient-42px.png);
         // just webkit bugs
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;

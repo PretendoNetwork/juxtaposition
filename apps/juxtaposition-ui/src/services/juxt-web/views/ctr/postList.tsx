@@ -1,5 +1,6 @@
 import { CtrPostView } from '@/services/juxt-web/views/ctr/components/CtrPostView';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { CtrSystemPostView } from '@/services/juxt-web/views/ctr/components/CtrSystemPostView';
 import type { ReactNode } from 'react';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
@@ -21,5 +22,5 @@ export function CtrPostListView(props: PostListViewProps): ReactNode {
 }
 
 export function CtrPostListClosedView(): ReactNode {
-	return <div className="headline"><h2><T k="community.closed" /></h2></div>;
+	return <CtrSystemPostView type="system"><T k="community.closed" /></CtrSystemPostView>;
 }
