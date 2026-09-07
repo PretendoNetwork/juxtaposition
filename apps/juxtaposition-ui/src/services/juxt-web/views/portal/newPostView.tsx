@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
@@ -62,8 +63,16 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 				<input type="hidden" name="community_id" value={props.id} />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
-						<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} id="mii-face" className="icon" />
-						<ul className="buttons">
+						{empathies.map(v => (
+							<img
+								src={url.cdn(`/mii/${user.pid}/${v.miiFaceFile}`)}
+								className={cx('icon', {
+									hide: !v.isDefault
+								})}
+								data-mii-feeling={v.value}
+							/>
+						))}
+						<ul className="buttons" data-mii-feeling-selector>
 							{empathies.map(v => (
 								<li key={v.value}>
 									<input
@@ -71,7 +80,6 @@ export function PortalNewPostView(props: NewPostViewProps): ReactNode {
 										name="feeling_id"
 										value={v.value}
 										className={v.className}
-										data-mii-face-url={url.cdn(`/mii/${user.pid}/${v.miiFaceFile}`)}
 										defaultChecked={v.isDefault}
 										data-sound={v.sound}
 									/>
