@@ -352,7 +352,7 @@ body {
  position:relative;
  min-width:400px;
  max-width:800px;
- padding:20px 25px 5px;
+ padding: 25px;
  z-index:2;
  background:#fff;
  border-radius:20px;
@@ -366,15 +366,17 @@ body {
  margin:-15px 0 0;
  line-height:40px
 }
-.post-list .post .timestamp,
 .tags {
  display:inline-block;
  font-size:20px;
  line-height:30px
 }
-.post-list .post .timestamp {
- margin-top:-3px;
- color:#969696
+.post-list .post .timestamp,
+.post-list .post .spoiler-label {
+    margin-top: -3px;
+    color: #969696;
+    font-size: 20px;
+    line-height: 30px;
 }
 header svg {
  fill:#a362d8;
@@ -488,9 +490,8 @@ header svg {
 
 .post-list .post .post-buttons {
  clear:both;
- margin:0 0 20px;
  display:-webkit-box;
- border-radius:0 0 20px 20px
+ border-radius:0 0 20px 20px;
 }
 .post-list .post .post-buttons .yeah-button {
  position:relative;
@@ -1458,8 +1459,9 @@ input[type=radio] {
  margin:0 auto;
  display:block
 }
-.spoiler .post-content {
- display:none
+.spoiler .post-content,
+.spoiler .post-buttons {
+    display: none !important;
 }
 .add-post-page-content.report,
 .report div {

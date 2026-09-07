@@ -70,6 +70,14 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 							{'- '}
 							{moment(post.createdAt).fromNow()}
 						</span>
+						{post.isSpoiler
+							? (
+									<span className="spoiler-label">
+										{' - '}
+										<T k="post.spoiler_label" />
+									</span>
+								)
+							: null}
 						{post.topicTag
 							? (
 									<a href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
