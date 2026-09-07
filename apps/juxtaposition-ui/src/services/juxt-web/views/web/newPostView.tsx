@@ -77,6 +77,7 @@ export function WebNewPostView(props: NewPostViewProps): ReactNode {
 									hide: !v.isDefault
 								})}
 								data-mii-feeling={v.value}
+								key={v.value}
 							/>
 						))}
 						<ul className="buttons" data-mii-feeling-selector>

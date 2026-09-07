@@ -69,6 +69,7 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 									hide: !v.isDefault
 								})}
 								data-mii-feeling={v.value}
+								key={v.value}
 							/>
 						))}
 
