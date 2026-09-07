@@ -1,4 +1,5 @@
 import { genId } from '@/util';
+import { errors } from '@/services/internal/errors';
 import type { PrismaClient } from '@/prisma/client';
 import type { IPost } from '@/types/mongoose/post';
 
@@ -73,6 +74,7 @@ async function groupRecentNotifications(db: PrismaClient, targetPid: number, act
 
 	// Prevent sending a new notification if the same user has done so recently
 	const weekInMs = 7 * 24 * 60 * 60 * 1000;
+	const empathyJsonFilter = empathyPost ? { content: { path: ['post'], equals: empathyPost } } : {};
 	const recentNotifs = await db.notificationRecipient.findMany({
 		where: {
 			pid: targetPid,
@@ -81,10 +83,7 @@ async function groupRecentNotifications(db: PrismaClient, targetPid: number, act
 				updatedAt: {
 					gte: new Date(now.getTime() - weekInMs) // Get 7 days worth of notifications
 				},
-				content: {
-					path: ['post'],
-					equals: empathyPost
-				}
+				...empathyJsonFilter
 			}
 		},
 		include: {
@@ -94,7 +93,7 @@ async function groupRecentNotifications(db: PrismaClient, targetPid: number, act
 	const notifsContent = recentNotifs.map(v => v.notification.content as FollowNotificationContent | EmpathyNotificationContent);
 	const hasNotifContentForUser = notifsContent.some(content => content.users.some(usr => usr.pid === actingPid));
 	if (hasNotifContentForUser) {
-		// Don't send any notification to prevent follow notif spam
+		// Don't send any notification to prevent notif spam
 		return;
 	}
 
@@ -108,10 +107,7 @@ async function groupRecentNotifications(db: PrismaClient, targetPid: number, act
 				updatedAt: {
 					gte: new Date(now.getTime() - hourInMs)
 				},
-				content: {
-					path: ['post'],
-					equals: empathyPost
-				}
+				...empathyJsonFilter
 			}
 		},
 		include: {
@@ -187,6 +183,10 @@ export async function createNewReplyNotification(db: PrismaClient, ops: ReplyNot
 	const post = ops.reply;
 	const targetPid = ops.replyToUser;
 
+	if (!post.parent) {
+		throw errors.for('not_found');
+	}
+
 	// Prevent sending a new notification if the same user has done so recently
 	const weekInMs = 7 * 24 * 60 * 60 * 1000;
 	const recentNotifs = await db.notificationRecipient.findMany({
@@ -199,7 +199,7 @@ export async function createNewReplyNotification(db: PrismaClient, ops: ReplyNot
 				},
 				content: {
 					path: ['parent'],
-					equals: post.parent!
+					equals: post.parent
 				}
 			}
 		},
