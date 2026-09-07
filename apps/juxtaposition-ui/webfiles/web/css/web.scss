@@ -722,7 +722,7 @@ button.report {
   resize: none;
 }
 
-[hidden] {
+[hidden], .hide {
   display: none !important;
 }
 
@@ -1079,7 +1079,7 @@ input[type="radio"] {
   justify-content: center;
 }
 
-.feeling-selector.expression>#mii-face {
+.feeling-selector.expression > .icon {
   width: 66px;
   height: 66px;
   margin: 0 1ch 1em 0;
