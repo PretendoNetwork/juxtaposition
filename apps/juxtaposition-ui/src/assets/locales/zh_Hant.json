@@ -34,7 +34,7 @@
     },
     "setup": {
         "welcome": "歡迎來到 Juxtaposition！",
-        "beta": "《Beta 免責聲明》",
+        "beta": "《測試版免責聲明》",
         "beta_text": {
             "first": "歡迎來到 Pretendo Network 公開測試版！雖然與第一個公開測試版相比已經發生了許多變化，Juxt 仍處於開發階段，隨時都可能發生變化。",
             "second": "這可能包括在測試階段結束時或測試期間完全清除資料庫。",
@@ -103,10 +103,10 @@
         "banned": "已禁止使用者",
         "friend_requests": "請求",
         "not_found": "使用者不存在",
-        "tester_tag": "測試者",
+        "tester_tag": "測試人員",
         "supporter_tag": "支持者",
         "moderator_tag": "版主",
-        "developer_tag": "開發者"
+        "developer_tag": "開發人員"
     },
     "user_settings": {
         "show_country": "在個人檔案顯示國家/地區",
