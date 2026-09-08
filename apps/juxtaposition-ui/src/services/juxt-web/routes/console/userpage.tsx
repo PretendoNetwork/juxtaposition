@@ -88,7 +88,10 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 			country: z.coerce.boolean(),
 			birthday: z.coerce.boolean(),
 			experience: z.coerce.boolean(),
-			comment: z.string().optional()
+			comment: z.string().optional(),
+			notifyEmpathy: z.coerce.boolean(),
+			notifyFollows: z.coerce.boolean(),
+			notifyReply: z.coerce.boolean()
 		})
 	});
 
@@ -97,7 +100,10 @@ userPageRouter.post('/me/settings', upload.none(), async function (req, res) {
 		birthdayVisible: body.birthday,
 		gameSkillVisible: body.experience,
 		countryVisible: body.country,
-		comment: body.comment ? body.comment : null
+		comment: body.comment ? body.comment : null,
+		notifyEmpathy: body.notifyEmpathy,
+		notifyFollows: body.notifyFollows,
+		notifyReply: body.notifyReply
 	});
 
 	res.redirect('/users/me');

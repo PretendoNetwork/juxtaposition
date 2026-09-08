@@ -3,7 +3,7 @@ import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapNotification, notificationSchema } from '@/services/internal/contract/notification';
-import type { FollowNotificationContent } from '@/services/internal/utils/notifications';
+import type { EmpathyNotificationContent, FollowNotificationContent, ReplyNotificationContent } from '@/services/internal/utils/notifications';
 import type { NotificationRecipientWhereInput } from '@/prisma/models';
 
 export const notificationsRouter = createInternalApiRouter();
@@ -45,9 +45,13 @@ notificationsRouter.get({
 
 		const relatedUserIds = notifications.reduce<number[]>((acc, v) => {
 			acc.push(v.pid);
-			if (v.notification.type === 'Follow') {
-				const content = v.notification.content as FollowNotificationContent;
+			if (v.notification.type === 'Follow' || v.notification.type === 'Empathy') {
+				const content = v.notification.content as FollowNotificationContent | EmpathyNotificationContent;
 				acc.push(...content.users.map(u => u.pid));
+			}
+			if (v.notification.type === 'Reply') {
+				const content = v.notification.content as ReplyNotificationContent;
+				acc.push(content.pid);
 			}
 			return acc;
 		}, []);

@@ -9,6 +9,8 @@ datasource db {
 
 enum NotificationType {
   Follow
+  Empathy
+  Reply
   LimitedFromPosting
   PostDeleted
   System
@@ -52,6 +54,10 @@ model UserSetting {
   isRelationshipVisible       Boolean            @map("is_relationship_visible")
   isBirthdayVisible           Boolean            @map("is_birthday_visible")
   isGameSkillVisible          Boolean            @map("is_game_skill_visible")
+
+  notifyFollows Boolean @map("notify_follows")
+  notifyEmpathy Boolean @map("notify_empathy")
+  notifyReply   Boolean @map("notify_reply")
 
   profileComment String? @map("profile_comment")
   gameSkill      Int     @map("game_skill")

@@ -10,7 +10,10 @@ export const userSettingsSchema = z.object({
 	countryVisible: z.boolean(),
 	birthdayVisible: z.boolean(),
 	gameSkillVisible: z.boolean(),
-	comment: z.string().nullable()
+	comment: z.string().nullable(),
+	notifyEmpathy: z.boolean(),
+	notifyFollows: z.boolean(),
+	notifyReply: z.boolean()
 }).openapi('UserSettings');
 export type UserSettingsDto = z.infer<typeof userSettingsSchema>;
 
@@ -30,6 +33,9 @@ export function mapUserSettings(settings: UserSetting): UserSettingsDto {
 		birthdayVisible: settings.isBirthdayVisible,
 		countryVisible: settings.isCountryVisible,
 		gameSkillVisible: settings.isGameSkillVisible,
-		comment: settings.profileComment
+		comment: settings.profileComment,
+		notifyEmpathy: settings.notifyEmpathy,
+		notifyFollows: settings.notifyFollows,
+		notifyReply: settings.notifyReply
 	};
 }

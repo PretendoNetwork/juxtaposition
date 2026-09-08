@@ -17,6 +17,7 @@ import { createNewPost, isValidPost, postCreateSchema } from '@/services/interna
 import { isPostingAllowed } from '@/services/internal/utils/communities';
 import { mapSelf } from '@/services/internal/contract/self';
 import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
+import { createNewEmpathyNotification, createNewReplyNotification } from '@/services/internal/utils/notifications';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 import type { User } from '@/prisma/client';
@@ -225,7 +226,7 @@ postsRouter.post({
 		}),
 		response: empathySchema
 	},
-	async handler({ body, params, auth }) {
+	async handler({ body, params, auth, db }) {
 		let post = await Post.findOne({
 			id: params.post_id,
 			message_to_pid: null, // messages aren't really posts
@@ -260,6 +261,18 @@ postsRouter.post({
 		}
 		if (!post) {
 			throw errors.for('not_found');
+		}
+
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: post.pid
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (targetUser?.settings?.notifyEmpathy) {
+			await createNewEmpathyNotification(db, { currentUser: pid, postAuthor: post.pid, postId: post.id });
 		}
 
 		return mapEmpathy(body.action, post);
@@ -356,7 +369,7 @@ postsRouter.post({
 		body: postCreateSchema,
 		response: postSchema
 	},
-	async handler({ body, params, auth }) {
+	async handler({ body, params, auth, db }) {
 		const account = auth!;
 
 		const parentPost = await Post.findOne({
@@ -392,6 +405,18 @@ postsRouter.post({
 			community,
 			parentPost
 		});
+
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: parentPost.pid
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (targetUser?.settings?.notifyReply) {
+			await createNewReplyNotification(db, { reply: newPost, replyToUser: targetUser.pid });
+		}
 
 		return mapPost(newPost, community);
 	}
