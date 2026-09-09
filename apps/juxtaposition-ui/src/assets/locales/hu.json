@@ -21,7 +21,9 @@
         "search": "Keresés...",
         "global_feed_short": "Globális",
         "people_feed": "Követett személyek",
-        "people_feed_short": "Követve"
+        "people_feed_short": "Követve",
+        "system_message": "Rendszer üzenet",
+        "mascot_name": "Sávszélesség"
     },
     "all_communities": {
         "popular_places": "Népszerű helyek",
@@ -39,7 +41,8 @@
         "closed": "Ez a közösség már nem fogad új bejegyzést.",
         "tags_not_applicable": "N/A",
         "related_to": "{{community}} kapcsolódó közösségei",
-        "related_short": "Kapcsolódó"
+        "related_short": "Kapcsolódó",
+        "description": "A közösségről"
     },
     "user_page": {
         "country": "Ország",
@@ -70,7 +73,10 @@
         "save_action": "Beállítások mentése",
         "gdpr_download": "Felhasználó adat letöltése",
         "gdpr_download_action": "Letöltés",
-        "show_profile": "Profil megjelenítése vendégnek"
+        "show_profile": "Profil megjelenítése vendégnek",
+        "notify_empathy": "Yeah! értesítések megjelenítése",
+        "notify_follows": "Követés értesítések megjelenítése",
+        "notify_reply": "Válasz/megjegyzés értesítések megjelenítése"
     },
     "notifications": {
         "none": "Nincsennek értesítések.",
@@ -93,7 +99,14 @@
             "temporary": "Korlátozva vagy a bejegyzések létrehozásában {{until}} -ig.",
             "temporary_with_reason": "Korlátozva vagy a bejegyzések létrehozásában {{until}} -ig. Oka: \"{{reason}}\".",
             "footer": "Kattints erre az üzenetre, hogy megtekintsd a Juxtaposition magatartás kódexét. Ha kérdéseid vannak, vedd fel a kapcsolatot a moderátorokkal a Pretendo Network Forum-on ({{banAppealUrl}})."
-        }
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> adott a bejegyzésednek egy Yeah-t!",
+            "message/two": "<empathy_one />, <empathy_two /> adott a bejegyzésednek egy Yeah-t!",
+            "message/three": "<empathy_one />, <empathy_two /> és {{count_other}} másik személy adott a bejegyzésednek egy Yeah-t!",
+            "message/multiple": "<empathy_one />, <empathy_two /> és {{count_other}} másik személy adott a bejegyzésednek egy Yeah-t!"
+        },
+        "new_reply": "<reply_author /> megjegyzést fűzött a bejegyzésedhez!"
     },
     "new_post": {
         "post_to": "Bejegyzés ehhez {{user}}",
