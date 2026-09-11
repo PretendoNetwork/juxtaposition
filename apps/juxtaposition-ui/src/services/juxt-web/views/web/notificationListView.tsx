@@ -7,13 +7,15 @@ import { humanDate, humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { EmpathyNotification, FollowNotification, LimitedFromPostingNotification, Notification, PostDeletedNotification, ReplyNotification, ShallowUser, SystemNotification } from '@/api/generated';
+import type { ListViewLinks, ListViewRemaining } from '@/services/juxt-web/views/web/listView';
 
 export type NotificationWrapperViewProps = {
 	children?: ReactNode;
 };
 
-export type NotificationListViewProps = {
+export type NotificationListViewProps = ListViewLinks & ListViewRemaining & {
 	notifications: Notification[];
+	remainingUnreads: number;
 };
 
 export type NotificationItemProps = {
@@ -295,6 +297,16 @@ export function WebNotificationListView(props: NotificationListViewProps): React
 					<WebNotificationItem notification={notification} />
 				</li>
 			))}
+			{props.remaining > 0
+				? (
+						<div id="wrapper" className="bottom">
+							<button id="load-more" data-href={props.nextLink}>
+								<T k="global.load_more" />
+								{props.remainingUnreads > 0 ? ` (${props.remainingUnreads})` : null}
+							</button>
+						</div>
+					)
+				: null}
 		</ul>
 	);
 }

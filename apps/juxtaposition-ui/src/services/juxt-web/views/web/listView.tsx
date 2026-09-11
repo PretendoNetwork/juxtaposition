@@ -25,3 +25,13 @@ export function buildListLinks(baseUrl: string, offset: number, length: number):
 		})
 	};
 }
+
+export type ListViewRemaining = {
+	remaining: number;
+};
+
+export function buildListRemaining(offset: number, length: number, total: number): ListViewRemaining {
+	return {
+		remaining: Math.max(total - offset - length, 0)
+	};
+}

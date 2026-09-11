@@ -261,6 +261,16 @@ export function CtrNotificationListView(props: NotificationListViewProps): React
 			{props.notifications.map((notification, i) => (
 				<CtrNotificationItem notification={notification} key={i} />
 			))}
+			{props.remaining > 0
+				? (
+						<div className="button-wrapper center">
+							<a className="load-more" href={props.nextPageLink} data-pjax="#body">
+								<T k="global.load_more" />
+								{props.remainingUnreads > 0 ? ` (${props.remainingUnreads})` : null}
+							</a>
+						</div>
+					)
+				: null}
 		</CtrListView>
 	);
 }

@@ -6,6 +6,7 @@ import { PortalNotificationListView, PortalNotificationWrapperView } from '@/ser
 import { CtrNotificationListView, CtrNotificationWrapperView } from '@/services/juxt-web/views/ctr/notificationListView';
 import { PortalFriendRequestListView, PortalFriendRequestWrapperView } from '@/services/juxt-web/views/portal/friendRequestListView';
 import { CtrFriendRequestListView, CtrFriendRequestWrapperView } from '@/services/juxt-web/views/ctr/friendRequestListView';
+import { buildListLinks, buildListRemaining } from '@/services/juxt-web/views/web/listView';
 import type { NotificationListViewProps } from '@/services/juxt-web/views/web/notificationListView';
 import type { FriendRequestListViewProps } from '@/services/juxt-web/views/web/friendRequestListView';
 export const notificationRouter = express.Router();
@@ -13,16 +14,27 @@ export const notificationRouter = express.Router();
 notificationRouter.get('/my_news', async function (req, res) {
 	const { query } = parseReq(req, {
 		query: z.object({
-			pjax: z.stringbool().optional()
+			pjax: z.stringbool().optional(),
+			offset: z.coerce.number().optional().default(0)
 		})
 	});
+	const offset = query.offset;
 
 	const { data: notificationsPage } = await req.api.notifications.list({
 		markAsRead: 'true',
+		offset,
 		limit: 25
 	});
+	const { items, total } = notificationsPage;
+
+	// we do this *after* markAsRead: true, so we are seeing remaining counts
+	const { data: notificationCounts } = await req.api.self.getNotifications();
+
 	const props: NotificationListViewProps = {
-		notifications: notificationsPage.items
+		...buildListLinks('/news/my_news', offset, items.length),
+		...buildListRemaining(offset, items.length, total),
+		notifications: items,
+		remainingUnreads: notificationCounts.unreadNotifications
 	};
 
 	if (query.pjax) {

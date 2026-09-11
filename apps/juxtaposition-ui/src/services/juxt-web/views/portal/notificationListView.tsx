@@ -257,6 +257,16 @@ export function PortalNotificationListView(props: NotificationListViewProps): Re
 			{props.notifications.map((notification, i) => (
 				<PortalNotificationItem notification={notification} key={i} />
 			))}
+			{props.remaining > 0
+				? (
+						<div className="button-wrapper center">
+							<button type="button" className="load-more" data-href={props.nextLink}>
+								<T k="global.load_more" />
+								{props.remainingUnreads > 0 ? ` (${props.remainingUnreads})` : null}
+							</button>
+						</div>
+					)
+				: null}
 		</PortalListView>
 	);
 }
