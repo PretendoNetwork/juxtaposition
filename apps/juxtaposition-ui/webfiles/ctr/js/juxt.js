@@ -151,6 +151,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		elements: 'a[data-pjax]',
 		selectors: ['title', '#body']
 	});
+	if (pjaxCanGoBack()) {
+		cave.toolbar_setButtonType(1);
+	} else {
+		cave.toolbar_setButtonType(0);
+	}
 	console.debug('Pjax initialized.');
 	initAll();
 	stopLoading();
@@ -166,6 +171,11 @@ document.addEventListener('PjaxDone', function () {
 	} else {
 		cave.toolbar_setButtonType(0);
 	}
+	cave.requestGc();
+	cave.transition_end();
+});
+document.addEventListener('PjaxError', function () {
+	cave.error_callErrorViewer(15_5000);
 	cave.requestGc();
 	cave.transition_end();
 });

@@ -1,4 +1,5 @@
 import { GET } from '@common/js/xhr';
+import { sessionStorageGet, sessionStorageSet } from '@common/js/storage';
 
 var elements: string = '';
 var selectors: string[] = [];
@@ -8,6 +9,7 @@ var href: string = '';
 var pjaxHistory: string[] = [];
 var PjaxRequest = document.createEvent('Event');
 var PjaxDone = document.createEvent('Event');
+var PjaxError = document.createEvent('Event');
 
 export type PjaxOptions = {
 	elements: string;
@@ -19,8 +21,14 @@ export function pjaxInit(init: PjaxOptions): void {
 	selectors = init.selectors;
 	href = document.location.pathname;
 
+	pjaxHistory = sessionStorageGet('pjax-history') ?? [];
+	window.addEventListener('pagehide', (_e) => {
+		sessionStorageSet('pjax-history', pjaxHistory.concat(href));
+	});
+
 	PjaxRequest.initEvent('PjaxRequest', true, true);
 	PjaxDone.initEvent('PjaxDone', true, true);
+	PjaxError.initEvent('PjaxError', true, true);
 }
 
 function pjaxClick(this: HTMLElement, e: Event): boolean {
@@ -55,6 +63,7 @@ export function pjaxLoadUrl(url: string, pushHistory: boolean): void {
 function pjaxParseDom(xhr: XMLHttpRequest): void {
 	var response = xhr.responseText;
 	if (!response) {
+		document.dispatchEvent(PjaxError);
 		return;
 	}
 
