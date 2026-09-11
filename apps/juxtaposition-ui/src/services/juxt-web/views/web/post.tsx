@@ -184,7 +184,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 								/>
 							</div>
 							<div className="yeah-list">
-								{post.yeahsBy.slice(0, 15).map(({ pid }) => (
+								{post.yeahsBy.slice(0, 22).map(({ pid }) => (
 									<WebMiiIcon pid={pid}></WebMiiIcon>
 								))}
 							</div>
