@@ -381,6 +381,9 @@ postsRouter.post({
 		if (!parentPost) {
 			throw errors.for('not_found');
 		}
+		if (parentPost.parent) {
+			throw errors.for('bad_request');
+		}
 
 		const community = await Community.findOne({ olive_community_id: parentPost.community_id });
 		if (!community) {
