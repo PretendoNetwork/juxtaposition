@@ -271,7 +271,7 @@ postsRouter.post({
 				settings: true
 			}
 		});
-		if (targetUser?.settings?.notifyEmpathy) {
+		if (targetUser && pid !== targetUser.pid && targetUser.settings?.notifyEmpathy) {
 			await createNewEmpathyNotification(db, { currentUser: pid, postAuthor: post.pid, postId: post.id });
 		}
 
@@ -371,6 +371,7 @@ postsRouter.post({
 	},
 	async handler({ body, params, auth, db }) {
 		const account = auth!;
+		const pid = account.pnid.pid;
 
 		const parentPost = await Post.findOne({
 			id: params.post_id,
@@ -396,7 +397,7 @@ postsRouter.post({
 		}
 		const newPost = await createNewPost({
 			author: {
-				pid: account.pnid.pid,
+				pid,
 				miiData: account.pnid.mii?.data ?? '',
 				screenName: account.user?.displayName ?? '',
 				verified: self.permissions.moderator
@@ -414,7 +415,7 @@ postsRouter.post({
 				settings: true
 			}
 		});
-		if (targetUser?.settings?.notifyReply) {
+		if (targetUser && pid !== targetUser.pid && targetUser.settings?.notifyReply) {
 			await createNewReplyNotification(db, { reply: newPost, replyToUser: targetUser.pid });
 		}
 
