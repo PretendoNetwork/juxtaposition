@@ -1,13 +1,13 @@
 import express from 'express';
 import { z } from 'zod';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { WebNotificationListView, WebNotificationWrapperView } from '@/services/juxt-web/views/web/notificationListView';
-import { PortalNotificationListView, PortalNotificationWrapperView } from '@/services/juxt-web/views/portal/notificationListView';
-import { CtrNotificationListView, CtrNotificationWrapperView } from '@/services/juxt-web/views/ctr/notificationListView';
+import { WebNotificationListItems, WebNotificationWrapperView } from '@/services/juxt-web/views/web/notificationListView';
+import { PortalNotificationListItems, PortalNotificationWrapperView } from '@/services/juxt-web/views/portal/notificationListView';
+import { CtrNotificationListItems, CtrNotificationWrapperView } from '@/services/juxt-web/views/ctr/notificationListView';
 import { PortalFriendRequestListView, PortalFriendRequestWrapperView } from '@/services/juxt-web/views/portal/friendRequestListView';
 import { CtrFriendRequestListView, CtrFriendRequestWrapperView } from '@/services/juxt-web/views/ctr/friendRequestListView';
 import { buildListLinks, buildListRemaining } from '@/services/juxt-web/views/web/listView';
-import type { NotificationListViewProps } from '@/services/juxt-web/views/web/notificationListView';
+import type { NotificationListItemsProps } from '@/services/juxt-web/views/web/notificationListView';
 import type { FriendRequestListViewProps } from '@/services/juxt-web/views/web/friendRequestListView';
 export const notificationRouter = express.Router();
 
@@ -30,7 +30,7 @@ notificationRouter.get('/my_news', async function (req, res) {
 	// we do this *after* markAsRead: true, so we are seeing remaining counts
 	const { data: notificationCounts } = await req.api.self.getNotifications();
 
-	const props: NotificationListViewProps = {
+	const props: NotificationListItemsProps = {
 		...buildListLinks('/news/my_news', offset, items.length),
 		...buildListRemaining(offset, items.length, total),
 		notifications: items,
@@ -39,26 +39,26 @@ notificationRouter.get('/my_news', async function (req, res) {
 
 	if (query.pjax) {
 		return res.jsxForDirectory({
-			web: <WebNotificationListView {...props} />,
-			portal: <PortalNotificationListView {...props} />,
-			ctr: <CtrNotificationListView {...props} />
+			web: <WebNotificationListItems {...props} />,
+			portal: <PortalNotificationListItems {...props} />,
+			ctr: <CtrNotificationListItems {...props} />
 		});
 	}
 
 	res.jsxForDirectory({
 		web: (
 			<WebNotificationWrapperView>
-				<WebNotificationListView {...props} />
+				<WebNotificationListItems {...props} />
 			</WebNotificationWrapperView>
 		),
 		portal: (
 			<PortalNotificationWrapperView>
-				<PortalNotificationListView {...props} />
+				<PortalNotificationListItems {...props} />
 			</PortalNotificationWrapperView>
 		),
 		ctr: (
 			<CtrNotificationWrapperView>
-				<CtrNotificationListView {...props} />
+				<CtrNotificationListItems {...props} />
 			</CtrNotificationWrapperView>
 		)
 	});

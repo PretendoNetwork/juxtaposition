@@ -7,7 +7,7 @@ import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/Ct
 import { CtrListView, CtrListViewItem } from '@/services/juxt-web/views/ctr/components/CtrListView';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
-import type { NotificationItemProps, NotificationItemTypeProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
+import type { NotificationItemProps, NotificationItemTypeProps, NotificationListItemsProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
 import type { EmpathyNotification, FollowNotification, LimitedFromPostingNotification, PostDeletedNotification, ReplyNotification, ShallowUser, SystemNotification } from '@/api/generated';
 
 function FollowNotificationView(props: NotificationItemTypeProps<FollowNotification>): ReactNode {
@@ -254,9 +254,9 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 	return <div>Invalid notification type!</div>;
 }
 
-export function CtrNotificationListView(props: NotificationListViewProps): ReactNode {
+export function CtrNotificationListItems(props: NotificationListItemsProps): ReactNode {
 	return (
-		<CtrListView type="icon-column">
+		<>
 			{props.notifications.length === 0 ? <li><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<CtrNotificationItem notification={notification} key={i} />
@@ -271,7 +271,7 @@ export function CtrNotificationListView(props: NotificationListViewProps): React
 						</div>
 					)
 				: null}
-		</CtrListView>
+		</>
 	);
 }
 
@@ -287,7 +287,9 @@ export function CtrNotificationWrapperView(props: NotificationWrapperViewProps):
 				</CtrPageTitledHeader>
 				<div className="body-content tab2-content" id="news-page">
 					<div className="tab-body">
-						{props.children}
+						<CtrListView type="icon-column">
+							{props.children}
+						</CtrListView>
 					</div>
 				</div>
 			</CtrPageBody>

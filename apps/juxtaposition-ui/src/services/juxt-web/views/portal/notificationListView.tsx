@@ -7,7 +7,7 @@ import { PortalIcon } from '@/services/juxt-web/views/portal/components/ui/Porta
 import { PortalListView, PortalListViewItem } from '@/services/juxt-web/views/portal/components/PortalListView';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
-import type { NotificationItemProps, NotificationItemTypeProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
+import type { NotificationItemProps, NotificationItemTypeProps, NotificationListItemsProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
 import type { EmpathyNotification, FollowNotification, LimitedFromPostingNotification, PostDeletedNotification, ReplyNotification, ShallowUser, SystemNotification } from '@/api/generated';
 
 function FollowNotificationView(props: NotificationItemTypeProps<FollowNotification>): ReactNode {
@@ -250,9 +250,9 @@ function PortalNotificationItem(props: NotificationItemProps): ReactNode {
 	return <div>Invalid notification type!</div>;
 }
 
-export function PortalNotificationListView(props: NotificationListViewProps): ReactNode {
+export function PortalNotificationListItems(props: NotificationListItemsProps): ReactNode {
 	return (
-		<PortalListView type="list" id="news-list-content">
+		<>
 			{props.notifications.length === 0 ? <li><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<PortalNotificationItem notification={notification} key={i} />
@@ -267,7 +267,7 @@ export function PortalNotificationListView(props: NotificationListViewProps): Re
 						</div>
 					)
 				: null}
-		</PortalListView>
+		</>
 	);
 }
 
@@ -281,7 +281,9 @@ export function PortalNotificationWrapperView(props: NotificationWrapperViewProp
 				</header>
 				<div className="body-content tab2-content" id="news-page">
 					<div className="tab-body">
-						{props.children}
+						<PortalListView type="list" id="news-list-content">
+							{props.children}
+						</PortalListView>
 					</div>
 				</div>
 			</PortalPageBody>
