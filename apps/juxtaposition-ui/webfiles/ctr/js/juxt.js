@@ -1,13 +1,13 @@
-import './polyfills';
-import { initCheckboxes } from './controls/checkbox';
-import { initClientTabs } from './controls/ctabs';
-import { initNewPostView } from './new-post-view';
-import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
-import { initPostPageView, initYeahButton } from './post';
-import { initToolbarConfigs } from './toolbar';
-import { GET, POST } from './xhr';
-import { initNavTabs } from './components/ui/CtrNavTabs';
-import { initSearchForm } from './components/ui/CtrSearchForm';
+import '@/js/polyfills';
+import { initCheckboxes } from '@/js/controls/checkbox';
+import { initClientTabs } from '@/js/controls/ctabs';
+import { initNewPostView } from '@/js/new-post-view';
+import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from '@/js/pjax';
+import { initPostPageView, initYeahButton } from '@/js/post';
+import { initToolbarConfigs } from '@/js/toolbar';
+import { GET, POST } from '@/js/xhr';
+import { initNavTabs } from '@/js/components/ui/CtrNavTabs';
+import { initSearchForm } from '@/js/components/ui/CtrSearchForm';
 
 setInterval(checkForUpdates, 30000);
 

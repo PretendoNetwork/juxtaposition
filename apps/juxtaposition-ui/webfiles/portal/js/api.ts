@@ -1,4 +1,4 @@
-import { POST, DELETE } from './xhr';
+import { POST, DELETE } from '@/js/xhr';
 
 export type EmpathyPostResponse = {
 	status: number;

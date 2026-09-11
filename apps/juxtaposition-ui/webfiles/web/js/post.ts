@@ -1,4 +1,5 @@
-import { empathyPostById } from './api';
+import { empathyPostById } from '@/js/api';
+import { Toast } from '@/js/toast';
 
 function inc(base: string, val: number): string {
 	return (Number(base) + val).toString();

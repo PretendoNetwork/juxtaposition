@@ -1,10 +1,10 @@
-import { popupItemCb, setupPopup } from './menus';
-import { initReportForm, reportPost } from './reports';
-import { POST, GET } from './xhr';
-import { deletePostById, spoilerPostById, unspoilerPostById } from './api';
-import { initYeahButton } from './post';
-import { initSearchForm } from './components/ui/WebSearchForm';
-import { Toast, initToast } from './toast';
+import { popupItemCb, setupPopup } from '@/js/menus';
+import { initReportForm, reportPost } from '@/js/reports';
+import { POST, GET } from '@/js/xhr';
+import { deletePostById, spoilerPostById, unspoilerPostById } from '@/js/api';
+import { initYeahButton } from '@/js/post';
+import { initSearchForm } from '@/js/components/ui/WebSearchForm';
+import { Toast, initToast } from '@/js/toast';
 
 setInterval(checkForUpdates, 30000);
 
