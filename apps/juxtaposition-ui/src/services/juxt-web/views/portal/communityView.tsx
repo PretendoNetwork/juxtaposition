@@ -97,7 +97,7 @@ export function PortalCommunityView(props: CommunityViewProps): ReactNode {
 					</PortalNavTabs>
 					<div id="new-post-button-container" className="none">
 						<a href="#" className="button" data-offset="10">
-							<T k="global.more" />
+							<T k="global.more_posts" />
 						</a>
 						<div id="new-post"></div>
 					</div>

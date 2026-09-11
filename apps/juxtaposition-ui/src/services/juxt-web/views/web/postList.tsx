@@ -20,7 +20,7 @@ export function WebPostListView(props: PostListViewProps): ReactNode {
 				<WebPostView key={v.id} post={v} userContent={props.userContent} />
 			))}
 			<div id="wrapper" className="bottom">
-				<button id="load-more" data-href={props.nextLink}><T k="global.more" /></button>
+				<button id="load-more" data-href={props.nextLink}><T k="global.more_posts" /></button>
 			</div>
 		</>
 	);
