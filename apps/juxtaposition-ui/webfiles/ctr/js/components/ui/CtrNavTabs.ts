@@ -1,4 +1,4 @@
-import { GET } from '@/js/xhr';
+import { GET } from '@common/js/xhr';
 import { pjaxSetUrl, pjaxRefresh } from '@/js/pjax';
 import { initPosts } from '@/js/juxt';
 

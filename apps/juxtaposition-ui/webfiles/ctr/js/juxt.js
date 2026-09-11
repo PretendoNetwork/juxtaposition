@@ -1,12 +1,12 @@
 import '@/js/polyfills';
 import { initLocalStorage, initSessionStorage } from '@common/js/storage';
+import { GET, POST } from '@common/js/xhr';
 import { initCheckboxes } from '@/js/controls/checkbox';
 import { initClientTabs } from '@/js/controls/ctabs';
 import { initNewPostView } from '@/js/new-post-view';
 import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from '@/js/pjax';
 import { initPostPageView, initYeahButton } from '@/js/post';
 import { initToolbarConfigs } from '@/js/toolbar';
-import { GET, POST } from '@/js/xhr';
 import { initNavTabs } from '@/js/components/ui/CtrNavTabs';
 import { initSearchForm } from '@/js/components/ui/CtrSearchForm';
 

@@ -1,5 +1,5 @@
 import { Toast } from '@/js/toast';
-import { POST } from '@/js/xhr';
+import { POST } from '@common/js/xhr';
 
 export function initReportForm() {
 	const modal = document.getElementById('report-form-modal');

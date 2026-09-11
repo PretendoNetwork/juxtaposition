@@ -1,8 +1,8 @@
 import { initLocalStorage, initSessionStorage } from '@common/js/storage';
+import { POST, GET } from '@common/js/xhr';
+import { deletePostById, spoilerPostById, unspoilerPostById } from '@common/js/api';
 import { popupItemCb, setupPopup } from '@/js/menus';
 import { initReportForm, reportPost } from '@/js/reports';
-import { POST, GET } from '@/js/xhr';
-import { deletePostById, spoilerPostById, unspoilerPostById } from '@/js/api';
 import { initYeahButton } from '@/js/post';
 import { initSearchForm } from '@/js/components/ui/WebSearchForm';
 import { Toast, initToast } from '@/js/toast';

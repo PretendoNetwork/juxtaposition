@@ -1,4 +1,4 @@
-import { GET } from '@/js/xhr';
+import { GET } from '@common/js/xhr';
 import { initMorePosts, initPosts, pjax } from '@/js/juxt';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {

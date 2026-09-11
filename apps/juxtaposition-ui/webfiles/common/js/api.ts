@@ -1,4 +1,4 @@
-import { POST, DELETE } from '@/js/xhr';
+import { POST, DELETE, POSTNoTranstion } from '@common/js/xhr';
 
 export type EmpathyPostResponse = {
 	status: number;
@@ -7,13 +7,13 @@ export type EmpathyPostResponse = {
 };
 
 export function empathyPostById(id: string, cb: (post: EmpathyPostResponse) => void): void {
-	const params = 'postID=' + id;
+	var params = 'postID=' + id;
 
-	POST('/posts/empathy', params, (xhr) => {
+	POSTNoTranstion('/posts/empathy', params, (xhr) => {
 		if (xhr.status !== 200) {
 			return cb({ status: xhr.status, id, count: 0 });
 		}
-		let post: EmpathyPostResponse;
+		var post: EmpathyPostResponse;
 
 		try {
 			post = JSON.parse(xhr.responseText);
@@ -32,8 +32,8 @@ export type DeletePostResponse = {
 };
 
 export function deletePostById(id: string, reason: string | null, cb: (result: DeletePostResponse) => void): void {
-	const postUrl = `/posts/${id}`;
-	const query = reason !== null ? `?reason=${encodeURIComponent(reason)}` : '';
+	var postUrl = `/posts/${id}`;
+	var query = reason !== null ? `?reason=${encodeURIComponent(reason)}` : '';
 
 	DELETE(postUrl + query, function (xhr) {
 		if (xhr.status !== 200) {
@@ -43,7 +43,7 @@ export function deletePostById(id: string, reason: string | null, cb: (result: D
 		// HACK: we haven't actually formalised this API serverside yet
 		// for now, synthesise the response object ourselves
 		// make sure it looks like a URL...
-		const nextUrl = xhr.responseText;
+		var nextUrl = xhr.responseText;
 		if (!/^\/[\w/]+$/.test(nextUrl)) {
 			return cb({ status: 400, nextUrl: postUrl });
 		}
@@ -62,7 +62,7 @@ export function unspoilerPostById(id: string, cb: () => void): void {
 		if (xhr.status !== 200) {
 			return cb();
 		}
-		let res: UnspoilerPostResponse;
+		var res: UnspoilerPostResponse;
 
 		try {
 			res = JSON.parse(xhr.responseText);
@@ -88,7 +88,7 @@ export function spoilerPostById(id: string, cb: () => void): void {
 		if (xhr.status !== 200) {
 			return cb();
 		}
-		let res: SpoilerPostResponse;
+		var res: SpoilerPostResponse;
 
 		try {
 			res = JSON.parse(xhr.responseText);

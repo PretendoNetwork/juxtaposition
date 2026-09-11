@@ -1,9 +1,9 @@
 import '@/js/polyfills';
 import Pjax from 'pjax';
 import { initLocalStorage, initSessionStorage } from '@common/js/storage';
+import { GET, POST } from '@common/js/xhr';
+import { empathyPostById } from '@common/js/api';
 import { back, exit } from '@/js/nav';
-import { GET, POST } from '@/js/xhr';
-import { empathyPostById } from '@/js/api';
 import { initPostPageView } from '@/js/post';
 import { initNavTabs } from '@/js/components/ui/PortalNavTabs';
 import { initSearchForm } from '@/js/components/ui/PortalSearchForm';

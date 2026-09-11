@@ -14,9 +14,9 @@ export function POSTNoTranstion(url: string, data: string, callback: XHRCallback
 }
 
 export function POST(url: string, data: string, callback: XHRCallback): void {
-	cave.transition_begin();
+	loading_start();
 	POSTNoTranstion(url, data, (request) => {
-		cave.transition_end();
+		loading_end();
 		callback(request);
 	});
 }
@@ -31,13 +31,34 @@ export function GET(url: string, callback: XHRCallback): void {
 }
 
 export function DELETE(url: string, callback: XHRCallback): void {
-	cave.transition_begin();
+	loading_start();
 	var xhttp = new XMLHttpRequest();
 	xhttp.onload = function (): void {
-		cave.transition_end();
+		loading_end();
 		callback(this);
 	};
-	xhttp.open('POST', url, true);
-	xhttp.setRequestHeader('X-HTTP-Method-Override', 'DELETE');
+	if (platform === 'ctr') {
+		xhttp.open('POST', url, true);
+		xhttp.setRequestHeader('X-HTTP-Method-Override', 'DELETE');
+	} else {
+		xhttp.open('DELETE', url, true);
+	}
+
 	xhttp.send();
+}
+
+function loading_start(): void {
+	if (platform === 'ctr') {
+		cave.transition_begin();
+	} else if (platform === 'portal') {
+		wiiuBrowser.showLoadingIcon(true);
+	}
+}
+
+function loading_end(): void {
+	if (platform === 'ctr') {
+		cave.transition_end();
+	} else if (platform === 'portal') {
+		wiiuBrowser.showLoadingIcon(false);
+	}
 }

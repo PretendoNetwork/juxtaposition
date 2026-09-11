@@ -1,4 +1,4 @@
-import { GET } from '@/js/xhr';
+import { GET } from '@common/js/xhr';
 
 var elements: string = '';
 var selectors: string[] = [];

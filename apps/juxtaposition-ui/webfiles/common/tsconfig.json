@@ -25,7 +25,7 @@
 			"@pretendonetwork/wiiu-session-storage-types"
 		],
 		"paths": {
-			"@/*": [
+			"@common/*": [
 				"./*"
 			]
 		}
