@@ -1,4 +1,3 @@
-import './Object.defineProperty.js'; // used by the other polyfills
 import './this.Window.js';
 
 // import './Array.from.js';

@@ -91,12 +91,16 @@
             margin-right: 15px;
         }
 
-        .timestamp {
+        .timestamp,
+        .spoiler-label {
             color: t.$root-text-1;
         }
     }
 
-    &.spoiler .post-content {
+    &.spoiler .post-content,
+    &.spoiler .post-action-button,
+    &.spoiler .caption,
+    &:not(.spoiler) .spoiler-label {
         display: none
     }
 

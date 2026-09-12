@@ -132,15 +132,25 @@ function initPostModules() {
 	}
 }
 function initPostEmotion() {
-	var els = document.querySelectorAll('input[data-mii-face-url]');
-
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			document.getElementById('mii-face').src = el.getAttribute('data-mii-face-url');
-			wiiuSound.playSoundByName(el.getAttribute('data-sound'), 3);
-		});
+	var feeling_selector = document.querySelector('[data-mii-feeling-selector]');
+	if (!feeling_selector) {
+		return;
 	}
+
+	feeling_selector.addEventListener('change', (e) => {
+		var feeling = e.target.value;
+		var icons = document.querySelectorAll('[data-mii-feeling]');
+
+		icons.forEach((icon) => {
+			var icon_feeling = icon.getAttribute('data-mii-feeling');
+
+			if (icon_feeling == feeling) {
+				icon.classList.remove('hide');
+			} else {
+				icon.classList.add('hide');
+			}
+		});
+	});
 }
 function playSound(e) {
 	wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);

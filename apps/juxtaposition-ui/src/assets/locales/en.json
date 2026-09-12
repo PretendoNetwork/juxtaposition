@@ -153,6 +153,7 @@
     "yeahs_count/one": "<count/> person gave this post a yeah.",
     "yeahs_count/multiple": "<count/> people gave this post a yeah.",
     "show_spoiler": "Show Spoiler",
+    "spoiler_label": "Spoilers",
     "reply_post": "Reply",
     "report_post": "Report post",
     "delete_post": "Delete post",
