@@ -33,7 +33,7 @@ export function PortalPersonalFeedView(props: FeedViewProps): ReactNode {
 					<h1 id="page-title" className="left">{title}</h1>
 				</header>
 				<div id="new-post-button-container" className="none">
-					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more" /></a>
+					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more_posts" /></a>
 					<div id="new-post"></div>
 				</div>
 				<div className="body-content" id="activity-feed">
@@ -57,7 +57,7 @@ export function PortalPeopleFeedView(props: FeedViewProps): ReactNode {
 					<h1 id="page-title" className="left">{title}</h1>
 				</header>
 				<div id="new-post-button-container" className="none">
-					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more" /></a>
+					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more_posts" /></a>
 					<div id="new-post"></div>
 				</div>
 				<div className="body-content" id="activity-feed">
@@ -81,7 +81,7 @@ export function PortalGlobalFeedView(props: FeedViewProps): ReactNode {
 					<h1 id="page-title" className="left">{title}</h1>
 				</header>
 				<div id="new-post-button-container" className="none">
-					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more" /></a>
+					<a href="#" className="button" data-offset="10" evt-click="loadFeedPosts(this)"><T k="global.more_posts" /></a>
 					<div id="new-post"></div>
 				</div>
 				<div className="body-content" id="activity-feed">

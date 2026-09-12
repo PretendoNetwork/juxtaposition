@@ -6,7 +6,8 @@ import { WebModerateUserView } from '@/services/juxt-web/views/web/admin/moderat
 import { ModerateUserOverviewView } from '@/services/juxt-web/views/web/admin/moderate-user/moderateUserOverviewView';
 import { ModerateUserReportsListView } from '@/services/juxt-web/views/web/admin/moderate-user/moderateUserReportsView';
 import { getReasonMap } from '@/util';
-import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { buildListLinks } from '@/services/juxt-web/views/web/listView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
 export const adminUserRouter = express.Router();
@@ -133,7 +134,7 @@ adminUserRouter.get('/accounts/:pid/posts', async function (req, res) {
 
 	const { data: postPage } = await req.api.users.posts.list({ id: reqPid, offset: query.offset });
 	const postListProps: PostListViewProps = {
-		...buildPostListLinks(`/admin/accounts/${reqPid}/posts`, query.offset, postPage.items.length),
+		...buildListLinks(`/admin/accounts/${reqPid}/posts`, query.offset, postPage.items.length),
 		posts: postPage.items,
 		userContent: auth().self?.content ?? null
 	};

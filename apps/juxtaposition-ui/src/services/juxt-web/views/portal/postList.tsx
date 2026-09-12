@@ -15,7 +15,7 @@ export function PortalPostListView(props: PostListViewProps): ReactNode {
 				<PortalPostView key={v.id} post={v} userContent={props.userContent} />
 			))}
 			<div className="button-wrapper center">
-				<button type="button" className="load-more" data-href={props.nextLink}><T k="global.more" /></button>
+				<button type="button" className="load-more" data-href={props.nextLink}><T k="global.more_posts" /></button>
 			</div>
 		</>
 	);

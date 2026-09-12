@@ -2,12 +2,13 @@ import express from 'express';
 import { z } from 'zod';
 import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { PortalTopicTagView } from '@/services/juxt-web/views/portal/topics';
 import { WebTopicTagView } from '@/services/juxt-web/views/web/topics';
 import { CtrTopicTagView } from '@/services/juxt-web/views/ctr/topics';
+import { buildListLinks } from '@/services/juxt-web/views/web/listView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
 export const topicsRouter = express.Router();
@@ -32,7 +33,7 @@ topicsRouter.get('/', async function (req, res) {
 	})}`;
 
 	const postListProps: PostListViewProps = {
-		...buildPostListLinks(link, offset, posts.length),
+		...buildListLinks(link, offset, posts.length),
 		posts,
 		userContent
 	};
