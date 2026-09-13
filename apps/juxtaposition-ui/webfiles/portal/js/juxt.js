@@ -206,7 +206,7 @@ document.addEventListener('PjaxDone', function () {
 document.addEventListener('DOMContentLoaded', function () {
 	pjaxInit({
 		elements: '[data-pjax]',
-		selectors: ['#body', '#nav-menu']
+		selectors: ['#body']
 	});
 	console.debug('Pjax initialized.');
 	initAll();
