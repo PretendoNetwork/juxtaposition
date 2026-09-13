@@ -39,15 +39,6 @@ cave.toolbar_setCallback(5, function () {
 cave.toolbar_setCallback(8, function () { });
 
 export function initPosts() {
-	var els = document.querySelectorAll('.post-content[data-href]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			pjaxLoadUrl(e.currentTarget.getAttribute('data-href'), true);
-		});
-	}
 	initYeahButton(document);
 	initSpoilers();
 }
@@ -150,8 +141,8 @@ window.exitUserSettings = exitUserSettings;
 
 document.addEventListener('DOMContentLoaded', function () {
 	pjaxInit({
-		elements: 'a[data-pjax]',
-		selectors: ['title', '#body']
+		elements: '[data-pjax]',
+		selectors: ['#body']
 	});
 	if (pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(1);

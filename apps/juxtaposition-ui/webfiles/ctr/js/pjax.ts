@@ -34,7 +34,7 @@ export function pjaxInit(init: PjaxOptions): void {
 }
 
 function pjaxClick(this: HTMLElement, e: Event): boolean {
-	var url = this.getAttribute('href')!;
+	var url = this.getAttribute('href') ?? this.getAttribute('data-href')!;
 	pjaxLoadUrl(url, true);
 
 	e.preventDefault();
