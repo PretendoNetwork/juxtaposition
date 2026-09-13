@@ -101,7 +101,7 @@ export function pjaxSetUrl(url: string, pushHistory: boolean): void {
 	}
 
 	href = url;
-	if (window.isDebugCave) {
+	if (window.isDebugCave || window.isDebugPortal) {
 		// for browser debugging. this doesn't work on console
 		window.location.hash = url;
 	}

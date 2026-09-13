@@ -1,5 +1,6 @@
 /* Debugging */
 if (typeof wiiu === 'undefined') {
+	window.isDebugPortal = true;
 	window.wiiu = {
 		gamepad: {
 			update: function () {

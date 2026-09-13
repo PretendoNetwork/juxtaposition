@@ -1,5 +1,5 @@
 import { GET } from '@common/js/xhr';
-import { pjaxSetUrl, pjaxRefresh } from '@/js/pjax';
+import { pjaxSetUrl, pjaxRefresh } from '@common/js/pjax';
 import { initPosts } from '@/js/juxt';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {

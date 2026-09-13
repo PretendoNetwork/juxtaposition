@@ -1,5 +1,6 @@
 import { GET } from '@common/js/xhr';
-import { initMorePosts, initPosts, pjax } from '@/js/juxt';
+import { initMorePosts, initPosts } from '@/js/juxt';
+import { pjaxRefresh, pjaxSetUrl } from '@common/js/pjax';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {
 	/* Note: because we use ev.target here, the nav-tab can not have any HTML elements inside it.
@@ -29,10 +30,10 @@ function navTabsClick(this: HTMLElement, ev: Event): void {
 		}
 
 		target.innerHTML = xhr.responseText;
-		window.history.pushState({ url: href, title: '', scrollPos: [0, 0] }, '', href);
+		pjaxSetUrl(href, true);
 		initPosts();
 		initMorePosts();
-		pjax.refresh();
+		pjaxRefresh(target);
 		wiiuBrowser.showLoadingIcon(false);
 	});
 }

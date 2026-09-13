@@ -1,5 +1,5 @@
 import '@/js/polyfills';
-import Pjax from 'pjax';
+import { pjaxInit, pjaxLoadUrl } from '@common/js/pjax';
 import { initLocalStorage, initSessionStorage } from '@common/js/storage';
 import { GET, POST } from '@common/js/xhr';
 import { empathyPostById } from '@common/js/api';
@@ -9,7 +9,6 @@ import { initNavTabs } from '@/js/components/ui/PortalNavTabs';
 import { initSearchForm } from '@/js/components/ui/PortalSearchForm';
 import { initNavBar } from '@/js/components/PortalNavBar';
 
-export var pjax;
 setInterval(checkForUpdates, 30000);
 setInterval(input, 100);
 initLocalStorage();
@@ -60,15 +59,6 @@ function initYeah() {
 	}
 }
 export function initPosts() {
-	var els = document.querySelectorAll('.post-content[data-href]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
-		});
-	}
 	initYeah();
 	initSpoilers();
 }
@@ -196,47 +186,29 @@ function initAll() {
 	initSounds();
 	initNewPost();
 	checkForUpdates();
-	pjax.refresh();
 }
 
 console.debug('Document initialized:' + window.location.href);
-document.addEventListener('pjax:send', function () {
-	console.debug('Event: pjax:send', arguments);
+document.addEventListener('PjaxRequest', function () {
+	console.debug('Event: PjaxRequest', arguments);
 	wiiuBrowser.showLoadingIcon(true);
 });
-document.addEventListener('pjax:complete', function () {
-	console.debug('Event: pjax:complete', arguments);
-	wiiuBrowser.showLoadingIcon(false);
-});
-document.addEventListener('pjax:error', function (e) {
+document.addEventListener('PjaxError', function (e) {
 	wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send the error code and what you were doing in #support');
 	console.debug(e);
 	wiiuBrowser.showLoadingIcon(false);
 });
-document.addEventListener('pjax:success', function () {
-	console.debug('Event: pjax:success', arguments);
+document.addEventListener('PjaxDone', function () {
+	console.debug('Event: PjaxDone', arguments);
 	wiiuBrowser.showLoadingIcon(false);
-	var back = document.getElementById('nav-menu-back');
-	var close = document.getElementById('nav-menu-exit');
-	if (wiiuBrowser.canHistoryBack()) {
-		back.classList.remove('selected');
-		back.classList.remove('none');
-		close.classList.add('none');
-	} else {
-		back.classList.remove('selected');
-		back.classList.add('none');
-		close.classList.remove('none');
-	}
 	initAll();
 });
 document.addEventListener('DOMContentLoaded', function () {
-	pjax = new Pjax({
-		elements: 'a[data-pjax]' +
-			'',
-		selectors: ['title', '#body'],
-		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
+	pjaxInit({
+		elements: '[data-pjax]',
+		selectors: ['#body', '#nav-menu']
 	});
-	console.debug('Pjax initialized.', pjax);
+	console.debug('Pjax initialized.');
 	initAll();
 	stopLoading();
 });
@@ -332,7 +304,7 @@ window.stopLoading = stopLoading;
 
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
-	pjax.loadUrl('/posts/' + id + '/report');
+	pjaxLoadUrl('/posts/' + id + '/report', true);
 }
 window.reportPost = reportPost;
 
@@ -355,12 +327,16 @@ function checkForUpdates() {
 	});
 }
 
+var gamepadLast = 0;
 function input() {
 	wiiu.gamepad.update();
 	if (wiiu.gamepad.isDataValid === 0) {
 		return;
 	}
-	switch (wiiu.gamepad.hold) {
+	var trigger = wiiu.gamepad.hold & ~gamepadLast;
+	gamepadLast = wiiu.gamepad.hold;
+
+	switch (trigger) {
 		case 12:
 			return wiiuBrowser.lockUserOperation(false);
 		case 4096:

@@ -1,3 +1,5 @@
+import { pjaxBack, pjaxCanGoBack } from '@common/js/pjax';
+
 // TODO needs refactor
 export function exit(): void {
 	// @ts-expect-error wrong upstream types
@@ -7,7 +9,7 @@ export function exit(): void {
 
 // TODO needs refactor
 export function back(): void {
-	if (!wiiuBrowser.canHistoryBack()) {
+	if (!pjaxCanGoBack()) {
 		return;
 	}
 
@@ -16,6 +18,6 @@ export function back(): void {
 	document.querySelector('[data-navbar-back]')!.classList.add('selected');
 	// @ts-expect-error wrong upstream types
 	wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
-	history.back();
+	pjaxBack();
 	document.querySelector<HTMLElement>('[data-navbar]')!.style.display = 'block';
 }
