@@ -29,6 +29,8 @@ export function pjaxInit(init: PjaxOptions): void {
 	PjaxRequest.initEvent('PjaxRequest', true, true);
 	PjaxDone.initEvent('PjaxDone', true, true);
 	PjaxError.initEvent('PjaxError', true, true);
+
+	pjaxRefresh(document);
 }
 
 function pjaxClick(this: HTMLElement, e: Event): boolean {
@@ -39,12 +41,10 @@ function pjaxClick(this: HTMLElement, e: Event): boolean {
 	return false;
 }
 
-export function pjaxRefresh(): void {
-	var els = document.querySelectorAll(elements);
-
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', pjaxClick);
-	}
+export function pjaxRefresh(fragment: Element | Document): void {
+	fragment.querySelectorAll(elements).forEach((el) => {
+		el.addEventListener('click', pjaxClick);
+	});
 }
 
 export function pjaxLoadUrl(url: string, pushHistory: boolean): void {
@@ -79,9 +79,8 @@ function pjaxParseDom(xhr: XMLHttpRequest): void {
 
 		// avoid an outerHTML roundtrip, which would serialise it all
 		oldElement.parentNode?.replaceChild(document.adoptNode(newElement), oldElement);
+		pjaxRefresh(newElement);
 	}
-
-	pjaxRefresh();
 }
 
 export function pjaxCanGoBack(): boolean {

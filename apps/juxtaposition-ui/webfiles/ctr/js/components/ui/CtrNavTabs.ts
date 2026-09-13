@@ -32,7 +32,7 @@ function navTabsClick(this: HTMLElement, ev: Event): void {
 		target.innerHTML = xhr.responseText;
 		pjaxSetUrl(href, true);
 		initPosts();
-		pjaxRefresh();
+		pjaxRefresh(target);
 		cave.transition_end();
 	});
 }
