@@ -14,6 +14,9 @@ setInterval(checkForUpdates, 30000);
 initLocalStorage();
 initSessionStorage();
 
+// Disable the browser native back-forward handling
+cave.toolbar_enableBackBtnFunc(false);
+
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);
 cave.toolbar_setCallback(2, function () {
