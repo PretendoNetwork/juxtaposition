@@ -7,7 +7,8 @@
 		"esModuleInterop": true,
 		"moduleResolution": "bundler",
 		"skipLibCheck": true,
-		"baseUrl": ".",
+		"rootDir": "..",
+		"rootDirs": [".", "../common"],
 		"outDir": "dist",
 		"allowJs": true,
 		"target": "es2022",
@@ -19,11 +20,16 @@
 			"@pretendonetwork/wiiu-browser-types",
 			"@pretendonetwork/wiiu-dialog-types",
 			"@pretendonetwork/wiiu-error-viewer-types",
-			"@pretendonetwork/wiiu-sound-types"
+			"@pretendonetwork/wiiu-sound-types",
+			"@pretendonetwork/wiiu-local-storage-types",
+			"@pretendonetwork/wiiu-session-storage-types"
 		],
 		"paths": {
 			"@/*": [
 				"./*"
+			],
+			"@common/*": [
+				"../common/*"
 			]
 		}
 	},

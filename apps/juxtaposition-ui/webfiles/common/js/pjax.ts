@@ -1,4 +1,5 @@
-import { GET } from './xhr';
+import { GET } from '@common/js/xhr';
+import { sessionStorageGet, sessionStorageSet } from '@common/js/storage';
 
 var elements: string = '';
 var selectors: string[] = [];
@@ -8,6 +9,7 @@ var href: string = '';
 var pjaxHistory: string[] = [];
 var PjaxRequest = document.createEvent('Event');
 var PjaxDone = document.createEvent('Event');
+var PjaxError = document.createEvent('Event');
 
 export type PjaxOptions = {
 	elements: string;
@@ -19,24 +21,30 @@ export function pjaxInit(init: PjaxOptions): void {
 	selectors = init.selectors;
 	href = document.location.pathname;
 
+	pjaxHistory = sessionStorageGet('pjax-history') ?? [];
+	window.addEventListener('pagehide', (_e) => {
+		sessionStorageSet('pjax-history', pjaxHistory.concat(href));
+	});
+
 	PjaxRequest.initEvent('PjaxRequest', true, true);
 	PjaxDone.initEvent('PjaxDone', true, true);
+	PjaxError.initEvent('PjaxError', true, true);
+
+	pjaxRefresh(document);
 }
 
 function pjaxClick(this: HTMLElement, e: Event): boolean {
-	var url = this.getAttribute('href')!;
+	var url = this.getAttribute('href') ?? this.getAttribute('data-href')!;
 	pjaxLoadUrl(url, true);
 
 	e.preventDefault();
 	return false;
 }
 
-export function pjaxRefresh(): void {
-	var els = document.querySelectorAll(elements);
-
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', pjaxClick);
-	}
+export function pjaxRefresh(fragment: Element | Document): void {
+	fragment.querySelectorAll(elements).forEach((el) => {
+		el.addEventListener('click', pjaxClick);
+	});
 }
 
 export function pjaxLoadUrl(url: string, pushHistory: boolean): void {
@@ -55,6 +63,7 @@ export function pjaxLoadUrl(url: string, pushHistory: boolean): void {
 function pjaxParseDom(xhr: XMLHttpRequest): void {
 	var response = xhr.responseText;
 	if (!response) {
+		document.dispatchEvent(PjaxError);
 		return;
 	}
 
@@ -70,9 +79,8 @@ function pjaxParseDom(xhr: XMLHttpRequest): void {
 
 		// avoid an outerHTML roundtrip, which would serialise it all
 		oldElement.parentNode?.replaceChild(document.adoptNode(newElement), oldElement);
+		pjaxRefresh(newElement);
 	}
-
-	pjaxRefresh();
 }
 
 export function pjaxCanGoBack(): boolean {
@@ -93,7 +101,7 @@ export function pjaxSetUrl(url: string, pushHistory: boolean): void {
 	}
 
 	href = url;
-	if (window.isDebugCave) {
+	if (window.isDebugCave || window.isDebugPortal) {
 		// for browser debugging. this doesn't work on console
 		window.location.hash = url;
 	}

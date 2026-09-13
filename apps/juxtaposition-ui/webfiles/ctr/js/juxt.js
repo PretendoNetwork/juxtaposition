@@ -1,15 +1,21 @@
-import './polyfills';
-import { initCheckboxes } from './controls/checkbox';
-import { initClientTabs } from './controls/ctabs';
-import { initNewPostView } from './new-post-view';
-import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
-import { initPostPageView, initYeahButton } from './post';
-import { initToolbarConfigs } from './toolbar';
-import { GET, POST } from './xhr';
-import { initNavTabs } from './components/ui/CtrNavTabs';
-import { initSearchForm } from './components/ui/CtrSearchForm';
+import '@/js/polyfills';
+import { initLocalStorage, initSessionStorage } from '@common/js/storage';
+import { GET, POST } from '@common/js/xhr';
+import { initCheckboxes } from '@/js/controls/checkbox';
+import { initClientTabs } from '@/js/controls/ctabs';
+import { initNewPostView } from '@/js/new-post-view';
+import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl } from '@common/js/pjax';
+import { initPostPageView, initYeahButton } from '@/js/post';
+import { initToolbarConfigs } from '@/js/toolbar';
+import { initNavTabs } from '@/js/components/ui/CtrNavTabs';
+import { initSearchForm } from '@/js/components/ui/CtrSearchForm';
 
 setInterval(checkForUpdates, 30000);
+initLocalStorage();
+initSessionStorage();
+
+// Disable the browser native back-forward handling
+cave.toolbar_enableBackBtnFunc(false);
 
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);
@@ -33,15 +39,6 @@ cave.toolbar_setCallback(5, function () {
 cave.toolbar_setCallback(8, function () { });
 
 export function initPosts() {
-	var els = document.querySelectorAll('.post-content[data-href]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			pjaxLoadUrl(e.currentTarget.getAttribute('data-href'), true);
-		});
-	}
 	initYeahButton(document);
 	initSpoilers();
 }
@@ -92,7 +89,6 @@ function initAll() {
 	initSearchForm();
 	checkForUpdates();
 	initToolbarConfigs();
-	pjaxRefresh();
 }
 
 function checkForUpdates() {
@@ -145,9 +141,14 @@ window.exitUserSettings = exitUserSettings;
 
 document.addEventListener('DOMContentLoaded', function () {
 	pjaxInit({
-		elements: 'a[data-pjax]',
-		selectors: ['title', '#body']
+		elements: '[data-pjax]',
+		selectors: ['#body']
 	});
+	if (pjaxCanGoBack()) {
+		cave.toolbar_setButtonType(1);
+	} else {
+		cave.toolbar_setButtonType(0);
+	}
 	console.debug('Pjax initialized.');
 	initAll();
 	stopLoading();
@@ -163,6 +164,11 @@ document.addEventListener('PjaxDone', function () {
 	} else {
 		cave.toolbar_setButtonType(0);
 	}
+	cave.requestGc();
+	cave.transition_end();
+});
+document.addEventListener('PjaxError', function () {
+	cave.error_callErrorViewer(15_5000);
 	cave.requestGc();
 	cave.transition_end();
 });

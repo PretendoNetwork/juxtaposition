@@ -103,6 +103,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 					<div
 						className="post-content"
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
+						data-pjax="#body"
 					>
 						{post.body ? <p className="post-content-text">{post.body}</p> : null}
 						<PortalPostScreenshot post={post}></PortalPostScreenshot>

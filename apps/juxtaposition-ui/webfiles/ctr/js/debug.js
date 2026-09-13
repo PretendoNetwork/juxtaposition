@@ -1,4 +1,4 @@
-import { initDebugToolbar, caveFuncs } from './debug_toolbar';
+import { initDebugToolbar, caveFuncs } from '@/js/debug_toolbar';
 
 if (typeof cave === 'undefined') {
 	initDebugToolbar();
@@ -537,6 +537,10 @@ if (typeof cave === 'undefined') {
 
 		boss_clearNewArrival: function () {
 			console.log('cave.boss_clearNewArrival()');
+		},
+		ls_clear: function () {
+			console.log('cave.ls_clear()');
+			sessionStorage.clear();
 		},
 		lls_clear: function () {
 			console.log('cave.lls_clear()');

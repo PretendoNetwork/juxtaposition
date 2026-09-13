@@ -74,11 +74,16 @@ export default defineConfig([
 		target: 'chrome4',
 		format: 'iife',
 
+		define: {
+			platform: '\'ctr\''
+		},
+
 		esbuildOptions(options): void {
 			options.external = ['/fonts/*'];
 			options.tsconfig = './webfiles/ctr/tsconfig.json';
 		},
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			sassPlugin({ type: 'css' }),
 			oxipng({ loader: 'dataurl' }),
 			spritesmith({
@@ -121,12 +126,17 @@ export default defineConfig([
 		target: 'chrome20',
 		format: 'iife',
 
+		define: {
+			platform: '\'portal\''
+		},
+
 		loader: {
 			'.inline.svg': 'dataurl'
 		},
 		external: ['/images/*', '/fonts/*'],
 		tsconfig: './webfiles/portal/tsconfig.json',
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			sassPlugin({ type: 'css' }),
 			copy({
 				resolveFrom: 'cwd',
@@ -165,11 +175,16 @@ export default defineConfig([
 		target: browserslist(),
 		format: 'iife',
 
+		define: {
+			platform: '\'web\''
+		},
+
 		esbuildOptions(options): void {
 			options.external = ['/images/*'];
 			options.tsconfig = './webfiles/web/tsconfig.json';
 		},
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			sassPlugin({ type: 'css' }),
 			copy({
 				resolveFrom: 'cwd',

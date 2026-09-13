@@ -87,7 +87,7 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 						)
 					: null }
 
-				<div className="post-content" data-href={!props.isReply ? `/posts/${post.id}` : undefined}>
+				<div className="post-content" data-href={!props.isReply ? `/posts/${post.id}` : undefined} data-pjax="#body">
 					{post.body
 						? (
 								<p className="post-content-text">{post.body}</p>

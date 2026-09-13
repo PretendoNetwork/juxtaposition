@@ -1,12 +1,15 @@
-import { popupItemCb, setupPopup } from './menus';
-import { initReportForm, reportPost } from './reports';
-import { POST, GET } from './xhr';
-import { deletePostById, spoilerPostById, unspoilerPostById } from './api';
-import { initYeahButton } from './post';
-import { initSearchForm } from './components/ui/WebSearchForm';
-import { Toast, initToast } from './toast';
+import { initLocalStorage, initSessionStorage } from '@common/js/storage';
+import { POST, GET } from '@common/js/xhr';
+import { deletePostById, spoilerPostById, unspoilerPostById } from '@common/js/api';
+import { popupItemCb, setupPopup } from '@/js/menus';
+import { initReportForm, reportPost } from '@/js/reports';
+import { initYeahButton } from '@/js/post';
+import { initSearchForm } from '@/js/components/ui/WebSearchForm';
+import { Toast, initToast } from '@/js/toast';
 
 setInterval(checkForUpdates, 30000);
+initLocalStorage();
+initSessionStorage();
 
 function initNavBar() {
 	const els = document.querySelectorAll('#nav-menu > li');

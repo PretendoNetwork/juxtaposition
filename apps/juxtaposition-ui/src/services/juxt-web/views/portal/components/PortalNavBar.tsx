@@ -10,8 +10,8 @@ export type NavBarProps = {
 export function PortalNavBar(props: NavBarProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
-	const selectedClasses = (id: number): string =>
-		id === props.selection ? 'selected' : '';
+	const selectedClasses = (id: number): string | undefined =>
+		id === props.selection ? 'selected' : undefined;
 
 	return (
 		<menu id="nav-menu" data-navbar>

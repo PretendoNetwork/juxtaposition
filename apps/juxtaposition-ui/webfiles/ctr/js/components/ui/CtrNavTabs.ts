@@ -1,6 +1,6 @@
-import { GET } from '../../xhr';
-import { pjaxSetUrl, pjaxRefresh } from '../../pjax';
-import { initPosts } from '../../juxt';
+import { GET } from '@common/js/xhr';
+import { pjaxSetUrl, pjaxRefresh } from '@common/js/pjax';
+import { initPosts } from '@/js/juxt';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {
 	/* Note: because we use ev.target here, the nav-tab can not have any HTML elements inside it.
@@ -32,7 +32,7 @@ function navTabsClick(this: HTMLElement, ev: Event): void {
 		target.innerHTML = xhr.responseText;
 		pjaxSetUrl(href, true);
 		initPosts();
-		pjaxRefresh();
+		pjaxRefresh(target);
 		cave.transition_end();
 	});
 }
