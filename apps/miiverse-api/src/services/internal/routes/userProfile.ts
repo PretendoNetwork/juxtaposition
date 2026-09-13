@@ -332,6 +332,9 @@ userProfileRouter.post({
 		if (existingFollow) {
 			return mapFollowUser('follow', targetUserPid, targetFollowCount);
 		}
+		if (targetUserPid === currentUserPid) {
+			throw errors.for('bad_request');
+		}
 
 		await db.userFollow.create({
 			data: {

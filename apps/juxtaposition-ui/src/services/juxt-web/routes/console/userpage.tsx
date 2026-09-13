@@ -3,7 +3,7 @@ import multer from 'multer';
 import { z } from 'zod';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebUserMissingPage, WebUserPageView } from '@/services/juxt-web/views/web/userPageView';
-import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { WebUserPageFollowingView } from '@/services/juxt-web/views/web/userPageFollowingView';
@@ -15,12 +15,14 @@ import { CtrUserSettingsView } from '@/services/juxt-web/views/ctr/userSettingsV
 import { PortalUserMissingPage, PortalUserPageView } from '@/services/juxt-web/views/portal/userPageView';
 import { CtrUserMissingPage, CtrUserPageView } from '@/services/juxt-web/views/ctr/userPageView';
 import { wrapApi } from '@/api/errors';
+import { buildListLinks } from '@/services/juxt-web/views/web/listView';
 import type { Request, Response } from 'express';
 import type { UserPageFollowingViewProps } from '@/services/juxt-web/views/web/userPageFollowingView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { UserMissingPageViewProps, UserPageViewProps } from '@/services/juxt-web/views/web/userPageView';
 import type { UserSettingsViewProps } from '@/services/juxt-web/views/web/userSettingsView';
 import type { Community, ShallowUser } from '@/api/generated';
+
 export const userPageRouter = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
@@ -221,7 +223,7 @@ async function userPage(req: Request, res: Response, userID: number): Promise<an
 	const link = isSelf ? '/users/me/' : `/users/${userID}/`;
 
 	const postListProps: PostListViewProps = {
-		...buildPostListLinks(link, offset, postPage.items.length),
+		...buildListLinks(link, offset, postPage.items.length),
 		posts: postPage.items,
 		userContent: self?.content ?? null
 	};
@@ -305,7 +307,7 @@ async function userRelations(req: Request, res: Response, userID: number): Promi
 	if (params.type === 'yeahs') {
 		const posts = (await req.api.posts.list({ empathy_by: userID, offset }))?.data.items ?? [];
 		const postListProps: PostListViewProps = {
-			...buildPostListLinks(link + 'yeahs', offset, posts.length),
+			...buildListLinks(link + 'yeahs', offset, posts.length),
 			posts,
 			userContent: self?.content ?? null
 		};

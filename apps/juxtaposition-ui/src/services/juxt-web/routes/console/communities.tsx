@@ -11,7 +11,7 @@ import { CtrSubCommunityView } from '@/services/juxt-web/views/ctr/subCommunityV
 import { WebCommunityView } from '@/services/juxt-web/views/web/communityView';
 import { PortalCommunityView } from '@/services/juxt-web/views/portal/communityView';
 import { CtrCommunityView } from '@/services/juxt-web/views/ctr/communityView';
-import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { zodFallback } from '@/util';
@@ -21,6 +21,7 @@ import { getShotMode, isPostingAllowed } from '@/services/juxt-web/routes/permis
 import { getAllFromList } from '@/api/helpers';
 import { WebSubCommunityView } from '@/services/juxt-web/views/web/subCommunityView';
 import { WebNewPostPage } from '@/services/juxt-web/views/web/newPostView';
+import { buildListLinks } from '@/services/juxt-web/views/web/listView';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
@@ -212,7 +213,7 @@ communitiesRouter.get('/:communityID/:type', async function (req, res) {
 	const link = `/titles/${params.communityID}/${params.type}`;
 
 	const postListProps: PostListViewProps = {
-		...buildPostListLinks(link, offset, posts.length),
+		...buildListLinks(link, offset, posts.length),
 		posts,
 		userContent: self?.content ?? null
 	};

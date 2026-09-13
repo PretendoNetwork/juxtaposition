@@ -7,13 +7,15 @@ import { humanDate, humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
 import type { EmpathyNotification, FollowNotification, LimitedFromPostingNotification, Notification, PostDeletedNotification, ReplyNotification, ShallowUser, SystemNotification } from '@/api/generated';
+import type { ListViewLinks, ListViewRemaining } from '@/services/juxt-web/views/web/listView';
 
 export type NotificationWrapperViewProps = {
 	children?: ReactNode;
 };
 
-export type NotificationListViewProps = {
+export type NotificationListItemsProps = ListViewLinks & ListViewRemaining & {
 	notifications: Notification[];
+	remainingUnreads: number;
 };
 
 export type NotificationItemProps = {
@@ -286,16 +288,26 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	return <div>Invalid notification type!</div>;
 }
 
-export function WebNotificationListView(props: NotificationListViewProps): ReactNode {
+export function WebNotificationListItems(props: NotificationListItemsProps): ReactNode {
 	return (
-		<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
+		<>
 			{props.notifications.length === 0 ? <li style={{ borderBottom: 'none' }}><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<li key={i}>
 					<WebNotificationItem notification={notification} />
 				</li>
 			))}
-		</ul>
+			{props.remaining > 0
+				? (
+						<div id="wrapper" className="bottom">
+							<button id="load-more" data-href={props.nextLink}>
+								<T k="global.load_more" />
+								{props.remainingUnreads > 0 ? ` (${props.remainingUnreads})` : null}
+							</button>
+						</div>
+					)
+				: null}
+		</>
 	);
 }
 
@@ -308,7 +320,9 @@ export function WebNotificationWrapperView(props: NotificationWrapperViewProps):
 			<WebNavBar selection={4} />
 			<div id="toast"></div>
 			<WebWrapper>
-				{props.children}
+				<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
+					{props.children}
+				</ul>
 			</WebWrapper>
 			<WebReportModalView />
 		</WebRoot>
