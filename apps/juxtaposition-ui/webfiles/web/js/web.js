@@ -2,7 +2,7 @@ import { popupItemCb, setupPopup } from './menus';
 import { initReportForm, reportPost } from './reports';
 import { POST, GET } from './xhr';
 import { deletePostById, spoilerPostById, unspoilerPostById } from './api';
-import { initYeahButton } from './post';
+import { initYeahButton, initSpoilers } from './post';
 import { initSearchForm } from './components/ui/WebSearchForm';
 import { Toast, initToast } from './toast';
 
@@ -115,6 +115,7 @@ function initPopupMenus() {
 
 function initPosts() {
 	initYeahButton(document);
+	initSpoilers(document);
 	initPopupMenus();
 }
 function initMorePosts() {

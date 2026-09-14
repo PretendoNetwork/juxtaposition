@@ -299,6 +299,10 @@ header>.selected svg {
   cursor: pointer;
 }
 
+.spoiler .post-content {
+  display: none;
+}
+
 .post-content>p {
   margin-top: 0;
   margin-bottom: 0.5em;
@@ -324,6 +328,9 @@ header>.selected svg {
   justify-content: space-between;
   user-select: none;
   margin-left: 74px;
+}
+.spoiler .post-buttons-wrapper {
+  display: none;
 }
 
 .post-buttons-wrapper>.post-button {
