@@ -15,7 +15,7 @@ export function CtrPostListView(props: PostListViewProps): ReactNode {
 				<CtrPostView key={v.id} post={v} userContent={props.userContent} />
 			))}
 			<div className="button-wrapper center">
-				<a className="load-more" href={props.nextPageLink} data-pjax="#body"><T k="global.more" /></a>
+				<a className="load-more" href={props.nextPageLink} data-pjax="#body"><T k="global.more_posts" /></a>
 			</div>
 		</>
 	);

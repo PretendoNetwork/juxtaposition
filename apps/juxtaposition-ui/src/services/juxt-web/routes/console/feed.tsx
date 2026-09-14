@@ -3,11 +3,12 @@ import { z } from 'zod';
 import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
 import { WebGlobalFeedView, WebPeopleFeedView, WebPersonalFeedView } from '@/services/juxt-web/views/web/feed';
-import { buildPostListLinks, WebPostListView } from '@/services/juxt-web/views/web/postList';
+import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { CtrGlobalFeedView, CtrPeopleFeedView, CtrPersonalFeedView } from '@/services/juxt-web/views/ctr/feed';
 import { CtrPostListView } from '@/services/juxt-web/views/ctr/postList';
 import { PortalGlobalFeedView, PortalPeopleFeedView, PortalPersonalFeedView } from '@/services/juxt-web/views/portal/feed';
 import { PortalPostListView } from '@/services/juxt-web/views/portal/postList';
+import { buildListLinks } from '@/services/juxt-web/views/web/listView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
 export const feedRouter = express.Router();
@@ -30,7 +31,7 @@ feedRouter.get('/', async function (req, res) {
 	const posts = postPage.data.items;
 
 	const postListProps: PostListViewProps = {
-		...buildPostListLinks('/feed', offset, posts.length),
+		...buildListLinks('/feed', offset, posts.length),
 		posts,
 		userContent
 	};
@@ -80,7 +81,7 @@ feedRouter.get('/people', async function (req, res) {
 	const posts = postPage.data.items;
 
 	const postListProps: PostListViewProps = {
-		...buildPostListLinks('/feed/people', offset, posts.length),
+		...buildListLinks('/feed/people', offset, posts.length),
 		posts,
 		userContent
 	};
@@ -130,7 +131,7 @@ feedRouter.get('/all', async function (req, res) {
 	const posts = postPage.data.items;
 
 	const postListProps: PostListViewProps = {
-		...buildPostListLinks('/feed/all', offset, posts.length),
+		...buildListLinks('/feed/all', offset, posts.length),
 		posts,
 		userContent
 	};

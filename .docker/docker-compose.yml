@@ -11,6 +11,7 @@ services:
   postgres:
     image: postgres:18
     restart: unless-stopped
+    command: "-c log_statement=all"
     ports:
       - "5432:5432"
     environment:

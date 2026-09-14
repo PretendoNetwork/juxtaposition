@@ -430,6 +430,9 @@ header>.selected svg {
   width: 100%;
   margin-bottom: 1em;
 }
+#news-list-content #load-more {
+  margin-top: 1em; // lol, lmao
+}
 
 #toast,
 iframe {
@@ -1485,10 +1488,6 @@ li.reports .button-spacer {
     stroke: var(--theme-light);
   }
 
-  #load-more {
-    margin-bottom: 1em;
-  }
-
   #title {
     color: var(--text);
     width: 100vw;
@@ -1823,10 +1822,6 @@ button.report {
 
   header>.selected>svg {
     stroke: var(--theme-light)
-  }
-
-  #load-more {
-    margin-bottom: 1em;
   }
 
   #title {

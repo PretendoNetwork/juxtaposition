@@ -209,6 +209,7 @@ function initAll() {
 console.debug('Document initialized:' + window.location.href);
 document.addEventListener('DOMContentLoaded', function () {
 	initAll();
+	checkForUpdates();
 });
 
 function follow(el) {
