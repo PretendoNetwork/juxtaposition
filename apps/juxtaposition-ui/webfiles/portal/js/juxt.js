@@ -2,7 +2,7 @@ import './polyfills';
 import Pjax from 'pjax';
 import { GET, POST } from './xhr';
 import { empathyPostById } from './api';
-import { initPostPageView } from './post';
+import { initPostPageView, initSpoilers } from './post';
 import { initNavTabs } from './components/ui/PortalNavTabs';
 import { initSearchForm } from './components/ui/PortalSearchForm';
 import { initNavBar } from './components/PortalNavBar';
@@ -67,7 +67,7 @@ export function initPosts() {
 		});
 	}
 	initYeah();
-	initSpoilers();
+	initSpoilers(document);
 }
 export function initMorePosts() {
 	var els = document.querySelectorAll('.load-more[data-href]');
@@ -177,19 +177,6 @@ function initScreenShots() {
 function initNewPost() {
 	initPostEmotion();
 	initScreenShots();
-}
-function initSpoilers() {
-	var els = document.querySelectorAll('button[data-post-id]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			document.getElementById('post-' + el.getAttribute('data-post-id')).classList.remove('spoiler');
-			el.outerHTML = '';
-		});
-	}
 }
 
 function initAll() {

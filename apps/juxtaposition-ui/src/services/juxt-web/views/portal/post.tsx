@@ -102,7 +102,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 
 					{ post.isSpoiler
 						? (
-								<div className="spoiler-wrapper">
+								<div className="spoiler-wrapper" id={`spoiler-${post.id}`}>
 									<button data-post-id={post.id}><T k="post.show_spoiler" /></button>
 								</div>
 							)
