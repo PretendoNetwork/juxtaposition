@@ -38,7 +38,10 @@ userSettingsRouter.post({
 			countryVisible: z.boolean(),
 			birthdayVisible: z.boolean(),
 			gameSkillVisible: z.boolean(),
-			comment: z.string().nullable()
+			comment: z.string().nullable(),
+			notifyEmpathy: z.boolean(),
+			notifyFollows: z.boolean(),
+			notifyReply: z.boolean()
 		}),
 		response: resultSchema
 	},
@@ -55,6 +58,9 @@ userSettingsRouter.post({
 		data.isBirthdayVisible = body.birthdayVisible;
 		data.isGameSkillVisible = body.gameSkillVisible;
 		data.profileComment = body.comment ? body.comment : null;
+		data.notifyEmpathy = body.notifyEmpathy;
+		data.notifyFollows = body.notifyFollows;
+		data.notifyReply = body.notifyReply;
 
 		await db.userSetting.update({
 			where: {

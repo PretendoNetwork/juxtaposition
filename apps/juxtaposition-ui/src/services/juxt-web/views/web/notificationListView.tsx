@@ -6,14 +6,16 @@ import { T } from '@/services/juxt-web/views/common/components/T';
 import { humanDate, humanFromNow } from '@/util';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
-import type { FollowNotification, LimitedFromPostingNotification, Notification, PostDeletedNotification, ShallowUser, SystemNotification } from '@/api/generated';
+import type { EmpathyNotification, FollowNotification, LimitedFromPostingNotification, Notification, PostDeletedNotification, ReplyNotification, ShallowUser, SystemNotification } from '@/api/generated';
+import type { ListViewLinks, ListViewRemaining } from '@/services/juxt-web/views/web/listView';
 
 export type NotificationWrapperViewProps = {
 	children?: ReactNode;
 };
 
-export type NotificationListViewProps = {
+export type NotificationListItemsProps = ListViewLinks & ListViewRemaining & {
 	notifications: Notification[];
+	remainingUnreads: number;
 };
 
 export type NotificationItemProps = {
@@ -59,6 +61,86 @@ function FollowNotificationView(props: NotificationItemTypeProps<FollowNotificat
 							components={{
 								follower_one: <NickName user={users[0]?.user} />,
 								follower_two: <NickName user={users[1]?.user} />
+							}}
+						/>
+					</span>
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
+					</span>
+				</span>
+			</a>
+		</div>
+	);
+}
+
+function EmpathyNotificationView(props: NotificationItemTypeProps<EmpathyNotification>): ReactNode {
+	const url = useUrl();
+	const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? 'Nobody'}</span>;
+	const users = [...props.notif.content.users].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+	const latestUser = users[0];
+	const yeahedPost = props.notif.content.postId;
+
+	let i18nKey: TranslationKey = 'notifications.new_empathy.message/one';
+	if (users.length === 2) {
+		i18nKey = 'notifications.new_empathy.message/two';
+	}
+	if (users.length === 3) {
+		i18nKey = 'notifications.new_empathy.message/three';
+	}
+	if (users.length > 3) {
+		i18nKey = 'notifications.new_empathy.message/multiple';
+	}
+
+	return (
+		<div className="hover">
+			<a href={`/posts/${yeahedPost}`} className="icon-container notify">
+				<img src={url.cdn(`/mii/${latestUser.pid}/normal_face.png`)} className="icon" />
+			</a>
+			<a className="body" href={`/posts/${yeahedPost}`}>
+				<span className="text">
+					<span className="link">
+						<T
+							k={i18nKey}
+							values={{
+								count: users.length,
+								count_other: Math.max(0, users.length - 2)
+							}}
+							components={{
+								empathy_one: <NickName user={users[0]?.user} />,
+								empathy_two: <NickName user={users[1]?.user} />
+							}}
+						/>
+					</span>
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
+					</span>
+				</span>
+			</a>
+		</div>
+	);
+}
+
+function ReplyNotificationView(props: NotificationItemTypeProps<ReplyNotification>): ReactNode {
+	const url = useUrl();
+	const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? 'Nobody'}</span>;
+	const { pid, user, parent } = props.notif.content;
+
+	const i18nKey: TranslationKey = 'notifications.new_reply';
+
+	return (
+		<div className="hover">
+			<a href={`/posts/${parent}`} className="icon-container notify">
+				<img src={url.cdn(`/mii/${pid}/normal_face.png`)} className="icon" />
+			</a>
+			<a className="body" href={`/posts/${parent}`}>
+				<span className="text">
+					<span className="link">
+						<T
+							k={i18nKey}
+							components={{
+								reply_author: <NickName user={user} />
 							}}
 						/>
 					</span>
@@ -183,6 +265,14 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 		return <FollowNotificationView data={props.notification} notif={notif} />;
 	}
 
+	if (notif.type == 'empathy') {
+		return <EmpathyNotificationView data={props.notification} notif={notif} />;
+	}
+
+	if (notif.type === 'reply') {
+		return <ReplyNotificationView data={props.notification} notif={notif} />;
+	}
+
 	if (notif.type === 'postDeleted') {
 		return <PostDeletedNotificationView data={props.notification} notif={notif} />;
 	}
@@ -198,16 +288,26 @@ function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	return <div>Invalid notification type!</div>;
 }
 
-export function WebNotificationListView(props: NotificationListViewProps): ReactNode {
+export function WebNotificationListItems(props: NotificationListItemsProps): ReactNode {
 	return (
-		<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
+		<>
 			{props.notifications.length === 0 ? <li style={{ borderBottom: 'none' }}><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<li key={i}>
 					<WebNotificationItem notification={notification} />
 				</li>
 			))}
-		</ul>
+			{props.remaining > 0
+				? (
+						<div id="wrapper" className="bottom">
+							<button id="load-more" data-href={props.nextLink}>
+								<T k="global.load_more" />
+								{props.remainingUnreads > 0 ? ` (${props.remainingUnreads})` : null}
+							</button>
+						</div>
+					)
+				: null}
+		</>
 	);
 }
 
@@ -220,7 +320,9 @@ export function WebNotificationWrapperView(props: NotificationWrapperViewProps):
 			<WebNavBar selection={4} />
 			<div id="toast"></div>
 			<WebWrapper>
-				{props.children}
+				<ul className="list-content-with-icon-and-text arrow-list" id="news-list-content">
+					{props.children}
+				</ul>
 			</WebWrapper>
 			<WebReportModalView />
 		</WebRoot>

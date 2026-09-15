@@ -28,6 +28,23 @@ export function initNewPostView(): void {
 	ctabOnShown(ctab, 'painting', delayedMemo);
 
 	initScreenshotControl(page, ctab);
+
+	// feeling selector
+	var feeling_selector = page.querySelector('[data-mii-feeling-selector]')!;
+	feeling_selector.addEventListener('change', (e) => {
+		var feeling = (e.target as HTMLInputElement).value;
+		var icons = page!.querySelectorAll('[data-mii-feeling]');
+
+		icons.forEach((icon) => {
+			var icon_feeling = icon.getAttribute('data-mii-feeling')!;
+
+			if (icon_feeling == feeling) {
+				icon.classList.remove('hide');
+			} else {
+				icon.classList.add('hide');
+			}
+		});
+	});
 }
 
 function initScreenshotControl(page: Element, ctab: Element): void {

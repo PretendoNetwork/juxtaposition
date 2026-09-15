@@ -25,6 +25,7 @@ export type UserPageViewProps = {
 	children?: ReactNode;
 	profile: UserProfile;
 	requestUserContent: SelfContent | null;
+	isFirstPage: boolean;
 };
 
 export function WebUserMissingPage(props: UserMissingPageViewProps): ReactNode {

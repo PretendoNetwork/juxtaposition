@@ -7,8 +7,8 @@ import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/Ct
 import { CtrListView, CtrListViewItem } from '@/services/juxt-web/views/ctr/components/CtrListView';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@/services/juxt-web/views/common/components/T';
-import type { NotificationItemProps, NotificationItemTypeProps, NotificationListViewProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
-import type { FollowNotification, LimitedFromPostingNotification, PostDeletedNotification, ShallowUser, SystemNotification } from '@/api/generated';
+import type { NotificationItemProps, NotificationItemTypeProps, NotificationListItemsProps, NotificationWrapperViewProps } from '@/services/juxt-web/views/web/notificationListView';
+import type { EmpathyNotification, FollowNotification, LimitedFromPostingNotification, PostDeletedNotification, ReplyNotification, ShallowUser, SystemNotification } from '@/api/generated';
 
 function FollowNotificationView(props: NotificationItemTypeProps<FollowNotification>): ReactNode {
 	const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? null}</span>;
@@ -40,6 +40,76 @@ function FollowNotificationView(props: NotificationItemTypeProps<FollowNotificat
 						components={{
 							follower_one: <NickName user={users[0]?.user} />,
 							follower_two: <NickName user={users[1]?.user} />
+						}}
+					/>
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
+					</span>
+				</p>
+			</div>
+		</CtrListViewItem>
+	);
+}
+
+function EmpathyNotificationView(props: NotificationItemTypeProps<EmpathyNotification>): ReactNode {
+	const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? null}</span>;
+	const users = [...props.notif.content.users].sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+	const latestUser = users[0];
+	const yeahedPost = props.notif.content.postId;
+
+	let i18nKey: TranslationKey = 'notifications.new_empathy.message/one';
+	if (users.length === 2) {
+		i18nKey = 'notifications.new_empathy.message/two';
+	}
+	if (users.length === 3) {
+		i18nKey = 'notifications.new_empathy.message/three';
+	}
+	if (users.length > 3) {
+		i18nKey = 'notifications.new_empathy.message/multiple';
+	}
+
+	return (
+		<CtrListViewItem href={`/posts/${yeahedPost}`}>
+			<CtrMiiIcon pid={latestUser.pid} type="icon"></CtrMiiIcon>
+			<div className="list-body">
+				<p>
+					<T
+						k={i18nKey}
+						values={{
+							count: users.length,
+							count_other: Math.max(0, users.length - 2)
+						}}
+						components={{
+							empathy_one: <NickName user={users[0]?.user} />,
+							empathy_two: <NickName user={users[1]?.user} />
+						}}
+					/>
+					<span className="timestamp">
+						{' '}
+						{humanFromNow(props.data.updatedAt)}
+					</span>
+				</p>
+			</div>
+		</CtrListViewItem>
+	);
+}
+
+function ReplyNotificationView(props: NotificationItemTypeProps<ReplyNotification>): ReactNode {
+	const NickName = ({ user }: { user: ShallowUser | null | undefined }): ReactNode => <span className="nick-name">{user?.miiName ?? null}</span>;
+	const { pid, user, parent } = props.notif.content;
+
+	const i18nKey: TranslationKey = 'notifications.new_reply';
+
+	return (
+		<CtrListViewItem href={`/posts/${parent}`}>
+			<CtrMiiIcon pid={pid} type="icon"></CtrMiiIcon>
+			<div className="list-body">
+				<p>
+					<T
+						k={i18nKey}
+						components={{
+							reply_author: <NickName user={user} />
 						}}
 					/>
 					<span className="timestamp">
@@ -161,6 +231,14 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 		return <FollowNotificationView data={props.notification} notif={notif} />;
 	}
 
+	if (notif.type === 'empathy') {
+		return <EmpathyNotificationView data={props.notification} notif={notif} />;
+	}
+
+	if (notif.type === 'reply') {
+		return <ReplyNotificationView data={props.notification} notif={notif} />;
+	}
+
 	if (notif.type === 'postDeleted') {
 		return <PostDeletedNotificationView data={props.notification} notif={notif} />;
 	}
@@ -176,14 +254,24 @@ function CtrNotificationItem(props: NotificationItemProps): ReactNode {
 	return <div>Invalid notification type!</div>;
 }
 
-export function CtrNotificationListView(props: NotificationListViewProps): ReactNode {
+export function CtrNotificationListItems(props: NotificationListItemsProps): ReactNode {
 	return (
-		<CtrListView type="icon-column">
+		<>
 			{props.notifications.length === 0 ? <li><p><T k="notifications.none" /></p></li> : null}
 			{props.notifications.map((notification, i) => (
 				<CtrNotificationItem notification={notification} key={i} />
 			))}
-		</CtrListView>
+			{props.remaining > 0
+				? (
+						<div className="button-wrapper center">
+							<a className="load-more" href={props.nextPageLink} data-pjax="#body">
+								<T k="global.load_more" />
+								{props.remainingUnreads > 0 ? ` (${props.remainingUnreads})` : null}
+							</a>
+						</div>
+					)
+				: null}
+		</>
 	);
 }
 
@@ -199,7 +287,9 @@ export function CtrNotificationWrapperView(props: NotificationWrapperViewProps):
 				</CtrPageTitledHeader>
 				<div className="body-content tab2-content" id="news-page">
 					<div className="tab-body">
-						{props.children}
+						<CtrListView type="icon-column">
+							{props.children}
+						</CtrListView>
 					</div>
 				</div>
 			</CtrPageBody>

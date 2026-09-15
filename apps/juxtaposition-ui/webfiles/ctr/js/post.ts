@@ -80,6 +80,22 @@ export function initYeahButton(posts: Element | Document | DocumentFragment): vo
 	}
 }
 
+function unspoilerPost(this: HTMLButtonElement, _e: Event): void {
+	var spoilerWrapper = document.getElementById('spoiler-' + this.getAttribute('data-post-id'))!;
+	var postEl = document.getElementById('post-' + this.getAttribute('data-post-id'))!;
+
+	postEl.classList.remove('spoiler');
+	spoilerWrapper.outerHTML = '';
+	// @ts-expect-error incorrect upstream types
+	cave.snd_playSe('SE_OLV_OK');
+}
+
+export function initSpoilers(posts: Element | Document | DocumentFragment): void {
+	posts.querySelectorAll('button[data-post-id]').forEach((el) => {
+		el.addEventListener('click', unspoilerPost);
+	});
+}
+
 export function initPostPageView(): void {
 	initDeleteButton();
 	// initYeahButton(document);

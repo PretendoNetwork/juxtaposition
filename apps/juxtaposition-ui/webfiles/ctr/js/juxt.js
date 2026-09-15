@@ -3,7 +3,7 @@ import { initCheckboxes } from './controls/checkbox';
 import { initClientTabs } from './controls/ctabs';
 import { initNewPostView } from './new-post-view';
 import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
-import { initPostPageView, initYeahButton } from './post';
+import { initPostPageView, initYeahButton, initSpoilers } from './post';
 import { initToolbarConfigs } from './toolbar';
 import { GET, POST } from './xhr';
 import { initNavTabs } from './components/ui/CtrNavTabs';
@@ -43,26 +43,9 @@ export function initPosts() {
 		});
 	}
 	initYeahButton(document);
-	initSpoilers();
+	initSpoilers(document);
 }
 
-function initSpoilers() {
-	var els = document.querySelectorAll('button[data-post-id]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			var spoilerWrapper = document.getElementById('spoiler-' + el.getAttribute('data-post-id'));
-			var postEl = document.getElementById('post-' + el.getAttribute('data-post-id'));
-
-			postEl.classList.remove('spoiler');
-			spoilerWrapper.outerHTML = '';
-			cave.snd_playSe('SE_OLV_OK');
-		});
-	}
-}
 function back() {
 	if (!pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(0);
