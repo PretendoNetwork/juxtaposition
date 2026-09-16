@@ -16,7 +16,7 @@
     "start": "node --enable-source-maps dist/server.js"
   },
   "dependencies": {
-    "@hey-api/openapi-ts": "^0.95.0",
+    "@hey-api/openapi-ts": "^0.99.0",
     "@imagemagick/magick-wasm": "^0.0.38",
     "@neato/config": "^4.1.0",
     "@pretendonetwork/grpc": "^2.5.3",
