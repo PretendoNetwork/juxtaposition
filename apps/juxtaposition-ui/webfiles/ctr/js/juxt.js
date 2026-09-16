@@ -9,6 +9,9 @@ import { initPostPageView, initYeahButton, initSpoilers } from '@/js/post';
 import { initToolbarConfigs } from '@/js/toolbar';
 import { initNavTabs } from '@/js/components/ui/CtrNavTabs';
 import { initSearchForm } from '@/js/components/ui/CtrSearchForm';
+import { islands } from '@/js/islands';
+import { checkboxIsland } from '@/js/islands/checkbox';
+import { ctabsIsland } from '@/js/islands/ctabs';
 
 setInterval(checkForUpdates, 30000);
 initLocalStorage();
@@ -168,3 +171,8 @@ document.addEventListener('error', (e) => {
 		target.setAttribute('src', placeholder);
 	}
 }, true);
+
+islands.register([
+	checkboxIsland,
+	ctabsIsland
+]);
