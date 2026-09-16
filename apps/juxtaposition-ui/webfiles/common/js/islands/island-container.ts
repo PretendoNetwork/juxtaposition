@@ -1,4 +1,4 @@
-import type { IslandControls, IslandMountContext } from './island';
+import type { IslandControls, IslandMountHookContext } from './island';
 
 export type IslandArray = IslandControls[];
 
@@ -33,7 +33,7 @@ export function createIslandContainer(ops?: IslandContainerOptions): IslandConta
 		loadPartial: function (el): void {
 			var hasDoubleHydrated = false;
 
-			var ctx: IslandMountContext = {
+			var ctx: IslandMountHookContext = {
 				doc: el,
 				triggerDoubleHydrate: () => hasDoubleHydrated = true
 			};
