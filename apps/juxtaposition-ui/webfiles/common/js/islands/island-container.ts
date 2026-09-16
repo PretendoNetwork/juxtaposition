@@ -1,0 +1,52 @@
+import type { IslandControls, IslandMountContext } from './island';
+
+export type IslandArray = IslandControls[];
+
+export type IslandContainerOptions = {
+	islands?: IslandArray;
+};
+
+export type IslandContainer = {
+	register: (mod: IslandArray) => void;
+	loadBody: () => void;
+	loadPartial: (el: HTMLElement) => void;
+};
+
+export function createIslandContainer(ops?: IslandContainerOptions): IslandContainer {
+	var islands: IslandControls[] = [];
+	function registerManyIslands(islandArr: IslandArray): void {
+		for (var i = 0; i < islandArr.length; i++) {
+			islands.push(islandArr[i]);
+		}
+	}
+
+	// Register input modules
+	if (ops && ops.islands) {
+		registerManyIslands(ops.islands);
+	}
+
+	return {
+		register: registerManyIslands,
+		loadBody: function (): void {
+			this.loadPartial(document.body);
+		},
+		loadPartial: function (el): void {
+			var hasDoubleHydrated = false;
+
+			var ctx: IslandMountContext = {
+				doc: el,
+				triggerDoubleHydrate: () => hasDoubleHydrated = true
+			};
+			for (var i = 0; i < islands.length; i++) {
+				var island = islands[i];
+				island.run(ctx);
+			}
+
+			if (hasDoubleHydrated) {
+				var text = 'Double hydration detected, have you called loadPartial twice?';
+				console.warn(text);
+				alert(text);
+			}
+		}
+	};
+}
