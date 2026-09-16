@@ -1,23 +1,23 @@
-export type IslandMountContext = {
+export type IslandMountHookContext = {
 	doc: HTMLElement;
 	triggerDoubleHydrate?: () => void;
 };
 
-export type IslandHydrateContext = {
+export type IslandElementHookContext = {
 	el: HTMLElement;
 };
 
 export type IslandControls = {
 	id: string;
-	run: (ctx: IslandMountContext) => void;
+	run: (ctx: IslandMountHookContext) => void;
 };
 
 export type IslandOptions = {
 	id: string;
-	mount?: (ctx: IslandMountContext) => void;
+	onMount?: (ctx: IslandMountHookContext) => void;
 
 	selector?: string;
-	hydrate?: (ctx: IslandHydrateContext) => void;
+	onElement?: (ctx: IslandElementHookContext) => void;
 };
 
 type ElementModuleData = {
@@ -30,12 +30,15 @@ declare global {
 	}
 }
 
+/**
+ * Create an island of JS-powered interactivity. Read more at webfiles/common/js/islands/README.md
+ */
 export function createIsland(ops: IslandOptions): IslandControls {
 	return {
 		id: ops.id,
 		run: function (ctx): void {
-			ops.mount?.(ctx);
-			if (ops.selector && ops.hydrate) {
+			ops.onMount?.(ctx);
+			if (ops.selector && ops.onElement) {
 				ctx.doc.querySelectorAll(ops.selector).forEach((el) => {
 					if (el.moduleData && el.moduleData.hasHydrated) {
 						ctx.triggerDoubleHydrate?.();
@@ -44,7 +47,7 @@ export function createIsland(ops: IslandOptions): IslandControls {
 
 					el.moduleData = el.moduleData ?? {};
 					el.moduleData.hasHydrated = true;
-					ops.hydrate?.({ el: el as HTMLElement });
+					ops.onElement?.({ el: el as HTMLElement });
 				});
 			}
 		}
