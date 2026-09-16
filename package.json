@@ -10,7 +10,9 @@
     "overrides": {
         "get-pixels": "github:scijs/get-pixels#5283976",
         "js-yaml": "5.3.0",
-        "esbuild": "0.28.1"
+        "esbuild": "0.28.1",
+        "deepmerge-ts": "8.0.2",
+        "mysql2": "3.24.4"
     },
     "allowScripts": {
         "@bufbuild/buf@1.66.1": true,
