@@ -71,15 +71,15 @@ export function WebPostView(props: PostViewProps): ReactNode {
 
 					<p className="extra-info">
 						<a href={`/posts/${post.id}`}>{moment(post.createdAt).fromNow()}</a>
-						{' - '}
-						{post.community ? <a href={`/titles/${post.community.olive_community_id}`}>{post.community.name}</a> : null }
+						{post.community ? <>{' - '}<a href={`/titles/${post.community.olive_community_id}`}>{post.community.name}</a></> : null }
+						{post.isSpoiler ? <>{' - '}<T k="post.spoiler_label" /></> : null}
 					</p>
 				</div>
 			</div>
 			{ post.isSpoiler
 				? (
-						<div className="spoiler-overlay">
-							<button evt-click={`this.parentElement.style.display = 'none'; document.getElementById('post-content-${post.id}').style.display = 'block'`}>
+						<div className="spoiler-overlay" id={`spoiler-${post.id}`}>
+							<button data-post-id={post.id}>
 								<T k="post.show_spoiler" />
 							</button>
 						</div>
@@ -89,9 +89,6 @@ export function WebPostView(props: PostViewProps): ReactNode {
 			<div
 				className="post-content"
 				id={`post-content-${post.id}`}
-				style={{
-					display: post.isSpoiler ? 'none' : undefined // Will be removed by spoiler-overlay onclick
-				}}
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
 				{post.body ? <p>{post.body}</p> : null}
@@ -195,7 +192,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 	);
 
 	return (
-		<div className={cx('posts-wrapper', { 'posts-wrapper-removed': post.moderation?.removed })} id={post.id ?? undefined}>
+		<div className={cx('posts-wrapper', { 'posts-wrapper-removed': post.moderation?.removed, 'spoiler': post.isSpoiler })} id={`post-${post.id}`}>
 			{removedPostPart}
 			{contentPart}
 		</div>

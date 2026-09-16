@@ -5,7 +5,7 @@ import { initCheckboxes } from '@/js/controls/checkbox';
 import { initClientTabs } from '@/js/controls/ctabs';
 import { initNewPostView } from '@/js/new-post-view';
 import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl } from '@common/js/pjax';
-import { initPostPageView, initYeahButton } from '@/js/post';
+import { initPostPageView, initYeahButton, initSpoilers } from '@/js/post';
 import { initToolbarConfigs } from '@/js/toolbar';
 import { initNavTabs } from '@/js/components/ui/CtrNavTabs';
 import { initSearchForm } from '@/js/components/ui/CtrSearchForm';
@@ -40,26 +40,9 @@ cave.toolbar_setCallback(8, function () { });
 
 export function initPosts() {
 	initYeahButton(document);
-	initSpoilers();
+	initSpoilers(document);
 }
 
-function initSpoilers() {
-	var els = document.querySelectorAll('button[data-post-id]');
-	if (!els) {
-		return;
-	}
-	for (var i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			var el = e.currentTarget;
-			var spoilerWrapper = document.getElementById('spoiler-' + el.getAttribute('data-post-id'));
-			var postEl = document.getElementById('post-' + el.getAttribute('data-post-id'));
-
-			postEl.classList.remove('spoiler');
-			spoilerWrapper.outerHTML = '';
-			cave.snd_playSe('SE_OLV_OK');
-		});
-	}
-}
 function back() {
 	if (!pjaxCanGoBack()) {
 		cave.toolbar_setButtonType(0);

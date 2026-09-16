@@ -3,7 +3,7 @@ import { POST, GET } from '@common/js/xhr';
 import { deletePostById, spoilerPostById, unspoilerPostById } from '@common/js/api';
 import { popupItemCb, setupPopup } from '@/js/menus';
 import { initReportForm, reportPost } from '@/js/reports';
-import { initYeahButton } from '@/js/post';
+import { initYeahButton, initSpoilers } from '@/js/post';
 import { initSearchForm } from '@/js/components/ui/WebSearchForm';
 import { Toast, initToast } from '@/js/toast';
 
@@ -118,6 +118,7 @@ function initPopupMenus() {
 
 function initPosts() {
 	initYeahButton(document);
+	initSpoilers(document);
 	initPopupMenus();
 }
 function initMorePosts() {
@@ -168,21 +169,29 @@ function initPostModules() {
 			} else {
 				document.getElementById('nav-menu').style.display = 'none';
 			}
-			initNewPost();
 		});
 	}
 }
 function initPostEmotion() {
-	const els = document.querySelectorAll('input[data-mii-face-url]');
-	if (!els) {
+	const feeling_selector = document.querySelector('[data-mii-feeling-selector]');
+	if (!feeling_selector) {
 		return;
 	}
-	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function (e) {
-			const el = e.currentTarget;
-			document.getElementById('mii-face').src = el.getAttribute('data-mii-face-url');
+
+	feeling_selector.addEventListener('change', (e) => {
+		const feeling = e.target.value;
+		const icons = document.querySelectorAll('[data-mii-feeling]');
+
+		icons.forEach((icon) => {
+			const icon_feeling = icon.getAttribute('data-mii-feeling');
+
+			if (icon_feeling == feeling) {
+				icon.classList.remove('hide');
+			} else {
+				icon.classList.add('hide');
+			}
 		});
-	}
+	});
 }
 function initNewPost() {
 	initPostEmotion();
@@ -197,6 +206,7 @@ function initAll() {
 	initPostModules();
 	initReportForm();
 	initToast();
+	initNewPost();
 }
 
 console.debug('Document initialized:' + window.location.href);
