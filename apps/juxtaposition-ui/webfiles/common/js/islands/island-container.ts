@@ -1,4 +1,4 @@
-import type { IslandControls, IslandMountHookContext } from './island';
+import type { IslandControls, IslandMountHookContext } from '@common/js/islands/island';
 
 export type IslandArray = IslandControls[];
 
