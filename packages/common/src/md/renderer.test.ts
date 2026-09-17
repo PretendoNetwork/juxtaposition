@@ -1,5 +1,5 @@
 import { parseJuxtMarkdown } from '@/md';
-import { renderToPlainText } from '@/md/renderer';
+import { extractMentionPids, renderToPlainText } from '@/md/renderer';
 
 function runTest(input: string, output: string): void {
 	expect(renderToPlainText(parseJuxtMarkdown(input))).toStrictEqual(output);
@@ -39,6 +39,17 @@ describe('renderToPlainText', () => {
 		runTest('Hello\nworld!', 'Hello\nworld!');
 	});
 
+	it('handles invalid mentions', () => {
+		runTest('Hello <@1234>!', 'Hello @1234!');
+	});
+
+	it('handles valid mentions', () => {
+		expect(renderToPlainText(parseJuxtMarkdown('Hello <@1234>!'), [{
+			pid: 1234,
+			username: 'jake'
+		}])).toStrictEqual('Hello @jake!');
+	});
+
 	it('handles paragraphs', () => {
 		runTest('Hello\n\nworld!', 'Hello\n\nworld!');
 	});
@@ -56,5 +67,20 @@ Cool
 .
 		`.trim();
 		runTest(input, input);
+	});
+});
+
+describe('extractMentionPids', () => {
+	it('extracts all mentions from all formatting', () => {
+		const tokens = parseJuxtMarkdown(`
+			Hello world!
+
+			Today is the day that <@1234> will be crowned King.
+			Not to mention that **_<@5432>_** will get married to ~~<@7125>~~ as well!
+
+			That was all,
+			- **<@1629>**
+		`);
+		expect(extractMentionPids(tokens)).toStrictEqual([1234, 5432, 7125, 1629]);
 	});
 });
