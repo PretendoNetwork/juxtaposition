@@ -1,3 +1,3 @@
-export function test(): void {
-	console.log('I am test()');
-}
+export { transformJuxtMarkdown, parseJuxtMarkdown } from '@/md/index';
+export { renderToPlainText } from '@/md/renderer';
+export type { JuxtMdNode, JuxtMdInlineNode } from '@/md/tree';
