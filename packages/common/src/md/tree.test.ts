@@ -173,6 +173,18 @@ describe('tokensToTree / inline', () => {
 		}]);
 	});
 
+	it('handles mentions', () => {
+		expect(tokensToTree(paragraph([
+			token('mention', '1234')
+		]))).toStrictEqual<JuxtMdNode[]>([{
+			type: 'paragraph',
+			children: [{
+				type: 'mention',
+				pid: 1234
+			}]
+		}]);
+	});
+
 	it('handles nested container nodes', () => {
 		expect(tokensToTree(paragraph([
 			token('strong_open'),

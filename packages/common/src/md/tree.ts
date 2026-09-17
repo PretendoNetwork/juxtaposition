@@ -6,6 +6,7 @@ export type JuxtMdNode =
 type JuxtMdInlineContainerNode = 'bold' | 'italic' | 'strikethrough';
 export type JuxtMdInlineNode =
 	{ type: 'text'; value: string } |
+	{ type: 'mention'; pid: number } |
 	{ type: 'br' } |
 	{ type: JuxtMdInlineContainerNode; children: JuxtMdInlineNode[] } |
 	{ type: 'code'; value: string };
@@ -33,6 +34,14 @@ function inlineTokensToTree(inlineTokens: Token[]): JuxtMdInlineNode[] {
 		if (token.type === 'softbreak' || token.type === 'hardbreak') {
 			stack[0]?.push({
 				type: 'br'
+			});
+			continue;
+		}
+
+		if (token.type === 'mention') {
+			stack[0]?.push({
+				type: 'mention',
+				pid: parseInt(token.content, 10) // Prevent parsing octal on accident
 			});
 			continue;
 		}
