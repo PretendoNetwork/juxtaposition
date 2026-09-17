@@ -2,7 +2,7 @@
 
 Juxtaposition markdown is a subset of normal markdown, it supports the following:
 - Bold: `**bold**` and `__bold__` turns into <kbd>**bold**</kbd>
-- Italics: `*italic*`, `*italic*` turns into <kbd>*italic*</kbd>
+- Italics: `*italic*` and `_italic_` turns into <kbd>*italic*</kbd>
 - Strikethrough: `~~strikethrough~~` turns into <kbd>~~strikethrough~~</kbd>
 - Inline code: `` `code` `` turns into <kbd>`code`</kbd>
 - Newlines: Using a newline turns it into a proper new line. This is unusual in markdown, but is more intuitive for users.
@@ -10,6 +10,7 @@ Juxtaposition markdown is a subset of normal markdown, it supports the following
 
 There's also custom syntax:
 - Mentions: `@pnid` Turns into `<@1262353>` (the PID), which gets rendered as a real mention.
+  - **Note:** This doesn't exist yet, still working on it.
 
 ## Processing stack
 
