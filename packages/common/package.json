@@ -1,0 +1,19 @@
+{
+    "name": "@repo/common",
+    "private": true,
+    "type": "module",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsup && tsc --noEmit",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix",
+        "postinstall": "npm run build"
+    },
+    "devDependencies": {
+        "@types/node": "^24.0.0",
+        "tsup": "^8.5.1",
+        "eslint": "^9.39.4",
+        "typescript": "^5.9.3"
+    }
+}
