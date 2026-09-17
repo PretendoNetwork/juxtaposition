@@ -1,8 +1,8 @@
 import type { Env, MarkdownIt, StateInline } from 'markdown-it';
 import type { TransformReplacement } from '@/md/transform';
 
-const MENTION_REGEX = /^@([\w.-]{6,16})/;
-const MENTION_SYNTAX_REGEX = /^<@(\d{6,16})>/;
+const MENTION_REGEX = /^@([\w.-]{1,})/;
+const MENTION_SYNTAX_REGEX = /^<@(\d{1,16})>/;
 
 export type MentionDiscovery = {
 	start: number;
