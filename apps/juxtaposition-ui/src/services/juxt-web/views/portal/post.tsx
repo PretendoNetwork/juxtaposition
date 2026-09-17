@@ -113,7 +113,14 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						className="post-content"
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
 					>
-						<PostContent classNames={{ plaintextContainer: 'post-content-text' }} post={post} />
+						<PostContent
+							post={post}
+							classNames={{
+								container: 'post-content-text-container',
+								plaintextContainer: 'post-content-text-container-plain',
+								markdownContainer: 'post-content-text-container-markdown'
+							}}
+						/>
 						<PortalPostScreenshot post={post}></PortalPostScreenshot>
 						{post.painting ? <img className="post-memo" src={url.cdn(post.painting.imageUrlBig ? post.painting.imageUrlBig : `/paintings/${post.author.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
