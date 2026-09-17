@@ -364,7 +364,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		}
 
 		if (cleanedBody.length > 0) {
-			const transformed = transformJuxtMarkdown(cleanedBody, {});
+			const transformed = await transformJuxtMarkdown(cleanedBody, {});
 			const ast = parseJuxtMarkdown(transformed);
 			const plainText = renderToPlainText(ast);
 			parsedBody = {
