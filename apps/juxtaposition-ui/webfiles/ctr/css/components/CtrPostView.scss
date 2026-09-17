@@ -50,11 +50,13 @@
         color: t.$root-text-4;
     }
 
-    .post-content-text {
+    .post-content-text-container {
         margin: 10px;
 
-        word-wrap: break-word;
-        white-space: pre-wrap;
+        &.post-content-text-container-plain {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
     }
 
     .post-buttons {

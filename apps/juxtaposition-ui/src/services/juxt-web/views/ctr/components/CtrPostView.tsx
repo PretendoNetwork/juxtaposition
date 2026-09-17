@@ -89,7 +89,14 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 					: null }
 
 				<div className="post-content" data-href={!props.isReply ? `/posts/${post.id}` : undefined}>
-					<PostContent classNames={{ plaintextContainer: 'post-content-text' }} post={post} />
+					<PostContent
+						post={post}
+						classNames={{
+							container: 'post-content-text-container',
+							plaintextContainer: 'post-content-text-container-plain',
+							markdownContainer: 'post-content-text-container-markdown'
+						}}
+					/>
 					<CtrPostScreenshot post={post}></CtrPostScreenshot>
 					{post.painting
 						? (

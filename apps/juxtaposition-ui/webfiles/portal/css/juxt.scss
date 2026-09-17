@@ -453,13 +453,20 @@ header svg {
  user-select:none;
  cursor:pointer
 }
-.post-list .post .post-content-text {
- word-wrap:break-word;
- white-space:pre-wrap;
- font-size:28px;
- overflow:hidden;
- margin-bottom:20px
+
+.post-list .post {
+    .post-content-text-container {
+        font-size: 28px;
+        overflow: hidden;
+        margin-bottom: 20px;
+
+        &.post-content-text-container-plain {
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+    }
 }
+
 .post-list .post .post-memo {
     width:640px;
     height:240px;
