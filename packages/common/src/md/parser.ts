@@ -1,5 +1,5 @@
 import MarkdownItCtor from 'markdown-it';
-import type { Token } from 'markdown-it';
+import type { Env, Token } from 'markdown-it';
 
 const markdown = new MarkdownItCtor('zero')
 	.enable([
@@ -10,8 +10,16 @@ const markdown = new MarkdownItCtor('zero')
 		'newline'
 	]);
 
-export function parseJuxtMarkdownInternal(input: string, isPreTransform: boolean): Token[] {
-	return markdown.parse(input, {
-		preTransform: isPreTransform
-	});
+export type ParseResult = {
+	tokens: Token[];
+	env: Env;
+};
+
+export function parseJuxtMarkdownInternal(input: string): ParseResult {
+	const env: Env = {};
+	const tokens = markdown.parse(input, env);
+	return {
+		tokens,
+		env
+	};
 }
