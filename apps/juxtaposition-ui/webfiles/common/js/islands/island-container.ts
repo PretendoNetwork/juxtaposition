@@ -15,9 +15,7 @@ export type IslandContainer = {
 export function createIslandContainer(ops?: IslandContainerOptions): IslandContainer {
 	var islands: IslandControls[] = [];
 	function registerManyIslands(islandArr: IslandArray): void {
-		for (var i = 0; i < islandArr.length; i++) {
-			islands.push(islandArr[i]);
-		}
+		islands = islands.concat(islandArr);
 	}
 
 	// Register input modules
@@ -37,10 +35,9 @@ export function createIslandContainer(ops?: IslandContainerOptions): IslandConta
 				doc: el,
 				triggerDoubleHydrate: () => hasDoubleHydrated = true
 			};
-			for (var i = 0; i < islands.length; i++) {
-				var island = islands[i];
+			islands.forEach(function (island) {
 				island.run(ctx);
-			}
+			});
 
 			if (hasDoubleHydrated) {
 				var text = 'Double hydration detected, have you called loadPartial twice?';
