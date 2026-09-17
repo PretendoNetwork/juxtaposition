@@ -1,8 +1,9 @@
 import { z } from 'zod';
+import { extractMentionsFromMarkdown } from '@repo/common';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowCommunity, shallowCommunitySchema } from '@/services/internal/contract/community';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
-import type { IPost } from '@/types/mongoose/post';
+import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
 import type { User } from '@/prisma/client';
 
@@ -72,7 +73,14 @@ export const postSchema = asOpenapi('Post', z.object({
 
 export type PostDto = z.infer<typeof postSchema>;
 
-export function mapPost(post: IPost, comm: HydratedCommunityDocument | null): PostDto {
+export function getRelevantPidsFromPost(posts: HydratedPostDocument[]): number[] {
+	const removedByPids = posts.flatMap(v => [v.pid, v.removed_by]).filter((v): v is number => !!v);
+	const mentionPids = posts.flatMap(v => v.body_markdown ? extractMentionsFromMarkdown(v.body_markdown) : []);
+
+	return [removedByPids, mentionPids].flat();
+}
+
+export function mapPost(post: IPost, comm: HydratedCommunityDocument | null, _relevantUsers: User[]): PostDto {
 	return {
 		id: post.id,
 		createdAt: post.created_at,
@@ -136,9 +144,11 @@ export function mapPost(post: IPost, comm: HydratedCommunityDocument | null): Po
 	};
 }
 
-export function mapPostWithModeration(post: IPost, comm: HydratedCommunityDocument | null, remover: User | null): PostDto {
+export function mapPostWithModeration(post: IPost, comm: HydratedCommunityDocument | null, relevantUsers: User[]): PostDto {
+	const remover = post.removed_by ? relevantUsers.find(v => v.pid === post.removed_by) : null;
+
 	return {
-		...mapPost(post, comm),
+		...mapPost(post, comm, relevantUsers),
 
 		moderation: {
 			removed: post.removed
