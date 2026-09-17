@@ -363,7 +363,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 			return badRequest(response, ApiErrorCode.BAD_PARAMS);
 		}
 
-		const transformed = transformJuxtMarkdown(cleanedBody, {});
+		const transformed = await transformJuxtMarkdown(cleanedBody, {});
 		const ast = parseJuxtMarkdown(transformed);
 		const plainText = renderToPlainText(ast);
 		parsedBody = {

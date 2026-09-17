@@ -65,7 +65,7 @@ export function isValidPost(post: PostCreateBody): boolean {
 	return true;
 }
 
-function validateAndProcessPostBody(input: string): { text: string; markdown: string } {
+async function validateAndProcessPostBody(input: string): Promise<{ text: string; markdown: string }> {
 	const cleanedBody = input.trim().replaceAll('\r\n', '\n');
 	if (getInvalidPostRegex().test(cleanedBody)) {
 		throw new Error('Invalid characters found in post body');
@@ -75,7 +75,7 @@ function validateAndProcessPostBody(input: string): { text: string; markdown: st
 		throw new Error('Post body is top long');
 	}
 
-	const transformed = transformJuxtMarkdown(cleanedBody, {});
+	const transformed = await transformJuxtMarkdown(cleanedBody, {});
 	const ast = parseJuxtMarkdown(transformed);
 	const plainText = renderToPlainText(ast);
 	return {
@@ -123,7 +123,7 @@ export async function createNewPost(ops: PostCreateOptions): Promise<HydratedPos
 
 	const miiFace = miiFaceFilenameMap[body.feelingId] ?? defaultMiiFaceFilename;
 
-	const postBody = body.body ? validateAndProcessPostBody(body.body) : null;
+	const postBody = body.body ? await validateAndProcessPostBody(body.body) : null;
 
 	const document: IPostInput = {
 		title_id: ops.community.title_id[0],
