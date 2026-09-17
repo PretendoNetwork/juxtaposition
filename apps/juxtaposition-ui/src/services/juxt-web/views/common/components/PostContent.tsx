@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { parseJuxtMarkdown } from '@repo/common';
 import type { JuxtMdInlineNode, JuxtMdNode } from '@repo/common';
 import type { ReactNode } from 'react';
+import type { ShallowUser } from '@/api/generated';
 
 export type PostContentProps = {
 	classNames?: {
@@ -9,10 +10,10 @@ export type PostContentProps = {
 		plaintextContainer?: string;
 		markdownContainer?: string;
 	};
-	post: { body: string | null; bodyMarkdown: string | null };
+	post: { body: string | null; bodyMarkdown: string | null; mentions: ShallowUser[] };
 };
 
-function renderInlineNodes(nodes: JuxtMdInlineNode[]): ReactNode {
+function renderInlineNodes(nodes: JuxtMdInlineNode[], userList: ShallowUser[]): ReactNode {
 	return (
 		<>
 			{nodes.map((node) => {
@@ -25,15 +26,19 @@ function renderInlineNodes(nodes: JuxtMdInlineNode[]): ReactNode {
 				if (node.type === 'code') {
 					return <pre className="prose-code">{node.value}</pre>;
 				}
+				if (node.type === 'mention') {
+					const user = userList.find(v => v.pid === node.pid);
+					return <pre className="prose-code prose-mention">@{user?.miiName ?? node.pid}</pre>;
+				}
 
 				if (node.type === 'bold') {
-					return <b className="prose-bold">{renderInlineNodes(node.children)}</b>;
+					return <b className="prose-bold">{renderInlineNodes(node.children, userList)}</b>;
 				}
 				if (node.type === 'italic') {
-					return <em className="prose-italic">{renderInlineNodes(node.children)}</em>;
+					return <em className="prose-italic">{renderInlineNodes(node.children, userList)}</em>;
 				}
 				if (node.type === 'strikethrough') {
-					return <s className="prose-strikethrough">{renderInlineNodes(node.children)}</s>;
+					return <s className="prose-strikethrough">{renderInlineNodes(node.children, userList)}</s>;
 				}
 
 				return '';
@@ -42,25 +47,31 @@ function renderInlineNodes(nodes: JuxtMdInlineNode[]): ReactNode {
 	);
 }
 
-function renderNode(node: JuxtMdNode): ReactNode {
+function renderNode(node: JuxtMdNode, userList: ShallowUser[]): ReactNode {
 	if (node.type === 'paragraph') {
-		return <p className="prose-par">{renderInlineNodes(node.children)}</p>;
+		return <p className="prose-par">{renderInlineNodes(node.children, userList)}</p>;
 	}
 }
 
-export function PostMarkdown(props: { className?: string; content: string }): ReactNode {
+export function PostMarkdown(props: { className?: string; content: string; mentions: ShallowUser[] }): ReactNode {
 	const nodes = parseJuxtMarkdown(props.content);
 
 	return (
 		<div className={props.className}>
-			{nodes.map(node => <>{renderNode(node)}</>)}
+			{nodes.map(node => <>{renderNode(node, props.mentions)}</>)}
 		</div>
 	);
 }
 
 export function PostContent(props: PostContentProps): ReactNode {
 	if (props.post.bodyMarkdown) {
-		return <PostMarkdown className={cx(props.classNames?.container, props.classNames?.markdownContainer)} content={props.post.bodyMarkdown} />;
+		return (
+			<PostMarkdown
+				className={cx(props.classNames?.container, props.classNames?.markdownContainer)}
+				content={props.post.bodyMarkdown}
+				mentions={props.post.mentions}
+			/>
+		);
 	}
 
 	if (props.post.body) {
