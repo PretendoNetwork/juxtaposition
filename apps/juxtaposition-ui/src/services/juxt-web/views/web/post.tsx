@@ -5,6 +5,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
+import { PostContent } from '@/services/juxt-web/views/common/components/PostContent';
 import type { ReactNode } from 'react';
 import type { Post, SelfContent } from '@/api/generated';
 
@@ -91,7 +92,7 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				id={`post-content-${post.id}`}
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
-				{post.body ? <p>{post.body}</p> : null}
+				<PostContent post={post} />
 				<WebPostScreenshot post={props.post}></WebPostScreenshot>
 				{post.painting ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.author.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}
