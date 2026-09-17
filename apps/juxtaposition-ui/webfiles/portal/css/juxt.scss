@@ -464,6 +464,41 @@ header svg {
             word-wrap: break-word;
             white-space: pre-wrap;
         }
+
+        &.post-content-text-container-markdown {
+            .prose-par {
+                margin: 0;
+                margin-bottom: 26px; // Roughly 2 newlines
+                word-wrap: break-word;
+                line-height: 1.3;
+                color: #111;
+            }
+
+            .prose-bold {
+                font-weight: 700;
+                color: black;
+            }
+            .prose-italic {
+                font-style: italic;
+            }
+            .prose-strikethrough {
+                text-decoration: line-through;
+            }
+            .prose-code {
+                font-size: 22px;
+                background-color: #eeeeee;
+                border: 1px solid #dadada;
+                padding: 4px 12px;
+                color: #585858;
+                font-family: monospace;
+                display: inline;
+                border-radius: 8px;
+            }
+
+            > *:last-child {
+                margin-bottom: 0; // Prevent post content from sticking out at the bottom
+            }
+        }
     }
 }
 
