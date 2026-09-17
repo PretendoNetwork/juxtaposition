@@ -68,7 +68,8 @@ export const postSchema = asOpenapi('Post', z.object({
 			removedAt: z.date(),
 			reason: z.string()
 		}).nullable()
-	}).nullable()
+	}).nullable(),
+	mentions: z.array(shallowUserSchema)
 }));
 
 export type PostDto = z.infer<typeof postSchema>;
@@ -80,7 +81,9 @@ export function getRelevantPidsFromPost(posts: HydratedPostDocument[]): number[]
 	return [removedByPids, mentionPids].flat();
 }
 
-export function mapPost(post: IPost, comm: HydratedCommunityDocument | null, _relevantUsers: User[]): PostDto {
+export function mapPost(post: IPost, comm: HydratedCommunityDocument | null, relevantUsers: User[]): PostDto {
+	const mentionedPids = post.body_markdown ? extractMentionsFromMarkdown(post.body_markdown) : [];
+
 	return {
 		id: post.id,
 		createdAt: post.created_at,
@@ -140,7 +143,11 @@ export function mapPost(post: IPost, comm: HydratedCommunityDocument | null, _re
 		titleId: post.title_id ?? null,
 		appData: post.app_data ?? null,
 
-		moderation: null
+		moderation: null,
+		mentions: mentionedPids
+			.map(pid => relevantUsers.find(v => v.pid === pid))
+			.filter((v): v is User => !!v)
+			.map(v => mapShallowUser(v))
 	};
 }
 
