@@ -1,5 +1,6 @@
 import MarkdownItCtor from 'markdown-it';
 import { linebreakMarkdownPlugin } from '@/md/plugins/linebreak';
+import { mentionMarkdownPlugin } from '@/md/plugins/mention';
 import type { Env, Token } from 'markdown-it';
 
 const markdown = new MarkdownItCtor('zero')
@@ -10,7 +11,8 @@ const markdown = new MarkdownItCtor('zero')
 		'backticks',
 		'newline'
 	])
-	.use(linebreakMarkdownPlugin);
+	.use(linebreakMarkdownPlugin)
+	.use(mentionMarkdownPlugin);
 
 export type ParseResult = {
 	tokens: Token[];
