@@ -1,4 +1,5 @@
 import MarkdownItCtor from 'markdown-it';
+import { mentionMarkdownPlugin } from '@/md/plugins/mention';
 import type { Env, Token } from 'markdown-it';
 
 const markdown = new MarkdownItCtor('zero')
@@ -8,7 +9,8 @@ const markdown = new MarkdownItCtor('zero')
 		'strikethrough',
 		'backticks',
 		'newline'
-	]);
+	])
+	.use(mentionMarkdownPlugin);
 
 export type ParseResult = {
 	tokens: Token[];
