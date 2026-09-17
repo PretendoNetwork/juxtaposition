@@ -10,5 +10,5 @@ export async function transformJuxtMarkdown(input: string, ops: JuxtMarkdownTran
 }
 
 export function parseJuxtMarkdown(input: string): JuxtMdNode[] {
-	return tokensToTree(parseJuxtMarkdownInternal(input, false));
+	return tokensToTree(parseJuxtMarkdownInternal(input).tokens);
 }

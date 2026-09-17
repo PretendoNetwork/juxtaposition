@@ -2,7 +2,7 @@ import { parseJuxtMarkdownInternal } from '@/md/parser';
 
 describe('parseJuxtMarkdown', () => {
 	function runTest(input: string): void {
-		expect(parseJuxtMarkdownInternal(input, false)).toBeTruthy();
+		expect(parseJuxtMarkdownInternal(input).tokens).toBeTruthy();
 	}
 
 	// These are just basic no-crash tests. Full tests are elsewhere
