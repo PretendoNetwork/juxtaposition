@@ -20,6 +20,10 @@ const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 		type: String,
 		default: ''
 	},
+	body_markdown: {
+		type: String,
+		default: null
+	},
 	app_data: { type: String },
 
 	painting: { type: String },
