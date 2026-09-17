@@ -4,6 +4,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { PortalUIIcon } from '@/services/juxt-web/views/portal/components/ui/PortalUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { PostContent } from '@/services/juxt-web/views/common/components/PostContent';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -112,7 +113,7 @@ export function PortalPostView(props: PostViewProps): ReactNode {
 						className="post-content"
 						data-href={!props.isReply ? `/posts/${post.id}` : undefined}
 					>
-						{post.body ? <p className="post-content-text">{post.body}</p> : null}
+						<PostContent classNames={{ plaintextContainer: 'post-content-text' }} post={post} />
 						<PortalPostScreenshot post={post}></PortalPostScreenshot>
 						{post.painting ? <img className="post-memo" src={url.cdn(post.painting.imageUrlBig ? post.painting.imageUrlBig : `/paintings/${post.author.pid}/${post.id}.png`)} /> : null}
 						{/* TODO add post.url back */}
