@@ -8,12 +8,17 @@
         "build": "tsup && tsc --noEmit",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
+        "test": "vitest run",
         "postinstall": "npm run build"
     },
     "devDependencies": {
         "@types/node": "^24.0.0",
-        "tsup": "^8.5.1",
         "eslint": "^9.39.4",
-        "typescript": "^5.9.3"
+        "tsup": "^8.5.1",
+        "typescript": "^5.9.3",
+        "vitest": "^5.0.1"
+    },
+    "dependencies": {
+        "markdown-it": "^15.0.2"
     }
 }
