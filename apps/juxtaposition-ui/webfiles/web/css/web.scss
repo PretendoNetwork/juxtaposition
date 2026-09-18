@@ -237,20 +237,43 @@ header>.selected svg {
 }
 
 .post-body-content.removed {
-  height: 1.8rem;
-}
+  height: 1.9rem;
 
-.post-body-content.removed h3 {
-  border-bottom: 1px solid var(--background-alt-alt);
-  font-size: .8rem;
-  padding: 0.5rem 1rem;
-  margin: 0;
-  text-align: center;
-  color: var(--text-light);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  h3 {
+    border-bottom: 1px solid var(--background-alt-alt);
+    font-size: .8rem;
+    padding: 0.7rem 1rem;
+    margin: 0;
+    text-align: left;
+    color: var(--text-light);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .post-removed-by {
+    text-align: right;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .post-removed-by-user {
+      color: var(--text-secondary);
+    }
+
+    .mii-icon {
+      height: 1.5rem;
+      width: 1.5rem;
+      margin: -0.5rem 0;
+      border-radius: 9999px;
+    }
+  }
 }
 
 .icon-container>img,
@@ -329,6 +352,7 @@ header>.selected svg {
   user-select: none;
   margin-left: 74px;
 }
+
 .spoiler .post-buttons-wrapper {
   display: none;
 }
@@ -430,6 +454,7 @@ header>.selected svg {
   width: 100%;
   margin-bottom: 1em;
 }
+
 #news-list-content #load-more {
   margin-top: 1em; // lol, lmao
 }
@@ -732,7 +757,8 @@ button.report {
   resize: none;
 }
 
-[hidden], .hide {
+[hidden],
+.hide {
   display: none !important;
 }
 
@@ -985,7 +1011,7 @@ input[type="radio"] {
   justify-content: center;
 }
 
-.feeling-selector.expression > .icon {
+.feeling-selector.expression>.icon {
   width: 66px;
   height: 66px;
   margin: 0 1ch 1em 0;
