@@ -386,7 +386,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 				}
 			}
 		});
-		const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.pid.toString() })));
+		const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.displayName ?? v.pid.toString() })));
 		parsedBody = {
 			markdown: transformed,
 			text: plainText
