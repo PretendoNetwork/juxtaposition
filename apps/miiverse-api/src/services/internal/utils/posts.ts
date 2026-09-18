@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
+import { extractMentionPids, parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { getShotModeForTitleId } from '@/services/api/routes/posts';
 import { evaluateAutomodRules, getInvalidPostRegex, performAutomodAction } from '@/util';
 import { config } from '@/config';
-import { getDuplicatePosts } from '@/database';
+import { getDb, getDuplicatePosts } from '@/database';
 import { Post } from '@/models/post';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { AutomodRule } from '@/models/automodRules';
@@ -75,9 +75,29 @@ async function validateAndProcessPostBody(input: string): Promise<{ text: string
 		throw new Error('Post body is top long');
 	}
 
-	const transformed = await transformJuxtMarkdown(cleanedBody, {});
+	const transformed = await transformJuxtMarkdown(cleanedBody, {
+		async lookupPnid(pnid) {
+			const user = await getDb().user.findFirst({
+				where: {
+					pnidNormalized: pnid.toLowerCase()
+				},
+				select: {
+					pid: true
+				}
+			});
+			return user ? { pid: user.pid } : null;
+		}
+	});
 	const ast = parseJuxtMarkdown(transformed);
-	const plainText = renderToPlainText(ast);
+	const mentionPids = extractMentionPids(ast);
+	const mentionedUsers = await getDb().user.findMany({
+		where: {
+			pid: {
+				in: mentionPids
+			}
+		}
+	});
+	const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.pid.toString() })));
 	return {
 		markdown: transformed,
 		text: plainText
