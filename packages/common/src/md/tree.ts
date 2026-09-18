@@ -31,7 +31,7 @@ function inlineTokensToTree(inlineTokens: Token[]): JuxtMdInlineNode[] {
 			continue;
 		}
 
-		if (token.type === 'softbreak') {
+		if (token.type === 'softbreak' || token.type === 'hardbreak') {
 			stack[0]?.push({
 				type: 'br'
 			});

@@ -54,12 +54,20 @@ describe('renderToPlainText', () => {
 		runTest('Hello\n\nworld!', 'Hello\n\nworld!');
 	});
 
+	it('preserves all newlines', () => {
+		runTest('Hello\n\nworld!', 'Hello\n\nworld!');
+		runTest('Hello\n\n\nworld!', 'Hello\n\n\nworld!');
+		runTest('Hello\n\n\n\n\nworld!', 'Hello\n\n\n\n\nworld!');
+	});
+
 	it('handles mixed newlines and paragraphs', () => {
 		const input = `
 Hello
 World!
 
 This is very cool...
+
+
 
 Very..
 
