@@ -1,14 +1,15 @@
 import '@/js/polyfills';
 import { initLocalStorage, initSessionStorage } from '@common/js/storage';
 import { GET, POST } from '@common/js/xhr';
-import { initCheckboxes } from '@/js/controls/checkbox';
-import { initClientTabs } from '@/js/controls/ctabs';
 import { initNewPostView } from '@/js/new-post-view';
 import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl } from '@common/js/pjax';
 import { initPostPageView, initYeahButton, initSpoilers } from '@/js/post';
 import { initToolbarConfigs } from '@/js/toolbar';
 import { initNavTabs } from '@/js/components/ui/CtrNavTabs';
 import { initSearchForm } from '@/js/components/ui/CtrSearchForm';
+import { islands } from '@/js/islands';
+import { checkboxIsland } from '@/js/islands/checkbox';
+import { ctabsIsland } from '@/js/islands/ctabs';
 
 setInterval(checkForUpdates, 30000);
 initLocalStorage();
@@ -67,11 +68,10 @@ function initAll() {
 	initNewPostView();
 	initNavTabs();
 	initPostPageView();
-	initClientTabs();
-	initCheckboxes();
 	initSearchForm();
 	checkForUpdates();
 	initToolbarConfigs();
+	islands.loadBody();
 }
 
 function checkForUpdates() {
@@ -168,3 +168,8 @@ document.addEventListener('error', (e) => {
 		target.setAttribute('src', placeholder);
 	}
 }, true);
+
+islands.register([
+	checkboxIsland,
+	ctabsIsland
+]);
