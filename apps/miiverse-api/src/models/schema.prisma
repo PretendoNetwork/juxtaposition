@@ -23,10 +23,12 @@ enum ProfilePrivacyType {
 
 /// User
 model User {
-  pid         Int      @id
-  createdAt   DateTime @default(now()) @map("created_at")
-  displayName String   @map("display_name")
-  lastSeen    DateTime @map("last_seen")
+  pid            Int      @id
+  pnid           String?
+  pnidNormalized String?  @map("pnid_normalized")
+  createdAt      DateTime @default(now()) @map("created_at")
+  displayName    String   @map("display_name")
+  lastSeen       DateTime @map("last_seen")
 
   // TODO refactor bans to different table so it keeps a history
   accountStatus Int       @map("account_status")

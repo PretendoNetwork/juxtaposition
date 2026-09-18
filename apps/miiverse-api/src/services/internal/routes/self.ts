@@ -46,6 +46,10 @@ selfRouter.get({
 			if (auth.pnid.mii) {
 				data.displayName = auth.pnid.mii.name;
 			}
+			if (auth.pnid.username !== user.pnid) {
+				data.pnid = auth.pnid.username;
+				data.pnidNormalized = auth.pnid.username.toLowerCase();
+			}
 
 			// Save changes
 			const newUser = await db.user.update({
