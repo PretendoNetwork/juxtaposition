@@ -23,7 +23,7 @@ function renderInlineNodes(nodes: JuxtMdInlineNode[]): ReactNode {
 					return <br />;
 				}
 				if (node.type === 'code') {
-					return <pre className="prose-code">{node.value}</pre>;
+					return <code className="prose-code">{node.value}</code>;
 				}
 
 				if (node.type === 'bold') {
