@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import xmlbuilder from 'xmlbuilder';
 import * as z from 'zod';
-import { parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
+import { extractMentionPids, parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
 import {
 	getValueFromQueryString,
 	getInvalidPostRegex,
@@ -15,7 +15,8 @@ import {
 	getCommunityByID,
 	getCommunityByTitleID,
 	getDuplicatePosts,
-	getUser
+	getUser,
+	getDb
 } from '@/database';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
@@ -363,9 +364,29 @@ async function newPost(request: express.Request, response: express.Response): Pr
 			return badRequest(response, ApiErrorCode.BAD_PARAMS);
 		}
 
-		const transformed = transformJuxtMarkdown(cleanedBody, {});
+		const transformed = await transformJuxtMarkdown(cleanedBody, {
+			async lookupPnid(pnid) {
+				const user = await getDb().user.findFirst({
+					where: {
+						pnidNormalized: pnid.toLowerCase()
+					},
+					select: {
+						pid: true
+					}
+				});
+				return user ? { pid: user.pid } : null;
+			}
+		});
 		const ast = parseJuxtMarkdown(transformed);
-		const plainText = renderToPlainText(ast);
+		const mentionPids = extractMentionPids(ast);
+		const mentionedUsers = await getDb().user.findMany({
+			where: {
+				pid: {
+					in: mentionPids
+				}
+			}
+		});
+		const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.displayName ?? v.pid.toString() })));
 		parsedBody = {
 			markdown: transformed,
 			text: plainText

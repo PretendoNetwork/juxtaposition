@@ -99,6 +99,11 @@ export function WebPostView(props: PostViewProps): ReactNode {
 						plaintextContainer: 'post-content-text-container-plain',
 						markdownContainer: 'post-content-text-container-markdown'
 					}}
+					components={{
+						mention(text, pid) {
+							return <a className="prose-mention" href={`/users/${pid}`}>@{text}</a>;
+						}
+					}}
 				/>
 				<WebPostScreenshot post={props.post}></WebPostScreenshot>
 				{post.painting ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.author.pid}/${post.id}.png`)} /> : null}
