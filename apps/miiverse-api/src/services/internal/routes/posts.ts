@@ -17,6 +17,7 @@ import { createNewPost, isValidPost, postCreateSchema } from '@/services/interna
 import { isPostingAllowed } from '@/services/internal/utils/communities';
 import { mapSelf } from '@/services/internal/contract/self';
 import { assertCanAccessUser, canAccessUser } from '@/services/internal/utils/user';
+import { createNewEmpathyNotification, createNewReplyNotification } from '@/services/internal/utils/notifications';
 import type { FilterQuery } from 'mongoose';
 import type { IPost } from '@/types/mongoose/post';
 import type { User } from '@/prisma/client';
@@ -225,7 +226,7 @@ postsRouter.post({
 		}),
 		response: empathySchema
 	},
-	async handler({ body, params, auth }) {
+	async handler({ body, params, auth, db }) {
 		let post = await Post.findOne({
 			id: params.post_id,
 			message_to_pid: null, // messages aren't really posts
@@ -260,6 +261,18 @@ postsRouter.post({
 		}
 		if (!post) {
 			throw errors.for('not_found');
+		}
+
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: post.pid
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (targetUser && pid !== targetUser.pid && targetUser.settings?.notifyEmpathy) {
+			await createNewEmpathyNotification(db, { currentUser: pid, postAuthor: post.pid, postId: post.id });
 		}
 
 		return mapEmpathy(body.action, post);
@@ -356,8 +369,9 @@ postsRouter.post({
 		body: postCreateSchema,
 		response: postSchema
 	},
-	async handler({ body, params, auth }) {
+	async handler({ body, params, auth, db }) {
 		const account = auth!;
+		const pid = account.pnid.pid;
 
 		const parentPost = await Post.findOne({
 			id: params.post_id,
@@ -366,6 +380,9 @@ postsRouter.post({
 		});
 		if (!parentPost) {
 			throw errors.for('not_found');
+		}
+		if (parentPost.parent) {
+			throw errors.for('bad_request');
 		}
 
 		const community = await Community.findOne({ olive_community_id: parentPost.community_id });
@@ -383,7 +400,7 @@ postsRouter.post({
 		}
 		const newPost = await createNewPost({
 			author: {
-				pid: account.pnid.pid,
+				pid,
 				miiData: account.pnid.mii?.data ?? '',
 				screenName: account.user?.displayName ?? '',
 				verified: self.permissions.moderator
@@ -392,6 +409,18 @@ postsRouter.post({
 			community,
 			parentPost
 		});
+
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: parentPost.pid
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (targetUser && pid !== targetUser.pid && targetUser.settings?.notifyReply) {
+			await createNewReplyNotification(db, { reply: newPost, replyToUser: targetUser.pid });
+		}
 
 		return mapPost(newPost, community);
 	}

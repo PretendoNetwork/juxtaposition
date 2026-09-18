@@ -15,14 +15,17 @@
     "go_back": "Go Back",
     "back": "Back",
     "yeahs": "Yeahs",
-    "more": "Load More Posts",
+    "load_more": "Load More",
+    "more_posts": "Load More Posts",
     "no_posts": "No Posts",
     "private": "Private",
     "close": "Close",
     "save": "Save",
     "exit": "Exit",
     "next": "Next",
-    "search": "Search..."
+    "search": "Search...",
+    "system_message": "System Message",
+    "mascot_name": "Bandwidth"
   },
   "login": {
     "title": "Juxtaposition Log In",
@@ -59,7 +62,8 @@
     "related": "Related Communities",
     "related_short": "Related",
     "related_to": "{{community}} Related Communities",
-    "closed": "This community is closed to new posts."
+    "closed": "This community is closed to new posts.",
+    "description": "About this Community"
   },
   "user_page": {
     "country": "Country",
@@ -88,6 +92,9 @@
     "show_country": "Show Country on Profile",
     "show_birthday": "Show Birthday on Profile",
     "show_game": "Show Game Experience on Profile",
+    "notify_empathy": "Show Yeah! Notifications",
+    "notify_follows": "Show Follow Notifications",
+    "notify_reply": "Show Reply/Comment Notifications",
     "save_action": "Save Settings",
     "gdpr_download": "Download User Data",
     "gdpr_download_action": "Download"
@@ -103,6 +110,13 @@
       "message/three": "<follower_one />, <follower_two />, and {{count_other}} other followed you!",
       "message/multiple": "<follower_one />, <follower_two />, and {{count_other}} others followed you!"
     },
+    "new_empathy": {
+      "message/one": "<empathy_one /> gave your post a Yeah!",
+      "message/two": "<empathy_one />, <empathy_two /> gave your post a Yeah!",
+      "message/three": "<empathy_one />, <empathy_two />, and {{count_other}} other gave your post a Yeah!",
+      "message/multiple": "<empathy_one />, <empathy_two />, and {{count_other}} others gave your post a Yeah!"
+    },
+    "new_reply": "<reply_author /> commented on your post!",
     "post_deleted": {
       "post_removed": "Your post \"{{postId}}\" has been removed.",
       "post_removed_for_reason": "Your post \"{{postId}}\" has been removed for the following reason: \"{{reason}}\".",
@@ -139,6 +153,7 @@
     "yeahs_count/one": "<count/> person gave this post a yeah.",
     "yeahs_count/multiple": "<count/> people gave this post a yeah.",
     "show_spoiler": "Show Spoiler",
+    "spoiler_label": "Spoilers",
     "reply_post": "Reply",
     "report_post": "Report post",
     "delete_post": "Delete post",

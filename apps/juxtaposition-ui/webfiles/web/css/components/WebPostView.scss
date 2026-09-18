@@ -23,7 +23,7 @@
     }
 
     .mii-icon-container {
-        margin: 0 -3px;
+        margin: 0 -3px 20px; // bottom margin to push 2nd row into clipped overflow
         transition: transform 100ms ease-in-out;
 
         &:hover {

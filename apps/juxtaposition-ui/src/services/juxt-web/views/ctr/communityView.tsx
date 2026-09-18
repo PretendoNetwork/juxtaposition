@@ -7,6 +7,7 @@ import { CtrCommunityIcon } from '@/services/juxt-web/views/ctr/components/ui/Ct
 import { CtrNavTab, CtrNavTabs, CtrNavTabsRow } from '@/services/juxt-web/views/ctr/components/ui/CtrNavTabs';
 import { CtrPageHeaderStat, CtrPageIconHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import { CtrPageButton, CtrPageButtons } from '@/services/juxt-web/views/ctr/components/CtrPageButtons';
+import { CtrSystemPostView } from '@/services/juxt-web/views/ctr/components/CtrSystemPostView';
 import type { ReactNode } from 'react';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 
@@ -75,7 +76,11 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						: null}
 				</CtrPageButtons>
 				<div className="body-content tab2-content" id="community-post-list">
-					<div className="community-info info-content with-header-banner">
+					<div className="post-list">
+						{community.description && props.isFirstPage
+							? <CtrSystemPostView type="community-comment">{community.description}</CtrSystemPostView>
+							: null}
+						{!community.permissions.open ? <CtrPostListClosedView /> : null}
 					</div>
 					<CtrNavTabs target=".tab-body">
 						<CtrNavTabsRow>
@@ -88,7 +93,6 @@ export function CtrCommunityView(props: CommunityViewProps): ReactNode {
 						</CtrNavTabsRow>
 					</CtrNavTabs>
 					<div className="tab-body post-list">
-						{!community.permissions.open ? <CtrPostListClosedView /> : null}
 						{props.children}
 					</div>
 				</div>

@@ -71,7 +71,7 @@ input,
 label {
  cursor:pointer
 }
-hidden {
+hidden, .hide {
     display: none;
 }
 #nav-menu {
@@ -320,6 +320,10 @@ body {
 .post-list .post {
  padding:15px 0
 }
+// hack
+.post-list.notices {
+    padding-bottom: 15px;
+}
 .post-list .post .mii-icon-container {
  position:relative;
  display:block;
@@ -348,7 +352,7 @@ body {
  position:relative;
  min-width:400px;
  max-width:800px;
- padding:20px 25px 5px;
+ padding: 25px;
  z-index:2;
  background:#fff;
  border-radius:20px;
@@ -362,15 +366,17 @@ body {
  margin:-15px 0 0;
  line-height:40px
 }
-.post-list .post .timestamp,
 .tags {
  display:inline-block;
  font-size:20px;
  line-height:30px
 }
-.post-list .post .timestamp {
- margin-top:-3px;
- color:#969696
+.post-list .post .timestamp,
+.post-list .post .spoiler-label {
+    margin-top: -3px;
+    color: #969696;
+    font-size: 20px;
+    line-height: 30px;
 }
 header svg {
  fill:#a362d8;
@@ -455,13 +461,16 @@ header svg {
  margin-bottom:20px
 }
 .post-list .post .post-memo {
- width:640px;
- height:240px;
- image-rendering:pixelated;
- border-radius:10px
+    width:640px;
+    height:240px;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
+    border-radius:10px;
 }
 .post-list .post .post-screenshot {
     border-radius: 10px;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
 
     /* fallback for screenshots without aspect info */
     width: 800px;
@@ -484,9 +493,8 @@ header svg {
 
 .post-list .post .post-buttons {
  clear:both;
- margin:0 0 20px;
  display:-webkit-box;
- border-radius:0 0 20px 20px
+ border-radius:0 0 20px 20px;
 }
 .post-list .post .post-buttons .yeah-button {
  position:relative;
@@ -591,7 +599,7 @@ h6.yeah-text {
 #user-page .user-page-content,
 .body-content .tab-body {
  padding-top:5px;
- margin-top:10px
+ margin-top:10px;
 }
 // Notifications and Friend Requests
 #news-list-content li .text {
@@ -1369,9 +1377,10 @@ input[type=radio] {
  position:absolute
 }
 .textarea-memo-preview {
- image-rendering:pixelated;
- width:640px;
- height:240px
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: pixelated;
+    width:640px;
+    height:240px;
 }
 .feeling-button-normal {
  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23fff' viewBox='0 0 256 256'%3E%3Ccircle cx='128' cy='128' r='96' stroke='%23fff' stroke-miterlimit='10' stroke-width='16'/%3E%3Cline x1='88' y1='160' x2='168' y2='160' fill='none' stroke='%23846abd' stroke-linecap='round' stroke-linejoin='round' stroke-width='16'/%3E%3Ccircle cx='92' cy='108' r='12' fill='%23846abd'/%3E%3Ccircle cx='164' cy='108' r='12' fill='%23846abd' /%3E%3C/svg%3E")!important
@@ -1454,8 +1463,9 @@ input[type=radio] {
  margin:0 auto;
  display:block
 }
-.spoiler .post-content {
- display:none
+.spoiler .post-content,
+.spoiler .post-buttons {
+    display: none !important;
 }
 .add-post-page-content.report,
 .report div {

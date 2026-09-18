@@ -1,3 +1,4 @@
+import cx from 'classnames';
 import { CtrTabsView, CtrTabView } from '@/services/juxt-web/views/ctr/controls/ctabs';
 import { CtrCheckbox } from '@/services/juxt-web/views/ctr/controls/checkbox';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
@@ -12,27 +13,33 @@ const empathies = [
 	{
 		value: 0,
 		className: 'sprite sp-feeling-normal',
+		miiFaceFile: 'normal_face.png',
 		isDefault: true
 	},
 	{
 		value: 1,
-		className: 'sprite sp-feeling-happy'
+		className: 'sprite sp-feeling-happy',
+		miiFaceFile: 'smile_open_mouth.png'
 	},
 	{
 		value: 2,
-		className: 'sprite sp-feeling-like'
+		className: 'sprite sp-feeling-like',
+		miiFaceFile: 'wink_left.png'
 	},
 	{
 		value: 3,
-		className: 'sprite sp-feeling-surprise'
+		className: 'sprite sp-feeling-surprise',
+		miiFaceFile: 'surprise_open_mouth.png'
 	},
 	{
 		value: 4,
-		className: 'sprite sp-feeling-frustrated'
+		className: 'sprite sp-feeling-frustrated',
+		miiFaceFile: 'frustrated.png'
 	},
 	{
 		value: 5,
-		className: 'sprite sp-feeling-puzzled'
+		className: 'sprite sp-feeling-puzzled',
+		miiFaceFile: 'sorrow.png'
 	}
 ];
 
@@ -55,8 +62,18 @@ export function CtrNewPostView(props: NewPostViewProps): ReactNode {
 				<input type="hidden" name="bmp" value="true" />
 				<div className="add-post-page-content">
 					<div className="feeling-selector expression">
-						<img src={url.cdn(`/mii/${user.pid}/normal_face.png`)} className="icon" />
-						<menu className="buttons">
+						{empathies.map(v => (
+							<img
+								src={url.cdn(`/mii/${user.pid}/${v.miiFaceFile}`)}
+								className={cx('icon', {
+									hide: !v.isDefault
+								})}
+								data-mii-feeling={v.value}
+								key={v.value}
+							/>
+						))}
+
+						<menu className="buttons" data-mii-feeling-selector>
 							{empathies.map(v => (
 								<input
 									key={v.value}
