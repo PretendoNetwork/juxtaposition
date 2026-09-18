@@ -5,6 +5,7 @@ import { CtrMiiIcon } from '@/services/juxt-web/views/ctr/components/ui/CtrMiiIc
 import { CtrButton } from '@/services/juxt-web/views/ctr/components/ui/CtrButton';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { humanFromNow } from '@/util';
+import { PostContent } from '@/services/juxt-web/views/common/components/PostContent';
 import type { ReactNode } from 'react';
 import type { PostScreenshotProps, PostViewProps } from '@/services/juxt-web/views/web/post';
 
@@ -88,11 +89,14 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 					: null }
 
 				<div className="post-content" data-href={!props.isReply ? `/posts/${post.id}` : undefined}>
-					{post.body
-						? (
-								<p className="post-content-text">{post.body}</p>
-							)
-						: null}
+					<PostContent
+						post={post}
+						classNames={{
+							container: 'post-content-text-container',
+							plaintextContainer: 'post-content-text-container-plain',
+							markdownContainer: 'post-content-text-container-markdown'
+						}}
+					/>
 					<CtrPostScreenshot post={post}></CtrPostScreenshot>
 					{post.painting
 						? (

@@ -11,6 +11,7 @@ export interface IPost {
 	title_id?: string; // u64
 	screen_name: string;
 	body: string;
+	body_markdown: string | null;
 	app_data?: string; // nintendo base64
 
 	painting?: string; // base64, can be empty or undefined
@@ -64,6 +65,7 @@ export interface IPost {
 type PostDefaultedFields =
 	'id' | // generated in save hook
 	'body' |
+	'body_markdown' |
 	'is_autopost' |
 	'is_community_private_autopost' |
 	'is_spoiler' |

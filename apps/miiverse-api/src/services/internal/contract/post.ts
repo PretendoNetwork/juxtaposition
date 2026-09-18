@@ -24,6 +24,7 @@ export const postSchema = asOpenapi('Post', z.object({
 
 	feelingId: z.number().nullable(),
 	body: z.string().nullable(),
+	bodyMarkdown: z.string().nullable(),
 	painting: z.object({
 		data: z.string(),
 		imageUrl: z.string(),
@@ -90,6 +91,7 @@ export function mapPost(post: IPost, comm: HydratedCommunityDocument | null): Po
 
 		feelingId: post.feeling_id ?? null,
 		body: post.body ? post.body : null,
+		bodyMarkdown: post.body_markdown ? post.body_markdown : null,
 		painting: post.painting
 			? {
 					data: post.painting,

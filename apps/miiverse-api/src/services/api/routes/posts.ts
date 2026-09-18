@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import xmlbuilder from 'xmlbuilder';
 import * as z from 'zod';
+import { parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
 import {
 	getValueFromQueryString,
 	getInvalidPostRegex,
@@ -265,7 +266,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	}
 
 	const communityID = bodyCheck.data.community_id || '';
-	const messageBody = bodyCheck.data.body?.trim();
+	const messageBody = bodyCheck.data.body;
 	const painting = bodyCheck.data.painting?.toString('base64') ?? '';
 	const screenshot = bodyCheck.data.screenshot?.toString('base64') ?? '';
 	const appData = bodyCheck.data.app_data?.toString('base64') ?? '';
@@ -349,17 +350,29 @@ async function newPost(request: express.Request, response: express.Response): Pr
 			break;
 	}
 
-	if (messageBody && getInvalidPostRegex().test(messageBody)) {
-		request.log.warn('Message body failed regex');
-		return badRequest(response, ApiErrorCode.BAD_PARAMS);
+	let parsedBody: { text: string; markdown: string } | null = null;
+	if (messageBody) {
+		const cleanedBody = messageBody.trim().replaceAll('\r\n', '\n');
+		if (getInvalidPostRegex().test(cleanedBody)) {
+			request.log.warn('Message body failed regex');
+			return badRequest(response, ApiErrorCode.BAD_PARAMS);
+		}
+
+		if (cleanedBody.length > 280) {
+			request.log.warn('Message body too long');
+			return badRequest(response, ApiErrorCode.BAD_PARAMS);
+		}
+
+		const transformed = transformJuxtMarkdown(cleanedBody, {});
+		const ast = parseJuxtMarkdown(transformed);
+		const plainText = renderToPlainText(ast);
+		parsedBody = {
+			markdown: transformed,
+			text: plainText
+		};
 	}
 
-	if (messageBody && messageBody.length > 280) {
-		request.log.warn('Message body too long');
-		return badRequest(response, ApiErrorCode.BAD_PARAMS);
-	}
-
-	if (!messageBody && !painting && !screenshot) {
+	if (!parsedBody && !painting && !screenshot) {
 		request.log.warn('Message content is empty');
 		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
@@ -373,7 +386,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		title_id: request.paramPack.title_id,
 		community_id: community.olive_community_id,
 		screen_name: dbUser.displayName,
-		body: messageBody ? messageBody : '',
+		body: parsedBody ? parsedBody.text : undefined,
+		body_markdown: parsedBody ? parsedBody.markdown : undefined,
 		app_data: appData,
 		painting: '',
 		painting_img: '',

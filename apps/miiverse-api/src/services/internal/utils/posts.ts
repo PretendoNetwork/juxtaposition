@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { getShotModeForTitleId } from '@/services/api/routes/posts';
 import { evaluateAutomodRules, getInvalidPostRegex, performAutomodAction } from '@/util';
@@ -64,6 +65,25 @@ export function isValidPost(post: PostCreateBody): boolean {
 	return true;
 }
 
+function validateAndProcessPostBody(input: string): { text: string; markdown: string } {
+	const cleanedBody = input.trim().replaceAll('\r\n', '\n');
+	if (getInvalidPostRegex().test(cleanedBody)) {
+		throw new Error('Invalid characters found in post body');
+	}
+
+	if (cleanedBody.length > 280) {
+		throw new Error('Post body is top long');
+	}
+
+	const transformed = transformJuxtMarkdown(cleanedBody, {});
+	const ast = parseJuxtMarkdown(transformed);
+	const plainText = renderToPlainText(ast);
+	return {
+		markdown: transformed,
+		text: plainText
+	};
+}
+
 /**
  * Create a new post from an input body
  * Warning: Does not check if it should be posted, validation should be done outside of this method
@@ -103,20 +123,14 @@ export async function createNewPost(ops: PostCreateOptions): Promise<HydratedPos
 
 	const miiFace = miiFaceFilenameMap[body.feelingId] ?? defaultMiiFaceFilename;
 
-	const postBody = body.body?.replaceAll('\r\n', '\n'); // Clean up \r\n
-	if (postBody && getInvalidPostRegex().test(postBody)) {
-		throw new Error('Invalid characters found in post body');
-	}
-
-	if (postBody && postBody.length > 280) {
-		throw new Error('Post body is top long');
-	}
+	const postBody = body.body ? validateAndProcessPostBody(body.body) : null;
 
 	const document: IPostInput = {
 		title_id: ops.community.title_id[0],
 		community_id: ops.community.olive_community_id,
 		screen_name: ops.author.screenName,
-		body: postBody,
+		body: postBody?.text,
+		body_markdown: postBody?.markdown,
 		painting: paintings?.blob ?? '',
 		painting_img: paintings?.img ?? '',
 		painting_big: paintings?.big ?? '',
