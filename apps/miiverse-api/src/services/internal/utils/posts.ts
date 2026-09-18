@@ -97,7 +97,7 @@ async function validateAndProcessPostBody(input: string): Promise<{ text: string
 			}
 		}
 	});
-	const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.pid.toString() })));
+	const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.displayName ?? v.pid.toString() })));
 	return {
 		markdown: transformed,
 		text: plainText
