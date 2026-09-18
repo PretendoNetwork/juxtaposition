@@ -32,7 +32,7 @@ async function main() {
 
 	let migratedUsers = 0;
 	console.log('--- Migrating users ---')
-	const cursor = pg.query(new Cursor<{ pid: number }>(`SELECT * FROM users WHERE pnid IS NOT NULL`));
+	const cursor = pg.query(new Cursor<{ pid: number }>(`SELECT * FROM users WHERE pnid IS NULL`));
 	while (true) {
 		const rows = await cursor.read(50);
 
