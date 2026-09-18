@@ -3,9 +3,9 @@ import multer from 'multer';
 import { z } from 'zod';
 import { config } from '@/config';
 import { parseReq } from '@/services/juxt-web/routes/routeUtils';
-import { WebCommunityListView, WebCommunityOverviewView } from '@/services/juxt-web/views/web/communityListView';
-import { PortalCommunityListView, PortalCommunityOverviewView } from '@/services/juxt-web/views/portal/communityListView';
-import { CtrCommunityListView, CtrCommunityOverviewView } from '@/services/juxt-web/views/ctr/communityListView';
+import { WebCommunityListView } from '@/services/juxt-web/views/web/communityListView';
+import { PortalCommunityListView } from '@/services/juxt-web/views/portal/communityListView';
+import { CtrCommunityListView } from '@/services/juxt-web/views/ctr/communityListView';
 import { PortalSubCommunityView } from '@/services/juxt-web/views/portal/subCommunityView';
 import { CtrSubCommunityView } from '@/services/juxt-web/views/ctr/subCommunityView';
 import { WebCommunityView } from '@/services/juxt-web/views/web/communityView';
@@ -22,29 +22,66 @@ import { getAllFromList } from '@/api/helpers';
 import { WebSubCommunityView } from '@/services/juxt-web/views/web/subCommunityView';
 import { WebNewPostPage } from '@/services/juxt-web/views/web/newPostView';
 import { buildListLinks } from '@/services/juxt-web/views/web/listView';
+import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
+import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
 import type { NewPostViewProps } from '@/services/juxt-web/views/web/newPostView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 import type { CommunityViewProps } from '@/services/juxt-web/views/web/communityView';
 import type { SubCommunityViewProps } from '@/services/juxt-web/views/portal/subCommunityView';
-import type { CommunityListViewProps, CommunityOverviewViewProps } from '@/services/juxt-web/views/web/communityListView';
+import type { CommunityListViewProps } from '@/services/juxt-web/views/web/communityListView';
 import type { FollowAction, Post } from '@/api/generated';
 
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
 
 communitiesRouter.get('/', async function (req, res) {
-	const popular = await req.api.communities.listPopular({ limit: 9 });
-	const recent = await req.api.communities.list({ category: 'listed', limit: 6, sort: 'newest' });
+	const postId = '1234';
+	return res.jsx(
+		<CtrRoot title="Page A">
+			<CtrPageBody>
+				<CtrPageTitledHeader
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="2"
+				>
+					Page A
+				</CtrPageTitledHeader>
+				<p>
+					<a href="/titles/test">Page B (Page reload)</a>
+				</p>
+				<p>
+					<a href="/titles/test" data-pjax>Page B (pjax)</a>
+				</p>
 
-	const props: CommunityOverviewViewProps = {
-		newCommunities: recent.data.items,
-		popularCommunities: popular.data.items
-	};
-	res.jsxForDirectory({
-		web: <WebCommunityOverviewView {...props} />,
-		portal: <PortalCommunityOverviewView {...props} />,
-		ctr: <CtrCommunityOverviewView {...props} />
-	});
+				<p id={'count-' + postId}>0</p>
+				<button data-button-yeah-post={postId}>Yeah<span className="sprite sp-heart" /></button>
+			</CtrPageBody>
+		</CtrRoot>
+	);
+});
+
+communitiesRouter.get('/test', async function (req, res) {
+	const postId = '1234';
+	return res.jsx(
+		<CtrRoot title="Page B">
+			<CtrPageBody>
+				<CtrPageTitledHeader
+					data-toolbar-mode="normal"
+					data-toolbar-active-button="2"
+				>
+					Page B
+				</CtrPageTitledHeader>
+				<p>
+					<a href="/titles">Page A (Page reload)</a>
+				</p>
+				<p>
+					<a href="/titles" data-pjax>Page A (pjax)</a>
+				</p>
+
+				<p id={'count-' + postId}>0</p>
+				<button data-button-yeah-post={postId}>Yeah<span className="sprite sp-heart" /></button>
+			</CtrPageBody>
+		</CtrRoot>
+	);
 });
 
 communitiesRouter.get('/all', async function (req, res) {
