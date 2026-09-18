@@ -28,7 +28,7 @@ function renderInlineNodes(nodes: JuxtMdInlineNode[], userList: ShallowUser[]): 
 				}
 				if (node.type === 'mention') {
 					const user = userList.find(v => v.pid === node.pid);
-					return <pre className="prose-code prose-mention">@{user?.miiName ?? node.pid}</pre>;
+					return <code className="prose-code prose-mention">@{user?.miiName ?? node.pid}</code>;
 				}
 
 				if (node.type === 'bold') {
