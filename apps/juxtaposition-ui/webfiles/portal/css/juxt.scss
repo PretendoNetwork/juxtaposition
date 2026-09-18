@@ -494,6 +494,14 @@ header svg {
                 display: inline;
                 border-radius: 8px;
             }
+            .prose-mention {
+                font-size: 22px;
+                background-color: #f3eefc;
+                color: #402d68;
+                font-weight: bold;
+                padding: 4px 2px;
+                border-radius: 8px;
+            }
 
             > *:last-child {
                 margin-bottom: 0; // Prevent post content from sticking out at the bottom
