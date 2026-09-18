@@ -1,4 +1,5 @@
 import type { Model, HydratedDocument } from 'mongoose';
+import type { CommunityData as ProtoCommunityData } from '@pretendonetwork/grpc/miiverse/v2/community';
 import type { CommunityData } from '@/types/miiverse/community';
 
 export enum COMMUNITY_TYPE {
@@ -83,7 +84,14 @@ export type ICommunityInput = Omit<ICommunity, CommunityDefaultedFields> & Parti
 export interface ICommunityMethods {
 	addUserFavorite(pid: number): Promise<void>;
 	delUserFavorite(pid: number): Promise<void>;
+	/**
+	 * @returns JSON representation of the community object
+	 */
 	json(): CommunityData;
+	/**
+	 * @returns Protobuf representation of the community object
+	 */
+	proto(): Promise<ProtoCommunityData>;
 }
 
 export type CommunityModel = Model<ICommunity, object, ICommunityMethods>;
