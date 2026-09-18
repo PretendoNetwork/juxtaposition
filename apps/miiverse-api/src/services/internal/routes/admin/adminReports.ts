@@ -12,6 +12,7 @@ import { deleteOptional } from '@/services/internal/utils';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { Community } from '@/models/community';
+import { getRelevantPidsFromPost } from '@/services/internal/contract/post';
 
 export const adminReportsRouter = createInternalApiRouter();
 
@@ -52,7 +53,7 @@ adminReportsRouter.get({
 
 		const relatedUserIds = [
 			...rawReports.flatMap(v => [v.reported_by, v.resolved_by]),
-			...posts.map(v => v.removed_by)
+			...getRelevantPidsFromPost(posts)
 		].filter((v): v is number => !!v);
 		const users = await db.user.findMany({
 			where: {
