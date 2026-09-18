@@ -62,7 +62,7 @@ export function createInternalApiClient(tokens: UserTokens): InternalApi {
 			return err;
 		}
 
-		return new InternalApiError(response.status, err);
+		return new InternalApiError(response?.status ?? 500, err);
 	});
 
 	return new InternalApi({
