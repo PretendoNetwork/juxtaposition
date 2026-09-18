@@ -91,6 +91,7 @@ describe('tokensToTree / inline', () => {
 		expect(tokensToTree(paragraph([
 			token('text', 'Hello'),
 			token('softbreak'),
+			token('hardbreak'),
 			token('text', 'World')
 		]))).toStrictEqual<JuxtMdNode[]>([{
 			type: 'paragraph',
@@ -99,24 +100,6 @@ describe('tokensToTree / inline', () => {
 				value: 'Hello'
 			}, {
 				type: 'br'
-			},
-			{
-				type: 'text',
-				value: 'World'
-			}]
-		}]);
-	});
-
-	it('handles newlines', () => {
-		expect(tokensToTree(paragraph([
-			token('text', 'Hello'),
-			token('softbreak'),
-			token('text', 'World')
-		]))).toStrictEqual<JuxtMdNode[]>([{
-			type: 'paragraph',
-			children: [{
-				type: 'text',
-				value: 'Hello'
 			}, {
 				type: 'br'
 			},
