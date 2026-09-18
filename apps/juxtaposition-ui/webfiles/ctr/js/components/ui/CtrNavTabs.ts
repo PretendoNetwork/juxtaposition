@@ -1,5 +1,5 @@
 import { GET } from '../../xhr';
-import { pjaxSetUrl, pjaxRefresh } from '../../pjax';
+import { pjaxSetUrl, pjaxRefresh, pjaxCanGoBack } from '../../pjax';
 import { initPosts } from '../../juxt';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {
@@ -34,6 +34,11 @@ function navTabsClick(this: HTMLElement, ev: Event): void {
 		initPosts();
 		pjaxRefresh();
 		cave.transition_end();
+		if (pjaxCanGoBack()) {
+			cave.toolbar_setButtonType(1);
+		} else {
+			cave.toolbar_setButtonType(0);
+		}
 	});
 }
 
