@@ -45,15 +45,20 @@ communitiesRouter.get('/', async function (req, res) {
 				>
 					Page A
 				</CtrPageTitledHeader>
-				<p>
-					<a href="/titles/test">Page B (Page reload)</a>
-				</p>
-				<p>
-					<a href="/titles/test" data-pjax>Page B (pjax)</a>
-				</p>
+				<div className="body-content tab2-content" id="community-post-list">
+					<p>
+						<a href="/titles/test">Page B (Page reload)</a>
+					</p>
+					<p>
+						<a href="/titles/test" data-pjax>Page B (pjax)</a>
+					</p>
+					<p>
+						<button evt-click="history.back()">Back (history)</button>
+					</p>
 
-				<p id={'count-' + postId}>0</p>
-				<button data-button-yeah-post={postId}>Yeah<span className="sprite sp-heart" /></button>
+					<p id={'count-' + postId}>0</p>
+					<button data-button-yeah-post={postId}>Yeah<span className="sprite sp-heart" /></button>
+				</div>
 			</CtrPageBody>
 		</CtrRoot>
 	);
@@ -70,15 +75,20 @@ communitiesRouter.get('/test', async function (req, res) {
 				>
 					Page B
 				</CtrPageTitledHeader>
-				<p>
-					<a href="/titles">Page A (Page reload)</a>
-				</p>
-				<p>
-					<a href="/titles" data-pjax>Page A (pjax)</a>
-				</p>
+				<div className="body-content tab2-content" id="community-post-list">
+					<p>
+						<a href="/titles">Page A (Page reload)</a>
+					</p>
+					<p>
+						<a href="/titles" data-pjax>Page A (pjax)</a>
+					</p>
+					<p>
+						<button evt-click="history.back()">Back (history)</button>
+					</p>
 
-				<p id={'count-' + postId}>0</p>
-				<button data-button-yeah-post={postId}>Yeah<span className="sprite sp-heart" /></button>
+					<p id={'count-' + postId}>0</p>
+					<button data-button-yeah-post={postId}>Yeah<span className="sprite sp-heart" /></button>
+				</div>
 			</CtrPageBody>
 		</CtrRoot>
 	);
