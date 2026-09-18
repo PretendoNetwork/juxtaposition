@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { Client as PgClient } from "pg";
+import { Pool } from "pg";
 import Cursor from "pg-cursor"
 import { createChannel, createClient, Metadata } from 'nice-grpc';
 import { AccountServiceDefinition } from '@pretendonetwork/grpc/account/v2/account_service';
@@ -13,10 +13,11 @@ if (!POSTGRES_URL || !GRPC_HOST || !GRPC_KEY) {
 	process.exit(1);
 }
 
-const pg = new PgClient({
+const pool = new Pool({
 	connectionString: POSTGRES_URL,
 });
-await pg.connect();
+const readClient = await pool.connect();
+const writeClient = await pool.connect();
 
 const channel = createChannel(GRPC_HOST);
 const grpc = createClient(AccountServiceDefinition, channel, {
@@ -31,10 +32,13 @@ async function main() {
 	console.log("Starting migration");
 
 	let migratedUsers = 0;
-	console.log('--- Migrating users ---')
-	const cursor = pg.query(new Cursor<{ pid: number }>(`SELECT * FROM users WHERE pnid IS NULL`));
+	const countResult = await pool.query('SELECT COUNT(*) AS count FROM users WHERE pnid IS NULL');
+	const total = Number(countResult.rows[0].count);
+
+	console.log(`--- Migrating ${total} users ---`)
+	const cursor = readClient.query(new Cursor<{ pid: number }>(`SELECT * FROM users WHERE pnid IS NULL`));
 	while (true) {
-		const rows = await cursor.read(50);
+		const rows = await cursor.read(300);
 
 		if (rows.length === 0) {
 			break;
@@ -42,7 +46,7 @@ async function main() {
 
 		for (const row of rows) {
 			const pid = row.pid;
-			console.log(`[${migratedUsers+1}] Processing ${pid}`);
+			console.log(`[${migratedUsers+1}/${total}] Processing ${pid}`);
 			try {
 				const user = await grpc.getUserData({
 					pid: pid
@@ -52,7 +56,7 @@ async function main() {
 					continue;
 				}
 
-				await pg.query(
+				await writeClient.query(
 					`UPDATE users SET pnid = $1, pnid_normalized = $2 WHERE pid = $3`,
 					[
 						user.username,
@@ -76,4 +80,6 @@ await main().catch((err) => {
 });
 
 channel.close();
-await pg.end();
+readClient.release();
+writeClient.release();
+await pool.end();
