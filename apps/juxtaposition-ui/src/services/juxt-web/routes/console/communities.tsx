@@ -34,8 +34,13 @@ import type { FollowAction, Post } from '@/api/generated';
 const upload = multer({ dest: 'uploads/' });
 export const communitiesRouter = express.Router();
 
+const actionFunc = `(function(){
+	var xhttp = new XMLHttpRequest();
+	xhttp.open('POST', '/titles/action', true);
+	xhttp.send("Hello world");
+})()`;
+
 communitiesRouter.get('/', async function (req, res) {
-	const postId = '1234';
 	return res.jsx(
 		<CtrRoot title="Page A">
 			<CtrPageBody>
@@ -52,12 +57,22 @@ communitiesRouter.get('/', async function (req, res) {
 					<p>
 						<a href="/titles/test" data-pjax>Page B (pjax)</a>
 					</p>
+
+					<hr />
+
 					<p>
 						<button evt-click="history.back()">Back (history)</button>
 					</p>
+					<p>
+						<button evt-click="history.go(-1)">Back (go(-1))</button>
+					</p>
+					<p>
+						<button evt-click="location.reload()">Reload</button>
+					</p>
 
-					<p id={'count-' + postId}>0</p>
-					<button data-button-yeah-post={postId}>Yeah<span className="sprite sp-heart" /></button>
+					<hr />
+
+					<button evt-click={actionFunc}>do POST</button>
 				</div>
 			</CtrPageBody>
 		</CtrRoot>
@@ -65,7 +80,6 @@ communitiesRouter.get('/', async function (req, res) {
 });
 
 communitiesRouter.get('/test', async function (req, res) {
-	const postId = '1234';
 	return res.jsx(
 		<CtrRoot title="Page B">
 			<CtrPageBody>
@@ -82,16 +96,34 @@ communitiesRouter.get('/test', async function (req, res) {
 					<p>
 						<a href="/titles" data-pjax>Page A (pjax)</a>
 					</p>
+
+					<hr />
+
 					<p>
 						<button evt-click="history.back()">Back (history)</button>
 					</p>
+					<p>
+						<button evt-click="history.go(-1)">Back (go(-1))</button>
+					</p>
+					<p>
+						<button evt-click="location.reload()">Reload</button>
+					</p>
 
-					<p id={'count-' + postId}>0</p>
-					<button data-button-yeah-post={postId}>Yeah<span className="sprite sp-heart" /></button>
+					<hr />
+
+					<button evt-click={actionFunc}>do POST</button>
 				</div>
 			</CtrPageBody>
 		</CtrRoot>
 	);
+});
+
+communitiesRouter.post('/action', async function (req, res) {
+	return res.send('Hello POST');
+});
+
+communitiesRouter.get('/action', async function (req, res) {
+	return res.send('Hello GET');
 });
 
 communitiesRouter.get('/all', async function (req, res) {
