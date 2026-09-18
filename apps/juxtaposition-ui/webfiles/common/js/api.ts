@@ -1,4 +1,4 @@
-import { DELETE, POSTNoTranstion } from './xhr';
+import { POST, DELETE, POSTNoTranstion } from '@common/js/xhr';
 
 export type EmpathyPostResponse = {
 	status: number;
@@ -50,5 +50,57 @@ export function deletePostById(id: string, reason: string | null, cb: (result: D
 
 		// make a response object
 		return cb({ status: 200, nextUrl });
+	});
+}
+
+export type UnspoilerPostResponse = {
+	success: boolean;
+};
+
+export function unspoilerPostById(id: string, cb: () => void): void {
+	POST(`/posts/${id}/edit/unspoiler`, '', (xhr) => {
+		if (xhr.status !== 200) {
+			return cb();
+		}
+		var res: UnspoilerPostResponse;
+
+		try {
+			res = JSON.parse(xhr.responseText);
+		} catch (e) {
+			console.error(e);
+			return cb();
+		}
+
+		if (!res.success) {
+			return cb();
+		}
+
+		cb();
+	});
+}
+
+export type SpoilerPostResponse = {
+	success: boolean;
+};
+
+export function spoilerPostById(id: string, cb: () => void): void {
+	POST(`/posts/${id}/edit/spoiler`, '', (xhr) => {
+		if (xhr.status !== 200) {
+			return cb();
+		}
+		var res: SpoilerPostResponse;
+
+		try {
+			res = JSON.parse(xhr.responseText);
+		} catch (e) {
+			console.error(e);
+			return cb();
+		}
+
+		if (!res.success) {
+			return cb();
+		}
+
+		cb();
 	});
 }

@@ -28,7 +28,9 @@ export default defineConfig([
 			'webfiles/ctr/**/*.js',
 			'webfiles/ctr/**/*.ts',
 			'webfiles/portal/**/*.js',
-			'webfiles/portal/**/*.ts'
+			'webfiles/portal/**/*.ts',
+			'webfiles/common/**/*.js',
+			'webfiles/common/**/*.ts'
 		],
 		rules: {
 			'no-var': 'off' // 3DS and Wii U browsers need to use var
@@ -61,5 +63,61 @@ export default defineConfig([
 	{
 		// Ignore generated code
 		ignores: ['src/api/generated']
+	},
+	{
+		// Set tsconfig for Portal (wiiu) webfiles
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: './webfiles/portal/tsconfig.json'
+				}
+			}
+		},
+		files: [
+			'webfiles/portal/**/*.js',
+			'webfiles/portal/**/*.ts'
+		]
+	},
+	{
+		// Set tsconfig for ctr (3ds) webfiles
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: './webfiles/ctr/tsconfig.json'
+				}
+			}
+		},
+		files: [
+			'webfiles/ctr/**/*.js',
+			'webfiles/ctr/**/*.ts'
+		]
+	},
+	{
+		// Set tsconfig for web (browser) webfiles
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: './webfiles/web/tsconfig.json'
+				}
+			}
+		},
+		files: [
+			'webfiles/web/**/*.js',
+			'webfiles/web/**/*.ts'
+		]
+	},
+	{
+		// Set tsconfig for library (common) webfiles
+		settings: {
+			'import/resolver': {
+				typescript: {
+					project: './webfiles/common/tsconfig.json'
+				}
+			}
+		},
+		files: [
+			'webfiles/common/**/*.js',
+			'webfiles/common/**/*.ts'
+		]
 	}
 ]);

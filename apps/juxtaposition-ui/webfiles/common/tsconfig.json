@@ -2,6 +2,7 @@
 	"extends": ["../tsconfig.base.json"],
 	"compilerOptions": {
 		"types": [
+			"@pretendonetwork/cave-types",
 			"@pretendonetwork/wiiu-browser-types",
 			"@pretendonetwork/wiiu-dialog-types",
 			"@pretendonetwork/wiiu-error-viewer-types",
@@ -10,12 +11,9 @@
 			"@pretendonetwork/wiiu-session-storage-types"
 		],
 		"paths": {
-			"@/*": [
-				"./*"
-			],
 			"@common/*": [
-				"../common/*" 
-			],
+				"./*"
+			]
 		}
 	}
 }

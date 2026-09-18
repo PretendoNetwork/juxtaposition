@@ -1,4 +1,4 @@
-import { ctabOnShown } from './controls/ctabs';
+import { ctabOnShown } from '@/js/controls/ctabs';
 
 export function initNewPostView(): void {
 	var page = document.querySelector('#add-post-page');
