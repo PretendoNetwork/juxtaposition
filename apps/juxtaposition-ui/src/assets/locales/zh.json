@@ -22,7 +22,9 @@
         "search": "搜索...",
         "global_feed_short": "全球",
         "people_feed": "关注中动态",
-        "people_feed_short": "关注中"
+        "people_feed_short": "关注中",
+        "system_message": "系统消息",
+        "mascot_name": "带宽"
     },
     "all_communities": {
         "text": "所有社区",
@@ -40,7 +42,8 @@
         "related": "相关社区",
         "related_to": "{{community}} 相关社区",
         "closed": "本社区不再接受新帖子。",
-        "related_short": "相关"
+        "related_short": "相关",
+        "description": "关于本社区"
     },
     "user_page": {
         "country": "国家/地区",
@@ -71,7 +74,10 @@
         "save_action": "保存设置",
         "gdpr_download": "下载用户数据",
         "gdpr_download_action": "下载",
-        "show_profile": "允许访客查看你的个人资料"
+        "show_profile": "允许访客查看你的个人资料",
+        "notify_empathy": "显示「同意！」通知",
+        "notify_follows": "显示关注通知",
+        "notify_reply": "显示回复/评论通知"
     },
     "activity_feed": {
         "empty": "这里是空的。尝试关注某人！"
@@ -97,7 +103,14 @@
             "temporary": "您已被限制发帖，直至 {{until}}。",
             "temporary_with_reason": "您已被限制发帖，直至 {{until}}。原因：\"{{reason}}\"。",
             "footer": "点击此消息即可查看《Juxtaposition 行为准则》。如有任何疑问，请联系 Pretendo Network 论坛的版主（{{banAppealUrl}}）。"
-        }
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> 同意了你的帖子！",
+            "message/two": "<empathy_one />、<empathy_two /> 同意了你的帖子！",
+            "message/three": "<empathy_one />、<empathy_two /> 和 {{count_other}} 位其他用户同意了你的帖子！",
+            "message/multiple": "<empathy_one />、<empathy_two /> 和 {{count_other}} 位其他用户同意了你的帖子！"
+        },
+        "new_reply": "<reply_author /> 评论了你的帖子！"
     },
     "new_post": {
         "post_to": "发布到{{user}}",
