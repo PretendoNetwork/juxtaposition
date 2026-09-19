@@ -22,7 +22,9 @@
         "people_feed_short": "Obserwowani",
         "friend_requests": "Prośby o przyjaźń",
         "updates": "Aktualizacje",
-        "search": "Szukaj..."
+        "search": "Szukaj...",
+        "system_message": "Wiadomość Systemowa",
+        "mascot_name": "Bandwidth"
     },
     "setup": {
         "beta_text": {
@@ -82,7 +84,8 @@
         "related": "Powiązane społeczności",
         "related_to": "Powiązane społeczności ze społecznością {{community}}",
         "closed": "Ta społeczność ma zablokowane tworzenie nowych postów.",
-        "related_short": "Powiązane"
+        "related_short": "Powiązane",
+        "description": "O tej społeczności"
     },
     "user_page": {
         "country": "Kraj",
@@ -113,7 +116,10 @@
         "save_action": "Zapisz ustawienia",
         "gdpr_download": "Pobierz dane użytkownika",
         "gdpr_download_action": "Pobierz",
-        "show_profile": "Pokaż profil dla gości"
+        "show_profile": "Pokaż profil dla gości",
+        "notify_empathy": "Pokaż powiadomienia dotyczące Nieźle!",
+        "notify_reply": "Pokaż powiadomienia dotyczące komentarzy/odpowiedzi",
+        "notify_follows": "Pokaż powiadomienia dotyczące obserwowań"
     },
     "activity_feed": {
         "empty": "Pusto tutaj. Zaobserwuj kogoś!"
@@ -139,7 +145,14 @@
             "temporary": "Twoja możliwość publikowania została ograniczona do {{until}}.",
             "temporary_with_reason": "Twoja możliwość publikowania została ograniczona do {{until}}. Powód: \"{{reason}}\".",
             "footer": "Kliknij tę wiadomość, żeby zobaczyć Kodeks Postępowania Juxtaposition. Jeśli masz jakieś pytania, skontaktuj się z moderatorami na forum Pretendo Network ({{banAppealUrl}})."
-        }
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> zareagował Nieźle! na twój post.",
+            "message/two": "<empathy_one />, <empathy_two /> zareagowali Nieźle! na twój post.",
+            "message/three": "<empathy_one />, <empathy_two />, i {{count_other}} innych zareagowało Nieźle! na twój post.",
+            "message/multiple": "<empathy_one />, <empathy_two />, i {{count_other}} innych zareagowało Nieźle! na twój post."
+        },
+        "new_reply": "<reply_author /> skomentował twój post!"
     },
     "new_post": {
         "post_to": "Postuj do {{user}}",
@@ -173,7 +186,7 @@
         "error_details": "Identyfikator prośby: {{id}}"
     },
     "post": {
-        "yeahs_count/one": "Osoby, które zareagowały \"Nieźle\": <count/>",
+        "yeahs_count/one": "<count/> osób zareagowało nieźle na ten post.",
         "yeahs_count/multiple": "Osoby, które zareagowały \"Nieźle\": <count/>.",
         "title": "Post od {{username}}",
         "heading": "Post",
