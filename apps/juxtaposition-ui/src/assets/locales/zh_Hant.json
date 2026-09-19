@@ -22,7 +22,9 @@
         "search": "搜尋...",
         "global_feed_short": "全球",
         "people_feed": "追蹤中動態",
-        "people_feed_short": "追蹤中"
+        "people_feed_short": "追蹤中",
+        "system_message": "系統訊息",
+        "mascot_name": "頻寬"
     },
     "all_communities": {
         "text": "所有社群",
@@ -85,7 +87,8 @@
         "related": "相關社群",
         "related_to": "{{community}} 相關社群",
         "closed": "此社群不再接受新貼文。",
-        "related_short": "相關"
+        "related_short": "相關",
+        "description": "關於此社群"
     },
     "user_page": {
         "game_experience": "遊戲經驗",
@@ -116,7 +119,10 @@
         "save_action": "儲存設定",
         "gdpr_download": "下載使用者資料",
         "gdpr_download_action": "下載",
-        "show_profile": "允許訪客查看你的個人檔案"
+        "show_profile": "允許訪客查看你的個人檔案",
+        "notify_empathy": "顯示「讚同！」通知",
+        "notify_follows": "顯示追蹤通知",
+        "notify_reply": "顯示回覆/評論通知"
     },
     "notifications": {
         "none": "沒有通知。",
@@ -139,7 +145,14 @@
             "temporary": "您已被限制發佈，直至 {{until}}。",
             "temporary_with_reason": "您已被限制發佈，直至 {{until}}。原因：\"{{reason}}\"。",
             "footer": "點觸此訊息即可查看《Juxt 社群守則》。如有任何疑問，請聯絡 Pretendo Network 論壇的版主（{{banAppealUrl}}）。"
-        }
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> 已讚同你的貼文！",
+            "message/two": "<empathy_one />、<empathy_two /> 已讚同你的貼文！",
+            "message/three": "<empathy_one />、<empathy_two /> 和另外 {{count_other}} 人已讚同你的貼文！",
+            "message/multiple": "<empathy_one />、<empathy_two /> 和另外 {{count_other}} 人已讚同你的貼文！"
+        },
+        "new_reply": "<reply_author /> 已評論你的貼文！"
     },
     "new_post": {
         "swearing": "貼文不能包含露骨內容。",
