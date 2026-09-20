@@ -23,7 +23,8 @@
         "people_feed": "Követett személyek",
         "people_feed_short": "Követve",
         "system_message": "Rendszer üzenet",
-        "mascot_name": "Sávszélesség"
+        "mascot_name": "Sávszélesség",
+        "load_more": "Több betöltése"
     },
     "all_communities": {
         "popular_places": "Népszerű helyek",
@@ -179,7 +180,8 @@
         "yeahs_count/multiple": "<count/> személy adott ennek a bejegyzésnek egy Yeah-t.",
         "sort_newest_first": "Rendezés legfrissebbre",
         "sort_oldest_first": "Rendezés legrégebbire",
-        "replies_heading": "Válaszok"
+        "replies_heading": "Válaszok",
+        "spoiler_label": "Spoiler-ek"
     },
     "login": {
         "title": "Juxtaposition belépés",
