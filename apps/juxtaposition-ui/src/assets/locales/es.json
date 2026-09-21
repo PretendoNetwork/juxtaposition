@@ -40,7 +40,7 @@
         "related_to": "Otras comunidades de {{community}}",
         "closed": "Esta comunidad está cerrada a nuevas publicaciones.",
         "tags_not_applicable": "N/A",
-        "related_short": "Relacionado"
+        "related_short": "Otras"
     },
     "user_page": {
         "country": "País",
@@ -109,7 +109,7 @@
         "content_placeholder": "Comparte tus pensamientos en una publicación a una comunidad o a tus seguidores.",
         "painting_submit": "Aceptar",
         "no_screenshot": "No hay capturas",
-        "automod_error": "Tu publicación contiene texto que no se permite en Juxtaposition. Para más información, por favor, visita https://preten.do/juxt-rules"
+        "automod_error": "Tu mensaje contiene texto que no se permite en Juxtaposition. Para más información, por favor, visita https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "¡Estás en Juxtaposition!",
@@ -204,15 +204,15 @@
         "submit": "Enviar denuncia",
         "title": "Denunciar publicación",
         "reason_others": "Otros",
-        "reason_not_nice": "Grosero/Odioso (Regla 1)",
-        "reason_inappropriate": "Inapropiado/NSFW (Regla 2)",
+        "reason_not_nice": "Ofensivo/Odio (Regla 1)",
+        "reason_inappropriate": "Inapropiado/Contenido sensible (Regla 2)",
         "reason_spam": "Spam/Promoción propia (Regla 3)",
         "reason_offtopic": "Fuera de tema (Regla 4)",
         "reason_piracy_new": "Piratería (Regla 5)",
-        "reason_exploits": "Abuso de API/Aprovecharse de bugs (Regla 8)",
-        "reason_drama": "Drama (Regla 9)",
-        "reason_cheating": "Hacer trampas online (Regla 10)",
-        "reason_spoiler_new": "Spoiler (Regla 11)",
+        "reason_exploits": "Abuso de API/Aprovecharse de errores (Regla 8)",
+        "reason_drama": "Conflictos (Regla 9)",
+        "reason_cheating": "Hacer trampas en línea (Regla 10)",
+        "reason_spoiler_new": "Revelación (Regla 11)",
         "reason_personal_info_new": "Información personal (Regla 12)",
         "reason_politics": "Política (Regla 13)",
         "reason_misinformation": "Desinformación/Consejos malos (Regla 14)",
@@ -225,7 +225,7 @@
         "moderate_user": "Moderar usuario",
         "title": "Moderación",
         "silently_delete_post": "Eliminar en silencio",
-        "mark_as_spoiler": "Marcar como spoiler",
-        "mark_as_not_spoiler": "Eliminar spoiler"
+        "mark_as_spoiler": "Marcar como revelación",
+        "mark_as_not_spoiler": "Eliminar revelación"
     }
 }

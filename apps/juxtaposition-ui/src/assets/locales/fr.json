@@ -22,7 +22,9 @@
         "people_feed_short": "Abonnés",
         "friend_requests": "Demandes d'amis",
         "updates": "Mises à jour",
-        "search": "Chercher..."
+        "search": "Chercher...",
+        "load_more": "Charger Plus",
+        "system_message": "Message Système"
     },
     "all_communities": {
         "text": "Toutes les communautés",
@@ -40,7 +42,8 @@
         "related": "Communautés associées",
         "closed": "Cette communauté est fermée aux nouveaux posts.",
         "related_to": "Communautés liées à {{community}}",
-        "related_short": "En lien"
+        "related_short": "En lien",
+        "description": "A propos de cette communauté"
     },
     "user_page": {
         "country": "Pays",
@@ -110,7 +113,7 @@
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",
         "welcome_text": "Juxt est une communauté de jeu qui rassemble les personnes du monde entier à l'aide de personnages Mii. Utilisez Juxt pour partager votre expérience de jeu et rencontrer des gens autour du globe.",
-        "beta": "Bêta: Avis de non-responsabilité",
+        "beta": "Bêta : Avis de non-responsabilité",
         "beta_text": {
             "first": "Vous êtes sur le point d'essayer la première version bêta publique de Juxt. Cela signifie que beaucoup de choses sont encore en développement et qu'elles peuvent changer à tout moment.",
             "second": "Cela peut inclure un effacement total de la base de données à la fin ou pendant la période bêta.",
@@ -184,7 +187,8 @@
         "copy_link": "Copier le lien",
         "sort_newest_first": "Afficher les plus récents",
         "sort_oldest_first": "Afficher les plus anciens",
-        "replies_heading": "Réponses"
+        "replies_heading": "Réponses",
+        "spoiler_label": "Révélations"
     },
     "reporting": {
         "title": "Sigaler la publication",
