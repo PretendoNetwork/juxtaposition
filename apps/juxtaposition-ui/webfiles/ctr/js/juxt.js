@@ -11,6 +11,7 @@ import { initSearchForm } from './components/ui/CtrSearchForm';
 
 setInterval(checkForUpdates, 30000);
 
+cave.toolbar_enableBackBtnFunc(false);
 cave.toolbar_setCallback(1, back);
 cave.toolbar_setCallback(99, back);
 cave.toolbar_setCallback(2, function () {
@@ -134,6 +135,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	console.debug('Pjax initialized.');
 	initAll();
 	stopLoading();
+	if (pjaxCanGoBack()) {
+		cave.toolbar_setButtonType(1);
+	} else {
+		cave.toolbar_setButtonType(0);
+	}
 });
 document.addEventListener('PjaxRequest', function () {
 	cave.transition_begin();
