@@ -7,6 +7,7 @@ import { initNavTabs } from './components/ui/PortalNavTabs';
 import { initSearchForm } from './components/ui/PortalSearchForm';
 import { initNavBar } from './components/PortalNavBar';
 import { back, exit } from './nav';
+import { initBoss } from './boss';
 
 export var pjax;
 setInterval(checkForUpdates, 30000);
@@ -180,6 +181,7 @@ function initNewPost() {
 }
 
 function initAll() {
+	initBoss();
 	initNavBar();
 	initNavTabs();
 	initPosts();
