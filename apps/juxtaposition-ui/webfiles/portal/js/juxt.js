@@ -181,7 +181,6 @@ function initNewPost() {
 }
 
 function initAll() {
-	initBoss();
 	initNavBar();
 	initNavTabs();
 	initPosts();
@@ -233,6 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
 	});
 	console.debug('Pjax initialized.', pjax);
+	initBoss();
 	initAll();
 	stopLoading();
 });
