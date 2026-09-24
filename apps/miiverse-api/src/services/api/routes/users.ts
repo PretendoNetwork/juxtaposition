@@ -1,12 +1,18 @@
 import express from 'express';
-import { getValueFromQueryString } from '@/util';
+import { getValueFromQueryString, sendOliveXmlResult } from '@/util';
 import { ApiErrorCode, badRequest } from '@/errors';
 import { getDb, getUser } from '@/database';
 
 const router = express.Router();
 
+type NotificationResult = {
+	request_name: 'notifications';
+	notification_count: number;
+};
+
 /**
- * Endpoint data doesn't get read by the caller, it only reads the status code
+ * Endpoint data doesn't get read by the caller, it only reads the status code.
+ * We provide a made-up response structure similar, third-parties may enjoy the data.
  */
 router.get('/:pid/notifications', async function (request: express.Request, response: express.Response): Promise<void> {
 	const pid = Number(getValueFromQueryString(request.query, 'pid')[0]);
@@ -32,7 +38,10 @@ router.get('/:pid/notifications', async function (request: express.Request, resp
 		return;
 	}
 
-	response.status(200).send();
+	sendOliveXmlResult<NotificationResult>(response, {
+		request_name: 'notifications',
+		notification_count: unreadNotifications
+	});
 });
 
 export default router;
