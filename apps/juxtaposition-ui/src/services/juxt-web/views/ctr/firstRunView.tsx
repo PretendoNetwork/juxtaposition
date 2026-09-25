@@ -1,6 +1,7 @@
 import { CtrPageBody, CtrRoot } from '@/services/juxt-web/views/ctr/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { CtrPageTitledHeader } from '@/services/juxt-web/views/ctr/components/CtrPageHeader';
+import { assetUrl } from '@/webfiles';
 import type { ReactNode } from 'react';
 import type { FirstRunViewProps } from '@/services/juxt-web/views/web/firstRunView';
 
@@ -70,8 +71,8 @@ export function CtrFirstRunView(_props: FirstRunViewProps): ReactNode {
 
 	const head = (
 		<>
-			<link rel="stylesheet" type="text/css" href="/assets/ctr/css/firstrun.css" />
-			<script src="/assets/ctr/js/firstrun.global.js"></script>
+			<link rel="stylesheet" type="text/css" href={assetUrl('/assets/ctr/css/firstrun.css')} />
+			<script src={assetUrl('/assets/ctr/js/firstrun.global.js')}></script>
 		</>
 	);
 

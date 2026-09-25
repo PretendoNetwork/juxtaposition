@@ -1,5 +1,6 @@
 import { PortalPageBody, PortalRoot } from '@/services/juxt-web/views/portal/root';
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { assetUrl } from '@/webfiles';
 import type { ReactNode } from 'react';
 import type { FirstRunViewProps } from '@/services/juxt-web/views/web/firstRunView';
 
@@ -69,8 +70,8 @@ export function PortalFirstRunView(_props: FirstRunViewProps): ReactNode {
 
 	const head = (
 		<>
-			<link rel="stylesheet" type="text/css" href="/assets/portal/css/firstrun.css" />
-			<script src="/assets/portal/js/firstrun.global.js"></script>
+			<link rel="stylesheet" type="text/css" href={assetUrl('/assets/portal/css/firstrun.css')} />
+			<script src={assetUrl('/assets/portal/js/firstrun.global.js')}></script>
 		</>
 	);
 

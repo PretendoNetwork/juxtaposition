@@ -1,5 +1,6 @@
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebLoginRoot } from '@/services/juxt-web/views/web/login';
+import { assetUrl } from '@/webfiles';
 import type { ReactNode } from 'react';
 
 export type FirstRunViewProps = {
@@ -9,7 +10,7 @@ export function WebFirstRunView(_props: FirstRunViewProps): ReactNode {
 	const extraHead = (
 		<>
 			<title>{T.str('login.title')}</title>
-			<link rel="stylesheet" href="/assets/web/css/first_run.css" />
+			<link rel="stylesheet" href={assetUrl('/assets/web/css/first_run.css')} />
 		</>
 	);
 

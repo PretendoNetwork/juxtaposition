@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { assetUrl } from '@/webfiles';
 import type { ReactNode } from 'react';
 
 export function DefaultHead(): ReactNode {
@@ -26,15 +27,15 @@ export function DefaultStyling(props: DefaultStylingProps): ReactNode {
 	if (props.type === 'admin') {
 		return (
 			<>
-				<link rel="stylesheet" type="text/css" href="/assets/web/css/admin.css" />
-				<script src="/assets/web/js/admin.global.js" />
+				<link rel="stylesheet" type="text/css" href={assetUrl('/assets/web/css/admin.css')} />
+				<script src={assetUrl('/assets/web/js/admin.global.js')} />
 			</>
 		);
 	} else /* if (props.type === "normal") */ {
 		return (
 			<>
-				<link rel="stylesheet" type="text/css" href="/assets/web/css/web.css" />
-				<script src="/assets/web/js/web.global.js" />
+				<link rel="stylesheet" type="text/css" href={assetUrl('/assets/web/css/web.css')} />
+				<script src={assetUrl('/assets/web/js/web.global.js')} />
 			</>
 		);
 	}
