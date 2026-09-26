@@ -1,13 +1,14 @@
-import './polyfills';
-import { initCheckboxes } from './controls/checkbox';
-import { initClientTabs } from './controls/ctabs';
-import { initNewPostView } from './new-post-view';
-import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from './pjax';
-import { initPostPageView, initYeahButton, initSpoilers } from './post';
-import { initToolbarConfigs } from './toolbar';
-import { GET, POST } from './xhr';
-import { initNavTabs } from './components/ui/CtrNavTabs';
-import { initSearchForm } from './components/ui/CtrSearchForm';
+import '@/js/polyfills';
+import { initNewPostView } from '@/js/new-post-view';
+import { pjaxBack, pjaxCanGoBack, pjaxInit, pjaxLoadUrl, pjaxRefresh } from '@/js/pjax';
+import { initPostPageView, initYeahButton, initSpoilers } from '@/js/post';
+import { initToolbarConfigs } from '@/js/toolbar';
+import { GET, POST } from '@/js/xhr';
+import { initNavTabs } from '@/js/components/ui/CtrNavTabs';
+import { initSearchForm } from '@/js/components/ui/CtrSearchForm';
+import { islands } from '@/js/islands';
+import { checkboxIsland } from '@/js/islands/checkbox';
+import { ctabsIsland } from '@/js/islands/ctabs';
 
 setInterval(checkForUpdates, 30000);
 
@@ -71,12 +72,11 @@ function initAll() {
 	initNewPostView();
 	initNavTabs();
 	initPostPageView();
-	initClientTabs();
-	initCheckboxes();
 	initSearchForm();
 	checkForUpdates();
 	initToolbarConfigs();
 	pjaxRefresh();
+	islands.loadBody();
 }
 
 function checkForUpdates() {
@@ -168,3 +168,8 @@ document.addEventListener('error', (e) => {
 		target.setAttribute('src', placeholder);
 	}
 }, true);
+
+islands.register([
+	checkboxIsland,
+	ctabsIsland
+]);
