@@ -1,5 +1,5 @@
 // Script for the post page view (postPageView.tsx)
-import { deletePostById } from './api';
+import { deletePostById } from '@/js/api';
 
 function deletePost(this: HTMLElement, _e: Event): void {
 	var id = this.getAttribute('data-button-delete-post');
