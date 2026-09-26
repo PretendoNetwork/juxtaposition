@@ -39,9 +39,33 @@ export function WebPostView(props: PostViewProps): ReactNode {
 
 	let removedPostPart = null;
 	if (post.moderation?.removed) {
+		const removedBy = post.moderation.removed.removedBy;
 		removedPostPart = (
 			<div className="post-body-content removed">
-				<h3><T k="post.removed" /></h3>
+				<h3>
+					<span>
+						<T k="post.removed" />
+					</span>
+					{removedBy
+						? (
+								<span className="post-removed-by">
+									<T k="post.removedBy" />
+									{ removedBy.pid === post.author.pid
+										? (
+												<span><T k="post.removedBySelf" /></span>
+											)
+										: (
+												<>
+													<WebMiiIcon type="mii-icon" pid={removedBy.pid} />
+													<a className="post-removed-by-user" href={`/users/${removedBy.pid}`}>
+														<span>{removedBy.miiName}</span>
+													</a>
+												</>
+											)}
+								</span>
+							)
+						: null}
+				</h3>
 			</div>
 		);
 	}
