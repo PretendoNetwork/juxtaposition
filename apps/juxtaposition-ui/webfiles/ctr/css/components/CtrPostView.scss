@@ -78,7 +78,7 @@
                 text-decoration: line-through;
             }
             .prose-code {
-                font-size: 12px;
+                font-size: 11px;
                 background-color: #eeeeee;
                 border: 1px solid #dadada;
                 padding: 3px 6px;
@@ -86,6 +86,14 @@
                 font-family: monospace;
                 display: inline;
                 border-radius: 5px;
+            }
+            .prose-mention {
+                font-size: 11px;
+                background-color: #f3eefc;
+                color: #402d68;
+                font-weight: bold;
+                padding: 3px 2px;
+                border-radius: 3px;
             }
 
             > *:last-child {

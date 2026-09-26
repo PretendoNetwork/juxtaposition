@@ -63,6 +63,11 @@ export function initPosts() {
 	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
+			// Prevent click event from happening if click target was in a link
+			if (e.target.closest('a[data-pjax]')) {
+				return;
+			}
+
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
 		});
 	}

@@ -32,7 +32,7 @@ adminUsersRouter.get({
 		let dbQuery: UserWhereInput = {};
 		if (query.search) {
 			const searchOrStatements: UserWhereInput[] = [];
-			searchOrStatements.push(buildPrismaSearchQuery(['displayName'], query.search));
+			searchOrStatements.push(buildPrismaSearchQuery(['displayName', 'pnidNormalized'], query.search));
 			if (query.search.match(/^\d+$/)) {
 				searchOrStatements.push({
 					pid: Number(query.search)

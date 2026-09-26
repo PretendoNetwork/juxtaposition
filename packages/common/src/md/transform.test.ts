@@ -1,8 +1,8 @@
 import { applyReplacements, retrieveReplacements } from '@/md/transform';
 
 describe('retrieveReplacements', () => {
-	it('does nothing', () => {
-		expect(retrieveReplacements('Hello world!', {})).toStrictEqual([]);
+	it('does nothing with no special syntax', async () => {
+		expect(await retrieveReplacements('Hello world!', {})).toStrictEqual([]);
 	});
 });
 

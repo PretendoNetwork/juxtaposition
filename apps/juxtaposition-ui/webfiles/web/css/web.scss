@@ -366,6 +366,25 @@ header>.selected svg {
     display: inline;
     border-radius: 5px;
   }
+  .prose-mention {
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 0.1em 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color 100ms ease-in-out, opacity 100ms ease-in-out;
+
+    &:hover {
+      background-color: var(--background-dark);
+      text-decoration: none;
+    }
+
+    &:active {
+      opacity: 0.8;
+      text-decoration: none;
+    }
+  }
 
   > *:last-child {
     margin-bottom: 0; // Prevent post content from sticking out at the bottom
