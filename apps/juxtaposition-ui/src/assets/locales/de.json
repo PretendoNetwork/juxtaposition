@@ -22,7 +22,10 @@
         "search": "Suche...",
         "global_feed_short": "Global",
         "people_feed": "Nutzer-Feed",
-        "people_feed_short": "Folge ich"
+        "people_feed_short": "Folge ich",
+        "load_more": "Mehr Laden",
+        "system_message": "Systemnachricht",
+        "mascot_name": "Bandbreite"
     },
     "all_communities": {
         "text": "Alle Communitys",
@@ -40,7 +43,8 @@
         "related": "Ähnliche Communities",
         "related_to": "Ähnliche Communities wie {{community}}",
         "closed": "In dieser Community können keine neuen Beiträge erstellt werden.",
-        "related_short": "Verwandte"
+        "related_short": "Verwandte",
+        "description": "Über diese Community"
     },
     "user_page": {
         "country": "Land",
@@ -71,7 +75,10 @@
         "save_action": "Einstellungen speichern",
         "gdpr_download": "Nutzerdaten herunterladen",
         "gdpr_download_action": "Herunterladen",
-        "show_profile": "Zeige Profil Gästen"
+        "show_profile": "Zeige Profil Gästen",
+        "notify_empathy": "Zeige Yeah! Benachrichtigungen",
+        "notify_follows": "Zeige Folgen Benachrichtigungen",
+        "notify_reply": "Zeige Antwort/Kommentar Benachrichtigungen"
     },
     "activity_feed": {
         "empty": "Es ist ganz schön leer hier. Versuche, jemandem zu folgen!"
@@ -86,7 +93,24 @@
         },
         "post_deleted": {
             "post_removed": "Dein Beitrag „{{postId}}“ wurde entfernt.",
-            "post_removed_for_reason": "Dein Beitrag „{{postId}}“ wurde aus folgendem Grund entfernt: „{{reason}}“."
+            "post_removed_for_reason": "Dein Beitrag „{{postId}}“ wurde aus folgendem Grund entfernt: „{{reason}}“.",
+            "comment_removed": "Ihr Kommentar \"{{postId}}\" wurde entfernt.",
+            "comment_removed_for_reason": "Ihr Kommentar \"{{postId}}\" wurde aus folgendem Grund entfernt: \"{{reason}}\".",
+            "footer": "Klicken Sie auf diese Nachricht, um den Verhaltenskodex von Juxtaposition anzuzeigen. Wenn Sie Fragen haben, wenden Sie sich bitte an die Moderatoren im Pretendo Network Forum ({{contactModsUrl}})."
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> Ich habe deinen Beitrag ein Yeah gegeben!",
+            "message/two": "<empathy_one /><empathy_two /> Ich habe deinem Beitrag ein Yeah gegeben!",
+            "message/three": "<empathy_one />, <empathy_two />, and {{count_other}} andere gaben deinem Beitrag ein Yeah!",
+            "message/multiple": "<empathy_one />, <empathy_two />,and {{count_other}} andere gaben deinem Beitag ein Yeah!"
+        },
+        "new_reply": "<reply_author /> Ich habe deinen Beitrag Kommentiert!",
+        "limited_from_posting": {
+            "message": "Deine Beitragsrechte wurden eingeschränkt.",
+            "message_with_reason": "Deine Beitragsrechte wurden eingeschränkt. Grund: \"{{reason}}\".",
+            "temporary": "Deine Beitragsrechte wurden bis {{until}} eingeschränkt.",
+            "temporary_with_reason": "Deine Beitragsrechte wurden bis {{until}} eingeschränkt. Grund: \"{{reason}}\".",
+            "footer": "Klicken Sie auf diese Nachricht, um den Juxtaposition Verhaltenskodex anzuzeigen. Wenn Sie Fragen haben, wenden Sie sich bitte an die Moderatoren im Pretendo Network Forum ({{banAppealUrl}})."
         }
     },
     "new_post": {
@@ -175,12 +199,16 @@
         "report_post": "Beitrag melden",
         "delete_post": "Beitrag löschen",
         "removed": "Beitrag wurde entfernt.",
-        "copy_link": "Link kopieren"
+        "copy_link": "Link kopieren",
+        "spoiler_label": "Spoilern",
+        "sort_newest_first": "Sortieren nach neuesten",
+        "sort_oldest_first": "Sortieren nach ältesten",
+        "replies_heading": "Antworten"
     },
     "reporting": {
         "title": "Beitrag melden",
         "submit": "Meldung senden",
-        "description": "Du bist dabei, einen Beitrag zu melden, dessen Inhalt gegen den Juxtaposition-Verhaltenskodex verstößt. Diese Meldung wird an die Juxtaposition-Administratoren von Pretendo gesendet und nicht an den Ersteller des Beitrags.",
+        "description": "Du bist dabei, einen Beitrag zu melden, dessen Inhalt gegen den Juxtaposition-Verhaltenskodex verstößt. Dieser Bericht wird nur an die Moderatoren von Juxtaposition gesendet und nicht an den Ersteller des Beitrags.",
         "label": "Grund:",
         "additional_info_placeholder": "Zusätzliche Kommentare oder Informationen eingeben",
         "reason_spoiler": "Spoiler",
@@ -193,11 +221,26 @@
         "reason_piracy": "Piraterie",
         "reason_inappropiate_ingame": "Unangemessenes Verhalten im Spiel",
         "reason_missing_images": "Fehlende Bilder",
-        "reason_others": "Andere Gründe"
+        "reason_others": "Andere Gründe",
+        "reason_not_nice": "Gemein/Unhöflich/Hasserfüllt (Regel 1)",
+        "reason_inappropriate": "Unangemessen/Anstößig (Regel 2)",
+        "reason_spam": "Spam/Eigenwerbung (Regel 3)",
+        "reason_offtopic": "Themenfremd (Regel 4)",
+        "reason_exploits": "API-Missbrauch/Ausnutzen von Fehlern (Regel 8)",
+        "reason_drama": "Drama (Regel 9)",
+        "reason_cheating": "Online-Cheating (Regel 10)",
+        "reason_spoiler_new": "Spoilern (Regel 11)",
+        "reason_personal_info_new": "Persönliche Informationen (Regel 12)",
+        "reason_politics": "Politik (Regel 13)",
+        "reason_piracy_new": "Piraterie (Regel 5)",
+        "reason_misinformation": "Missinformationen/Schlechte Ratschläge (Regel 14)",
+        "reason_impersonation": "Identitätsdiebstahl (Regel 15)"
     },
     "moderation": {
         "title": "Moderation",
         "silently_delete_post": "Geräuschlos löschen",
-        "moderate_user": "Nutzer moderieren"
+        "moderate_user": "Nutzer moderieren",
+        "mark_as_spoiler": "Als Spoiler markieren",
+        "mark_as_not_spoiler": "Spoiler entfernen"
     }
 }
