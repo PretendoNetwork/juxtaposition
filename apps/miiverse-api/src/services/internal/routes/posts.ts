@@ -398,7 +398,7 @@ postsRouter.post({
 		if (!isValidPost(body)) {
 			throw errors.for('invalid_post');
 		}
-		const newPost = await createNewPost({
+		const newPost = await createNewPost(db, {
 			author: {
 				pid,
 				miiData: account.pnid.mii?.data ?? '',

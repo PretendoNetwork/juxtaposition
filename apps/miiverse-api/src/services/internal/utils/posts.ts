@@ -6,11 +6,11 @@ import { config } from '@/config';
 import { getDuplicatePosts } from '@/database';
 import { Post } from '@/models/post';
 import { asOpenapi } from '@/services/internal/builder/openapi';
-import { AutomodRule } from '@/models/automodRules';
 import { errors } from '@/services/internal/errors';
 import type { PaintingUrls } from '@/images';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
+import type { PrismaClient } from '@/prisma/client';
 
 export const postCreateSchema = asOpenapi('PostCreateBody', z.object({
 	body: z.string().trim().optional(),
@@ -68,7 +68,7 @@ export function isValidPost(post: PostCreateBody): boolean {
  * Create a new post from an input body
  * Warning: Does not check if it should be posted, validation should be done outside of this method
  */
-export async function createNewPost(ops: PostCreateOptions): Promise<HydratedPostDocument> {
+export async function createNewPost(db: PrismaClient, ops: PostCreateOptions): Promise<HydratedPostDocument> {
 	const body = ops.body;
 	const postId = await generatePostUID(21);
 
@@ -153,9 +153,9 @@ export async function createNewPost(ops: PostCreateOptions): Promise<HydratedPos
 	}
 
 	// Automod
-	const automodRules = await AutomodRule.find({ enabled: true });
+	const automodRules = await db.automodRule.findMany({ where: { enabled: true }, include: { keywordSettings: true } });
 	const automodEval = evaluateAutomodRules(document, automodRules);
-	const automodResult = await performAutomodAction(document, automodEval);
+	const automodResult = await performAutomodAction(db, document, automodEval);
 	if (!automodResult.allowPost) {
 		throw errors.for('automod_prevented');
 	}

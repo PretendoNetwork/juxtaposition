@@ -1,16 +1,15 @@
 import { z } from 'zod';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { guards } from '@/services/internal/middleware/guards';
-import { deleteOptional } from '@/services/internal/utils';
-import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import { standardSortSchema, standardSortToDirectionPrisma } from '@/services/internal/contract/utils';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { automodRuleSchema, mapAutomodRule } from '@/services/internal/contract/admin/automodRule';
-import { AutomodRule, automodRuleMode, automodRuleType } from '@/models/automodRules';
 import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { automodLogSchema, mapAutomodLog } from '@/services/internal/contract/admin/automodLog';
-import { automodAction, AutomodLog } from '@/models/automodLog';
-import type { RootFilterQuery } from 'mongoose';
+import { automodAction } from '@/models/automodLog';
+import { automodRuleMode, automodRuleType } from '@/models/automodRules';
+import type { AutomodLogWhereInput, AutomodRuleWhereInput } from '@/prisma/models';
 
 export const adminAutomodRouter = createInternalApiRouter();
 
@@ -25,16 +24,24 @@ adminAutomodRouter.get({
 		}).extend(pageControlSchema(50)),
 		response: pageDtoSchema(automodRuleSchema)
 	},
-	async handler({ query }) {
-		const dbQuery: RootFilterQuery<AutomodRule> = deleteOptional({
+	async handler({ db, query }) {
+		const dbQuery: AutomodRuleWhereInput = {
 			enabled: query.enabled
+		};
+		const rules = await db.automodRule.findMany({
+			where: dbQuery,
+			include: {
+				keywordSettings: true
+			},
+			orderBy: {
+				createdAt: standardSortToDirectionPrisma(query.sort)
+			},
+			skip: query.offset,
+			take: query.limit
 		});
-		const rules = await AutomodRule
-			.find(dbQuery)
-			.sort({ created_at: standardSortToDirection(query.sort) })
-			.skip(query.offset)
-			.limit(query.limit);
-		const total = await AutomodRule.countDocuments(dbQuery);
+		const total = await db.automodRule.count({
+			where: dbQuery
+		});
 
 		return mapPage(total, rules.map(v => mapAutomodRule(v)));
 	}
@@ -53,13 +60,18 @@ adminAutomodRouter.post({
 		}),
 		response: automodRuleSchema
 	},
-	async handler({ body }) {
-		const rule = await AutomodRule.create({
-			title: body.title,
-			enabled: false,
-			created_at: new Date(),
-			type: body.type,
-			mode: body.mode
+	async handler({ body, db }) {
+		const rule = await db.automodRule.create({
+			data: {
+				id: 'test', // TODO add ID generation
+				title: body.title,
+				enabled: false,
+				type: body.type,
+				mode: body.mode
+			},
+			include: {
+				keywordSettings: true
+			}
 		});
 
 		return mapAutomodRule(rule);
@@ -88,26 +100,33 @@ adminAutomodRouter.patch({
 		}).partial(),
 		response: automodRuleSchema
 	},
-	async handler({ params, body }) {
+	async handler({ params, body, db }) {
+		const oldRule = await db.automodRule.findUnique({
+			where: {
+				id: params.id
+			}
+		});
+		if (!oldRule) {
+			throw errors.for('not_found');
+		}
+
 		const desc = body.description ?? '';
-		const rule = await AutomodRule.findOneAndUpdate({ _id: params.id }, {
-			$set: deleteOptional({
+		const rule = await db.automodRule.update({
+			where: {
+				id: oldRule.id
+			},
+			data: {
 				title: body.title,
 				description: desc.length > 0 ? desc : null,
 				enabled: body.enabled,
 				type: body.type,
-				mode: body.mode,
-				keyword_settings: body.settings?.keyword
-					? {
-							keywords: body.settings.keyword.keywords
-						}
-					: undefined
-			})
-		}, { new: true });
-
-		if (!rule) {
-			throw errors.for('not_found');
-		}
+				mode: body.mode
+				// TODO add keyword settings update
+			},
+			include: {
+				keywordSettings: true
+			}
+		});
 
 		return mapAutomodRule(rule);
 	}
@@ -123,9 +142,13 @@ adminAutomodRouter.delete({
 		}),
 		response: resultSchema
 	},
-	async handler({ params }) {
-		const rule = await AutomodRule.findOneAndDelete({ _id: params.id });
-		if (!rule) {
+	async handler({ params, db }) {
+		const result = await db.automodRule.deleteMany({
+			where: {
+				id: params.id
+			}
+		});
+		if (result.count === 0) {
 			throw errors.for('not_found');
 		}
 
@@ -146,21 +169,28 @@ adminAutomodRouter.get({
 		response: pageDtoSchema(automodLogSchema)
 	},
 	async handler({ query, db }) {
-		const dbQuery: RootFilterQuery<AutomodLog> = deleteOptional({
+		const dbQuery: AutomodLogWhereInput = {
 			action: query.action,
 			author: query.authorPid
+		};
+		const logs = await db.automodLog.findMany({
+			where: dbQuery,
+			orderBy: {
+				createdAt: standardSortToDirectionPrisma(query.sort)
+			},
+			skip: query.offset,
+			take: query.limit
 		});
-		const logs = await AutomodLog
-			.find(dbQuery)
-			.sort({ created_at: standardSortToDirection(query.sort) })
-			.skip(query.offset)
-			.limit(query.limit);
-		const total = await AutomodLog.countDocuments(dbQuery);
+		const total = await db.automodLog.count({
+			where: dbQuery
+		});
 
-		const ruleIds = logs.map(v => v.rule_id);
-		const rules = await AutomodRule.find({
-			_id: {
-				$in: ruleIds
+		const ruleIds = logs.map(v => v.ruleId);
+		const rules = await db.automodRule.findMany({
+			where: {
+				id: {
+					in: ruleIds
+				}
 			}
 		});
 
@@ -174,7 +204,7 @@ adminAutomodRouter.get({
 		});
 
 		const mappedLogs = logs.map((log) => {
-			const rule = rules.find(v => v.id === log.rule_id) ?? null;
+			const rule = rules.find(v => v.id === log.ruleId) ?? null;
 			const user = users.find(v => v.pid === log.author) ?? null;
 
 			return mapAutomodLog(log, user, rule);
