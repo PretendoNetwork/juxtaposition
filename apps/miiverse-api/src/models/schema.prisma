@@ -21,6 +21,20 @@ enum ProfilePrivacyType {
   UsersOnly
 }
 
+enum AutomodActionType {
+  Blocked
+  Logged
+}
+
+enum AutomodRuleType {
+  Keyword
+}
+
+enum AutomodRuleMode {
+  Block
+  Log
+}
+
 /// User
 model User {
   pid         Int      @id
@@ -112,4 +126,56 @@ model NotificationRecipient {
 
   @@index([pid])
   @@map("notification_recipients")
+}
+
+/// Automod logs
+model AutomodLog {
+  id        String            @id
+  createdAt DateTime          @default(now()) @map("created_at")
+  ruleId    String            @map("rule_id")
+  author    Int
+  action    AutomodActionType
+
+  postContentBody String? @map("post_content_body")
+  matches         Json?
+
+  postId       String? @map("post_id")
+  parentPostId String? @map("parent_post_id")
+  communityId  String? @map("community_id")
+
+  @@map("automod_logs")
+}
+
+/// Automod rules
+model AutomodRule {
+  id        String   @id
+  createdAt DateTime @default(now()) @map("created_at")
+
+  title       String
+  description String?
+  type        AutomodRuleType
+  mode        AutomodRuleMode
+
+  // Content of the post
+  postContentBody String? @map("post_content_body")
+  matches         Json?
+
+  // Relationship info about the post
+  postId       String? @map("post_id")
+  parentPostId String? @map("parent_post_id")
+  communityId  String? @map("community_id")
+
+  keywordSettings AutomodRuleKeywordSetting?
+
+  @@map("automod_rules")
+}
+
+/// Settings for the keyword AutomodRule
+model AutomodRuleKeywordSetting {
+  ruleId String      @id
+  rule   AutomodRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  keywords String[]
+
+  @@map("automod_rule_keyword_settings")
 }
