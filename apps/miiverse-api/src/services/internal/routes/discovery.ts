@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
-import { Endpoint } from '@/models/endpoint';
 import { discoverySchema, mapDiscovery } from '@/services/internal/contract/discovery';
+import { getEndpoint } from '@/database';
 
 export const discoveryRouter = createInternalApiRouter();
 
@@ -18,7 +18,7 @@ discoveryRouter.get({
 		response: discoverySchema
 	},
 	async handler({ params }) {
-		const discovery = await Endpoint.findOne({ server_access_level: params.environment });
+		const discovery = await getEndpoint(params.environment);
 		return mapDiscovery(discovery);
 	}
 });
