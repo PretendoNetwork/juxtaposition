@@ -35,6 +35,12 @@ enum AutomodRuleMode {
   Log
 }
 
+enum ServerAccessLevel {
+  Prod
+  Beta
+  Dev
+}
+
 /// User
 model User {
   pid         Int      @id
@@ -179,4 +185,18 @@ model AutomodRuleKeywordSetting {
   keywords String[]
 
   @@map("automod_rule_keyword_settings")
+}
+
+/// Endpoints for the discovery service
+model DiscoveryEndpoint {
+  id                String            @id
+  createdAt         DateTime          @default(now()) @map("created_at")
+  serverAccessLevel ServerAccessLevel @map("server_access_level")
+
+  status  Int
+  apiHost String @map("api_host")
+  wupHost String @map("wup_host")
+  ctrHost String @map("ctr_host")
+
+  @@map("discovery_endpoints")
 }
