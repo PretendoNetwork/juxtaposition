@@ -153,6 +153,7 @@ model AutomodRule {
 
   title       String
   description String?
+  enabled     Boolean
   type        AutomodRuleType
   mode        AutomodRuleMode
 
