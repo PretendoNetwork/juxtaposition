@@ -203,7 +203,9 @@
         "spoiler_label": "Spoilern",
         "sort_newest_first": "Sortieren nach neuesten",
         "sort_oldest_first": "Sortieren nach ältesten",
-        "replies_heading": "Antworten"
+        "replies_heading": "Antworten",
+        "removedBy": "Entfernt von",
+        "removedBySelf": "Autor"
     },
     "reporting": {
         "title": "Beitrag melden",
