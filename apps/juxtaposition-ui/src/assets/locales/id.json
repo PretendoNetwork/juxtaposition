@@ -21,7 +21,10 @@
         "people_feed_short": "Orang",
         "friend_requests": "Permintaan Pertemanan",
         "updates": "Pembaruan",
-        "search": "Cari..."
+        "search": "Cari...",
+        "load_more": "Muat Lebih Banyak",
+        "system_message": "Pesan Sistem",
+        "mascot_name": "Bandwidth"
     },
     "language": "Bahasa Indonesia",
     "all_communities": {
@@ -37,7 +40,10 @@
         "show_profile": "Tampilkan Profil kepada tamu",
         "save_action": "Simpan Pengaturan",
         "gdpr_download": "Unduh Data Pengguna",
-        "gdpr_download_action": "Unduh"
+        "gdpr_download_action": "Unduh",
+        "notify_empathy": "Tampilkan Notifikasi Yeah!",
+        "notify_follows": "Tampilkan Notifikasi Mengikuti",
+        "notify_reply": "Tampilkan Notifikasi Balasan/Komentar"
     },
     "setup": {
         "welcome_text": "Juxt adalah komunitas game yang menghubungan orang-orang dari seluruh dunia menggunakan karakter Mii. Gunakan Juxt untuk berbagi pengalaman bermain game anda dan bertemu orang-orang dari seluruh dunia.",
@@ -92,7 +98,8 @@
         "related": "Komunitas Terkait",
         "related_short": "Terkait",
         "related_to": "Komunitas Terkait {{community}}",
-        "closed": "Komunitas ini ditutup untuk posting baru."
+        "closed": "Komunitas ini ditutup untuk posting baru.",
+        "description": "Tentang Komunitas Ini"
     },
     "user_page": {
         "country": "Negara",
@@ -125,6 +132,27 @@
             "message/two": "<follower_one />, <follower_two /> mengikuti Anda!",
             "message/three": "<follower_one />, <follower_two />, dan {{count_other}} lainnya mengikuti Anda!",
             "message/multiple": "<follower_one />, <follower_two />, dan {{count_other}} lainnya mengikuti Anda!"
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> memberikan Yeah! pada postingan Anda!",
+            "message/two": "<empathy_one />, <empathy_two /> memberikan Yeah! pada postingan Anda!",
+            "message/three": "<empathy_one />, <empathy_two />, dan {{count_other}} pengguna lain memberikan Yeah! pada postingan Anda!",
+            "message/multiple": "<empathy_one />, <empathy_two />, dan {{count_other}} pengguna lainnya memberikan Yeah! pada postingan Anda!"
+        },
+        "new_reply": "<reply_author /> mengomentari postingan Anda!",
+        "post_deleted": {
+            "post_removed": "Postingan Anda \"{{postId}}\" telah dihapus.",
+            "post_removed_for_reason": "Postingan Anda \"{{postId}}\" telah dihapus dengan alasan berikut: \"{{reason}}\".",
+            "comment_removed": "Komentar Anda \"{{postId}}\" telah dihapus.",
+            "comment_removed_for_reason": "Komentar Anda \"{{postId}}\" telah dihapus dengan alasan berikut: \"{{reason}}\".",
+            "footer": "Klik pesan ini untuk melihat Kode Etik Juxtaposition. Jika Anda memiliki pertanyaan, silakan hubungi moderator di Forum Pretendo Network ({{contactModsUrl}})."
+        },
+        "limited_from_posting": {
+            "message": "Anda Dibatasi untuk Membuat Postingan.",
+            "message_with_reason": "Anda Dibatasi untuk Membuat Postingan. Alasan: \"{{reason}}\".",
+            "temporary": "Anda Dibatasi untuk Membuat Postingan hingga {{until}}.",
+            "temporary_with_reason": "Anda Dibatasi untuk Membuat Postingan hingga {{until}}. Alasan: \"{{reason}}\".",
+            "footer": "Klik pesan ini untuk melihat Kode Etik Juxtaposition. Jika Anda memiliki pertanyaan, silakan hubungi moderator di Forum Pretendo Network ({{banAppealUrl}})."
         }
     },
     "new_post": {
@@ -171,12 +199,18 @@
         "report_post": "Laporkan posting",
         "delete_post": "Hapus posting",
         "removed": "Posting telah dihapus.",
-        "copy_link": "Salin tautan"
+        "copy_link": "Salin tautan",
+        "spoiler_label": "Spoiler",
+        "removedBy": "Dihapus oleh",
+        "removedBySelf": "penulis",
+        "sort_newest_first": "Urutkan berdasarkan terbaru",
+        "sort_oldest_first": "Urutkan berdasarkan terlama",
+        "replies_heading": "Balasan"
     },
     "reporting": {
         "title": "Laporkan Posting",
         "submit": "Kirim Laporan",
-        "description": "Anda akan melaporkan sebuah posting dengan konten yang melanggar Kode Etik Juxtaposition. Laporan ini akan dikirim ke administrator Juxtaposition Pretendo dan bukan kepada pembuat posting.",
+        "description": "Anda akan melaporkan postingan yang melanggar Kode Etik Juxtaposition. Laporan ini hanya akan dikirim kepada Moderator Juxtaposition dan tidak kepada pembuat postingan.",
         "label": "Alasan:",
         "additional_info_placeholder": "Masukkan komentar atau informasi tambahan",
         "reason_spoiler": "Spoiler",
@@ -189,11 +223,26 @@
         "reason_piracy": "Pembajakan",
         "reason_inappropiate_ingame": "Perilaku Tidak Pantas dalam Game",
         "reason_missing_images": "Gambar Hilang",
-        "reason_others": "Lainnya"
+        "reason_others": "Lainnya",
+        "reason_not_nice": "Kasar/Tidak Sopan/Penuh Kebencian (Aturan 1)",
+        "reason_inappropriate": "Tidak Pantas/NSFW (Aturan 2)",
+        "reason_spam": "Spam/Promosi Diri (Aturan 3)",
+        "reason_offtopic": "Di Luar Topik (Aturan 4)",
+        "reason_piracy_new": "Pembajakan (Aturan 5)",
+        "reason_exploits": "Penyalahgunaan API/Mengeksploitasi Bug (Aturan 8)",
+        "reason_drama": "Drama (Aturan 9)",
+        "reason_cheating": "Kecurangan Daring (Aturan 10)",
+        "reason_spoiler_new": "Spoiler (Aturan 11)",
+        "reason_personal_info_new": "Informasi Pribadi (Aturan 12)",
+        "reason_politics": "Politik (Aturan 13)",
+        "reason_misinformation": "Misinformasi/Saran Buruk (Aturan 14)",
+        "reason_impersonation": "Penyamaran Identitas (Aturan 15)"
     },
     "moderation": {
         "title": "Moderasi",
         "silently_delete_post": "Hapus diam-diam",
-        "moderate_user": "Moderasi Pengguna"
+        "moderate_user": "Moderasi Pengguna",
+        "mark_as_spoiler": "Tandai sebagai spoiler",
+        "mark_as_not_spoiler": "Hapus tanda spoiler"
     }
 }
