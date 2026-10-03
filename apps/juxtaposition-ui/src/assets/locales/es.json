@@ -22,7 +22,9 @@
         "people_feed": "Actividad de usuarios",
         "global_feed_short": "Global",
         "global_feed": "Actividad global",
-        "my_feed": "Mi actividad"
+        "my_feed": "Mi actividad",
+        "load_more": "Cargar mas.",
+        "system_message": "Mensaje del sistema."
     },
     "all_communities": {
         "text": "Todas las comunidades",
@@ -40,7 +42,8 @@
         "related_to": "Otras comunidades de {{community}}",
         "closed": "Esta comunidad está cerrada a nuevas publicaciones.",
         "tags_not_applicable": "N/A",
-        "related_short": "Otras"
+        "related_short": "Otras",
+        "description": "Acerca de la comunidad"
     },
     "user_page": {
         "country": "País",
@@ -71,7 +74,10 @@
         "save_action": "Guardar ajustes",
         "gdpr_download": "Descargar información de usuario",
         "gdpr_download_action": "Descargar",
-        "show_profile": "Mostrar perfil a invitados"
+        "show_profile": "Mostrar perfil a invitados",
+        "notify_empathy": "Mostrar notificaciones de Yeah!",
+        "notify_follows": "Mostrar Notificaciones de seguidos",
+        "notify_reply": "Mostrar notificaciones de Respuesta/comentarios"
     },
     "activity_feed": {
         "empty": "No hay nada que ver. ¡Prueba a seguir a alguien!"
@@ -97,6 +103,9 @@
             "temporary": "Se te ha limitado la posibilidad de publicar hasta {{until}}.",
             "temporary_with_reason": "Se te ha limitado la posibilidad de publicar hasta {{until}}. Motivo: \"{{reason}}\".",
             "footer": "Pulsa en este mensaje para ver el Código de Conducta de Juxtaposition. Si tienes alguna pregunta, por favor, contacta a los moderadores en el foro de Pretendo Network {{banAppealUrl}}."
+        },
+        "new_empathy": {
+            "message/one": ""
         }
     },
     "new_post": {
@@ -163,9 +172,9 @@
     },
     "post": {
         "yeahs_count/one": "Le mola a <count/> persona.",
-        "yeahs_count/multiple": "A <count/> personas les mola.",
+        "yeahs_count/multiple": "A <count/> persona le ah dado tu post con un yeah",
         "reply_post": "Comentar",
-        "report_post": "Denunciar",
+        "report_post": "Denunciar Post",
         "title": "Publicación de {{username}}",
         "show_spoiler": "Ver revelación",
         "removed": "La publicación ha sido eliminada.",
@@ -174,7 +183,9 @@
         "copy_link": "Copiar enlace",
         "sort_newest_first": "Ordenar por más reciente",
         "sort_oldest_first": "Ordenar por más antiguo",
-        "replies_heading": "Respuestas"
+        "replies_heading": "Respuestas",
+        "removedBy": "Removido por.",
+        "removedBySelf": "Autor"
     },
     "login": {
         "username": "Nombre de usuario",
