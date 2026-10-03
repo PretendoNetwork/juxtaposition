@@ -24,7 +24,8 @@
         "updates": "Mises à jour",
         "search": "Chercher...",
         "load_more": "Charger Plus",
-        "system_message": "Message Système"
+        "system_message": "Message Système",
+        "mascot_name": "Bandwidth"
     },
     "all_communities": {
         "text": "Toutes les communautés",
@@ -74,7 +75,9 @@
         "save_action": "Enregistrer les paramètres",
         "gdpr_download": "Télécharger les données utilisateur",
         "gdpr_download_action": "Télécharger",
-        "show_profile": "Afficher le profil aux invités"
+        "show_profile": "Afficher le profil aux invités",
+        "notify_empathy": "Afficher les notifications de Ouais!",
+        "notify_reply": "Afficher les notifications des Commentaires/Réponses"
     },
     "activity_feed": {
         "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
@@ -96,7 +99,11 @@
         },
         "limited_from_posting": {
             "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les modérateurs sur le Forum Pretendo Network ({{banAppealUrl}})."
-        }
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> a donné un Ouais! à votre publication"
+        },
+        "new_reply": "<reply_author /> a commenté votre publication !"
     },
     "new_post": {
         "post_to": "Envoyer à {{user}}",
@@ -188,7 +195,9 @@
         "sort_newest_first": "Afficher les plus récents",
         "sort_oldest_first": "Afficher les plus anciens",
         "replies_heading": "Réponses",
-        "spoiler_label": "Révélations"
+        "spoiler_label": "Révélations",
+        "removedBySelf": "auteur",
+        "removedBy": "Supprimé par"
     },
     "reporting": {
         "title": "Sigaler la publication",
