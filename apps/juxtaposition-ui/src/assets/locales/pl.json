@@ -24,7 +24,8 @@
         "updates": "Aktualizacje",
         "search": "Szukaj...",
         "system_message": "Wiadomość Systemowa",
-        "mascot_name": "Bandwidth"
+        "mascot_name": "Bandwidth",
+        "load_more": "Załaduj więcej"
     },
     "setup": {
         "beta_text": {
@@ -198,7 +199,10 @@
         "copy_link": "Skopiuj link",
         "sort_newest_first": "Najnowsze",
         "sort_oldest_first": "Najstarsze",
-        "replies_heading": "Odpowiedzi"
+        "replies_heading": "Odpowiedzi",
+        "spoiler_label": "Spoilery",
+        "removedBy": "Usunięty przez",
+        "removedBySelf": "Autor"
     },
     "friend_requests": {
         "none": "Brak zaproszeń do znajomych"
