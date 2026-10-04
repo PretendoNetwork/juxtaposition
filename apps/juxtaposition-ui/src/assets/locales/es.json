@@ -24,7 +24,8 @@
         "global_feed": "Actividad global",
         "my_feed": "Mi actividad",
         "load_more": "Cargar mas.",
-        "system_message": "Mensaje del sistema."
+        "system_message": "Mensaje del sistema.",
+        "mascot_name": "Ancho de banda."
     },
     "all_communities": {
         "text": "Todas las comunidades",
@@ -103,7 +104,14 @@
             "temporary": "Se te ha limitado la posibilidad de publicar hasta {{until}}.",
             "temporary_with_reason": "Se te ha limitado la posibilidad de publicar hasta {{until}}. Motivo: \"{{reason}}\".",
             "footer": "Pulsa en este mensaje para ver el Código de Conducta de Juxtaposition. Si tienes alguna pregunta, por favor, contacta a los moderadores en el foro de Pretendo Network {{banAppealUrl}}."
-        }
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> le a molado tu publicación!",
+            "message/two": "<empathy_one />, <empathy_two /> les a molado tu publicación.",
+            "message/three": "<empathy_one />, <empathy_two />, y {{count_other}} persona/s les a molado tu publicacion!",
+            "message/multiple": "<empathy_one /><empathy_two /> y {{count_other}} les a molado la publicación."
+        },
+        "new_reply": "<reply_author /> comento tu post!"
     },
     "new_post": {
         "post_to": "Mensaje para \"{{user}}\"",
@@ -168,8 +176,8 @@
         "message_web": "Mira el <status>estado actual del servidor</status>.<newline/>O, <home>vuelve a la página principal</home>"
     },
     "post": {
-        "yeahs_count/one": "Le mola a <count/> persona.",
-        "yeahs_count/multiple": "A <count/> persona le ah dado tu post con un yeah",
+        "yeahs_count/one": "<count/> persona/s les a molado tu publicacion",
+        "yeahs_count/multiple": "A <count/> personas les mola.",
         "reply_post": "Comentar",
         "report_post": "Denunciar Post",
         "title": "Publicación de {{username}}",
@@ -182,7 +190,8 @@
         "sort_oldest_first": "Ordenar por más antiguo",
         "replies_heading": "Respuestas",
         "removedBy": "Removido por.",
-        "removedBySelf": "Autor"
+        "removedBySelf": "Autor",
+        "spoiler_label": "revelaciones"
     },
     "login": {
         "username": "Nombre de usuario",
