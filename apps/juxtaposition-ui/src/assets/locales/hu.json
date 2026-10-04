@@ -181,7 +181,9 @@
         "sort_newest_first": "Rendezés legfrissebbre",
         "sort_oldest_first": "Rendezés legrégebbire",
         "replies_heading": "Válaszok",
-        "spoiler_label": "Spoiler-ek"
+        "spoiler_label": "Spoiler-ek",
+        "removedBy": "Eltávolította",
+        "removedBySelf": "szerző"
     },
     "login": {
         "title": "Juxtaposition belépés",
