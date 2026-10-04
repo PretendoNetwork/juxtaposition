@@ -77,7 +77,8 @@
         "gdpr_download_action": "Télécharger",
         "show_profile": "Afficher le profil aux invités",
         "notify_empathy": "Afficher les notifications de Ouais!",
-        "notify_reply": "Afficher les notifications des Commentaires/Réponses"
+        "notify_reply": "Afficher les notifications des Commentaires/Réponses",
+        "notify_follows": "Montrer les notifications de Suivis"
     },
     "activity_feed": {
         "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
@@ -98,10 +99,17 @@
             "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les moderateurs sur le Forum Pretendo Network ({{contactModsUrl}})."
         },
         "limited_from_posting": {
-            "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les modérateurs sur le Forum Pretendo Network ({{banAppealUrl}})."
+            "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les modérateurs sur le Forum Pretendo Network ({{banAppealUrl}}).",
+            "message": "Vous avez été limité de publier.",
+            "message_with_reason": "Vous avez été limité de publier. Raison: \"{{reason}}\".",
+            "temporary": "Vous avez êtez limité de publier jusqu'à {{until}}.",
+            "temporary_with_reason": "Vous avez êtez limité de publier jusqu’à {{until}}. Raison: \"{{reason}}\"."
         },
         "new_empathy": {
-            "message/one": "<empathy_one /> a donné un Ouais! à votre publication"
+            "message/one": "<empathy_one /> a donné un Ouais! à votre publication",
+            "message/two": "<empathy_one />, <empathy_two /> a donné un Ouais à votre poste!",
+            "message/three": "<empathy_one />, <empathy_two />, et {{count_other}} ont donné un Ouais à votre poste!",
+            "message/multiple": "<empathy_one />, <empathy_two />, et{{count_other}} autres ont donné un Ouais à votre poste!"
         },
         "new_reply": "<reply_author /> a commenté votre publication !"
     },
