@@ -103,9 +103,6 @@
             "temporary": "Se te ha limitado la posibilidad de publicar hasta {{until}}.",
             "temporary_with_reason": "Se te ha limitado la posibilidad de publicar hasta {{until}}. Motivo: \"{{reason}}\".",
             "footer": "Pulsa en este mensaje para ver el Código de Conducta de Juxtaposition. Si tienes alguna pregunta, por favor, contacta a los moderadores en el foro de Pretendo Network {{banAppealUrl}}."
-        },
-        "new_empathy": {
-            "message/one": ""
         }
     },
     "new_post": {
