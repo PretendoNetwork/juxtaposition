@@ -16,7 +16,8 @@
         "exit": "閉じる",
         "next": "次へ",
         "friend_requests": "フレンド申請",
-        "updates": "アップデート"
+        "updates": "アップデート",
+        "search": "検索..."
     },
     "all_communities": {
         "text": "すべてのコミュニティ",
@@ -99,7 +100,13 @@
         "done_button": "行きましょう！"
     },
     "login": {
-        "login_action": "ログイン"
+        "login_action": "ログイン",
+        "title": "Juxtaposition にログイン",
+        "sub_title": "ログイン情報を入力してください",
+        "username": "ユーザー名",
+        "password": "パスワード",
+        "forgot_password": "パスワードを忘れた場合",
+        "no_account": "アカウントをお持ちでない場合"
     },
     "error": {
         "title": "エラー {{code}}",
