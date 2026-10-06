@@ -66,7 +66,7 @@
         "new_follower": {
             "message/three": "<follower_one />さん、<follower_two />さん、ほか{{count_other}}人にフォローされました!",
             "message/one": "<follower_one />さんにフォローされました!",
-            "message/two": "<follower_one />さん、<follower_two />さんにファローされました!",
+            "message/two": "<follower_one />さん、<follower_two />さんにフォローされました!",
             "message/multiple": "<follower_one />さん、<follower_two />さん、ほか{{count_other}}人にフォローされました!"
         }
     },
