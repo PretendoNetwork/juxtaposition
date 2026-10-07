@@ -79,6 +79,7 @@ export default defineConfig([
 			options.tsconfig = './webfiles/ctr/tsconfig.json';
 		},
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			sassPlugin({ type: 'css' }),
 			oxipng({ loader: 'dataurl' }),
 			spritesmith({
@@ -127,6 +128,7 @@ export default defineConfig([
 		external: ['/images/*', '/fonts/*'],
 		tsconfig: './webfiles/portal/tsconfig.json',
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			sassPlugin({ type: 'css' }),
 			copy({
 				resolveFrom: 'cwd',
@@ -170,6 +172,7 @@ export default defineConfig([
 			options.tsconfig = './webfiles/web/tsconfig.json';
 		},
 		esbuildPlugins: [
+			fixImportsPlugin(),
 			sassPlugin({ type: 'css' }),
 			copy({
 				resolveFrom: 'cwd',

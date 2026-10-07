@@ -1,4 +1,4 @@
-import { back, exit } from '../nav';
+import { back, exit } from '@/js/nav';
 
 function select(this: Element, _ev: Event): void {
 	var component = this.closest('[data-navbar]')!;

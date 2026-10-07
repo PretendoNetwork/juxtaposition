@@ -1,27 +1,13 @@
 {
+	"extends": ["../tsconfig.base.json"],
 	"compilerOptions": {
-		"strict": true,
-		"sourceMap": true,
-		"resolveJsonModule": true,
-		"module": "ES2022",
-		"esModuleInterop": true,
-		"moduleResolution": "bundler",
-		"skipLibCheck": true,
-		"baseUrl": ".",
-		"outDir": "dist",
-		"allowJs": true,
-		"target": "es2022",
-		"noEmitOnError": true,
-		"noImplicitAny": true,
-		"strictPropertyInitialization": true,
-		"verbatimModuleSyntax": true,
 		"paths": {
 			"@/*": [
-				"./*"
-			]
+				"./*" 
+			],
+			"@common/*": [
+				"../common/*" 
+			],
 		}
 	},
-	"include": [
-		"js"
-	]
 }
