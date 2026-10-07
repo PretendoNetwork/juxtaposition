@@ -64,6 +64,20 @@ export function convertAccountServerAccessLevel(input: string): ServerAccessLeve
 	return serverAccessLevelMap[input] ?? null;
 }
 
+export const logEntryActions = [
+	'REMOVE_POST',
+	'IGNORE_REPORT',
+	'LIMIT_POSTING',
+	'TEMP_BAN',
+	'PERMA_BAN',
+	'UNBAN',
+	'UPDATE_USER',
+	'MAKE_COMMUNITY',
+	'UPDATE_COMMUNITY',
+	'DELETE_COMMUNITY'
+] as const;
+export type LogEntryActions = (typeof logEntryActions)[number];
+
 export type AutomodLogMatch = {
 	start: number;
 	end: number;

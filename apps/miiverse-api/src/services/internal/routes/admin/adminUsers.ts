@@ -13,8 +13,8 @@ import { accountStatusDisplayMap } from '@/services/internal/utils/communities';
 import { accountActionDisplayMap, createLogEntry } from '@/services/internal/utils/auditLogs';
 import { humanDate } from '@/services/internal/utils/dates';
 import { buildPrismaSearchQuery } from '@/services/internal/utils/search';
-import type { LogEntryActions } from '@/models/logs';
 import type { UserUpdateInput, UserWhereInput } from '@/prisma/models';
+import type { LogEntryActions } from '@/models/helpers';
 
 export const adminUsersRouter = createInternalApiRouter();
 
@@ -202,7 +202,7 @@ adminUsersRouter.patch({
 		}
 
 		if (changes.length > 0) {
-			await createLogEntry({
+			await createLogEntry(db, {
 				actorId: account.pnid.pid,
 				action,
 				targetResourceId: newUser.pid.toString(),

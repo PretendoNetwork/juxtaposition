@@ -170,7 +170,7 @@ postsRouter.delete({
 		}),
 		response: resultSchema
 	},
-	async handler({ query, params, auth }) {
+	async handler({ query, params, auth, db }) {
 		const post = await Post.findOne({
 			id: params.post_id,
 			message_to_pid: null, // messages aren't really posts
@@ -188,7 +188,7 @@ postsRouter.delete({
 			if (account.moderator) {
 				// If a moderator deletes someone else's post, they can provide a reason
 				reason = query.reason ?? 'Removed by moderator';
-				await createLogEntry({
+				await createLogEntry(db, {
 					actorId: account.pnid.pid,
 					action: 'REMOVE_POST',
 					targetResourceId: post.pid.toString(),

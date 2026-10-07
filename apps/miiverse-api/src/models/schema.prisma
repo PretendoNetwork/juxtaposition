@@ -210,3 +210,18 @@ model Report {
 
   @@map("reports")
 }
+
+/// Audit logs entries
+model AuditLogEntry {
+  id        String   @id
+  actor     Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  actionType String @map("action_type")
+  context    String
+
+  targetResourceId String   @map("target_resource_id")
+  changedFields    String[] @map("changed_fields")
+
+  @@map("audit_log_entries")
+}

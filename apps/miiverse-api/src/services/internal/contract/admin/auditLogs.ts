@@ -1,9 +1,9 @@
 import { z } from 'zod';
-import { logEntryActions } from '@/models/logs';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
-import type { HydratedAuditLogDocument } from '@/models/logs';
-import type { User } from '@/prisma/client';
+import { logEntryActions } from '@/models/helpers';
+import type { LogEntryActions } from '@/models/helpers';
+import type { AuditLogEntry, User } from '@/prisma/client';
 
 export const auditLogActionSchema = asOpenapi('AuditLogAction', z.enum(logEntryActions));
 
@@ -19,14 +19,14 @@ export const auditLogSchema = z.object({
 
 export type AuditLogDto = z.infer<typeof auditLogSchema>;
 
-export function mapAuditLog(log: HydratedAuditLogDocument, actorUser: User): AuditLogDto {
+export function mapAuditLog(log: AuditLogEntry, actorUser: User): AuditLogDto {
 	return {
 		id: log.id,
 		actor: mapShallowUser(actorUser),
-		targetId: log.target,
-		action: log.action,
-		actionAt: log.timestamp,
+		targetId: log.targetResourceId,
+		action: log.actionType as LogEntryActions,
+		actionAt: log.createdAt,
 		context: log.context,
-		changedFields: log.changed_fields
+		changedFields: log.changedFields
 	};
 }

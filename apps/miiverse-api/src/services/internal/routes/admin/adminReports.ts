@@ -137,7 +137,7 @@ adminReportsRouter.post({
 			post: post,
 			reason
 		});
-		await createLogEntry({
+		await createLogEntry(db, {
 			actorId: account.pnid.pid,
 			action: 'REMOVE_POST',
 			targetResourceId: post.id,
@@ -184,7 +184,7 @@ adminReportsRouter.post({
 				moderationNote: body.reason ?? null
 			}
 		});
-		await createLogEntry({
+		await createLogEntry(db, {
 			actorId: account.pnid.pid,
 			action: 'IGNORE_REPORT',
 			targetResourceId: report.id,
