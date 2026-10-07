@@ -5,17 +5,15 @@ import { config } from '@/config';
 import { logger } from '@/logger';
 import { grpcAccount, grpcApi, oldGrpcFriends } from '@/grpc';
 import { getS3 } from '@/s3';
-import { AutomodLog } from '@/models/automodLog';
 import type { IncomingHttpHeaders } from 'node:http';
 import type { ObjectCannedACL } from '@aws-sdk/client-s3';
 import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/v2/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
 import type { GetPNIDResponse } from '@pretendonetwork/grpc/account/v2/get_pnid_rpc';
-import type { AutomodAction } from '@/models/automodLog';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { IPostInput } from '@/types/mongoose/post';
-import type { HydratedAutomodRuleDocument } from '@/models/automodRules';
+import type { AutomodActionType, AutomodRule, AutomodRuleKeywordSetting, PrismaClient } from '@/prisma/client';
 
 // TODO - This doesn't really belong here
 export function getInvalidPostRegex(): RegExp {
@@ -197,22 +195,22 @@ export type AutomodRuleEvaluationMatch = {
 	end: number;
 };
 export type AutomodRuleEvaluation = {
-	violatedRule: HydratedAutomodRuleDocument;
+	violatedRule: AutomodRule;
 	matches: AutomodRuleEvaluationMatch[];
-	action: AutomodAction;
+	action: AutomodActionType;
 } | null;
 
-export function evaluateAutomodRules(post: IPostInput, rules: HydratedAutomodRuleDocument[]): AutomodRuleEvaluation {
-	const blockRules = rules.filter(v => v.mode === 'block');
-	const nonBlockRules = rules.filter(v => v.mode !== 'block');
+export function evaluateAutomodRules(post: IPostInput, rules: (AutomodRule & { keywordSettings: AutomodRuleKeywordSetting | null })[]): AutomodRuleEvaluation {
+	const blockRules = rules.filter(v => v.mode === 'Block');
+	const nonBlockRules = rules.filter(v => v.mode !== 'Block');
 	const orderedRules = [...blockRules, ...nonBlockRules];
 
 	for (const rule of orderedRules) {
 		let hasMatched = false;
 		const matches: AutomodRuleEvaluationMatch[] = [];
-		if (rule.type === 'keyword') {
+		if (rule.type === 'Keyword') {
 			const bodyNormalized = (post.body ?? '').toLowerCase();
-			const keywordsToCheck = rule.keyword_settings?.keywords ?? [];
+			const keywordsToCheck = rule.keywordSettings?.keywords ?? [];
 			keywordsToCheck.forEach((keywordUpper) => {
 				const keyword = keywordUpper.toLowerCase();
 				const index = bodyNormalized.indexOf(keyword);
@@ -230,7 +228,7 @@ export function evaluateAutomodRules(post: IPostInput, rules: HydratedAutomodRul
 
 		if (hasMatched) {
 			return {
-				action: rule.mode === 'block' ? 'blocked' : 'logged',
+				action: rule.mode === 'Block' ? 'Blocked' : 'Logged',
 				matches,
 				violatedRule: rule
 			};
@@ -240,26 +238,29 @@ export function evaluateAutomodRules(post: IPostInput, rules: HydratedAutomodRul
 	return null; // No rules apply to this post
 }
 
-export async function performAutomodAction(post: IPostInput, evaluation: AutomodRuleEvaluation): Promise<{ allowPost: boolean }> {
+export async function performAutomodAction(db: PrismaClient, post: IPostInput, evaluation: AutomodRuleEvaluation): Promise<{ allowPost: boolean }> {
 	if (!evaluation) {
 		return { allowPost: true };
 	}
 
-	if (evaluation.action === 'blocked' || evaluation.action === 'logged') {
-		const allowPost = evaluation.action === 'blocked' ? false : true;
-		await AutomodLog.create({
-			action: evaluation.action,
-			author: post.pid,
-			post_id: post.id,
-			post_content_body: post.body ?? '',
-			created_at: new Date(),
-			rule_id: evaluation.violatedRule.id,
-			parent_post_id: post.parent ?? null,
-			community_id: post.community_id,
-			matches: evaluation.matches.map(match => ({
-				start: match.start,
-				end: match.end
-			}))
+	if (evaluation.action === 'Blocked' || evaluation.action === 'Logged') {
+		const allowPost = evaluation.action === 'Blocked' ? false : true;
+		await db.automodLog.create({
+			data: {
+				id: randomUUID(),
+				action: evaluation.action,
+				author: post.pid,
+				postId: post.id,
+				postContentBody: post.body ?? '',
+				createdAt: new Date(),
+				ruleId: evaluation.violatedRule.id,
+				parentPostId: post.parent ?? null,
+				communityId: post.community_id,
+				matches: evaluation.matches.map(match => ({
+					start: match.start,
+					end: match.end
+				}))
+			}
 		});
 		return {
 			allowPost

@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { automodRuleMode, automodRuleType } from '@/models/automodRules';
 import { asOpenapi } from '@/services/internal/builder/openapi';
-import type { HydratedAutomodRuleDocument } from '@/models/automodRules';
+import { automodRuleModeInput, automodRuleTypeInput, mapAutomodRuleMode, mapAutomodRuleType } from '@/models/helpers';
+import type { AutomodRule, AutomodRuleKeywordSetting } from '@/prisma/client';
 
-export const automodRuleTypeEnum = asOpenapi('AutomodRuleTypeEnum', z.enum(automodRuleType));
-export const automodRuleModeEnum = asOpenapi('AutomodRuleModeEnum', z.enum(automodRuleMode));
+export const automodRuleTypeEnum = asOpenapi('AutomodRuleTypeEnum', z.enum(automodRuleTypeInput));
+export const automodRuleModeEnum = asOpenapi('AutomodRuleModeEnum', z.enum(automodRuleModeInput));
 
 export const automodRuleSchema = z.object({
 	id: z.string(),
@@ -33,29 +33,29 @@ export const shallowAutomodRuleSchema = asOpenapi('ShallowAutomodRule', z.object
 
 export type ShallowAutomodRuleDto = z.infer<typeof shallowAutomodRuleSchema>;
 
-export function mapShallowAutomodRule(rule: HydratedAutomodRuleDocument): ShallowAutomodRuleDto {
+export function mapShallowAutomodRule(rule: AutomodRule): ShallowAutomodRuleDto {
 	return {
 		id: rule.id,
-		type: rule.type,
-		mode: rule.mode,
+		type: mapAutomodRuleType(rule.type),
+		mode: mapAutomodRuleMode(rule.mode),
 		title: rule.title,
 		description: rule.description
 	};
 }
 
-export function mapAutomodRule(rule: HydratedAutomodRuleDocument): AutomodRuleDto {
+export function mapAutomodRule(rule: AutomodRule & { keywordSettings: AutomodRuleKeywordSetting | null }): AutomodRuleDto {
 	return {
 		id: rule.id,
-		createdAt: rule.created_at,
+		createdAt: rule.createdAt,
 		enabled: rule.enabled,
-		type: rule.type,
-		mode: rule.mode,
+		type: mapAutomodRuleType(rule.type),
+		mode: mapAutomodRuleMode(rule.mode),
 		title: rule.title,
 		description: rule.description,
 		settings: {
-			keyword: rule.keyword_settings
+			keyword: rule.keywordSettings
 				? {
-						keywords: rule.keyword_settings.keywords
+						keywords: rule.keywordSettings.keywords
 					}
 				: null
 		}

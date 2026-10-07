@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
-import { Endpoint } from '@/models/endpoint';
 import { discoverySchema, mapDiscovery } from '@/services/internal/contract/discovery';
+import { getEndpoint } from '@/database';
+import { convertAccountServerAccessLevel } from '@/models/helpers';
 
 export const discoveryRouter = createInternalApiRouter();
 
@@ -18,7 +19,8 @@ discoveryRouter.get({
 		response: discoverySchema
 	},
 	async handler({ params }) {
-		const discovery = await Endpoint.findOne({ server_access_level: params.environment });
+		const serverAccessLevel = convertAccountServerAccessLevel(params.environment);
+		const discovery = serverAccessLevel ? await getEndpoint(serverAccessLevel) : null;
 		return mapDiscovery(discovery);
 	}
 });

@@ -14,7 +14,8 @@ import {
 	getCommunityByID,
 	getCommunityByTitleID,
 	getDuplicatePosts,
-	getUser
+	getUser,
+	getDb
 } from '@/database';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
@@ -22,7 +23,6 @@ import { config } from '@/config';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { cleanedBase64 } from '@/zodUtils';
-import { AutomodRule } from '@/models/automodRules';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
@@ -410,9 +410,16 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	}
 
 	// Automod
-	const automodRules = await AutomodRule.find({ enabled: true });
+	const automodRules = await getDb().automodRule.findMany({
+		where: {
+			enabled: true
+		},
+		include: {
+			keywordSettings: true
+		}
+	});
 	const automodEval = evaluateAutomodRules(document, automodRules);
-	const automodResult = await performAutomodAction(document, automodEval);
+	const automodResult = await performAutomodAction(getDb(), document, automodEval);
 	if (!automodResult.allowPost) {
 		return badRequest(response, ApiErrorCode.BAD_WORDS_FILTER);
 	}

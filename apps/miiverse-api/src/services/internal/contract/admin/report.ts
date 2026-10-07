@@ -1,10 +1,9 @@
 import { z } from 'zod';
 import { mapPostWithModeration, postSchema } from '@/services/internal/contract/post';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
-import type { HydratedReportDocument } from '@/types/mongoose/report';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
-import type { User } from '@/prisma/client';
+import type { Report, User } from '@/prisma/client';
 
 export const reportSchema = z.object({
 	id: z.string(),
@@ -28,30 +27,30 @@ export const reportSchema = z.object({
 
 export type ReportDto = z.infer<typeof reportSchema>;
 
-export function mapReport(report: HydratedReportDocument, users: User[], post: HydratedPostDocument | null, community: HydratedCommunityDocument | null): ReportDto {
+export function mapReport(report: Report, users: User[], post: HydratedPostDocument | null, community: HydratedCommunityDocument | null): ReportDto {
 	const hasPost = post && !post.removed ? post : null;
 	const isResolved = report.resolved || !hasPost;
 
-	const reporter = users.find(v => v.pid === report.reported_by);
-	const resolver = report.resolved_by ? users.find(v => v.pid === report.resolved_by) : null;
+	const reporter = users.find(v => v.pid === report.reportedBy);
+	const resolver = report.reportedBy ? users.find(v => v.pid === report.reportedBy) : null;
 
 	const remover = post?.removed_by ? users.find(v => v.pid === post.removed_by) ?? null : null;
 
 	return {
 		id: report.id,
-		createdAt: report.created_at,
+		createdAt: report.createdAt,
 		reporter: {
-			pid: report.reported_by,
+			pid: report.reportedBy,
 			user: reporter ? mapShallowUser(reporter) : null,
-			reasonId: report.reason,
-			message: report.message
+			reasonId: report.reportReasonId,
+			message: report.reportMessage
 		},
 		resolved: {
-			resolvedAt: report.resolved_at ?? null,
-			pid: report.resolved_by ?? null,
+			resolvedAt: report.resolvedAt ?? null,
+			pid: report.resolvedBy ?? null,
 			user: resolver ? mapShallowUser(resolver) : null,
 			isResolved: isResolved,
-			note: report.note ?? null,
+			note: report.moderationNote ?? null,
 			reason: report.resolved ? 'reportResolved' : 'similarReportResolved'
 		},
 		post: post ? mapPostWithModeration(post, community, remover) : null

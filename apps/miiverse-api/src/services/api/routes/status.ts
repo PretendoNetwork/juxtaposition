@@ -1,5 +1,5 @@
 import express from 'express';
-import { getEndpoints } from '@/database';
+import { getDb } from '@/database';
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ router.get('/', function (_request: express.Request, response: express.Response)
 });
 
 router.get('/database', async function (_request: express.Request, response: express.Response): Promise<void> {
-	const endpoints = await getEndpoints();
+	const endpoints = await getDb().discoveryEndpoint.findMany({});
 
 	if (endpoints && endpoints.length <= 0) {
 		response.send('DB Connection Working! :D');
