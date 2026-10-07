@@ -7,6 +7,7 @@ import { initNavTabs } from './components/ui/PortalNavTabs';
 import { initSearchForm } from './components/ui/PortalSearchForm';
 import { initNavBar } from './components/PortalNavBar';
 import { back, exit } from './nav';
+import { initBoss } from './boss';
 
 export var pjax;
 setInterval(checkForUpdates, 30000);
@@ -231,6 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
 	});
 	console.debug('Pjax initialized.', pjax);
+	initBoss();
 	initAll();
 	stopLoading();
 });
