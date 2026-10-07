@@ -191,3 +191,22 @@ model DiscoveryEndpoint {
 
   @@map("discovery_endpoints")
 }
+
+/// Report for a post
+model Report {
+  id         String   @id
+  postId     String   @map("post_id")
+  postAuthor Int      @map("post_author")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  reportedBy     Int    @map("reported_by")
+  reportReasonId Int    @map("report_reasonId")
+  reportMessage  String @map("report_message")
+
+  resolved       Boolean   @default(false)
+  resolvedAt     DateTime? @map("resolved_at")
+  resolvedBy     Int?      @map("resolved_by")
+  moderationNote String?   @map("moderation_note")
+
+  @@map("reports")
+}
