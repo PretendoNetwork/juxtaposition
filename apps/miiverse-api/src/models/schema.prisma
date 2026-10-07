@@ -170,7 +170,7 @@ model AutomodRule {
 
 /// Settings for the keyword AutomodRule
 model AutomodRuleKeywordSetting {
-  ruleId String      @id
+  ruleId String      @id @map("rule_id")
   rule   AutomodRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
 
   keywords String[]
