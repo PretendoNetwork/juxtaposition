@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose';
-import { Snowflake as snowflake } from 'node-snowflake';
 import type { HydratedDocument, Types } from 'mongoose';
 
 export type ConversationUser = {
@@ -36,7 +35,7 @@ const user = new Schema<ConversationUser>({
 export const ConversationSchema = new Schema<Conversation>({
 	id: {
 		type: String,
-		default: snowflake.nextId()
+		required: true
 	},
 	created_at: {
 		type: Date,
