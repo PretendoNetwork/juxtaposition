@@ -34,7 +34,9 @@ export function CtrSystemPostView(props: SystemPostViewProps): ReactNode {
 
 			<div className="post-body">
 				<div className="post-content">
-					<p className="post-content-text">{props.children}</p>
+					<div className="post-content-text-container post-content-text-container-plain">
+						<p className="post-content-text">{props.children}</p>
+					</div>
 				</div>
 			</div>
 		</div>

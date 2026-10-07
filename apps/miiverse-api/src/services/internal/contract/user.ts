@@ -19,7 +19,8 @@ export type UserBadgeEnum = z.infer<typeof userBadgeSchema>;
 export const shallowUserSchema = asOpenapi('ShallowUser', z.object({
 	pid: z.number(),
 	miiName: z.string(),
-	accountStatus: z.number()
+	accountStatus: z.number(),
+	pnid: z.string().nullable()
 }));
 
 export type ShallowUserDto = z.infer<typeof shallowUserSchema>;
@@ -47,7 +48,8 @@ export function mapShallowUser(user: User): ShallowUserDto {
 	return {
 		pid: user.pid,
 		accountStatus: user.accountStatus,
-		miiName: user.displayName
+		miiName: user.displayName,
+		pnid: user.pnid
 	};
 }
 

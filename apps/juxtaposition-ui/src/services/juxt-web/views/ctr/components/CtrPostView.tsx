@@ -96,6 +96,11 @@ export function CtrPostView(props: PostViewProps): ReactNode {
 							plaintextContainer: 'post-content-text-container-plain',
 							markdownContainer: 'post-content-text-container-markdown'
 						}}
+						components={{
+							mention(text, pid) {
+								return <a className="prose-mention" href={url.url('/users/show', { pid: pid })} data-pjax="#body">@{text}</a>;
+							}
+						}}
 					/>
 					<CtrPostScreenshot post={post}></CtrPostScreenshot>
 					{post.painting

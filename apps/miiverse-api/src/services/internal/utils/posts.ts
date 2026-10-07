@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
+import { extractMentionPids, parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { getShotModeForTitleId } from '@/services/api/routes/posts';
 import { evaluateAutomodRules, getInvalidPostRegex, performAutomodAction } from '@/util';
 import { config } from '@/config';
-import { getDuplicatePosts } from '@/database';
+import { getDb, getDuplicatePosts } from '@/database';
 import { Post } from '@/models/post';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { AutomodRule } from '@/models/automodRules';
@@ -65,7 +65,7 @@ export function isValidPost(post: PostCreateBody): boolean {
 	return true;
 }
 
-function validateAndProcessPostBody(input: string): { text: string; markdown: string } {
+async function validateAndProcessPostBody(input: string): Promise<{ text: string; markdown: string }> {
 	const cleanedBody = input.trim().replaceAll('\r\n', '\n');
 	if (getInvalidPostRegex().test(cleanedBody)) {
 		throw new Error('Invalid characters found in post body');
@@ -75,9 +75,29 @@ function validateAndProcessPostBody(input: string): { text: string; markdown: st
 		throw new Error('Post body is top long');
 	}
 
-	const transformed = transformJuxtMarkdown(cleanedBody, {});
+	const transformed = await transformJuxtMarkdown(cleanedBody, {
+		async lookupPnid(pnid) {
+			const user = await getDb().user.findFirst({
+				where: {
+					pnidNormalized: pnid.toLowerCase()
+				},
+				select: {
+					pid: true
+				}
+			});
+			return user ? { pid: user.pid } : null;
+		}
+	});
 	const ast = parseJuxtMarkdown(transformed);
-	const plainText = renderToPlainText(ast);
+	const mentionPids = extractMentionPids(ast);
+	const mentionedUsers = await getDb().user.findMany({
+		where: {
+			pid: {
+				in: mentionPids
+			}
+		}
+	});
+	const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.displayName ?? v.pid.toString() })));
 	return {
 		markdown: transformed,
 		text: plainText
@@ -123,7 +143,7 @@ export async function createNewPost(ops: PostCreateOptions): Promise<HydratedPos
 
 	const miiFace = miiFaceFilenameMap[body.feelingId] ?? defaultMiiFaceFilename;
 
-	const postBody = body.body ? validateAndProcessPostBody(body.body) : null;
+	const postBody = body.body ? await validateAndProcessPostBody(body.body) : null;
 
 	const document: IPostInput = {
 		title_id: ops.community.title_id[0],
