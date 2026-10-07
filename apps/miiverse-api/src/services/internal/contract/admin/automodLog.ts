@@ -1,11 +1,12 @@
 import { z } from 'zod';
 import { mapShallowAutomodRule, shallowAutomodRuleSchema } from '@/services/internal/contract/admin/automodRule';
-import { automodAction } from '@/models/automodLog';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
+import { automodActionInput, mapAutomodAction } from '@/models/helpers';
+import type { AutomodLogMatchList } from '@/models/helpers';
 import type { AutomodLog, AutomodRule, User } from '@/prisma/client';
 
-export const automodActionEnum = asOpenapi('AutomodActionEnum', z.enum(automodAction));
+export const automodActionEnum = asOpenapi('AutomodActionEnum', z.enum(automodActionInput));
 
 export const automodLogSchema = z.object({
 	id: z.string(),
@@ -32,12 +33,12 @@ export function mapAutomodLog(log: AutomodLog, user: User | null, rule: AutomodR
 		id: log.id,
 		createdAt: log.createdAt,
 		rule: rule ? mapShallowAutomodRule(rule) : null,
-		action: log.action,
+		action: mapAutomodAction(log.action),
 		postAuthor: user ? mapShallowUser(user) : null,
 		postId: log.action === 'Blocked' ? null : log.postId,
 		parentPostId: log.parentPostId,
 		communityId: log.communityId,
-		matches: log.matches ?? [],
+		matches: (log.matches ?? []) as AutomodLogMatchList,
 		postContent: {
 			body: log.postContentBody
 		}

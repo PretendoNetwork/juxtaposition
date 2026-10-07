@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { automodRuleMode, automodRuleType } from '@/models/automodRules';
 import { asOpenapi } from '@/services/internal/builder/openapi';
+import { automodRuleModeInput, automodRuleTypeInput, mapAutomodRuleMode, mapAutomodRuleType } from '@/models/helpers';
 import type { AutomodRule, AutomodRuleKeywordSetting } from '@/prisma/client';
 
-export const automodRuleTypeEnum = asOpenapi('AutomodRuleTypeEnum', z.enum(automodRuleType));
-export const automodRuleModeEnum = asOpenapi('AutomodRuleModeEnum', z.enum(automodRuleMode));
+export const automodRuleTypeEnum = asOpenapi('AutomodRuleTypeEnum', z.enum(automodRuleTypeInput));
+export const automodRuleModeEnum = asOpenapi('AutomodRuleModeEnum', z.enum(automodRuleModeInput));
 
 export const automodRuleSchema = z.object({
 	id: z.string(),
@@ -36,8 +36,8 @@ export type ShallowAutomodRuleDto = z.infer<typeof shallowAutomodRuleSchema>;
 export function mapShallowAutomodRule(rule: AutomodRule): ShallowAutomodRuleDto {
 	return {
 		id: rule.id,
-		type: rule.type,
-		mode: rule.mode,
+		type: mapAutomodRuleType(rule.type),
+		mode: mapAutomodRuleMode(rule.mode),
 		title: rule.title,
 		description: rule.description
 	};
@@ -48,8 +48,8 @@ export function mapAutomodRule(rule: AutomodRule & { keywordSettings: AutomodRul
 		id: rule.id,
 		createdAt: rule.createdAt,
 		enabled: rule.enabled,
-		type: rule.type,
-		mode: rule.mode,
+		type: mapAutomodRuleType(rule.type),
+		mode: mapAutomodRuleMode(rule.mode),
 		title: rule.title,
 		description: rule.description,
 		settings: {

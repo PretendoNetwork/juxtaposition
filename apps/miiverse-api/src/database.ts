@@ -6,7 +6,7 @@ import { Conversation } from '@/models/conversation';
 import { Post } from '@/models/post';
 import { config } from '@/config';
 import { PrismaClient } from '@/prisma/client';
-import type { DiscoveryEndpoint, User } from '@/prisma/client';
+import type { DiscoveryEndpoint, ServerAccessLevel, User } from '@/prisma/client';
 import type { HydratedConversationDocument } from '@/models/conversation';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
@@ -143,7 +143,7 @@ export async function getPostsBytitleID(titleID: string[], limit: number): Promi
 	}).sort({ created_at: -1 }).limit(limit);
 }
 
-export async function getEndpoint(accessLevel: string): Promise<DiscoveryEndpoint | null> {
+export async function getEndpoint(accessLevel: ServerAccessLevel): Promise<DiscoveryEndpoint | null> {
 	return getDb().discoveryEndpoint.findFirst({
 		where: {
 			serverAccessLevel: accessLevel

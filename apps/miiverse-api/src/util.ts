@@ -11,10 +11,9 @@ import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/v2/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
 import type { GetPNIDResponse } from '@pretendonetwork/grpc/account/v2/get_pnid_rpc';
-import type { AutomodAction } from '@/models/automodLog';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { IPostInput } from '@/types/mongoose/post';
-import type { AutomodRule, AutomodRuleKeywordSetting, PrismaClient } from '@/prisma/client';
+import type { AutomodActionType, AutomodRule, AutomodRuleKeywordSetting, PrismaClient } from '@/prisma/client';
 
 // TODO - This doesn't really belong here
 export function getInvalidPostRegex(): RegExp {
@@ -198,7 +197,7 @@ export type AutomodRuleEvaluationMatch = {
 export type AutomodRuleEvaluation = {
 	violatedRule: AutomodRule;
 	matches: AutomodRuleEvaluationMatch[];
-	action: AutomodAction;
+	action: AutomodActionType;
 } | null;
 
 export function evaluateAutomodRules(post: IPostInput, rules: (AutomodRule & { keywordSettings: AutomodRuleKeywordSetting | null })[]): AutomodRuleEvaluation {
@@ -229,7 +228,7 @@ export function evaluateAutomodRules(post: IPostInput, rules: (AutomodRule & { k
 
 		if (hasMatched) {
 			return {
-				action: rule.mode === 'Block' ? 'blocked' : 'logged',
+				action: rule.mode === 'Block' ? 'Blocked' : 'Logged',
 				matches,
 				violatedRule: rule
 			};
@@ -244,18 +243,19 @@ export async function performAutomodAction(db: PrismaClient, post: IPostInput, e
 		return { allowPost: true };
 	}
 
-	if (evaluation.action === 'blocked' || evaluation.action === 'logged') {
-		const allowPost = evaluation.action === 'blocked' ? false : true;
+	if (evaluation.action === 'Blocked' || evaluation.action === 'Logged') {
+		const allowPost = evaluation.action === 'Blocked' ? false : true;
 		await db.automodLog.create({
 			data: {
+				id: randomUUID(),
 				action: evaluation.action,
 				author: post.pid,
-				post_id: post.id,
-				post_content_body: post.body ?? '',
-				created_at: new Date(),
-				rule_id: evaluation.violatedRule.id,
-				parent_post_id: post.parent ?? null,
-				community_id: post.community_id,
+				postId: post.id,
+				postContentBody: post.body ?? '',
+				createdAt: new Date(),
+				ruleId: evaluation.violatedRule.id,
+				parentPostId: post.parent ?? null,
+				communityId: post.community_id,
 				matches: evaluation.matches.map(match => ({
 					start: match.start,
 					end: match.end

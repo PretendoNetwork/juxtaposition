@@ -163,15 +163,6 @@ model AutomodRule {
   type        AutomodRuleType
   mode        AutomodRuleMode
 
-  // Content of the post
-  postContentBody String? @map("post_content_body")
-  matches         Json?
-
-  // Relationship info about the post
-  postId       String? @map("post_id")
-  parentPostId String? @map("parent_post_id")
-  communityId  String? @map("community_id")
-
   keywordSettings AutomodRuleKeywordSetting?
 
   @@map("automod_rules")

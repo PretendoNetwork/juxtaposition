@@ -7,8 +7,7 @@ import { automodRuleSchema, mapAutomodRule } from '@/services/internal/contract/
 import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { automodLogSchema, mapAutomodLog } from '@/services/internal/contract/admin/automodLog';
-import { automodAction } from '@/models/automodLog';
-import { automodRuleMode, automodRuleType } from '@/models/automodRules';
+import { automodActionInput, automodRuleModeInput, automodRuleTypeInput, convertAutomodActionInput, convertAutomodRuleModeInput, convertAutomodRuleTypeInput } from '@/models/helpers';
 import type { AutomodLogWhereInput, AutomodRuleWhereInput } from '@/prisma/models';
 
 export const adminAutomodRouter = createInternalApiRouter();
@@ -55,8 +54,8 @@ adminAutomodRouter.post({
 	schema: {
 		body: z.object({
 			title: z.string(),
-			type: z.enum(automodRuleType),
-			mode: z.enum(automodRuleMode)
+			type: z.enum(automodRuleTypeInput),
+			mode: z.enum(automodRuleModeInput)
 		}),
 		response: automodRuleSchema
 	},
@@ -66,8 +65,8 @@ adminAutomodRouter.post({
 				id: 'test', // TODO add ID generation
 				title: body.title,
 				enabled: false,
-				type: body.type,
-				mode: body.mode
+				type: convertAutomodRuleTypeInput(body.type),
+				mode: convertAutomodRuleModeInput(body.mode)
 			},
 			include: {
 				keywordSettings: true
@@ -90,8 +89,8 @@ adminAutomodRouter.patch({
 			title: z.string().trim().min(1),
 			description: z.string().trim().nullable(),
 			enabled: z.boolean(),
-			type: z.enum(automodRuleType),
-			mode: z.enum(automodRuleMode),
+			type: z.enum(automodRuleTypeInput),
+			mode: z.enum(automodRuleModeInput),
 			settings: z.object({
 				keyword: z.object({
 					keywords: z.array(z.string().min(1))
@@ -119,8 +118,8 @@ adminAutomodRouter.patch({
 				title: body.title,
 				description: desc.length > 0 ? desc : null,
 				enabled: body.enabled,
-				type: body.type,
-				mode: body.mode
+				type: body.type ? convertAutomodRuleTypeInput(body.type) : undefined,
+				mode: body.mode ? convertAutomodRuleModeInput(body.mode) : undefined
 				// TODO add keyword settings update
 			},
 			include: {
@@ -162,7 +161,7 @@ adminAutomodRouter.get({
 	guard: guards.moderator,
 	schema: {
 		query: z.object({
-			action: z.enum(automodAction).optional(),
+			action: z.enum(automodActionInput).optional(),
 			authorPid: z.coerce.number().optional(),
 			sort: standardSortSchema
 		}).extend(pageControlSchema(150)),
@@ -170,7 +169,7 @@ adminAutomodRouter.get({
 	},
 	async handler({ query, db }) {
 		const dbQuery: AutomodLogWhereInput = {
-			action: query.action,
+			action: query.action ? convertAutomodActionInput(query.action) : undefined,
 			author: query.authorPid
 		};
 		const logs = await db.automodLog.findMany({
