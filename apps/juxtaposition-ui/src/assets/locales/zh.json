@@ -7,7 +7,7 @@
         "notifications": "通知",
         "go_back": "返回",
         "back": "返回",
-        "yeahs": "同意",
+        "yeahs": "赞同",
         "more_posts": "加载更多帖子",
         "no_posts": "没有帖子",
         "private": "私人",
@@ -22,12 +22,15 @@
         "search": "搜索...",
         "global_feed_short": "全球",
         "people_feed": "关注中动态",
-        "people_feed_short": "关注中"
+        "people_feed_short": "关注中",
+        "system_message": "系统消息",
+        "mascot_name": "带宽",
+        "load_more": "加载更多"
     },
     "all_communities": {
         "text": "所有社区",
         "popular_places": "热门地点",
-        "new_communities": "新建社区"
+        "new_communities": "新设社区"
     },
     "community": {
         "followers": "关注者",
@@ -40,7 +43,8 @@
         "related": "相关社区",
         "related_to": "{{community}} 相关社区",
         "closed": "本社区不再接受新帖子。",
-        "related_short": "相关"
+        "related_short": "相关",
+        "description": "关于本社区"
     },
     "user_page": {
         "country": "国家/地区",
@@ -58,7 +62,10 @@
         "banned": "已禁止用户",
         "friend_requests": "请求",
         "not_found": "用户不存在",
-        "tester_tag": "测试用户"
+        "tester_tag": "测试人员",
+        "supporter_tag": "支持者",
+        "moderator_tag": "版主",
+        "developer_tag": "开发人员"
     },
     "user_settings": {
         "profile_settings": "个人资料设置",
@@ -67,10 +74,14 @@
         "show_game": "在个人资料显示游戏经验",
         "save_action": "保存设置",
         "gdpr_download": "下载用户数据",
-        "gdpr_download_action": "下载"
+        "gdpr_download_action": "下载",
+        "show_profile": "允许访客查看你的个人资料",
+        "notify_empathy": "显示「赞同！」通知",
+        "notify_follows": "显示关注通知",
+        "notify_reply": "显示回复/评论通知"
     },
     "activity_feed": {
-        "empty": "这里是空的。尝试关注某人！"
+        "empty": "这里空空如也。先去关注别人吧！"
     },
     "notifications": {
         "none": "无通知。",
@@ -79,7 +90,28 @@
             "message/two": "<follower_one />、<follower_two /> 已开始关注你！",
             "message/three": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！",
             "message/multiple": "<follower_one />、<follower_two /> 和 {{count_other}} 位其他用户开始关注你！"
-        }
+        },
+        "post_deleted": {
+            "post_removed": "您的帖子「{{postId}}」已被删除。",
+            "post_removed_for_reason": "您的帖子「{{postId}}」已被删除，原因如下：「{{reason}}」。",
+            "comment_removed": "您的评论「{{postId}}」已被删除。",
+            "comment_removed_for_reason": "您的评论「{{postId}}」已被删除，原因如下：「{{reason}}」。",
+            "footer": "点击此消息即可查看 Juxtaposition 行为准则。如有任何疑问，请联系 Pretendo Network 论坛的版主（{{contactModsUrl}}）。"
+        },
+        "limited_from_posting": {
+            "message": "您已被限制发帖。",
+            "message_with_reason": "您已被限制发帖。原因：\"{{reason}}\"。",
+            "temporary": "您已被限制发帖，直至 {{until}}。",
+            "temporary_with_reason": "您已被限制发帖，直至 {{until}}。原因：\"{{reason}}\"。",
+            "footer": "点击此消息即可查看 Juxtaposition 行为准则。如有任何疑问，请联系 Pretendo Network 论坛的版主（{{banAppealUrl}}）。"
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> 赞同了你的帖子！",
+            "message/two": "<empathy_one />、<empathy_two /> 赞同了你的帖子！",
+            "message/three": "<empathy_one />、<empathy_two /> 和 {{count_other}} 位其他用户赞同了你的帖子！",
+            "message/multiple": "<empathy_one />、<empathy_two /> 和 {{count_other}} 位其他用户赞同了你的帖子！"
+        },
+        "new_reply": "<reply_author /> 评论了你的帖子！"
     },
     "new_post": {
         "post_to": "发布到{{user}}",
@@ -94,7 +126,7 @@
         "automod_error": "您的帖子包含 Juxtaposition 不允许使用的文本。了解更多信息，请访问 https://preten.do/juxt-rules"
     },
     "setup": {
-        "welcome": "欢迎来到Juxtaposition！",
+        "welcome": "欢迎来到 Juxtaposition！",
         "welcome_text": "Juxt 是一个游戏社区，它使用 Mii 将来自世界各地的人们联接起来。使用 Juxt 分享您的游戏体验并结识来自世界各地的人们。",
         "beta": "测试版免责声明",
         "beta_text": {
@@ -116,8 +148,8 @@
             "eighth": "不要发布剧透内容",
             "ninth": "有些人来到 Juxt 是为了寻找游戏的提示和技巧，而另一些人则想自己发现游戏的秘密。揭示游戏秘密或其故事的帖子都被称为“剧透”。如果发布的游戏内容可能会剧透，请务必在发送帖子前勾选“剧透”框。这样，不想被剧透的人就不会看到你的帖子。",
             "tenth": "违反行为准则",
-            "eleventh": "我们的目标是让 Juxt 对每个人都充满乐趣。如果有人违反 Juxt 的行为准则，我们将采取措施，包括阻止违规用户或硬件。",
-            "twelfth": "你玩了那个游戏吗？",
+            "eleventh": "我们的目标是让 Juxt 对每个人都充满乐趣。如果有人违反 Juxt 行为准则，我们将采取适当措施，包括封禁违规用户或游戏主机。",
+            "twelfth": "你玩过这个游戏吗？",
             "thirteenth": "如果您在社区中发布关于您玩过的游戏的帖子，您的帖子将带有一个图标，表明您已经玩过该游戏。"
         },
         "experience": "游戏经验",
@@ -128,11 +160,11 @@
             "expert": "高级"
         },
         "analytics": "分析",
-        "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 来跟踪用户如何使用我们的服务。收集的数据包括但不限于访问时间、访问的页面以及在网站上花费的时间。此数据不会以任何方式附加到您身上，也不会被我们或 Cloudflare 用于广告。",
+        "analytics_text": "Juxtaposition 使用 Cloudflare Web Analytics 来跟踪用户如何使用我们的服务。收集的数据包括但不限于访问时间、访问的页面以及在网站上花费的时间。此数据不会以任何方式关联到您身上，也不会被我们或 Cloudflare 用于广告。",
         "ready": "开始使用 Juxt",
-        "ready_text": "首先看一看一些社区，看看大家都在发布什么。借此机会熟悉 Juxt。一路上你可能会有新发现！",
+        "ready_text": "首先看看一些社区，了解世界各地的人们都在发布什么内容。借此机会熟悉 Juxt。说不定一路上你会有新发现！",
         "done": "在 Juxt 玩得开心！",
-        "done_button": "我们走吧！",
+        "done_button": "走吧！",
         "title": "Juxtaposition 设置"
     },
     "login": {
@@ -142,7 +174,7 @@
         "username": "用户名",
         "password": "密码",
         "forgot_password": "忘记了密码？",
-        "no_account": "没有一个账号？",
+        "no_account": "没有账号？",
         "login_action": "登录",
         "no_account_setup": "只有当您拥有已绑定的 Wii U 或 3DS 主机时，才能创建账号。"
     },
@@ -160,19 +192,24 @@
     "post": {
         "title": "发布者：{{username}}",
         "heading": "帖子",
-        "yeahs_count/one": "<count/> 人已同意此帖子。",
-        "yeahs_count/multiple": "<count/> 人已同意此帖子。",
+        "yeahs_count/one": "<count/> 人赞同了此帖子。",
+        "yeahs_count/multiple": "<count/> 人赞同了此帖子。",
         "show_spoiler": "显示剧透",
         "reply_post": "回复",
         "report_post": "举报帖子",
         "delete_post": "删除帖子",
         "removed": "帖子已被删除。",
-        "copy_link": "复制链接"
+        "copy_link": "复制链接",
+        "sort_newest_first": "按最新排序",
+        "sort_oldest_first": "按最旧排序",
+        "replies_heading": "回复",
+        "spoiler_label": "剧透",
+        "removedBySelf": "作者"
     },
     "reporting": {
         "title": "举报帖子",
         "submit": "提交举报",
-        "description": "你即将举报一篇违反《Juxtaposition 行为准则》的帖子。此举报将发送给 Pretendo 的 Juxtaposition 管理员，而非此帖子的创建者。",
+        "description": "你即将举报一篇违反 Juxtaposition 行为准则的帖子。此举报将仅发送给 Juxtaposition 版主，而不会发送给此帖子的创建者。",
         "label": "原因：",
         "additional_info_placeholder": "输入其他评论或信息",
         "reason_spoiler": "剧透",
@@ -182,14 +219,29 @@
         "reason_bullying": "仇恨/欺凌",
         "reason_advertising": "宣传广告",
         "reason_nsfw": "露骨的性描写",
-        "reason_piracy": "海盗行为",
+        "reason_piracy": "盗版行为",
         "reason_inappropiate_ingame": "游戏中的不当行为",
         "reason_missing_images": "缺少图像",
-        "reason_others": "其他"
+        "reason_others": "其他",
+        "reason_not_nice": "刻薄/无礼/仇恨（规则 1）",
+        "reason_inappropriate": "不适宜/不适宜工作场所观看（规则 2）",
+        "reason_spam": "垃圾内容/自我推销（规则 3）",
+        "reason_offtopic": "无关内容（规则 4）",
+        "reason_piracy_new": "盗版行为（规则 5）",
+        "reason_exploits": "API滥用/利用漏洞（规则 8）",
+        "reason_drama": "戏剧化（规则 9）",
+        "reason_cheating": "线上作弊（规则 10）",
+        "reason_spoiler_new": "剧透（规则 11）",
+        "reason_personal_info_new": "个人信息（规则 12）",
+        "reason_politics": "政治（规则 13）",
+        "reason_misinformation": "虚假信息/不良建议（规则 14）",
+        "reason_impersonation": "冒充他人（规则 15）"
     },
     "moderation": {
         "title": "审核",
         "silently_delete_post": "静默删除",
-        "moderate_user": "审核用户"
+        "moderate_user": "审核用户",
+        "mark_as_spoiler": "标记为剧透",
+        "mark_as_not_spoiler": "移除剧透"
     }
 }
