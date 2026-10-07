@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "bundler",
+        "skipLibCheck": true,
+        "declaration": true,
+        "module": "ES2022",
+        "target": "es2022",
+        "outDir": "dist",
+        "strict": true,
+        "noEmitOnError": true,
+        "types": ["vitest/globals"],
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ]
+        }
+    },
+    "include": [
+        "src"
+    ]
+}

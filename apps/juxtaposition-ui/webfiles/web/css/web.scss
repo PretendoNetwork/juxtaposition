@@ -326,13 +326,50 @@ header>.selected svg {
   display: none;
 }
 
-.post-content>p {
+.post-content > .post-content-text-container {
   margin-top: 0;
   margin-bottom: 0.5em;
-  font-weight: 400;
   margin-left: 0.25em;
+}
+
+.post-content-text-container.post-content-text-container-plain {
+  font-weight: 400;
   word-wrap: break-word;
   white-space: pre-wrap;
+}
+
+.post-content-text-container.post-content-text-container-markdown {
+  .prose-par {
+    margin: 0;
+    margin-bottom: 1.6rem; // Roughly 2 newlines
+    word-wrap: break-word;
+    line-height: 1.3;
+  }
+
+  .prose-bold {
+    font-weight: 700;
+    color: white;
+  }
+  .prose-italic {
+    font-style: italic;
+  }
+  .prose-strikethrough {
+    text-decoration: line-through;
+  }
+  .prose-code {
+    font-size: 0.9rem;
+    background-color: var(--background-dark);
+    border: 1px solid var(--background-alt);
+    padding: 0.1em 0.5em;
+    color: var(--text-light);
+    font-family: monospace;
+    display: inline;
+    border-radius: 5px;
+  }
+
+  > *:last-child {
+    margin-bottom: 0; // Prevent post content from sticking out at the bottom
+  }
 }
 
 .post-content,
