@@ -1,4 +1,4 @@
-import { initDebugToolbar, caveFuncs } from './debug_toolbar';
+import { initDebugToolbar, caveFuncs } from '@/js/debug_toolbar';
 
 if (typeof cave === 'undefined') {
 	initDebugToolbar();

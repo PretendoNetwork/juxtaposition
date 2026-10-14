@@ -1,33 +1,21 @@
 {
+	"extends": ["../tsconfig.base.json"],
 	"compilerOptions": {
-		"strict": true,
-		"sourceMap": true,
-		"resolveJsonModule": true,
-		"module": "ES2022",
-		"esModuleInterop": true,
-		"moduleResolution": "bundler",
-		"skipLibCheck": true,
-		"baseUrl": ".",
-		"outDir": "dist",
-		"allowJs": true,
-		"target": "es2022",
-		"noEmitOnError": true,
-		"noImplicitAny": true,
-		"strictPropertyInitialization": true,
-		"verbatimModuleSyntax": true,
 		"types": [
 			"@pretendonetwork/wiiu-browser-types",
 			"@pretendonetwork/wiiu-dialog-types",
 			"@pretendonetwork/wiiu-error-viewer-types",
-			"@pretendonetwork/wiiu-sound-types"
+			"@pretendonetwork/wiiu-sound-types",
+			"@pretendonetwork/wiiu-local-storage-types",
+			"@pretendonetwork/wiiu-session-storage-types"
 		],
 		"paths": {
 			"@/*": [
 				"./*"
-			]
+			],
+			"@common/*": [
+				"../common/*" 
+			],
 		}
-	},
-	"include": [
-		"js"
-	]
+	}
 }
