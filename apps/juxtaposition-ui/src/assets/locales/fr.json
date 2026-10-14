@@ -22,7 +22,10 @@
         "people_feed_short": "Abonnés",
         "friend_requests": "Demandes d'amis",
         "updates": "Mises à jour",
-        "search": "Chercher..."
+        "search": "Chercher...",
+        "load_more": "Charger Plus",
+        "system_message": "Message Système",
+        "mascot_name": "Bandwidth"
     },
     "all_communities": {
         "text": "Toutes les communautés",
@@ -40,7 +43,8 @@
         "related": "Communautés associées",
         "closed": "Cette communauté est fermée aux nouveaux posts.",
         "related_to": "Communautés liées à {{community}}",
-        "related_short": "En lien"
+        "related_short": "En lien",
+        "description": "A propos de cette communauté"
     },
     "user_page": {
         "country": "Pays",
@@ -71,7 +75,10 @@
         "save_action": "Enregistrer les paramètres",
         "gdpr_download": "Télécharger les données utilisateur",
         "gdpr_download_action": "Télécharger",
-        "show_profile": "Afficher le profil aux invités"
+        "show_profile": "Afficher le profil aux invités",
+        "notify_empathy": "Afficher les notifications de Ouais!",
+        "notify_reply": "Afficher les notifications des Commentaires/Réponses",
+        "notify_follows": "Montrer les notifications de Suivis"
     },
     "activity_feed": {
         "empty": "C'est vide ici. Essaie de suivre quelqu'un !"
@@ -92,8 +99,19 @@
             "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les moderateurs sur le Forum Pretendo Network ({{contactModsUrl}})."
         },
         "limited_from_posting": {
-            "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les modérateurs sur le Forum Pretendo Network ({{banAppealUrl}})."
-        }
+            "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les modérateurs sur le Forum Pretendo Network ({{banAppealUrl}}).",
+            "message": "Vous avez été limité de publier.",
+            "message_with_reason": "Vous avez été limité de publier. Raison: \"{{reason}}\".",
+            "temporary": "Vous avez êtez limité de publier jusqu'à {{until}}.",
+            "temporary_with_reason": "Vous avez êtez limité de publier jusqu’à {{until}}. Raison: \"{{reason}}\"."
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> a donné un Ouais! à votre publication",
+            "message/two": "<empathy_one />, <empathy_two /> a donné un Ouais à votre poste!",
+            "message/three": "<empathy_one />, <empathy_two />, et {{count_other}} ont donné un Ouais à votre poste!",
+            "message/multiple": "<empathy_one />, <empathy_two />, et{{count_other}} autres ont donné un Ouais à votre poste!"
+        },
+        "new_reply": "<reply_author /> a commenté votre publication !"
     },
     "new_post": {
         "post_to": "Envoyer à {{user}}",
@@ -110,7 +128,7 @@
     "setup": {
         "welcome": "Bienvenue sur Juxtaposition !",
         "welcome_text": "Juxt est une communauté de jeu qui rassemble les personnes du monde entier à l'aide de personnages Mii. Utilisez Juxt pour partager votre expérience de jeu et rencontrer des gens autour du globe.",
-        "beta": "Bêta: Avis de non-responsabilité",
+        "beta": "Bêta : Avis de non-responsabilité",
         "beta_text": {
             "first": "Vous êtes sur le point d'essayer la première version bêta publique de Juxt. Cela signifie que beaucoup de choses sont encore en développement et qu'elles peuvent changer à tout moment.",
             "second": "Cela peut inclure un effacement total de la base de données à la fin ou pendant la période bêta.",
@@ -184,7 +202,10 @@
         "copy_link": "Copier le lien",
         "sort_newest_first": "Afficher les plus récents",
         "sort_oldest_first": "Afficher les plus anciens",
-        "replies_heading": "Réponses"
+        "replies_heading": "Réponses",
+        "spoiler_label": "Révélations",
+        "removedBySelf": "auteur",
+        "removedBy": "Supprimé par"
     },
     "reporting": {
         "title": "Sigaler la publication",

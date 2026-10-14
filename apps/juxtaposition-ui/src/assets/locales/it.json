@@ -22,7 +22,9 @@
         "global_feed_short": "Globale",
         "people_feed": "Attività seguiti",
         "people_feed_short": "Seguiti",
-        "search": "Cerca..."
+        "search": "Cerca...",
+        "system_message": "Messaggio di sistema",
+        "mascot_name": "Bandwidth"
     },
     "all_communities": {
         "text": "Tutti i gruppi",
@@ -39,7 +41,9 @@
         "related": "Gruppi correlati",
         "related_to": "{{community}} Gruppi correlati",
         "closed": "Non è possibile pubblicare nuovi post in questo gruppo.",
-        "followers_count": "{{count}} seguaci"
+        "followers_count": "{{count}} seguaci",
+        "related_short": "Altre",
+        "description": "Info su questo gruppo"
     },
     "user_page": {
         "country": "Paese",
@@ -55,7 +59,12 @@
         "deleted": "Utente eliminato",
         "banned": "Utente bannato",
         "game_experience_unknown": "Sconosciuta",
-        "friend_requests": "Richieste"
+        "friend_requests": "Richieste",
+        "not_found": "Questo utente non esiste",
+        "tester_tag": "Tester",
+        "supporter_tag": "Supporter",
+        "moderator_tag": "Moderatore",
+        "developer_tag": "Sviluppatore"
     },
     "user_settings": {
         "profile_settings": "Impostazioni del profilo",
@@ -64,7 +73,11 @@
         "show_game": "Mostra esperienza di gioco sul tuo profilo",
         "save_action": "Salva impostazioni",
         "gdpr_download": "Scarica dati utente",
-        "gdpr_download_action": "Scarica"
+        "gdpr_download_action": "Scarica",
+        "show_profile": "Mostra profilo agli ospiti",
+        "notify_empathy": "Mostra notifiche Sìì!",
+        "notify_follows": "Mostra notifiche quando qualcuno segue il tuo profilo",
+        "notify_reply": "Mostra notifiche per risposte/commenti"
     },
     "activity_feed": {
         "empty": "È vuoto. Prova a seguire qualcuno!"
@@ -76,6 +89,27 @@
             "message/two": "<follower_one /> e <follower_two /> ti seguono!",
             "message/three": "<follower_one />, <follower_two /> e {{count_other}} altro ti seguono!",
             "message/multiple": "<follower_one />, <follower_two /> e altri {{count_other}} ti seguono!"
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> ha messo Sìì al tuo post!",
+            "message/two": "<empathy_one />, <empathy_two /> hanno messo Sìì! al tuo post",
+            "message/three": "<empathy_one />, <empathy_two /> e {{count_other}} hanno messo Sìì! al tuo post",
+            "message/multiple": "<empathy_one />, <empathy_two /> e altri {{count_other}} hanno messo Sìì al tuo post!"
+        },
+        "new_reply": "<reply_author /> ha commentato sul tuo post!",
+        "post_deleted": {
+            "post_removed": "Il tuo post \"{{postId}}\" è stato rimosso.",
+            "post_removed_for_reason": "Il tuo post \"{{postId}}\" è stato rimosso per il seguente motivo: \"{{reason}}\".",
+            "comment_removed": "Il tuo commento \"{{postId}}\" è stato rimosso.",
+            "comment_removed_for_reason": "Il tuo commento \"{{postId}}\" è stato rimosso per il seguente motivo: \"{{reason}}\".",
+            "footer": "Clicca su questo messaggio per vedere il Codice di Condotta di Juxtaposition. Se hai qualche dubbio, per favore contatta i moderatori sul Forum Pretendo Network ({{contactModsUrl}})."
+        },
+        "limited_from_posting": {
+            "message": "La possibilità di postare ti è stata limitata.",
+            "message_with_reason": "La possibilità di postare ti è stata limitata. Motivo: \"{{reason}}\".",
+            "temporary": "La possibilità di postare ti è stata limitata fino a {{until}}.",
+            "temporary_with_reason": "La possibilità di postare ti è stata limitata fino a {{until}}. Reason: \"{{reason}}\".",
+            "footer": "Clicca su questo messaggio per vedere il Codice di Condotta di Juxtaposition. Se hai qualche dubbio, per favore contatta i moderatori sul Forum Pretendo Network ({{banAppealUrl}})."
         }
     },
     "new_post": {
@@ -87,7 +121,8 @@
         "spoiler_label": "Spoiler",
         "content_placeholder": "Condividi il tuo pensiero con un post rivolto ad un gruppo o ai tuoi seguaci.",
         "screenshots_coming_soon": "Gli screenshot non sono ancora pronti. Ricontrolla preso!",
-        "painting_submit": "OK"
+        "painting_submit": "OK",
+        "automod_error": "Il tuo post contiene testo non permesso su Juxtaposition. Per maggiori informazioni, visita https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "Benvenuto/a su Juxtaposition!",
@@ -155,10 +190,13 @@
         "heading": "Post",
         "delete_post": "Elimina post",
         "removed": "Il post è stato eliminato.",
-        "copy_link": "Copia link"
+        "copy_link": "Copia link",
+        "sort_newest_first": "Ordina dal più recente",
+        "sort_oldest_first": "Ordina dal più vecchio",
+        "replies_heading": "Risposte"
     },
     "reporting": {
-        "description": "Stai per segnalare un post il cui contenuto viola il Codice di Condotta di Juxtaposition. La segnalazione sarà inviata agli amministratori di Juxtaposition di Pretendo e non al creatore del post.",
+        "description": "Stai per segnalare un post che viola il Codice di Condotta di Juxtaposition. La segnalazione sarà inviata solamente ai moderatori di Juxtaposition e non al creatore del post.",
         "label": "Motivo:",
         "additional_info_placeholder": "Commenti o informazioni aggiuntive",
         "reason_spoiler": "Spoiler",
@@ -172,7 +210,21 @@
         "reason_inappropiate_ingame": "Comportamento scorretto nel gioco",
         "reason_missing_images": "Immagini mancanti",
         "title": "Segnala post",
-        "submit": "Invia segnalazione"
+        "submit": "Invia segnalazione",
+        "reason_others": "Altra",
+        "reason_not_nice": "Cattivo/Maleducato/Odio (Regola 1)",
+        "reason_inappropriate": "Inappropriato/NSFW (Regola 2)",
+        "reason_spam": "Spam/Autopromozione (Regola 3)",
+        "reason_offtopic": "Fuori tema (Regola 4)",
+        "reason_piracy_new": "Pirateria (Regola 5)",
+        "reason_exploits": "Abuso API/Esploitazione dei bug (Regola 8)",
+        "reason_drama": "Conflitti (Regola 9)",
+        "reason_cheating": "Imbrogliare online (Regola 10)",
+        "reason_spoiler_new": "Spoiler (Regola 11)",
+        "reason_personal_info_new": "Informazioni personali (Regola 12)",
+        "reason_politics": "Politica (Regola 13)",
+        "reason_misinformation": "Disinformazione/Cattivi consigli (Regola 14)",
+        "reason_impersonation": "Impersonazione (Regola 15)"
     },
     "error": {
         "title": "Errore {{code}}",
@@ -185,6 +237,8 @@
     "moderation": {
         "title": "Moderazione",
         "silently_delete_post": "Elimina senza notifica",
-        "moderate_user": "Modera utente"
+        "moderate_user": "Modera utente",
+        "mark_as_spoiler": "Segna come spoiler",
+        "mark_as_not_spoiler": "Rimuovi spoiler"
     }
 }
