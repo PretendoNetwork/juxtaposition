@@ -30,8 +30,6 @@ export const checkDiscovery: RequestHandler = async (request, response, next) =>
 		});
 	}
 
-	request.guest_access = discovery.guestAccess;
-	request.new_users = discovery.newUsers;
 	response.locals.cdnURL = config.cdnDomain;
 
 	next();

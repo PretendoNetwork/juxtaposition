@@ -119,7 +119,7 @@ communityPostsRouter.post({
 		body: postCreateSchema,
 		response: postSchema
 	},
-	async handler({ body, params, auth }) {
+	async handler({ body, params, auth, db }) {
 		const account = auth!;
 
 		const community = await Community.findOne({ olive_community_id: params.id });
@@ -135,7 +135,7 @@ communityPostsRouter.post({
 		if (!isValidPost(body)) {
 			throw errors.for('invalid_post');
 		}
-		const newPost = await createNewPost({
+		const newPost = await createNewPost(db, {
 			author: {
 				pid: account.pnid.pid,
 				miiData: account.pnid.mii?.data ?? '',

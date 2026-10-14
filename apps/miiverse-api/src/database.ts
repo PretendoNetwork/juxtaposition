@@ -3,12 +3,10 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { logger } from '@/logger';
 import { Community } from '@/models/community';
 import { Conversation } from '@/models/conversation';
-import { Endpoint } from '@/models/endpoint';
 import { Post } from '@/models/post';
 import { config } from '@/config';
 import { PrismaClient } from '@/prisma/client';
-import type { User } from '@/prisma/client';
-import type { HydratedEndpointDocument } from '@/models/endpoint';
+import type { DiscoveryEndpoint, ServerAccessLevel, User } from '@/prisma/client';
 import type { HydratedConversationDocument } from '@/models/conversation';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
 import type { HydratedCommunityDocument } from '@/types/mongoose/community';
@@ -145,17 +143,11 @@ export async function getPostsBytitleID(titleID: string[], limit: number): Promi
 	}).sort({ created_at: -1 }).limit(limit);
 }
 
-export async function getEndpoints(): Promise<HydratedEndpointDocument[]> {
-	verifyConnected();
-
-	return Endpoint.find({});
-}
-
-export async function getEndpoint(accessLevel: string): Promise<HydratedEndpointDocument | null> {
-	verifyConnected();
-
-	return Endpoint.findOne({
-		server_access_level: accessLevel
+export async function getEndpoint(accessLevel: ServerAccessLevel): Promise<DiscoveryEndpoint | null> {
+	return getDb().discoveryEndpoint.findFirst({
+		where: {
+			serverAccessLevel: accessLevel
+		}
 	});
 }
 

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { getValueFromHeaders, decodeParamPack, getUserDataFromServiceToken } from '@/util';
 import { getDb, getEndpoint, getUser } from '@/database';
 import { badRequest, ApiErrorCode, serverError } from '@/errors';
+import { convertAccountServerAccessLevel } from '@/models/helpers';
 import type express from 'express';
 
 const ParamPackSchema = z.object({
@@ -58,7 +59,8 @@ async function auth(request: express.Request, response: express.Response, next: 
 		return badRequest(response, ApiErrorCode.BAD_PARAM_PACK);
 	}
 
-	const discovery = await getEndpoint(pnid.serverAccessLevel);
+	const serverAccessLevel = convertAccountServerAccessLevel(pnid.serverAccessLevel);
+	const discovery = serverAccessLevel ? await getEndpoint(serverAccessLevel) : null;
 
 	if (!discovery) {
 		request.log.error(`Discovery data is missing for ${pnid.serverAccessLevel}`);

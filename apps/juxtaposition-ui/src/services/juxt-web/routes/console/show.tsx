@@ -50,11 +50,10 @@ showRouter.post('/newUser', async function (req, res) {
 	});
 	const self = hasAuth() ? auth().self : null;
 
-	const newUsersEnabled = !!req.new_users; // Can this instance onboard new users?
 	const platformAllowsOnboarding = req.directory !== 'web'; // Web is not allowed to onboard users
 	const isAuthed = !!self;
 
-	const canDoOnboarding = isAuthed && platformAllowsOnboarding && newUsersEnabled;
+	const canDoOnboarding = isAuthed && platformAllowsOnboarding;
 	if (!canDoOnboarding) {
 		return res.sendStatus(401);
 	}

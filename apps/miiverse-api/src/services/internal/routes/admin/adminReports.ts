@@ -2,14 +2,12 @@ import { z } from 'zod';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapReport, reportSchema } from '@/services/internal/contract/admin/report';
-import { Report } from '@/models/report';
 import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
 import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import { createLogEntry } from '@/services/internal/utils/auditLogs';
 import { createNewPostDeletionNotification } from '@/services/internal/utils/notifications';
-import { deleteOptional } from '@/services/internal/utils';
-import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import { standardSortSchema, standardSortToDirectionPrisma } from '@/services/internal/contract/utils';
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { Community } from '@/models/community';
 
@@ -33,16 +31,19 @@ adminReportsRouter.get({
 			throw errors.for('bad_request', 'Pagination is not possible when filtering for resolved states');
 		}
 
-		const rawReports = await Report
-			.find(deleteOptional({
+		const rawReports = await db.report.findMany({
+			where: {
 				resolved: query.resolved,
-				pid: query.offenderPid,
-				reported_by: query.reporterPid
-			}))
-			.sort({ created_at: standardSortToDirection(query.sort) })
-			.limit(query.limit)
-			.skip(query.offset);
-		const postIds = rawReports.map(obj => obj.post_id);
+				postAuthor: query.offenderPid,
+				reportedBy: query.reporterPid
+			},
+			orderBy: {
+				createdAt: standardSortToDirectionPrisma(query.sort)
+			},
+			take: query.limit,
+			skip: query.offset
+		});
+		const postIds = rawReports.map(obj => obj.postId);
 		const posts = await Post.find(
 			{ id: { $in: postIds } }
 		);
@@ -51,7 +52,7 @@ adminReportsRouter.get({
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
 		const relatedUserIds = [
-			...rawReports.flatMap(v => [v.reported_by, v.resolved_by]),
+			...rawReports.flatMap(v => [v.reportedBy, v.resolvedBy]),
 			...posts.map(v => v.removed_by)
 		].filter((v): v is number => !!v);
 		const users = await db.user.findMany({
@@ -63,7 +64,7 @@ adminReportsRouter.get({
 		});
 
 		let reports = rawReports.map((report) => {
-			const post = posts.find(v => v.id === report.post_id) ?? null;
+			const post = posts.find(v => v.id === report.postId) ?? null;
 			const community = post ? communities.find(v => v.olive_community_id === post.community_id) ?? null : null;
 			return mapReport(report, users, post, community);
 		});
@@ -95,12 +96,16 @@ adminReportsRouter.post({
 	async handler({ db, params, body, auth }) {
 		const account = auth!;
 
-		const report = await Report.findOne({ _id: params.id });
+		const report = await db.report.findFirst({
+			where: {
+				id: params.id
+			}
+		});
 		if (!report) {
 			throw errors.for('not_found');
 		}
 
-		const post = await Post.findOne({ id: report.post_id });
+		const post = await Post.findOne({ id: report.postId });
 		if (post === null) {
 			return mapResult('success'); // Already deleted, action already done
 		}
@@ -116,12 +121,15 @@ adminReportsRouter.post({
 			});
 		}
 
-		await Report.findOneAndUpdate({ _id: report.id }, {
-			$set: {
+		await db.report.update({
+			where: {
+				id: report.id
+			},
+			data: {
 				resolved: true,
-				resolved_by: account.pnid.pid,
-				resolved_at: new Date(),
-				note: reason
+				resolvedBy: account.pnid.pid,
+				resolvedAt: new Date(),
+				moderationNote: reason
 			}
 		});
 		await createNewPostDeletionNotification(db, {
@@ -129,7 +137,7 @@ adminReportsRouter.post({
 			post: post,
 			reason
 		});
-		await createLogEntry({
+		await createLogEntry(db, {
 			actorId: account.pnid.pid,
 			action: 'REMOVE_POST',
 			targetResourceId: post.id,
@@ -153,23 +161,30 @@ adminReportsRouter.post({
 		}),
 		response: resultSchema
 	},
-	async handler({ params, body, auth }) {
+	async handler({ params, body, auth, db }) {
 		const account = auth!;
 
-		const report = await Report.findOne({ _id: params.id });
+		const report = await db.report.findFirst({
+			where: {
+				id: params.id
+			}
+		});
 		if (!report) {
 			throw errors.for('not_found');
 		}
 
-		await Report.findOneAndUpdate({ _id: report.id }, {
-			$set: {
+		await db.report.update({
+			where: {
+				id: report.id
+			},
+			data: {
 				resolved: true,
-				resolved_by: account.pnid.pid,
-				resolved_at: new Date(),
-				note: body.reason ?? null
+				resolvedBy: account.pnid.pid,
+				resolvedAt: new Date(),
+				moderationNote: body.reason ?? null
 			}
 		});
-		await createLogEntry({
+		await createLogEntry(db, {
 			actorId: account.pnid.pid,
 			action: 'IGNORE_REPORT',
 			targetResourceId: report.id,

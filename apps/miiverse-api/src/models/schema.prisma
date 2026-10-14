@@ -21,6 +21,26 @@ enum ProfilePrivacyType {
   UsersOnly
 }
 
+enum AutomodActionType {
+  Blocked
+  Logged
+}
+
+enum AutomodRuleType {
+  Keyword
+}
+
+enum AutomodRuleMode {
+  Block
+  Log
+}
+
+enum ServerAccessLevel {
+  Prod
+  Beta
+  Dev
+}
+
 /// User
 model User {
   pid         Int      @id
@@ -112,4 +132,96 @@ model NotificationRecipient {
 
   @@index([pid])
   @@map("notification_recipients")
+}
+
+/// Automod logs
+model AutomodLog {
+  id        String            @id
+  createdAt DateTime          @default(now()) @map("created_at")
+  ruleId    String            @map("rule_id")
+  author    Int
+  action    AutomodActionType
+
+  postContentBody String? @map("post_content_body")
+  matches         Json?
+
+  postId       String? @map("post_id")
+  parentPostId String? @map("parent_post_id")
+  communityId  String? @map("community_id")
+
+  @@map("automod_logs")
+}
+
+/// Automod rules
+model AutomodRule {
+  id        String   @id
+  createdAt DateTime @default(now()) @map("created_at")
+
+  title       String
+  description String?
+  enabled     Boolean
+  type        AutomodRuleType
+  mode        AutomodRuleMode
+
+  keywordSettings AutomodRuleKeywordSetting?
+
+  @@map("automod_rules")
+}
+
+/// Settings for the keyword AutomodRule
+model AutomodRuleKeywordSetting {
+  ruleId String      @id @map("rule_id")
+  rule   AutomodRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+
+  keywords String[]
+
+  @@map("automod_rule_keyword_settings")
+}
+
+/// Endpoints for the discovery service
+model DiscoveryEndpoint {
+  id                String            @id
+  createdAt         DateTime          @default(now()) @map("created_at")
+  serverAccessLevel ServerAccessLevel @map("server_access_level")
+
+  status  Int
+  apiHost String @map("api_host")
+  wupHost String @map("wup_host")
+  ctrHost String @map("ctr_host")
+
+  @@map("discovery_endpoints")
+}
+
+/// Report for a post
+model Report {
+  id         String   @id
+  postId     String   @map("post_id")
+  postAuthor Int      @map("post_author")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  reportedBy     Int    @map("reported_by")
+  reportReasonId Int    @map("report_reasonId")
+  reportMessage  String @map("report_message")
+
+  resolved       Boolean   @default(false)
+  resolvedAt     DateTime? @map("resolved_at")
+  resolvedBy     Int?      @map("resolved_by")
+  moderationNote String?   @map("moderation_note")
+
+  @@map("reports")
+}
+
+/// Audit logs entries
+model AuditLogEntry {
+  id        String   @id
+  actor     Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  actionType String @map("action_type")
+  context    String
+
+  targetResourceId String   @map("target_resource_id")
+  changedFields    String[] @map("changed_fields")
+
+  @@map("audit_log_entries")
 }

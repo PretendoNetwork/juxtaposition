@@ -1,5 +1,6 @@
-import { Logs } from '@/models/logs';
-import type { LogEntryActions } from '@/models/logs';
+import { randomUUID } from 'crypto';
+import type { PrismaClient } from '@/prisma/client';
+import type { LogEntryActions } from '@/models/helpers';
 
 export const accountActionDisplayMap: Record<number, LogEntryActions> = {
 	0: 'UNBAN',
@@ -16,12 +17,15 @@ export type CreateLogEntryOptions = {
 	fields?: string[]; // What fields have been changed?
 };
 
-export async function createLogEntry(ops: CreateLogEntryOptions): Promise<void> {
-	await Logs.create({
-		actor: ops.actorId,
-		action: ops.action,
-		target: ops.targetResourceId,
-		context: ops.context,
-		changed_fields: ops.fields ?? []
+export async function createLogEntry(db: PrismaClient, ops: CreateLogEntryOptions): Promise<void> {
+	await db.auditLogEntry.create({
+		data: {
+			id: randomUUID(),
+			actor: ops.actorId,
+			actionType: ops.action,
+			targetResourceId: ops.targetResourceId,
+			context: ops.context,
+			changedFields: ops.fields ?? []
+		}
 	});
 }

@@ -1,6 +1,6 @@
+import { randomUUID } from 'crypto';
 import express from 'express';
 import multer from 'multer';
-import { Snowflake } from 'node-snowflake';
 import moment from 'moment';
 import xmlbuilder from 'xmlbuilder';
 import * as z from 'zod';
@@ -80,7 +80,7 @@ router.post('/', upload.none(), async function (request: express.Request, respon
 
 	if (!conversation) {
 		conversation = await Conversation.create({
-			id: Snowflake.nextId(),
+			id: randomUUID(),
 			users: [
 				{
 					pid: sender.pid,

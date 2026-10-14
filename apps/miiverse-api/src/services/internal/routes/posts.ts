@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { z } from 'zod';
 import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
@@ -12,7 +13,6 @@ import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
 import { createLogEntry } from '@/services/internal/utils/auditLogs';
 import { Community } from '@/models/community';
-import { Report } from '@/models/report';
 import { createNewPost, isValidPost, postCreateSchema } from '@/services/internal/utils/posts';
 import { isPostingAllowed } from '@/services/internal/utils/communities';
 import { mapSelf } from '@/services/internal/contract/self';
@@ -170,7 +170,7 @@ postsRouter.delete({
 		}),
 		response: resultSchema
 	},
-	async handler({ query, params, auth }) {
+	async handler({ query, params, auth, db }) {
 		const post = await Post.findOne({
 			id: params.post_id,
 			message_to_pid: null, // messages aren't really posts
@@ -188,7 +188,7 @@ postsRouter.delete({
 			if (account.moderator) {
 				// If a moderator deletes someone else's post, they can provide a reason
 				reason = query.reason ?? 'Removed by moderator';
-				await createLogEntry({
+				await createLogEntry(db, {
 					actorId: account.pnid.pid,
 					action: 'REMOVE_POST',
 					targetResourceId: post.pid.toString(),
@@ -291,7 +291,7 @@ postsRouter.post({
 		}),
 		response: resultSchema
 	},
-	async handler({ body, params, auth }) {
+	async handler({ body, params, auth, db }) {
 		// guards.user makes this safe
 		const account = auth!;
 		const pid = account.pnid.pid;
@@ -305,20 +305,26 @@ postsRouter.post({
 			throw errors.for('not_found');
 		}
 
-		const duplicateReport = await Report.findOne({
-			reported_by: pid,
-			post_id: post.id
+		const duplicateReport = await db.report.findFirst({
+			where: {
+				reportedBy: pid,
+				postId: post.id
+			}
 		});
 		if (duplicateReport) {
 			return mapResult('success'); // Silently reject duplicate reports
 		}
 
-		await Report.create({
-			pid: post.pid,
-			reported_by: pid,
-			post_id: post.id,
-			reason: body.reasonId,
-			message: body.message
+		await db.report.create({
+			data: {
+				id: randomUUID(),
+				postId: post.id,
+				postAuthor: post.pid,
+
+				reportedBy: pid,
+				reportReasonId: body.reasonId,
+				reportMessage: body.message
+			}
 		});
 
 		return mapResult('success');
@@ -398,7 +404,7 @@ postsRouter.post({
 		if (!isValidPost(body)) {
 			throw errors.for('invalid_post');
 		}
-		const newPost = await createNewPost({
+		const newPost = await createNewPost(db, {
 			author: {
 				pid,
 				miiData: account.pnid.mii?.data ?? '',

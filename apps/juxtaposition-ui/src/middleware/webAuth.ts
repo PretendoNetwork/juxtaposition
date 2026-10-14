@@ -77,7 +77,7 @@ function requestOkForGuest(req: Request): boolean {
 
 	// login page is always ok
 	// guest access pages must not be writes and the instance must have guest enabled
-	return loginPage || (guestAccessPage && !req.isWrite && req.guest_access);
+	return loginPage || (guestAccessPage && !req.isWrite);
 }
 
 export function loginWall(req: Request, res: Response): void {

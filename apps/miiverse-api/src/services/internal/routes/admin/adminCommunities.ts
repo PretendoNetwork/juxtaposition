@@ -122,7 +122,7 @@ adminCommunitiesRouter.post({
 		body: communityCreateSchema,
 		response: adminCommunitySchema
 	},
-	async handler({ body, auth }) {
+	async handler({ body, auth, db }) {
 		const pnid = auth!.pnid;
 
 		const communityId = await generateCommunityId();
@@ -186,7 +186,7 @@ adminCommunitiesRouter.post({
 		changes.push(`Is Recommended set to "${community.is_recommended}"`);
 		changes.push(`Has Shop Page set to "${community.has_shop_page}"`);
 
-		await createLogEntry({
+		await createLogEntry(db, {
 			actorId: pnid.pid,
 			action: 'MAKE_COMMUNITY',
 			targetResourceId: communityId,
@@ -342,7 +342,7 @@ adminCommunitiesRouter.patch({
 		}
 
 		if (changes.length > 0) {
-			await createLogEntry({
+			await createLogEntry(db, {
 				actorId: pnid.pid,
 				action: 'UPDATE_COMMUNITY',
 				targetResourceId: oldCommunity.olive_community_id,
@@ -371,14 +371,14 @@ adminCommunitiesRouter.delete({
 		}),
 		response: resultSchema
 	},
-	async handler({ params, auth }) {
+	async handler({ params, auth, db }) {
 		const pnid = auth!.pnid;
 		const result = await Community.deleteOne({ olive_community_id: params.id });
 		if (result.deletedCount === 0) {
 			throw errors.for('not_found');
 		}
 
-		await createLogEntry({
+		await createLogEntry(db, {
 			actorId: pnid.pid,
 			action: 'DELETE_COMMUNITY',
 			targetResourceId: params.id,

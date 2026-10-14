@@ -1,13 +1,12 @@
 import { z } from 'zod';
 import { mapShallowAutomodRule, shallowAutomodRuleSchema } from '@/services/internal/contract/admin/automodRule';
-import { automodAction } from '@/models/automodLog';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
-import type { HydratedAutomodLogDocument } from '@/models/automodLog';
-import type { HydratedAutomodRuleDocument } from '@/models/automodRules';
-import type { User } from '@/prisma/client';
+import { automodActionInput, mapAutomodAction } from '@/models/helpers';
+import type { AutomodLogMatchList } from '@/models/helpers';
+import type { AutomodLog, AutomodRule, User } from '@/prisma/client';
 
-export const automodActionEnum = asOpenapi('AutomodActionEnum', z.enum(automodAction));
+export const automodActionEnum = asOpenapi('AutomodActionEnum', z.enum(automodActionInput));
 
 export const automodLogSchema = z.object({
 	id: z.string(),
@@ -29,19 +28,19 @@ export const automodLogSchema = z.object({
 
 export type AutomodLogDto = z.infer<typeof automodLogSchema>;
 
-export function mapAutomodLog(log: HydratedAutomodLogDocument, user: User | null, rule: HydratedAutomodRuleDocument | null): AutomodLogDto {
+export function mapAutomodLog(log: AutomodLog, user: User | null, rule: AutomodRule | null): AutomodLogDto {
 	return {
 		id: log.id,
-		createdAt: log.created_at,
+		createdAt: log.createdAt,
 		rule: rule ? mapShallowAutomodRule(rule) : null,
-		action: log.action,
+		action: mapAutomodAction(log.action),
 		postAuthor: user ? mapShallowUser(user) : null,
-		postId: log.action === 'blocked' ? null : log.post_id,
-		parentPostId: log.parent_post_id,
-		communityId: log.community_id,
-		matches: log.matches ?? [],
+		postId: log.action === 'Blocked' ? null : log.postId,
+		parentPostId: log.parentPostId,
+		communityId: log.communityId,
+		matches: (log.matches ?? []) as AutomodLogMatchList,
 		postContent: {
-			body: log.post_content_body
+			body: log.postContentBody
 		}
 	};
 }

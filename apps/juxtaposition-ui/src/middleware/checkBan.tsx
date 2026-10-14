@@ -12,7 +12,7 @@ export const checkBan: RequestHandler = async (request, response, next) => {
 	response.locals.developer = request.self?.permissions.developer ?? null;
 
 	if (!request.user) {
-		if (request.guest_access || request.path === '/login') {
+		if (request.path === '/login') {
 			return next();
 		} else {
 			return response.status(401).send('Ban Check Failed: No user or guest access');

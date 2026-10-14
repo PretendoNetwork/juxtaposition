@@ -10,6 +10,10 @@ export function standardSortToDirection(sort: StandardSortEnum): 1 | -1 {
 	return sort === 'newest' ? -1 : 1;
 }
 
+export function standardSortToDirectionPrisma(sort: StandardSortEnum): 'asc' | 'desc' {
+	return sort === 'newest' ? 'desc' : 'asc';
+}
+
 export const postTypeFilter = asOpenapi('PostTypeFilter', z.enum(['post', 'reply', 'all']));
 export type PostTypeFilterEnum = z.infer<typeof postTypeFilter>;
 

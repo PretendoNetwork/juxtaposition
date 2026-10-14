@@ -2,12 +2,9 @@ import { z } from 'zod';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { guards } from '@/services/internal/middleware/guards';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
-import { standardSortSchema, standardSortToDirection } from '@/services/internal/contract/utils';
+import { standardSortSchema, standardSortToDirectionPrisma } from '@/services/internal/contract/utils';
 import { auditLogActionSchema, auditLogSchema, mapAuditLog } from '@/services/internal/contract/admin/auditLogs';
-import { Logs } from '@/models/logs';
-import { deleteOptional } from '@/services/internal/utils';
-import type { FilterQuery } from 'mongoose';
-import type { AuditLog } from '@/models/logs';
+import type { AuditLogEntryWhereInput } from '@/prisma/models';
 
 export const adminAuditLogs = createInternalApiRouter();
 
@@ -24,16 +21,21 @@ adminAuditLogs.get({
 		response: pageDtoSchema(auditLogSchema)
 	},
 	async handler({ query, db }) {
-		const dbQuery: FilterQuery<AuditLog> = deleteOptional({
-			target: query.targetId,
-			action: query.action
+		const dbQuery: AuditLogEntryWhereInput = {
+			targetResourceId: query.targetId,
+			actionType: query.action
+		};
+		const logs = await db.auditLogEntry.findMany({
+			where: dbQuery,
+			orderBy: {
+				createdAt: standardSortToDirectionPrisma(query.sort)
+			},
+			take: query.limit,
+			skip: query.offset
 		});
-		const logs = await Logs
-			.find(dbQuery)
-			.sort({ timestamp: standardSortToDirection(query.sort) })
-			.limit(query.limit)
-			.skip(query.offset);
-		const total = await Logs.countDocuments(dbQuery);
+		const total = await db.auditLogEntry.count({
+			where: dbQuery
+		});
 
 		const users = await db.user.findMany({
 			where: {

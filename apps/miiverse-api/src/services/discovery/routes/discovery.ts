@@ -2,7 +2,8 @@ import express from 'express';
 import xmlbuilder from 'xmlbuilder';
 import { getEndpoint } from '@/database';
 import { ApiErrorCode, badRequest, serverError } from '@/errors';
-import type { HydratedEndpointDocument } from '@/models/endpoint';
+import { convertAccountServerAccessLevel } from '@/models/helpers';
+import type { DiscoveryEndpoint } from '@/prisma/client';
 
 const router = express.Router();
 
@@ -10,12 +11,13 @@ const router = express.Router();
 router.get('/', async function (request: express.Request, response: express.Response): Promise<void> {
 	response.type('application/xml');
 
-	let discovery: HydratedEndpointDocument | null;
+	let discovery: DiscoveryEndpoint | null;
 
 	if (request.user) {
-		discovery = await getEndpoint(request.user.serverAccessLevel);
+		const serverAccessLevel = convertAccountServerAccessLevel(request.user.serverAccessLevel);
+		discovery = serverAccessLevel ? await getEndpoint(serverAccessLevel) : null;
 	} else {
-		discovery = await getEndpoint('prod');
+		discovery = await getEndpoint('Prod');
 	}
 
 	if (!discovery) {
@@ -35,10 +37,10 @@ router.get('/', async function (request: express.Request, response: express.Resp
 			has_error: 0,
 			version: 1,
 			endpoint: {
-				host: discovery.host,
-				api_host: discovery.api_host,
-				portal_host: discovery.portal_host,
-				n3ds_host: discovery.n3ds_host
+				host: discovery.apiHost,
+				api_host: discovery.apiHost,
+				portal_host: discovery.wupHost,
+				n3ds_host: discovery.ctrHost
 			}
 		}
 	}).end({ pretty: true }));
