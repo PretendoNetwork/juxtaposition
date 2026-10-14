@@ -24,7 +24,8 @@
         "people_feed_short": "Seguiti",
         "search": "Cerca...",
         "system_message": "Messaggio di sistema",
-        "mascot_name": "Bandwidth"
+        "mascot_name": "Bandwidth",
+        "load_more": "Carica altro"
     },
     "all_communities": {
         "text": "Tutti i gruppi",
@@ -76,7 +77,7 @@
         "gdpr_download_action": "Scarica",
         "show_profile": "Mostra profilo agli ospiti",
         "notify_empathy": "Mostra notifiche Sìì!",
-        "notify_follows": "Mostra notifiche quando qualcuno segue il tuo profilo",
+        "notify_follows": "Mostra notifiche Seguiti",
         "notify_reply": "Mostra notifiche per risposte/commenti"
     },
     "activity_feed": {
@@ -193,7 +194,10 @@
         "copy_link": "Copia link",
         "sort_newest_first": "Ordina dal più recente",
         "sort_oldest_first": "Ordina dal più vecchio",
-        "replies_heading": "Risposte"
+        "replies_heading": "Risposte",
+        "spoiler_label": "Spoiler",
+        "removedBy": "Rimosso da",
+        "removedBySelf": "autore"
     },
     "reporting": {
         "description": "Stai per segnalare un post che viola il Codice di Condotta di Juxtaposition. La segnalazione sarà inviata solamente ai moderatori di Juxtaposition e non al creatore del post.",
