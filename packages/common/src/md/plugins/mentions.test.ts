@@ -1,5 +1,6 @@
 import { parseJuxtMarkdownInternal } from '@/md/parser';
 import { extractMentionDiscoveries, handleMentionDiscoveries } from '@/md/plugins/mention';
+import { applyReplacements } from '@/md/transform';
 import type { Token } from 'markdown-it';
 import type { TransformReplacement } from '@/md/transform';
 import type { MentionDiscovery } from '@/md/plugins/mention';
@@ -47,6 +48,26 @@ describe('mention discovery', () => {
 			end: 60,
 			value: '@jake_is_cool_and_i_wish_to_meet_him_sometime_in_this'
 		}]);
+	});
+
+	it('discovers chained mentions', () => {
+		test('Hello @@goodbye ab@cde@@fg@ world', [
+			{
+				start: 7,
+				end: 16,
+				value: '@goodbye'
+			},
+			{
+				start: 18,
+				end: 23,
+				value: '@cde'
+			},
+			{
+				start: 23,
+				end: 27,
+				value: '@fg'
+			}
+		]);
 	});
 });
 
@@ -151,5 +172,27 @@ describe('mentionSyntaxRule', () => {
 		expect(inlineTokens.length).toBe(1);
 		expect(inlineTokens[0].type).toBe('text');
 		expect(inlineTokens[0].content).toBe('Hello <@> <@23462346123512351235>!');
+	});
+});
+
+describe('mentions integration test', () => {
+	it('handles the full pipeline', async () => {
+		const jamesPid = 12345;
+		const input = 'Hello @james, how are you?';
+		const expected = `Hello <@${jamesPid}>, how are you?`;
+
+		async function mockPnidLookup(pnid: string): Promise<{ pid: number } | null> {
+			if (pnid === 'james') {
+				return { pid: jamesPid };
+			}
+			return null;
+		}
+
+		const { env } = parseJuxtMarkdownInternal(input);
+		const discoveries = extractMentionDiscoveries(env);
+
+		const replacements = await handleMentionDiscoveries(discoveries, mockPnidLookup);
+		const output = applyReplacements(input, replacements);
+		expect(output).toStrictEqual(expected);
 	});
 });
