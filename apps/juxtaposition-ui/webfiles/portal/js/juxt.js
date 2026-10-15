@@ -1,13 +1,13 @@
-import './polyfills';
+import '@/js/polyfills';
 import Pjax from 'pjax';
-import { GET, POST } from './xhr';
-import { empathyPostById } from './api';
-import { initPostPageView, initSpoilers } from './post';
-import { initNavTabs } from './components/ui/PortalNavTabs';
-import { initSearchForm } from './components/ui/PortalSearchForm';
-import { initNavBar } from './components/PortalNavBar';
-import { back, exit } from './nav';
-import { initBoss } from './boss';
+import { GET, POST } from '@/js/xhr';
+import { empathyPostById } from '@/js/api';
+import { initPostPageView, initSpoilers } from '@/js/post';
+import { initNavTabs } from '@/js/components/ui/PortalNavTabs';
+import { initSearchForm } from '@/js/components/ui/PortalSearchForm';
+import { initNavBar } from '@/js/components/PortalNavBar';
+import { back, exit } from '@/js/nav';
+import { initBoss } from '@/js/boss';
 
 export var pjax;
 setInterval(checkForUpdates, 30000);

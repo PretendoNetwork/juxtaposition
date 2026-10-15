@@ -1,5 +1,5 @@
-import { GET } from '../../xhr';
-import { initMorePosts, initPosts, pjax } from '../../juxt';
+import { GET } from '@/js/xhr';
+import { initMorePosts, initPosts, pjax } from '@/js/juxt';
 
 function navTabsClick(this: HTMLElement, ev: Event): void {
 	/* Note: because we use ev.target here, the nav-tab can not have any HTML elements inside it.
