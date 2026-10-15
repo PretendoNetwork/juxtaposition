@@ -37,7 +37,7 @@ export function mentionDiscoveryRule(state: StateInline, _silent: boolean): bool
 	env.mentionDiscoveries ??= [];
 	env.mentionDiscoveries.push({
 		start: pos,
-		end: pos + mentionString.length + 1,
+		end: pos + mentionString.length,
 		value: mentionString
 	});
 
