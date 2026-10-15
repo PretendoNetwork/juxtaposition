@@ -2,7 +2,8 @@ import { parseJuxtMarkdownInternal } from '@/md/parser';
 import { extractMentionDiscoveries, handleMentionDiscoveries } from '@/md/plugins/mention';
 
 export type JuxtMarkdownTransformOptions = {
-	lookupPnid?: (pnid: string) => Promise<{ pid: number } | null>;
+	/** This has to return the same amount of array items as input */
+	lookupPnids?: (pnids: string[]) => Promise<Array<{ pid: number } | null>>;
 };
 
 export type TransformReplacement = {
@@ -15,9 +16,9 @@ export async function retrieveReplacements(input: string, ops: JuxtMarkdownTrans
 	const replacements: TransformReplacement[] = [];
 	const { env } = parseJuxtMarkdownInternal(input);
 
-	if (ops.lookupPnid) {
+	if (ops.lookupPnids) {
 		const discoveries = extractMentionDiscoveries(env);
-		const mentionReplacements = await handleMentionDiscoveries(discoveries, ops.lookupPnid);
+		const mentionReplacements = await handleMentionDiscoveries(discoveries, ops.lookupPnids);
 		replacements.push(...mentionReplacements);
 	}
 

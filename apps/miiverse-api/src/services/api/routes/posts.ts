@@ -365,16 +365,23 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		}
 
 		const transformed = await transformJuxtMarkdown(cleanedBody, {
-			async lookupPnid(pnid) {
-				const user = await getDb().user.findFirst({
+			async lookupPnids(pnids) {
+				const normalisedPnids = pnids.map(v => v.toLowerCase());
+				const users = await getDb().user.findMany({
 					where: {
-						pnidNormalized: pnid.toLowerCase()
+						pnidNormalized: {
+							in: normalisedPnids
+						}
 					},
 					select: {
+						pnidNormalized: true,
 						pid: true
 					}
 				});
-				return user ? { pid: user.pid } : null;
+				return normalisedPnids.map((pnid) => {
+					const user = users.find(v => v.pnidNormalized === pnid);
+					return user ? { pid: user.pid } : null;
+				});
 			}
 		});
 		const ast = parseJuxtMarkdown(transformed);

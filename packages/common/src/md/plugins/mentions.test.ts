@@ -76,9 +76,11 @@ describe('handleMentionDiscoveries', () => {
 		hello: 12353,
 		world: 12361236
 	};
-	async function pnidLookup(pnid: string): Promise<{ pid: number } | null> {
-		const val = testPnids[pnid];
-		return val ? { pid: val } : null;
+	async function pnidLookup(pnids: string[]): Promise<Array<{ pid: number } | null>> {
+		return pnids.map((pnid) => {
+			const val = testPnids[pnid];
+			return val ? { pid: val } : null;
+		});
 	}
 
 	it('handles empty input', async () => {
@@ -106,6 +108,7 @@ describe('handleMentionDiscoveries', () => {
 	});
 
 	it('handles multiple pnids', async () => {
+		const mock = vi.fn(pnidLookup);
 		expect(await handleMentionDiscoveries([{
 			start: 42,
 			end: 42,
@@ -118,7 +121,7 @@ describe('handleMentionDiscoveries', () => {
 			start: 3,
 			end: 3,
 			value: '@world'
-		}], pnidLookup)).toStrictEqual<TransformReplacement[]>([{
+		}], mock)).toStrictEqual<TransformReplacement[]>([{
 			start: 42,
 			end: 42,
 			value: '<@12353>'
@@ -127,6 +130,7 @@ describe('handleMentionDiscoveries', () => {
 			end: 3,
 			value: '<@12361236>'
 		}]);
+		expect(mock).toHaveBeenCalledExactlyOnceWith(['hello', 'fake', 'world']);
 	});
 });
 
@@ -181,11 +185,13 @@ describe('mentions integration test', () => {
 		const input = 'Hello @james, how are you?';
 		const expected = `Hello <@${jamesPid}>, how are you?`;
 
-		async function mockPnidLookup(pnid: string): Promise<{ pid: number } | null> {
-			if (pnid === 'james') {
-				return { pid: jamesPid };
-			}
-			return null;
+		async function mockPnidLookup(pnids: string[]): Promise<Array<{ pid: number } | null>> {
+			return pnids.map((pnid) => {
+				if (pnid === 'james') {
+					return { pid: jamesPid };
+				}
+				return null;
+			});
 		}
 
 		const { env } = parseJuxtMarkdownInternal(input);
