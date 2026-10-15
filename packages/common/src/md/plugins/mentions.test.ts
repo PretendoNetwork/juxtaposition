@@ -19,17 +19,17 @@ describe('mention discovery', () => {
 	it('discovers mentions', () => {
 		test('Hello @jake_is_cool world!', [{
 			start: 6,
-			end: 20,
+			end: 19,
 			value: '@jake_is_cool'
 		}]);
 		test('Hello @WITH-dashes world!', [{
 			start: 6,
-			end: 19,
+			end: 18,
 			value: '@WITH-dashes'
 		}]);
 		test('Hello @cool2001 world!', [{
 			start: 6,
-			end: 16,
+			end: 15,
 			value: '@cool2001'
 		}]);
 	});
@@ -37,7 +37,7 @@ describe('mention discovery', () => {
 	it('discovers short mentions', () => {
 		test('Hello @a world!', [{
 			start: 6,
-			end: 9,
+			end: 8,
 			value: '@a'
 		}]);
 	});
@@ -45,7 +45,7 @@ describe('mention discovery', () => {
 	it('discovers long mentions', () => {
 		test('Hello @jake_is_cool_and_i_wish_to_meet_him_sometime_in_this world!', [{
 			start: 6,
-			end: 60,
+			end: 59,
 			value: '@jake_is_cool_and_i_wish_to_meet_him_sometime_in_this'
 		}]);
 	});
@@ -54,17 +54,17 @@ describe('mention discovery', () => {
 		test('Hello @@goodbye ab@cde@@fg@ world', [
 			{
 				start: 7,
-				end: 16,
+				end: 15,
 				value: '@goodbye'
 			},
 			{
 				start: 18,
-				end: 23,
+				end: 22,
 				value: '@cde'
 			},
 			{
 				start: 23,
-				end: 27,
+				end: 26,
 				value: '@fg'
 			}
 		]);
