@@ -6,7 +6,6 @@ import communitiesHandlers from '@/services/api/routes/communities';
 import peopleHandlers from '@/services/api/routes/people';
 import topicsHandlers from '@/services/api/routes/topics';
 import usersHandlers from '@/services/api/routes/users';
-import statusHandlers from '@/services/api/routes/status';
 import { restrictHostnames } from '@/middleware/hostLimit';
 import { config } from '@/config';
 
@@ -35,6 +34,5 @@ api.use('/v1/communities/', communitiesHandlers);
 api.use('/v1/people/', peopleHandlers);
 api.use('/v1/topics/', topicsHandlers);
 api.use('/v1/users/', usersHandlers);
-api.use('/v1/status/', statusHandlers);
 
 export default router;

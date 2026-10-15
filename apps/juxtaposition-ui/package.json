@@ -50,6 +50,7 @@
   "devDependencies": {
     "@pretendonetwork/cave-types": "^1.0.2",
     "@pretendonetwork/eslint-config": "^0.1.4",
+    "@pretendonetwork/wiiu-boss-types": "^1.0.0",
     "@pretendonetwork/wiiu-browser-types": "^1.0.0",
     "@pretendonetwork/wiiu-dialog-types": "^1.0.0",
     "@pretendonetwork/wiiu-error-viewer-types": "^1.0.0",
