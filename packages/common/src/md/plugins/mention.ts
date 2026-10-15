@@ -75,18 +75,27 @@ export function mentionSyntaxRule(state: StateInline, silent: boolean): boolean 
 	return true;
 }
 
-export async function handleMentionDiscoveries(discoveries: MentionDiscovery[], pnidSearcher: (pnid: string) => Promise<{ pid: number } | null>): Promise<TransformReplacement[]> {
+export async function handleMentionDiscoveries(discoveries: MentionDiscovery[], pnidSearcher: (pnids: string[]) => Promise<Array<{ pid: number } | null>>): Promise<TransformReplacement[]> {
 	const replacements: TransformReplacement[] = [];
 
+	const parsedDiscoveries: Array<{ discovery: MentionDiscovery; pnid: string }> = [];
 	for (const discovery of discoveries) {
 		const match = discovery.value.match(MENTION_REGEX);
 		if (!match) {
 			continue;
 		}
+		parsedDiscoveries.push({
+			discovery,
+			pnid: match[1]
+		});
+	}
 
-		const pnid = await pnidSearcher(match[1]);
-		if (!pnid) {
-			continue; // Not a valid PNID, don't handle
+	const pnids = parsedDiscoveries.length > 0 ? await pnidSearcher(parsedDiscoveries.map(v => v.pnid)) : [];
+	for (let i = 0; i < parsedDiscoveries.length; i++) {
+		const { discovery } = parsedDiscoveries[i];
+		const pnid = pnids[i];
+		if (!pnid || !discovery) {
+			continue;
 		}
 
 		replacements.push({
