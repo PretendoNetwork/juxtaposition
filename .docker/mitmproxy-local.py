@@ -51,7 +51,7 @@ def request(flow: http.HTTPFlow):
         flow.request.host_header = old
     elif flow.request.pretty_host in s3_domains:
         old = flow.request.host
-        flow.request.host = "minio"
+        flow.request.host = "host.docker.internal"
         flow.request.scheme = "http"
-        flow.request.port = 9000
-        #flow.request.host_header = old
+        flow.request.port = 3902
+        flow.request.host_header = "miiverse.localhost:3902"
