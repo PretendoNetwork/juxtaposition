@@ -1,0 +1,20 @@
+{
+    "type": "module",
+    "scripts": {
+        "start": "node ./script.ts"
+    },
+    "dependencies": {
+        "@pretendonetwork/grpc": "^2.6.2",
+        "dotenv": "^17.4.2",
+        "mongodb": "^7.4.0",
+        "nice-grpc": "^2.1.17",
+        "pg": "^8.22.0",
+        "pg-cursor": "^2.22.0"
+    },
+    "allowScripts": {
+        "protobufjs@7.6.6": true
+    },
+    "devDependencies": {
+        "@types/pg-cursor": "^2.7.2"
+    }
+}

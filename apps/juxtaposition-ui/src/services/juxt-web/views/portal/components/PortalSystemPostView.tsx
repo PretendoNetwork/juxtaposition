@@ -40,7 +40,9 @@ export function PortalSystemPostView(props: SystemPostViewProps): ReactNode {
 						: null}
 
 					<div className="post-content">
-						<p className="post-content-text">{props.children}</p>
+						<div className="post-content-text-container post-content-text-container-plain">
+							<p className="post-content-text">{props.children}</p>
+						</div>
 					</div>
 
 				</div>
