@@ -23,8 +23,8 @@
         "global_feed_short": "Global",
         "global_feed": "Actividad global",
         "my_feed": "Mi actividad",
-        "load_more": "Cargar mas.",
-        "system_message": "Mensaje del sistema.",
+        "load_more": "Cargar Más",
+        "system_message": "Mensaje del Sistema",
         "mascot_name": "Ancho de banda."
     },
     "all_communities": {
@@ -111,7 +111,7 @@
             "message/three": "<empathy_one />, <empathy_two />, y {{count_other}} persona/s les a molado tu publicacion!",
             "message/multiple": "<empathy_one /><empathy_two /> y {{count_other}} les a molado la publicación."
         },
-        "new_reply": "<reply_author /> comento tu post!"
+        "new_reply": "<reply_author /> dejó un comentario en tu publicación!"
     },
     "new_post": {
         "post_to": "Mensaje para \"{{user}}\"",
