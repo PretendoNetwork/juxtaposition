@@ -23,8 +23,8 @@
         "global_feed_short": "Global",
         "global_feed": "Actividad global",
         "my_feed": "Mi actividad",
-        "load_more": "Cargar mas.",
-        "system_message": "Mensaje del sistema.",
+        "load_more": "Cargar Más",
+        "system_message": "Mensaje del Sistema",
         "mascot_name": "Ancho de banda."
     },
     "all_communities": {
@@ -111,7 +111,7 @@
             "message/three": "<empathy_one />, <empathy_two />, y {{count_other}} persona/s les a molado tu publicacion!",
             "message/multiple": "<empathy_one /><empathy_two /> y {{count_other}} les a molado la publicación."
         },
-        "new_reply": "<reply_author /> comento tu post!"
+        "new_reply": "<reply_author /> dejó un comentario en tu publicación!"
     },
     "new_post": {
         "post_to": "Mensaje para \"{{user}}\"",
@@ -130,7 +130,7 @@
         "welcome_text": "Juxt es una comunidad de videojuegos para conectar a personas de todo el mundo usando personajes Mii. Juxt se puede usar para compartir tus experiencias de juego y conocer personas de todo el mundo.",
         "beta": "Información de la beta",
         "beta_text": {
-            "first": "¡Estás en la beta pública de Pretendo Network! Aunque han cambiado muchas cosas desde la primera beta pública, Juxt sigue siendo un trabajo en marcha y pueden haber grandes cambios en cualquier momento.",
+            "first": "¡Te damos la bienvenida a la beta pública de Pretendo Network! Aunque han cambiado muchas cosas desde la primera beta pública, Juxt sigue siendo un trabajo en marcha y pueden haber grandes cambios en cualquier momento.",
             "second": "Esto puede incluir que todos los datos que almacenamos sean completamente eliminados durante o al acabar el periodo de beta.",
             "third": "El sitio web, su software y todo el contenido que se encuentra en él se proporcionan 'tal cual' y 'según esté disponible'. Pretendo Network no ofrece ninguna garantía, ya sea expresa o implícita, en cuanto a la integridad o usabilidad del sitio web, su software o cualquiera de sus contenidos."
         },
