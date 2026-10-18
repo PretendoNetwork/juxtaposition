@@ -1,5 +1,5 @@
 import express from 'express';
-import { getValueFromQueryString, sendOliveXmlResult } from '@/util';
+import { sendOliveXmlResult } from '@/util';
 import { ApiErrorCode, badRequest } from '@/errors';
 import { getDb, getUser } from '@/database';
 
@@ -15,7 +15,7 @@ type NotificationResult = {
  * We provide a made-up response structure similar, third-parties may enjoy the data.
  */
 router.get('/:pid/notifications', async function (request: express.Request, response: express.Response): Promise<void> {
-	const pid = Number(getValueFromQueryString(request.query, 'pid')[0]);
+	const pid = Number(request.params.pid);
 	const user = await getUser(request.pid);
 
 	if (!user) {
