@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: ["packages/common"]
+        project: ["packages/common"]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -24,4 +24,4 @@ jobs:
 
       - name: Test
         run: npm run test
-        working-directory: ./${{ matrix.repo }}
+        working-directory: ./${{ matrix.project }}
