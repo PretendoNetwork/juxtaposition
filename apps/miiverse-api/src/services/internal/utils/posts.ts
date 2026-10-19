@@ -72,7 +72,7 @@ function validateAndProcessPostBody(input: string): { text: string; markdown: st
 	}
 
 	if (cleanedBody.length > 280) {
-		throw new Error('Post body is top long');
+		throw new Error('Post body is too long');
 	}
 
 	const transformed = transformJuxtMarkdown(cleanedBody, {});
