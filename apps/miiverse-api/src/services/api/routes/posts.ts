@@ -363,13 +363,15 @@ async function newPost(request: express.Request, response: express.Response): Pr
 			return badRequest(response, ApiErrorCode.BAD_PARAMS);
 		}
 
-		const transformed = transformJuxtMarkdown(cleanedBody, {});
-		const ast = parseJuxtMarkdown(transformed);
-		const plainText = renderToPlainText(ast);
-		parsedBody = {
-			markdown: transformed,
-			text: plainText
-		};
+		if (cleanedBody.length > 0) {
+			const transformed = transformJuxtMarkdown(cleanedBody, {});
+			const ast = parseJuxtMarkdown(transformed);
+			const plainText = renderToPlainText(ast);
+			parsedBody = {
+				markdown: transformed,
+				text: plainText
+			};
+		}
 	}
 
 	if (!parsedBody && !painting && !screenshot) {

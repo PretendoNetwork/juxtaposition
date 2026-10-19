@@ -65,8 +65,12 @@ export function isValidPost(post: PostCreateBody): boolean {
 	return true;
 }
 
-function validateAndProcessPostBody(input: string): { text: string; markdown: string } {
+function validateAndProcessPostBody(input: string): { text: string; markdown: string } | null {
 	const cleanedBody = input.trim().replaceAll('\r\n', '\n');
+	if (cleanedBody.length === 0) {
+		return null;
+	}
+
 	if (getInvalidPostRegex().test(cleanedBody)) {
 		throw new Error('Invalid characters found in post body');
 	}
