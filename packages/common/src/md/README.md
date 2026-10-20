@@ -7,10 +7,10 @@ Juxtaposition markdown is a subset of normal markdown, it supports the following
 - Inline code: `` `code` `` turns into <kbd>`code`</kbd>
 - Newlines: Using a newline turns it into a proper new line. This is unusual in markdown, but is more intuitive for users.
 - Paragraphs: Using two newlines in a row turns it into a new paragraph
+- Escaping: you can place a `\` in front of any special markdown character to disable the markdown parsing, like so: `\*not italic\*` -> <kbd>\*not italic\*</kdb>
 
 There's also custom syntax:
 - Mentions: `@pnid` Turns into `<@1262353>` (the PID), which gets rendered as a real mention.
-  - **Note:** This doesn't exist yet, still working on it.
 
 ## Processing stack
 
