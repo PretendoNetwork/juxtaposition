@@ -2,6 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import xmlbuilder from 'xmlbuilder';
 import * as z from 'zod';
+import { extractMentionPids, parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
 import {
 	getValueFromQueryString,
 	getInvalidPostRegex,
@@ -14,7 +15,8 @@ import {
 	getCommunityByID,
 	getCommunityByTitleID,
 	getDuplicatePosts,
-	getUser
+	getUser,
+	getDb
 } from '@/database';
 import { Post } from '@/models/post';
 import { Community } from '@/models/community';
@@ -265,7 +267,7 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	}
 
 	const communityID = bodyCheck.data.community_id || '';
-	const messageBody = bodyCheck.data.body?.trim();
+	const messageBody = bodyCheck.data.body;
 	const painting = bodyCheck.data.painting?.toString('base64') ?? '';
 	const screenshot = bodyCheck.data.screenshot?.toString('base64') ?? '';
 	const appData = bodyCheck.data.app_data?.toString('base64') ?? '';
@@ -349,17 +351,58 @@ async function newPost(request: express.Request, response: express.Response): Pr
 			break;
 	}
 
-	if (messageBody && getInvalidPostRegex().test(messageBody)) {
-		request.log.warn('Message body failed regex');
-		return badRequest(response, ApiErrorCode.BAD_PARAMS);
+	let parsedBody: { text: string; markdown: string } | null = null;
+	if (messageBody) {
+		const cleanedBody = messageBody.trim().replaceAll('\r\n', '\n');
+		if (getInvalidPostRegex().test(cleanedBody)) {
+			request.log.warn('Message body failed regex');
+			return badRequest(response, ApiErrorCode.BAD_PARAMS);
+		}
+
+		if (cleanedBody.length > 280) {
+			request.log.warn('Message body too long');
+			return badRequest(response, ApiErrorCode.BAD_PARAMS);
+		}
+
+		if (cleanedBody.length > 0) {
+			const transformed = await transformJuxtMarkdown(cleanedBody, {
+				async lookupPnids(pnids) {
+					const normalisedPnids = pnids.map(v => v.toLowerCase());
+					const users = await getDb().user.findMany({
+						where: {
+							pnidNormalized: {
+								in: normalisedPnids
+							}
+						},
+						select: {
+							pnidNormalized: true,
+							pid: true
+						}
+					});
+					return normalisedPnids.map((pnid) => {
+						const user = users.find(v => v.pnidNormalized === pnid);
+						return user ? { pid: user.pid } : null;
+					});
+				}
+			});
+			const ast = parseJuxtMarkdown(transformed);
+			const mentionPids = extractMentionPids(ast);
+			const mentionedUsers = await getDb().user.findMany({
+				where: {
+					pid: {
+						in: mentionPids
+					}
+				}
+			});
+			const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.displayName ?? v.pid.toString() })));
+			parsedBody = {
+				markdown: transformed,
+				text: plainText
+			};
+		}
 	}
 
-	if (messageBody && messageBody.length > 280) {
-		request.log.warn('Message body too long');
-		return badRequest(response, ApiErrorCode.BAD_PARAMS);
-	}
-
-	if (!messageBody && !painting && !screenshot) {
+	if (!parsedBody && !painting && !screenshot) {
 		request.log.warn('Message content is empty');
 		return badRequest(response, ApiErrorCode.BAD_PARAMS);
 	}
@@ -373,7 +416,8 @@ async function newPost(request: express.Request, response: express.Response): Pr
 		title_id: request.paramPack.title_id,
 		community_id: community.olive_community_id,
 		screen_name: dbUser.displayName,
-		body: messageBody ? messageBody : '',
+		body: parsedBody ? parsedBody.text : undefined,
+		body_markdown: parsedBody ? parsedBody.markdown : undefined,
 		app_data: appData,
 		painting: '',
 		painting_img: '',
