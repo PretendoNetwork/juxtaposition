@@ -15,6 +15,7 @@ describe('parseJuxtMarkdown', () => {
 	it('parses strikethrough', () => runTest('Hello ~~world~~'));
 	it('parses newlines', () => runTest('Hello world!\nand moon!'));
 	it('parses paragraphs', () => runTest('Hello world!\n\nand moon!'));
+	it('parses escaped characters', () => runTest('Hello\\* \\\\ \\\nWorl\\d!'));
 
 	it('parses broken markdown', () => {
 		runTest('Hello *world!');

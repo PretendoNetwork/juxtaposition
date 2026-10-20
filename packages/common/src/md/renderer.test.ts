@@ -39,6 +39,11 @@ describe('renderToPlainText', () => {
 		runTest('Hello\nworld!', 'Hello\nworld!');
 	});
 
+	it('handles escaped text', () => {
+		runTest('Hello\n\\*world\\*!', 'Hello\n*world*!');
+		runTest('Hello\\\n*world\\\\*!', 'Hello\nworld\\!');
+	});
+
 	it('handles paragraphs', () => {
 		runTest('Hello\n\nworld!', 'Hello\n\nworld!');
 	});

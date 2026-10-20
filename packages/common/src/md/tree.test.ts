@@ -173,6 +173,18 @@ describe('tokensToTree / inline', () => {
 		}]);
 	});
 
+	it('handles special text', () => {
+		expect(tokensToTree(paragraph([
+			token('text_special', 'escaped text')
+		]))).toStrictEqual<JuxtMdNode[]>([{
+			type: 'paragraph',
+			children: [{
+				type: 'text',
+				value: 'escaped text'
+			}]
+		}]);
+	});
+
 	it('handles nested container nodes', () => {
 		expect(tokensToTree(paragraph([
 			token('strong_open'),

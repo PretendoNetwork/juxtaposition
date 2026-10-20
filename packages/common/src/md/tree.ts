@@ -22,7 +22,7 @@ function inlineTokensToTree(inlineTokens: Token[]): JuxtMdInlineNode[] {
 	const stack: JuxtMdInlineNode[][] = [root];
 
 	for (const token of inlineTokens) {
-		if (token.type === 'text') {
+		if (token.type === 'text' || token.type === 'text_special') {
 			stack[0]?.push({
 				type: 'text',
 				value: token.content

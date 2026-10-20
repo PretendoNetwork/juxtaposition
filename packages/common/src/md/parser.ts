@@ -5,6 +5,7 @@ import type { Token } from 'markdown-it';
 const markdown = new MarkdownItCtor('zero')
 	.enable([
 		'text',
+		'escape',
 		'emphasis',
 		'strikethrough',
 		'backticks',
