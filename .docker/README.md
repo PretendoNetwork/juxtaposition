@@ -18,7 +18,7 @@ Now, create a PNID on your new account server and configure Cemu. Alternatively,
 Assuming you're in a usual Linux environment and shell:
 ```shell
 # REGISTER
-https_proxy=http://localhost:8888 curl -k -v -X POST -H "Content-Type: application/json" --data '{"email":"ash@heyquark.com", "username":"PN_quarky_dev", "mii_name":"Luca", "password":"letm3in", "password_confirm":"letm3in"}'  https://api.pretendo.cc/v1/register/
+https_proxy=http://localhost:8888 curl -k -v -X POST -H "Content-Type: application/json" --data '{"email":"ash@heyquark.com", "username":"PN_quarky_dev", "mii_name":"Luca", "password":"letm3in", "password_confirm":"letm3in", "birthday": "1990-01-01", "ip": "no"}'  https://api.pretendo.cc/v1/register/
 
 # LOGIN (get tokens for user info)
 https_proxy=http://localhost:8888 curl -k -v -X POST -H 'Content-Type: application/json' --data '{"grant_type": "password", "username":"PN_quarky_dev", "password":"letm3in"}' https://api.pretendo.cc/v1/login
