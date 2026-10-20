@@ -58,7 +58,8 @@ export function createInternalApiClient(tokens: UserTokens): InternalApi {
 	});
 
 	client.interceptors.error.use((err, response, _req, options) => {
-		if (!options.throwOnError) {
+		const throwOnError = options.throwOnError ?? true; // Default is set at createClient but is not resolved
+		if (!throwOnError) {
 			return err;
 		}
 
