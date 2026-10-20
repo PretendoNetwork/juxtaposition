@@ -44,7 +44,12 @@ function renderInlineNodes(nodes: JuxtMdInlineNode[]): ReactNode {
 
 function renderNode(node: JuxtMdNode): ReactNode {
 	if (node.type === 'paragraph') {
-		return <p className="prose-par">{renderInlineNodes(node.children)}</p>;
+		return (
+			<p className="prose-par">
+				{renderInlineNodes(node.children)}
+				<br />{/* Browsers don't render a single BR at the end of a paragraph, adding in one by default makes other BR look correct */}
+			</p>
+		);
 	}
 }
 
