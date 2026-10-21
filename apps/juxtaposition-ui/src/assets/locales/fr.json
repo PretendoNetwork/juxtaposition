@@ -101,15 +101,15 @@
         "limited_from_posting": {
             "footer": "Cliquez sur ce message pour voir le Code de Conduite de Juxtaposition. Si vous avez une question, merci de contacter les modérateurs sur le Forum Pretendo Network ({{banAppealUrl}}).",
             "message": "Vous avez été limité de publier.",
-            "message_with_reason": "Vous avez été limité de publier. Raison: \"{{reason}}\".",
+            "message_with_reason": "Vous avez été limité de publier. Raison : \"{{reason}}\".",
             "temporary": "Vous avez êtez limité de publier jusqu'à {{until}}.",
-            "temporary_with_reason": "Vous avez êtez limité de publier jusqu’à {{until}}. Raison: \"{{reason}}\"."
+            "temporary_with_reason": "Vous avez êtez limité de publier jusqu’à {{until}}. Raison : \"{{reason}}\"."
         },
         "new_empathy": {
             "message/one": "<empathy_one /> a donné un Ouais! à votre publication",
-            "message/two": "<empathy_one />, <empathy_two /> a donné un Ouais à votre poste!",
-            "message/three": "<empathy_one />, <empathy_two />, et {{count_other}} ont donné un Ouais à votre poste!",
-            "message/multiple": "<empathy_one />, <empathy_two />, et{{count_other}} autres ont donné un Ouais à votre poste!"
+            "message/two": "<empathy_one />, <empathy_two /> a donné un Ouais! à votre post",
+            "message/three": "<empathy_one />, <empathy_two />, et {{count_other}} autre ont donné un Ouais! à votre post",
+            "message/multiple": "<empathy_one />, <empathy_two />, et{{count_other}} autres ont donné un Ouais! à votre post"
         },
         "new_reply": "<reply_author /> a commenté votre publication !"
     },
