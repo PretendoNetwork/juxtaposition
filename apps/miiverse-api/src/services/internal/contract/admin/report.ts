@@ -35,8 +35,6 @@ export function mapReport(report: HydratedReportDocument, users: User[], post: H
 	const reporter = users.find(v => v.pid === report.reported_by);
 	const resolver = report.resolved_by ? users.find(v => v.pid === report.resolved_by) : null;
 
-	const remover = post?.removed_by ? users.find(v => v.pid === post.removed_by) ?? null : null;
-
 	return {
 		id: report.id,
 		createdAt: report.created_at,
@@ -54,6 +52,6 @@ export function mapReport(report: HydratedReportDocument, users: User[], post: H
 			note: report.note ?? null,
 			reason: report.resolved ? 'reportResolved' : 'similarReportResolved'
 		},
-		post: post ? mapPostWithModeration(post, community, remover) : null
+		post: post ? mapPostWithModeration(post, community, users) : null
 	};
 }

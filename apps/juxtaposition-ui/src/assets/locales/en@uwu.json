@@ -42,7 +42,8 @@
         "followers": "Fowwowers",
         "following": "Fowwowing",
         "follow_user": "Fowwow",
-        "following_user": "Fowwowing"
+        "following_user": "Fowwowing",
+        "banned": "Bwanned User"
     },
     "login": {
         "title": "gimmeh ur passwrd :3c",
@@ -60,5 +61,8 @@
         "heading": "oh noes!! {{code}}: {{message}}",
         "message": "aa omg &gt;&lt; i did a oopsie woopsie!! i can't find da page,,,<newline/>is da link ok? pls giv new link? :3c",
         "no_access": "ur not aloud >:( ({{code}})"
+    },
+    "user_settings": {
+        "profile_settings": "Pwofile Settings"
     }
 }

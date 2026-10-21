@@ -22,7 +22,10 @@
         "people_feed": "Actividad de usuarios",
         "global_feed_short": "Global",
         "global_feed": "Actividad global",
-        "my_feed": "Mi actividad"
+        "my_feed": "Mi actividad",
+        "load_more": "Cargar mas.",
+        "system_message": "Mensaje del sistema.",
+        "mascot_name": "Ancho de banda."
     },
     "all_communities": {
         "text": "Todas las comunidades",
@@ -40,7 +43,8 @@
         "related_to": "Otras comunidades de {{community}}",
         "closed": "Esta comunidad está cerrada a nuevas publicaciones.",
         "tags_not_applicable": "N/A",
-        "related_short": "Relacionado"
+        "related_short": "Otras",
+        "description": "Acerca de la comunidad"
     },
     "user_page": {
         "country": "País",
@@ -71,7 +75,10 @@
         "save_action": "Guardar ajustes",
         "gdpr_download": "Descargar información de usuario",
         "gdpr_download_action": "Descargar",
-        "show_profile": "Mostrar perfil a invitados"
+        "show_profile": "Mostrar perfil a invitados",
+        "notify_empathy": "Mostrar notificaciones de Yeah!",
+        "notify_follows": "Mostrar Notificaciones de seguidos",
+        "notify_reply": "Mostrar notificaciones de Respuesta/comentarios"
     },
     "activity_feed": {
         "empty": "No hay nada que ver. ¡Prueba a seguir a alguien!"
@@ -97,7 +104,14 @@
             "temporary": "Se te ha limitado la posibilidad de publicar hasta {{until}}.",
             "temporary_with_reason": "Se te ha limitado la posibilidad de publicar hasta {{until}}. Motivo: \"{{reason}}\".",
             "footer": "Pulsa en este mensaje para ver el Código de Conducta de Juxtaposition. Si tienes alguna pregunta, por favor, contacta a los moderadores en el foro de Pretendo Network {{banAppealUrl}}."
-        }
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> le a molado tu publicación!",
+            "message/two": "<empathy_one />, <empathy_two /> les a molado tu publicación.",
+            "message/three": "<empathy_one />, <empathy_two />, y {{count_other}} persona/s les a molado tu publicacion!",
+            "message/multiple": "<empathy_one /><empathy_two /> y {{count_other}} les a molado la publicación."
+        },
+        "new_reply": "<reply_author /> comento tu post!"
     },
     "new_post": {
         "post_to": "Mensaje para \"{{user}}\"",
@@ -109,7 +123,7 @@
         "content_placeholder": "Comparte tus pensamientos en una publicación a una comunidad o a tus seguidores.",
         "painting_submit": "Aceptar",
         "no_screenshot": "No hay capturas",
-        "automod_error": "Tu publicación contiene texto que no se permite en Juxtaposition. Para más información, por favor, visita https://preten.do/juxt-rules"
+        "automod_error": "Tu mensaje contiene texto que no se permite en Juxtaposition. Para más información, por favor, visita https://preten.do/juxt-rules"
     },
     "setup": {
         "welcome": "¡Estás en Juxtaposition!",
@@ -162,10 +176,10 @@
         "message_web": "Mira el <status>estado actual del servidor</status>.<newline/>O, <home>vuelve a la página principal</home>"
     },
     "post": {
-        "yeahs_count/one": "Le mola a <count/> persona.",
+        "yeahs_count/one": "<count/> persona/s les a molado tu publicacion",
         "yeahs_count/multiple": "A <count/> personas les mola.",
         "reply_post": "Comentar",
-        "report_post": "Denunciar",
+        "report_post": "Denunciar Post",
         "title": "Publicación de {{username}}",
         "show_spoiler": "Ver revelación",
         "removed": "La publicación ha sido eliminada.",
@@ -174,7 +188,10 @@
         "copy_link": "Copiar enlace",
         "sort_newest_first": "Ordenar por más reciente",
         "sort_oldest_first": "Ordenar por más antiguo",
-        "replies_heading": "Respuestas"
+        "replies_heading": "Respuestas",
+        "removedBy": "Removido por.",
+        "removedBySelf": "Autor",
+        "spoiler_label": "revelaciones"
     },
     "login": {
         "username": "Nombre de usuario",
@@ -204,15 +221,15 @@
         "submit": "Enviar denuncia",
         "title": "Denunciar publicación",
         "reason_others": "Otros",
-        "reason_not_nice": "Grosero/Odioso (Regla 1)",
-        "reason_inappropriate": "Inapropiado/NSFW (Regla 2)",
+        "reason_not_nice": "Ofensivo/Odio (Regla 1)",
+        "reason_inappropriate": "Inapropiado/Contenido sensible (Regla 2)",
         "reason_spam": "Spam/Promoción propia (Regla 3)",
         "reason_offtopic": "Fuera de tema (Regla 4)",
         "reason_piracy_new": "Piratería (Regla 5)",
-        "reason_exploits": "Abuso de API/Aprovecharse de bugs (Regla 8)",
-        "reason_drama": "Drama (Regla 9)",
-        "reason_cheating": "Hacer trampas online (Regla 10)",
-        "reason_spoiler_new": "Spoiler (Regla 11)",
+        "reason_exploits": "Abuso de API/Aprovecharse de errores (Regla 8)",
+        "reason_drama": "Conflictos (Regla 9)",
+        "reason_cheating": "Hacer trampas en línea (Regla 10)",
+        "reason_spoiler_new": "Revelación (Regla 11)",
         "reason_personal_info_new": "Información personal (Regla 12)",
         "reason_politics": "Política (Regla 13)",
         "reason_misinformation": "Desinformación/Consejos malos (Regla 14)",
@@ -225,7 +242,7 @@
         "moderate_user": "Moderar usuario",
         "title": "Moderación",
         "silently_delete_post": "Eliminar en silencio",
-        "mark_as_spoiler": "Marcar como spoiler",
-        "mark_as_not_spoiler": "Eliminar spoiler"
+        "mark_as_spoiler": "Marcar como revelación",
+        "mark_as_not_spoiler": "Eliminar revelación"
     }
 }

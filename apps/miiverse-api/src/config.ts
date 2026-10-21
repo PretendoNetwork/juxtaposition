@@ -66,7 +66,7 @@ export const presets: Record<string, any> = {
 		http: {
 			trustProxy: 'loopback'
 		},
-		cdnUrl: 'http://cdn.pretendo.cc/miiverse',
+		cdnUrl: 'http://cdn.pretendo.cc',
 		mongoose: {
 			uri: 'mongodb://localhost:27017/miiverse?directConnection=true'
 		},
@@ -74,11 +74,11 @@ export const presets: Record<string, any> = {
 			url: 'postgres://postgres:postgres@localhost:5432/miiverse'
 		},
 		s3: {
-			endpoint: 'http://localhost:9000',
-			key: 'minioadmin',
-			secret: 'minioadmin',
+			endpoint: 'http://localhost:3900',
+			key: 'GK3515373e4c851ebaad366558',
+			secret: '7d37d093435a41f2aab8f13c19ba067d9776c90215f56614adad6ece597dbb34',
 			bucket: 'miiverse',
-			region: 'us-east-1'
+			region: 'garage'
 		},
 		grpc: {
 			friends: {

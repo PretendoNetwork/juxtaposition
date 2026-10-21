@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { Post } from '@/models/post';
 import { deleteOptional, filterRemovedPosts } from '@/services/internal/utils';
 import { guards } from '@/services/internal/middleware/guards';
-import { mapPost, mapPostWithModeration, postSchema } from '@/services/internal/contract/post';
+import { getRelevantPidsFromPost, mapPost, mapPostWithModeration, postSchema } from '@/services/internal/contract/post';
 import { feedPageDtoSchema, mapFeedPage, pageControlSchema } from '@/services/internal/contract/page';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { Community } from '@/models/community';
@@ -39,23 +39,21 @@ communityPostsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const userIds = posts.flatMap(v => v.removed_by).filter((v): v is number => !!v);
 		const users = await db.user.findMany({
 			where: {
 				pid: {
-					in: userIds
+					in: getRelevantPidsFromPost(posts)
 				}
 			}
 		});
 
 		const mappedPosts = posts.map((p) => {
 			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
-			const remover = p.removed_by ? users.find(v => v.pid === p.removed_by) ?? null : null;
 
 			if (auth?.moderator) {
-				return mapPostWithModeration(p, comm, remover);
+				return mapPostWithModeration(p, comm, users);
 			}
-			return mapPost(p, comm);
+			return mapPost(p, comm, users);
 		});
 		return mapFeedPage(mappedPosts);
 	}
@@ -86,23 +84,21 @@ communityPostsRouter.get({
 		const communityIds = posts.map(v => v.community_id);
 		const communities = await Community.find({ olive_community_id: { $in: communityIds } });
 
-		const userIds = posts.flatMap(v => v.removed_by).filter((v): v is number => !!v);
 		const users = await db.user.findMany({
 			where: {
 				pid: {
-					in: userIds
+					in: getRelevantPidsFromPost(posts)
 				}
 			}
 		});
 
 		const mappedPosts = posts.map((p) => {
 			const comm = communities.find(v => v.olive_community_id === p.community_id) ?? null;
-			const remover = p.removed_by ? users.find(v => v.pid === p.removed_by) ?? null : null;
 
 			if (auth?.moderator) {
-				return mapPostWithModeration(p, comm, remover);
+				return mapPostWithModeration(p, comm, users);
 			}
-			return mapPost(p, comm);
+			return mapPost(p, comm, users);
 		});
 		return mapFeedPage(mappedPosts);
 	}
@@ -119,7 +115,7 @@ communityPostsRouter.post({
 		body: postCreateSchema,
 		response: postSchema
 	},
-	async handler({ body, params, auth }) {
+	async handler({ body, params, auth, db }) {
 		const account = auth!;
 
 		const community = await Community.findOne({ olive_community_id: params.id });
@@ -146,7 +142,14 @@ communityPostsRouter.post({
 			community,
 			parentPost: null
 		});
+		const users = await db.user.findMany({
+			where: {
+				pid: {
+					in: getRelevantPidsFromPost([newPost])
+				}
+			}
+		});
 
-		return mapPost(newPost, community);
+		return mapPost(newPost, community, users);
 	}
 });

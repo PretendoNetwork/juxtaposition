@@ -5,11 +5,11 @@ on:
 
 jobs:
   lint_base:
-    name: Lint common packages
+    name: Lint projects
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: ["miiverse-api"]
+        project: ["packages/common", "apps/miiverse-api"]
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -24,7 +24,7 @@ jobs:
 
       - name: Lint
         run: npm run lint -- --max-warnings=0
-        working-directory: ./apps/${{ matrix.repo }}
+        working-directory: ./${{ matrix.project }}
   lint_juxt:
     # Juxtaposition-ui has a couple extra build steps before linting is possible
     name: Lint Juxtaposition-UI

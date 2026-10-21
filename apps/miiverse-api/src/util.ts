@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { DeleteObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { SystemType } from '@pretendonetwork/grpc/account/v2/token_info';
+import xmlbuilder from 'xmlbuilder';
 import { config } from '@/config';
 import { logger } from '@/logger';
 import { grpcAccount, grpcApi, oldGrpcFriends } from '@/grpc';
@@ -12,6 +13,7 @@ import type { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request
 import type { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/v2/get_user_data_rpc';
 import type { ParsedQs } from 'qs';
 import type { GetPNIDResponse } from '@pretendonetwork/grpc/account/v2/get_pnid_rpc';
+import type { Response } from 'express';
 import type { AutomodAction } from '@/models/automodLog';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { IPostInput } from '@/types/mongoose/post';
@@ -271,4 +273,39 @@ export async function performAutomodAction(post: IPostInput, evaluation: Automod
 
 export function genId(): string {
 	return randomUUID();
+}
+
+export type OliveXmlResult<T = {}> = {
+	result: T & {
+		has_error: 0 | 1;
+		version: number;
+	};
+};
+
+export type SuccessOliveXmlResult = {
+	request_name: string;
+};
+
+export function buildOliveXmlResult<T extends SuccessOliveXmlResult>(obj: T): OliveXmlResult<T> {
+	return {
+		result: {
+			has_error: 0,
+			version: 1,
+			...obj
+		}
+	};
+}
+
+export function sendOliveXmlResult<T extends SuccessOliveXmlResult>(response: Response, obj: T): void {
+	response.type('application/xml');
+	const builder = xmlbuilder.create(
+		buildOliveXmlResult<T>(obj),
+		{ separateArrayItems: true }
+	);
+	response.send(
+		builder.end({
+			pretty: true,
+			allowEmpty: true
+		})
+	);
 }

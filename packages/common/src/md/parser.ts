@@ -1,0 +1,30 @@
+import MarkdownItCtor from 'markdown-it';
+import { linebreakMarkdownPlugin } from '@/md/plugins/linebreak';
+import { mentionMarkdownPlugin } from '@/md/plugins/mention';
+import type { Env, Token } from 'markdown-it';
+
+const markdown = new MarkdownItCtor('zero')
+	.enable([
+		'text',
+		'escape',
+		'emphasis',
+		'strikethrough',
+		'backticks',
+		'newline'
+	])
+	.use(linebreakMarkdownPlugin)
+	.use(mentionMarkdownPlugin);
+
+export type ParseResult = {
+	tokens: Token[];
+	env: Env;
+};
+
+export function parseJuxtMarkdownInternal(input: string): ParseResult {
+	const env: Env = {};
+	const tokens = markdown.parse(input, env);
+	return {
+		tokens,
+		env
+	};
+}

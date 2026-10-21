@@ -5,6 +5,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { WebMiiIcon } from '@/services/juxt-web/views/web/components/ui/WebMiiIcon';
+import { PostContent } from '@/services/juxt-web/views/common/components/PostContent';
 import type { ReactNode } from 'react';
 import type { Post, SelfContent } from '@/api/generated';
 
@@ -39,9 +40,33 @@ export function WebPostView(props: PostViewProps): ReactNode {
 
 	let removedPostPart = null;
 	if (post.moderation?.removed) {
+		const removedBy = post.moderation.removed.removedBy;
 		removedPostPart = (
 			<div className="post-body-content removed">
-				<h3><T k="post.removed" /></h3>
+				<h3>
+					<span>
+						<T k="post.removed" />
+					</span>
+					{removedBy
+						? (
+								<span className="post-removed-by">
+									<T k="post.removedBy" />
+									{ removedBy.pid === post.author.pid
+										? (
+												<span><T k="post.removedBySelf" /></span>
+											)
+										: (
+												<>
+													<WebMiiIcon type="mii-icon" pid={removedBy.pid} />
+													<a className="post-removed-by-user" href={`/users/${removedBy.pid}`}>
+														<span>{removedBy.miiName}</span>
+													</a>
+												</>
+											)}
+								</span>
+							)
+						: null}
+				</h3>
 			</div>
 		);
 	}
@@ -91,7 +116,19 @@ export function WebPostView(props: PostViewProps): ReactNode {
 				id={`post-content-${post.id}`}
 				evt-click={`location.href='/posts/${post.id}'`}
 			>
-				{post.body ? <p>{post.body}</p> : null}
+				<PostContent
+					post={post}
+					classNames={{
+						container: 'post-content-text-container',
+						plaintextContainer: 'post-content-text-container-plain',
+						markdownContainer: 'post-content-text-container-markdown'
+					}}
+					components={{
+						mention(text, pid) {
+							return <a className="prose-mention" href={`/users/${pid}`}>@{text}</a>;
+						}
+					}}
+				/>
 				<WebPostScreenshot post={props.post}></WebPostScreenshot>
 				{post.painting ? <img id={post.id ?? undefined} className="painting" src={url.cdn(`/paintings/${post.author.pid}/${post.id}.png`)} /> : null}
 				{/* TODO add post.url back */}

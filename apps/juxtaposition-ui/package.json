@@ -16,11 +16,12 @@
     "start": "node --enable-source-maps dist/server.js"
   },
   "dependencies": {
-    "@hey-api/openapi-ts": "^0.95.0",
+    "@hey-api/openapi-ts": "^0.99.0",
     "@imagemagick/magick-wasm": "^0.0.38",
     "@neato/config": "^4.1.0",
     "@pretendonetwork/grpc": "^2.5.3",
     "@repo/grpc-client": "^0.0.0",
+    "@repo/common": "^0.0.0",
     "classnames": "^2.5.1",
     "connect-redis": "^9.0.0",
     "cookie-parser": "^1.4.7",
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@pretendonetwork/cave-types": "^1.0.2",
     "@pretendonetwork/eslint-config": "^0.1.4",
+    "@pretendonetwork/wiiu-boss-types": "^1.0.0",
     "@pretendonetwork/wiiu-browser-types": "^1.0.0",
     "@pretendonetwork/wiiu-dialog-types": "^1.0.0",
     "@pretendonetwork/wiiu-error-viewer-types": "^1.0.0",

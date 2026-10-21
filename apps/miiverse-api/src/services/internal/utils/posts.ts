@@ -1,9 +1,10 @@
 import { z } from 'zod';
+import { extractMentionPids, parseJuxtMarkdown, renderToPlainText, transformJuxtMarkdown } from '@repo/common';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { getShotModeForTitleId } from '@/services/api/routes/posts';
 import { evaluateAutomodRules, getInvalidPostRegex, performAutomodAction } from '@/util';
 import { config } from '@/config';
-import { getDuplicatePosts } from '@/database';
+import { getDb, getDuplicatePosts } from '@/database';
 import { Post } from '@/models/post';
 import { asOpenapi } from '@/services/internal/builder/openapi';
 import { AutomodRule } from '@/models/automodRules';
@@ -64,6 +65,56 @@ export function isValidPost(post: PostCreateBody): boolean {
 	return true;
 }
 
+async function validateAndProcessPostBody(input: string): Promise<{ text: string; markdown: string } | null> {
+	const cleanedBody = input.trim().replaceAll('\r\n', '\n');
+	if (cleanedBody.length === 0) {
+		return null;
+	}
+
+	if (getInvalidPostRegex().test(cleanedBody)) {
+		throw new Error('Invalid characters found in post body');
+	}
+
+	if (cleanedBody.length > 280) {
+		throw new Error('Post body is too long');
+	}
+
+	const transformed = await transformJuxtMarkdown(cleanedBody, {
+		async lookupPnids(pnids) {
+			const normalisedPnids = pnids.map(v => v.toLowerCase());
+			const users = await getDb().user.findMany({
+				where: {
+					pnidNormalized: {
+						in: normalisedPnids
+					}
+				},
+				select: {
+					pnidNormalized: true,
+					pid: true
+				}
+			});
+			return normalisedPnids.map((pnid) => {
+				const user = users.find(v => v.pnidNormalized === pnid);
+				return user ? { pid: user.pid } : null;
+			});
+		}
+	});
+	const ast = parseJuxtMarkdown(transformed);
+	const mentionPids = extractMentionPids(ast);
+	const mentionedUsers = await getDb().user.findMany({
+		where: {
+			pid: {
+				in: mentionPids
+			}
+		}
+	});
+	const plainText = renderToPlainText(ast, mentionedUsers.map(v => ({ pid: v.pid, username: v.pnid ?? v.displayName ?? v.pid.toString() })));
+	return {
+		markdown: transformed,
+		text: plainText
+	};
+}
+
 /**
  * Create a new post from an input body
  * Warning: Does not check if it should be posted, validation should be done outside of this method
@@ -103,20 +154,14 @@ export async function createNewPost(ops: PostCreateOptions): Promise<HydratedPos
 
 	const miiFace = miiFaceFilenameMap[body.feelingId] ?? defaultMiiFaceFilename;
 
-	const postBody = body.body?.replaceAll('\r\n', '\n'); // Clean up \r\n
-	if (postBody && getInvalidPostRegex().test(postBody)) {
-		throw new Error('Invalid characters found in post body');
-	}
-
-	if (postBody && postBody.length > 280) {
-		throw new Error('Post body is top long');
-	}
+	const postBody = body.body ? await validateAndProcessPostBody(body.body) : null;
 
 	const document: IPostInput = {
 		title_id: ops.community.title_id[0],
 		community_id: ops.community.olive_community_id,
 		screen_name: ops.author.screenName,
-		body: postBody,
+		body: postBody?.text,
+		body_markdown: postBody?.markdown,
 		painting: paintings?.blob ?? '',
 		painting_img: paintings?.img ?? '',
 		painting_big: paintings?.big ?? '',

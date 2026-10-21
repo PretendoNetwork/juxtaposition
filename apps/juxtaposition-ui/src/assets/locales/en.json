@@ -158,6 +158,8 @@
     "report_post": "Report post",
     "delete_post": "Delete post",
     "removed": "Post has been removed.",
+    "removedBy": "Removed by",
+    "removedBySelf": "author",
     "copy_link": "Copy link",
     "sort_newest_first": "Sort by newest",
     "sort_oldest_first": "Sort by oldest",
