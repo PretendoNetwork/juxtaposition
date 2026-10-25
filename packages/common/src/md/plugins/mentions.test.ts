@@ -69,6 +69,16 @@ describe('mention discovery', () => {
 			}
 		]);
 	});
+
+	it('handles newlines', () => {
+		test('Hello\n\n@goodbye world', [
+			{
+				start: 7,
+				end: 15,
+				value: '@goodbye'
+			}
+		]);
+	});
 });
 
 describe('handleMentionDiscoveries', () => {
