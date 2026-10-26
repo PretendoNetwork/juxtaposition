@@ -33,10 +33,14 @@ export function mentionDiscoveryRule(state: StateInline, _silent: boolean): bool
 		return false; // Does not match regex for a mention
 	}
 
-	const mentionString = match[0];
 	const env = state.env as MentionDiscoveryEnv;
+	const inlineStartPos = env.sourceOffset;
+	if (inlineStartPos === undefined) {
+		return false; // Unknown location of the mention, can't build a proper discovery
+	}
+
+	const mentionString = match[0];
 	env.mentionDiscoveries ??= [];
-	const inlineStartPos = env.sourceOffset ?? 0;
 	env.mentionDiscoveries.push({
 		start: inlineStartPos + pos,
 		end: inlineStartPos + pos + mentionString.length,
@@ -64,7 +68,10 @@ function inlineOffsetTrackingCoreRule(state: StateCore): void {
 	for (let i = 0, l = tokens.length; i < l; i++) {
 		const tok = tokens[i];
 		if (tok.type === 'inline') {
-			env.sourceOffset = lineOffsets[tok.map?.[0] ?? 0];
+			const lineStart = lineOffsets[tok.map?.[0] ?? 0] ?? 0;
+			const contentStart = state.src.indexOf(tok.content, lineStart); // Whitespace is trimmed from inline blocks
+			env.sourceOffset = contentStart === -1 ? undefined : contentStart;
+
 			state.md.inline.parse(tok.content, state.md, state.env, tok.children!);
 		}
 	}

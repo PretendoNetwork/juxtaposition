@@ -78,6 +78,13 @@ describe('mention discovery', () => {
 				value: '@goodbye'
 			}
 		]);
+		test('Hello\n\n  @goodbye world', [
+			{
+				start: 9,
+				end: 17,
+				value: '@goodbye'
+			}
+		]);
 	});
 });
 
