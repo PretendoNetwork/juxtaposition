@@ -1,4 +1,4 @@
-import type { Env, MarkdownIt, StateInline } from 'markdown-it';
+import type { Env, MarkdownIt, StateCore, StateInline } from 'markdown-it';
 import type { TransformReplacement } from '@/md/transform';
 
 const MENTION_REGEX = /^@([\w.-]{1,})/;
@@ -12,6 +12,7 @@ export type MentionDiscovery = {
 
 export type MentionDiscoveryEnv = Env & {
 	mentionDiscoveries?: MentionDiscovery[];
+	sourceOffset?: number;
 };
 
 // Discovers all mentions (like: `@pnid`) in markdown and emits their locations
@@ -32,16 +33,48 @@ export function mentionDiscoveryRule(state: StateInline, _silent: boolean): bool
 		return false; // Does not match regex for a mention
 	}
 
-	const mentionString = match[0];
 	const env = state.env as MentionDiscoveryEnv;
+	const inlineStartPos = env.sourceOffset;
+	if (inlineStartPos === undefined) {
+		return false; // Unknown location of the mention, can't build a proper discovery
+	}
+
+	const mentionString = match[0];
 	env.mentionDiscoveries ??= [];
 	env.mentionDiscoveries.push({
-		start: pos,
-		end: pos + mentionString.length,
+		start: inlineStartPos + pos,
+		end: inlineStartPos + pos + mentionString.length,
 		value: mentionString
 	});
 
 	return false; // False because we don't actually want to handle it as a new token
+}
+
+// The standard inline plugin, but with source offset tracking
+// original: https://github.com/markdown-it/markdown-it/blob/master/src/rules_core/inline.ts
+function inlineOffsetTrackingCoreRule(state: StateCore): void {
+	const env = state.env as MentionDiscoveryEnv;
+	const lineOffsets = [0]; // Map of newline index -> original source index
+
+	for (let i = 0; i < state.src.length; i++) {
+		if (state.src[i] === '\n') {
+			lineOffsets.push(i + 1);
+		}
+	}
+
+	const tokens = state.tokens;
+
+	// Parse inlines
+	for (let i = 0, l = tokens.length; i < l; i++) {
+		const tok = tokens[i];
+		if (tok.type === 'inline') {
+			const lineStart = lineOffsets[tok.map?.[0] ?? 0] ?? 0;
+			const contentStart = state.src.indexOf(tok.content, lineStart); // Whitespace is trimmed from inline blocks
+			env.sourceOffset = contentStart === -1 ? undefined : contentStart;
+
+			state.md.inline.parse(tok.content, state.md, state.env, tok.children!);
+		}
+	}
 }
 
 export function extractMentionDiscoveries(env: Env): MentionDiscovery[] {
@@ -109,6 +142,7 @@ export async function handleMentionDiscoveries(discoveries: MentionDiscovery[], 
 }
 
 export function mentionMarkdownPlugin(md: MarkdownIt): void {
+	md.core.ruler.at('inline', inlineOffsetTrackingCoreRule);
 	md.inline.ruler.push('mention-discovery', mentionDiscoveryRule);
 	md.inline.ruler.push('mention-syntax', mentionSyntaxRule);
 }
