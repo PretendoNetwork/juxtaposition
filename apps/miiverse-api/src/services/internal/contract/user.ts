@@ -76,7 +76,7 @@ export function getProfileFlags(pnid: GetUserDataResponse): UserBadgeEnum[] {
 		flags.push(accessLevelFlag);
 	}
 
-	if (pnid.accessLevel > 2) {
+	if (pnid.accessLevel >= 2) {
 		flags.push('verified');
 	}
 

@@ -44,6 +44,14 @@ $icon-size: 64px;
         .verified > .header-icon {
             border: 5px solid var(--btn);
         }
+
+        .tester > .header-icon {
+            border: 5px solid var(--accent-tester);
+        }
+
+        .dev > .header-icon {
+            border: 5px solid var(--accent-dev);
+        }
         .online {
             position: relative;
             &::before {

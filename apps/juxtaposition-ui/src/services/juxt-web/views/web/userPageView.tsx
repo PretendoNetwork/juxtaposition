@@ -180,7 +180,9 @@ export function WebUserPageView(props: UserPageViewProps): ReactNode {
 							type="header-icon"
 							className={cx({
 								verified: profile.flags.includes('verified'),
-								online: profile.isOnline
+								online: profile.isOnline,
+								tester: profile.flags.includes('al:tester'),
+								dev: profile.flags.includes('al:dev')
 							})}
 						/>
 						<div className="title">
