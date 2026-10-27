@@ -1,7 +1,6 @@
 import { WebNavBar } from '@/services/juxt-web/views/web/navbar';
 import { WebRoot, WebWrapper } from '@/services/juxt-web/views/web/root';
 import { WebReportModalView } from '@/services/juxt-web/views/web/reportModalView';
-import { T } from '@/services/juxt-web/views/common/components/T';
 import type { ReactNode } from 'react';
 
 export type TopicTagViewProps = {
