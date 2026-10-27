@@ -17,6 +17,7 @@
   --text-light: #7d7f94;
   --border: rgba(255, 255, 255, 0.1);
   --background-alt-alt: #383f6b;
+  --accent-tags: #bb87e6;
 }
 
 p {
@@ -184,6 +185,23 @@ header>.selected svg {
 .post-meta-wrapper>.extra-info {
   padding-left: 0.5em;
   color: var(--text-secondary);
+  margin-right: 1em;
+}
+
+.tag-icon svg {
+  height: 1.2em;
+  width: 1.2em;
+}
+
+.topic-tag-container,
+.topic-tag-container > .tag-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent-tags);
+}
+
+.topic-tag-container {
+  column-gap: 0.25em;
 }
 
 .post-user-info-wrapper {

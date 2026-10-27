@@ -98,17 +98,19 @@ export function WebPostView(props: PostViewProps): ReactNode {
 						<a href={`/posts/${post.id}`}>{moment(post.createdAt).fromNow()}</a>
 						{post.community ? <>{' - '}<a href={`/titles/${post.community.olive_community_id}`}>{post.community.name}</a></> : null }
 						{post.isSpoiler ? <>{' - '}<T k="post.spoiler_label" /></> : null}
-						{post.topicTag
-							? (
-									<>{' '}
-										<a href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
-											{/* TODO this has been modified due to inbalanced tags */}
-											<span className="tags">({post.topicTag})</span>
-										</a>
-									</>
-								)
-							: null }
 					</p>
+
+					{post.topicTag
+						? (
+								<p className="topic-tag-container">
+									{' '}
+									<span className="tag-icon"><WebUIIcon name="topic" /></span>
+									<a href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
+										<span className="tags">{post.topicTag}</span>
+									</a>
+								</p>
+							)
+						: null }
 
 				</div>
 
