@@ -13,7 +13,7 @@ export function WebTopicTagView(props: TopicTagViewProps): ReactNode {
 	return (
 		<WebRoot>
 			<h2 id="title" className="page-header">
-				<T k="global.activity_feed" />
+				{props.title}
 			</h2>
 			<WebNavBar selection={1} />
 			<div id="toast"></div>
