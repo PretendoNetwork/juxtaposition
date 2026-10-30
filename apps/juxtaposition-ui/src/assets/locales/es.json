@@ -25,7 +25,7 @@
         "my_feed": "Mi actividad",
         "load_more": "Cargar Más",
         "system_message": "Mensaje del Sistema",
-        "mascot_name": "Ancho de banda."
+        "mascot_name": "Bandwidth"
     },
     "all_communities": {
         "text": "Todas las comunidades",
@@ -35,7 +35,7 @@
     "community": {
         "followers": "Seguidores",
         "posts": "Publicaciones",
-        "tags": "Distintivos de uso",
+        "tags": "Etiquetas",
         "recent": "Recientes",
         "popular": "Populares",
         "followers_count": "{{count}} seguidores",
@@ -44,7 +44,7 @@
         "closed": "Esta comunidad está cerrada a nuevas publicaciones.",
         "tags_not_applicable": "N/A",
         "related_short": "Otras",
-        "description": "Acerca de la comunidad"
+        "description": "Sobre esta comunidad"
     },
     "user_page": {
         "country": "País",
@@ -76,7 +76,7 @@
         "gdpr_download": "Descargar información de usuario",
         "gdpr_download_action": "Descargar",
         "show_profile": "Mostrar perfil a invitados",
-        "notify_empathy": "Mostrar notificaciones de Yeah!",
+        "notify_empathy": "Mostrar notificaciones de \"Mola\"",
         "notify_follows": "Mostrar Notificaciones de seguidos",
         "notify_reply": "Mostrar notificaciones de Respuesta/comentarios"
     },
@@ -107,9 +107,9 @@
         },
         "new_empathy": {
             "message/one": "<empathy_one /> le a molado tu publicación!",
-            "message/two": "<empathy_one />, <empathy_two /> les a molado tu publicación.",
+            "message/two": "<empathy_one />, <empathy_two /> les mola tu publicación.",
             "message/three": "<empathy_one />, <empathy_two />, y {{count_other}} persona/s les a molado tu publicacion!",
-            "message/multiple": "<empathy_one /><empathy_two /> y {{count_other}} les a molado la publicación."
+            "message/multiple": "<empathy_one /><empathy_two /> y {{count_other}} más dijeron \"Molá\" a tu publicacion."
         },
         "new_reply": "<reply_author /> dejó un comentario en tu publicación!"
     },
@@ -126,11 +126,11 @@
         "automod_error": "Tu mensaje contiene texto que no se permite en Juxtaposition. Para más información, por favor, visita https://preten.do/juxt-rules"
     },
     "setup": {
-        "welcome": "¡Estás en Juxtaposition!",
-        "welcome_text": "Juxt es una comunidad de videojuegos para conectar a personas de todo el mundo usando personajes Mii. Juxt se puede usar para compartir tus experiencias de juego y conocer personas de todo el mundo.",
+        "welcome": "¡Bienvenido a Juxtaposition!",
+        "welcome_text": "Juxt es una comunidad de videojuegos que conecta a personas de todo el mundo mediante personajes Mii. Usa Juxt para compartir tus experiencias de juego y conocer a gente de todo el mundo.",
         "beta": "Información de la beta",
         "beta_text": {
-            "first": "¡Te damos la bienvenida a la beta pública de Pretendo Network! Aunque han cambiado muchas cosas desde la primera beta pública, Juxt sigue siendo un trabajo en marcha y pueden haber grandes cambios en cualquier momento.",
+            "first": "¡Te damos la bienvenida a la beta pública de Pretendo Network! Aunque han cambiado muchas cosas desde la primera beta pública, Juxt sigue siendo un proyecto en desarrollo y muchas cosas pueden cambiar en cualquier momento.",
             "second": "Esto puede incluir que todos los datos que almacenamos sean completamente eliminados durante o al acabar el periodo de beta.",
             "third": "El sitio web, su software y todo el contenido que se encuentra en él se proporcionan 'tal cual' y 'según esté disponible'. Pretendo Network no ofrece ninguna garantía, ya sea expresa o implícita, en cuanto a la integridad o usabilidad del sitio web, su software o cualquiera de sus contenidos."
         },
@@ -138,17 +138,17 @@
         "info_text": "Juxt es una comunidad de videojuegos dirigida por usuarios donde puedes interactuar con personas\n                de todo el mundo. Puedes escribir y dibujar publicaciones en comunidades enfocadas a los videojuegos y enviar mensajes directamente a tus amigos.",
         "rules": "Reglas de Juxt",
         "rules_text": {
-            "first": "Las siguientes son algunas normas importantes para hacer de Juxt una experiencia divertida y agradable para todos. El Código de conducta de Juxt contiene información detallada, así que léelo detenidamente.",
+            "first": "A continuación, se presentan algunas normas importantes para hacer de Juxt una experiencia divertida y agradable para todos. El Código de conducta de Juxt contiene información detallada, así que léelo detenidamente.",
             "second": "Todas las publicaciones pueden ser vistas por cualquier persona",
             "third": "Juxt contiene muchas comunidades de videojuegos donde gente de todo el mundo puede compartir sus pensamientos. Cuando publiques en una comunidad, recuerda que todos pueden verlo. Por favor, expresa tus pensamientos de una forma que sea respetuosa hacia todos. Usa el sentido común y piensa antes de publicar. Juxt es un servicio al que también se puede acceder desde Internet, así que ten en cuenta que las personas que no usan Juxt también pueden ver tus publicaciones. Además, cualquier comentario que hagas en las publicaciones de tus amigos será visto, no solo por tus amigos, sino también por personas de todo el mundo. Por favor, ten esto en mente.",
-            "fourth": "Sé agradable con los demás",
+            "fourth": "Sean amables unos con otros",
             "fifth": "Para que Juxt sea un lugar divertido para todos, te pedimos que seas considerado con los demás usuarios. Ayúdanos a que Juxt sea una experiencia agradable: no publiques nada inapropiado ni ofensivo.",
             "sixth": "No publiques información personal - tuya o de otras personas",
             "seventh": "Recuerda, conocer a alguien en Juxt no es lo mismo que conocerlo en la vida real. Nunca compartas tu dirección de correo electrónico, domicilio, nombre de tu trabajo o escuela u otra información de identificación personal con nadie en Juxt, y tampoco compartas la información de nadie más. Además, si alguien que conoces en Juxt te invita a conocerlo en el mundo real, no lo aceptes. Juxt es una comunidad en línea y no debe usarse para organizar reuniones en el mundo real.",
             "eighth": "No publiques revelaciones",
             "ninth": "Algunas personas vienen a Juxt en busca de consejos y trucos para juegos, pero otras quieren descubrir los secretos de un juego por su cuenta. Las publicaciones que revelan secretos de un juego o su historia se denominan \"Revelaciones\". Si estás publicando algo sobre un juego que podría ser una revelación, asegúrate de marcar la casilla \"Revelaciones\" antes de enviar tu publicación. De esta forma, las personas que no quieran ver detalles del juego no verán tu publicación.",
             "tenth": "Violaciones del Código de conducta",
-            "eleventh": "Nuestro objetivo es hacer que Juxt sea divertido y agradable para todos. En el caso de que alguien viole el Código de conducta de Juxt tomaremos las medidas adecuadas, incluyendo el bloqueo del usuario o la consola infractores.",
+            "eleventh": "Nuestro objetivo es mantener Juxt divertido y agradable para todos. En caso de que alguien viole el Código de conducta de Juxt, tomaremos las medidas necesarias, que pueden incluir el baneo del usuario o de la consola infractora.",
             "twelfth": "¿Has jugado a este juego?",
             "thirteenth": "Si publicas en una comunidad sobre algún juego que has jugado, tus publicaciones tendrán un icono que indica que has jugado a ese juego."
         },
@@ -176,10 +176,10 @@
         "message_web": "Mira el <status>estado actual del servidor</status>.<newline/>O, <home>vuelve a la página principal</home>"
     },
     "post": {
-        "yeahs_count/one": "<count/> persona/s les a molado tu publicacion",
+        "yeahs_count/one": "Le mola a <count/> persona.",
         "yeahs_count/multiple": "A <count/> personas les mola.",
         "reply_post": "Comentar",
-        "report_post": "Denunciar Post",
+        "report_post": "Denunciar",
         "title": "Publicación de {{username}}",
         "show_spoiler": "Ver revelación",
         "removed": "La publicación ha sido eliminada.",
@@ -189,9 +189,9 @@
         "sort_newest_first": "Ordenar por más reciente",
         "sort_oldest_first": "Ordenar por más antiguo",
         "replies_heading": "Respuestas",
-        "removedBy": "Removido por.",
+        "removedBy": "Removido por",
         "removedBySelf": "Autor",
-        "spoiler_label": "revelaciones"
+        "spoiler_label": "Revelaciones"
     },
     "login": {
         "username": "Nombre de usuario",
@@ -205,7 +205,7 @@
         "sub_title": "Introduce tus datos de acceso"
     },
     "reporting": {
-        "description": "Estás a punto de denunciar una publicación que viola el Código de conducta de Juxtaposition. La denuncia será únicamente enviada a los moderadores de Juxtaposition y no al creador de la publicación.",
+        "description": "Estás a punto de reportar una publicación que infringe el Código de conducta de Juxtaposition. Este reporte se enviará únicamente a los moderadores de Juxtaposition y no al autor de la publicación.",
         "label": "Motivo:",
         "additional_info_placeholder": "Introduce comentarios o información adicionales",
         "reason_spoiler": "Revelación",
