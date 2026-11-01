@@ -111,7 +111,7 @@
             "message/three": "<empathy_one />, <empathy_two />, y {{count_other}} persona/s les a molado tu publicacion!",
             "message/multiple": "<empathy_one /><empathy_two /> y {{count_other}} más dijeron \"Molá\" a tu publicacion."
         },
-        "new_reply": "<reply_author /> dejó un comentario en tu publicación!"
+        "new_reply": "<reply_author /> comentó en tu publicación!"
     },
     "new_post": {
         "post_to": "Mensaje para \"{{user}}\"",
