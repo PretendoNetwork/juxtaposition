@@ -20,6 +20,7 @@ import rightIcon from '../../assets/right_line.svg?raw';
 import eyeIcon from '../../assets/eye.svg?raw';
 import eyeSlashIcon from '../../assets/eye_slash.svg?raw';
 import upDownIcon from '../../assets/up_down.svg?raw';
+import topicIcon from '../../assets/topic.svg?raw';
 import type { ReactNode } from 'react';
 
 const icons = {
@@ -41,7 +42,8 @@ const icons = {
 	'right-arrow': rightIcon,
 	'eye': eyeIcon,
 	'eye-slash': eyeSlashIcon,
-	'up-down': upDownIcon
+	'up-down': upDownIcon,
+	'topic': topicIcon
 } as const;
 
 type WebUIIcon = keyof typeof icons;
