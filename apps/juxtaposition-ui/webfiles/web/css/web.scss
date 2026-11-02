@@ -190,16 +190,13 @@ header>.selected svg {
   margin-right: 1em;
 }
 
-.tag-icon svg {
-  font-size: 1.2em; // Now 1em will be 20% larger on the descending elements, since it's a relative unit
-}
-
 .post-meta-wrapper {
   .topic-tag-container {
     .tag-icon {
       display: inline-flex;
       align-items: center;
       color: var(--accent-tags);
+      font-size: 1.2em;
     }
     display: inline-flex;
     align-items: center;
