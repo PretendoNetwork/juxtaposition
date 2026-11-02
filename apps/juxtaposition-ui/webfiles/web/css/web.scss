@@ -194,15 +194,18 @@ header>.selected svg {
   font-size: 1.2em; // Now 1em will be 20% larger on the descending elements, since it's a relative unit
 }
 
-.post-meta-wrapper > .topic-tag-container,
-.post-meta-wrapper > .topic-tag-container > .tag-icon {
-  display: inline-flex;
-  align-items: center;
-  color: var(--accent-tags);
-}
-
-.post-meta-wrapper > .topic-tag-container {
-  column-gap: 0.25em;
+.post-meta-wrapper {
+  .topic-tag-container {
+    .tag-icon {
+      display: inline-flex;
+      align-items: center;
+      color: var(--accent-tags);
+    }
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-tags);
+    column-gap: 0.25em;
+  }
 }
 
 .post-user-info-wrapper {
