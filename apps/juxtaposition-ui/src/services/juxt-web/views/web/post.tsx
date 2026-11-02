@@ -103,7 +103,6 @@ export function WebPostView(props: PostViewProps): ReactNode {
 					{post.topicTag
 						? (
 								<p className="topic-tag-container">
-									{' '}
 									<span className="tag-icon"><WebUIIcon name="topic" /></span>
 									<a href={url.url('/topics', { topic_tag: post.topicTag })} data-pjax="#body">
 										<span className="tags">{post.topicTag}</span>
