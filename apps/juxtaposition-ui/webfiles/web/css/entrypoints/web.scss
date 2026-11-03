@@ -1,11 +1,11 @@
-@use './theme.scss' as t;
-@use './components/WebInfobox.scss';
-@use './components/WebCommunityListView.scss';
-@use './components/WebPostView.scss';
+@use '../theme' as t;
+@use '../components/WebInfobox.scss';
+@use '../components/WebCommunityListView.scss';
+@use '../components/WebPostView.scss';
 
 :root {
-  --background: #1b1f3b;
-  --background-alt: #2a2f50;
+  --background: #{t.$background};
+  --background-alt: #{t.$background-alt};
   --background-dark: #121527;
   --text: white;
   --text-secondary: #a1a8d9;
@@ -18,7 +18,7 @@
   --border: rgba(255, 255, 255, 0.1);
   --background-alt-alt: #383f6b;
   --accent-tags: #bb87e6;
-  --accent-tester : #0E6AC0;
+  --accent-tester: #0E6AC0;
   --accent-dev: #C53655;
 }
 
@@ -198,6 +198,7 @@ header>.selected svg {
       color: var(--accent-tags);
       font-size: 1.2em;
     }
+
     display: inline-flex;
     align-items: center;
     color: var(--accent-tags);
@@ -345,7 +346,7 @@ header>.selected svg {
   display: none;
 }
 
-.post-content > .post-content-text-container {
+.post-content>.post-content-text-container {
   margin-top: 0;
   margin-bottom: 0.5em;
   margin-left: 0.25em;
@@ -369,12 +370,15 @@ header>.selected svg {
     font-weight: 700;
     color: white;
   }
+
   .prose-italic {
     font-style: italic;
   }
+
   .prose-strikethrough {
     text-decoration: line-through;
   }
+
   .prose-code {
     font-size: 0.9rem;
     background-color: var(--background-dark);
@@ -385,6 +389,7 @@ header>.selected svg {
     display: inline;
     border-radius: 5px;
   }
+
   .prose-mention {
     font-size: 0.9rem;
     font-weight: bold;
@@ -405,7 +410,7 @@ header>.selected svg {
     }
   }
 
-  > *:last-child {
+  >*:last-child {
     margin-bottom: 0; // Prevent post content from sticking out at the bottom
   }
 }

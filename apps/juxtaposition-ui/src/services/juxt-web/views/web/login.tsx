@@ -38,7 +38,7 @@ export function LoginHead(): ReactNode {
 			<link rel="icon" type="image/png" href="/assets/web/images/icons/icon-144x144.png" />
 			<link rel="shortcut icon" href="/assets/web/images/icons/icon-72x72.png" />
 
-			<link rel="stylesheet" href="/assets/web/css/login.css" />
+			<link rel="stylesheet" href="/assets/web/css/themes/base/login.css" />
 			<script src="/assets/web/js/login.global.js" />
 		</>
 	);

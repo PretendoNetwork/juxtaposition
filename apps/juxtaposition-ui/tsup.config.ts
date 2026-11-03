@@ -1,17 +1,17 @@
+/* eslint-disable no-restricted-imports -- It doesn't support paths in build scripts */
 import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { defineConfig } from 'tsup';
 import { copy } from 'esbuild-plugin-copy';
 import { raw } from 'esbuild-raw-plugin';
 import { fixImportsPlugin } from 'esbuild-fix-imports-plugin';
-import { oxipng } from '@repo/esbuild-plugin-oxipng';
-import { spritesmith } from '@repo/esbuild-plugin-spritesmith';
 import browserslist from 'browserslist-to-esbuild';
-import { sassPlugin } from 'esbuild-sass-plugin';
+import { scssBuildEntries } from './webfiles/scssPlugin';
 
 export default defineConfig([
 	/* Main server app (Node) */
 	{
+		name: 'server',
 		entry: ['src/server.ts'],
 		sourcemap: true,
 		clean: true,
@@ -57,123 +57,69 @@ export default defineConfig([
 	},
 	/* CTR/3DS webfiles (Chrome 4) */
 	{
+		name: 'ctr-js',
 		entry: [
 			'webfiles/ctr/js/juxt.js',
 			'webfiles/ctr/js/debug.js',
-			'webfiles/ctr/js/firstrun.js',
-			'webfiles/ctr/css/juxt.scss',
-			'webfiles/ctr/css/firstrun.css'
+			'webfiles/ctr/js/firstrun.js'
 		],
 		bundle: true,
 		sourcemap: true,
 		minify: true,
 
-		outDir: 'dist/webfiles/ctr',
+		outDir: 'dist/webfiles/ctr/js',
 
 		platform: 'browser',
 		target: 'chrome4',
 		format: 'iife',
 
-		esbuildOptions(options): void {
-			options.external = ['/fonts/*'];
-			options.tsconfig = './webfiles/ctr/tsconfig.json';
-		},
-		esbuildPlugins: [
-			fixImportsPlugin(),
-			sassPlugin({ type: 'css' }),
-			oxipng({ loader: 'dataurl' }),
-			spritesmith({
-				input_folder: './webfiles/ctr/images/sprites/',
-				output_css: './webfiles/ctr/css/sprites.css',
-				output_image: './webfiles/ctr/images/sprites.png',
-				output_image_url: '@/images/sprites.png'
-			}),
-			copy({
-				resolveFrom: 'cwd',
-				assets: [
-					{
-						from: ['./webfiles/ctr/images/**'],
-						to: ['./dist/webfiles/ctr/images']
-					},
-					{
-						from: ['./webfiles/ctr/fonts/**'],
-						to: ['./dist/webfiles/ctr/fonts']
-					}
-				]
-			})
-		]
+		tsconfig: './webfiles/ctr/tsconfig.json'
 	},
 	/* Portal/Wii U webfiles (~Chrome 20) */
 	{
+		name: 'wup-js',
 		entry: [
 			'webfiles/portal/js/juxt.js',
 			'webfiles/portal/js/debug.js',
-			'webfiles/portal/js/firstrun.js',
-			'webfiles/portal/css/juxt.scss',
-			'webfiles/portal/css/firstrun.css'
+			'webfiles/portal/js/firstrun.js'
 		],
 		bundle: true,
 		sourcemap: true,
 		minify: true,
 
-		outDir: 'dist/webfiles/portal',
+		outDir: 'dist/webfiles/portal/js',
 
 		platform: 'browser',
 		target: 'chrome20',
 		format: 'iife',
 
-		loader: {
-			'.inline.svg': 'dataurl'
-		},
-		external: ['/images/*', '/fonts/*'],
 		tsconfig: './webfiles/portal/tsconfig.json',
 		esbuildPlugins: [
-			fixImportsPlugin(),
-			sassPlugin({ type: 'css' }),
-			copy({
-				resolveFrom: 'cwd',
-				assets: [
-					{
-						from: ['./webfiles/portal/images/**'],
-						to: ['./dist/webfiles/portal/images']
-					},
-					{
-						from: ['./webfiles/portal/fonts/**'],
-						to: ['./dist/webfiles/portal/fonts']
-					}
-				]
-			})
+			fixImportsPlugin()
 		]
 	},
 	/* Main web frontend (Modern browsers) */
 	{
+		name: 'web-js',
 		entry: [
 			'webfiles/web/js/admin.ts',
 			'webfiles/web/js/login.js',
 			'webfiles/web/js/painting.js',
-			'webfiles/web/js/web.js',
-			'webfiles/web/css/web.scss',
-			'webfiles/web/css/admin.css',
-			'webfiles/web/css/first_run.css',
-			'webfiles/web/css/login.css'
+			'webfiles/web/js/web.js'
 		],
 		bundle: true,
 		sourcemap: true,
 		minify: true,
 
-		outDir: 'dist/webfiles/web',
+		outDir: 'dist/webfiles/web/js',
 
 		platform: 'browser',
 		target: browserslist(),
 		format: 'iife',
 
-		esbuildOptions(options): void {
-			options.external = ['/images/*'];
-			options.tsconfig = './webfiles/web/tsconfig.json';
-		},
+		tsconfig: './webfiles/web/tsconfig.json',
 		esbuildPlugins: [
 			fixImportsPlugin(),
-			sassPlugin({ type: 'css' }),
 			copy({
 				resolveFrom: 'cwd',
 				assets: [
@@ -196,5 +142,8 @@ export default defineConfig([
 				]
 			})
 		]
-	}
+	},
+
+	/* SCSS configurations */
+	...scssBuildEntries
 ]);
