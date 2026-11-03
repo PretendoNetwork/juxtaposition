@@ -1,7 +1,7 @@
-@use "./components/ui/PortalNavTabs.css";
-@use "./components/ui/PortalSearchForm.scss";
-@use "./components/PortalListView.scss";
-@use "./components/PortalCommunityList.scss";
+@use "../components/ui/PortalNavTabs.css";
+@use "../components/ui/PortalSearchForm.scss";
+@use "../components/PortalListView.scss";
+@use "../components/PortalCommunityList.scss";
 
 html {
  background-color:#fff;
@@ -1184,7 +1184,6 @@ input.fixed-bottom-button {
  border-radius:40px 0 0 0
 }
 .settings-list-content .settings-list>li {
- *zoom:1;
  padding:25px 0;
  border-bottom:3px dotted #d2b0e1
 }

@@ -1,7 +1,7 @@
 @use '../sprites.css';
-@use './theme' as t;
-@use '../controls/ctabs.css';
-@use '../controls/checkbox.css';
+@use '../theme' as t;
+@use '../controls/ctabs.scss';
+@use '../controls/checkbox.scss';
 @use '../components/ui/CtrNavTabs.scss';
 @use '../components/ui/CtrIcon.scss';
 @use '../components/ui/CtrBigButton.scss';
@@ -11,8 +11,8 @@
 @use '../components/CtrCommunityList.scss';
 @use '../components/CtrListView.scss';
 @use '../components/CtrPostView.scss';
-@use '../pages/new-post-view.css';
-@use '../pages/report-post-page.css';
+@use '../pages/new-post-view.scss';
+@use '../pages/report-post-page.scss';
 
 body {
     margin: 0;
