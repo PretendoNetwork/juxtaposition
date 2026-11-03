@@ -1,18 +1,18 @@
-@use 'sprites.css';
-@use './controls/ctabs.css';
-@use './controls/checkbox.css';
-@use './components/ui/CtrNavTabs.scss';
-@use './components/ui/CtrIcon.scss';
-@use './components/ui/CtrBigButton.scss';
-@use './components/ui/CtrSearchForm.scss';
-@use './components/CtrPageButtons.scss';
-@use './components/CtrPageHeader.scss';
-@use './components/CtrCommunityList.scss';
-@use './components/CtrListView.scss';
-@use './components/CtrPostView.scss';
-@use 'new-post-view.css';
-@use 'report-post-page.css';
-@use 'theme.scss' as t;
+@use '../sprites.css';
+@use './theme' as t;
+@use '../controls/ctabs.css';
+@use '../controls/checkbox.css';
+@use '../components/ui/CtrNavTabs.scss';
+@use '../components/ui/CtrIcon.scss';
+@use '../components/ui/CtrBigButton.scss';
+@use '../components/ui/CtrSearchForm.scss';
+@use '../components/CtrPageButtons.scss';
+@use '../components/CtrPageHeader.scss';
+@use '../components/CtrCommunityList.scss';
+@use '../components/CtrListView.scss';
+@use '../components/CtrPostView.scss';
+@use '../pages/new-post-view.css';
+@use '../pages/report-post-page.css';
 
 body {
     margin: 0;
