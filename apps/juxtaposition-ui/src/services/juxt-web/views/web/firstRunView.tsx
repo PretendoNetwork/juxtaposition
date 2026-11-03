@@ -9,7 +9,7 @@ export function WebFirstRunView(_props: FirstRunViewProps): ReactNode {
 	const extraHead = (
 		<>
 			<title>{T.str('login.title')}</title>
-			<link rel="stylesheet" href="/assets/web/css/first_run.css" />
+			<link rel="stylesheet" href="/assets/web/css/themes/base/first_run.css" />
 		</>
 	);
 

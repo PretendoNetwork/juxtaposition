@@ -26,14 +26,14 @@ export function DefaultStyling(props: DefaultStylingProps): ReactNode {
 	if (props.type === 'admin') {
 		return (
 			<>
-				<link rel="stylesheet" type="text/css" href="/assets/web/css/admin.css" />
+				<link rel="stylesheet" type="text/css" href="/assets/web/css/themes/base/admin.css" />
 				<script src="/assets/web/js/admin.global.js" />
 			</>
 		);
 	} else /* if (props.type === "normal") */ {
 		return (
 			<>
-				<link rel="stylesheet" type="text/css" href="/assets/web/css/web.css" />
+				<link rel="stylesheet" type="text/css" href="/assets/web/css/themes/base/web.css" />
 				<script src="/assets/web/js/web.global.js" />
 			</>
 		);
