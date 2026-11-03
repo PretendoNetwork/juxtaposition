@@ -4,8 +4,8 @@
 @use '../components/WebPostView.scss';
 
 :root {
-  --background: t.$background;
-  --background-alt: t.$background-alt;
+  --background: #{t.$background};
+  --background-alt: #{t.$background-alt};
   --background-dark: #121527;
   --text: white;
   --text-secondary: #a1a8d9;
