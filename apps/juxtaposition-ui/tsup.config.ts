@@ -67,7 +67,7 @@ export default defineConfig([
 		sourcemap: true,
 		minify: true,
 
-		outDir: 'dist/webfiles/ctr',
+		outDir: 'dist/webfiles/ctr/js',
 
 		platform: 'browser',
 		target: 'chrome4',
@@ -87,7 +87,7 @@ export default defineConfig([
 		sourcemap: true,
 		minify: true,
 
-		outDir: 'dist/webfiles/portal',
+		outDir: 'dist/webfiles/portal/js',
 
 		platform: 'browser',
 		target: 'chrome20',
@@ -111,7 +111,7 @@ export default defineConfig([
 		sourcemap: true,
 		minify: true,
 
-		outDir: 'dist/webfiles/web',
+		outDir: 'dist/webfiles/web/js',
 
 		platform: 'browser',
 		target: browserslist(),
