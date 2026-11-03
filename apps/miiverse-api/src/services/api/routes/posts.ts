@@ -25,6 +25,7 @@ import { ApiErrorCode, badRequest, serverError } from '@/errors';
 import { uploadPainting, uploadScreenshot } from '@/images';
 import { cleanedBase64 } from '@/zodUtils';
 import { AutomodRule } from '@/models/automodRules';
+import { createNewEmpathyNotification, createNewReplyNotification } from '@/services/internal/utils/notifications';
 import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_user_data_rpc';
 import type { PostRepliesResult } from '@/types/miiverse/post';
 import type { HydratedPostDocument, IPostInput } from '@/types/mongoose/post';
@@ -99,6 +100,22 @@ router.post('/:post_id/empathies', upload.none(), async function (request: expre
 				yeahs: request.pid
 			}
 		});
+
+		// Removed posts and friend messages can't be viewed, so a notification for them would lead nowhere
+		if (!post.removed && !post.message_to_pid) {
+			const db = getDb();
+			const targetUser = await db.user.findUnique({
+				where: {
+					pid: post.pid
+				},
+				include: {
+					settings: true
+				}
+			});
+			if (targetUser && request.pid !== targetUser.pid && targetUser.settings?.notifyEmpathy) {
+				await createNewEmpathyNotification(db, { currentUser: request.pid, postAuthor: post.pid, postId: post.id });
+			}
+		}
 	} else if (post.yeahs?.indexOf(request.pid) !== -1) {
 		await Post.updateOne({
 			id: post.id,
@@ -509,6 +526,19 @@ async function newPost(request: express.Request, response: express.Response): Pr
 	if (parentPost) {
 		parentPost.reply_count = (parentPost.reply_count || 0) + 1;
 		parentPost.save();
+
+		const db = getDb();
+		const targetUser = await db.user.findUnique({
+			where: {
+				pid: parentPost.pid
+			},
+			include: {
+				settings: true
+			}
+		});
+		if (targetUser && request.pid !== targetUser.pid && targetUser.settings?.notifyReply) {
+			await createNewReplyNotification(db, { reply: post, replyToUser: targetUser.pid });
+		}
 	}
 
 	response.send(xmlbuilder.create({
