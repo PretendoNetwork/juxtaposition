@@ -56,8 +56,8 @@ $icon-size: 64px;
             position: relative;
             &::before {
                 content: "";
-                background: #23a55a;
-                border: 3px solid white;
+                background: t.$online-fill;
+                border: 3px solid t.$online-border;
                 border-radius: 100%;
 
                 display: block;
@@ -90,8 +90,8 @@ $icon-size: 64px;
             &.selected { 
                 background: var(--btn);
                 svg {
-                    fill: red;
-                    stroke: red;
+                    fill: t.$post-action-empathy-fill;
+                    stroke: t.$post-action-empathy-fill;
                 }
             }
 
@@ -167,7 +167,7 @@ $icon-size: 64px;
             display: block;
 
             svg {
-                fill: white;
+                fill: t.$text;
             }
         }
     }
