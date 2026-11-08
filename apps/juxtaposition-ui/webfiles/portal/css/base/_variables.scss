@@ -11,6 +11,18 @@ $shadow-soft: rgba(0, 0, 0, .4) !default;
 $component-gap: 10px !default;
 
 $button-text: #323232 !default;
+$button-background-top: #fff !default;
+$button-background-bottom: #e6e6e6 !default;
+$button-primary-background-top: #866dbe !default;
+$button-primary-background-bottom: #673db6 !default;
+$button-alt-background-1: #fff !default;
+$button-alt-background-2: #f6f6f6 !default;
+$button-alt-background-3: #f5f5f5 !default;
+$button-alt-background-4: #bbb !default;
+$button-alt-disabled-background-top: #fff !default;
+$button-alt-disabled-background-bottom: #efefef !default;
+$button-alt2-background-top: #fff !default;
+$button-alt2-background-bottom: #f5f5f5 !default;
 $image-placeholder: #e6eaf1 !default;
 
 $subline-size: 18px !default;
@@ -64,6 +76,7 @@ $post-yeah-button-shadow: rgba(0, 0, 0, .45) !default;
 $post-yeah-button-selected-shadow: rgba(119, 88, 187, .67) !default;
 $post-yeah-button-selected-disabled-shadow: rgba(66, 45, 120, .75) !default;
 $post-actions-text: #646464 !default;
+$post-subtitle-text: #969696 !default;
 
 $post-content-text: #111 !default;
 $post-content-bold: black !default;
