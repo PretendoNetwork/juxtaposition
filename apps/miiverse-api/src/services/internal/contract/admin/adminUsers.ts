@@ -25,6 +25,9 @@ export function mapAdminUserProfile(user: UserWithSettings, pnid: GetUserDataRes
 	const networkBanned = pnid.accessLevel < 0;
 	const juxtBanned = user.accountStatus < 0 || user.accountStatus > 1;
 	const limitedFromPosting = user.accountStatus == 1;
+	if (limitedFromPosting) {
+		status = 'limited_from_posting';
+	}
 	if (juxtBanned) {
 		status = 'juxt_ban';
 	}
@@ -33,9 +36,6 @@ export function mapAdminUserProfile(user: UserWithSettings, pnid: GetUserDataRes
 	}
 	if (deleted) {
 		status = 'deleted';
-	}
-	if (limitedFromPosting) {
-		status = 'limited_from_posting';
 	}
 
 	return {
