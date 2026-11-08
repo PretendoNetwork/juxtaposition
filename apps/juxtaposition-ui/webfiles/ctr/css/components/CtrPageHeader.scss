@@ -61,7 +61,7 @@ $spad: math.div($pad, 2);
         .stats {
             padding: $spad 0;
             .stat {
-                border-left: 1px solid gray;
+                border-left: 1px solid t.$page-header-divider;
                 padding: 0 $spad;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
@@ -82,5 +82,5 @@ $spad: math.div($pad, 2);
 
 /* Communities with old style headers where we need to cover the bottom 52px */
 .header-legacy .title-area {
-    background: #fff;
+    background: t.$page-header-title-background;
 }

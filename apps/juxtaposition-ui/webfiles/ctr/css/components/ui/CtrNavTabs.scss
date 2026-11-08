@@ -9,7 +9,7 @@ $page-gap: 10px;
     padding: 5px;
     margin-top: $page-gap;
 
-    background: -webkit-gradient(linear, left top, left bottom, from(#6045af), to(#634ca8)) 0 0;
+    background: -webkit-gradient(linear, left top, left bottom, from(t.$nav-tabs-selected-background-top), to(t.$nav-tabs-selected-background-bottom)) 0 0;
     border-radius: 2px;
 }
 
@@ -28,10 +28,10 @@ $page-gap: 10px;
     /* Visuals */
     text-align: center;
     background: url(@/images/tab.png);
-    color: #cabbf3;
+    color: t.$nav-tabs-text;
 
     &.selected {
-        background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.3, #fff), color-stop(.8, #fff5f5), color-stop(.96, #fff5f5), to(#fff5f5)) 0 0;
-        color: #4d4d4d;
+        background: -webkit-gradient(linear, left top, left bottom, from(t.$nav-tabs-background-top), color-stop(.3, t.$nav-tabs-background-top), color-stop(.8, t.$nav-tabs-background-bottom), color-stop(.96, t.$nav-tabs-background-bottom), to(t.$nav-tabs-background-bottom)) 0 0;
+        color: t.$nav-tabs-selected-text;
     }
 }
