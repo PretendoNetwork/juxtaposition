@@ -5,7 +5,7 @@ import type { UserWithSettings } from '@/services/internal/utils/user';
 
 export const adminUserProfileSchema = userProfileSchema.extend({
 	moderation: z.object({
-		status: z.enum(['deleted', 'network_ban', 'juxt_ban', 'normal'])
+		status: z.enum(['deleted', 'network_ban', 'juxt_ban', 'normal', 'limited_from_posting'])
 	})
 }).openapi('AdminUserProfile');
 
@@ -24,6 +24,10 @@ export function mapAdminUserProfile(user: UserWithSettings, pnid: GetUserDataRes
 	const deleted = pnid.deleted;
 	const networkBanned = pnid.accessLevel < 0;
 	const juxtBanned = user.accountStatus < 0 || user.accountStatus > 1;
+	const limitedFromPosting = user.accountStatus == 1;
+	if (limitedFromPosting) {
+		status = 'limited_from_posting';
+	}
 	if (juxtBanned) {
 		status = 'juxt_ban';
 	}

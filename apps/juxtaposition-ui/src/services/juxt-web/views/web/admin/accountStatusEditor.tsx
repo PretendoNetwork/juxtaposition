@@ -16,7 +16,7 @@ function DatePickerWithPreview(props: { value?: Date; id: string; name: string; 
 					<p data-date-preview-utc />
 				</div>
 				<div className="segment">
-					<p className="segment-label">Banned until</p>
+					<p className="segment-label">Restricted until</p>
 					<p data-date-preview-until />
 				</div>
 			</div>
