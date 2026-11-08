@@ -73,7 +73,7 @@ export const scssBuildEntries: Options[] = [
 		options: {
 			entry: [
 				'webfiles/portal/css/entrypoints/juxt.scss',
-				'webfiles/portal/css/entrypoints/firstrun.css'
+				'webfiles/portal/css/entrypoints/firstrun.scss'
 			],
 			bundle: true,
 			minify: true,
