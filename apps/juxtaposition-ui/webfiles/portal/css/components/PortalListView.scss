@@ -30,7 +30,7 @@ $tile-gap: 10px;
             position: absolute;
             left: 0;
 
-            border-bottom: $border-dot dotted #d2b0e1;
+            border-bottom: $border-dot dotted t.$list-view-divider;
             margin: $border-gap 0;
         }
         // select 1st and 2nd items
@@ -42,7 +42,7 @@ $tile-gap: 10px;
     &.list .list-item {
         &:not(:last-of-type) {
             padding-bottom: $border-gap;
-            border-bottom: $border-dot dotted #d2b0e1;
+            border-bottom: $border-dot dotted t.$list-view-divider;
         }
         margin-bottom: $border-gap;
     }
@@ -68,12 +68,12 @@ $tile-gap: 10px;
     }
 
     .icon-container {
-        box-shadow: 0 3px 10px rgba(0,0,0,0.6);
+        box-shadow: 0 3px 10px t.$list-view-icon-shadow;
         border-radius: 12px;
     }
     .icon {
         // yes we need to specify border-radius on both, just webkit bugs
         border-radius: 12px;
-        background-color: #fff;
+        background-color: t.$list-view-icon-background;
     }
 }
