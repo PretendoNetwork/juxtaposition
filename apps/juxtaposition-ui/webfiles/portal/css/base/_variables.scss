@@ -1,0 +1,147 @@
+$text: #000 !default;
+$primary: #a362d8 !default;
+$link: #006eff !default;
+$background: #fff !default;
+$box-shading-top: #fff !default;
+$box-shading-bottom: #fff5f5 !default;
+$shadow-strong: rgba(0, 0, 0, .6) !default;
+$shadow-medium: rgba(0, 0, 0, .45) !default;
+$shadow-soft: rgba(0, 0, 0, .4) !default;
+
+$component-gap: 10px !default;
+
+$button-text: #323232 !default;
+$button-background-top: #fff !default;
+$button-background-bottom: #e6e6e6 !default;
+$button-primary-background-top: #866dbe !default;
+$button-primary-background-bottom: #673db6 !default;
+$button-alt-background-1: #fff !default;
+$button-alt-background-2: #f6f6f6 !default;
+$button-alt-background-3: #f5f5f5 !default;
+$button-alt-background-4: #bbb !default;
+$button-alt-disabled-background-top: #fff !default;
+$button-alt-disabled-background-bottom: #efefef !default;
+$button-alt2-background-top: #fff !default;
+$button-alt2-background-bottom: #f5f5f5 !default;
+$image-placeholder: #e6eaf1 !default;
+
+$subline-size: 18px !default;
+$subline-text: #969696 !default;
+
+$nav-menu-divider-top: #e5e5e5 !default;
+$nav-menu-divider-bottom: #fff !default;
+$nav-menu-text: #323232 !default;
+$nav-menu-text-shadow: #fff !default;
+$nav-menu-user-icon-background: #e6eaf1 !default;
+$nav-menu-item-exit-text: #fff !default;
+$nav-menu-item-exit-background-top: #181d2e !default;
+$nav-menu-item-exit-background-bottom: #1b2031 !default;
+$nav-menu-item-selected-text: #a362d8 !default;
+$nav-menu-item-selected-shadow-top: rgba(0, 0, 0, .2) !default;
+$nav-menu-item-selected-shadow-bottom: rgba(0, 0, 0, .1) !default;
+$nav-menu-item-selected-background-top: #ddd !default;
+$nav-menu-item-selected-background-bottom: #f0f0f0 !default;
+$nav-menu-badge-border: #fff !default;
+$nav-menu-badge-text: #fff !default;
+$nav-menu-badge-text-shadow: rgba(0, 0, 0, .3) !default;
+$nav-menu-badge-background-top: #866dbe !default;
+$nav-menu-badge-background-bottom: #673db6 !default;
+
+$nav-tabs-background-top: #6045af !default;
+$nav-tabs-background-bottom: #634ca8 !default;
+$nav-tabs-inner: #5e44aa !default;
+$nav-tabs-inner-top: rgba(66, 45, 120, .75) !default;
+$nav-tabs-inner-bottom: rgba(128, 101, 213, .5) !default;
+$nav-tabs-text: #cabbf3 !default;
+$nav-tabs-selected-background-top: #fff !default;
+$nav-tabs-selected-background-bottom: #fff5f5 !default;
+$nav-tabs-selected-text: #4d4d4d !default;
+
+$platform-dot-wup: #0096C8 !default;
+$platform-dot-ctr: #CE181E !default;
+
+$list-view-divider: #d2b0e1 !default;
+$list-view-icon-background: #fff !default;
+$list-view-icon-shadow: rgba(0, 0, 0, 0.6) !default;
+
+$headline-text: #fff !default;
+$headline-primary-background: #54389f !default;
+$headline-secondary-background: #59c9a5 !default;
+
+$post-background: #fff !default;
+$post-mii-icon-background: #fff !default;
+$post-yeahed-shadow: rgba(119, 88, 187, .6) !default;
+$post-yeahed-shadow-light: rgba(119, 88, 187, .4) !default;
+$post-yeah-button-shadow: rgba(0, 0, 0, .45) !default;
+$post-yeah-button-selected-shadow: rgba(119, 88, 187, .67) !default;
+$post-yeah-button-selected-disabled-shadow: rgba(66, 45, 120, .75) !default;
+$post-actions-text: #646464 !default;
+$post-subtitle-text: #969696 !default;
+
+$post-content-text: #111 !default;
+$post-content-bold: black !default;
+$post-content-mention-background: #f3eefc !default;
+$post-content-mention-text: #402d68 !default;
+$post-content-code-background: #eeeeee !default;
+$post-content-code-border: #dadada !default;
+$post-content-code-text: #585858 !default;
+
+$community-banner-background: #f1f1f1 !default;
+$community-banner-inset-shadow: rgba(0, 0, 0, .2) !default;
+$community-banner-text: #323232 !default;
+$community-banner-name-text: #969696 !default;
+
+$community-info-icon-background: #fff !default;
+$community-info-background: #54389f !default;
+$community-info-title-text: #fff !default;
+$community-info-subtitle-text: #fff !default;
+
+$list-content-text: #111 !default;
+$list-content-link-text: #673db6 !default;
+$list-content-timestamp-text: #969696 !default;
+
+$info-content-title: #323232 !default;
+$info-content-text: #969696 !default;
+
+$post-create-feeling-preview-background: #fff !default;
+$post-create-feeling-button-group-background: #846abd !default;
+$post-create-feeling-button-group-background-top: rgba(66, 45, 120, .75) !default;
+$post-create-feeling-button-group-background-bottom: rgba(128, 101, 213, .5) !default;
+$post-create-screenshot-button-text: #323232 !default;
+$post-create-screenshot-popout-background: rgba(0, 0, 0, .7) !default;
+$post-create-screenshot-popout-text: #fff !default;
+$post-create-content-input-background: #f9f5fb !default;
+$post-create-content-input-inset-shadow-top: rgba(110, 109, 113, .35) !default;
+$post-create-content-input-inset-shadow-bottom: rgba(255, 255, 255, .5) !default;
+
+$checkbox-background: #e0dee6 !default;
+$checkbox-background-top: rgba(172, 171, 172, .75) !default;
+$checkbox-background-bottom: rgba(227, 227, 227, .5) !default;
+$checkbox-checked-background-top: #866dbe !default;
+$checkbox-checked-background-bottom: #673db6 !default;
+$checkbox-icon: #fff !default;
+
+$badge-supporter-mario-fill: rgba(255, 132, 132, .2) !default;
+$badge-supporter-mario-text: #ff8484 !default;
+$badge-supporter-super-fill: rgba(89, 201, 165, .3) !default;
+$badge-supporter-super-text: #59c9a5 !default;
+$badge-supporter-mega-fill: rgba(202, 177, 251, .3) !default;
+$badge-supporter-mega-text: #cab1fb !default;
+$badge-level-dev-text: #fff !default;
+$badge-level-admin-fill: rgba(220, 226, 27, .3) !default;
+$badge-level-admin-text: #dce21b !default;
+$badge-level-tester-fill: rgba(23, 212, 237, .3) !default;
+$badge-level-tester-text: #17d4ed !default;
+
+$report-popup-background: #fff !default;
+$report-popup-input-background: #f9f5fb !default;
+$report-popup-input-background-top: rgba(110, 109, 113, .35) !default;
+$report-popup-input-background-bottom: rgba(255, 255, 255, .5) !default;
+
+$first-run-header-text: #866dbe !default;
+$first-run-header-secondary-text: #44cca1 !default;
+$first-run-banner-background: #866dbe !default;
+
+$primary-button-text: #fff !default;
+$primary-button-background-top: #866dbe !default;
+$primary-button-background-bottom: #673DB6 !default;

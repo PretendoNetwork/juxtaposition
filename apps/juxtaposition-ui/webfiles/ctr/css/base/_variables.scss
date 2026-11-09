@@ -1,0 +1,89 @@
+// Based on the scroll to top widget. Looks pretty bad on 16-bit colour...
+// $root-gradient: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#d7d7d7));
+$root-gradient-30px: url(@/images/gradient-30px.png) !default;
+
+$root-light-100: #ffffff !default;
+$root-light-200: #fbfafa !default;
+$root-light-300: #f6f6f6 !default;
+$root-light-300: #edeeef !default;
+$root-light-500: #e8e8e8 !default;
+$root-light-600: #e3e3e3 !default;
+
+$root-text-1: #9B9DAF !default;
+$root-text-2: #858899 !default;
+$root-text-4: #404355 !default;
+$root-text-5: #272833 !default;
+
+$root-text-accent: #a362d8 !default; // sampled from topic tag sprite
+
+$title-size: 18px !default;
+
+$subline-size: 12px !default;
+$subline-text: #969696 !default;
+
+$component-border: 1px solid #b9b9b9 !default;
+$component-border-size: 1px !default;
+$component-radius: 5px !default;
+
+$button-text: #323232 !default;
+$button-font-size: 14px !default;
+$heading-text: black !default; // should match the sprites
+
+$headline-text: #fff !default;
+$headline-secondary-border: #59c9a5 !default;
+
+$mii-icon-background: #e6eaf1 !default;
+$icon-background: #fff !default;
+
+$content-text: #000 !default;
+$content-text-secondary: #646464 !default;
+$content-text-light: #969696 !default;
+
+$first-run-card-background: #fff !default;
+$first-run-card-border: #666 !default;
+$first-run-heading-text: #866dbe !default;
+$first-run-heading-secondary-text: #44cca1 !default;
+
+$first-run-tabs-border: #5e44aa !default;
+$first-run-tabs-background-top: #6045af !default;
+$first-run-tabs-background-bottom: #634ca8 !default;
+$first-run-tabs-text: #cabbf3 !default;
+$first-run-tabs-selected-background-top: #fff !default;
+$first-run-tabs-selected-background-bottom: #fff5f5 !default;
+$first-run-tabs-selected-text: #4d4d4d !default;
+
+$nav-tabs-background-top: #fff !default;
+$nav-tabs-background-bottom: #fff5f5 !default;
+$nav-tabs-text: #cabbf3 !default;
+$nav-tabs-selected-background-top: #6045af !default;
+$nav-tabs-selected-background-bottom: #634ca8 !default;
+$nav-tabs-selected-text: #4d4d4d !default;
+
+$ctab-background-top: #fff !default;
+$ctab-background-bottom: #dfdfdf !default;
+$ctab-selected-background-top: #846dbd !default;
+$ctab-selected-background-bottom: #6b3cb5 !default;
+$new-post-border: gray !default;
+$new-post-content: #fff !default;
+$image-selector-preview: lightgray !default;
+$image-selector-border: #fff !default;
+$image-selector-selected-border: #6b3cb5 !default;
+
+$platform-dot-wup: #0096C8 !default;
+$platform-dot-ctr: #CE181E !default;
+
+$list-view-text: #323232 !default;
+$list-view-divider: #d2b0e1 !default;
+
+$page-header-title-background: #fff !default;
+$page-header-divider: gray !default;
+
+$post-body-background: #fff !default;
+
+$post-content-text: #111 !default;
+$post-content-bold: black !default;
+$post-content-mention-background: #f3eefc !default;
+$post-content-mention-text: #402d68 !default;
+$post-content-code-background: #eeeeee !default;
+$post-content-code-border: #dadada !default;
+$post-content-code-text: #585858 !default;

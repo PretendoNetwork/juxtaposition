@@ -1,24 +1,24 @@
-@use 'sprites.css';
-@use './controls/ctabs.css';
-@use './controls/checkbox.css';
-@use './components/ui/CtrNavTabs.scss';
-@use './components/ui/CtrIcon.scss';
-@use './components/ui/CtrBigButton.scss';
-@use './components/ui/CtrSearchForm.scss';
-@use './components/CtrPageButtons.scss';
-@use './components/CtrPageHeader.scss';
-@use './components/CtrCommunityList.scss';
-@use './components/CtrListView.scss';
-@use './components/CtrPostView.scss';
-@use 'new-post-view.css';
-@use 'report-post-page.css';
-@use 'theme.scss' as t;
+@use '../sprites.css';
+@use '../theme' as t;
+@use '../controls/ctabs.scss';
+@use '../controls/checkbox.scss';
+@use '../components/ui/CtrNavTabs.scss';
+@use '../components/ui/CtrIcon.scss';
+@use '../components/ui/CtrBigButton.scss';
+@use '../components/ui/CtrSearchForm.scss';
+@use '../components/CtrPageButtons.scss';
+@use '../components/CtrPageHeader.scss';
+@use '../components/CtrCommunityList.scss';
+@use '../components/CtrListView.scss';
+@use '../components/CtrPostView.scss';
+@use '../pages/new-post-view.scss';
+@use '../pages/report-post-page.scss';
 
 body {
     margin: 0;
     font-family: nintendo_NTLG-DB_001, sans-serif;
     width: 400px;
-    background: #00f
+    background: #00f; // Debug background
 }
 
 #body,
@@ -94,7 +94,7 @@ menu.tab-header {
 
 .headline {
     line-height: 2;
-    color: #fff;
+    color: t.$headline-text;
     background: url(@/images/headline.png) 0 0 no-repeat;
     margin: 6px 10px;
     background-size: 100% !important
@@ -102,13 +102,13 @@ menu.tab-header {
 
 .headline.headline-green {
     background: url(@/images/headline-green.png) 0 0 no-repeat;
-    border-color: #59c9a5
+    border-color: t.$headline-secondary-border;
 }
 
 .icon-container>.icon {
     width: 64px;
     height: 64px;
-    background: #e6eaf1;
+    background: t.$mii-icon-background;
     display: block;
 }
 
@@ -118,8 +118,8 @@ menu.tab-header {
     padding: 5px 0;
     margin-top: 30px;
     margin-left: 10px;
-    border: 1px solid #5e44aa;
-    background: -webkit-gradient(linear, left top, left bottom, from(#6045af), to(#634ca8)) 0 0 !important;
+    border: 1px solid t.$first-run-tabs-border;
+    background: -webkit-gradient(linear, left top, left bottom, from(t.$first-run-tabs-background-top), to(t.$first-run-tabs-background-bottom)) 0 0 !important;
     border-radius: 2px
 }
 
@@ -140,14 +140,14 @@ menu.tab-header li:last-child {
 }
 
 menu.tab-header a {
-    color: #cabbf3;
+    color: t.$first-run-tabs-text;
     width: 145px
 }
 
 menu.tab-header li.selected a {
     display: inline-block;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(.3, #fff), color-stop(.8, #fff5f5), color-stop(.96, #fff5f5), to(#fff5f5)) 0 0;
-    color: #4d4d4d
+    background: -webkit-gradient(linear, left top, left bottom, from(t.$first-run-tabs-selected-background-top), color-stop(.3, t.$first-run-tabs-selected-background-top), color-stop(.8, t.$first-run-tabs-selected-background-bottom), color-stop(.96, t.$first-run-tabs-selected-background-bottom), to(t.$first-run-tabs-selected-background-bottom)) 0 0;
+    color: t.$first-run-tabs-selected-text;
 }
 
 menu.tab-header.user-page a,
@@ -175,21 +175,6 @@ menu.tab-header.user-page li:last-child {
 
 .tab-body.post-list {
     margin-top: 10px;
-}
-
-.tags-container {
-    >.sprite {
-        margin-right: 5px;
-        position: relative;
-        top: 3px;
-    }
-
-    .tags {
-        display: inline-block;
-        color: #a362d8;
-        font-size: 10px;
-        line-height: 12px;
-    }
 }
 
 .community-banner {
@@ -237,7 +222,7 @@ div.button-wrapper.center {
 }
 
 .timestamp {
-    color: #969696;
+    color: t.$content-text-light;
     white-space: nowrap;
 }
 
@@ -249,21 +234,21 @@ menu.tab-header.no-margin {
     margin-left: 0;
     font-size: 12px;
     font-weight: 400;
-    color: #969696;
+    color: t.$content-text-light;
 }
 
 .body.message span {
     font-size: 10px;
-    color: #646464;
+    color: t.$content-text-secondary;
 }
 
 .body.message .nick-name {
     font-size: 14px;
-    color: #000;
+    color: t.$content-text;
 }
 
 .body .nick-name {
-    color: #000;
+    color: t.$content-text;
 }
 
 p.settings-label {

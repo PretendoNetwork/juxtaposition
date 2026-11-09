@@ -1,4 +1,4 @@
-@use "../../theme.scss" as t;
+@use '../../theme' as t;
 
 $radius: 5px;
 $padding: 4px;
@@ -11,7 +11,7 @@ $padding: 4px;
         width: 64px;
         height: 64px;
         display: block;
-        background: #fff;
+        background: t.$icon-background;
     }
 
     .icon-frame {

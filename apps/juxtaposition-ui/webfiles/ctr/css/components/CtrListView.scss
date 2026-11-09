@@ -1,16 +1,16 @@
-@use '../theme.scss' as t;
+@use '../theme' as t;
 
 .list-content-with-icon-column {
     * { -webkit-box-sizing: border-box; } // etc etc
 
     font-size: 15px;
-    color: #323232;
+    color: t.$list-view-text;
 
     .list-item {
         width: 300px;
 
         margin: 5px auto;
-        border-bottom: 3px dotted #d2b0e1;
+        border-bottom: 3px dotted t.$list-view-divider;
         padding-bottom: 5px;
 
         &:last-of-type {

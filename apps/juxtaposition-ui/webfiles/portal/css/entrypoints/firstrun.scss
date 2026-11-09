@@ -1,7 +1,9 @@
+@use "../theme" as t;
+
 .background {
-	background: #fff;
+	background: t.$background;
 	border-radius: 20px;
-	box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+	box-shadow: 0 3px 10px t.$shadow-strong;
 	margin: 40px auto;
 	width: 890px;
 	padding: 25px 75px;
@@ -15,35 +17,35 @@
 	min-height: 500px;
 }
 .about-button {
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+	box-shadow: 0 2px 6px t.$shadow-medium;
 	height: 60px;
 	padding: 0 25px;
 	border-radius: 12px;
 	border: none;
 	font-size: 20px;
-	color: white;
+	color: t.$primary-button-text;
 	font-weight: bold;
 	margin: 0 auto;
 	display: block;
-	background: -webkit-gradient(linear, left top, left bottom, from(#866dbe), to(#673DB6)) 0 0;
+	background: -webkit-gradient(linear, left top, left bottom, from(t.$primary-button-background-top), to(t.$primary-button-background-bottom)) 0 0;
 }
 .about-header {
 	font-weight: bold;
 	text-align: center;
-	color: #866dbe;
+	color: t.$first-run-header-text;
 	font-size: 30px;
 	margin: 15px 0;
 }
 h3 {
 	font-weight: bold;
 	text-align: center;
-	color: #44cca1;
+	color: t.$first-run-header-secondary-text;
 	font-size: 25px;
 	margin: 15px 0;
 }
 ul.horizontal-list {
-	color: white;
-	background: -webkit-gradient(linear, left top, left bottom, from(#6045af), to(#634ca8)) 0 0 !important;
+	color: t.$nav-tabs-text;
+	background: -webkit-gradient(linear, left top, left bottom, from(t.$nav-tabs-background-top), to(t.$nav-tabs-background-bottom)) 0 0 !important;
 	display: block;
 	border-radius: 50px;
 	padding: 15px 15px;
@@ -53,8 +55,8 @@ ul.horizontal-list li {
 	width: 287px;
 	height: 50px;
 	cursor: pointer;
-	background-color: #5e44aa;
-	box-shadow: inset 0 7px 10px -3px rgba(66, 45, 120, 0.75), inset 0 -3px 5px 0 rgba(128, 101, 213, 0.5);
+	background-color: t.$nav-tabs-inner;
+	box-shadow: inset 0 7px 10px -3px t.$nav-tabs-inner-top, inset 0 -3px 5px 0 t.$nav-tabs-inner-bottom;
 	display: table-cell;
 	text-align: center;
 }
@@ -75,9 +77,9 @@ ul.horizontal-list li > a {
 	display: inline-block;
 	width: 287px;
 	height: 60px;
-	color: #fff;
+	color: t.$nav-tabs-text;
 }
 ul.horizontal-list li.selected > a {
-	background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(0.3, #fff), color-stop(0.8, #fff5f5), color-stop(0.96, #fff5f5), to(#fff5f5)) 0 0;
-	color: #4d4d4d;
+	background: -webkit-gradient(linear, left top, left bottom, from(t.$nav-tabs-selected-background-top), to(t.$nav-tabs-selected-background-bottom)) 0 0;
+	color: t.$nav-tabs-selected-text;
 }

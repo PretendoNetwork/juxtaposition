@@ -1,4 +1,3 @@
-
 /* These are the breakpoints as they exist on today's Juxt, definitely not the ideal ones */
 @use '~include-media' as * with ($breakpoints: (
     "phone": 0px,
@@ -6,5 +5,3 @@
     "desktop": 1400px,
 ));
 @forward '~include-media';
-
-$component-radius: 15px;
