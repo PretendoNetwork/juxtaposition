@@ -13,7 +13,18 @@
         "user_page": "Páxina de usuario",
         "yeahs": "Guay",
         "more_posts": "Cargar máis publicacións",
-        "no_posts": "Non hai publicacións"
+        "no_posts": "Non hai publicacións",
+        "my_feed": "Meu Feed",
+        "global_feed": "Feed Global",
+        "global_feed_short": "Global",
+        "people_feed": "Feed de Usuarios",
+        "people_feed_short": "Xente",
+        "friend_requests": "Solicitudes de Amizade",
+        "updates": "Actualizacións",
+        "load_more": "Cargar Máis",
+        "search": "Buscar...",
+        "system_message": "Mensaxe do Sistema",
+        "mascot_name": "Ancho de Banda"
     },
     "all_communities": {
         "text": "Todas as comunidades",
@@ -24,19 +35,36 @@
         "followers": "Seguidores",
         "posts": "Publicacións",
         "tags": "Etiquetas",
-        "recent": "Mensaxes recentes",
-        "popular": "Publicacións populares"
+        "recent": "Recente",
+        "popular": "Popular",
+        "related": "Relacionado",
+        "related_short": "Relacionado",
+        "related_to": "{{community}} Relacionado",
+        "closed": "Esta comunidade está pechada a novas publicacións.",
+        "description": "Sobre esta Comunidade",
+        "followers_count": "{{count}} seguidores",
+        "tags_not_applicable": "N/A"
     },
     "user_page": {
-        "country": "Pais",
-        "game_experience": "Experiencia de xogo",
+        "country": "País",
+        "game_experience": "Experiencia de Xogo",
         "posts": "Publicacións",
         "friends": "Amigos",
         "following": "Seguindo",
         "followers": "Seguidores",
-        "follow_user": "Segue",
+        "follow_user": "Seguir",
         "birthday": "Aniversario",
-        "following_user": "Seguindo"
+        "following_user": "Seguindo",
+        "game_experience_unknown": "Descoñecido",
+        "settings": "Axustes",
+        "friend_requests": "Solicitudes",
+        "deleted": "Usuario Eliminado",
+        "banned": "Usuario Vetado",
+        "not_found": "O Usuario non existe",
+        "tester_tag": "Probador",
+        "supporter_tag": "Colaborador",
+        "moderator_tag": "Moderador",
+        "developer_tag": "Desarrollador"
     },
     "language": "Galego",
     "setup": {
@@ -88,12 +116,63 @@
         "profile_settings": "Axustes Do Perfil",
         "show_country": "Amosar País no Perfil",
         "show_birthday": "Amosar Aniversario no Perfil",
-        "show_game": "Amosar Experiencia En Xogos no Perfil"
+        "show_game": "Amosar Experiencia En Xogos no Perfil",
+        "show_profile": "Ensinar Perfil a invitados",
+        "notify_empathy": "Amosar notificacións de Mola!",
+        "notify_follows": "Amosar Notificacións de Seguimento",
+        "notify_reply": "Amosar Contestación/Notificación de Comentarios",
+        "save_action": "Gardar Axustes",
+        "gdpr_download": "Descargar Datos do Usuario",
+        "gdpr_download_action": "Descargar"
     },
     "activity_feed": {
         "empty": "Está baleiro aiquí. Proba a seguir a alguén!"
     },
     "notifications": {
-        "none": "Sen notificacións."
+        "none": "Sen notificacións.",
+        "new_follower": {
+            "message/one": "<follower_one /> seguíuche!",
+            "message/two": "<follower_one />, <follower_two /> seguíronche!",
+            "message/three": "<follower_one />, <follower_two /> e {{count_other}} outro seguíronche!",
+            "message/multiple": "<follower_one />, <follower_two /> e outros {{count_other}} seguíronche!"
+        },
+        "new_empathy": {
+            "message/one": "<empathy_one /> deulle a o teu post un Mola!",
+            "message/two": "<empathy_one />, <empathy_two /> déronlle ao teu post un Mola!",
+            "message/three": "<empathy_one />, <empathy_two /> e {{count_other}} máis déronlle ao teu post un Mola!",
+            "message/multiple": "<empathy_one />, <empathy_two /> e {{count_other}} máis déronlle ao teu post un Mola!"
+        },
+        "new_reply": "<reply_author /> comentou no teu post!",
+        "post_deleted": {
+            "post_removed": "Teu post \"{{postId}}\" foi eliminado.",
+            "post_removed_for_reason": "Teu post \"{{postId}}\" foi eliminado pola seguinte razón: \"{{reason}}\".",
+            "comment_removed": "Teu comentario \"{{postId}}\" foi eliminado.",
+            "comment_removed_for_reason": "Teu comentario \"{{postId}}\" foi eliminado pola seguinte razón: \"{{reason}}\".",
+            "footer": "Clica nesta mensaxe para ver o Código de Conducta de Juxtaposition. Se tés algunha pregunta, por favor contacta os moderadores no Foro de Pretendo Network {{contactModsUrl}}."
+        },
+        "limited_from_posting": {
+            "message": "Fuches Limitado a Postear.",
+            "message_with_reason": "Fuches Limitado a Postear- Razón: \"{{reason}}\".",
+            "temporary": "Fuches Limitado a Postear ata {{until}}."
+        }
+    },
+    "login": {
+        "title": "Inicio de Sesión en Juxtaposition",
+        "heading": "Rexistro en Juxtaposition",
+        "sub_title": "Introduce os datos da túa conta debaixo",
+        "username": "Nome de usuario",
+        "password": "Contrasinal",
+        "forgot_password": "Olvidaches o teu contrasinal?",
+        "no_account": "Non tes unha conta?",
+        "login_action": "Iniciar Sesión",
+        "no_account_setup": "A Creación de Conta só está dispoñíbel cando tes vinculada unha Wii U ou 3DS."
+    },
+    "error": {
+        "title": "Erro {{code}}",
+        "heading": "Erro {{code}}: {{message}}",
+        "message": "Ups! Parece que non puidemos atopar a páxina que estás a buscar.<newline/>Comproba o enlace ou inténtao de novo máis tarde",
+        "no_access": "Non estás autorizado a acceder a este aplicativo ({{code}})",
+        "message_web": "Mira o actual <status>estado do servidor</status>.<newline/>Ou, <home>volve a páxina principal</home>",
+        "error_details": "ID da Solicitude: {{id}}"
     }
 }
