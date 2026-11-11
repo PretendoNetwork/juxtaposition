@@ -16,6 +16,7 @@ import { discoveryRouter } from '@/services/internal/routes/discovery';
 import { adminAutomodRouter } from '@/services/internal/routes/admin/adminAutomod';
 import { onboardingRouter } from '@/services/internal/routes/onboarding';
 import { userSettingsRouter } from '@/services/internal/routes/userSettings';
+import { adminAnnouncementsRouter } from '@/services/internal/routes/admin/adminAnnouncements';
 
 export const internalApiRouter = express.Router();
 
@@ -37,3 +38,4 @@ internalApiRouter.use('/api/v1', adminUsersRouter.toRouter());
 internalApiRouter.use('/api/v1', adminAuditLogs.toRouter());
 internalApiRouter.use('/api/v1', adminStatsRouter.toRouter());
 internalApiRouter.use('/api/v1', adminAutomodRouter.toRouter());
+internalApiRouter.use('/api/v1', adminAnnouncementsRouter.toRouter());
