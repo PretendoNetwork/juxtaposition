@@ -24,7 +24,16 @@ notificationsRouter.get({
 
 		const dbQuery: NotificationRecipientWhereInput = {
 			hasRead: query.read,
-			pid: account.pnid.pid
+			pid: account.pnid.pid,
+
+			// Only show list notifications with this endpoint
+			notification: {
+				OR: [{
+					displayType: 'List'
+				}, {
+					displayType: 'ListAndPopup'
+				}]
+			}
 		};
 		const notifications = await db.notificationRecipient.findMany({
 			where: dbQuery,
