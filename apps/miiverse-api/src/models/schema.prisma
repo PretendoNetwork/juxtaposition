@@ -14,6 +14,13 @@ enum NotificationType {
   LimitedFromPosting
   PostDeleted
   System
+  Changelog
+}
+
+enum NotificationDisplayType {
+  List /// Display in notification list
+  Popup /// Display as a popup
+  ListAndPopup /// Display as popup and in list
 }
 
 enum ProfilePrivacyType {
@@ -28,7 +35,9 @@ model User {
   pnidNormalized String?  @map("pnid_normalized")
   createdAt      DateTime @default(now()) @map("created_at")
   displayName    String   @map("display_name")
-  lastSeen       DateTime @map("last_seen")
+
+  lastSeen                DateTime @map("last_seen")
+  announcementsLastSeenAt DateTime @default(now()) @map("announcements_last_seen_at")
 
   // TODO refactor bans to different table so it keeps a history
   accountStatus Int       @map("account_status")
@@ -92,13 +101,16 @@ model CommunityFollow {
 
 /// Notification content
 model Notification {
-  id      String           @id
-  type    NotificationType
-  content Json /// Any extra context, dependent on type. Like users who followed
+  id          String                  @id
+  type        NotificationType
+  displayType NotificationDisplayType @default(List) @map("display_type")
+  content     Json /// Any extra context, dependent on type. Like users who followed
 
-  createdAt              DateTime                @default(now()) @map("created_at")
-  updatedAt              DateTime                @updatedAt @map("updated_at")
-  notificationRecipients NotificationRecipient[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  notificationRecipients    NotificationRecipient[]
+  announcementNotifications AnnouncementNotification[]
 
   @@map("notifications")
 }
@@ -114,4 +126,16 @@ model NotificationRecipient {
 
   @@index([pid])
   @@map("notification_recipients")
+}
+
+/// Broadcasted notifications to everybody
+model AnnouncementNotification {
+  id        String   @id
+  createdAt DateTime @default(now()) @map("created_at")
+
+  notificationId String       @map("notification_id")
+  notification   Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+  @@map("announcement_notifications")
 }
