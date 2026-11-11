@@ -24,7 +24,11 @@
         "updates": "Actualitzacions"
     },
     "notifications": {
-        "none": "No hi ha notificacions."
+        "none": "No hi ha notificacions.",
+        "new_follower": {
+            "message/one": "<follower_one /> t'ha seguit!",
+            "message/two": "<follower_one />, <follower_two /> t'han seguit!"
+        }
     },
     "user_page": {
         "follow_user": "Seguir",
