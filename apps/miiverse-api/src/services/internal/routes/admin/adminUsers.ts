@@ -5,7 +5,7 @@ import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/c
 import { mapShallowUser, shallowUserSchema } from '@/services/internal/contract/user';
 import { Post } from '@/models/post';
 import { errors } from '@/services/internal/errors';
-import { getUserAccountData } from '@/util';
+import { genId, getUserAccountData } from '@/util';
 import { mapModerationProfile, moderationProfileSchema } from '@/services/internal/contract/admin/moderationProfile';
 import { adminUserProfileSchema, mapAdminUserProfile } from '@/services/internal/contract/admin/adminUsers';
 import { createNewLimitedPostingNotification } from '@/services/internal/utils/notifications';
@@ -13,8 +13,11 @@ import { accountStatusDisplayMap } from '@/services/internal/utils/communities';
 import { accountActionDisplayMap, createLogEntry } from '@/services/internal/utils/auditLogs';
 import { humanDate } from '@/services/internal/utils/dates';
 import { buildPrismaSearchQuery } from '@/services/internal/utils/search';
+import { mapNotification, notificationSchema } from '@/services/internal/contract/notification';
+import { mapResult, resultSchema } from '@/services/internal/contract/result';
+import type { SystemNotificationContent } from '@/services/internal/utils/notifications';
 import type { LogEntryActions } from '@/models/logs';
-import type { UserUpdateInput, UserWhereInput } from '@/prisma/models';
+import type { NotificationRecipientWhereInput, UserUpdateInput, UserWhereInput } from '@/prisma/models';
 
 export const adminUsersRouter = createInternalApiRouter();
 
@@ -212,5 +215,111 @@ adminUsersRouter.patch({
 		}
 
 		return mapModerationProfile(newUser);
+	}
+});
+
+adminUsersRouter.get({
+	path: '/admin/users/:id/notifications',
+	name: 'admin.users.getSystemNotifications',
+	description: 'Get the system notifications sent to a user',
+	guard: guards.moderator,
+	allowNotFound: true,
+	schema: {
+		params: z.object({
+			id: z.coerce.number()
+		}),
+		query: z.object(pageControlSchema()),
+		response: pageDtoSchema(notificationSchema)
+	},
+	async handler({ params, query, db }) {
+		const user = await db.user.findUnique({
+			where: {
+				pid: params.id
+			}
+		});
+		if (!user) {
+			throw errors.for('not_found');
+		}
+
+		const dbQuery: NotificationRecipientWhereInput = {
+			pid: user.pid,
+			notification: {
+				type: 'System'
+			}
+		};
+		const notifications = await db.notificationRecipient.findMany({
+			where: dbQuery,
+			take: query.limit,
+			skip: query.offset,
+			orderBy: {
+				notification: {
+					updatedAt: 'desc'
+				}
+			},
+			include: {
+				notification: true
+			}
+		});
+		const total = await db.notificationRecipient.count({
+			where: dbQuery
+		});
+
+		return mapPage(total, notifications.map(v => mapNotification(v, v.notification, [])));
+	}
+});
+
+adminUsersRouter.post({
+	path: '/admin/users/:id/notifications',
+	name: 'admin.users.sendSystemNotification',
+	description: 'Send a user a system notification',
+	guard: guards.moderator,
+	schema: {
+		params: z.object({
+			id: z.coerce.number()
+		}),
+		body: z.object({
+			text: z.string().trim().min(1)
+		}),
+		response: resultSchema
+	},
+	async handler({ params, db, body, auth }) {
+		const account = auth!;
+		const user = await db.user.findUnique({
+			where: {
+				pid: params.id
+			}
+		});
+		if (!user) {
+			throw errors.for('not_found');
+		}
+
+		const content: SystemNotificationContent = {
+			text: body.text,
+			link: '/titles/2551084080/new',
+			imagePath: '/images/bandwidthalert.png'
+		};
+		const notifId = genId();
+		await db.notification.create({
+			data: {
+				id: notifId,
+				content,
+				type: 'System',
+				displayType: 'ListAndPopup',
+				notificationRecipients: {
+					create: {
+						id: genId(),
+						pid: user.pid
+					}
+				}
+			}
+		});
+		await createLogEntry({
+			actorId: account.pnid.pid,
+			action: 'SEND_SYSTEM_NOTIFICATION',
+			targetResourceId: user.pid.toString(),
+			context: `Created notification with ID: '${notifId}'`
+		});
+
+		return mapResult('success');
 	}
 });

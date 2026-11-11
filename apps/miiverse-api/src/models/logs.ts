@@ -11,7 +11,8 @@ export const logEntryActions = [
 	'UPDATE_USER',
 	'MAKE_COMMUNITY',
 	'UPDATE_COMMUNITY',
-	'DELETE_COMMUNITY'
+	'DELETE_COMMUNITY',
+	'SEND_SYSTEM_NOTIFICATION'
 ] as const;
 export type LogEntryActions = (typeof logEntryActions)[number];
 
