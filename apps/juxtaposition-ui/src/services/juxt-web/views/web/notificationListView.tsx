@@ -259,7 +259,7 @@ function SystemNotificationView(props: NotificationItemTypeProps<SystemNotificat
 	);
 }
 
-function WebNotificationItem(props: NotificationItemProps): ReactNode {
+export function WebNotificationItem(props: NotificationItemProps): ReactNode {
 	const notif = props.notification.notif;
 	if (notif.type === 'follow') {
 		return <FollowNotificationView data={props.notification} notif={notif} />;
