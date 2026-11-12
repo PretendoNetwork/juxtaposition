@@ -7,6 +7,7 @@ function closePopup(this: HTMLElement): void {
 	}
 
 	notifEl.removeAttribute('data-popup-notification-state');
+	document.body.removeAttribute('data-stop-scroll');
 
 	const nextNotifId = notifEl.getAttribute('data-popup-notification-next');
 	if (nextNotifId) {
@@ -21,6 +22,7 @@ function showPopup(notifId: string): void {
 	}
 
 	el.setAttribute('data-popup-notification-state', 'open');
+	document.body.setAttribute('data-stop-scroll', '');
 }
 
 function initPopup(el: HTMLElement, nextNotifId: string | null): void {

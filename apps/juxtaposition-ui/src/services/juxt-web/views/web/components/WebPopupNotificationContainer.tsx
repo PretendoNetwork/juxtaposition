@@ -6,7 +6,7 @@ export type PopupNotificationContainerProps = {
 
 export function WebPopupNotificationContainer(props: PopupNotificationContainerProps): ReactNode {
 	return (
-		<div data-popup-notification-container>
+		<div className="popup-notification-container" data-popup-notification-container>
 			{props.children}
 		</div>
 	);
