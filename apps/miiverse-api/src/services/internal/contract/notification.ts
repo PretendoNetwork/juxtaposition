@@ -73,6 +73,7 @@ export const notificationContentSchema = z.discriminatedUnion('type', [
 ]);
 
 export const notificationSchema = z.object({
+	id: z.string(),
 	pid: z.number(),
 	user: shallowUserSchema.optional(),
 	hasRead: z.boolean(),
@@ -170,6 +171,7 @@ export function mapNotificationContent(notif: Notification, users: User[]): Noti
 export function mapNotification(recipient: NotificationRecipient, notif: Notification, users: User[]): NotificationDto {
 	const user = users.find(u => u.pid === recipient.pid);
 	return {
+		id: recipient.id,
 		pid: recipient.pid,
 		user: user ? mapShallowUser(user) : undefined,
 		hasRead: recipient.hasRead,

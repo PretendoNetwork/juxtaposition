@@ -3,8 +3,38 @@ import { config } from '@/config';
 import { logger } from '@/logger';
 import { getUserAccountData, getUserDataFromToken } from '@/util';
 import type { RequestHandler, Request, Response } from 'express';
+import type { UserTokens } from '@/types/juxt/tokens';
 
 const cookieDomain = config.http.cookieDomain;
+
+export async function populateSelfOnRequest(req: Request, tokens: UserTokens): Promise<void> {
+	req.self = null;
+	req.notifications = null;
+	if (!req.user) {
+		return;
+	}
+
+	const api = createInternalApiClient(tokens);
+	const selfResult = await api.self.get({ throwOnError: false });
+	if (!selfResult.error && selfResult.data) {
+		req.self = selfResult.data;
+	} else {
+		logger.error(selfResult.error, 'Failed to get self from access token');
+	}
+
+	try {
+		const notificationCounts = await api.self.getNotifications();
+		const popupNotifications = await api.notifications.list({ type: 'popup', limit: 10 }); // Only show 10 max
+		const unreadAnnouncements = await api.announcements.getUnread({});
+		req.notifications = {
+			counts: notificationCounts.data,
+			popups: popupNotifications.data.items,
+			announcements: unreadAnnouncements.data
+		};
+	} catch (err) {
+		logger.error(err, 'Failed to get notifications for user');
+	}
+}
 
 export const webAuth: RequestHandler = async (request, response, next) => {
 	// Get pid and fetch user data
@@ -34,15 +64,7 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 	}
 
 	request.tokens = { oauthToken: request.cookies.access_token };
-
-	request.self = null;
-	if (request.user) {
-		const selfResult = await createInternalApiClient(request.tokens).self.get({ throwOnError: false });
-		if (selfResult.error) {
-			logger.error(selfResult.error, 'Failed to get self from access token');
-		}
-		request.self = selfResult.error ? null : selfResult.data ?? null;
-	}
+	await populateSelfOnRequest(request, request.tokens);
 
 	// Handle guest access pages
 	if (!request.pid || !request.user || !request.self) {
