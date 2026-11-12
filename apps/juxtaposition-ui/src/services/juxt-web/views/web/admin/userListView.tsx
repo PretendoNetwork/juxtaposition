@@ -65,10 +65,7 @@ export function WebUserListView(props: UserListViewProps): ReactNode {
 												<a className="body" href={`/users/${user.pid}`}>
 													<span className="text">
 														<span className="nick-name">
-															{user.pid}
-															:
-															{' '}
-															{user.miiName}
+															{user.miiName} (@{user.pnid}) - {user.pid}
 														</span>
 													</span>
 												</a>
