@@ -1,5 +1,6 @@
 import { WebNotificationItem } from '@/services/juxt-web/views/web/notificationListView';
 import { humanDate } from '@/util';
+import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 import type { Notification } from '@/api/generated';
 
@@ -45,9 +46,11 @@ function WebNotificationSendForm(props: { pid: number }): ReactNode {
 }
 
 export function ModerateUserNotificationsListView(props: ModerateUserNotificationsListViewProps): ReactNode {
+	const user = useUser();
+
 	return (
 		<div>
-			<WebNotificationSendForm pid={props.userPid} />
+			{user.perms.developer ? <WebNotificationSendForm pid={props.userPid} /> : null}
 			<h4>{props.notifications.length}/50 sent notifications</h4>
 			<ul className="list-content-with-icon-and-text arrow-list">
 				{props.notifications.length === 0 ? <p>There's nothing here...</p> : null}
