@@ -1,0 +1,7 @@
+.popup-notification {
+    display: none;
+
+    &[data-popup-notification-state="open"] {
+        display: block;
+    }
+}

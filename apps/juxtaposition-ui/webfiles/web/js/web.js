@@ -5,6 +5,8 @@ import { deletePostById, spoilerPostById, unspoilerPostById } from '@/js/api';
 import { initYeahButton, initSpoilers } from '@/js/post';
 import { initSearchForm } from '@/js/components/ui/WebSearchForm';
 import { Toast, initToast } from '@/js/toast';
+import { islands } from '@/js/islands';
+import { popupNotificationCloseIsland, popupNotificationIsland } from '@/js/islands/popupNotification';
 
 setInterval(checkForUpdates, 30000);
 
@@ -204,6 +206,7 @@ function initAll() {
 	initReportForm();
 	initToast();
 	initNewPost();
+	islands.loadBody();
 }
 
 console.debug('Document initialized:' + window.location.href);
@@ -349,3 +352,8 @@ function closePainting(save) {
 	paintingOverlay.style.display = 'none';
 }
 window.closePainting = closePainting;
+
+islands.register([
+	popupNotificationIsland,
+	popupNotificationCloseIsland
+]);

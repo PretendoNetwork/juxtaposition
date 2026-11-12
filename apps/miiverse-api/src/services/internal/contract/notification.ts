@@ -70,7 +70,7 @@ export const notificationContentSchema = z.discriminatedUnion('type', [
 	systemNotificationSchema,
 	postDeletedNotificationSchema,
 	limitedFromPostingNotificationSchema
-]);
+]).openapi('NotificationContent');
 
 export const notificationSchema = z.object({
 	id: z.string(),

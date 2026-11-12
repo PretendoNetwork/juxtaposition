@@ -5,7 +5,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { humanDate, humanFromNow } from '@/util';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
-import type { AdminAnnouncement } from '@/api/generated';
+import type { AdminAnnouncement, NotificationContent } from '@/api/generated';
 
 export type AnnouncementItemViewProps = {
 	announcement: AdminAnnouncement;
@@ -16,7 +16,7 @@ export type AnnouncementListViewProps = {
 	page: number;
 };
 
-function AnnouncementContent(props: { notif: AdminAnnouncement['notif'] }): ReactNode {
+function AnnouncementContent(props: { notif: NotificationContent }): ReactNode {
 	if (props.notif.type === 'system') {
 		return <p>{props.notif.content.text}</p>;
 	}

@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { WebPopupDisplay } from '@/services/juxt-web/views/web/popups';
 import type { ReactNode } from 'react';
 
 export function DefaultHead(): ReactNode {
@@ -43,6 +44,7 @@ export function DefaultStyling(props: DefaultStylingProps): ReactNode {
 export type HtmlProps = {
 	children?: ReactNode;
 	head?: ReactNode;
+	preventPopups?: boolean;
 
 	type?: DefaultStylingType; // default "normal"
 };
@@ -59,6 +61,7 @@ export function WebRoot(props: HtmlProps): ReactNode {
 			</head>
 			<body>
 				<div id="main">{props.children}</div>
+				{!props.preventPopups ? <WebPopupDisplay /> : null}
 			</body>
 		</html>
 	);
