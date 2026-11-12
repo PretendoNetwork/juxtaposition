@@ -1,4 +1,5 @@
 import { T } from '@/services/juxt-web/views/common/components/T';
+import { useNotifications } from '@/services/juxt-web/views/common/hooks/useNotifications';
 import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
@@ -10,6 +11,7 @@ export type NavBarProps = {
 export function PortalNavBar(props: NavBarProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
+	const notifs = useNotifications();
 	const selectedClasses = (id: number): string =>
 		id === props.selection ? 'selected' : '';
 
@@ -65,8 +67,8 @@ export function PortalNavBar(props: NavBarProps): ReactNode {
 			>
 				<a href="/news/my_news" data-pjax="#body" data-sound="SE_WAVE_MENU">
 					<T k="global.notifications" />
-					<span id="news-badge" className="badge">
-						0
+					<span id="news-badge" style={{ display: notifs.unreadCount > 0 ? 'block' : 'none' }} className="badge">
+						{notifs.unreadCount > 99 ? '99+' : notifs.unreadCount.toString()}
 					</span>
 				</a>
 			</li>

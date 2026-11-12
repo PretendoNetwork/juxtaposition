@@ -7,9 +7,9 @@ import type { UserTokens } from '@/types/juxt/tokens';
 
 const cookieDomain = config.http.cookieDomain;
 
-export async function populateSelfOnRequest(req: Request, tokens: UserTokens): Promise<void> {
+export async function populateSelfOnRequest(req: Request, res: Response, tokens: UserTokens): Promise<void> {
 	req.self = null;
-	req.notifications = null;
+	res.notifications = null;
 	if (!req.user) {
 		return;
 	}
@@ -26,7 +26,7 @@ export async function populateSelfOnRequest(req: Request, tokens: UserTokens): P
 		const notificationCounts = await api.self.getNotifications();
 		const popupNotifications = await api.notifications.list({ type: 'popup', limit: 10 }); // Only show 10 max
 		const unreadAnnouncements = await api.announcements.getUnread({});
-		req.notifications = {
+		res.notifications = {
 			counts: notificationCounts.data,
 			popups: popupNotifications.data.items,
 			announcements: unreadAnnouncements.data
@@ -64,7 +64,7 @@ export const webAuth: RequestHandler = async (request, response, next) => {
 	}
 
 	request.tokens = { oauthToken: request.cookies.access_token };
-	await populateSelfOnRequest(request, request.tokens);
+	await populateSelfOnRequest(request, response, request.tokens);
 
 	// Handle guest access pages
 	if (!request.pid || !request.user || !request.self) {

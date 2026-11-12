@@ -14,11 +14,6 @@ declare global {
 			directory?: 'ctr' | 'portal' | 'web';
 			api: InternalApi;
 			self: Self | null;
-			notifications: {
-				counts: SelfNotificationCount;
-				popups: Notification[];
-				announcements: Notification[];
-			} | null;
 
 			paramPackData: ParamPack | null;
 			tokens: UserTokens;
@@ -69,6 +64,15 @@ declare global {
 			 * i18n instance of the current response
 			 */
 			i18n: i18n;
+
+			/**
+			 * Notification data for the user
+			 */
+			notifications: {
+				counts: SelfNotificationCount;
+				popups: Notification[];
+				announcements: Notification[];
+			} | null;
 		}
 	}
 }

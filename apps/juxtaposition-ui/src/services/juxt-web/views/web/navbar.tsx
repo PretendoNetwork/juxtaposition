@@ -2,6 +2,7 @@ import { useUrl } from '@/services/juxt-web/views/common/hooks/useUrl';
 import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import { T } from '@/services/juxt-web/views/common/components/T';
 import { JuxtLogo, WebUIIcon } from '@/services/juxt-web/views/web/components/ui/WebUIIcon';
+import { useNotifications } from '@/services/juxt-web/views/common/hooks/useNotifications';
 import type { ReactNode } from 'react';
 
 export type NavBarProps = {
@@ -11,6 +12,7 @@ export type NavBarProps = {
 export function WebNavBar(props: NavBarProps): ReactNode {
 	const url = useUrl();
 	const user = useUser();
+	const notifs = useNotifications();
 	const selectedClasses = (id: number): string =>
 		id === props.selection ? 'selected' : '';
 
@@ -40,7 +42,9 @@ export function WebNavBar(props: NavBarProps): ReactNode {
 							</a>
 							<a href="/news/my_news" className={selectedClasses(4)}>
 								<WebUIIcon name="bell" />
-								<span id="news-badge" className="badge"></span>
+								<span id="news-badge" style={{ display: notifs.unreadCount > 0 ? 'block' : 'none' }} className="badge">
+									{notifs.unreadCount > 99 ? '99+' : notifs.unreadCount.toString()}
+								</span>
 								<p><T k="global.notifications" /></p>
 							</a>
 							{user.perms.moderator

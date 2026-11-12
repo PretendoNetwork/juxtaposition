@@ -195,7 +195,6 @@ function initAll() {
 	initSearchForm();
 	initSounds();
 	initNewPost();
-	checkForUpdates();
 	pjax.refresh();
 }
 

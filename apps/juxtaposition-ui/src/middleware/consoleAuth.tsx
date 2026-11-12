@@ -67,7 +67,7 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 		}
 	}
 
-	await populateSelfOnRequest(request, request.tokens);
+	await populateSelfOnRequest(request, response, request.tokens);
 	const mayBypassAuthChecks = request.user?.accessLevel === 3 || config.disableConsoleChecks;
 
 	// This section includes checks if a user is a developer and adds exceptions for these cases
