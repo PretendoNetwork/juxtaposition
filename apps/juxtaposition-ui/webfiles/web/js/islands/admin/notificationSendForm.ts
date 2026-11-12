@@ -23,6 +23,8 @@ function sendNotification(form: HTMLFormElement): void {
 				throw new Error('Server error');
 			}
 			alert('Sent notification!');
+			form.reset();
+			window.location.reload();
 		})
 		.catch((err) => {
 			console.error(err);
