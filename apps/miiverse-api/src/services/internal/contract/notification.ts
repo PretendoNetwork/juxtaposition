@@ -63,25 +63,29 @@ export const limitedFromPostingNotificationSchema = asOpenapi('LimitedFromPostin
 	})
 }));
 
+export const notificationContentSchema = z.discriminatedUnion('type', [
+	followNotificationSchema,
+	empathyNotificationSchema,
+	replyNotificationSchema,
+	systemNotificationSchema,
+	postDeletedNotificationSchema,
+	limitedFromPostingNotificationSchema
+]).openapi('NotificationContent');
+
 export const notificationSchema = z.object({
+	id: z.string(),
 	pid: z.number(),
 	user: shallowUserSchema.optional(),
 	hasRead: z.boolean(),
 	updatedAt: z.date(),
-	notif: z.discriminatedUnion('type', [
-		followNotificationSchema,
-		empathyNotificationSchema,
-		replyNotificationSchema,
-		systemNotificationSchema,
-		postDeletedNotificationSchema,
-		limitedFromPostingNotificationSchema
-	])
+	notif: notificationContentSchema
 }).openapi('Notification');
 
 export type NotificationDto = z.infer<typeof notificationSchema>;
+export type NotificationContentDto = z.infer<typeof notificationContentSchema>;
 
-export function mapNotification(recipient: NotificationRecipient, notif: Notification, users: User[]): NotificationDto {
-	let data: NotificationDto['notif'] | null = null;
+export function mapNotificationContent(notif: Notification, users: User[]): NotificationContentDto {
+	let data: NotificationContentDto | null = null;
 
 	if (notif.type === 'Follow') {
 		const content = notif.content as FollowNotificationContent;
@@ -161,12 +165,17 @@ export function mapNotification(recipient: NotificationRecipient, notif: Notific
 		throw new Error(`No DTO mapping for notification ${notif.type} found`);
 	}
 
+	return data;
+}
+
+export function mapNotification(recipient: NotificationRecipient, notif: Notification, users: User[]): NotificationDto {
 	const user = users.find(u => u.pid === recipient.pid);
 	return {
+		id: recipient.id,
 		pid: recipient.pid,
 		user: user ? mapShallowUser(user) : undefined,
 		hasRead: recipient.hasRead,
 		updatedAt: notif.updatedAt,
-		notif: data
+		notif: mapNotificationContent(notif, users)
 	};
 }

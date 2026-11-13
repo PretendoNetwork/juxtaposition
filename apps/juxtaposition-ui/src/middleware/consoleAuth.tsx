@@ -1,7 +1,7 @@
-import { createInternalApiClient } from '@/api/client';
 import { config } from '@/config';
 import { getLanguage } from '@/i18n';
 import { logger } from '@/logger';
+import { populateSelfOnRequest } from '@/middleware/webAuth';
 import { CtrFatalErrorView } from '@/services/juxt-web/views/ctr/errorView';
 import { PortalFatalErrorView } from '@/services/juxt-web/views/portal/errorView';
 import { decodeParamPack, getUserAccountData, getUserDataFromServiceToken, getUserDataFromToken } from '@/util';
@@ -67,15 +67,7 @@ export const consoleAuth: RequestHandler = async (request, response, next) => {
 		}
 	}
 
-	request.self = null;
-	if (request.user) {
-		const selfResult = await createInternalApiClient(request.tokens).self.get({ throwOnError: false });
-		if (selfResult.error) {
-			logger.error(selfResult.error, 'Failed to get self from access token');
-		}
-		request.self = selfResult.error ? null : selfResult.data ?? null;
-	}
-
+	await populateSelfOnRequest(request, response, request.tokens);
 	const mayBypassAuthChecks = request.user?.accessLevel === 3 || config.disableConsoleChecks;
 
 	// This section includes checks if a user is a developer and adds exceptions for these cases

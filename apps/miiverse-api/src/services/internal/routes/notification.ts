@@ -3,6 +3,7 @@ import { guards } from '@/services/internal/middleware/guards';
 import { createInternalApiRouter } from '@/services/internal/builder/router';
 import { mapPage, pageControlSchema, pageDtoSchema } from '@/services/internal/contract/page';
 import { mapNotification, notificationSchema } from '@/services/internal/contract/notification';
+import { mapResult, resultSchema } from '@/services/internal/contract/result';
 import type { EmpathyNotificationContent, FollowNotificationContent, ReplyNotificationContent } from '@/services/internal/utils/notifications';
 import type { NotificationRecipientWhereInput } from '@/prisma/models';
 
@@ -15,6 +16,7 @@ notificationsRouter.get({
 	schema: {
 		query: z.object({
 			read: z.stringbool().optional(),
+			type: z.enum(['list', 'popup']).default('list'),
 			markAsRead: z.stringbool().default(false)
 		}).extend(pageControlSchema()),
 		response: pageDtoSchema(notificationSchema)
@@ -24,7 +26,24 @@ notificationsRouter.get({
 
 		const dbQuery: NotificationRecipientWhereInput = {
 			hasRead: query.read,
-			pid: account.pnid.pid
+			pid: account.pnid.pid,
+
+			// Only show list notifications with this endpoint
+			notification: query.type === 'list'
+				? {
+						OR: [{
+							displayType: 'List'
+						}, {
+							displayType: 'ListAndPopup'
+						}]
+					}
+				: {
+						OR: [{
+							displayType: 'Popup'
+						}, {
+							displayType: 'ListAndPopup'
+						}]
+					}
 		};
 		const notifications = await db.notificationRecipient.findMany({
 			where: dbQuery,
@@ -77,5 +96,32 @@ notificationsRouter.get({
 		}
 
 		return mapPage(total, notifications.map(v => mapNotification(v, v.notification, users)));
+	}
+});
+
+notificationsRouter.post({
+	path: '/notifications/:id/read',
+	name: 'notifications.markAsRead',
+	guard: guards.user,
+	schema: {
+		params: z.object({
+			id: z.string()
+		}),
+		response: resultSchema
+	},
+	async handler({ params, db, auth }) {
+		const account = auth!;
+
+		await db.notificationRecipient.updateMany({
+			where: {
+				pid: account.pnid.pid,
+				id: params.id
+			},
+			data: {
+				hasRead: true
+			}
+		});
+
+		return mapResult('success');
 	}
 });

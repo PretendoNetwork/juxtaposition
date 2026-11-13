@@ -1,0 +1,41 @@
+import type { ReactNode } from 'react';
+import type { SystemNotification } from '@/api/generated';
+import type { PopupNotificationItemTypeProps, PopupNotificationProps } from '@/services/juxt-web/views/web/components/WebPopupNotification';
+
+function SystemPopupView(props: PopupNotificationItemTypeProps<SystemNotification>): ReactNode {
+	return (
+		<div>
+			<div className="popup-card-content">
+				<p>{props.notif.content.text}</p>
+			</div>
+		</div>
+	);
+}
+
+export function PortalPopupNotificationItemView(props: PopupNotificationProps): ReactNode {
+	const notif = props.notification;
+	if (notif.type === 'system') {
+		return <SystemPopupView notif={notif} />;
+	}
+
+	return <div>Invalid popup type!</div>;
+}
+
+export function PortalPopupNotification(props: PopupNotificationProps): ReactNode {
+	return (
+		<div data-popup-notification={props.id} data-popup-notification-type={props.popupType} className="popup-notification">
+			<div className="popup-screen">
+				<div className="popup-screen">
+					<div className="popup-content">
+						<div className="popup-card">
+							<PortalPopupNotificationItemView {...props} />
+							<div className="popup-action-list">
+								<button className="popup-action" data-popup-notification-close>Continue</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}

@@ -3,7 +3,7 @@ import { useUser } from '@/services/juxt-web/views/common/hooks/useUser';
 import type { ReactNode } from 'react';
 
 export type ModerationTabsProps = {
-	selected: 'users' | 'reports' | 'automod' | 'communities';
+	selected: 'users' | 'reports' | 'automod' | 'communities' | 'announcements';
 };
 
 export function WebAdminCenterItems(props: { children?: ReactNode }): ReactNode {
@@ -59,6 +59,14 @@ export function WebModerationTabs(props: ModerationTabsProps): ReactNode {
 						</a>
 					)
 				: null }
+			<a
+				className={cx({
+					selected: props.selected === 'announcements'
+				})}
+				href="/admin/announcements"
+			>
+				Announcements
+			</a>
 		</div>
 	);
 }

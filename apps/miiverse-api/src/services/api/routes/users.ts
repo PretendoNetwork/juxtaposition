@@ -32,15 +32,25 @@ router.get('/:pid/notifications', async function (request: express.Request, resp
 			pid: user.pid
 		}
 	});
+	const unreadAnnouncements = await getDb().announcementNotification.count({
+		where: {
+			createdAt: {
+				gt: user.announcementsLastSeenAt
+			}
+		}
+	});
+	const unreadAnnouncementCount = unreadAnnouncements > 0 ? 1 : 0; // User only gets shown one announcement if they have multiple
 
-	if (unreadNotifications === 0) {
+	// Combination of popup notifications, list notifications and announcements
+	const notificationCount = unreadNotifications + unreadAnnouncementCount;
+	if (notificationCount === 0) {
 		response.status(204).send();
 		return;
 	}
 
 	sendOliveXmlResult<NotificationResult>(response, {
 		request_name: 'notifications',
-		notification_count: unreadNotifications
+		notification_count: notificationCount
 	});
 });
 

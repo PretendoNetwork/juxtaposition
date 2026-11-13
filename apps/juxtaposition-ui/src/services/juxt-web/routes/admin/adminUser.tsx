@@ -8,6 +8,7 @@ import { ModerateUserReportsListView } from '@/services/juxt-web/views/web/admin
 import { getReasonMap } from '@/util';
 import { WebPostListView } from '@/services/juxt-web/views/web/postList';
 import { buildListLinks } from '@/services/juxt-web/views/web/listView';
+import { ModerateUserNotificationsListView } from '@/services/juxt-web/views/web/admin/moderate-user/moderateUserNotificationsView';
 import type { PostListViewProps } from '@/services/juxt-web/views/web/postList';
 
 export const adminUserRouter = express.Router();
@@ -111,6 +112,37 @@ adminUserRouter.get('/accounts/:pid/reports', async function (req, res) {
 	});
 });
 
+adminUserRouter.get('/accounts/:pid/notifications', async function (req, res) {
+	if (!res.locals.moderator) {
+		return res.redirect('/titles/show');
+	}
+
+	const { params } = parseReq(req, {
+		params: z.object({
+			pid: z.coerce.number()
+		})
+	});
+
+	const reqPid = params.pid;
+	const { data: profile } = await req.api.admin.users.getProfile({ id: reqPid });
+	if (!profile) {
+		return res.redirect('/404');
+	}
+
+	const { data: notificationsPage } = await req.api.admin.users.getSystemNotifications({ id: reqPid, limit: 50 });
+
+	res.jsxForDirectory({
+		web: (
+			<WebModerateUserView profile={profile} tab="notifications">
+				<ModerateUserNotificationsListView
+					userPid={reqPid}
+					notifications={notificationsPage?.items ?? []}
+				/>
+			</WebModerateUserView>
+		)
+	});
+});
+
 adminUserRouter.get('/accounts/:pid/posts', async function (req, res) {
 	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
@@ -175,6 +207,26 @@ adminUserRouter.post('/accounts/:pid', async (req, res) => {
 		accountStatus: body.account_status,
 		banLiftDate: body.ban_lift_date,
 		banReason: body.ban_reason
+	});
+
+	res.json({
+		error: false
+	});
+});
+
+adminUserRouter.post('/accounts/:pid/notifications', async (req, res) => {
+	const { params, body } = parseReq(req, {
+		params: z.object({
+			pid: z.coerce.number()
+		}),
+		body: z.object({
+			text: z.string().trim().min(1)
+		})
+	});
+
+	await req.api.admin.users.sendSystemNotification({
+		id: params.pid,
+		text: body.text
 	});
 
 	res.json({

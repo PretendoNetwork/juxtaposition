@@ -10,6 +10,7 @@ export type RenderContextContent = {
 	developer: boolean;
 	pid: number;
 	uaIsConsole?: boolean; // user agent looks like a Nintendo console
+	notifications: Response['notifications'];
 };
 
 const InternalRenderContext = createContext<RenderContextContent | null>(null);
@@ -30,7 +31,8 @@ export function buildContext(res: Response): RenderContextContent {
 		developer: locals.developer,
 		uaIsConsole: locals.uaIsConsole,
 		pid: locals.pid,
-		i18n: res.i18n
+		i18n: res.i18n,
+		notifications: res.notifications
 	};
 }
 

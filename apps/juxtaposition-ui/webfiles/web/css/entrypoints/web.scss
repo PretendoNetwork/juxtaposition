@@ -2,6 +2,7 @@
 @use '../components/WebInfobox.scss';
 @use '../components/WebCommunityListView.scss';
 @use '../components/WebPostView.scss';
+@use '../components/WebPopupNotification.scss';
 
 :root {
   --background: #{t.$background};

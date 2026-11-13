@@ -4,7 +4,7 @@ import type { GetUserDataResponse } from '@pretendonetwork/grpc/account/v2/get_u
 import type { i18n } from 'i18next';
 import type { ParamPack } from '@/types/common/param-pack';
 import type { UserTokens } from '@/types/juxt/tokens';
-import type { InternalApi, Self } from '@/api/generated';
+import type { InternalApi, Notification, Self, SelfNotificationCount } from '@/api/generated';
 
 declare global {
 	namespace Express {
@@ -64,6 +64,15 @@ declare global {
 			 * i18n instance of the current response
 			 */
 			i18n: i18n;
+
+			/**
+			 * Notification data for the user
+			 */
+			notifications: {
+				counts: SelfNotificationCount;
+				popups: Notification[];
+				announcements: Notification[];
+			} | null;
 		}
 	}
 }

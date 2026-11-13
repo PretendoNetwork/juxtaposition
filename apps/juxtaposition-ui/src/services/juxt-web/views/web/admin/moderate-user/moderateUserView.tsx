@@ -11,7 +11,7 @@ import type { AdminUserProfile } from '@/api/generated';
 
 type ModerateUserTabsProps = {
 	pid: number;
-	selected: 'overview' | 'removed' | 'posts' | 'reports';
+	selected: 'overview' | 'removed' | 'posts' | 'reports' | 'notifications';
 };
 
 export type ModerateUserViewProps = {
@@ -28,6 +28,7 @@ export function ModerateUserTabs(props: ModerateUserTabsProps): ReactNode {
 			<a className={cx({ selected: props.selected === 'overview' })} href={base + '/'}>Overview</a>
 			<a className={cx({ selected: props.selected === 'removed' })} href={base + '/removed'}>Removed</a>
 			<a className={cx({ selected: props.selected === 'reports' })} href={base + '/reports'}>Reports</a>
+			<a className={cx({ selected: props.selected === 'notifications' })} href={base + '/notifications'}>Notifications</a>
 		</div>
 	);
 }

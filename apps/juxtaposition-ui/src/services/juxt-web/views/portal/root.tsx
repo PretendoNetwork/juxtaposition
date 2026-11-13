@@ -1,4 +1,5 @@
 import { useRequest } from '@/services/juxt-web/views/common/hooks/useRequest';
+import { PortalPopupDisplay } from '@/services/juxt-web/views/portal/popups';
 import type { ReactNode } from 'react';
 
 function DefaultHead(): ReactNode {
@@ -19,6 +20,7 @@ export type HtmlProps = {
 	head?: ReactNode;
 	title: string;
 	onLoad?: string;
+	preventPopups?: boolean;
 };
 
 export function PortalRoot(props: HtmlProps): ReactNode {
@@ -30,6 +32,7 @@ export function PortalRoot(props: HtmlProps): ReactNode {
 				{props.head}
 			</head>
 			<body evt-load={props.onLoad ?? ''}>{props.children}</body>
+			{!props.preventPopups ? <PortalPopupDisplay /> : null}
 		</html>
 	);
 }

@@ -104,7 +104,14 @@ selfRouter.get({
 		const notificationCount = await getDb().notificationRecipient.count({
 			where: {
 				pid: account.pnid.pid,
-				hasRead: false
+				hasRead: false,
+				notification: {
+					OR: [{
+						displayType: 'List'
+					}, {
+						displayType: 'ListAndPopup'
+					}]
+				}
 			}
 		});
 
