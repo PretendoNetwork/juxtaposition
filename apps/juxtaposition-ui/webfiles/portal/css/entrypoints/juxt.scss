@@ -4,6 +4,7 @@
 @use "../components/ui/PortalSearchForm.scss";
 @use "../components/PortalListView.scss";
 @use "../components/PortalCommunityList.scss";
+@use "../components/PortalPopupNotification.scss";
 
 html {
  background-color: t.$background;

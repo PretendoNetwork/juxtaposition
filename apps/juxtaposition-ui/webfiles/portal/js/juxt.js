@@ -8,6 +8,8 @@ import { initSearchForm } from '@/js/components/ui/PortalSearchForm';
 import { initNavBar } from '@/js/components/PortalNavBar';
 import { back, exit } from '@/js/nav';
 import { initBoss } from '@/js/boss';
+import { islands } from '@/js/islands';
+import { popupNotificationCloseIsland, popupNotificationIsland } from '@/js/islands/popupNotification';
 
 export var pjax;
 setInterval(checkForUpdates, 30000);
@@ -233,10 +235,20 @@ document.addEventListener('DOMContentLoaded', function () {
 		elements: 'a[data-pjax]' +
 			'',
 		selectors: ['title', '#body'],
-		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
+		switches: {
+			'#nav-menu': Pjax.switches.replaceNode,
+			'.tab-body': Pjax.switches.replaceNode,
+			'#body': function (oldEl, newEl) {
+				// Default behaviour except for the loadPartial in between
+				oldEl.outerHTML = newEl.outerHTML;
+				islands.loadPartial(oldEl);
+				this.onSwitch();
+			}
+		}
 	});
 	console.debug('Pjax initialized.', pjax);
 	initBoss();
+	islands.loadBody();
 	initAll();
 	stopLoading();
 });
@@ -375,3 +387,8 @@ function exitApplet() {
 	exit();
 }
 window.exitApplet = exitApplet;
+
+islands.register([
+	popupNotificationIsland,
+	popupNotificationCloseIsland
+]);
