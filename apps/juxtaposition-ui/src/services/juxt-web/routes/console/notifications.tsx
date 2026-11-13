@@ -97,3 +97,25 @@ notificationRouter.get('/friend_requests', async function (req, res) {
 		)
 	});
 });
+
+notificationRouter.post('/notifications/:type/:id/mark-read', async function (req, res) {
+	const { params } = parseReq(req, {
+		params: z.object({
+			type: z.enum(['announcement', 'notification']),
+			id: z.string()
+		})
+	});
+
+	if (params.type === 'announcement') {
+		await req.api.announcements.markAsRead({
+			id: params.id
+		});
+	}
+	if (params.type === 'notification') {
+		await req.api.notifications.markAsRead({
+			id: params.id
+		});
+	}
+
+	res.json({ success: true });
+});

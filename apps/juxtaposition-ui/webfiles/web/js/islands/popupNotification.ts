@@ -1,18 +1,53 @@
 import { createIsland } from '@common/js/island';
 
+let isSaving = false;
+type PopupType = 'announcement' | 'notification';
+
+function markAsRead(id: string, type: 'announcement' | 'notification', cb: (err: null | Error) => void): void {
+	if (isSaving) {
+		return; // Prevent spamming button
+	}
+
+	isSaving = true;
+	fetch('/news/notifications/' + type + '/' + id + '/mark-read', {
+		method: 'POST'
+	})
+		.then(() => {
+			isSaving = false;
+			cb(null);
+		})
+		.catch((err) => {
+			isSaving = false;
+			cb(err);
+		});
+}
+
 function closePopup(this: HTMLElement): void {
 	const notifEl = this.closest('[data-popup-notification]');
 	if (!notifEl) {
 		return;
 	}
 
-	notifEl.removeAttribute('data-popup-notification-state');
-	document.body.removeAttribute('data-stop-scroll');
-
-	const nextNotifId = notifEl.getAttribute('data-popup-notification-next');
-	if (nextNotifId) {
-		showPopup(nextNotifId);
+	const notifId = notifEl.getAttribute('data-popup-notification');
+	const notifType = notifEl.getAttribute('data-popup-notification-type');
+	if (!notifId || !notifType) {
+		return;
 	}
+
+	markAsRead(notifId, notifType as PopupType, function (err) {
+		if (err) {
+			// log and continue
+			console.error('Failed to mark popup as read', err);
+		}
+
+		notifEl.removeAttribute('data-popup-notification-state');
+		document.body.removeAttribute('data-stop-scroll');
+
+		const nextNotifId = notifEl.getAttribute('data-popup-notification-next');
+		if (nextNotifId) {
+			showPopup(nextNotifId);
+		}
+	});
 }
 
 function showPopup(notifId: string): void {

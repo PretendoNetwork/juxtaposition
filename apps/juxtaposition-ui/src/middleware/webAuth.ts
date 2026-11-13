@@ -24,7 +24,7 @@ export async function populateSelfOnRequest(req: Request, res: Response, tokens:
 
 	try {
 		const notificationCounts = await api.self.getNotifications();
-		const popupNotifications = await api.notifications.list({ type: 'popup', limit: 10 }); // Only show 10 max
+		const popupNotifications = await api.notifications.list({ type: 'popup', read: 'false', limit: 10 }); // Only show 10 max
 		const unreadAnnouncements = await api.announcements.getUnread({});
 		res.notifications = {
 			counts: notificationCounts.data,

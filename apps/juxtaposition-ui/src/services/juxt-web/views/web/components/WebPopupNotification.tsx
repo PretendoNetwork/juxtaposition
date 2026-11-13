@@ -32,14 +32,14 @@ export function WebPopupNotificationItemView(props: PopupNotificationProps): Rea
 
 export function WebPopupNotification(props: PopupNotificationProps): ReactNode {
 	return (
-		<div data-popup-notification={props.id} className="popup-notification">
+		<div data-popup-notification={props.id} data-popup-notification-type={props.popupType} className="popup-notification">
 			<div className="popup-screen">
 				<div className="popup-screen">
 					<div className="popup-content">
 						<div className="popup-card">
 							<WebPopupNotificationItemView {...props} />
 							<div className="popup-action-list">
-								<button className="popup-action" data-popup-notification-close={props.popupType}>Continue</button>
+								<button className="popup-action" data-popup-notification-close>Continue</button>
 							</div>
 						</div>
 					</div>
